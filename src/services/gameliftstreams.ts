@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "GameLiftStreams",
@@ -1373,37 +1371,33 @@ export const ListStreamGroupsOutput = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.String },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { Message: S.String },
   T.Retryable({ throttling: true }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.String },
-) {}
+).pipe(C.withQuotaError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1418,8 +1412,8 @@ export const listApplications: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationsInput,
@@ -1429,8 +1423,8 @@ export const listApplications: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationsInput,
@@ -1440,8 +1434,8 @@ export const listApplications: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsInput,
@@ -1471,8 +1465,8 @@ export const getStreamSession: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStreamSessionInput,
   output: GetStreamSessionOutput,
@@ -1501,8 +1495,8 @@ export const listStreamSessions: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamSessionsInput,
@@ -1513,8 +1507,8 @@ export const listStreamSessions: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamSessionsInput,
@@ -1525,8 +1519,8 @@ export const listStreamSessions: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamSessionsInput,
@@ -1557,8 +1551,8 @@ export const getApplication: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationInput,
   output: GetApplicationOutput,
@@ -1584,8 +1578,8 @@ export const updateApplication: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationInput,
   output: UpdateApplicationOutput,
@@ -1609,8 +1603,8 @@ export const getStreamGroup: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStreamGroupInput,
   output: GetStreamGroupOutput,
@@ -1636,8 +1630,8 @@ export const removeStreamGroupLocations: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveStreamGroupLocationsInput,
   output: RemoveStreamGroupLocationsResponse,
@@ -1661,8 +1655,8 @@ export const terminateStreamSession: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateStreamSessionInput,
   output: TerminateStreamSessionResponse,
@@ -1688,8 +1682,8 @@ export const disassociateApplications: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateApplicationsInput,
   output: DisassociateApplicationsOutput,
@@ -1726,8 +1720,8 @@ export const deleteApplication: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationInput,
   output: DeleteApplicationResponse,
@@ -1753,8 +1747,8 @@ export const deleteStreamGroup: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStreamGroupInput,
   output: DeleteStreamGroupResponse,
@@ -1806,8 +1800,8 @@ export const createStreamSessionConnection: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStreamSessionConnectionInput,
   output: CreateStreamSessionConnectionOutput,
@@ -1889,8 +1883,8 @@ export const startStreamSession: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartStreamSessionInput,
   output: StartStreamSessionOutput,
@@ -1915,8 +1909,8 @@ export const listStreamGroups: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamGroupsInput,
@@ -1926,8 +1920,8 @@ export const listStreamGroups: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamGroupsInput,
@@ -1937,8 +1931,8 @@ export const listStreamGroups: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamGroupsInput,
@@ -1972,8 +1966,8 @@ export const listStreamSessionsByAccount: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamSessionsByAccountInput,
@@ -1983,8 +1977,8 @@ export const listStreamSessionsByAccount: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamSessionsByAccountInput,
@@ -1994,8 +1988,8 @@ export const listStreamSessionsByAccount: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamSessionsByAccountInput,
@@ -2030,8 +2024,8 @@ export const listTagsForResource: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2063,8 +2057,8 @@ export const tagResource: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2086,8 +2080,8 @@ export const untagResource: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2124,8 +2118,8 @@ export const exportStreamSessionFiles: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportStreamSessionFilesInput,
   output: ExportStreamSessionFilesOutput,
@@ -2156,8 +2150,8 @@ export const createApplication: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationInput,
   output: CreateApplicationOutput,
@@ -2196,8 +2190,8 @@ export const updateStreamGroup: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStreamGroupInput,
   output: UpdateStreamGroupOutput,
@@ -2226,8 +2220,8 @@ export const associateApplications: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateApplicationsInput,
   output: AssociateApplicationsOutput,
@@ -2255,8 +2249,8 @@ export const addStreamGroupLocations: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddStreamGroupLocationsInput,
   output: AddStreamGroupLocationsOutput,
@@ -2299,8 +2293,8 @@ export const createStreamGroup: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStreamGroupInput,
   output: CreateStreamGroupOutput,

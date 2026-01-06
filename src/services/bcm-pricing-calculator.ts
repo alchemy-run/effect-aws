@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "BCM Pricing Calculator",
@@ -2292,17 +2290,17 @@ export const BatchCreateBillScenarioUsageModificationResponse = S.suspend(() =>
 export class DataUnavailableException extends S.TaggedError<DataUnavailableException>()(
   "DataUnavailableException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.String, resourceId: S.String, resourceType: S.String },
   T.AwsQueryError({ code: "ResourceNotFoundCode", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.String, resourceId: S.String, resourceType: S.String },
   T.AwsQueryError({ code: "ConflictCode", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -2313,7 +2311,7 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     quotaCode: S.optional(S.String),
   },
   T.AwsQueryError({ code: "ServiceQuotaCode", httpResponseCode: 402 }),
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -2323,8 +2321,8 @@ export const getPreferences: (
   input: GetPreferencesRequest,
 ) => Effect.Effect<
   GetPreferencesResponse,
-  DataUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPreferencesRequest,
   output: GetPreferencesResponse,
@@ -2337,8 +2335,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2351,8 +2349,8 @@ export const getBillEstimate: (
   input: GetBillEstimateRequest,
 ) => Effect.Effect<
   GetBillEstimateResponse,
-  DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBillEstimateRequest,
   output: GetBillEstimateResponse,
@@ -2365,8 +2363,8 @@ export const deleteBillEstimate: (
   input: DeleteBillEstimateRequest,
 ) => Effect.Effect<
   DeleteBillEstimateResponse,
-  ConflictException | DataUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | DataUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBillEstimateRequest,
   output: DeleteBillEstimateResponse,
@@ -2379,8 +2377,8 @@ export const getBillScenario: (
   input: GetBillScenarioRequest,
 ) => Effect.Effect<
   GetBillScenarioResponse,
-  DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBillScenarioRequest,
   output: GetBillScenarioResponse,
@@ -2396,8 +2394,8 @@ export const updateBillScenario: (
   | ConflictException
   | DataUnavailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBillScenarioRequest,
   output: UpdateBillScenarioResponse,
@@ -2414,8 +2412,8 @@ export const getWorkloadEstimate: (
   input: GetWorkloadEstimateRequest,
 ) => Effect.Effect<
   GetWorkloadEstimateResponse,
-  DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkloadEstimateRequest,
   output: GetWorkloadEstimateResponse,
@@ -2431,8 +2429,8 @@ export const updateWorkloadEstimate: (
   | ConflictException
   | DataUnavailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWorkloadEstimateRequest,
   output: UpdateWorkloadEstimateResponse,
@@ -2449,8 +2447,8 @@ export const deleteWorkloadEstimate: (
   input: DeleteWorkloadEstimateRequest,
 ) => Effect.Effect<
   DeleteWorkloadEstimateResponse,
-  DataUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkloadEstimateRequest,
   output: DeleteWorkloadEstimateResponse,
@@ -2463,8 +2461,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2477,8 +2475,8 @@ export const deleteBillScenario: (
   input: DeleteBillScenarioRequest,
 ) => Effect.Effect<
   DeleteBillScenarioResponse,
-  ConflictException | DataUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | DataUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBillScenarioRequest,
   output: DeleteBillScenarioResponse,
@@ -2494,8 +2492,8 @@ export const updateBillEstimate: (
   | ConflictException
   | DataUnavailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBillEstimateRequest,
   output: UpdateBillEstimateResponse,
@@ -2512,10 +2510,8 @@ export const updatePreferences: (
   input: UpdatePreferencesRequest,
 ) => Effect.Effect<
   UpdatePreferencesResponse,
-  | DataUnavailableException
-  | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | ServiceQuotaExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePreferencesRequest,
   output: UpdatePreferencesResponse,
@@ -2529,22 +2525,22 @@ export const listBillEstimateInputCommitmentModifications: {
     input: ListBillEstimateInputCommitmentModificationsRequest,
   ): Effect.Effect<
     ListBillEstimateInputCommitmentModificationsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBillEstimateInputCommitmentModificationsRequest,
   ) => Stream.Stream<
     ListBillEstimateInputCommitmentModificationsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBillEstimateInputCommitmentModificationsRequest,
   ) => Stream.Stream<
     BillEstimateInputCommitmentModificationSummary,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBillEstimateInputCommitmentModificationsRequest,
@@ -2565,22 +2561,22 @@ export const listBillScenarioCommitmentModifications: {
     input: ListBillScenarioCommitmentModificationsRequest,
   ): Effect.Effect<
     ListBillScenarioCommitmentModificationsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBillScenarioCommitmentModificationsRequest,
   ) => Stream.Stream<
     ListBillScenarioCommitmentModificationsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBillScenarioCommitmentModificationsRequest,
   ) => Stream.Stream<
     BillScenarioCommitmentModificationItem,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBillScenarioCommitmentModificationsRequest,
@@ -2605,8 +2601,8 @@ export const batchDeleteBillScenarioCommitmentModification: (
   | ConflictException
   | DataUnavailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteBillScenarioCommitmentModificationRequest,
   output: BatchDeleteBillScenarioCommitmentModificationResponse,
@@ -2629,8 +2625,8 @@ export const batchDeleteBillScenarioUsageModification: (
   | DataUnavailableException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteBillScenarioUsageModificationRequest,
   output: BatchDeleteBillScenarioUsageModificationResponse,
@@ -2653,8 +2649,8 @@ export const batchDeleteWorkloadEstimateUsage: (
   | DataUnavailableException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteWorkloadEstimateUsageRequest,
   output: BatchDeleteWorkloadEstimateUsageResponse,
@@ -2674,8 +2670,8 @@ export const createBillScenario: (
   | ConflictException
   | DataUnavailableException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBillScenarioRequest,
   output: CreateBillScenarioResponse,
@@ -2695,8 +2691,8 @@ export const createWorkloadEstimate: (
   | ConflictException
   | DataUnavailableException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkloadEstimateRequest,
   output: CreateWorkloadEstimateResponse,
@@ -2713,10 +2709,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  | ResourceNotFoundException
-  | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ServiceQuotaExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2732,8 +2726,8 @@ export const createBillEstimate: (
   | ConflictException
   | DataUnavailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBillEstimateRequest,
   output: CreateBillEstimateResponse,
@@ -2751,22 +2745,22 @@ export const listBillEstimates: {
     input: ListBillEstimatesRequest,
   ): Effect.Effect<
     ListBillEstimatesResponse,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBillEstimatesRequest,
   ) => Stream.Stream<
     ListBillEstimatesResponse,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBillEstimatesRequest,
   ) => Stream.Stream<
     BillEstimateSummary,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBillEstimatesRequest,
@@ -2787,22 +2781,22 @@ export const listBillEstimateCommitments: {
     input: ListBillEstimateCommitmentsRequest,
   ): Effect.Effect<
     ListBillEstimateCommitmentsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBillEstimateCommitmentsRequest,
   ) => Stream.Stream<
     ListBillEstimateCommitmentsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBillEstimateCommitmentsRequest,
   ) => Stream.Stream<
     BillEstimateCommitmentSummary,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBillEstimateCommitmentsRequest,
@@ -2823,22 +2817,22 @@ export const listBillEstimateInputUsageModifications: {
     input: ListBillEstimateInputUsageModificationsRequest,
   ): Effect.Effect<
     ListBillEstimateInputUsageModificationsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBillEstimateInputUsageModificationsRequest,
   ) => Stream.Stream<
     ListBillEstimateInputUsageModificationsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBillEstimateInputUsageModificationsRequest,
   ) => Stream.Stream<
     BillEstimateInputUsageModificationSummary,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBillEstimateInputUsageModificationsRequest,
@@ -2859,22 +2853,22 @@ export const listBillScenarios: {
     input: ListBillScenariosRequest,
   ): Effect.Effect<
     ListBillScenariosResponse,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBillScenariosRequest,
   ) => Stream.Stream<
     ListBillScenariosResponse,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBillScenariosRequest,
   ) => Stream.Stream<
     BillScenarioSummary,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBillScenariosRequest,
@@ -2899,8 +2893,8 @@ export const batchUpdateBillScenarioCommitmentModification: (
   | ConflictException
   | DataUnavailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateBillScenarioCommitmentModificationRequest,
   output: BatchUpdateBillScenarioCommitmentModificationResponse,
@@ -2918,22 +2912,22 @@ export const listBillScenarioUsageModifications: {
     input: ListBillScenarioUsageModificationsRequest,
   ): Effect.Effect<
     ListBillScenarioUsageModificationsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBillScenarioUsageModificationsRequest,
   ) => Stream.Stream<
     ListBillScenarioUsageModificationsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBillScenarioUsageModificationsRequest,
   ) => Stream.Stream<
     BillScenarioUsageModificationItem,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBillScenarioUsageModificationsRequest,
@@ -2959,8 +2953,8 @@ export const batchUpdateBillScenarioUsageModification: (
   | DataUnavailableException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateBillScenarioUsageModificationRequest,
   output: BatchUpdateBillScenarioUsageModificationResponse,
@@ -2979,22 +2973,22 @@ export const listWorkloadEstimates: {
     input: ListWorkloadEstimatesRequest,
   ): Effect.Effect<
     ListWorkloadEstimatesResponse,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkloadEstimatesRequest,
   ) => Stream.Stream<
     ListWorkloadEstimatesResponse,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkloadEstimatesRequest,
   ) => Stream.Stream<
     WorkloadEstimateSummary,
-    DataUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkloadEstimatesRequest,
@@ -3015,22 +3009,22 @@ export const listWorkloadEstimateUsage: {
     input: ListWorkloadEstimateUsageRequest,
   ): Effect.Effect<
     ListWorkloadEstimateUsageResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkloadEstimateUsageRequest,
   ) => Stream.Stream<
     ListWorkloadEstimateUsageResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkloadEstimateUsageRequest,
   ) => Stream.Stream<
     WorkloadEstimateUsageItem,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkloadEstimateUsageRequest,
@@ -3056,8 +3050,8 @@ export const batchCreateWorkloadEstimateUsage: (
   | DataUnavailableException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateWorkloadEstimateUsageRequest,
   output: BatchCreateWorkloadEstimateUsageResponse,
@@ -3080,8 +3074,8 @@ export const batchUpdateWorkloadEstimateUsage: (
   | DataUnavailableException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateWorkloadEstimateUsageRequest,
   output: BatchUpdateWorkloadEstimateUsageResponse,
@@ -3099,22 +3093,22 @@ export const listBillEstimateLineItems: {
     input: ListBillEstimateLineItemsRequest,
   ): Effect.Effect<
     ListBillEstimateLineItemsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBillEstimateLineItemsRequest,
   ) => Stream.Stream<
     ListBillEstimateLineItemsResponse,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBillEstimateLineItemsRequest,
   ) => Stream.Stream<
     BillEstimateLineItemSummary,
-    DataUnavailableException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DataUnavailableException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBillEstimateLineItemsRequest,
@@ -3139,8 +3133,8 @@ export const batchCreateBillScenarioCommitmentModification: (
   | ConflictException
   | DataUnavailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateBillScenarioCommitmentModificationRequest,
   output: BatchCreateBillScenarioCommitmentModificationResponse,
@@ -3163,8 +3157,8 @@ export const batchCreateBillScenarioUsageModification: (
   | DataUnavailableException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateBillScenarioUsageModificationRequest,
   output: BatchCreateBillScenarioUsageModificationResponse,

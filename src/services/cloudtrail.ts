@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://cloudtrail.amazonaws.com/doc/2013-11-01/");
 const svc = T.AwsApiService({
@@ -3358,27 +3356,27 @@ export class ChannelARNInvalidException extends S.TaggedError<ChannelARNInvalidE
   "ChannelARNInvalidException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ChannelARNInvalid", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConflictException", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class ChannelExistsForEDSException extends S.TaggedError<ChannelExistsForEDSException>()(
   "ChannelExistsForEDSException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ChannelExistsForEDS", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CloudTrailARNInvalidException extends S.TaggedError<CloudTrailARNInvalidException>()(
   "CloudTrailARNInvalidException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "CloudTrailARNInvalid", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountNotFoundException extends S.TaggedError<AccountNotFoundException>()(
   "AccountNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AccountNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CloudTrailAccessNotEnabledException extends S.TaggedError<CloudTrailAccessNotEnabledException>()(
   "CloudTrailAccessNotEnabledException",
   { Message: S.optional(S.String) },
@@ -3386,22 +3384,22 @@ export class CloudTrailAccessNotEnabledException extends S.TaggedError<CloudTrai
     code: "CloudTrailAccessNotEnabled",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ChannelNotFoundException extends S.TaggedError<ChannelNotFoundException>()(
   "ChannelNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ChannelNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDataStoreARNInvalidException extends S.TaggedError<EventDataStoreARNInvalidException>()(
   "EventDataStoreARNInvalidException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "EventDataStoreARNInvalid", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientDependencyServiceAccessPermissionException extends S.TaggedError<InsufficientDependencyServiceAccessPermissionException>()(
   "InsufficientDependencyServiceAccessPermissionException",
   { Message: S.optional(S.String) },
@@ -3409,57 +3407,57 @@ export class InsufficientDependencyServiceAccessPermissionException extends S.Ta
     code: "InsufficientDependencyServiceAccessPermission",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountNotRegisteredException extends S.TaggedError<AccountNotRegisteredException>()(
   "AccountNotRegisteredException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AccountNotRegistered", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceAccessDenied", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidTrailNameException extends S.TaggedError<InvalidTrailNameException>()(
   "InvalidTrailNameException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidTrailName", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsightNotEnabledException extends S.TaggedError<InsightNotEnabledException>()(
   "InsightNotEnabledException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InsightNotEnabled", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OperationNotPermittedException extends S.TaggedError<OperationNotPermittedException>()(
   "OperationNotPermittedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "OperationNotPermitted", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ImportNotFoundException extends S.TaggedError<ImportNotFoundException>()(
   "ImportNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ImportNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ChannelAlreadyExistsException extends S.TaggedError<ChannelAlreadyExistsException>()(
   "ChannelAlreadyExistsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ChannelAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDataStoreNotFoundException extends S.TaggedError<EventDataStoreNotFoundException>()(
   "EventDataStoreNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "EventDataStoreNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountRegisteredException extends S.TaggedError<AccountRegisteredException>()(
   "AccountRegisteredException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AccountRegistered", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CloudTrailInvalidClientTokenIdException extends S.TaggedError<CloudTrailInvalidClientTokenIdException>()(
   "CloudTrailInvalidClientTokenIdException",
   { Message: S.optional(S.String) },
@@ -3467,12 +3465,12 @@ export class CloudTrailInvalidClientTokenIdException extends S.TaggedError<Cloud
     code: "CloudTrailInvalidClientTokenId",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedOperationException extends S.TaggedError<UnsupportedOperationException>()(
   "UnsupportedOperationException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "UnsupportedOperation", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDataStoreFederationEnabledException extends S.TaggedError<EventDataStoreFederationEnabledException>()(
   "EventDataStoreFederationEnabledException",
   { Message: S.optional(S.String) },
@@ -3480,17 +3478,17 @@ export class EventDataStoreFederationEnabledException extends S.TaggedError<Even
     code: "EventDataStoreFederationEnabled",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidHomeRegionException extends S.TaggedError<InvalidHomeRegionException>()(
   "InvalidHomeRegionException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidHomeRegion", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConcurrentModification", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoManagementAccountSLRExistsException extends S.TaggedError<NoManagementAccountSLRExistsException>()(
   "NoManagementAccountSLRExistsException",
   { Message: S.optional(S.String) },
@@ -3498,7 +3496,7 @@ export class NoManagementAccountSLRExistsException extends S.TaggedError<NoManag
     code: "NoManagementAccountSLRExists",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidParameterCombinationException extends S.TaggedError<InvalidParameterCombinationException>()(
   "InvalidParameterCombinationException",
   { Message: S.optional(S.String) },
@@ -3506,32 +3504,32 @@ export class InvalidParameterCombinationException extends S.TaggedError<InvalidP
     code: "InvalidParameterCombinationError",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceARNNotValidException extends S.TaggedError<ResourceARNNotValidException>()(
   "ResourceARNNotValidException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceARNNotValid", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidMaxResultsException extends S.TaggedError<InvalidMaxResultsException>()(
   "InvalidMaxResultsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidMaxResults", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTimeRangeException extends S.TaggedError<InvalidTimeRangeException>()(
   "InvalidTimeRangeException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidTimeRange", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidEventCategoryException extends S.TaggedError<InvalidEventCategoryException>()(
   "InvalidEventCategoryException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidEventCategory", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientEncryptionPolicyException extends S.TaggedError<InsufficientEncryptionPolicyException>()(
   "InsufficientEncryptionPolicyException",
   { Message: S.optional(S.String) },
@@ -3539,12 +3537,12 @@ export class InsufficientEncryptionPolicyException extends S.TaggedError<Insuffi
     code: "InsufficientEncryptionPolicy",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InactiveEventDataStoreException extends S.TaggedError<InactiveEventDataStoreException>()(
   "InactiveEventDataStoreException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InactiveEventDataStore", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDataStoreMaxLimitExceededException extends S.TaggedError<EventDataStoreMaxLimitExceededException>()(
   "EventDataStoreMaxLimitExceededException",
   { Message: S.optional(S.String) },
@@ -3552,7 +3550,7 @@ export class EventDataStoreMaxLimitExceededException extends S.TaggedError<Event
     code: "EventDataStoreMaxLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDataStoreAlreadyExistsException extends S.TaggedError<EventDataStoreAlreadyExistsException>()(
   "EventDataStoreAlreadyExistsException",
   { Message: S.optional(S.String) },
@@ -3560,12 +3558,12 @@ export class EventDataStoreAlreadyExistsException extends S.TaggedError<EventDat
     code: "EventDataStoreAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class GenerateResponseException extends S.TaggedError<GenerateResponseException>()(
   "GenerateResponseException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "GenerateResponse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidEventDataStoreCategoryException extends S.TaggedError<InvalidEventDataStoreCategoryException>()(
   "InvalidEventDataStoreCategoryException",
   { Message: S.optional(S.String) },
@@ -3573,7 +3571,7 @@ export class InvalidEventDataStoreCategoryException extends S.TaggedError<Invali
     code: "InvalidEventDataStoreCategory",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CannotDelegateManagementAccountException extends S.TaggedError<CannotDelegateManagementAccountException>()(
   "CannotDelegateManagementAccountException",
   { Message: S.optional(S.String) },
@@ -3581,12 +3579,12 @@ export class CannotDelegateManagementAccountException extends S.TaggedError<Cann
     code: "CannotDelegateManagementAccount",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrailNotFoundException extends S.TaggedError<TrailNotFoundException>()(
   "TrailNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TrailNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotOrganizationManagementAccountException extends S.TaggedError<NotOrganizationManagementAccountException>()(
   "NotOrganizationManagementAccountException",
   { Message: S.optional(S.String) },
@@ -3594,12 +3592,12 @@ export class NotOrganizationManagementAccountException extends S.TaggedError<Not
     code: "NotOrganizationManagementAccount",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class ChannelMaxLimitExceededException extends S.TaggedError<ChannelMaxLimitExceededException>()(
   "ChannelMaxLimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ChannelMaxLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CloudWatchLogsDeliveryUnavailableException extends S.TaggedError<CloudWatchLogsDeliveryUnavailableException>()(
   "CloudWatchLogsDeliveryUnavailableException",
   { Message: S.optional(S.String) },
@@ -3607,7 +3605,7 @@ export class CloudWatchLogsDeliveryUnavailableException extends S.TaggedError<Cl
     code: "CloudWatchLogsDeliveryUnavailable",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDataStoreHasOngoingImportException extends S.TaggedError<EventDataStoreHasOngoingImportException>()(
   "EventDataStoreHasOngoingImportException",
   { Message: S.optional(S.String) },
@@ -3615,34 +3613,32 @@ export class EventDataStoreHasOngoingImportException extends S.TaggedError<Event
     code: "EventDataStoreHasOngoingImport",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourcePolicyNotFoundException extends S.TaggedError<ResourcePolicyNotFoundException>()(
   "ResourcePolicyNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourcePolicyNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTokenException extends S.TaggedError<InvalidTokenException>()(
   "InvalidTokenException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidToken", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidLookupAttributesException extends S.TaggedError<InvalidLookupAttributesException>()(
   "InvalidLookupAttributesException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidLookupAttributes", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidEventSelectorsException extends S.TaggedError<InvalidEventSelectorsException>()(
   "InvalidEventSelectorsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidEventSelectors", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientS3BucketPolicyException extends S.TaggedError<InsufficientS3BucketPolicyException>()(
   "InsufficientS3BucketPolicyException",
   { Message: S.optional(S.String) },
@@ -3650,17 +3646,17 @@ export class InsufficientS3BucketPolicyException extends S.TaggedError<Insuffici
     code: "InsufficientS3BucketPolicy",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class AccountHasOngoingImportException extends S.TaggedError<AccountHasOngoingImportException>()(
   "AccountHasOngoingImportException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AccountHasOngoingImport", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidQueryStatementException extends S.TaggedError<InvalidQueryStatementException>()(
   "InvalidQueryStatementException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidQueryStatement", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidEventDataStoreStatusException extends S.TaggedError<InvalidEventDataStoreStatusException>()(
   "InvalidEventDataStoreStatusException",
   { Message: S.optional(S.String) },
@@ -3668,7 +3664,7 @@ export class InvalidEventDataStoreStatusException extends S.TaggedError<InvalidE
     code: "InvalidEventDataStoreStatus",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotOrganizationMasterAccountException extends S.TaggedError<NotOrganizationMasterAccountException>()(
   "NotOrganizationMasterAccountException",
   { Message: S.optional(S.String) },
@@ -3676,7 +3672,7 @@ export class NotOrganizationMasterAccountException extends S.TaggedError<NotOrga
     code: "NotOrganizationMasterAccount",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DelegatedAdminAccountLimitExceededException extends S.TaggedError<DelegatedAdminAccountLimitExceededException>()(
   "DelegatedAdminAccountLimitExceededException",
   { Message: S.optional(S.String) },
@@ -3684,12 +3680,12 @@ export class DelegatedAdminAccountLimitExceededException extends S.TaggedError<D
     code: "DelegatedAdminAccountLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourcePolicyNotValidException extends S.TaggedError<ResourcePolicyNotValidException>()(
   "ResourcePolicyNotValidException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourcePolicyNotValid", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OrganizationNotInAllFeaturesModeException extends S.TaggedError<OrganizationNotInAllFeaturesModeException>()(
   "OrganizationNotInAllFeaturesModeException",
   { Message: S.optional(S.String) },
@@ -3697,32 +3693,32 @@ export class OrganizationNotInAllFeaturesModeException extends S.TaggedError<Org
     code: "OrganizationNotInAllFeaturesMode",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSourceException extends S.TaggedError<InvalidSourceException>()(
   "InvalidSourceException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSource", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTagParameterException extends S.TaggedError<InvalidTagParameterException>()(
   "InvalidTagParameterException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidTagParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InactiveQueryException extends S.TaggedError<InactiveQueryException>()(
   "InactiveQueryException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InactiveQuery", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class QueryIdNotFoundException extends S.TaggedError<QueryIdNotFoundException>()(
   "QueryIdNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "QueryIdNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDateRangeException extends S.TaggedError<InvalidDateRangeException>()(
   "InvalidDateRangeException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDateRange", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientIAMAccessPermissionException extends S.TaggedError<InsufficientIAMAccessPermissionException>()(
   "InsufficientIAMAccessPermissionException",
   { Message: S.optional(S.String) },
@@ -3730,12 +3726,12 @@ export class InsufficientIAMAccessPermissionException extends S.TaggedError<Insu
     code: "InsufficientIAMAccessPermission",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ServiceQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDataStoreTerminationProtectedException extends S.TaggedError<EventDataStoreTerminationProtectedException>()(
   "EventDataStoreTerminationProtectedException",
   { Message: S.optional(S.String) },
@@ -3743,17 +3739,17 @@ export class EventDataStoreTerminationProtectedException extends S.TaggedError<E
     code: "EventDataStoreTerminationProtectedException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceTypeNotSupportedException extends S.TaggedError<ResourceTypeNotSupportedException>()(
   "ResourceTypeNotSupportedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceTypeNotSupported", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidInsightSelectorsException extends S.TaggedError<InvalidInsightSelectorsException>()(
   "InvalidInsightSelectorsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidInsightSelectors", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientSnsTopicPolicyException extends S.TaggedError<InsufficientSnsTopicPolicyException>()(
   "InsufficientSnsTopicPolicyException",
   { Message: S.optional(S.String) },
@@ -3761,42 +3757,42 @@ export class InsufficientSnsTopicPolicyException extends S.TaggedError<Insuffici
     code: "InsufficientSnsTopicPolicy",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class OrganizationsNotInUseException extends S.TaggedError<OrganizationsNotInUseException>()(
   "OrganizationsNotInUseException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "OrganizationsNotInUse", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidKmsKeyIdException extends S.TaggedError<InvalidKmsKeyIdException>()(
   "InvalidKmsKeyIdException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidKmsKeyId", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidS3BucketNameException extends S.TaggedError<InvalidS3BucketNameException>()(
   "InvalidS3BucketNameException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidS3BucketName", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidQueryStatusException extends S.TaggedError<InvalidQueryStatusException>()(
   "InvalidQueryStatusException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidQueryStatus", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidImportSourceException extends S.TaggedError<InvalidImportSourceException>()(
   "InvalidImportSourceException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidImportSource", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagsLimitExceededException extends S.TaggedError<TagsLimitExceededException>()(
   "TagsLimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TagsLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsException extends S.TaggedError<KmsException>()(
   "KmsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "KmsException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCloudWatchLogsLogGroupArnException extends S.TaggedError<InvalidCloudWatchLogsLogGroupArnException>()(
   "InvalidCloudWatchLogsLogGroupArnException",
   { Message: S.optional(S.String) },
@@ -3804,17 +3800,17 @@ export class InvalidCloudWatchLogsLogGroupArnException extends S.TaggedError<Inv
     code: "InvalidCloudWatchLogsLogGroupArn",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidS3PrefixException extends S.TaggedError<InvalidS3PrefixException>()(
   "InvalidS3PrefixException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidS3Prefix", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class S3BucketDoesNotExistException extends S.TaggedError<S3BucketDoesNotExistException>()(
   "S3BucketDoesNotExistException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "S3BucketDoesNotExist", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCloudWatchLogsRoleArnException extends S.TaggedError<InvalidCloudWatchLogsRoleArnException>()(
   "InvalidCloudWatchLogsRoleArnException",
   { Message: S.optional(S.String) },
@@ -3822,34 +3818,32 @@ export class InvalidCloudWatchLogsRoleArnException extends S.TaggedError<Invalid
     code: "InvalidCloudWatchLogsRoleArn",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MaxConcurrentQueriesException extends S.TaggedError<MaxConcurrentQueriesException>()(
   "MaxConcurrentQueriesException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "MaxConcurrentQueries", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class KmsKeyNotFoundException extends S.TaggedError<KmsKeyNotFoundException>()(
   "KmsKeyNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "KmsKeyNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSnsTopicNameException extends S.TaggedError<InvalidSnsTopicNameException>()(
   "InvalidSnsTopicNameException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSnsTopicName", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsKeyDisabledException extends S.TaggedError<KmsKeyDisabledException>()(
   "KmsKeyDisabledException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "KmsKeyDisabled", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrailNotProvidedException extends S.TaggedError<TrailNotProvidedException>()(
   "TrailNotProvidedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TrailNotProvided", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MaximumNumberOfTrailsExceededException extends S.TaggedError<MaximumNumberOfTrailsExceededException>()(
   "MaximumNumberOfTrailsExceededException",
   { Message: S.optional(S.String) },
@@ -3857,12 +3851,12 @@ export class MaximumNumberOfTrailsExceededException extends S.TaggedError<Maximu
     code: "MaximumNumberOfTrailsExceeded",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class TrailAlreadyExistsException extends S.TaggedError<TrailAlreadyExistsException>()(
   "TrailAlreadyExistsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TrailAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3875,8 +3869,8 @@ export const deleteDashboard: (
   | ConflictException
   | ResourceNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDashboardRequest,
   output: DeleteDashboardResponse,
@@ -3897,8 +3891,8 @@ export const listChannels: {
     | InvalidNextTokenException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelsRequest,
@@ -3907,8 +3901,8 @@ export const listChannels: {
     | InvalidNextTokenException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelsRequest,
@@ -3917,8 +3911,8 @@ export const listChannels: {
     | InvalidNextTokenException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
@@ -3948,8 +3942,8 @@ export const listEventDataStores: {
     | NoManagementAccountSLRExistsException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventDataStoresRequest,
@@ -3960,8 +3954,8 @@ export const listEventDataStores: {
     | NoManagementAccountSLRExistsException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventDataStoresRequest,
@@ -3972,8 +3966,8 @@ export const listEventDataStores: {
     | NoManagementAccountSLRExistsException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventDataStoresRequest,
@@ -3998,10 +3992,8 @@ export const getDashboard: (
   input: GetDashboardRequest,
 ) => Effect.Effect<
   GetDashboardResponse,
-  | ResourceNotFoundException
-  | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | UnsupportedOperationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDashboardRequest,
   output: GetDashboardResponse,
@@ -4014,8 +4006,8 @@ export const listDashboards: (
   input: ListDashboardsRequest,
 ) => Effect.Effect<
   ListDashboardsResponse,
-  UnsupportedOperationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  UnsupportedOperationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDashboardsRequest,
   output: ListDashboardsResponse,
@@ -4052,8 +4044,8 @@ export const listInsightsMetricData: {
     | InvalidTrailNameException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInsightsMetricDataRequest,
@@ -4063,8 +4055,8 @@ export const listInsightsMetricData: {
     | InvalidTrailNameException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInsightsMetricDataRequest,
@@ -4074,8 +4066,8 @@ export const listInsightsMetricData: {
     | InvalidTrailNameException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInsightsMetricDataRequest,
@@ -4102,8 +4094,8 @@ export const listTrails: {
     ListTrailsResponse,
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTrailsRequest,
@@ -4111,8 +4103,8 @@ export const listTrails: {
     ListTrailsResponse,
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTrailsRequest,
@@ -4120,8 +4112,8 @@ export const listTrails: {
     TrailInfo,
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrailsRequest,
@@ -4144,8 +4136,8 @@ export const searchSampleQueries: (
   | InvalidParameterException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SearchSampleQueriesRequest,
   output: SearchSampleQueriesResponse,
@@ -4166,8 +4158,8 @@ export const stopImport: (
   | InvalidParameterException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopImportRequest,
   output: StopImportResponse,
@@ -4189,8 +4181,8 @@ export const deleteChannel: (
   | ChannelNotFoundException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelRequest,
   output: DeleteChannelResponse,
@@ -4212,8 +4204,8 @@ export const getChannel: (
   | ChannelNotFoundException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChannelRequest,
   output: GetChannelResponse,
@@ -4235,8 +4227,8 @@ export const getImport: (
   | InvalidParameterException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImportRequest,
   output: GetImportResponse,
@@ -4277,8 +4269,8 @@ export const generateQuery: (
   | NoManagementAccountSLRExistsException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GenerateQueryRequest,
   output: GenerateQueryResponse,
@@ -4305,8 +4297,8 @@ export const getTrail: (
   | OperationNotPermittedException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTrailRequest,
   output: GetTrailResponse,
@@ -4331,8 +4323,8 @@ export const describeTrails: (
   | NoManagementAccountSLRExistsException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrailsRequest,
   output: DescribeTrailsResponse,
@@ -4358,8 +4350,8 @@ export const getEventDataStore: (
   | NoManagementAccountSLRExistsException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventDataStoreRequest,
   output: GetEventDataStoreResponse,
@@ -4384,8 +4376,8 @@ export const listImportFailures: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImportFailuresRequest,
@@ -4395,8 +4387,8 @@ export const listImportFailures: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImportFailuresRequest,
@@ -4406,8 +4398,8 @@ export const listImportFailures: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImportFailuresRequest,
@@ -4439,8 +4431,8 @@ export const listImports: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImportsRequest,
@@ -4451,8 +4443,8 @@ export const listImports: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImportsRequest,
@@ -4463,8 +4455,8 @@ export const listImports: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImportsRequest,
@@ -4500,8 +4492,8 @@ export const updateChannel: (
   | InvalidParameterException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelRequest,
   output: UpdateChannelResponse,
@@ -4534,8 +4526,8 @@ export const getTrailStatus: (
   | OperationNotPermittedException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTrailStatusRequest,
   output: GetTrailStatusResponse,
@@ -4581,8 +4573,8 @@ export const getEventSelectors: (
   | OperationNotPermittedException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventSelectorsRequest,
   output: GetEventSelectorsResponse,
@@ -4621,8 +4613,8 @@ export const getInsightSelectors: (
   | ThrottlingException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInsightSelectorsRequest,
   output: GetInsightSelectorsResponse,
@@ -4665,8 +4657,8 @@ export const listInsightsData: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInsightsDataRequest,
@@ -4675,8 +4667,8 @@ export const listInsightsData: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInsightsDataRequest,
@@ -4685,8 +4677,8 @@ export const listInsightsData: {
     | InvalidParameterException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInsightsDataRequest,
@@ -4722,8 +4714,8 @@ export const listPublicKeys: {
     | InvalidTokenException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPublicKeysRequest,
@@ -4733,8 +4725,8 @@ export const listPublicKeys: {
     | InvalidTokenException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPublicKeysRequest,
@@ -4744,8 +4736,8 @@ export const listPublicKeys: {
     | InvalidTokenException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPublicKeysRequest,
@@ -4814,8 +4806,8 @@ export const lookupEvents: {
     | InvalidTimeRangeException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: LookupEventsRequest,
@@ -4828,8 +4820,8 @@ export const lookupEvents: {
     | InvalidTimeRangeException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: LookupEventsRequest,
@@ -4842,8 +4834,8 @@ export const lookupEvents: {
     | InvalidTimeRangeException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: LookupEventsRequest,
@@ -4885,8 +4877,8 @@ export const startLogging: (
   | ThrottlingException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartLoggingRequest,
   output: StartLoggingResponse,
@@ -4926,8 +4918,8 @@ export const describeQuery: (
   | OperationNotPermittedException
   | QueryIdNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeQueryRequest,
   output: DescribeQueryResponse,
@@ -4968,8 +4960,8 @@ export const putEventConfiguration: (
   | ThrottlingException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEventConfigurationRequest,
   output: PutEventConfigurationResponse,
@@ -5010,8 +5002,8 @@ export const startDashboardRefresh: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDashboardRefreshRequest,
   output: StartDashboardRefreshResponse,
@@ -5054,8 +5046,8 @@ export const createDashboard: (
   | InvalidTagParameterException
   | ServiceQuotaExceededException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDashboardRequest,
   output: CreateDashboardResponse,
@@ -5089,8 +5081,8 @@ export const getEventConfiguration: (
   | OperationNotPermittedException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventConfigurationRequest,
   output: GetEventConfigurationResponse,
@@ -5128,8 +5120,8 @@ export const startEventDataStoreIngestion: (
   | NotOrganizationMasterAccountException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartEventDataStoreIngestionRequest,
   output: StartEventDataStoreIngestionResponse,
@@ -5166,8 +5158,8 @@ export const stopEventDataStoreIngestion: (
   | NotOrganizationMasterAccountException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopEventDataStoreIngestionRequest,
   output: StopEventDataStoreIngestionResponse,
@@ -5209,8 +5201,8 @@ export const stopLogging: (
   | ThrottlingException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopLoggingRequest,
   output: StopLoggingResponse,
@@ -5258,8 +5250,8 @@ export const deleteTrail: (
   | ThrottlingException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrailRequest,
   output: DeleteTrailResponse,
@@ -5351,8 +5343,8 @@ export const putEventSelectors: (
   | ThrottlingException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEventSelectorsRequest,
   output: PutEventSelectorsResponse,
@@ -5391,8 +5383,8 @@ export const getQueryResults: {
     | OperationNotPermittedException
     | QueryIdNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetQueryResultsRequest,
@@ -5409,8 +5401,8 @@ export const getQueryResults: {
     | OperationNotPermittedException
     | QueryIdNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetQueryResultsRequest,
@@ -5427,8 +5419,8 @@ export const getQueryResults: {
     | OperationNotPermittedException
     | QueryIdNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetQueryResultsRequest,
@@ -5470,8 +5462,8 @@ export const cancelQuery: (
   | OperationNotPermittedException
   | QueryIdNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelQueryRequest,
   output: CancelQueryResponse,
@@ -5510,8 +5502,8 @@ export const updateDashboard: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDashboardRequest,
   output: UpdateDashboardResponse,
@@ -5558,8 +5550,8 @@ export const deleteEventDataStore: (
   | NotOrganizationMasterAccountException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventDataStoreRequest,
   output: DeleteEventDataStoreResponse,
@@ -5593,8 +5585,8 @@ export const getResourcePolicy: (
   | ResourcePolicyNotFoundException
   | ResourceTypeNotSupportedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -5623,8 +5615,8 @@ export const putResourcePolicy: (
   | ResourcePolicyNotValidException
   | ResourceTypeNotSupportedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -5652,8 +5644,8 @@ export const deleteResourcePolicy: (
   | ResourcePolicyNotFoundException
   | ResourceTypeNotSupportedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -5687,8 +5679,8 @@ export const listTags: {
     | ResourceNotFoundException
     | ResourceTypeNotSupportedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsRequest,
@@ -5706,8 +5698,8 @@ export const listTags: {
     | ResourceNotFoundException
     | ResourceTypeNotSupportedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsRequest,
@@ -5725,8 +5717,8 @@ export const listTags: {
     | ResourceNotFoundException
     | ResourceTypeNotSupportedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsRequest,
@@ -5773,8 +5765,8 @@ export const removeTags: (
   | ResourceNotFoundException
   | ResourceTypeNotSupportedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsRequest,
   output: RemoveTagsResponse,
@@ -5815,8 +5807,8 @@ export const deregisterOrganizationDelegatedAdmin: (
   | OrganizationNotInAllFeaturesModeException
   | OrganizationsNotInUseException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterOrganizationDelegatedAdminRequest,
   output: DeregisterOrganizationDelegatedAdminResponse,
@@ -5859,8 +5851,8 @@ export const listQueries: {
     | NoManagementAccountSLRExistsException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListQueriesRequest,
@@ -5877,8 +5869,8 @@ export const listQueries: {
     | NoManagementAccountSLRExistsException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListQueriesRequest,
@@ -5895,8 +5887,8 @@ export const listQueries: {
     | NoManagementAccountSLRExistsException
     | OperationNotPermittedException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueriesRequest,
@@ -5956,8 +5948,8 @@ export const startImport: (
   | InvalidParameterException
   | OperationNotPermittedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartImportRequest,
   output: StartImportResponse,
@@ -6009,8 +6001,8 @@ export const enableFederation: (
   | OrganizationNotInAllFeaturesModeException
   | OrganizationsNotInUseException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableFederationRequest,
   output: EnableFederationResponse,
@@ -6057,8 +6049,8 @@ export const disableFederation: (
   | OrganizationNotInAllFeaturesModeException
   | OrganizationsNotInUseException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableFederationRequest,
   output: DisableFederationResponse,
@@ -6102,8 +6094,8 @@ export const restoreEventDataStore: (
   | OrganizationNotInAllFeaturesModeException
   | OrganizationsNotInUseException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreEventDataStoreRequest,
   output: RestoreEventDataStoreResponse,
@@ -6144,8 +6136,8 @@ export const registerOrganizationDelegatedAdmin: (
   | OrganizationNotInAllFeaturesModeException
   | OrganizationsNotInUseException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterOrganizationDelegatedAdminRequest,
   output: RegisterOrganizationDelegatedAdminResponse,
@@ -6187,8 +6179,8 @@ export const createChannel: (
   | OperationNotPermittedException
   | TagsLimitExceededException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelRequest,
   output: CreateChannelResponse,
@@ -6236,8 +6228,8 @@ export const addTags: (
   | ResourceTypeNotSupportedException
   | TagsLimitExceededException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsRequest,
   output: AddTagsResponse,
@@ -6309,8 +6301,8 @@ export const putInsightSelectors: (
   | ThrottlingException
   | TrailNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutInsightSelectorsRequest,
   output: PutInsightSelectorsResponse,
@@ -6360,8 +6352,8 @@ export const startQuery: (
   | OperationNotPermittedException
   | S3BucketDoesNotExistException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartQueryRequest,
   output: StartQueryResponse,
@@ -6408,8 +6400,8 @@ export const createEventDataStore: (
   | OrganizationsNotInUseException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventDataStoreRequest,
   output: CreateEventDataStoreResponse,
@@ -6475,8 +6467,8 @@ export const updateEventDataStore: (
   | OrganizationsNotInUseException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEventDataStoreRequest,
   output: UpdateEventDataStoreResponse,
@@ -6550,8 +6542,8 @@ export const updateTrail: (
   | TrailNotFoundException
   | TrailNotProvidedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrailRequest,
   output: UpdateTrailResponse,
@@ -6631,8 +6623,8 @@ export const createTrail: (
   | TrailAlreadyExistsException
   | TrailNotProvidedException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrailRequest,
   output: CreateTrailResponse,

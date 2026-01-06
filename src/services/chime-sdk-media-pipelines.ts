@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Media Pipelines",
@@ -2475,7 +2473,7 @@ export class BadRequestException extends S.TaggedError<BadRequestException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   {
@@ -2483,7 +2481,7 @@ export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
@@ -2491,7 +2489,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   {
@@ -2499,7 +2497,7 @@ export class NotFoundException extends S.TaggedError<NotFoundException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   {
@@ -2507,7 +2505,7 @@ export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitE
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceFailureException extends S.TaggedError<ServiceFailureException>()(
   "ServiceFailureException",
   {
@@ -2515,9 +2513,7 @@ export class ServiceFailureException extends S.TaggedError<ServiceFailureExcepti
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   {
@@ -2525,9 +2521,7 @@ export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailabl
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottledClientException extends S.TaggedError<ThrottledClientException>()(
   "ThrottledClientException",
   {
@@ -2535,9 +2529,7 @@ export class ThrottledClientException extends S.TaggedError<ThrottledClientExcep
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnauthorizedClientException extends S.TaggedError<UnauthorizedClientException>()(
   "UnauthorizedClientException",
   {
@@ -2545,7 +2537,7 @@ export class UnauthorizedClientException extends S.TaggedError<UnauthorizedClien
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -2562,8 +2554,8 @@ export const deleteMediaCapturePipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMediaCapturePipelineRequest,
   output: DeleteMediaCapturePipelineResponse,
@@ -2591,8 +2583,8 @@ export const getMediaPipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMediaPipelineRequest,
   output: GetMediaPipelineResponse,
@@ -2621,8 +2613,8 @@ export const listMediaCapturePipelines: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMediaCapturePipelinesRequest,
@@ -2635,8 +2627,8 @@ export const listMediaCapturePipelines: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMediaCapturePipelinesRequest,
@@ -2649,8 +2641,8 @@ export const listMediaCapturePipelines: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMediaCapturePipelinesRequest,
@@ -2684,8 +2676,8 @@ export const getMediaCapturePipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMediaCapturePipelineRequest,
   output: GetMediaCapturePipelineResponse,
@@ -2713,8 +2705,8 @@ export const getMediaInsightsPipelineConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMediaInsightsPipelineConfigurationRequest,
   output: GetMediaInsightsPipelineConfigurationResponse,
@@ -2742,8 +2734,8 @@ export const getMediaPipelineKinesisVideoStreamPool: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMediaPipelineKinesisVideoStreamPoolRequest,
   output: GetMediaPipelineKinesisVideoStreamPoolResponse,
@@ -2771,8 +2763,8 @@ export const getSpeakerSearchTask: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSpeakerSearchTaskRequest,
   output: GetSpeakerSearchTaskResponse,
@@ -2800,8 +2792,8 @@ export const getVoiceToneAnalysisTask: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceToneAnalysisTaskRequest,
   output: GetVoiceToneAnalysisTaskResponse,
@@ -2835,8 +2827,8 @@ export const startVoiceToneAnalysisTask: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartVoiceToneAnalysisTaskRequest,
   output: StartVoiceToneAnalysisTaskResponse,
@@ -2866,8 +2858,8 @@ export const updateMediaPipelineKinesisVideoStreamPool: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMediaPipelineKinesisVideoStreamPoolRequest,
   output: UpdateMediaPipelineKinesisVideoStreamPoolResponse,
@@ -2896,8 +2888,8 @@ export const listTagsForResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2925,8 +2917,8 @@ export const tagResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2954,8 +2946,8 @@ export const untagResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2984,8 +2976,8 @@ export const createMediaStreamPipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMediaStreamPipelineRequest,
   output: CreateMediaStreamPipelineResponse,
@@ -3015,8 +3007,8 @@ export const updateMediaInsightsPipelineConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMediaInsightsPipelineConfigurationRequest,
   output: UpdateMediaInsightsPipelineConfigurationResponse,
@@ -3046,8 +3038,8 @@ export const deleteMediaInsightsPipelineConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMediaInsightsPipelineConfigurationRequest,
   output: DeleteMediaInsightsPipelineConfigurationResponse,
@@ -3077,8 +3069,8 @@ export const deleteMediaPipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMediaPipelineRequest,
   output: DeleteMediaPipelineResponse,
@@ -3108,8 +3100,8 @@ export const deleteMediaPipelineKinesisVideoStreamPool: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMediaPipelineKinesisVideoStreamPoolRequest,
   output: DeleteMediaPipelineKinesisVideoStreamPoolResponse,
@@ -3139,8 +3131,8 @@ export const stopSpeakerSearchTask: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopSpeakerSearchTaskRequest,
   output: StopSpeakerSearchTaskResponse,
@@ -3170,8 +3162,8 @@ export const stopVoiceToneAnalysisTask: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopVoiceToneAnalysisTaskRequest,
   output: StopVoiceToneAnalysisTaskResponse,
@@ -3201,8 +3193,8 @@ export const updateMediaInsightsPipelineStatus: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMediaInsightsPipelineStatusRequest,
   output: UpdateMediaInsightsPipelineStatusResponse,
@@ -3235,8 +3227,8 @@ export const startSpeakerSearchTask: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSpeakerSearchTaskRequest,
   output: StartSpeakerSearchTaskResponse,
@@ -3266,8 +3258,8 @@ export const listMediaInsightsPipelineConfigurations: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMediaInsightsPipelineConfigurationsRequest,
@@ -3280,8 +3272,8 @@ export const listMediaInsightsPipelineConfigurations: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMediaInsightsPipelineConfigurationsRequest,
@@ -3294,8 +3286,8 @@ export const listMediaInsightsPipelineConfigurations: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMediaInsightsPipelineConfigurationsRequest,
@@ -3330,8 +3322,8 @@ export const listMediaPipelineKinesisVideoStreamPools: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
@@ -3344,8 +3336,8 @@ export const listMediaPipelineKinesisVideoStreamPools: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
@@ -3358,8 +3350,8 @@ export const listMediaPipelineKinesisVideoStreamPools: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
@@ -3394,8 +3386,8 @@ export const listMediaPipelines: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMediaPipelinesRequest,
@@ -3408,8 +3400,8 @@ export const listMediaPipelines: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMediaPipelinesRequest,
@@ -3422,8 +3414,8 @@ export const listMediaPipelines: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMediaPipelinesRequest,
@@ -3474,8 +3466,8 @@ export const createMediaPipelineKinesisVideoStreamPool: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMediaPipelineKinesisVideoStreamPoolRequest,
   output: CreateMediaPipelineKinesisVideoStreamPoolResponse,
@@ -3504,8 +3496,8 @@ export const createMediaLiveConnectorPipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMediaLiveConnectorPipelineRequest,
   output: CreateMediaLiveConnectorPipelineResponse,
@@ -3535,8 +3527,8 @@ export const createMediaInsightsPipelineConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMediaInsightsPipelineConfigurationRequest,
   output: CreateMediaInsightsPipelineConfigurationResponse,
@@ -3566,8 +3558,8 @@ export const createMediaInsightsPipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMediaInsightsPipelineRequest,
   output: CreateMediaInsightsPipelineResponse,
@@ -3596,8 +3588,8 @@ export const createMediaCapturePipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMediaCapturePipelineRequest,
   output: CreateMediaCapturePipelineResponse,
@@ -3625,8 +3617,8 @@ export const createMediaConcatenationPipeline: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMediaConcatenationPipelineRequest,
   output: CreateMediaConcatenationPipelineResponse,

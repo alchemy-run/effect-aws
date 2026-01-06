@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "PartnerCentral Account",
@@ -1513,26 +1511,24 @@ export const ValidationErrorList = S.Array(ValidationError);
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.String, Reason: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.String, Reason: S.String },
-) {}
+).pipe(C.withConflictError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.String, Reason: S.String },
-) {}
+).pipe(C.withQuotaError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.String, Reason: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {
@@ -1541,9 +1537,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     QuotaCode: S.optional(S.String),
   },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -1551,7 +1545,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     Reason: S.String,
     ErrorDetails: S.optional(ValidationErrorList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1566,8 +1560,8 @@ export const listConnectionInvitations: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConnectionInvitationsRequest,
@@ -1577,8 +1571,8 @@ export const listConnectionInvitations: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConnectionInvitationsRequest,
@@ -1588,8 +1582,8 @@ export const listConnectionInvitations: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionInvitationsRequest,
@@ -1620,8 +1614,8 @@ export const startProfileUpdateTask: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartProfileUpdateTaskRequest,
   output: StartProfileUpdateTaskResponse,
@@ -1647,8 +1641,8 @@ export const acceptConnectionInvitation: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptConnectionInvitationRequest,
   output: AcceptConnectionInvitationResponse,
@@ -1673,8 +1667,8 @@ export const getPartner: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPartnerRequest,
   output: GetPartnerResponse,
@@ -1699,8 +1693,8 @@ export const cancelProfileUpdateTask: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelProfileUpdateTaskRequest,
   output: CancelProfileUpdateTaskResponse,
@@ -1725,8 +1719,8 @@ export const getConnectionInvitation: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectionInvitationRequest,
   output: GetConnectionInvitationResponse,
@@ -1750,8 +1744,8 @@ export const getAllianceLeadContact: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAllianceLeadContactRequest,
   output: GetAllianceLeadContactResponse,
@@ -1775,8 +1769,8 @@ export const getProfileUpdateTask: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProfileUpdateTaskRequest,
   output: GetProfileUpdateTaskResponse,
@@ -1800,8 +1794,8 @@ export const getProfileVisibility: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProfileVisibilityRequest,
   output: GetProfileVisibilityResponse,
@@ -1825,8 +1819,8 @@ export const putAllianceLeadContact: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAllianceLeadContactRequest,
   output: PutAllianceLeadContactResponse,
@@ -1850,8 +1844,8 @@ export const putProfileVisibility: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutProfileVisibilityRequest,
   output: PutProfileVisibilityResponse,
@@ -1875,8 +1869,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1901,8 +1895,8 @@ export const createConnectionInvitation: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectionInvitationRequest,
   output: CreateConnectionInvitationResponse,
@@ -1928,8 +1922,8 @@ export const cancelConnectionInvitation: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelConnectionInvitationRequest,
   output: CancelConnectionInvitationResponse,
@@ -1955,8 +1949,8 @@ export const rejectConnectionInvitation: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectConnectionInvitationRequest,
   output: RejectConnectionInvitationResponse,
@@ -1982,8 +1976,8 @@ export const cancelConnection: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelConnectionRequest,
   output: CancelConnectionResponse,
@@ -2009,8 +2003,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2036,8 +2030,8 @@ export const associateAwsTrainingCertificationEmailDomain: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateAwsTrainingCertificationEmailDomainRequest,
   output: AssociateAwsTrainingCertificationEmailDomainResponse,
@@ -2062,8 +2056,8 @@ export const disassociateAwsTrainingCertificationEmailDomain: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateAwsTrainingCertificationEmailDomainRequest,
   output: DisassociateAwsTrainingCertificationEmailDomainResponse,
@@ -2087,8 +2081,8 @@ export const getVerification: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVerificationRequest,
   output: GetVerificationResponse,
@@ -2112,8 +2106,8 @@ export const createPartner: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePartnerRequest,
   output: CreatePartnerResponse,
@@ -2137,8 +2131,8 @@ export const listPartners: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPartnersRequest,
@@ -2148,8 +2142,8 @@ export const listPartners: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPartnersRequest,
@@ -2159,8 +2153,8 @@ export const listPartners: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPartnersRequest,
@@ -2188,8 +2182,8 @@ export const getConnectionPreferences: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectionPreferencesRequest,
   output: GetConnectionPreferencesResponse,
@@ -2212,8 +2206,8 @@ export const updateConnectionPreferences: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectionPreferencesRequest,
   output: UpdateConnectionPreferencesResponse,
@@ -2237,8 +2231,8 @@ export const sendEmailVerificationCode: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendEmailVerificationCodeRequest,
   output: SendEmailVerificationCodeResponse,
@@ -2263,8 +2257,8 @@ export const startVerification: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartVerificationRequest,
   output: StartVerificationResponse,
@@ -2290,8 +2284,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2316,8 +2310,8 @@ export const listConnections: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConnectionsRequest,
@@ -2327,8 +2321,8 @@ export const listConnections: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConnectionsRequest,
@@ -2338,8 +2332,8 @@ export const listConnections: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionsRequest,
@@ -2369,8 +2363,8 @@ export const getConnection: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectionRequest,
   output: GetConnectionResponse,

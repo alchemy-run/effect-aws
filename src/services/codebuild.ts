@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CodeBuild",
@@ -3343,8 +3341,8 @@ export const deleteFleet: (
   input: DeleteFleetInput,
 ) => Effect.Effect<
   DeleteFleetOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFleetInput,
   output: DeleteFleetOutput,
@@ -3358,22 +3356,22 @@ export const listBuilds: {
     input: ListBuildsInput,
   ): Effect.Effect<
     ListBuildsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBuildsInput,
   ) => Stream.Stream<
     ListBuildsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBuildsInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBuildsInput,
@@ -3393,22 +3391,22 @@ export const listFleets: {
     input: ListFleetsInput,
   ): Effect.Effect<
     ListFleetsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFleetsInput,
   ) => Stream.Stream<
     ListFleetsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFleetsInput,
   ) => Stream.Stream<
     unknown,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFleetsInput,
@@ -3429,22 +3427,22 @@ export const listProjects: {
     input: ListProjectsInput,
   ): Effect.Effect<
     ListProjectsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProjectsInput,
   ) => Stream.Stream<
     ListProjectsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProjectsInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProjectsInput,
@@ -3464,22 +3462,22 @@ export const listReportGroups: {
     input: ListReportGroupsInput,
   ): Effect.Effect<
     ListReportGroupsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReportGroupsInput,
   ) => Stream.Stream<
     ListReportGroupsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReportGroupsInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReportGroupsInput,
@@ -3500,22 +3498,22 @@ export const listSandboxes: {
     input: ListSandboxesInput,
   ): Effect.Effect<
     ListSandboxesOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSandboxesInput,
   ) => Stream.Stream<
     ListSandboxesOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSandboxesInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSandboxesInput,
@@ -3536,22 +3534,22 @@ export const listSharedProjects: {
     input: ListSharedProjectsInput,
   ): Effect.Effect<
     ListSharedProjectsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSharedProjectsInput,
   ) => Stream.Stream<
     ListSharedProjectsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSharedProjectsInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSharedProjectsInput,
@@ -3572,22 +3570,22 @@ export const listSharedReportGroups: {
     input: ListSharedReportGroupsInput,
   ): Effect.Effect<
     ListSharedReportGroupsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSharedReportGroupsInput,
   ) => Stream.Stream<
     ListSharedReportGroupsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSharedReportGroupsInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSharedReportGroupsInput,
@@ -3607,8 +3605,8 @@ export const listSourceCredentials: (
   input: ListSourceCredentialsInput,
 ) => Effect.Effect<
   ListSourceCredentialsOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListSourceCredentialsInput,
   output: ListSourceCredentialsOutput,
@@ -3621,8 +3619,8 @@ export const deleteProject: (
   input: DeleteProjectInput,
 ) => Effect.Effect<
   DeleteProjectOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProjectInput,
   output: DeleteProjectOutput,
@@ -3635,8 +3633,8 @@ export const deleteReport: (
   input: DeleteReportInput,
 ) => Effect.Effect<
   DeleteReportOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReportInput,
   output: DeleteReportOutput,
@@ -3649,8 +3647,8 @@ export const deleteReportGroup: (
   input: DeleteReportGroupInput,
 ) => Effect.Effect<
   DeleteReportGroupOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReportGroupInput,
   output: DeleteReportGroupOutput,
@@ -3663,8 +3661,8 @@ export const deleteResourcePolicy: (
   input: DeleteResourcePolicyInput,
 ) => Effect.Effect<
   DeleteResourcePolicyOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyInput,
   output: DeleteResourcePolicyOutput,
@@ -3677,8 +3675,8 @@ export const deleteBuildBatch: (
   input: DeleteBuildBatchInput,
 ) => Effect.Effect<
   DeleteBuildBatchOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBuildBatchInput,
   output: DeleteBuildBatchOutput,
@@ -3691,8 +3689,8 @@ export const batchDeleteBuilds: (
   input: BatchDeleteBuildsInput,
 ) => Effect.Effect<
   BatchDeleteBuildsOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteBuildsInput,
   output: BatchDeleteBuildsOutput,
@@ -3705,8 +3703,8 @@ export const batchGetCommandExecutions: (
   input: BatchGetCommandExecutionsInput,
 ) => Effect.Effect<
   BatchGetCommandExecutionsOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetCommandExecutionsInput,
   output: BatchGetCommandExecutionsOutput,
@@ -3719,8 +3717,8 @@ export const batchGetReportGroups: (
   input: BatchGetReportGroupsInput,
 ) => Effect.Effect<
   BatchGetReportGroupsOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetReportGroupsInput,
   output: BatchGetReportGroupsOutput,
@@ -3733,8 +3731,8 @@ export const deleteSourceCredentials: (
   input: DeleteSourceCredentialsInput,
 ) => Effect.Effect<
   DeleteSourceCredentialsOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSourceCredentialsInput,
   output: DeleteSourceCredentialsOutput,
@@ -3748,22 +3746,22 @@ export const describeCodeCoverages: {
     input: DescribeCodeCoveragesInput,
   ): Effect.Effect<
     DescribeCodeCoveragesOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCodeCoveragesInput,
   ) => Stream.Stream<
     DescribeCodeCoveragesOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCodeCoveragesInput,
   ) => Stream.Stream<
     CodeCoverage,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCodeCoveragesInput,
@@ -3783,8 +3781,8 @@ export const getReportGroupTrend: (
   input: GetReportGroupTrendInput,
 ) => Effect.Effect<
   GetReportGroupTrendOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReportGroupTrendInput,
   output: GetReportGroupTrendOutput,
@@ -3798,22 +3796,22 @@ export const listBuildBatches: {
     input: ListBuildBatchesInput,
   ): Effect.Effect<
     ListBuildBatchesOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBuildBatchesInput,
   ) => Stream.Stream<
     ListBuildBatchesOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBuildBatchesInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBuildBatchesInput,
@@ -3834,22 +3832,22 @@ export const listReports: {
     input: ListReportsInput,
   ): Effect.Effect<
     ListReportsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReportsInput,
   ) => Stream.Stream<
     ListReportsOutput,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReportsInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReportsInput,
@@ -3876,8 +3874,8 @@ export const startBuild: (
   | AccountLimitExceededException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartBuildInput,
   output: StartBuildOutput,
@@ -3897,8 +3895,8 @@ export const startSandbox: (
   | AccountSuspendedException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSandboxInput,
   output: StartSandboxOutput,
@@ -3915,8 +3913,8 @@ export const startSandboxConnection: (
   input: StartSandboxConnectionInput,
 ) => Effect.Effect<
   StartSandboxConnectionOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSandboxConnectionInput,
   output: StartSandboxConnectionOutput,
@@ -3934,8 +3932,8 @@ export const deleteWebhook: (
   | InvalidInputException
   | OAuthProviderException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWebhookInput,
   output: DeleteWebhookOutput,
@@ -3952,8 +3950,8 @@ export const getResourcePolicy: (
   input: GetResourcePolicyInput,
 ) => Effect.Effect<
   GetResourcePolicyOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyInput,
   output: GetResourcePolicyOutput,
@@ -3967,22 +3965,22 @@ export const listBuildBatchesForProject: {
     input: ListBuildBatchesForProjectInput,
   ): Effect.Effect<
     ListBuildBatchesForProjectOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBuildBatchesForProjectInput,
   ) => Stream.Stream<
     ListBuildBatchesForProjectOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBuildBatchesForProjectInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBuildBatchesForProjectInput,
@@ -4004,22 +4002,22 @@ export const listBuildsForProject: {
     input: ListBuildsForProjectInput,
   ): Effect.Effect<
     ListBuildsForProjectOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBuildsForProjectInput,
   ) => Stream.Stream<
     ListBuildsForProjectOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBuildsForProjectInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBuildsForProjectInput,
@@ -4039,22 +4037,22 @@ export const listCommandExecutionsForSandbox: {
     input: ListCommandExecutionsForSandboxInput,
   ): Effect.Effect<
     ListCommandExecutionsForSandboxOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCommandExecutionsForSandboxInput,
   ) => Stream.Stream<
     ListCommandExecutionsForSandboxOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCommandExecutionsForSandboxInput,
   ) => Stream.Stream<
     CommandExecution,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCommandExecutionsForSandboxInput,
@@ -4075,22 +4073,22 @@ export const listReportsForReportGroup: {
     input: ListReportsForReportGroupInput,
   ): Effect.Effect<
     ListReportsForReportGroupOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReportsForReportGroupInput,
   ) => Stream.Stream<
     ListReportsForReportGroupOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReportsForReportGroupInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReportsForReportGroupInput,
@@ -4111,22 +4109,22 @@ export const listSandboxesForProject: {
     input: ListSandboxesForProjectInput,
   ): Effect.Effect<
     ListSandboxesForProjectOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSandboxesForProjectInput,
   ) => Stream.Stream<
     ListSandboxesForProjectOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSandboxesForProjectInput,
   ) => Stream.Stream<
     NonEmptyString,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSandboxesForProjectInput,
@@ -4147,8 +4145,8 @@ export const putResourcePolicy: (
   input: PutResourcePolicyInput,
 ) => Effect.Effect<
   PutResourcePolicyOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyInput,
   output: PutResourcePolicyOutput,
@@ -4161,8 +4159,8 @@ export const retryBuildBatch: (
   input: RetryBuildBatchInput,
 ) => Effect.Effect<
   RetryBuildBatchOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetryBuildBatchInput,
   output: RetryBuildBatchOutput,
@@ -4175,8 +4173,8 @@ export const startBuildBatch: (
   input: StartBuildBatchInput,
 ) => Effect.Effect<
   StartBuildBatchOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartBuildBatchInput,
   output: StartBuildBatchOutput,
@@ -4189,8 +4187,8 @@ export const startCommandExecution: (
   input: StartCommandExecutionInput,
 ) => Effect.Effect<
   StartCommandExecutionOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCommandExecutionInput,
   output: StartCommandExecutionOutput,
@@ -4203,8 +4201,8 @@ export const stopBuild: (
   input: StopBuildInput,
 ) => Effect.Effect<
   StopBuildOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopBuildInput,
   output: StopBuildOutput,
@@ -4217,8 +4215,8 @@ export const stopBuildBatch: (
   input: StopBuildBatchInput,
 ) => Effect.Effect<
   StopBuildBatchOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopBuildBatchInput,
   output: StopBuildBatchOutput,
@@ -4231,8 +4229,8 @@ export const stopSandbox: (
   input: StopSandboxInput,
 ) => Effect.Effect<
   StopSandboxOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopSandboxInput,
   output: StopSandboxOutput,
@@ -4245,8 +4243,8 @@ export const updateProject: (
   input: UpdateProjectInput,
 ) => Effect.Effect<
   UpdateProjectOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProjectInput,
   output: UpdateProjectOutput,
@@ -4285,8 +4283,8 @@ export const updateProjectVisibility: (
   input: UpdateProjectVisibilityInput,
 ) => Effect.Effect<
   UpdateProjectVisibilityOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProjectVisibilityInput,
   output: UpdateProjectVisibilityOutput,
@@ -4299,8 +4297,8 @@ export const updateReportGroup: (
   input: UpdateReportGroupInput,
 ) => Effect.Effect<
   UpdateReportGroupOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReportGroupInput,
   output: UpdateReportGroupOutput,
@@ -4313,8 +4311,8 @@ export const invalidateProjectCache: (
   input: InvalidateProjectCacheInput,
 ) => Effect.Effect<
   InvalidateProjectCacheOutput,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvalidateProjectCacheInput,
   output: InvalidateProjectCacheOutput,
@@ -4330,8 +4328,8 @@ export const retryBuild: (
   | AccountLimitExceededException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetryBuildInput,
   output: RetryBuildOutput,
@@ -4351,8 +4349,8 @@ export const updateFleet: (
   | AccountLimitExceededException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFleetInput,
   output: UpdateFleetOutput,
@@ -4374,8 +4372,8 @@ export const updateWebhook: (
   | InvalidInputException
   | OAuthProviderException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWebhookInput,
   output: UpdateWebhookOutput,
@@ -4392,8 +4390,8 @@ export const batchGetBuilds: (
   input: BatchGetBuildsInput,
 ) => Effect.Effect<
   BatchGetBuildsOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetBuildsInput,
   output: BatchGetBuildsOutput,
@@ -4406,8 +4404,8 @@ export const batchGetFleets: (
   input: BatchGetFleetsInput,
 ) => Effect.Effect<
   BatchGetFleetsOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetFleetsInput,
   output: BatchGetFleetsOutput,
@@ -4420,8 +4418,8 @@ export const batchGetProjects: (
   input: BatchGetProjectsInput,
 ) => Effect.Effect<
   BatchGetProjectsOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetProjectsInput,
   output: BatchGetProjectsOutput,
@@ -4435,22 +4433,22 @@ export const describeTestCases: {
     input: DescribeTestCasesInput,
   ): Effect.Effect<
     DescribeTestCasesOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTestCasesInput,
   ) => Stream.Stream<
     DescribeTestCasesOutput,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTestCasesInput,
   ) => Stream.Stream<
     TestCase,
-    InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTestCasesInput,
@@ -4474,8 +4472,8 @@ export const importSourceCredentials: (
   | AccountLimitExceededException
   | InvalidInputException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportSourceCredentialsInput,
   output: ImportSourceCredentialsOutput,
@@ -4492,8 +4490,8 @@ export const listCuratedEnvironmentImages: (
   input: ListCuratedEnvironmentImagesInput,
 ) => Effect.Effect<
   ListCuratedEnvironmentImagesOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListCuratedEnvironmentImagesInput,
   output: ListCuratedEnvironmentImagesOutput,
@@ -4519,8 +4517,8 @@ export const createWebhook: (
   | OAuthProviderException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWebhookInput,
   output: CreateWebhookOutput,
@@ -4541,8 +4539,8 @@ export const createFleet: (
   | AccountLimitExceededException
   | InvalidInputException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFleetInput,
   output: CreateFleetOutput,
@@ -4562,8 +4560,8 @@ export const createReportGroup: (
   | AccountLimitExceededException
   | InvalidInputException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReportGroupInput,
   output: CreateReportGroupOutput,
@@ -4580,8 +4578,8 @@ export const batchGetReports: (
   input: BatchGetReportsInput,
 ) => Effect.Effect<
   BatchGetReportsOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetReportsInput,
   output: BatchGetReportsOutput,
@@ -4594,8 +4592,8 @@ export const batchGetSandboxes: (
   input: BatchGetSandboxesInput,
 ) => Effect.Effect<
   BatchGetSandboxesOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetSandboxesInput,
   output: BatchGetSandboxesOutput,
@@ -4611,8 +4609,8 @@ export const createProject: (
   | AccountLimitExceededException
   | InvalidInputException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProjectInput,
   output: CreateProjectOutput,
@@ -4629,8 +4627,8 @@ export const batchGetBuildBatches: (
   input: BatchGetBuildBatchesInput,
 ) => Effect.Effect<
   BatchGetBuildBatchesOutput,
-  InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetBuildBatchesInput,
   output: BatchGetBuildBatchesOutput,

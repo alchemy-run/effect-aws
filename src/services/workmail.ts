@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "WorkMail",
@@ -3341,7 +3339,7 @@ export class InvalidCustomSesConfigurationException extends S.TaggedError<Invali
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DirectoryUnavailableException extends S.TaggedError<DirectoryUnavailableException>()(
   "DirectoryUnavailableException",
   { Message: S.optional(S.String) },
@@ -3389,7 +3387,7 @@ export class EntityAlreadyRegisteredException extends S.TaggedError<EntityAlread
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MailDomainStateException extends S.TaggedError<MailDomainStateException>()(
   "MailDomainStateException",
   { Message: S.optional(S.String) },
@@ -3408,10 +3406,8 @@ export const describeOrganization: (
   input: DescribeOrganizationRequest,
 ) => Effect.Effect<
   DescribeOrganizationResponse,
-  | InvalidParameterException
-  | OrganizationNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterException | OrganizationNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeOrganizationRequest,
   output: DescribeOrganizationResponse,
@@ -3425,8 +3421,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3439,8 +3435,8 @@ export const createIdentityCenterApplication: (
   input: CreateIdentityCenterApplicationRequest,
 ) => Effect.Effect<
   CreateIdentityCenterApplicationResponse,
-  InvalidParameterException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIdentityCenterApplicationRequest,
   output: CreateIdentityCenterApplicationResponse,
@@ -3453,8 +3449,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3469,10 +3465,8 @@ export const deleteAccessControlRule: (
   input: DeleteAccessControlRuleRequest,
 ) => Effect.Effect<
   DeleteAccessControlRuleResponse,
-  | OrganizationNotFoundException
-  | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OrganizationNotFoundException | OrganizationStateException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessControlRuleRequest,
   output: DeleteAccessControlRuleResponse,
@@ -3491,8 +3485,8 @@ export const deregisterMailDomain: (
   | MailDomainInUseException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterMailDomainRequest,
   output: DeregisterMailDomainResponse,
@@ -3517,8 +3511,8 @@ export const getImpersonationRoleEffect: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImpersonationRoleEffectRequest,
   output: GetImpersonationRoleEffectResponse,
@@ -3542,8 +3536,8 @@ export const getMobileDeviceAccessEffect: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMobileDeviceAccessEffectRequest,
   output: GetMobileDeviceAccessEffectResponse,
@@ -3560,10 +3554,8 @@ export const listAccessControlRules: (
   input: ListAccessControlRulesRequest,
 ) => Effect.Effect<
   ListAccessControlRulesResponse,
-  | OrganizationNotFoundException
-  | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OrganizationNotFoundException | OrganizationStateException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAccessControlRulesRequest,
   output: ListAccessControlRulesResponse,
@@ -3583,8 +3575,8 @@ export const listGroupMembers: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupMembersRequest,
@@ -3595,8 +3587,8 @@ export const listGroupMembers: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupMembersRequest,
@@ -3607,8 +3599,8 @@ export const listGroupMembers: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupMembersRequest,
@@ -3637,8 +3629,8 @@ export const listImpersonationRoles: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImpersonationRolesRequest,
@@ -3647,8 +3639,8 @@ export const listImpersonationRoles: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImpersonationRolesRequest,
@@ -3657,8 +3649,8 @@ export const listImpersonationRoles: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImpersonationRolesRequest,
@@ -3686,8 +3678,8 @@ export const listMailboxExportJobs: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMailboxExportJobsRequest,
@@ -3696,8 +3688,8 @@ export const listMailboxExportJobs: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMailboxExportJobsRequest,
@@ -3706,8 +3698,8 @@ export const listMailboxExportJobs: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMailboxExportJobsRequest,
@@ -3736,8 +3728,8 @@ export const listMailboxPermissions: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMailboxPermissionsRequest,
@@ -3747,8 +3739,8 @@ export const listMailboxPermissions: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMailboxPermissionsRequest,
@@ -3758,8 +3750,8 @@ export const listMailboxPermissions: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMailboxPermissionsRequest,
@@ -3787,8 +3779,8 @@ export const listMailDomains: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMailDomainsRequest,
@@ -3797,8 +3789,8 @@ export const listMailDomains: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMailDomainsRequest,
@@ -3807,8 +3799,8 @@ export const listMailDomains: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMailDomainsRequest,
@@ -3836,8 +3828,8 @@ export const listMobileDeviceAccessOverrides: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMobileDeviceAccessOverridesRequest,
@@ -3847,8 +3839,8 @@ export const listMobileDeviceAccessOverrides: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMobileDeviceAccessOverridesRequest,
@@ -3858,8 +3850,8 @@ export const listMobileDeviceAccessOverrides: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMobileDeviceAccessOverridesRequest,
@@ -3886,8 +3878,8 @@ export const listMobileDeviceAccessRules: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMobileDeviceAccessRulesRequest,
   output: ListMobileDeviceAccessRulesResponse,
@@ -3905,22 +3897,22 @@ export const listOrganizations: {
     input: ListOrganizationsRequest,
   ): Effect.Effect<
     ListOrganizationsResponse,
-    InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOrganizationsRequest,
   ) => Stream.Stream<
     ListOrganizationsResponse,
-    InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOrganizationsRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationsRequest,
@@ -3945,8 +3937,8 @@ export const listPersonalAccessTokens: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPersonalAccessTokensRequest,
@@ -3957,8 +3949,8 @@ export const listPersonalAccessTokens: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPersonalAccessTokensRequest,
@@ -3969,8 +3961,8 @@ export const listPersonalAccessTokens: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPersonalAccessTokensRequest,
@@ -4000,8 +3992,8 @@ export const putRetentionPolicy: (
   | LimitExceededException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRetentionPolicyRequest,
   output: PutRetentionPolicyResponse,
@@ -4025,8 +4017,8 @@ export const describeUser: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserRequest,
   output: DescribeUserResponse,
@@ -4049,8 +4041,8 @@ export const deleteEmailMonitoringConfiguration: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEmailMonitoringConfigurationRequest,
   output: DeleteEmailMonitoringConfigurationResponse,
@@ -4070,8 +4062,8 @@ export const deleteOrganization: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOrganizationRequest,
   output: DeleteOrganizationResponse,
@@ -4092,8 +4084,8 @@ export const describeEmailMonitoringConfiguration: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEmailMonitoringConfigurationRequest,
   output: DescribeEmailMonitoringConfigurationResponse,
@@ -4115,8 +4107,8 @@ export const describeEntity: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntityRequest,
   output: DescribeEntityResponse,
@@ -4138,8 +4130,8 @@ export const describeGroup: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGroupRequest,
   output: DescribeGroupResponse,
@@ -4161,8 +4153,8 @@ export const describeIdentityProviderConfiguration: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdentityProviderConfigurationRequest,
   output: DescribeIdentityProviderConfigurationResponse,
@@ -4180,10 +4172,8 @@ export const describeInboundDmarcSettings: (
   input: DescribeInboundDmarcSettingsRequest,
 ) => Effect.Effect<
   DescribeInboundDmarcSettingsResponse,
-  | OrganizationNotFoundException
-  | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OrganizationNotFoundException | OrganizationStateException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInboundDmarcSettingsRequest,
   output: DescribeInboundDmarcSettingsResponse,
@@ -4200,8 +4190,8 @@ export const describeMailboxExportJob: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMailboxExportJobRequest,
   output: DescribeMailboxExportJobResponse,
@@ -4225,8 +4215,8 @@ export const getAccessControlEffect: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessControlEffectRequest,
   output: GetAccessControlEffectResponse,
@@ -4249,8 +4239,8 @@ export const getDefaultRetentionPolicy: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDefaultRetentionPolicyRequest,
   output: GetDefaultRetentionPolicyResponse,
@@ -4272,8 +4262,8 @@ export const getImpersonationRole: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImpersonationRoleRequest,
   output: GetImpersonationRoleResponse,
@@ -4295,8 +4285,8 @@ export const getMailboxDetails: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMailboxDetailsRequest,
   output: GetMailboxDetailsResponse,
@@ -4319,8 +4309,8 @@ export const getMobileDeviceAccessOverride: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMobileDeviceAccessOverrideRequest,
   output: GetMobileDeviceAccessOverrideResponse,
@@ -4343,8 +4333,8 @@ export const getPersonalAccessTokenMetadata: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPersonalAccessTokenMetadataRequest,
   output: GetPersonalAccessTokenMetadataResponse,
@@ -4369,8 +4359,8 @@ export const listAliases: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAliasesRequest,
@@ -4381,8 +4371,8 @@ export const listAliases: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAliasesRequest,
@@ -4393,8 +4383,8 @@ export const listAliases: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAliasesRequest,
@@ -4424,8 +4414,8 @@ export const putIdentityProviderConfiguration: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutIdentityProviderConfigurationRequest,
   output: PutIdentityProviderConfigurationResponse,
@@ -4453,8 +4443,8 @@ export const testAvailabilityConfiguration: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestAvailabilityConfigurationRequest,
   output: TestAvailabilityConfigurationResponse,
@@ -4479,8 +4469,8 @@ export const cancelMailboxExportJob: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMailboxExportJobRequest,
   output: CancelMailboxExportJobResponse,
@@ -4504,8 +4494,8 @@ export const deleteAlias: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAliasRequest,
   output: DeleteAliasResponse,
@@ -4529,8 +4519,8 @@ export const deleteMailboxPermissions: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMailboxPermissionsRequest,
   output: DeleteMailboxPermissionsResponse,
@@ -4555,8 +4545,8 @@ export const deleteMobileDeviceAccessOverride: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMobileDeviceAccessOverrideRequest,
   output: DeleteMobileDeviceAccessOverrideResponse,
@@ -4582,8 +4572,8 @@ export const deregisterFromWorkMail: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterFromWorkMailRequest,
   output: DeregisterFromWorkMailResponse,
@@ -4608,8 +4598,8 @@ export const putMailboxPermissions: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMailboxPermissionsRequest,
   output: PutMailboxPermissionsResponse,
@@ -4633,8 +4623,8 @@ export const putMobileDeviceAccessOverride: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMobileDeviceAccessOverrideRequest,
   output: PutMobileDeviceAccessOverrideResponse,
@@ -4659,8 +4649,8 @@ export const updateMailboxQuota: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMailboxQuotaRequest,
   output: UpdateMailboxQuotaResponse,
@@ -4683,8 +4673,8 @@ export const updateMobileDeviceAccessRule: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMobileDeviceAccessRuleRequest,
   output: UpdateMobileDeviceAccessRuleResponse,
@@ -4702,10 +4692,8 @@ export const deleteAvailabilityConfiguration: (
   input: DeleteAvailabilityConfigurationRequest,
 ) => Effect.Effect<
   DeleteAvailabilityConfigurationResponse,
-  | OrganizationNotFoundException
-  | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OrganizationNotFoundException | OrganizationStateException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAvailabilityConfigurationRequest,
   output: DeleteAvailabilityConfigurationResponse,
@@ -4718,10 +4706,8 @@ export const putInboundDmarcSettings: (
   input: PutInboundDmarcSettingsRequest,
 ) => Effect.Effect<
   PutInboundDmarcSettingsResponse,
-  | OrganizationNotFoundException
-  | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OrganizationNotFoundException | OrganizationStateException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutInboundDmarcSettingsRequest,
   output: PutInboundDmarcSettingsResponse,
@@ -4734,8 +4720,8 @@ export const deleteIdentityCenterApplication: (
   input: DeleteIdentityCenterApplicationRequest,
 ) => Effect.Effect<
   DeleteIdentityCenterApplicationResponse,
-  InvalidParameterException | OrganizationStateException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterException | OrganizationStateException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentityCenterApplicationRequest,
   output: DeleteIdentityCenterApplicationResponse,
@@ -4751,8 +4737,8 @@ export const deleteIdentityProviderConfiguration: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentityProviderConfigurationRequest,
   output: DeleteIdentityProviderConfigurationResponse,
@@ -4772,8 +4758,8 @@ export const deleteImpersonationRole: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImpersonationRoleRequest,
   output: DeleteImpersonationRoleResponse,
@@ -4795,8 +4781,8 @@ export const deleteMobileDeviceAccessRule: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMobileDeviceAccessRuleRequest,
   output: DeleteMobileDeviceAccessRuleResponse,
@@ -4816,8 +4802,8 @@ export const deletePersonalAccessToken: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePersonalAccessTokenRequest,
   output: DeletePersonalAccessTokenResponse,
@@ -4837,8 +4823,8 @@ export const deleteRetentionPolicy: (
   | InvalidParameterException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRetentionPolicyRequest,
   output: DeleteRetentionPolicyResponse,
@@ -4859,8 +4845,8 @@ export const putEmailMonitoringConfiguration: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEmailMonitoringConfigurationRequest,
   output: PutEmailMonitoringConfigurationResponse,
@@ -4883,8 +4869,8 @@ export const updateAvailabilityConfiguration: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAvailabilityConfigurationRequest,
   output: UpdateAvailabilityConfigurationResponse,
@@ -4907,8 +4893,8 @@ export const assumeImpersonationRole: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssumeImpersonationRoleRequest,
   output: AssumeImpersonationRoleResponse,
@@ -4934,8 +4920,8 @@ export const startMailboxExportJob: (
   | LimitExceededException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMailboxExportJobRequest,
   output: StartMailboxExportJobResponse,
@@ -4963,8 +4949,8 @@ export const putAccessControlRule: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccessControlRuleRequest,
   output: PutAccessControlRuleResponse,
@@ -4991,8 +4977,8 @@ export const updateImpersonationRole: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateImpersonationRoleRequest,
   output: UpdateImpersonationRoleResponse,
@@ -5019,8 +5005,8 @@ export const registerMailDomain: (
   | MailDomainInUseException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterMailDomainRequest,
   output: RegisterMailDomainResponse,
@@ -5043,8 +5029,8 @@ export const createMobileDeviceAccessRule: (
   | LimitExceededException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMobileDeviceAccessRuleRequest,
   output: CreateMobileDeviceAccessRuleResponse,
@@ -5073,8 +5059,8 @@ export const createImpersonationRole: (
   | LimitExceededException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImpersonationRoleRequest,
   output: CreateImpersonationRoleResponse,
@@ -5098,8 +5084,8 @@ export const getMailDomain: (
   | MailDomainNotFoundException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMailDomainRequest,
   output: GetMailDomainResponse,
@@ -5121,8 +5107,8 @@ export const listAvailabilityConfigurations: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAvailabilityConfigurationsRequest,
@@ -5131,8 +5117,8 @@ export const listAvailabilityConfigurations: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAvailabilityConfigurationsRequest,
@@ -5141,8 +5127,8 @@ export const listAvailabilityConfigurations: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAvailabilityConfigurationsRequest,
@@ -5171,8 +5157,8 @@ export const listGroups: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupsRequest,
@@ -5182,8 +5168,8 @@ export const listGroups: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupsRequest,
@@ -5193,8 +5179,8 @@ export const listGroups: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
@@ -5224,8 +5210,8 @@ export const listGroupsForEntity: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupsForEntityRequest,
@@ -5236,8 +5222,8 @@ export const listGroupsForEntity: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupsForEntityRequest,
@@ -5248,8 +5234,8 @@ export const listGroupsForEntity: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsForEntityRequest,
@@ -5282,8 +5268,8 @@ export const listResourceDelegates: {
     | OrganizationNotFoundException
     | OrganizationStateException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceDelegatesRequest,
@@ -5295,8 +5281,8 @@ export const listResourceDelegates: {
     | OrganizationNotFoundException
     | OrganizationStateException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceDelegatesRequest,
@@ -5308,8 +5294,8 @@ export const listResourceDelegates: {
     | OrganizationNotFoundException
     | OrganizationStateException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceDelegatesRequest,
@@ -5340,8 +5326,8 @@ export const listResources: {
     | OrganizationNotFoundException
     | OrganizationStateException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourcesRequest,
@@ -5351,8 +5337,8 @@ export const listResources: {
     | OrganizationNotFoundException
     | OrganizationStateException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourcesRequest,
@@ -5362,8 +5348,8 @@ export const listResources: {
     | OrganizationNotFoundException
     | OrganizationStateException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesRequest,
@@ -5391,8 +5377,8 @@ export const listUsers: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUsersRequest,
@@ -5401,8 +5387,8 @@ export const listUsers: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUsersRequest,
@@ -5411,8 +5397,8 @@ export const listUsers: {
     | InvalidParameterException
     | OrganizationNotFoundException
     | OrganizationStateException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
@@ -5440,8 +5426,8 @@ export const tagResource: (
   | OrganizationStateException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5464,8 +5450,8 @@ export const updateDefaultMailDomain: (
   | MailDomainStateException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDefaultMailDomainRequest,
   output: UpdateDefaultMailDomainResponse,
@@ -5491,8 +5477,8 @@ export const deleteGroup: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResponse,
@@ -5525,8 +5511,8 @@ export const deleteUser: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -5555,8 +5541,8 @@ export const disassociateMemberFromGroup: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateMemberFromGroupRequest,
   output: DisassociateMemberFromGroupResponse,
@@ -5588,8 +5574,8 @@ export const updateUser: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,
@@ -5616,8 +5602,8 @@ export const deleteResource: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceRequest,
   output: DeleteResourceResponse,
@@ -5641,8 +5627,8 @@ export const describeResource: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResourceRequest,
   output: DescribeResourceResponse,
@@ -5667,8 +5653,8 @@ export const disassociateDelegateFromResource: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateDelegateFromResourceRequest,
   output: DisassociateDelegateFromResourceResponse,
@@ -5694,8 +5680,8 @@ export const updateGroup: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupRequest,
   output: UpdateGroupResponse,
@@ -5721,8 +5707,8 @@ export const associateDelegateToResource: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateDelegateToResourceRequest,
   output: AssociateDelegateToResourceResponse,
@@ -5750,8 +5736,8 @@ export const associateMemberToGroup: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateMemberToGroupRequest,
   output: AssociateMemberToGroupResponse,
@@ -5778,8 +5764,8 @@ export const createAvailabilityConfiguration: (
   | NameAvailabilityException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAvailabilityConfigurationRequest,
   output: CreateAvailabilityConfigurationResponse,
@@ -5813,8 +5799,8 @@ export const createOrganization: (
   | InvalidParameterException
   | LimitExceededException
   | NameAvailabilityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOrganizationRequest,
   output: CreateOrganizationResponse,
@@ -5842,8 +5828,8 @@ export const resetPassword: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetPasswordRequest,
   output: ResetPasswordResponse,
@@ -5875,8 +5861,8 @@ export const createAlias: (
   | MailDomainStateException
   | OrganizationNotFoundException
   | OrganizationStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAliasRequest,
   output: CreateAliasResponse,
@@ -5912,8 +5898,8 @@ export const updatePrimaryEmailAddress: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePrimaryEmailAddressRequest,
   output: UpdatePrimaryEmailAddressResponse,
@@ -5952,8 +5938,8 @@ export const updateResource: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResourceRequest,
   output: UpdateResourceResponse,
@@ -5998,8 +5984,8 @@ export const registerToWorkMail: (
   | OrganizationNotFoundException
   | OrganizationStateException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterToWorkMailRequest,
   output: RegisterToWorkMailResponse,
@@ -6033,8 +6019,8 @@ export const createGroup: (
   | OrganizationStateException
   | ReservedNameException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResponse,
@@ -6065,8 +6051,8 @@ export const createUser: (
   | OrganizationStateException
   | ReservedNameException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -6097,8 +6083,8 @@ export const createResource: (
   | OrganizationStateException
   | ReservedNameException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceRequest,
   output: CreateResourceResponse,

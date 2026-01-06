@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://cognito-sync.amazonaws.com/doc/2014-06-30/");
 const svc = T.AwsApiService({
@@ -1054,34 +1052,32 @@ export class InternalErrorException extends S.TaggedError<InternalErrorException
   "InternalErrorException",
   { message: S.String },
   T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class AlreadyStreamedException extends S.TaggedError<AlreadyStreamedException>()(
   "AlreadyStreamedException",
   { message: S.String },
   T.AwsQueryError({ code: "AlreadyStreamed", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidConfigurationException extends S.TaggedError<InvalidConfigurationException>()(
   "InvalidConfigurationException",
   { message: S.String },
   T.AwsQueryError({ code: "InvalidConfiguration", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.String },
   T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateRequestException extends S.TaggedError<DuplicateRequestException>()(
   "DuplicateRequestException",
   { message: S.String },
   T.AwsQueryError({ code: "DuplicateRequest", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { message: S.String },
   T.AwsQueryError({ code: "ConcurrentModification", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidLambdaFunctionOutputException extends S.TaggedError<InvalidLambdaFunctionOutputException>()(
   "InvalidLambdaFunctionOutputException",
   { message: S.String },
@@ -1089,41 +1085,37 @@ export class InvalidLambdaFunctionOutputException extends S.TaggedError<InvalidL
     code: "InvalidLambdaFunctionOutput",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotAuthorizedException extends S.TaggedError<NotAuthorizedException>()(
   "NotAuthorizedException",
   { message: S.String },
   T.AwsQueryError({ code: "NotAuthorizedError", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class LambdaThrottledException extends S.TaggedError<LambdaThrottledException>()(
   "LambdaThrottledException",
   { message: S.String },
   T.AwsQueryError({ code: "LambdaThrottled", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.String },
   T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { message: S.String },
   T.AwsQueryError({ code: "TooManyRequests", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceConflictException extends S.TaggedError<ResourceConflictException>()(
   "ResourceConflictException",
   { message: S.String },
   T.AwsQueryError({ code: "ResourceConflict", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.String },
   T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1191,8 +1183,8 @@ export const listDatasets: (
   | InvalidParameterException
   | NotAuthorizedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDatasetsRequest,
   output: ListDatasetsResponse,
@@ -1221,8 +1213,8 @@ export const deleteDataset: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -1289,8 +1281,8 @@ export const unsubscribeFromDataset: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnsubscribeFromDatasetRequest,
   output: UnsubscribeFromDatasetResponse,
@@ -1357,8 +1349,8 @@ export const registerDevice: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterDeviceRequest,
   output: RegisterDeviceResponse,
@@ -1384,8 +1376,8 @@ export const getBulkPublishDetails: (
   | InvalidParameterException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBulkPublishDetailsRequest,
   output: GetBulkPublishDetailsResponse,
@@ -1410,8 +1402,8 @@ export const getCognitoEvents: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCognitoEventsRequest,
   output: GetCognitoEventsResponse,
@@ -1477,8 +1469,8 @@ export const getIdentityPoolConfiguration: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityPoolConfigurationRequest,
   output: GetIdentityPoolConfigurationResponse,
@@ -1504,8 +1496,8 @@ export const setCognitoEvents: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetCognitoEventsRequest,
   output: SetCognitoEventsResponse,
@@ -1572,8 +1564,8 @@ export const describeIdentityPoolUsage: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdentityPoolUsageRequest,
   output: DescribeIdentityPoolUsageResponse,
@@ -1642,8 +1634,8 @@ export const describeIdentityUsage: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdentityUsageRequest,
   output: DescribeIdentityUsageResponse,
@@ -1708,8 +1700,8 @@ export const subscribeToDataset: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubscribeToDatasetRequest,
   output: SubscribeToDatasetResponse,
@@ -1737,8 +1729,8 @@ export const bulkPublish: (
   | InvalidParameterException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BulkPublishRequest,
   output: BulkPublishResponse,
@@ -1811,8 +1803,8 @@ export const setIdentityPoolConfiguration: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIdentityPoolConfigurationRequest,
   output: SetIdentityPoolConfigurationResponse,
@@ -1890,8 +1882,8 @@ export const listIdentityPoolUsage: (
   | InvalidParameterException
   | NotAuthorizedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListIdentityPoolUsageRequest,
   output: ListIdentityPoolUsageResponse,
@@ -1964,8 +1956,8 @@ export const listRecords: (
   | InvalidParameterException
   | NotAuthorizedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRecordsRequest,
   output: ListRecordsResponse,
@@ -1992,8 +1984,8 @@ export const describeDataset: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -2027,8 +2019,8 @@ export const updateRecords: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRecordsRequest,
   output: UpdateRecordsResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Translate",
@@ -1092,51 +1090,47 @@ export const TranslateTextResponse = S.suspend(() =>
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidFilterException extends S.TaggedError<InvalidFilterException>()(
   "InvalidFilterException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String), ResourceArn: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedDisplayLanguageCodeException extends S.TaggedError<UnsupportedDisplayLanguageCodeException>()(
   "UnsupportedDisplayLanguageCodeException",
   { Message: S.optional(S.String), DisplayLanguageCode: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedLanguagePairException extends S.TaggedError<UnsupportedLanguagePairException>()(
   "UnsupportedLanguagePairException",
   {
@@ -1144,21 +1138,19 @@ export class UnsupportedLanguagePairException extends S.TaggedError<UnsupportedL
     SourceLanguageCode: S.optional(S.String),
     TargetLanguageCode: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DetectedLanguageLowConfidenceException extends S.TaggedError<DetectedLanguageLowConfidenceException>()(
   "DetectedLanguageLowConfidenceException",
   { Message: S.optional(S.String), DetectedLanguageCode: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TextSizeLimitExceededException extends S.TaggedError<TextSizeLimitExceededException>()(
   "TextSizeLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1173,8 +1165,8 @@ export const listTagsForResource: (
   | InternalServerException
   | InvalidParameterValueException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1197,8 +1189,8 @@ export const untagResource: (
   | InternalServerException
   | InvalidParameterValueException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1224,8 +1216,8 @@ export const tagResource: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1255,8 +1247,8 @@ export const stopTextTranslationJob: (
   | InternalServerException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTextTranslationJobRequest,
   output: StopTextTranslationJobResponse,
@@ -1277,8 +1269,8 @@ export const listParallelData: {
     | InternalServerException
     | InvalidParameterValueException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListParallelDataRequest,
@@ -1287,8 +1279,8 @@ export const listParallelData: {
     | InternalServerException
     | InvalidParameterValueException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListParallelDataRequest,
@@ -1297,8 +1289,8 @@ export const listParallelData: {
     | InternalServerException
     | InvalidParameterValueException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListParallelDataRequest,
@@ -1325,8 +1317,8 @@ export const listTerminologies: {
     | InternalServerException
     | InvalidParameterValueException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTerminologiesRequest,
@@ -1335,8 +1327,8 @@ export const listTerminologies: {
     | InternalServerException
     | InvalidParameterValueException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTerminologiesRequest,
@@ -1345,8 +1337,8 @@ export const listTerminologies: {
     | InternalServerException
     | InvalidParameterValueException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTerminologiesRequest,
@@ -1373,8 +1365,8 @@ export const deleteParallelData: (
   | InternalServerException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteParallelDataRequest,
   output: DeleteParallelDataResponse,
@@ -1396,8 +1388,8 @@ export const deleteTerminology: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTerminologyRequest,
   output: DeleteTerminologyResponse,
@@ -1419,8 +1411,8 @@ export const getParallelData: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetParallelDataRequest,
   output: GetParallelDataResponse,
@@ -1442,8 +1434,8 @@ export const getTerminology: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTerminologyRequest,
   output: GetTerminologyResponse,
@@ -1465,8 +1457,8 @@ export const describeTextTranslationJob: (
   | InternalServerException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTextTranslationJobRequest,
   output: DescribeTextTranslationJobResponse,
@@ -1497,8 +1489,8 @@ export const importTerminology: (
   | LimitExceededException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportTerminologyRequest,
   output: ImportTerminologyResponse,
@@ -1527,8 +1519,8 @@ export const updateParallelData: (
   | LimitExceededException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateParallelDataRequest,
   output: UpdateParallelDataResponse,
@@ -1561,8 +1553,8 @@ export const createParallelData: (
   | LimitExceededException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateParallelDataRequest,
   output: CreateParallelDataResponse,
@@ -1589,8 +1581,8 @@ export const listTextTranslationJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTextTranslationJobsRequest,
@@ -1600,8 +1592,8 @@ export const listTextTranslationJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTextTranslationJobsRequest,
@@ -1611,8 +1603,8 @@ export const listTextTranslationJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTextTranslationJobsRequest,
@@ -1641,8 +1633,8 @@ export const listLanguages: {
     | InvalidParameterValueException
     | TooManyRequestsException
     | UnsupportedDisplayLanguageCodeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLanguagesRequest,
@@ -1652,8 +1644,8 @@ export const listLanguages: {
     | InvalidParameterValueException
     | TooManyRequestsException
     | UnsupportedDisplayLanguageCodeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLanguagesRequest,
@@ -1663,8 +1655,8 @@ export const listLanguages: {
     | InvalidParameterValueException
     | TooManyRequestsException
     | UnsupportedDisplayLanguageCodeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLanguagesRequest,
@@ -1702,8 +1694,8 @@ export const startTextTranslationJob: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UnsupportedLanguagePairException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTextTranslationJobRequest,
   output: StartTextTranslationJobResponse,
@@ -1739,8 +1731,8 @@ export const translateDocument: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnsupportedLanguagePairException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TranslateDocumentRequest,
   output: TranslateDocumentResponse,
@@ -1770,8 +1762,8 @@ export const translateText: (
   | TextSizeLimitExceededException
   | TooManyRequestsException
   | UnsupportedLanguagePairException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TranslateTextRequest,
   output: TranslateTextResponse,

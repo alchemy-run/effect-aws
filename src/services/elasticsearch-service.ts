@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://es.amazonaws.com/doc/2015-01-01/");
 const svc = T.AwsApiService({
@@ -3474,45 +3472,43 @@ export class BaseException extends S.TaggedError<BaseException>()(
 export class InternalException extends S.TaggedError<InternalException>()(
   "InternalException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DisabledOperationException extends S.TaggedError<DisabledOperationException>()(
   "DisabledOperationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidPaginationTokenException extends S.TaggedError<InvalidPaginationTokenException>()(
   "InvalidPaginationTokenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidTypeException extends S.TaggedError<InvalidTypeException>()(
   "InvalidTypeException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -3522,11 +3518,8 @@ export const listVpcEndpoints: (
   input: ListVpcEndpointsRequest,
 ) => Effect.Effect<
   ListVpcEndpointsResponse,
-  | BaseException
-  | DisabledOperationException
-  | InternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | DisabledOperationException | InternalException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVpcEndpointsRequest,
   output: ListVpcEndpointsResponse,
@@ -3539,8 +3532,8 @@ export const deleteElasticsearchServiceRole: (
   input: DeleteElasticsearchServiceRoleRequest,
 ) => Effect.Effect<
   DeleteElasticsearchServiceRoleResponse,
-  BaseException | InternalException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ValidationException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteElasticsearchServiceRoleRequest,
   output: DeleteElasticsearchServiceRoleResponse,
@@ -3557,8 +3550,8 @@ export const describeElasticsearchDomain: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeElasticsearchDomainRequest,
   output: DescribeElasticsearchDomainResponse,
@@ -3581,8 +3574,8 @@ export const describeReservedElasticsearchInstances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedElasticsearchInstancesRequest,
@@ -3592,8 +3585,8 @@ export const describeReservedElasticsearchInstances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedElasticsearchInstancesRequest,
@@ -3603,8 +3596,8 @@ export const describeReservedElasticsearchInstances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedElasticsearchInstancesRequest,
@@ -3632,8 +3625,8 @@ export const describeVpcEndpoints: (
   | DisabledOperationException
   | InternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcEndpointsRequest,
   output: DescribeVpcEndpointsResponse,
@@ -3661,8 +3654,8 @@ export const getCompatibleElasticsearchVersions: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCompatibleElasticsearchVersionsRequest,
   output: GetCompatibleElasticsearchVersionsResponse,
@@ -3687,8 +3680,8 @@ export const getPackageVersionHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetPackageVersionHistoryRequest,
@@ -3699,8 +3692,8 @@ export const getPackageVersionHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetPackageVersionHistoryRequest,
@@ -3711,8 +3704,8 @@ export const getPackageVersionHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetPackageVersionHistoryRequest,
@@ -3737,8 +3730,8 @@ export const listDomainNames: (
   input: ListDomainNamesRequest,
 ) => Effect.Effect<
   ListDomainNamesResponse,
-  BaseException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | ValidationException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDomainNamesRequest,
   output: ListDomainNamesResponse,
@@ -3757,8 +3750,8 @@ export const updateVpcEndpoint: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVpcEndpointRequest,
   output: UpdateVpcEndpointResponse,
@@ -3783,8 +3776,8 @@ export const addTags: (
   | InternalException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsRequest,
   output: AddTagsResponse,
@@ -3802,8 +3795,8 @@ export const describeElasticsearchDomains: (
   input: DescribeElasticsearchDomainsRequest,
 ) => Effect.Effect<
   DescribeElasticsearchDomainsResponse,
-  BaseException | InternalException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ValidationException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeElasticsearchDomainsRequest,
   output: DescribeElasticsearchDomainsResponse,
@@ -3816,8 +3809,8 @@ export const removeTags: (
   input: RemoveTagsRequest,
 ) => Effect.Effect<
   RemoveTagsResponse,
-  BaseException | InternalException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ValidationException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsRequest,
   output: RemoveTagsResponse,
@@ -3835,8 +3828,8 @@ export const listElasticsearchInstanceTypes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListElasticsearchInstanceTypesRequest,
@@ -3846,8 +3839,8 @@ export const listElasticsearchInstanceTypes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListElasticsearchInstanceTypesRequest,
@@ -3857,8 +3850,8 @@ export const listElasticsearchInstanceTypes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListElasticsearchInstanceTypesRequest,
@@ -3887,8 +3880,8 @@ export const listElasticsearchVersions: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListElasticsearchVersionsRequest,
@@ -3898,8 +3891,8 @@ export const listElasticsearchVersions: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListElasticsearchVersionsRequest,
@@ -3909,8 +3902,8 @@ export const listElasticsearchVersions: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListElasticsearchVersionsRequest,
@@ -3938,8 +3931,8 @@ export const listTags: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -3963,8 +3956,8 @@ export const revokeVpcEndpointAccess: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeVpcEndpointAccessRequest,
   output: RevokeVpcEndpointAccessResponse,
@@ -3987,8 +3980,8 @@ export const startElasticsearchServiceSoftwareUpdate: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartElasticsearchServiceSoftwareUpdateRequest,
   output: StartElasticsearchServiceSoftwareUpdateResponse,
@@ -4006,8 +3999,8 @@ export const deleteInboundCrossClusterSearchConnection: (
   input: DeleteInboundCrossClusterSearchConnectionRequest,
 ) => Effect.Effect<
   DeleteInboundCrossClusterSearchConnectionResponse,
-  DisabledOperationException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DisabledOperationException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInboundCrossClusterSearchConnectionRequest,
   output: DeleteInboundCrossClusterSearchConnectionResponse,
@@ -4025,8 +4018,8 @@ export const getUpgradeStatus: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUpgradeStatusRequest,
   output: GetUpgradeStatusResponse,
@@ -4050,8 +4043,8 @@ export const listVpcEndpointAccess: (
   | DisabledOperationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVpcEndpointAccessRequest,
   output: ListVpcEndpointAccessResponse,
@@ -4073,8 +4066,8 @@ export const listVpcEndpointsForDomain: (
   | DisabledOperationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVpcEndpointsForDomainRequest,
   output: ListVpcEndpointsForDomainResponse,
@@ -4092,8 +4085,8 @@ export const rejectInboundCrossClusterSearchConnection: (
   input: RejectInboundCrossClusterSearchConnectionRequest,
 ) => Effect.Effect<
   RejectInboundCrossClusterSearchConnectionResponse,
-  DisabledOperationException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DisabledOperationException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectInboundCrossClusterSearchConnectionRequest,
   output: RejectInboundCrossClusterSearchConnectionResponse,
@@ -4111,8 +4104,8 @@ export const cancelDomainConfigChange: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelDomainConfigChangeRequest,
   output: CancelDomainConfigChangeResponse,
@@ -4135,8 +4128,8 @@ export const cancelElasticsearchServiceSoftwareUpdate: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelElasticsearchServiceSoftwareUpdateRequest,
   output: CancelElasticsearchServiceSoftwareUpdateResponse,
@@ -4158,8 +4151,8 @@ export const deleteVpcEndpoint: (
   | DisabledOperationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointRequest,
   output: DeleteVpcEndpointResponse,
@@ -4183,8 +4176,8 @@ export const listDomainsForPackage: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListDomainsForPackageRequest,
@@ -4195,8 +4188,8 @@ export const listDomainsForPackage: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListDomainsForPackageRequest,
@@ -4207,8 +4200,8 @@ export const listDomainsForPackage: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsForPackageRequest,
@@ -4239,8 +4232,8 @@ export const listPackagesForDomain: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPackagesForDomainRequest,
@@ -4251,8 +4244,8 @@ export const listPackagesForDomain: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPackagesForDomainRequest,
@@ -4263,8 +4256,8 @@ export const listPackagesForDomain: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPackagesForDomainRequest,
@@ -4295,8 +4288,8 @@ export const updatePackage: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePackageRequest,
   output: UpdatePackageResponse,
@@ -4322,8 +4315,8 @@ export const deletePackage: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePackageRequest,
   output: DeletePackageResponse,
@@ -4349,8 +4342,8 @@ export const describePackages: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePackagesRequest,
@@ -4361,8 +4354,8 @@ export const describePackages: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePackagesRequest,
@@ -4373,8 +4366,8 @@ export const describePackages: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePackagesRequest,
@@ -4400,28 +4393,22 @@ export const describeOutboundCrossClusterSearchConnections: {
     input: DescribeOutboundCrossClusterSearchConnectionsRequest,
   ): Effect.Effect<
     DescribeOutboundCrossClusterSearchConnectionsResponse,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOutboundCrossClusterSearchConnectionsRequest,
   ) => Stream.Stream<
     DescribeOutboundCrossClusterSearchConnectionsResponse,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOutboundCrossClusterSearchConnectionsRequest,
   ) => Stream.Stream<
     unknown,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOutboundCrossClusterSearchConnectionsRequest,
@@ -4446,8 +4433,8 @@ export const dissociatePackage: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DissociatePackageRequest,
   output: DissociatePackageResponse,
@@ -4473,8 +4460,8 @@ export const authorizeVpcEndpointAccess: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeVpcEndpointAccessRequest,
   output: AuthorizeVpcEndpointAccessResponse,
@@ -4495,28 +4482,22 @@ export const describeInboundCrossClusterSearchConnections: {
     input: DescribeInboundCrossClusterSearchConnectionsRequest,
   ): Effect.Effect<
     DescribeInboundCrossClusterSearchConnectionsResponse,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInboundCrossClusterSearchConnectionsRequest,
   ) => Stream.Stream<
     DescribeInboundCrossClusterSearchConnectionsResponse,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInboundCrossClusterSearchConnectionsRequest,
   ) => Stream.Stream<
     unknown,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInboundCrossClusterSearchConnectionsRequest,
@@ -4538,8 +4519,8 @@ export const acceptInboundCrossClusterSearchConnection: (
   | DisabledOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptInboundCrossClusterSearchConnectionRequest,
   output: AcceptInboundCrossClusterSearchConnectionResponse,
@@ -4562,8 +4543,8 @@ export const associatePackage: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociatePackageRequest,
   output: AssociatePackageResponse,
@@ -4589,8 +4570,8 @@ export const createVpcEndpoint: (
   | InternalException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointRequest,
   output: CreateVpcEndpointResponse,
@@ -4610,8 +4591,8 @@ export const deleteOutboundCrossClusterSearchConnection: (
   input: DeleteOutboundCrossClusterSearchConnectionRequest,
 ) => Effect.Effect<
   DeleteOutboundCrossClusterSearchConnectionResponse,
-  DisabledOperationException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DisabledOperationException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOutboundCrossClusterSearchConnectionRequest,
   output: DeleteOutboundCrossClusterSearchConnectionResponse,
@@ -4629,8 +4610,8 @@ export const describeDomainChangeProgress: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainChangeProgressRequest,
   output: DescribeDomainChangeProgressResponse,
@@ -4653,8 +4634,8 @@ export const describeReservedElasticsearchInstanceOfferings: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedElasticsearchInstanceOfferingsRequest,
@@ -4664,8 +4645,8 @@ export const describeReservedElasticsearchInstanceOfferings: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedElasticsearchInstanceOfferingsRequest,
@@ -4675,8 +4656,8 @@ export const describeReservedElasticsearchInstanceOfferings: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedElasticsearchInstanceOfferingsRequest,
@@ -4706,8 +4687,8 @@ export const getUpgradeHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetUpgradeHistoryRequest,
@@ -4718,8 +4699,8 @@ export const getUpgradeHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetUpgradeHistoryRequest,
@@ -4730,8 +4711,8 @@ export const getUpgradeHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetUpgradeHistoryRequest,
@@ -4762,8 +4743,8 @@ export const upgradeElasticsearchDomain: (
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpgradeElasticsearchDomainRequest,
   output: UpgradeElasticsearchDomainResponse,
@@ -4790,8 +4771,8 @@ export const createPackage: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePackageRequest,
   output: CreatePackageResponse,
@@ -4818,8 +4799,8 @@ export const purchaseReservedElasticsearchInstanceOffering: (
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseReservedElasticsearchInstanceOfferingRequest,
   output: PurchaseReservedElasticsearchInstanceOfferingResponse,
@@ -4843,8 +4824,8 @@ export const createOutboundCrossClusterSearchConnection: (
   | InternalException
   | LimitExceededException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOutboundCrossClusterSearchConnectionRequest,
   output: CreateOutboundCrossClusterSearchConnectionResponse,
@@ -4868,8 +4849,8 @@ export const updateElasticsearchDomainConfig: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateElasticsearchDomainConfigRequest,
   output: UpdateElasticsearchDomainConfigResponse,
@@ -4897,8 +4878,8 @@ export const createElasticsearchDomain: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateElasticsearchDomainRequest,
   output: CreateElasticsearchDomainResponse,
@@ -4923,8 +4904,8 @@ export const deleteElasticsearchDomain: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteElasticsearchDomainRequest,
   output: DeleteElasticsearchDomainResponse,
@@ -4947,8 +4928,8 @@ export const describeDomainAutoTunes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDomainAutoTunesRequest,
@@ -4958,8 +4939,8 @@ export const describeDomainAutoTunes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDomainAutoTunesRequest,
@@ -4969,8 +4950,8 @@ export const describeDomainAutoTunes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDomainAutoTunesRequest,
@@ -4998,8 +4979,8 @@ export const describeElasticsearchDomainConfig: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeElasticsearchDomainConfigRequest,
   output: DescribeElasticsearchDomainConfigResponse,
@@ -5028,8 +5009,8 @@ export const describeElasticsearchInstanceTypeLimits: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeElasticsearchInstanceTypeLimitsRequest,
   output: DescribeElasticsearchInstanceTypeLimitsResponse,

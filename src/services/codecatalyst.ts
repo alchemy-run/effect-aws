@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CodeCatalyst",
@@ -2183,8 +2181,8 @@ export const verifySession: (
   input: VerifySessionRequest,
 ) => Effect.Effect<
   VerifySessionResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifySessionRequest,
   output: VerifySessionResponse,
@@ -2197,8 +2195,8 @@ export const deleteAccessToken: (
   input: DeleteAccessTokenRequest,
 ) => Effect.Effect<
   DeleteAccessTokenResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessTokenRequest,
   output: DeleteAccessTokenResponse,
@@ -2215,8 +2213,8 @@ export const createAccessToken: (
   input: CreateAccessTokenRequest,
 ) => Effect.Effect<
   CreateAccessTokenResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessTokenRequest,
   output: CreateAccessTokenResponse,
@@ -2229,8 +2227,8 @@ export const getSpace: (
   input: GetSpaceRequest,
 ) => Effect.Effect<
   GetSpaceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSpaceRequest,
   output: GetSpaceResponse,
@@ -2243,8 +2241,8 @@ export const updateSpace: (
   input: UpdateSpaceRequest,
 ) => Effect.Effect<
   UpdateSpaceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSpaceRequest,
   output: UpdateSpaceResponse,
@@ -2259,8 +2257,8 @@ export const deleteSpace: (
   input: DeleteSpaceRequest,
 ) => Effect.Effect<
   DeleteSpaceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSpaceRequest,
   output: DeleteSpaceResponse,
@@ -2273,8 +2271,8 @@ export const createProject: (
   input: CreateProjectRequest,
 ) => Effect.Effect<
   CreateProjectResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProjectRequest,
   output: CreateProjectResponse,
@@ -2287,8 +2285,8 @@ export const getProject: (
   input: GetProjectRequest,
 ) => Effect.Effect<
   GetProjectResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProjectRequest,
   output: GetProjectResponse,
@@ -2301,8 +2299,8 @@ export const updateProject: (
   input: UpdateProjectRequest,
 ) => Effect.Effect<
   UpdateProjectResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProjectRequest,
   output: UpdateProjectResponse,
@@ -2315,8 +2313,8 @@ export const deleteProject: (
   input: DeleteProjectRequest,
 ) => Effect.Effect<
   DeleteProjectResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProjectRequest,
   output: DeleteProjectResponse,
@@ -2329,8 +2327,8 @@ export const updateDevEnvironment: (
   input: UpdateDevEnvironmentRequest,
 ) => Effect.Effect<
   UpdateDevEnvironmentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDevEnvironmentRequest,
   output: UpdateDevEnvironmentResponse,
@@ -2343,8 +2341,8 @@ export const deleteDevEnvironment: (
   input: DeleteDevEnvironmentRequest,
 ) => Effect.Effect<
   DeleteDevEnvironmentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDevEnvironmentRequest,
   output: DeleteDevEnvironmentResponse,
@@ -2357,8 +2355,8 @@ export const startDevEnvironment: (
   input: StartDevEnvironmentRequest,
 ) => Effect.Effect<
   StartDevEnvironmentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDevEnvironmentRequest,
   output: StartDevEnvironmentResponse,
@@ -2371,8 +2369,8 @@ export const stopDevEnvironment: (
   input: StopDevEnvironmentRequest,
 ) => Effect.Effect<
   StopDevEnvironmentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDevEnvironmentRequest,
   output: StopDevEnvironmentResponse,
@@ -2385,8 +2383,8 @@ export const stopDevEnvironmentSession: (
   input: StopDevEnvironmentSessionRequest,
 ) => Effect.Effect<
   StopDevEnvironmentSessionResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDevEnvironmentSessionRequest,
   output: StopDevEnvironmentSessionResponse,
@@ -2400,8 +2398,8 @@ export const createSourceRepository: (
   input: CreateSourceRepositoryRequest,
 ) => Effect.Effect<
   CreateSourceRepositoryResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSourceRepositoryRequest,
   output: CreateSourceRepositoryResponse,
@@ -2414,8 +2412,8 @@ export const getSourceRepository: (
   input: GetSourceRepositoryRequest,
 ) => Effect.Effect<
   GetSourceRepositoryResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSourceRepositoryRequest,
   output: GetSourceRepositoryResponse,
@@ -2428,8 +2426,8 @@ export const deleteSourceRepository: (
   input: DeleteSourceRepositoryRequest,
 ) => Effect.Effect<
   DeleteSourceRepositoryResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSourceRepositoryRequest,
   output: DeleteSourceRepositoryResponse,
@@ -2443,8 +2441,8 @@ export const getSourceRepositoryCloneUrls: (
   input: GetSourceRepositoryCloneUrlsRequest,
 ) => Effect.Effect<
   GetSourceRepositoryCloneUrlsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSourceRepositoryCloneUrlsRequest,
   output: GetSourceRepositoryCloneUrlsResponse,
@@ -2459,8 +2457,8 @@ export const createSourceRepositoryBranch: (
   input: CreateSourceRepositoryBranchRequest,
 ) => Effect.Effect<
   CreateSourceRepositoryBranchResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSourceRepositoryBranchRequest,
   output: CreateSourceRepositoryBranchResponse,
@@ -2473,8 +2471,8 @@ export const startWorkflowRun: (
   input: StartWorkflowRunRequest,
 ) => Effect.Effect<
   StartWorkflowRunResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartWorkflowRunRequest,
   output: StartWorkflowRunResponse,
@@ -2487,8 +2485,8 @@ export const getWorkflowRun: (
   input: GetWorkflowRunRequest,
 ) => Effect.Effect<
   GetWorkflowRunResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkflowRunRequest,
   output: GetWorkflowRunResponse,
@@ -2502,8 +2500,8 @@ export const getSubscription: (
   input: GetSubscriptionRequest,
 ) => Effect.Effect<
   GetSubscriptionResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSubscriptionRequest,
   output: GetSubscriptionResponse,
@@ -2516,8 +2514,8 @@ export const getUserDetails: (
   input: GetUserDetailsRequest,
 ) => Effect.Effect<
   GetUserDetailsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserDetailsRequest,
   output: GetUserDetailsResponse,
@@ -2531,22 +2529,22 @@ export const listAccessTokens: {
     input: ListAccessTokensRequest,
   ): Effect.Effect<
     ListAccessTokensResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessTokensRequest,
   ) => Stream.Stream<
     ListAccessTokensResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessTokensRequest,
   ) => Stream.Stream<
     AccessTokenSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessTokensRequest,
@@ -2567,22 +2565,22 @@ export const listSpaces: {
     input: ListSpacesRequest,
   ): Effect.Effect<
     ListSpacesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSpacesRequest,
   ) => Stream.Stream<
     ListSpacesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSpacesRequest,
   ) => Stream.Stream<
     SpaceSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSpacesRequest,
@@ -2605,8 +2603,8 @@ export const createDevEnvironment: (
   input: CreateDevEnvironmentRequest,
 ) => Effect.Effect<
   CreateDevEnvironmentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDevEnvironmentRequest,
   output: CreateDevEnvironmentResponse,
@@ -2619,8 +2617,8 @@ export const getDevEnvironment: (
   input: GetDevEnvironmentRequest,
 ) => Effect.Effect<
   GetDevEnvironmentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDevEnvironmentRequest,
   output: GetDevEnvironmentResponse,
@@ -2634,22 +2632,22 @@ export const listDevEnvironmentSessions: {
     input: ListDevEnvironmentSessionsRequest,
   ): Effect.Effect<
     ListDevEnvironmentSessionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevEnvironmentSessionsRequest,
   ) => Stream.Stream<
     ListDevEnvironmentSessionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDevEnvironmentSessionsRequest,
   ) => Stream.Stream<
     DevEnvironmentSessionSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevEnvironmentSessionsRequest,
@@ -2670,22 +2668,22 @@ export const listSourceRepositories: {
     input: ListSourceRepositoriesRequest,
   ): Effect.Effect<
     ListSourceRepositoriesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSourceRepositoriesRequest,
   ) => Stream.Stream<
     ListSourceRepositoriesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSourceRepositoriesRequest,
   ) => Stream.Stream<
     ListSourceRepositoriesItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSourceRepositoriesRequest,
@@ -2706,22 +2704,22 @@ export const listSourceRepositoryBranches: {
     input: ListSourceRepositoryBranchesRequest,
   ): Effect.Effect<
     ListSourceRepositoryBranchesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSourceRepositoryBranchesRequest,
   ) => Stream.Stream<
     ListSourceRepositoryBranchesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSourceRepositoryBranchesRequest,
   ) => Stream.Stream<
     ListSourceRepositoryBranchesItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSourceRepositoryBranchesRequest,
@@ -2741,8 +2739,8 @@ export const getWorkflow: (
   input: GetWorkflowRequest,
 ) => Effect.Effect<
   GetWorkflowResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkflowRequest,
   output: GetWorkflowResponse,
@@ -2756,22 +2754,22 @@ export const listWorkflowRuns: {
     input: ListWorkflowRunsRequest,
   ): Effect.Effect<
     ListWorkflowRunsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkflowRunsRequest,
   ) => Stream.Stream<
     ListWorkflowRunsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkflowRunsRequest,
   ) => Stream.Stream<
     WorkflowRunSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowRunsRequest,
@@ -2792,22 +2790,22 @@ export const listDevEnvironments: {
     input: ListDevEnvironmentsRequest,
   ): Effect.Effect<
     ListDevEnvironmentsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevEnvironmentsRequest,
   ) => Stream.Stream<
     ListDevEnvironmentsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDevEnvironmentsRequest,
   ) => Stream.Stream<
     DevEnvironmentSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevEnvironmentsRequest,
@@ -2836,22 +2834,22 @@ export const listEventLogs: {
     input: ListEventLogsRequest,
   ): Effect.Effect<
     ListEventLogsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventLogsRequest,
   ) => Stream.Stream<
     ListEventLogsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventLogsRequest,
   ) => Stream.Stream<
     EventLogEntry,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventLogsRequest,
@@ -2872,22 +2870,22 @@ export const listProjects: {
     input: ListProjectsRequest,
   ): Effect.Effect<
     ListProjectsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProjectsRequest,
   ) => Stream.Stream<
     ListProjectsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProjectsRequest,
   ) => Stream.Stream<
     ProjectSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProjectsRequest,
@@ -2908,22 +2906,22 @@ export const listWorkflows: {
     input: ListWorkflowsRequest,
   ): Effect.Effect<
     ListWorkflowsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkflowsRequest,
   ) => Stream.Stream<
     ListWorkflowsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkflowsRequest,
   ) => Stream.Stream<
     WorkflowSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowsRequest,
@@ -2943,8 +2941,8 @@ export const startDevEnvironmentSession: (
   input: StartDevEnvironmentSessionRequest,
 ) => Effect.Effect<
   StartDevEnvironmentSessionResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDevEnvironmentSessionRequest,
   output: StartDevEnvironmentSessionResponse,

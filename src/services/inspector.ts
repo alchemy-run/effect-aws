@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Inspector",
@@ -1776,7 +1774,7 @@ export const DescribeFindingsResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.String, errorCode: S.String, canRetry: S.Boolean },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalException extends S.TaggedError<InternalException>()(
   "InternalException",
   { message: S.String, canRetry: S.Boolean },
@@ -1814,9 +1812,7 @@ export class AgentsAlreadyRunningAssessmentException extends S.TaggedError<Agent
 export class ServiceTemporarilyUnavailableException extends S.TaggedError<ServiceTemporarilyUnavailableException>()(
   "ServiceTemporarilyUnavailableException",
   { message: S.String, canRetry: S.Boolean },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.String, errorCode: S.String, canRetry: S.Boolean },
@@ -1839,8 +1835,8 @@ export const describeCrossAccountAccessRole: (
   input: DescribeCrossAccountAccessRoleRequest,
 ) => Effect.Effect<
   DescribeCrossAccountAccessRoleResponse,
-  InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCrossAccountAccessRoleRequest,
   output: DescribeCrossAccountAccessRoleResponse,
@@ -1857,8 +1853,8 @@ export const listRulesPackages: {
     | AccessDeniedException
     | InternalException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRulesPackagesRequest,
@@ -1867,8 +1863,8 @@ export const listRulesPackages: {
     | AccessDeniedException
     | InternalException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRulesPackagesRequest,
@@ -1877,8 +1873,8 @@ export const listRulesPackages: {
     | AccessDeniedException
     | InternalException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRulesPackagesRequest,
@@ -1898,8 +1894,8 @@ export const describeAssessmentTargets: (
   input: DescribeAssessmentTargetsRequest,
 ) => Effect.Effect<
   DescribeAssessmentTargetsResponse,
-  InternalException | InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAssessmentTargetsRequest,
   output: DescribeAssessmentTargetsResponse,
@@ -1913,8 +1909,8 @@ export const describeAssessmentTemplates: (
   input: DescribeAssessmentTemplatesRequest,
 ) => Effect.Effect<
   DescribeAssessmentTemplatesResponse,
-  InternalException | InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAssessmentTemplatesRequest,
   output: DescribeAssessmentTemplatesResponse,
@@ -1928,8 +1924,8 @@ export const describeResourceGroups: (
   input: DescribeResourceGroupsRequest,
 ) => Effect.Effect<
   DescribeResourceGroupsResponse,
-  InternalException | InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResourceGroupsRequest,
   output: DescribeResourceGroupsResponse,
@@ -1943,8 +1939,8 @@ export const describeRulesPackages: (
   input: DescribeRulesPackagesRequest,
 ) => Effect.Effect<
   DescribeRulesPackagesResponse,
-  InternalException | InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRulesPackagesRequest,
   output: DescribeRulesPackagesResponse,
@@ -1963,8 +1959,8 @@ export const listAssessmentTargets: {
     | AccessDeniedException
     | InternalException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssessmentTargetsRequest,
@@ -1973,8 +1969,8 @@ export const listAssessmentTargets: {
     | AccessDeniedException
     | InternalException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssessmentTargetsRequest,
@@ -1983,8 +1979,8 @@ export const listAssessmentTargets: {
     | AccessDeniedException
     | InternalException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentTargetsRequest,
@@ -2004,8 +2000,8 @@ export const describeAssessmentRuns: (
   input: DescribeAssessmentRunsRequest,
 ) => Effect.Effect<
   DescribeAssessmentRunsResponse,
-  InternalException | InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAssessmentRunsRequest,
   output: DescribeAssessmentRunsResponse,
@@ -2018,8 +2014,8 @@ export const describeExclusions: (
   input: DescribeExclusionsRequest,
 ) => Effect.Effect<
   DescribeExclusionsResponse,
-  InternalException | InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeExclusionsRequest,
   output: DescribeExclusionsResponse,
@@ -2037,8 +2033,8 @@ export const listExclusions: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExclusionsRequest,
@@ -2048,8 +2044,8 @@ export const listExclusions: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExclusionsRequest,
@@ -2059,8 +2055,8 @@ export const listExclusions: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExclusionsRequest,
@@ -2090,8 +2086,8 @@ export const registerCrossAccountAccessRole: (
   | InvalidCrossAccountRoleException
   | InvalidInputException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterCrossAccountAccessRoleRequest,
   output: RegisterCrossAccountAccessRoleResponse,
@@ -2117,8 +2113,8 @@ export const subscribeToEvent: (
   | LimitExceededException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubscribeToEventRequest,
   output: SubscribeToEventResponse,
@@ -2144,8 +2140,8 @@ export const listFindings: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFindingsRequest,
@@ -2155,8 +2151,8 @@ export const listFindings: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFindingsRequest,
@@ -2166,8 +2162,8 @@ export const listFindings: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFindingsRequest,
@@ -2198,8 +2194,8 @@ export const deleteAssessmentTarget: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAssessmentTargetRequest,
   output: DeleteAssessmentTargetResponse,
@@ -2226,8 +2222,8 @@ export const deleteAssessmentTemplate: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAssessmentTemplateRequest,
   output: DeleteAssessmentTemplateResponse,
@@ -2251,8 +2247,8 @@ export const listTagsForResource: (
   | InternalException
   | InvalidInputException
   | NoSuchEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2276,8 +2272,8 @@ export const removeAttributesFromFindings: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveAttributesFromFindingsRequest,
   output: RemoveAttributesFromFindingsResponse,
@@ -2302,8 +2298,8 @@ export const setTagsForResource: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetTagsForResourceRequest,
   output: SetTagsForResourceResponse,
@@ -2328,8 +2324,8 @@ export const stopAssessmentRun: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopAssessmentRunRequest,
   output: StopAssessmentRunResponse,
@@ -2354,8 +2350,8 @@ export const unsubscribeFromEvent: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnsubscribeFromEventRequest,
   output: UnsubscribeFromEventResponse,
@@ -2383,8 +2379,8 @@ export const updateAssessmentTarget: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAssessmentTargetRequest,
   output: UpdateAssessmentTargetResponse,
@@ -2409,8 +2405,8 @@ export const addAttributesToFindings: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddAttributesToFindingsRequest,
   output: AddAttributesToFindingsResponse,
@@ -2436,8 +2432,8 @@ export const deleteAssessmentRun: (
   | InvalidInputException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAssessmentRunRequest,
   output: DeleteAssessmentRunResponse,
@@ -2462,8 +2458,8 @@ export const getTelemetryMetadata: (
   | InternalException
   | InvalidInputException
   | NoSuchEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTelemetryMetadataRequest,
   output: GetTelemetryMetadataResponse,
@@ -2487,8 +2483,8 @@ export const listAssessmentTemplates: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssessmentTemplatesRequest,
@@ -2498,8 +2494,8 @@ export const listAssessmentTemplates: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssessmentTemplatesRequest,
@@ -2509,8 +2505,8 @@ export const listAssessmentTemplates: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentTemplatesRequest,
@@ -2541,8 +2537,8 @@ export const previewAgents: {
     | InvalidCrossAccountRoleException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: PreviewAgentsRequest,
@@ -2553,8 +2549,8 @@ export const previewAgents: {
     | InvalidCrossAccountRoleException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: PreviewAgentsRequest,
@@ -2565,8 +2561,8 @@ export const previewAgents: {
     | InvalidCrossAccountRoleException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: PreviewAgentsRequest,
@@ -2598,8 +2594,8 @@ export const getExclusionsPreview: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetExclusionsPreviewRequest,
@@ -2609,8 +2605,8 @@ export const getExclusionsPreview: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetExclusionsPreviewRequest,
@@ -2620,8 +2616,8 @@ export const getExclusionsPreview: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetExclusionsPreviewRequest,
@@ -2651,8 +2647,8 @@ export const listAssessmentRunAgents: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssessmentRunAgentsRequest,
@@ -2662,8 +2658,8 @@ export const listAssessmentRunAgents: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssessmentRunAgentsRequest,
@@ -2673,8 +2669,8 @@ export const listAssessmentRunAgents: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentRunAgentsRequest,
@@ -2704,8 +2700,8 @@ export const listAssessmentRuns: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssessmentRunsRequest,
@@ -2715,8 +2711,8 @@ export const listAssessmentRuns: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssessmentRunsRequest,
@@ -2726,8 +2722,8 @@ export const listAssessmentRuns: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssessmentRunsRequest,
@@ -2757,8 +2753,8 @@ export const listEventSubscriptions: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventSubscriptionsRequest,
@@ -2768,8 +2764,8 @@ export const listEventSubscriptions: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventSubscriptionsRequest,
@@ -2779,8 +2775,8 @@ export const listEventSubscriptions: {
     | InternalException
     | InvalidInputException
     | NoSuchEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventSubscriptionsRequest,
@@ -2813,8 +2809,8 @@ export const createAssessmentTemplate: (
   | LimitExceededException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAssessmentTemplateRequest,
   output: CreateAssessmentTemplateResponse,
@@ -2842,8 +2838,8 @@ export const createResourceGroup: (
   | InvalidInputException
   | LimitExceededException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceGroupRequest,
   output: CreateResourceGroupResponse,
@@ -2876,8 +2872,8 @@ export const createAssessmentTarget: (
   | LimitExceededException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAssessmentTargetRequest,
   output: CreateAssessmentTargetResponse,
@@ -2908,8 +2904,8 @@ export const startAssessmentRun: (
   | LimitExceededException
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAssessmentRunRequest,
   output: StartAssessmentRunResponse,
@@ -2939,8 +2935,8 @@ export const getAssessmentReport: (
   | NoSuchEntityException
   | ServiceTemporarilyUnavailableException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAssessmentReportRequest,
   output: GetAssessmentReportResponse,
@@ -2969,8 +2965,8 @@ export const createExclusionsPreview: (
   | NoSuchEntityException
   | PreviewGenerationInProgressException
   | ServiceTemporarilyUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExclusionsPreviewRequest,
   output: CreateExclusionsPreviewResponse,
@@ -2990,8 +2986,8 @@ export const describeFindings: (
   input: DescribeFindingsRequest,
 ) => Effect.Effect<
   DescribeFindingsResponse,
-  InternalException | InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFindingsRequest,
   output: DescribeFindingsResponse,

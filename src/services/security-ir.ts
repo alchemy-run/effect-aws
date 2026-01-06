@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Security IR",
@@ -1348,11 +1346,11 @@ export const ValidationExceptionFieldList = S.Array(ValidationExceptionField);
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -1360,7 +1358,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     reason: S.String,
     fieldList: S.optional(ValidationExceptionFieldList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1370,8 +1368,8 @@ export const sendFeedback: (
   input: SendFeedbackRequest,
 ) => Effect.Effect<
   SendFeedbackResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendFeedbackRequest,
   output: SendFeedbackResponse,
@@ -1384,8 +1382,8 @@ export const updateCase: (
   input: UpdateCaseRequest,
 ) => Effect.Effect<
   UpdateCaseResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCaseRequest,
   output: UpdateCaseResponse,
@@ -1398,8 +1396,8 @@ export const closeCase: (
   input: CloseCaseRequest,
 ) => Effect.Effect<
   CloseCaseResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CloseCaseRequest,
   output: CloseCaseResponse,
@@ -1412,8 +1410,8 @@ export const createCaseComment: (
   input: CreateCaseCommentRequest,
 ) => Effect.Effect<
   CreateCaseCommentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCaseCommentRequest,
   output: CreateCaseCommentResponse,
@@ -1426,8 +1424,8 @@ export const getCaseAttachmentDownloadUrl: (
   input: GetCaseAttachmentDownloadUrlRequest,
 ) => Effect.Effect<
   GetCaseAttachmentDownloadUrlResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCaseAttachmentDownloadUrlRequest,
   output: GetCaseAttachmentDownloadUrlResponse,
@@ -1440,8 +1438,8 @@ export const getCaseAttachmentUploadUrl: (
   input: GetCaseAttachmentUploadUrlRequest,
 ) => Effect.Effect<
   GetCaseAttachmentUploadUrlResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCaseAttachmentUploadUrlRequest,
   output: GetCaseAttachmentUploadUrlResponse,
@@ -1454,8 +1452,8 @@ export const updateCaseComment: (
   input: UpdateCaseCommentRequest,
 ) => Effect.Effect<
   UpdateCaseCommentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCaseCommentRequest,
   output: UpdateCaseCommentResponse,
@@ -1488,8 +1486,8 @@ export const updateCaseStatus: (
   input: UpdateCaseStatusRequest,
 ) => Effect.Effect<
   UpdateCaseStatusResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCaseStatusRequest,
   output: UpdateCaseStatusResponse,
@@ -1504,8 +1502,8 @@ export const updateResolverType: (
   input: UpdateResolverTypeRequest,
 ) => Effect.Effect<
   UpdateResolverTypeResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResolverTypeRequest,
   output: UpdateResolverTypeResponse,
@@ -1518,8 +1516,8 @@ export const updateMembership: (
   input: UpdateMembershipRequest,
 ) => Effect.Effect<
   UpdateMembershipResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMembershipRequest,
   output: UpdateMembershipResponse,
@@ -1532,8 +1530,8 @@ export const cancelMembership: (
   input: CancelMembershipRequest,
 ) => Effect.Effect<
   CancelMembershipResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMembershipRequest,
   output: CancelMembershipResponse,
@@ -1546,8 +1544,8 @@ export const createCase: (
   input: CreateCaseRequest,
 ) => Effect.Effect<
   CreateCaseResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCaseRequest,
   output: CreateCaseResponse,
@@ -1560,8 +1558,8 @@ export const getCase: (
   input: GetCaseRequest,
 ) => Effect.Effect<
   GetCaseResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCaseRequest,
   output: GetCaseResponse,
@@ -1575,22 +1573,22 @@ export const listCases: {
     input: ListCasesRequest,
   ): Effect.Effect<
     ListCasesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCasesRequest,
   ) => Stream.Stream<
     ListCasesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCasesRequest,
   ) => Stream.Stream<
     ListCasesItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCasesRequest,
@@ -1611,22 +1609,22 @@ export const listCaseEdits: {
     input: ListCaseEditsRequest,
   ): Effect.Effect<
     ListCaseEditsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCaseEditsRequest,
   ) => Stream.Stream<
     ListCaseEditsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCaseEditsRequest,
   ) => Stream.Stream<
     CaseEditItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCaseEditsRequest,
@@ -1647,22 +1645,22 @@ export const listComments: {
     input: ListCommentsRequest,
   ): Effect.Effect<
     ListCommentsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCommentsRequest,
   ) => Stream.Stream<
     ListCommentsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCommentsRequest,
   ) => Stream.Stream<
     ListCommentsItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCommentsRequest,
@@ -1682,8 +1680,8 @@ export const createMembership: (
   input: CreateMembershipRequest,
 ) => Effect.Effect<
   CreateMembershipResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMembershipRequest,
   output: CreateMembershipResponse,
@@ -1696,8 +1694,8 @@ export const getMembership: (
   input: GetMembershipRequest,
 ) => Effect.Effect<
   GetMembershipResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMembershipRequest,
   output: GetMembershipResponse,
@@ -1711,22 +1709,22 @@ export const listMemberships: {
     input: ListMembershipsRequest,
   ): Effect.Effect<
     ListMembershipsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMembershipsRequest,
   ) => Stream.Stream<
     ListMembershipsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMembershipsRequest,
   ) => Stream.Stream<
     ListMembershipItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMembershipsRequest,
@@ -1748,8 +1746,8 @@ export const batchGetMemberAccountDetails: (
   input: BatchGetMemberAccountDetailsRequest,
 ) => Effect.Effect<
   BatchGetMemberAccountDetailsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetMemberAccountDetailsRequest,
   output: BatchGetMemberAccountDetailsResponse,
@@ -1763,22 +1761,22 @@ export const listInvestigations: {
     input: ListInvestigationsRequest,
   ): Effect.Effect<
     ListInvestigationsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInvestigationsRequest,
   ) => Stream.Stream<
     ListInvestigationsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInvestigationsRequest,
   ) => Stream.Stream<
     InvestigationAction,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInvestigationsRequest,
@@ -1801,8 +1799,8 @@ export const untagResource: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1822,8 +1820,8 @@ export const listTagsForResource: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1843,8 +1841,8 @@ export const tagResource: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,

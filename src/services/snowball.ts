@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Snowball",
@@ -1546,8 +1544,8 @@ export const getSnowballUsage: (
   input: GetSnowballUsageRequest,
 ) => Effect.Effect<
   GetSnowballUsageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSnowballUsageRequest,
   output: GetSnowballUsageResult,
@@ -1560,8 +1558,8 @@ export const updateLongTermPricing: (
   input: UpdateLongTermPricingRequest,
 ) => Effect.Effect<
   UpdateLongTermPricingResult,
-  InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLongTermPricingRequest,
   output: UpdateLongTermPricingResult,
@@ -1574,8 +1572,8 @@ export const updateJobShipmentState: (
   input: UpdateJobShipmentStateRequest,
 ) => Effect.Effect<
   UpdateJobShipmentStateResult,
-  InvalidJobStateException | InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidJobStateException | InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateJobShipmentStateRequest,
   output: UpdateJobShipmentStateResult,
@@ -1589,8 +1587,8 @@ export const createLongTermPricing: (
   input: CreateLongTermPricingRequest,
 ) => Effect.Effect<
   CreateLongTermPricingResult,
-  InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLongTermPricingRequest,
   output: CreateLongTermPricingResult,
@@ -1604,8 +1602,8 @@ export const describeAddress: (
   input: DescribeAddressRequest,
 ) => Effect.Effect<
   DescribeAddressResult,
-  InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAddressRequest,
   output: DescribeAddressResult,
@@ -1636,8 +1634,8 @@ export const getJobManifest: (
   input: GetJobManifestRequest,
 ) => Effect.Effect<
   GetJobManifestResult,
-  InvalidJobStateException | InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidJobStateException | InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobManifestRequest,
   output: GetJobManifestResult,
@@ -1664,8 +1662,8 @@ export const getJobUnlockCode: (
   input: GetJobUnlockCodeRequest,
 ) => Effect.Effect<
   GetJobUnlockCodeResult,
-  InvalidJobStateException | InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidJobStateException | InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobUnlockCodeRequest,
   output: GetJobUnlockCodeResult,
@@ -1679,8 +1677,8 @@ export const getSoftwareUpdates: (
   input: GetSoftwareUpdatesRequest,
 ) => Effect.Effect<
   GetSoftwareUpdatesResult,
-  InvalidJobStateException | InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidJobStateException | InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSoftwareUpdatesRequest,
   output: GetSoftwareUpdatesResult,
@@ -1694,22 +1692,22 @@ export const listPickupLocations: {
     input: ListPickupLocationsRequest,
   ): Effect.Effect<
     ListPickupLocationsResult,
-    InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPickupLocationsRequest,
   ) => Stream.Stream<
     ListPickupLocationsResult,
-    InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPickupLocationsRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPickupLocationsRequest,
@@ -1731,22 +1729,22 @@ export const describeAddresses: {
     input: DescribeAddressesRequest,
   ): Effect.Effect<
     DescribeAddressesResult,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAddressesRequest,
   ) => Stream.Stream<
     DescribeAddressesResult,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAddressesRequest,
   ) => Stream.Stream<
     Address,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAddressesRequest,
@@ -1767,8 +1765,8 @@ export const describeCluster: (
   input: DescribeClusterRequest,
 ) => Effect.Effect<
   DescribeClusterResult,
-  InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterRequest,
   output: DescribeClusterResult,
@@ -1784,22 +1782,22 @@ export const listClusterJobs: {
     input: ListClusterJobsRequest,
   ): Effect.Effect<
     ListClusterJobsResult,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClusterJobsRequest,
   ) => Stream.Stream<
     ListClusterJobsResult,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClusterJobsRequest,
   ) => Stream.Stream<
     JobListEntry,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClusterJobsRequest,
@@ -1822,22 +1820,22 @@ export const listClusters: {
     input: ListClustersRequest,
   ): Effect.Effect<
     ListClustersResult,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClustersRequest,
   ) => Stream.Stream<
     ListClustersResult,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClustersRequest,
   ) => Stream.Stream<
     ClusterListEntry,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
@@ -1861,22 +1859,22 @@ export const listCompatibleImages: {
     input: ListCompatibleImagesRequest,
   ): Effect.Effect<
     ListCompatibleImagesResult,
-    Ec2RequestFailedException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    Ec2RequestFailedException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCompatibleImagesRequest,
   ) => Stream.Stream<
     ListCompatibleImagesResult,
-    Ec2RequestFailedException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    Ec2RequestFailedException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCompatibleImagesRequest,
   ) => Stream.Stream<
     CompatibleImage,
-    Ec2RequestFailedException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    Ec2RequestFailedException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCompatibleImagesRequest,
@@ -1897,22 +1895,22 @@ export const listLongTermPricing: {
     input: ListLongTermPricingRequest,
   ): Effect.Effect<
     ListLongTermPricingResult,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLongTermPricingRequest,
   ) => Stream.Stream<
     ListLongTermPricingResult,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLongTermPricingRequest,
   ) => Stream.Stream<
     LongTermPricingListEntry,
-    InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidResourceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLongTermPricingRequest,
@@ -1938,8 +1936,8 @@ export const cancelJob: (
   | InvalidJobStateException
   | InvalidResourceException
   | KMSRequestFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelJobRequest,
   output: CancelJobResult,
@@ -1959,8 +1957,8 @@ export const describeReturnShippingLabel: (
   | ConflictException
   | InvalidJobStateException
   | InvalidResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReturnShippingLabelRequest,
   output: DescribeReturnShippingLabelResult,
@@ -1982,22 +1980,22 @@ export const listJobs: {
     input: ListJobsRequest,
   ): Effect.Effect<
     ListJobsResult,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobsRequest,
   ) => Stream.Stream<
     ListJobsResult,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobsRequest,
   ) => Stream.Stream<
     JobListEntry,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
@@ -2025,8 +2023,8 @@ export const updateJob: (
   | InvalidJobStateException
   | InvalidResourceException
   | KMSRequestFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateJobRequest,
   output: UpdateJobResult,
@@ -2051,8 +2049,8 @@ export const cancelCluster: (
   | InvalidJobStateException
   | InvalidResourceException
   | KMSRequestFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelClusterRequest,
   output: CancelClusterResult,
@@ -2077,8 +2075,8 @@ export const updateCluster: (
   | InvalidJobStateException
   | InvalidResourceException
   | KMSRequestFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResult,
@@ -2098,8 +2096,8 @@ export const listServiceVersions: (
   input: ListServiceVersionsRequest,
 ) => Effect.Effect<
   ListServiceVersionsResult,
-  InvalidNextTokenException | InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidNextTokenException | InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListServiceVersionsRequest,
   output: ListServiceVersionsResult,
@@ -2117,8 +2115,8 @@ export const createReturnShippingLabel: (
   | InvalidJobStateException
   | InvalidResourceException
   | ReturnShippingLabelAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReturnShippingLabelRequest,
   output: CreateReturnShippingLabelResult,
@@ -2140,8 +2138,8 @@ export const createAddress: (
   input: CreateAddressRequest,
 ) => Effect.Effect<
   CreateAddressResult,
-  InvalidAddressException | UnsupportedAddressException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidAddressException | UnsupportedAddressException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAddressRequest,
   output: CreateAddressResult,
@@ -2159,8 +2157,8 @@ export const createCluster: (
   | InvalidInputCombinationException
   | InvalidResourceException
   | KMSRequestFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResult,
@@ -2262,8 +2260,8 @@ export const createJob: (
   | InvalidInputCombinationException
   | InvalidResourceException
   | KMSRequestFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateJobRequest,
   output: CreateJobResult,
@@ -2283,8 +2281,8 @@ export const describeJob: (
   input: DescribeJobRequest,
 ) => Effect.Effect<
   DescribeJobResult,
-  InvalidResourceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeJobRequest,
   output: DescribeJobResult,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ecr.amazonaws.com/doc/2015-09-21/");
 const svc = T.AwsApiService({
@@ -4328,7 +4326,7 @@ export class RepositoryPolicyNotFoundException extends S.TaggedError<RepositoryP
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LayersNotFoundException extends S.TaggedError<LayersNotFoundException>()(
   "LayersNotFoundException",
   { message: S.optional(S.String) },
@@ -4450,8 +4448,8 @@ export const getAuthorizationToken: (
   input: GetAuthorizationTokenRequest,
 ) => Effect.Effect<
   GetAuthorizationTokenResponse,
-  InvalidParameterException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAuthorizationTokenRequest,
   output: GetAuthorizationTokenResponse,
@@ -4475,8 +4473,8 @@ export const initiateLayerUpload: (
   | KmsException
   | RepositoryNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitiateLayerUploadRequest,
   output: InitiateLayerUploadResponse,
@@ -4505,8 +4503,8 @@ export const listImages: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListImagesRequest,
@@ -4515,8 +4513,8 @@ export const listImages: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListImagesRequest,
@@ -4525,8 +4523,8 @@ export const listImages: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagesRequest,
@@ -4554,8 +4552,8 @@ export const describeRepositories: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRepositoriesRequest,
@@ -4564,8 +4562,8 @@ export const describeRepositories: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRepositoriesRequest,
@@ -4574,8 +4572,8 @@ export const describeRepositories: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRepositoriesRequest,
@@ -4602,8 +4600,8 @@ export const listTagsForResource: (
   | InvalidParameterException
   | RepositoryNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4625,8 +4623,8 @@ export const putImageTagMutability: (
   | InvalidParameterException
   | RepositoryNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutImageTagMutabilityRequest,
   output: PutImageTagMutabilityResponse,
@@ -4648,8 +4646,8 @@ export const setRepositoryPolicy: (
   | InvalidParameterException
   | RepositoryNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetRepositoryPolicyRequest,
   output: SetRepositoryPolicyResponse,
@@ -4676,8 +4674,8 @@ export const batchCheckLayerAvailability: (
   | InvalidParameterException
   | RepositoryNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCheckLayerAvailabilityRequest,
   output: BatchCheckLayerAvailabilityResponse,
@@ -4704,8 +4702,8 @@ export const batchDeleteImage: (
   | InvalidParameterException
   | RepositoryNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteImageRequest,
   output: BatchDeleteImageResponse,
@@ -4726,8 +4724,8 @@ export const deleteRepositoryPolicy: (
   | RepositoryNotFoundException
   | RepositoryPolicyNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRepositoryPolicyRequest,
   output: DeleteRepositoryPolicyResponse,
@@ -4751,8 +4749,8 @@ export const describeRepositoryCreationTemplates: {
     | InvalidParameterException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRepositoryCreationTemplatesRequest,
@@ -4761,8 +4759,8 @@ export const describeRepositoryCreationTemplates: {
     | InvalidParameterException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRepositoryCreationTemplatesRequest,
@@ -4771,8 +4769,8 @@ export const describeRepositoryCreationTemplates: {
     | InvalidParameterException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRepositoryCreationTemplatesRequest,
@@ -4798,8 +4796,8 @@ export const updateImageStorageClass: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateImageStorageClassRequest,
   output: UpdateImageStorageClassResponse,
@@ -4833,8 +4831,8 @@ export const uploadLayerPart: (
   | RepositoryNotFoundException
   | ServerException
   | UploadNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadLayerPartRequest,
   output: UploadLayerPartResponse,
@@ -4861,8 +4859,8 @@ export const tagResource: (
   | RepositoryNotFoundException
   | ServerException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4885,8 +4883,8 @@ export const getRepositoryPolicy: (
   | RepositoryNotFoundException
   | RepositoryPolicyNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRepositoryPolicyRequest,
   output: GetRepositoryPolicyResponse,
@@ -4908,8 +4906,8 @@ export const updateRepositoryCreationTemplate: (
   | ServerException
   | TemplateNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRepositoryCreationTemplateRequest,
   output: UpdateRepositoryCreationTemplateResponse,
@@ -4935,8 +4933,8 @@ export const getSigningConfiguration: (
   | ServerException
   | SigningConfigurationNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSigningConfigurationRequest,
   output: GetSigningConfigurationResponse,
@@ -4959,8 +4957,8 @@ export const getLifecyclePolicy: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLifecyclePolicyRequest,
   output: GetLifecyclePolicyResponse,
@@ -4983,8 +4981,8 @@ export const listPullTimeUpdateExclusions: (
   | LimitExceededException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListPullTimeUpdateExclusionsRequest,
   output: ListPullTimeUpdateExclusionsResponse,
@@ -5007,8 +5005,8 @@ export const registerPullTimeUpdateExclusion: (
   | LimitExceededException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterPullTimeUpdateExclusionRequest,
   output: RegisterPullTimeUpdateExclusionResponse,
@@ -5031,8 +5029,8 @@ export const getRegistryPolicy: (
   | RegistryPolicyNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRegistryPolicyRequest,
   output: GetRegistryPolicyResponse,
@@ -5058,8 +5056,8 @@ export const putImageScanningConfiguration: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutImageScanningConfigurationRequest,
   output: PutImageScanningConfigurationResponse,
@@ -5083,8 +5081,8 @@ export const putLifecyclePolicy: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLifecyclePolicyRequest,
   output: PutLifecyclePolicyResponse,
@@ -5106,8 +5104,8 @@ export const batchGetRepositoryScanningConfiguration: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetRepositoryScanningConfigurationRequest,
   output: BatchGetRepositoryScanningConfigurationResponse,
@@ -5128,8 +5126,8 @@ export const getAccountSetting: (
   | InvalidParameterException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountSettingRequest,
   output: GetAccountSettingResponse,
@@ -5145,8 +5143,8 @@ export const getRegistryScanningConfiguration: (
   | InvalidParameterException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRegistryScanningConfigurationRequest,
   output: GetRegistryScanningConfigurationResponse,
@@ -5165,8 +5163,8 @@ export const putRegistryPolicy: (
   | InvalidParameterException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRegistryPolicyRequest,
   output: PutRegistryPolicyResponse,
@@ -5191,8 +5189,8 @@ export const putReplicationConfiguration: (
   | InvalidParameterException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutReplicationConfigurationRequest,
   output: PutReplicationConfigurationResponse,
@@ -5216,8 +5214,8 @@ export const putSigningConfiguration: (
   | InvalidParameterException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSigningConfigurationRequest,
   output: PutSigningConfigurationResponse,
@@ -5234,8 +5232,8 @@ export const deleteRegistryPolicy: (
   | RegistryPolicyNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRegistryPolicyRequest,
   output: DeleteRegistryPolicyResponse,
@@ -5258,8 +5256,8 @@ export const deleteLifecyclePolicy: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLifecyclePolicyRequest,
   output: DeleteLifecyclePolicyResponse,
@@ -5282,8 +5280,8 @@ export const putAccountSetting: (
   | LimitExceededException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccountSettingRequest,
   output: PutAccountSettingResponse,
@@ -5306,8 +5304,8 @@ export const deregisterPullTimeUpdateExclusion: (
   | LimitExceededException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterPullTimeUpdateExclusionRequest,
   output: DeregisterPullTimeUpdateExclusionResponse,
@@ -5331,8 +5329,8 @@ export const describeImageReplicationStatus: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImageReplicationStatusRequest,
   output: DescribeImageReplicationStatusResponse,
@@ -5361,8 +5359,8 @@ export const describeImageSigningStatus: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImageSigningStatusRequest,
   output: DescribeImageSigningStatusResponse,
@@ -5388,8 +5386,8 @@ export const validatePullThroughCacheRule: (
   | PullThroughCacheRuleNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidatePullThroughCacheRuleRequest,
   output: ValidatePullThroughCacheRuleResponse,
@@ -5411,8 +5409,8 @@ export const deletePullThroughCacheRule: (
   | PullThroughCacheRuleNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePullThroughCacheRuleRequest,
   output: DeletePullThroughCacheRuleResponse,
@@ -5435,8 +5433,8 @@ export const describePullThroughCacheRules: {
     | PullThroughCacheRuleNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePullThroughCacheRulesRequest,
@@ -5446,8 +5444,8 @@ export const describePullThroughCacheRules: {
     | PullThroughCacheRuleNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePullThroughCacheRulesRequest,
@@ -5457,8 +5455,8 @@ export const describePullThroughCacheRules: {
     | PullThroughCacheRuleNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePullThroughCacheRulesRequest,
@@ -5488,8 +5486,8 @@ export const describeRegistry: (
   | InvalidParameterException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRegistryRequest,
   output: DescribeRegistryResponse,
@@ -5509,8 +5507,8 @@ export const startLifecyclePolicyPreview: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartLifecyclePolicyPreviewRequest,
   output: StartLifecyclePolicyPreviewResponse,
@@ -5537,8 +5535,8 @@ export const deleteRepository: (
   | RepositoryNotEmptyException
   | RepositoryNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRepositoryRequest,
   output: DeleteRepositoryResponse,
@@ -5566,8 +5564,8 @@ export const batchGetImage: (
   | RepositoryNotFoundException
   | ServerException
   | UnableToGetUpstreamImageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetImageRequest,
   output: BatchGetImageResponse,
@@ -5595,8 +5593,8 @@ export const createRepositoryCreationTemplate: (
   | ServerException
   | TemplateAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRepositoryCreationTemplateRequest,
   output: CreateRepositoryCreationTemplateResponse,
@@ -5628,8 +5626,8 @@ export const startImageScan: (
   | ServerException
   | UnsupportedImageTypeException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartImageScanRequest,
   output: StartImageScanResponse,
@@ -5659,8 +5657,8 @@ export const createRepository: (
   | RepositoryAlreadyExistsException
   | ServerException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRepositoryRequest,
   output: CreateRepositoryResponse,
@@ -5686,8 +5684,8 @@ export const untagResource: (
   | RepositoryNotFoundException
   | ServerException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5710,8 +5708,8 @@ export const deleteRepositoryCreationTemplate: (
   | ServerException
   | TemplateNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRepositoryCreationTemplateRequest,
   output: DeleteRepositoryCreationTemplateResponse,
@@ -5738,8 +5736,8 @@ export const deleteSigningConfiguration: (
   | ServerException
   | SigningConfigurationNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSigningConfigurationRequest,
   output: DeleteSigningConfigurationResponse,
@@ -5772,8 +5770,8 @@ export const describeImages: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImagesRequest,
@@ -5783,8 +5781,8 @@ export const describeImages: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImagesRequest,
@@ -5794,8 +5792,8 @@ export const describeImages: {
     | InvalidParameterException
     | RepositoryNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImagesRequest,
@@ -5833,8 +5831,8 @@ export const getDownloadUrlForLayer: (
   | RepositoryNotFoundException
   | ServerException
   | UnableToGetUpstreamLayerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDownloadUrlForLayerRequest,
   output: GetDownloadUrlForLayerResponse,
@@ -5858,8 +5856,8 @@ export const listImageReferrers: (
   | RepositoryNotFoundException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListImageReferrersRequest,
   output: ListImageReferrersResponse,
@@ -5881,8 +5879,8 @@ export const putRegistryScanningConfiguration: (
   | InvalidParameterException
   | ServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRegistryScanningConfigurationRequest,
   output: PutRegistryScanningConfigurationResponse,
@@ -5917,8 +5915,8 @@ export const completeLayerUpload: (
   | RepositoryNotFoundException
   | ServerException
   | UploadNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompleteLayerUploadRequest,
   output: CompleteLayerUploadResponse,
@@ -5948,8 +5946,8 @@ export const getLifecyclePolicyPreview: {
     | RepositoryNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetLifecyclePolicyPreviewRequest,
@@ -5960,8 +5958,8 @@ export const getLifecyclePolicyPreview: {
     | RepositoryNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetLifecyclePolicyPreviewRequest,
@@ -5972,8 +5970,8 @@ export const getLifecyclePolicyPreview: {
     | RepositoryNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetLifecyclePolicyPreviewRequest,
@@ -6016,8 +6014,8 @@ export const putImage: (
   | ReferencedImagesNotFoundException
   | RepositoryNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutImageRequest,
   output: PutImageResponse,
@@ -6048,8 +6046,8 @@ export const updatePullThroughCacheRule: (
   | UnableToAccessSecretException
   | UnableToDecryptSecretValueException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePullThroughCacheRuleRequest,
   output: UpdatePullThroughCacheRuleResponse,
@@ -6082,8 +6080,8 @@ export const createPullThroughCacheRule: (
   | UnableToDecryptSecretValueException
   | UnsupportedUpstreamRegistryException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePullThroughCacheRuleRequest,
   output: CreatePullThroughCacheRuleResponse,
@@ -6113,8 +6111,8 @@ export const describeImageScanFindings: {
     | ScanNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImageScanFindingsRequest,
@@ -6126,8 +6124,8 @@ export const describeImageScanFindings: {
     | ScanNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImageScanFindingsRequest,
@@ -6139,8 +6137,8 @@ export const describeImageScanFindings: {
     | ScanNotFoundException
     | ServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImageScanFindingsRequest,

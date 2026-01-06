@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("https://route53.amazonaws.com/doc/2013-04-01/");
 const svc = T.AwsApiService({
@@ -4104,15 +4102,15 @@ export const ListResourceRecordSetsResponse = S.suspend(() =>
 export class CidrCollectionInUseException extends S.TaggedError<CidrCollectionInUseException>()(
   "CidrCollectionInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class HealthCheckInUse extends S.TaggedError<HealthCheckInUse>()(
   "HealthCheckInUse",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModification extends S.TaggedError<ConcurrentModification>()(
   "ConcurrentModification",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DelegationSetInUse extends S.TaggedError<DelegationSetInUse>()(
   "DelegationSetInUse",
   { message: S.optional(S.String) },
@@ -4120,11 +4118,11 @@ export class DelegationSetInUse extends S.TaggedError<DelegationSetInUse>()(
 export class InvalidInput extends S.TaggedError<InvalidInput>()(
   "InvalidInput",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class HostedZoneNotEmpty extends S.TaggedError<HostedZoneNotEmpty>()(
   "HostedZoneNotEmpty",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DelegationSetNotReusable extends S.TaggedError<DelegationSetNotReusable>()(
   "DelegationSetNotReusable",
   { message: S.optional(S.String) },
@@ -4132,63 +4130,63 @@ export class DelegationSetNotReusable extends S.TaggedError<DelegationSetNotReus
 export class NoSuchTrafficPolicyInstance extends S.TaggedError<NoSuchTrafficPolicyInstance>()(
   "NoSuchTrafficPolicyInstance",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DNSSECNotFound extends S.TaggedError<DNSSECNotFound>()(
   "DNSSECNotFound",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidVPCId extends S.TaggedError<InvalidVPCId>()(
   "InvalidVPCId",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchChange extends S.TaggedError<NoSuchChange>()(
   "NoSuchChange",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchHealthCheck extends S.TaggedError<NoSuchHealthCheck>()(
   "NoSuchHealthCheck",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchQueryLoggingConfig extends S.TaggedError<NoSuchQueryLoggingConfig>()(
   "NoSuchQueryLoggingConfig",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchTrafficPolicy extends S.TaggedError<NoSuchTrafficPolicy>()(
   "NoSuchTrafficPolicy",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IncompatibleVersion extends S.TaggedError<IncompatibleVersion>()(
   "IncompatibleVersion",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDomainName extends S.TaggedError<InvalidDomainName>()(
   "InvalidDomainName",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidPaginationToken extends S.TaggedError<InvalidPaginationToken>()(
   "InvalidPaginationToken",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchHostedZone extends S.TaggedError<NoSuchHostedZone>()(
   "NoSuchHostedZone",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictingTypes extends S.TaggedError<ConflictingTypes>()(
   "ConflictingTypes",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTrafficPolicyDocument extends S.TaggedError<InvalidTrafficPolicyDocument>()(
   "InvalidTrafficPolicyDocument",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidKeySigningKeyStatus extends S.TaggedError<InvalidKeySigningKeyStatus>()(
   "InvalidKeySigningKeyStatus",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchCidrCollectionException extends S.TaggedError<NoSuchCidrCollectionException>()(
   "NoSuchCidrCollectionException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitsExceeded extends S.TaggedError<LimitsExceeded>()(
   "LimitsExceeded",
   { message: S.optional(S.String) },
@@ -4200,7 +4198,7 @@ export class ConflictingDomainExists extends S.TaggedError<ConflictingDomainExis
 export class CidrBlockInUseException extends S.TaggedError<CidrBlockInUseException>()(
   "CidrBlockInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CidrCollectionAlreadyExistsException extends S.TaggedError<CidrCollectionAlreadyExistsException>()(
   "CidrCollectionAlreadyExistsException",
   { Message: S.optional(S.String) },
@@ -4208,7 +4206,7 @@ export class CidrCollectionAlreadyExistsException extends S.TaggedError<CidrColl
 export class HealthCheckAlreadyExists extends S.TaggedError<HealthCheckAlreadyExists>()(
   "HealthCheckAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidArgument extends S.TaggedError<InvalidArgument>()(
   "InvalidArgument",
   { message: S.optional(S.String) },
@@ -4216,7 +4214,7 @@ export class InvalidArgument extends S.TaggedError<InvalidArgument>()(
 export class InsufficientCloudWatchLogsResourcePolicy extends S.TaggedError<InsufficientCloudWatchLogsResourcePolicy>()(
   "InsufficientCloudWatchLogsResourcePolicy",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DelegationSetAlreadyCreated extends S.TaggedError<DelegationSetAlreadyCreated>()(
   "DelegationSetAlreadyCreated",
   { message: S.optional(S.String) },
@@ -4228,15 +4226,15 @@ export class NoSuchDelegationSet extends S.TaggedError<NoSuchDelegationSet>()(
 export class PriorRequestNotComplete extends S.TaggedError<PriorRequestNotComplete>()(
   "PriorRequestNotComplete",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LastVPCAssociation extends S.TaggedError<LastVPCAssociation>()(
   "LastVPCAssociation",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchGeoLocation extends S.TaggedError<NoSuchGeoLocation>()(
   "NoSuchGeoLocation",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class HostedZoneNotPrivate extends S.TaggedError<HostedZoneNotPrivate>()(
   "HostedZoneNotPrivate",
   { message: S.optional(S.String) },
@@ -4244,11 +4242,11 @@ export class HostedZoneNotPrivate extends S.TaggedError<HostedZoneNotPrivate>()(
 export class HealthCheckVersionMismatch extends S.TaggedError<HealthCheckVersionMismatch>()(
   "HealthCheckVersionMismatch",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class TooManyTrafficPolicyVersionsForCurrentPolicy extends S.TaggedError<TooManyTrafficPolicyVersionsForCurrentPolicy>()(
   "TooManyTrafficPolicyVersionsForCurrentPolicy",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSigningStatus extends S.TaggedError<InvalidSigningStatus>()(
   "InvalidSigningStatus",
   { message: S.optional(S.String) },
@@ -4260,23 +4258,23 @@ export class HostedZonePartiallyDelegated extends S.TaggedError<HostedZonePartia
 export class VPCAssociationAuthorizationNotFound extends S.TaggedError<VPCAssociationAuthorizationNotFound>()(
   "VPCAssociationAuthorizationNotFound",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyVPCAssociationAuthorizations extends S.TaggedError<TooManyVPCAssociationAuthorizations>()(
   "TooManyVPCAssociationAuthorizations",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrafficPolicyInUse extends S.TaggedError<TrafficPolicyInUse>()(
   "TrafficPolicyInUse",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTrafficPolicyInstances extends S.TaggedError<TooManyTrafficPolicyInstances>()(
   "TooManyTrafficPolicyInstances",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTrafficPolicies extends S.TaggedError<TooManyTrafficPolicies>()(
   "TooManyTrafficPolicies",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidKMSArn extends S.TaggedError<InvalidKMSArn>()(
   "InvalidKMSArn",
   { message: S.optional(S.String) },
@@ -4284,15 +4282,15 @@ export class InvalidKMSArn extends S.TaggedError<InvalidKMSArn>()(
 export class NoSuchCidrLocationException extends S.TaggedError<NoSuchCidrLocationException>()(
   "NoSuchCidrLocationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotAuthorizedException extends S.TaggedError<NotAuthorizedException>()(
   "NotAuthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class CidrCollectionVersionMismatchException extends S.TaggedError<CidrCollectionVersionMismatchException>()(
   "CidrCollectionVersionMismatchException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidChangeBatch extends S.TaggedError<InvalidChangeBatch>()(
   "InvalidChangeBatch",
   { messages: S.optional(ErrorMessages), message: S.optional(S.String) },
@@ -4304,11 +4302,11 @@ export class TooManyHealthChecks extends S.TaggedError<TooManyHealthChecks>()(
 export class InvalidKeySigningKeyName extends S.TaggedError<InvalidKeySigningKeyName>()(
   "InvalidKeySigningKeyName",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchCloudWatchLogsLogGroup extends S.TaggedError<NoSuchCloudWatchLogsLogGroup>()(
   "NoSuchCloudWatchLogsLogGroup",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DelegationSetAlreadyReusable extends S.TaggedError<DelegationSetAlreadyReusable>()(
   "DelegationSetAlreadyReusable",
   { message: S.optional(S.String) },
@@ -4316,7 +4314,7 @@ export class DelegationSetAlreadyReusable extends S.TaggedError<DelegationSetAlr
 export class VPCAssociationNotFound extends S.TaggedError<VPCAssociationNotFound>()(
   "VPCAssociationNotFound",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DelegationSetNotAvailable extends S.TaggedError<DelegationSetNotAvailable>()(
   "DelegationSetNotAvailable",
   { message: S.optional(S.String) },
@@ -4324,23 +4322,23 @@ export class DelegationSetNotAvailable extends S.TaggedError<DelegationSetNotAva
 export class KeySigningKeyInParentDSRecord extends S.TaggedError<KeySigningKeyInParentDSRecord>()(
   "KeySigningKeyInParentDSRecord",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrafficPolicyInstanceAlreadyExists extends S.TaggedError<TrafficPolicyInstanceAlreadyExists>()(
   "TrafficPolicyInstanceAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class TrafficPolicyAlreadyExists extends S.TaggedError<TrafficPolicyAlreadyExists>()(
   "TrafficPolicyAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class NoSuchKeySigningKey extends S.TaggedError<NoSuchKeySigningKey>()(
   "NoSuchKeySigningKey",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class KeySigningKeyWithActiveStatusNotFound extends S.TaggedError<KeySigningKeyWithActiveStatusNotFound>()(
   "KeySigningKeyWithActiveStatusNotFound",
   { message: S.optional(S.String) },
@@ -4348,19 +4346,19 @@ export class KeySigningKeyWithActiveStatusNotFound extends S.TaggedError<KeySign
 export class PublicZoneVPCAssociation extends S.TaggedError<PublicZoneVPCAssociation>()(
   "PublicZoneVPCAssociation",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class KeySigningKeyAlreadyExists extends S.TaggedError<KeySigningKeyAlreadyExists>()(
   "KeySigningKeyAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class QueryLoggingConfigAlreadyExists extends S.TaggedError<QueryLoggingConfigAlreadyExists>()(
   "QueryLoggingConfigAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class HostedZoneAlreadyExists extends S.TaggedError<HostedZoneAlreadyExists>()(
   "HostedZoneAlreadyExists",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class KeySigningKeyInUse extends S.TaggedError<KeySigningKeyInUse>()(
   "KeySigningKeyInUse",
   { message: S.optional(S.String) },
@@ -4376,7 +4374,7 @@ export class TooManyKeySigningKeys extends S.TaggedError<TooManyKeySigningKeys>(
 export class TooManyHostedZones extends S.TaggedError<TooManyHostedZones>()(
   "TooManyHostedZones",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -4393,8 +4391,8 @@ export const getCheckerIpRanges: (
   input: GetCheckerIpRangesRequest,
 ) => Effect.Effect<
   GetCheckerIpRangesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCheckerIpRangesRequest,
   output: GetCheckerIpRangesResponse,
@@ -4407,8 +4405,8 @@ export const getHealthCheckCount: (
   input: GetHealthCheckCountRequest,
 ) => Effect.Effect<
   GetHealthCheckCountResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHealthCheckCountRequest,
   output: GetHealthCheckCountResponse,
@@ -4422,8 +4420,8 @@ export const getTrafficPolicyInstanceCount: (
   input: GetTrafficPolicyInstanceCountRequest,
 ) => Effect.Effect<
   GetTrafficPolicyInstanceCountResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTrafficPolicyInstanceCountRequest,
   output: GetTrafficPolicyInstanceCountResponse,
@@ -4447,8 +4445,8 @@ export const listGeoLocations: (
   input: ListGeoLocationsRequest,
 ) => Effect.Effect<
   ListGeoLocationsResponse,
-  InvalidInput | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListGeoLocationsRequest,
   output: ListGeoLocationsResponse,
@@ -4462,8 +4460,8 @@ export const listReusableDelegationSets: (
   input: ListReusableDelegationSetsRequest,
 ) => Effect.Effect<
   ListReusableDelegationSetsResponse,
-  InvalidInput | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListReusableDelegationSetsRequest,
   output: ListReusableDelegationSetsResponse,
@@ -4476,8 +4474,8 @@ export const getHostedZoneCount: (
   input: GetHostedZoneCountRequest,
 ) => Effect.Effect<
   GetHostedZoneCountResponse,
-  InvalidInput | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHostedZoneCountRequest,
   output: GetHostedZoneCountResponse,
@@ -4498,8 +4496,8 @@ export const getAccountLimit: (
   input: GetAccountLimitRequest,
 ) => Effect.Effect<
   GetAccountLimitResponse,
-  InvalidInput | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountLimitRequest,
   output: GetAccountLimitResponse,
@@ -4520,8 +4518,8 @@ export const getChange: (
   input: GetChangeRequest,
 ) => Effect.Effect<
   GetChangeResponse,
-  InvalidInput | NoSuchChange | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchChange | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChangeRequest,
   output: GetChangeResponse,
@@ -4538,8 +4536,8 @@ export const getHealthCheckStatus: (
   input: GetHealthCheckStatusRequest,
 ) => Effect.Effect<
   GetHealthCheckStatusResponse,
-  InvalidInput | NoSuchHealthCheck | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchHealthCheck | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHealthCheckStatusRequest,
   output: GetHealthCheckStatusResponse,
@@ -4555,8 +4553,8 @@ export const getQueryLoggingConfig: (
   input: GetQueryLoggingConfigRequest,
 ) => Effect.Effect<
   GetQueryLoggingConfigResponse,
-  InvalidInput | NoSuchQueryLoggingConfig | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchQueryLoggingConfig | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQueryLoggingConfigRequest,
   output: GetQueryLoggingConfigResponse,
@@ -4572,8 +4570,8 @@ export const getTrafficPolicy: (
   input: GetTrafficPolicyRequest,
 ) => Effect.Effect<
   GetTrafficPolicyResponse,
-  InvalidInput | NoSuchTrafficPolicy | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchTrafficPolicy | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTrafficPolicyRequest,
   output: GetTrafficPolicyResponse,
@@ -4588,22 +4586,22 @@ export const listCidrCollections: {
     input: ListCidrCollectionsRequest,
   ): Effect.Effect<
     ListCidrCollectionsResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCidrCollectionsRequest,
   ) => Stream.Stream<
     ListCidrCollectionsResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCidrCollectionsRequest,
   ) => Stream.Stream<
     CollectionSummary,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCidrCollectionsRequest,
@@ -4624,22 +4622,22 @@ export const listHealthChecks: {
     input: ListHealthChecksRequest,
   ): Effect.Effect<
     ListHealthChecksResponse,
-    IncompatibleVersion | InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IncompatibleVersion | InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHealthChecksRequest,
   ) => Stream.Stream<
     ListHealthChecksResponse,
-    IncompatibleVersion | InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IncompatibleVersion | InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHealthChecksRequest,
   ) => Stream.Stream<
     HealthCheck,
-    IncompatibleVersion | InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IncompatibleVersion | InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHealthChecksRequest,
@@ -4711,8 +4709,8 @@ export const listHostedZonesByName: (
   input: ListHostedZonesByNameRequest,
 ) => Effect.Effect<
   ListHostedZonesByNameResponse,
-  InvalidDomainName | InvalidInput | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidDomainName | InvalidInput | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListHostedZonesByNameRequest,
   output: ListHostedZonesByNameResponse,
@@ -4730,8 +4728,8 @@ export const listTrafficPolicies: (
   input: ListTrafficPoliciesRequest,
 ) => Effect.Effect<
   ListTrafficPoliciesResponse,
-  InvalidInput | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTrafficPoliciesRequest,
   output: ListTrafficPoliciesResponse,
@@ -4755,11 +4753,8 @@ export const listTrafficPolicyInstancesByHostedZone: (
   input: ListTrafficPolicyInstancesByHostedZoneRequest,
 ) => Effect.Effect<
   ListTrafficPolicyInstancesByHostedZoneResponse,
-  | InvalidInput
-  | NoSuchHostedZone
-  | NoSuchTrafficPolicyInstance
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchHostedZone | NoSuchTrafficPolicyInstance | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTrafficPolicyInstancesByHostedZoneRequest,
   output: ListTrafficPolicyInstancesByHostedZoneResponse,
@@ -4777,8 +4772,8 @@ export const deleteCidrCollection: (
   | ConcurrentModification
   | InvalidInput
   | NoSuchCidrCollectionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCidrCollectionRequest,
   output: DeleteCidrCollectionResponse,
@@ -4804,8 +4799,8 @@ export const getTrafficPolicyInstance: (
   input: GetTrafficPolicyInstanceRequest,
 ) => Effect.Effect<
   GetTrafficPolicyInstanceResponse,
-  InvalidInput | NoSuchTrafficPolicyInstance | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchTrafficPolicyInstance | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTrafficPolicyInstanceRequest,
   output: GetTrafficPolicyInstanceResponse,
@@ -4828,8 +4823,8 @@ export const listTrafficPolicyInstances: (
   input: ListTrafficPolicyInstancesRequest,
 ) => Effect.Effect<
   ListTrafficPolicyInstancesResponse,
-  InvalidInput | NoSuchTrafficPolicyInstance | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchTrafficPolicyInstance | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTrafficPolicyInstancesRequest,
   output: ListTrafficPolicyInstancesResponse,
@@ -4856,8 +4851,8 @@ export const deleteHealthCheck: (
   input: DeleteHealthCheckRequest,
 ) => Effect.Effect<
   DeleteHealthCheckResponse,
-  HealthCheckInUse | InvalidInput | NoSuchHealthCheck | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  HealthCheckInUse | InvalidInput | NoSuchHealthCheck | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHealthCheckRequest,
   output: DeleteHealthCheckResponse,
@@ -4877,8 +4872,8 @@ export const deleteQueryLoggingConfig: (
   | ConcurrentModification
   | InvalidInput
   | NoSuchQueryLoggingConfig
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteQueryLoggingConfigRequest,
   output: DeleteQueryLoggingConfigResponse,
@@ -4905,8 +4900,8 @@ export const listTrafficPolicyInstancesByPolicy: (
   | InvalidInput
   | NoSuchTrafficPolicy
   | NoSuchTrafficPolicyInstance
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTrafficPolicyInstancesByPolicyRequest,
   output: ListTrafficPolicyInstancesByPolicyResponse,
@@ -4922,8 +4917,8 @@ export const listTrafficPolicyVersions: (
   input: ListTrafficPolicyVersionsRequest,
 ) => Effect.Effect<
   ListTrafficPolicyVersionsResponse,
-  InvalidInput | NoSuchTrafficPolicy | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchTrafficPolicy | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTrafficPolicyVersionsRequest,
   output: ListTrafficPolicyVersionsResponse,
@@ -4936,11 +4931,8 @@ export const updateTrafficPolicyComment: (
   input: UpdateTrafficPolicyCommentRequest,
 ) => Effect.Effect<
   UpdateTrafficPolicyCommentResponse,
-  | ConcurrentModification
-  | InvalidInput
-  | NoSuchTrafficPolicy
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConcurrentModification | InvalidInput | NoSuchTrafficPolicy | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrafficPolicyCommentRequest,
   output: UpdateTrafficPolicyCommentResponse,
@@ -4958,11 +4950,8 @@ export const listVPCAssociationAuthorizations: (
   input: ListVPCAssociationAuthorizationsRequest,
 ) => Effect.Effect<
   ListVPCAssociationAuthorizationsResponse,
-  | InvalidInput
-  | InvalidPaginationToken
-  | NoSuchHostedZone
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | InvalidPaginationToken | NoSuchHostedZone | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVPCAssociationAuthorizationsRequest,
   output: ListVPCAssociationAuthorizationsResponse,
@@ -4984,8 +4973,8 @@ export const testDNSAnswer: (
   input: TestDNSAnswerRequest,
 ) => Effect.Effect<
   TestDNSAnswerResponse,
-  InvalidInput | NoSuchHostedZone | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchHostedZone | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestDNSAnswerRequest,
   output: TestDNSAnswerResponse,
@@ -5005,31 +4994,22 @@ export const listQueryLoggingConfigs: {
     input: ListQueryLoggingConfigsRequest,
   ): Effect.Effect<
     ListQueryLoggingConfigsResponse,
-    | InvalidInput
-    | InvalidPaginationToken
-    | NoSuchHostedZone
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | InvalidPaginationToken | NoSuchHostedZone | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListQueryLoggingConfigsRequest,
   ) => Stream.Stream<
     ListQueryLoggingConfigsResponse,
-    | InvalidInput
-    | InvalidPaginationToken
-    | NoSuchHostedZone
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | InvalidPaginationToken | NoSuchHostedZone | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListQueryLoggingConfigsRequest,
   ) => Stream.Stream<
     QueryLoggingConfig,
-    | InvalidInput
-    | InvalidPaginationToken
-    | NoSuchHostedZone
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | InvalidPaginationToken | NoSuchHostedZone | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueryLoggingConfigsRequest,
@@ -5051,22 +5031,22 @@ export const listCidrLocations: {
     input: ListCidrLocationsRequest,
   ): Effect.Effect<
     ListCidrLocationsResponse,
-    InvalidInput | NoSuchCidrCollectionException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | NoSuchCidrCollectionException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCidrLocationsRequest,
   ) => Stream.Stream<
     ListCidrLocationsResponse,
-    InvalidInput | NoSuchCidrCollectionException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | NoSuchCidrCollectionException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCidrLocationsRequest,
   ) => Stream.Stream<
     LocationSummary,
-    InvalidInput | NoSuchCidrCollectionException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | NoSuchCidrCollectionException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCidrLocationsRequest,
@@ -5090,8 +5070,8 @@ export const createCidrCollection: (
   | ConcurrentModification
   | InvalidInput
   | LimitsExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCidrCollectionRequest,
   output: CreateCidrCollectionResponse,
@@ -5120,8 +5100,8 @@ export const deleteReusableDelegationSet: (
   | DelegationSetNotReusable
   | InvalidInput
   | NoSuchDelegationSet
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReusableDelegationSetRequest,
   output: DeleteReusableDelegationSetResponse,
@@ -5146,8 +5126,8 @@ export const deleteTrafficPolicyInstance: (
   | InvalidInput
   | NoSuchTrafficPolicyInstance
   | PriorRequestNotComplete
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficPolicyInstanceRequest,
   output: DeleteTrafficPolicyInstanceResponse,
@@ -5183,8 +5163,8 @@ export const getGeoLocation: (
   input: GetGeoLocationRequest,
 ) => Effect.Effect<
   GetGeoLocationResponse,
-  InvalidInput | NoSuchGeoLocation | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchGeoLocation | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGeoLocationRequest,
   output: GetGeoLocationResponse,
@@ -5197,8 +5177,8 @@ export const getHealthCheckLastFailureReason: (
   input: GetHealthCheckLastFailureReasonRequest,
 ) => Effect.Effect<
   GetHealthCheckLastFailureReasonResponse,
-  InvalidInput | NoSuchHealthCheck | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchHealthCheck | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHealthCheckLastFailureReasonRequest,
   output: GetHealthCheckLastFailureReasonResponse,
@@ -5216,8 +5196,8 @@ export const getHostedZoneLimit: (
   input: GetHostedZoneLimitRequest,
 ) => Effect.Effect<
   GetHostedZoneLimitResponse,
-  HostedZoneNotPrivate | InvalidInput | NoSuchHostedZone | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  HostedZoneNotPrivate | InvalidInput | NoSuchHostedZone | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHostedZoneLimitRequest,
   output: GetHostedZoneLimitResponse,
@@ -5261,8 +5241,8 @@ export const listHostedZonesByVPC: (
   input: ListHostedZonesByVPCRequest,
 ) => Effect.Effect<
   ListHostedZonesByVPCResponse,
-  InvalidInput | InvalidPaginationToken | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | InvalidPaginationToken | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListHostedZonesByVPCRequest,
   output: ListHostedZonesByVPCResponse,
@@ -5279,11 +5259,8 @@ export const updateHealthCheck: (
   input: UpdateHealthCheckRequest,
 ) => Effect.Effect<
   UpdateHealthCheckResponse,
-  | HealthCheckVersionMismatch
-  | InvalidInput
-  | NoSuchHealthCheck
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  HealthCheckVersionMismatch | InvalidInput | NoSuchHealthCheck | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHealthCheckRequest,
   output: UpdateHealthCheckResponse,
@@ -5297,8 +5274,8 @@ export const getDNSSEC: (
   input: GetDNSSECRequest,
 ) => Effect.Effect<
   GetDNSSECResponse,
-  InvalidArgument | InvalidInput | NoSuchHostedZone | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArgument | InvalidInput | NoSuchHostedZone | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDNSSECRequest,
   output: GetDNSSECResponse,
@@ -5322,8 +5299,8 @@ export const createTrafficPolicyVersion: (
   | InvalidTrafficPolicyDocument
   | NoSuchTrafficPolicy
   | TooManyTrafficPolicyVersionsForCurrentPolicy
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrafficPolicyVersionRequest,
   output: CreateTrafficPolicyVersionResponse,
@@ -5347,8 +5324,8 @@ export const getReusableDelegationSetLimit: (
   input: GetReusableDelegationSetLimitRequest,
 ) => Effect.Effect<
   GetReusableDelegationSetLimitResponse,
-  InvalidInput | NoSuchDelegationSet | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchDelegationSet | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReusableDelegationSetLimitRequest,
   output: GetReusableDelegationSetLimitResponse,
@@ -5362,11 +5339,8 @@ export const getReusableDelegationSet: (
   input: GetReusableDelegationSetRequest,
 ) => Effect.Effect<
   GetReusableDelegationSetResponse,
-  | DelegationSetNotReusable
-  | InvalidInput
-  | NoSuchDelegationSet
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DelegationSetNotReusable | InvalidInput | NoSuchDelegationSet | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReusableDelegationSetRequest,
   output: GetReusableDelegationSetResponse,
@@ -5389,8 +5363,8 @@ export const listHostedZones: {
     | DelegationSetNotReusable
     | InvalidInput
     | NoSuchDelegationSet
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHostedZonesRequest,
@@ -5399,8 +5373,8 @@ export const listHostedZones: {
     | DelegationSetNotReusable
     | InvalidInput
     | NoSuchDelegationSet
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHostedZonesRequest,
@@ -5409,8 +5383,8 @@ export const listHostedZones: {
     | DelegationSetNotReusable
     | InvalidInput
     | NoSuchDelegationSet
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHostedZonesRequest,
@@ -5457,8 +5431,8 @@ export const updateTrafficPolicyInstance: (
   | NoSuchTrafficPolicy
   | NoSuchTrafficPolicyInstance
   | PriorRequestNotComplete
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrafficPolicyInstanceRequest,
   output: UpdateTrafficPolicyInstanceResponse,
@@ -5483,8 +5457,8 @@ export const updateHostedZoneFeatures: (
   | LimitsExceeded
   | NoSuchHostedZone
   | PriorRequestNotComplete
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHostedZoneFeaturesRequest,
   output: UpdateHostedZoneFeaturesResponse,
@@ -5548,8 +5522,8 @@ export const deleteHostedZone: (
   | InvalidInput
   | NoSuchHostedZone
   | PriorRequestNotComplete
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHostedZoneRequest,
   output: DeleteHostedZoneResponse,
@@ -5568,11 +5542,8 @@ export const updateHostedZoneComment: (
   input: UpdateHostedZoneCommentRequest,
 ) => Effect.Effect<
   UpdateHostedZoneCommentResponse,
-  | InvalidInput
-  | NoSuchHostedZone
-  | PriorRequestNotComplete
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchHostedZone | PriorRequestNotComplete | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHostedZoneCommentRequest,
   output: UpdateHostedZoneCommentResponse,
@@ -5600,8 +5571,8 @@ export const deleteVPCAssociationAuthorization: (
   | InvalidVPCId
   | NoSuchHostedZone
   | VPCAssociationAuthorizationNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVPCAssociationAuthorizationRequest,
   output: DeleteVPCAssociationAuthorizationResponse,
@@ -5634,8 +5605,8 @@ export const createVPCAssociationAuthorization: (
   | InvalidVPCId
   | NoSuchHostedZone
   | TooManyVPCAssociationAuthorizations
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVPCAssociationAuthorizationRequest,
   output: CreateVPCAssociationAuthorizationResponse,
@@ -5669,8 +5640,8 @@ export const deleteTrafficPolicy: (
   | InvalidInput
   | NoSuchTrafficPolicy
   | TrafficPolicyInUse
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficPolicyRequest,
   output: DeleteTrafficPolicyResponse,
@@ -5692,8 +5663,8 @@ export const listCidrBlocks: {
     | InvalidInput
     | NoSuchCidrCollectionException
     | NoSuchCidrLocationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCidrBlocksRequest,
@@ -5702,8 +5673,8 @@ export const listCidrBlocks: {
     | InvalidInput
     | NoSuchCidrCollectionException
     | NoSuchCidrLocationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCidrBlocksRequest,
@@ -5712,8 +5683,8 @@ export const listCidrBlocks: {
     | InvalidInput
     | NoSuchCidrCollectionException
     | NoSuchCidrLocationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCidrBlocksRequest,
@@ -5762,8 +5733,8 @@ export const changeCidrCollection: (
   | InvalidInput
   | LimitsExceeded
   | NoSuchCidrCollectionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ChangeCidrCollectionRequest,
   output: ChangeCidrCollectionResponse,
@@ -5871,8 +5842,8 @@ export const changeResourceRecordSets: (
   | NoSuchHealthCheck
   | NoSuchHostedZone
   | PriorRequestNotComplete
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ChangeResourceRecordSetsRequest,
   output: ChangeResourceRecordSetsResponse,
@@ -5921,11 +5892,8 @@ export const createHealthCheck: (
   input: CreateHealthCheckRequest,
 ) => Effect.Effect<
   CreateHealthCheckResponse,
-  | HealthCheckAlreadyExists
-  | InvalidInput
-  | TooManyHealthChecks
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  HealthCheckAlreadyExists | InvalidInput | TooManyHealthChecks | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHealthCheckRequest,
   output: CreateHealthCheckResponse,
@@ -5979,8 +5947,8 @@ export const disassociateVPCFromHostedZone: (
   | LastVPCAssociation
   | NoSuchHostedZone
   | VPCAssociationNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateVPCFromHostedZoneRequest,
   output: DisassociateVPCFromHostedZoneResponse,
@@ -5999,8 +5967,8 @@ export const getHealthCheck: (
   input: GetHealthCheckRequest,
 ) => Effect.Effect<
   GetHealthCheckResponse,
-  IncompatibleVersion | InvalidInput | NoSuchHealthCheck | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  IncompatibleVersion | InvalidInput | NoSuchHealthCheck | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHealthCheckRequest,
   output: GetHealthCheckResponse,
@@ -6017,8 +5985,8 @@ export const getHostedZone: (
   input: GetHostedZoneRequest,
 ) => Effect.Effect<
   GetHostedZoneResponse,
-  InvalidInput | NoSuchHostedZone | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchHostedZone | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHostedZoneRequest,
   output: GetHostedZoneResponse,
@@ -6100,8 +6068,8 @@ export const listResourceRecordSets: (
   input: ListResourceRecordSetsRequest,
 ) => Effect.Effect<
   ListResourceRecordSetsResponse,
-  InvalidInput | NoSuchHostedZone | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NoSuchHostedZone | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListResourceRecordSetsRequest,
   output: ListResourceRecordSetsResponse,
@@ -6122,8 +6090,8 @@ export const listTagsForResources: (
   | NoSuchHostedZone
   | PriorRequestNotComplete
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourcesRequest,
   output: ListTagsForResourcesResponse,
@@ -6159,8 +6127,8 @@ export const createTrafficPolicyInstance: (
   | NoSuchTrafficPolicy
   | TooManyTrafficPolicyInstances
   | TrafficPolicyInstanceAlreadyExists
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrafficPolicyInstanceRequest,
   output: CreateTrafficPolicyInstanceResponse,
@@ -6185,8 +6153,8 @@ export const createTrafficPolicy: (
   | InvalidTrafficPolicyDocument
   | TooManyTrafficPolicies
   | TrafficPolicyAlreadyExists
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrafficPolicyRequest,
   output: CreateTrafficPolicyResponse,
@@ -6217,8 +6185,8 @@ export const deleteKeySigningKey: (
   | InvalidKMSArn
   | InvalidSigningStatus
   | NoSuchKeySigningKey
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteKeySigningKeyRequest,
   output: DeleteKeySigningKeyResponse,
@@ -6247,8 +6215,8 @@ export const disableHostedZoneDNSSEC: (
   | InvalidKMSArn
   | KeySigningKeyInParentDSRecord
   | NoSuchHostedZone
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableHostedZoneDNSSECRequest,
   output: DisableHostedZoneDNSSECResponse,
@@ -6278,8 +6246,8 @@ export const changeTagsForResource: (
   | NoSuchHostedZone
   | PriorRequestNotComplete
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ChangeTagsForResourceRequest,
   output: ChangeTagsForResourceResponse,
@@ -6306,8 +6274,8 @@ export const listTagsForResource: (
   | NoSuchHostedZone
   | PriorRequestNotComplete
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6335,8 +6303,8 @@ export const enableHostedZoneDNSSEC: (
   | InvalidKMSArn
   | KeySigningKeyWithActiveStatusNotFound
   | NoSuchHostedZone
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableHostedZoneDNSSECRequest,
   output: EnableHostedZoneDNSSECResponse,
@@ -6366,8 +6334,8 @@ export const activateKeySigningKey: (
   | InvalidKMSArn
   | InvalidSigningStatus
   | NoSuchKeySigningKey
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ActivateKeySigningKeyRequest,
   output: ActivateKeySigningKeyResponse,
@@ -6419,8 +6387,8 @@ export const associateVPCWithHostedZone: (
   | NotAuthorizedException
   | PriorRequestNotComplete
   | PublicZoneVPCAssociation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateVPCWithHostedZoneRequest,
   output: AssociateVPCWithHostedZoneResponse,
@@ -6588,8 +6556,8 @@ export const createQueryLoggingConfig: (
   | NoSuchCloudWatchLogsLogGroup
   | NoSuchHostedZone
   | QueryLoggingConfigAlreadyExists
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateQueryLoggingConfigRequest,
   output: CreateQueryLoggingConfigResponse,
@@ -6617,8 +6585,8 @@ export const deactivateKeySigningKey: (
   | KeySigningKeyInParentDSRecord
   | KeySigningKeyInUse
   | NoSuchKeySigningKey
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeactivateKeySigningKeyRequest,
   output: DeactivateKeySigningKeyResponse,
@@ -6693,8 +6661,8 @@ export const createReusableDelegationSet: (
   | InvalidArgument
   | InvalidInput
   | LimitsExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReusableDelegationSetRequest,
   output: CreateReusableDelegationSetResponse,
@@ -6726,8 +6694,8 @@ export const createKeySigningKey: (
   | KeySigningKeyAlreadyExists
   | NoSuchHostedZone
   | TooManyKeySigningKeys
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateKeySigningKeyRequest,
   output: CreateKeySigningKeyResponse,
@@ -6814,8 +6782,8 @@ export const createHostedZone: (
   | InvalidVPCId
   | NoSuchDelegationSet
   | TooManyHostedZones
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHostedZoneRequest,
   output: CreateHostedZoneResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Global Accelerator",
@@ -2078,85 +2076,83 @@ export const ListCustomRoutingPortMappingsResponse = S.suspend(() =>
 export class EndpointGroupNotFoundException extends S.TaggedError<EndpointGroupNotFoundException>()(
   "EndpointGroupNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AcceleratorNotDisabledException extends S.TaggedError<AcceleratorNotDisabledException>()(
   "AcceleratorNotDisabledException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class AssociatedEndpointGroupFoundException extends S.TaggedError<AssociatedEndpointGroupFoundException>()(
   "AssociatedEndpointGroupFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AcceleratorNotFoundException extends S.TaggedError<AcceleratorNotFoundException>()(
   "AcceleratorNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServiceErrorException extends S.TaggedError<InternalServiceErrorException>()(
   "InternalServiceErrorException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class AttachmentNotFoundException extends S.TaggedError<AttachmentNotFoundException>()(
   "AttachmentNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ByoipCidrNotFoundException extends S.TaggedError<ByoipCidrNotFoundException>()(
   "ByoipCidrNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class AssociatedListenerFoundException extends S.TaggedError<AssociatedListenerFoundException>()(
   "AssociatedListenerFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidArgumentException extends S.TaggedError<InvalidArgumentException>()(
   "InvalidArgumentException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointGroupAlreadyExistsException extends S.TaggedError<EndpointGroupAlreadyExistsException>()(
   "EndpointGroupAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IncorrectCidrStateException extends S.TaggedError<IncorrectCidrStateException>()(
   "IncorrectCidrStateException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointNotFoundException extends S.TaggedError<EndpointNotFoundException>()(
   "EndpointNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointAlreadyExistsException extends S.TaggedError<EndpointAlreadyExistsException>()(
   "EndpointAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidPortRangeException extends S.TaggedError<InvalidPortRangeException>()(
   "InvalidPortRangeException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TransactionInProgressException extends S.TaggedError<TransactionInProgressException>()(
   "TransactionInProgressException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ListenerNotFoundException extends S.TaggedError<ListenerNotFoundException>()(
   "ListenerNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2170,8 +2166,8 @@ export const listCrossAccountResourceAccounts: (
   input: ListCrossAccountResourceAccountsRequest,
 ) => Effect.Effect<
   ListCrossAccountResourceAccountsResponse,
-  AccessDeniedException | InternalServiceErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | InternalServiceErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListCrossAccountResourceAccountsRequest,
   output: ListCrossAccountResourceAccountsResponse,
@@ -2193,8 +2189,8 @@ export const allowCustomRoutingTraffic: (
   | EndpointGroupNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllowCustomRoutingTrafficRequest,
   output: AllowCustomRoutingTrafficResponse,
@@ -2223,8 +2219,8 @@ export const deprovisionByoipCidr: (
   | IncorrectCidrStateException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprovisionByoipCidrRequest,
   output: DeprovisionByoipCidrResponse,
@@ -2246,8 +2242,8 @@ export const describeAccelerator: (
   | AcceleratorNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAcceleratorRequest,
   output: DescribeAcceleratorResponse,
@@ -2267,8 +2263,8 @@ export const describeCustomRoutingEndpointGroup: (
   | EndpointGroupNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCustomRoutingEndpointGroupRequest,
   output: DescribeCustomRoutingEndpointGroupResponse,
@@ -2288,8 +2284,8 @@ export const describeEndpointGroup: (
   | EndpointGroupNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEndpointGroupRequest,
   output: DescribeEndpointGroupResponse,
@@ -2309,8 +2305,8 @@ export const describeAcceleratorAttributes: (
   | AcceleratorNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAcceleratorAttributesRequest,
   output: DescribeAcceleratorAttributesResponse,
@@ -2331,8 +2327,8 @@ export const describeCrossAccountAttachment: (
   | AttachmentNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCrossAccountAttachmentRequest,
   output: DescribeCrossAccountAttachmentResponse,
@@ -2353,8 +2349,8 @@ export const describeCustomRoutingAcceleratorAttributes: (
   | AcceleratorNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCustomRoutingAcceleratorAttributesRequest,
   output: DescribeCustomRoutingAcceleratorAttributesResponse,
@@ -2377,8 +2373,8 @@ export const tagResource: (
   | AcceleratorNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2398,8 +2394,8 @@ export const deleteCustomRoutingEndpointGroup: (
   | EndpointGroupNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomRoutingEndpointGroupRequest,
   output: DeleteCustomRoutingEndpointGroupResponse,
@@ -2419,8 +2415,8 @@ export const deleteEndpointGroup: (
   | EndpointGroupNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointGroupRequest,
   output: DeleteEndpointGroupResponse,
@@ -2446,8 +2442,8 @@ export const denyCustomRoutingTraffic: (
   | EndpointGroupNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DenyCustomRoutingTrafficRequest,
   output: DenyCustomRoutingTrafficResponse,
@@ -2471,8 +2467,8 @@ export const untagResource: (
   | AcceleratorNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2492,8 +2488,8 @@ export const describeCustomRoutingAccelerator: (
   | AcceleratorNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCustomRoutingAcceleratorRequest,
   output: DescribeCustomRoutingAcceleratorResponse,
@@ -2523,8 +2519,8 @@ export const withdrawByoipCidr: (
   | IncorrectCidrStateException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: WithdrawByoipCidrRequest,
   output: WithdrawByoipCidrResponse,
@@ -2556,8 +2552,8 @@ export const advertiseByoipCidr: (
   | IncorrectCidrStateException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdvertiseByoipCidrRequest,
   output: AdvertiseByoipCidrResponse,
@@ -2582,8 +2578,8 @@ export const removeCustomRoutingEndpoints: (
   | EndpointNotFoundException
   | InternalServiceErrorException
   | InvalidArgumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveCustomRoutingEndpointsRequest,
   output: RemoveCustomRoutingEndpointsResponse,
@@ -2619,8 +2615,8 @@ export const listCustomRoutingPortMappings: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCustomRoutingPortMappingsRequest,
@@ -2631,8 +2627,8 @@ export const listCustomRoutingPortMappings: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCustomRoutingPortMappingsRequest,
@@ -2643,8 +2639,8 @@ export const listCustomRoutingPortMappings: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCustomRoutingPortMappingsRequest,
@@ -2681,8 +2677,8 @@ export const deleteCrossAccountAttachment: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCrossAccountAttachmentRequest,
   output: DeleteCrossAccountAttachmentResponse,
@@ -2704,8 +2700,8 @@ export const describeCustomRoutingListener: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCustomRoutingListenerRequest,
   output: DescribeCustomRoutingListenerResponse,
@@ -2732,8 +2728,8 @@ export const createAccelerator: (
   | InvalidArgumentException
   | LimitExceededException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAcceleratorRequest,
   output: CreateAcceleratorResponse,
@@ -2776,8 +2772,8 @@ export const createCrossAccountAttachment: (
   | InvalidArgumentException
   | LimitExceededException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCrossAccountAttachmentRequest,
   output: CreateCrossAccountAttachmentResponse,
@@ -2801,8 +2797,8 @@ export const updateEndpointGroup: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEndpointGroupRequest,
   output: UpdateEndpointGroupResponse,
@@ -2844,8 +2840,8 @@ export const addEndpoints: (
   | InvalidArgumentException
   | LimitExceededException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddEndpointsRequest,
   output: AddEndpointsResponse,
@@ -2877,8 +2873,8 @@ export const updateCrossAccountAttachment: (
   | InvalidArgumentException
   | LimitExceededException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCrossAccountAttachmentRequest,
   output: UpdateCrossAccountAttachmentResponse,
@@ -2910,8 +2906,8 @@ export const createEndpointGroup: (
   | InvalidArgumentException
   | LimitExceededException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEndpointGroupRequest,
   output: CreateEndpointGroupResponse,
@@ -2943,8 +2939,8 @@ export const provisionByoipCidr: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProvisionByoipCidrRequest,
   output: ProvisionByoipCidrResponse,
@@ -2983,8 +2979,8 @@ export const addCustomRoutingEndpoints: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddCustomRoutingEndpointsRequest,
   output: AddCustomRoutingEndpointsResponse,
@@ -3011,8 +3007,8 @@ export const createCustomRoutingListener: (
   | InvalidArgumentException
   | InvalidPortRangeException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomRoutingListenerRequest,
   output: CreateCustomRoutingListenerResponse,
@@ -3037,8 +3033,8 @@ export const createListener: (
   | InvalidArgumentException
   | InvalidPortRangeException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateListenerRequest,
   output: CreateListenerResponse,
@@ -3062,8 +3058,8 @@ export const updateCustomRoutingListener: (
   | InvalidPortRangeException
   | LimitExceededException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCustomRoutingListenerRequest,
   output: UpdateCustomRoutingListenerResponse,
@@ -3087,8 +3083,8 @@ export const updateListener: (
   | InvalidPortRangeException
   | LimitExceededException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateListenerRequest,
   output: UpdateListenerResponse,
@@ -3115,8 +3111,8 @@ export const listCustomRoutingPortMappingsByDestination: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCustomRoutingPortMappingsByDestinationRequest,
@@ -3126,8 +3122,8 @@ export const listCustomRoutingPortMappingsByDestination: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCustomRoutingPortMappingsByDestinationRequest,
@@ -3137,8 +3133,8 @@ export const listCustomRoutingPortMappingsByDestination: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCustomRoutingPortMappingsByDestinationRequest,
@@ -3169,8 +3165,8 @@ export const listCrossAccountResources: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCrossAccountResourcesRequest,
@@ -3181,8 +3177,8 @@ export const listCrossAccountResources: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCrossAccountResourcesRequest,
@@ -3193,8 +3189,8 @@ export const listCrossAccountResources: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCrossAccountResourcesRequest,
@@ -3224,8 +3220,8 @@ export const listAccelerators: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAcceleratorsRequest,
@@ -3234,8 +3230,8 @@ export const listAccelerators: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAcceleratorsRequest,
@@ -3244,8 +3240,8 @@ export const listAccelerators: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAcceleratorsRequest,
@@ -3275,8 +3271,8 @@ export const listByoipCidrs: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListByoipCidrsRequest,
@@ -3286,8 +3282,8 @@ export const listByoipCidrs: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListByoipCidrsRequest,
@@ -3297,8 +3293,8 @@ export const listByoipCidrs: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListByoipCidrsRequest,
@@ -3328,8 +3324,8 @@ export const listCrossAccountAttachments: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCrossAccountAttachmentsRequest,
@@ -3339,8 +3335,8 @@ export const listCrossAccountAttachments: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCrossAccountAttachmentsRequest,
@@ -3350,8 +3346,8 @@ export const listCrossAccountAttachments: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCrossAccountAttachmentsRequest,
@@ -3380,8 +3376,8 @@ export const listCustomRoutingAccelerators: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCustomRoutingAcceleratorsRequest,
@@ -3390,8 +3386,8 @@ export const listCustomRoutingAccelerators: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCustomRoutingAcceleratorsRequest,
@@ -3400,8 +3396,8 @@ export const listCustomRoutingAccelerators: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCustomRoutingAcceleratorsRequest,
@@ -3430,8 +3426,8 @@ export const listCustomRoutingEndpointGroups: {
     | InvalidArgumentException
     | InvalidNextTokenException
     | ListenerNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCustomRoutingEndpointGroupsRequest,
@@ -3441,8 +3437,8 @@ export const listCustomRoutingEndpointGroups: {
     | InvalidArgumentException
     | InvalidNextTokenException
     | ListenerNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCustomRoutingEndpointGroupsRequest,
@@ -3452,8 +3448,8 @@ export const listCustomRoutingEndpointGroups: {
     | InvalidArgumentException
     | InvalidNextTokenException
     | ListenerNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCustomRoutingEndpointGroupsRequest,
@@ -3483,8 +3479,8 @@ export const listEndpointGroups: {
     | InvalidArgumentException
     | InvalidNextTokenException
     | ListenerNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEndpointGroupsRequest,
@@ -3494,8 +3490,8 @@ export const listEndpointGroups: {
     | InvalidArgumentException
     | InvalidNextTokenException
     | ListenerNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEndpointGroupsRequest,
@@ -3505,8 +3501,8 @@ export const listEndpointGroups: {
     | InvalidArgumentException
     | InvalidNextTokenException
     | ListenerNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEndpointGroupsRequest,
@@ -3536,8 +3532,8 @@ export const listCustomRoutingListeners: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCustomRoutingListenersRequest,
@@ -3547,8 +3543,8 @@ export const listCustomRoutingListeners: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCustomRoutingListenersRequest,
@@ -3558,8 +3554,8 @@ export const listCustomRoutingListeners: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCustomRoutingListenersRequest,
@@ -3589,8 +3585,8 @@ export const listListeners: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListListenersRequest,
@@ -3600,8 +3596,8 @@ export const listListeners: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListListenersRequest,
@@ -3611,8 +3607,8 @@ export const listListeners: {
     | InternalServiceErrorException
     | InvalidArgumentException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListListenersRequest,
@@ -3659,8 +3655,8 @@ export const updateAccelerator: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAcceleratorRequest,
   output: UpdateAcceleratorResponse,
@@ -3698,8 +3694,8 @@ export const removeEndpoints: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveEndpointsRequest,
   output: RemoveEndpointsResponse,
@@ -3723,8 +3719,8 @@ export const updateAcceleratorAttributes: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAcceleratorAttributesRequest,
   output: UpdateAcceleratorAttributesResponse,
@@ -3748,8 +3744,8 @@ export const updateCustomRoutingAcceleratorAttributes: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCustomRoutingAcceleratorAttributesRequest,
   output: UpdateCustomRoutingAcceleratorAttributesResponse,
@@ -3786,8 +3782,8 @@ export const deleteCustomRoutingAccelerator: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomRoutingAcceleratorRequest,
   output: DeleteCustomRoutingAcceleratorResponse,
@@ -3812,8 +3808,8 @@ export const updateCustomRoutingAccelerator: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCustomRoutingAcceleratorRequest,
   output: UpdateCustomRoutingAcceleratorResponse,
@@ -3850,8 +3846,8 @@ export const deleteAccelerator: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAcceleratorRequest,
   output: DeleteAcceleratorResponse,
@@ -3886,8 +3882,8 @@ export const createCustomRoutingAccelerator: (
   | InvalidArgumentException
   | LimitExceededException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomRoutingAcceleratorRequest,
   output: CreateCustomRoutingAcceleratorResponse,
@@ -3910,8 +3906,8 @@ export const deleteCustomRoutingListener: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomRoutingListenerRequest,
   output: DeleteCustomRoutingListenerResponse,
@@ -3932,8 +3928,8 @@ export const describeListener: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeListenerRequest,
   output: DescribeListenerResponse,
@@ -3954,8 +3950,8 @@ export const deleteListener: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteListenerRequest,
   output: DeleteListenerResponse,
@@ -3982,8 +3978,8 @@ export const listTagsForResource: (
   | InternalServiceErrorException
   | InvalidArgumentException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4013,8 +4009,8 @@ export const createCustomRoutingEndpointGroup: (
   | InvalidPortRangeException
   | LimitExceededException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomRoutingEndpointGroupRequest,
   output: CreateCustomRoutingEndpointGroupResponse,

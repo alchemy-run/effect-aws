@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials as Creds,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials as Creds } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ssm.amazonaws.com/doc/2014-11-06/");
 const svc = T.AwsApiService({ sdkId: "SSM", serviceShapeName: "AmazonSSM" });
@@ -11127,8 +11125,8 @@ export const deleteMaintenanceWindow: (
   input: DeleteMaintenanceWindowRequest,
 ) => Effect.Effect<
   DeleteMaintenanceWindowResult,
-  InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMaintenanceWindowRequest,
   output: DeleteMaintenanceWindowResult,
@@ -11142,8 +11140,8 @@ export const deleteParameters: (
   input: DeleteParametersRequest,
 ) => Effect.Effect<
   DeleteParametersResult,
-  InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteParametersRequest,
   output: DeleteParametersResult,
@@ -11156,8 +11154,8 @@ export const deregisterPatchBaselineForPatchGroup: (
   input: DeregisterPatchBaselineForPatchGroupRequest,
 ) => Effect.Effect<
   DeregisterPatchBaselineForPatchGroupResult,
-  InternalServerError | InvalidResourceId | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidResourceId | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterPatchBaselineForPatchGroupRequest,
   output: DeregisterPatchBaselineForPatchGroupResult,
@@ -11171,8 +11169,8 @@ export const getConnectionStatus: (
   input: GetConnectionStatusRequest,
 ) => Effect.Effect<
   GetConnectionStatusResponse,
-  InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectionStatusRequest,
   output: GetConnectionStatusResponse,
@@ -11189,8 +11187,8 @@ export const getDefaultPatchBaseline: (
   input: GetDefaultPatchBaselineRequest,
 ) => Effect.Effect<
   GetDefaultPatchBaselineResult,
-  InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDefaultPatchBaselineRequest,
   output: GetDefaultPatchBaselineResult,
@@ -11203,8 +11201,8 @@ export const getPatchBaselineForPatchGroup: (
   input: GetPatchBaselineForPatchGroupRequest,
 ) => Effect.Effect<
   GetPatchBaselineForPatchGroupResult,
-  InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPatchBaselineForPatchGroupRequest,
   output: GetPatchBaselineForPatchGroupResult,
@@ -11219,11 +11217,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResult,
-  | InternalServerError
-  | InvalidResourceId
-  | InvalidResourceType
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidResourceId | InvalidResourceType | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResult,
@@ -11237,8 +11232,8 @@ export const terminateSession: (
   input: TerminateSessionRequest,
 ) => Effect.Effect<
   TerminateSessionResponse,
-  InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateSessionRequest,
   output: TerminateSessionResponse,
@@ -11256,8 +11251,8 @@ export const cancelCommand: (
   | InternalServerError
   | InvalidCommandId
   | InvalidInstanceId
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelCommandRequest,
   output: CancelCommandResult,
@@ -11277,8 +11272,8 @@ export const cancelMaintenanceWindowExecution: (
   input: CancelMaintenanceWindowExecutionRequest,
 ) => Effect.Effect<
   CancelMaintenanceWindowExecutionResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMaintenanceWindowExecutionRequest,
   output: CancelMaintenanceWindowExecutionResult,
@@ -11291,8 +11286,8 @@ export const deletePatchBaseline: (
   input: DeletePatchBaselineRequest,
 ) => Effect.Effect<
   DeletePatchBaselineResult,
-  InternalServerError | ResourceInUseException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ResourceInUseException | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePatchBaselineRequest,
   output: DeletePatchBaselineResult,
@@ -11309,22 +11304,22 @@ export const describeAvailablePatches: {
     input: DescribeAvailablePatchesRequest,
   ): Effect.Effect<
     DescribeAvailablePatchesResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAvailablePatchesRequest,
   ) => Stream.Stream<
     DescribeAvailablePatchesResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAvailablePatchesRequest,
   ) => Stream.Stream<
     Patch,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAvailablePatchesRequest,
@@ -11346,22 +11341,22 @@ export const describeMaintenanceWindowExecutionTaskInvocations: {
     input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
   ): Effect.Effect<
     DescribeMaintenanceWindowExecutionTaskInvocationsResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
   ) => Stream.Stream<
     DescribeMaintenanceWindowExecutionTaskInvocationsResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
   ) => Stream.Stream<
     MaintenanceWindowExecutionTaskInvocationIdentity,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
@@ -11382,22 +11377,22 @@ export const describeMaintenanceWindowExecutionTasks: {
     input: DescribeMaintenanceWindowExecutionTasksRequest,
   ): Effect.Effect<
     DescribeMaintenanceWindowExecutionTasksResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMaintenanceWindowExecutionTasksRequest,
   ) => Stream.Stream<
     DescribeMaintenanceWindowExecutionTasksResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMaintenanceWindowExecutionTasksRequest,
   ) => Stream.Stream<
     MaintenanceWindowExecutionTaskIdentity,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowExecutionTasksRequest,
@@ -11418,22 +11413,22 @@ export const describeMaintenanceWindows: {
     input: DescribeMaintenanceWindowsRequest,
   ): Effect.Effect<
     DescribeMaintenanceWindowsResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMaintenanceWindowsRequest,
   ) => Stream.Stream<
     DescribeMaintenanceWindowsResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMaintenanceWindowsRequest,
   ) => Stream.Stream<
     MaintenanceWindowIdentity,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowsRequest,
@@ -11454,22 +11449,22 @@ export const describeMaintenanceWindowSchedule: {
     input: DescribeMaintenanceWindowScheduleRequest,
   ): Effect.Effect<
     DescribeMaintenanceWindowScheduleResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMaintenanceWindowScheduleRequest,
   ) => Stream.Stream<
     DescribeMaintenanceWindowScheduleResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMaintenanceWindowScheduleRequest,
   ) => Stream.Stream<
     ScheduledWindowExecution,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowScheduleRequest,
@@ -11491,22 +11486,22 @@ export const describeMaintenanceWindowsForTarget: {
     input: DescribeMaintenanceWindowsForTargetRequest,
   ): Effect.Effect<
     DescribeMaintenanceWindowsForTargetResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMaintenanceWindowsForTargetRequest,
   ) => Stream.Stream<
     DescribeMaintenanceWindowsForTargetResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMaintenanceWindowsForTargetRequest,
   ) => Stream.Stream<
     MaintenanceWindowIdentityForTarget,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowsForTargetRequest,
@@ -11527,22 +11522,22 @@ export const describeMaintenanceWindowTargets: {
     input: DescribeMaintenanceWindowTargetsRequest,
   ): Effect.Effect<
     DescribeMaintenanceWindowTargetsResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMaintenanceWindowTargetsRequest,
   ) => Stream.Stream<
     DescribeMaintenanceWindowTargetsResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMaintenanceWindowTargetsRequest,
   ) => Stream.Stream<
     MaintenanceWindowTarget,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowTargetsRequest,
@@ -11568,22 +11563,22 @@ export const describeMaintenanceWindowTasks: {
     input: DescribeMaintenanceWindowTasksRequest,
   ): Effect.Effect<
     DescribeMaintenanceWindowTasksResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMaintenanceWindowTasksRequest,
   ) => Stream.Stream<
     DescribeMaintenanceWindowTasksResult,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMaintenanceWindowTasksRequest,
   ) => Stream.Stream<
     MaintenanceWindowTask,
-    DoesNotExistException | InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    DoesNotExistException | InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowTasksRequest,
@@ -11604,22 +11599,22 @@ export const describePatchBaselines: {
     input: DescribePatchBaselinesRequest,
   ): Effect.Effect<
     DescribePatchBaselinesResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePatchBaselinesRequest,
   ) => Stream.Stream<
     DescribePatchBaselinesResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePatchBaselinesRequest,
   ) => Stream.Stream<
     PatchBaselineIdentity,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePatchBaselinesRequest,
@@ -11640,22 +11635,22 @@ export const describePatchGroups: {
     input: DescribePatchGroupsRequest,
   ): Effect.Effect<
     DescribePatchGroupsResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePatchGroupsRequest,
   ) => Stream.Stream<
     DescribePatchGroupsResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePatchGroupsRequest,
   ) => Stream.Stream<
     PatchGroupPatchBaselineMapping,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePatchGroupsRequest,
@@ -11675,8 +11670,8 @@ export const describePatchGroupState: (
   input: DescribePatchGroupStateRequest,
 ) => Effect.Effect<
   DescribePatchGroupStateResult,
-  InternalServerError | InvalidNextToken | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidNextToken | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePatchGroupStateRequest,
   output: DescribePatchGroupStateResult,
@@ -11747,22 +11742,22 @@ export const describePatchProperties: {
     input: DescribePatchPropertiesRequest,
   ): Effect.Effect<
     DescribePatchPropertiesResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePatchPropertiesRequest,
   ) => Stream.Stream<
     DescribePatchPropertiesResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePatchPropertiesRequest,
   ) => Stream.Stream<
     S.Schema.Type<typeof PatchPropertyEntry>,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePatchPropertiesRequest,
@@ -11783,8 +11778,8 @@ export const getMaintenanceWindowExecutionTask: (
   input: GetMaintenanceWindowExecutionTaskRequest,
 ) => Effect.Effect<
   GetMaintenanceWindowExecutionTaskResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowExecutionTaskRequest,
   output: GetMaintenanceWindowExecutionTaskResult,
@@ -11804,8 +11799,8 @@ export const getParameters: (
   input: GetParametersRequest,
 ) => Effect.Effect<
   GetParametersResult,
-  InternalServerError | InvalidKeyId | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidKeyId | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetParametersRequest,
   output: GetParametersResult,
@@ -11822,8 +11817,8 @@ export const listAssociationVersions: {
     | AssociationDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssociationVersionsRequest,
@@ -11832,8 +11827,8 @@ export const listAssociationVersions: {
     | AssociationDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAssociationVersionsRequest,
@@ -11842,8 +11837,8 @@ export const listAssociationVersions: {
     | AssociationDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssociationVersionsRequest,
@@ -11869,8 +11864,8 @@ export const listCommands: {
     | InvalidFilterKey
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListCommandsRequest,
@@ -11881,8 +11876,8 @@ export const listCommands: {
     | InvalidFilterKey
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListCommandsRequest,
@@ -11893,8 +11888,8 @@ export const listCommands: {
     | InvalidFilterKey
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCommandsRequest,
@@ -11921,31 +11916,22 @@ export const listDocumentVersions: {
     input: ListDocumentVersionsRequest,
   ): Effect.Effect<
     ListDocumentVersionsResult,
-    | InternalServerError
-    | InvalidDocument
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidDocument | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListDocumentVersionsRequest,
   ) => Stream.Stream<
     ListDocumentVersionsResult,
-    | InternalServerError
-    | InvalidDocument
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidDocument | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListDocumentVersionsRequest,
   ) => Stream.Stream<
     DocumentVersionInfo,
-    | InternalServerError
-    | InvalidDocument
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidDocument | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDocumentVersionsRequest,
@@ -11968,31 +11954,22 @@ export const listResourceComplianceSummaries: {
     input: ListResourceComplianceSummariesRequest,
   ): Effect.Effect<
     ListResourceComplianceSummariesResult,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceComplianceSummariesRequest,
   ) => Stream.Stream<
     ListResourceComplianceSummariesResult,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceComplianceSummariesRequest,
   ) => Stream.Stream<
     ResourceComplianceSummaryItem,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceComplianceSummariesRequest,
@@ -12015,8 +11992,8 @@ export const stopAutomationExecution: (
   | AutomationExecutionNotFoundException
   | InternalServerError
   | InvalidAutomationStatusUpdateException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopAutomationExecutionRequest,
   output: StopAutomationExecutionResult,
@@ -12053,8 +12030,8 @@ export const deleteOpsItem: (
   input: DeleteOpsItemRequest,
 ) => Effect.Effect<
   DeleteOpsItemResponse,
-  InternalServerError | OpsItemInvalidParameterException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | OpsItemInvalidParameterException | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOpsItemRequest,
   output: DeleteOpsItemResponse,
@@ -12071,8 +12048,8 @@ export const removeTagsFromResource: (
   | InvalidResourceId
   | InvalidResourceType
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceRequest,
   output: RemoveTagsFromResourceResult,
@@ -12104,8 +12081,8 @@ export const getCommandInvocation: (
   | InvalidInstanceId
   | InvalidPluginName
   | InvocationDoesNotExist
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCommandInvocationRequest,
   output: GetCommandInvocationResult,
@@ -12131,8 +12108,8 @@ export const deregisterManagedInstance: (
   input: DeregisterManagedInstanceRequest,
 ) => Effect.Effect<
   DeregisterManagedInstanceResult,
-  InternalServerError | InvalidInstanceId | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidInstanceId | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterManagedInstanceRequest,
   output: DeregisterManagedInstanceResult,
@@ -12147,8 +12124,8 @@ export const updateManagedInstanceRole: (
   input: UpdateManagedInstanceRoleRequest,
 ) => Effect.Effect<
   UpdateManagedInstanceRoleResult,
-  InternalServerError | InvalidInstanceId | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidInstanceId | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateManagedInstanceRoleRequest,
   output: UpdateManagedInstanceRoleResult,
@@ -12161,8 +12138,8 @@ export const deregisterTaskFromMaintenanceWindow: (
   input: DeregisterTaskFromMaintenanceWindowRequest,
 ) => Effect.Effect<
   DeregisterTaskFromMaintenanceWindowResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterTaskFromMaintenanceWindowRequest,
   output: DeregisterTaskFromMaintenanceWindowResult,
@@ -12175,8 +12152,8 @@ export const getMaintenanceWindow: (
   input: GetMaintenanceWindowRequest,
 ) => Effect.Effect<
   GetMaintenanceWindowResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowRequest,
   output: GetMaintenanceWindowResult,
@@ -12189,8 +12166,8 @@ export const getMaintenanceWindowExecution: (
   input: GetMaintenanceWindowExecutionRequest,
 ) => Effect.Effect<
   GetMaintenanceWindowExecutionResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowExecutionRequest,
   output: GetMaintenanceWindowExecutionResult,
@@ -12203,8 +12180,8 @@ export const getMaintenanceWindowExecutionTaskInvocation: (
   input: GetMaintenanceWindowExecutionTaskInvocationRequest,
 ) => Effect.Effect<
   GetMaintenanceWindowExecutionTaskInvocationResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowExecutionTaskInvocationRequest,
   output: GetMaintenanceWindowExecutionTaskInvocationResult,
@@ -12224,8 +12201,8 @@ export const getMaintenanceWindowTask: (
   input: GetMaintenanceWindowTaskRequest,
 ) => Effect.Effect<
   GetMaintenanceWindowTaskResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMaintenanceWindowTaskRequest,
   output: GetMaintenanceWindowTaskResult,
@@ -12241,8 +12218,8 @@ export const getPatchBaseline: (
   | DoesNotExistException
   | InternalServerError
   | InvalidResourceId
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPatchBaselineRequest,
   output: GetPatchBaselineResult,
@@ -12263,8 +12240,8 @@ export const registerDefaultPatchBaseline: (
   | DoesNotExistException
   | InternalServerError
   | InvalidResourceId
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterDefaultPatchBaselineRequest,
   output: RegisterDefaultPatchBaselineResult,
@@ -12281,8 +12258,8 @@ export const resumeSession: (
   input: ResumeSessionRequest,
 ) => Effect.Effect<
   ResumeSessionResponse,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResumeSessionRequest,
   output: ResumeSessionResponse,
@@ -12302,8 +12279,8 @@ export const updateMaintenanceWindow: (
   input: UpdateMaintenanceWindowRequest,
 ) => Effect.Effect<
   UpdateMaintenanceWindowResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMaintenanceWindowRequest,
   output: UpdateMaintenanceWindowResult,
@@ -12332,8 +12309,8 @@ export const updateMaintenanceWindowTarget: (
   input: UpdateMaintenanceWindowTargetRequest,
 ) => Effect.Effect<
   UpdateMaintenanceWindowTargetResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMaintenanceWindowTargetRequest,
   output: UpdateMaintenanceWindowTargetResult,
@@ -12381,8 +12358,8 @@ export const updateMaintenanceWindowTask: (
   input: UpdateMaintenanceWindowTaskRequest,
 ) => Effect.Effect<
   UpdateMaintenanceWindowTaskResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMaintenanceWindowTaskRequest,
   output: UpdateMaintenanceWindowTaskResult,
@@ -12399,8 +12376,8 @@ export const updatePatchBaseline: (
   input: UpdatePatchBaselineRequest,
 ) => Effect.Effect<
   UpdatePatchBaselineResult,
-  DoesNotExistException | InternalServerError | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  DoesNotExistException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePatchBaselineRequest,
   output: UpdatePatchBaselineResult,
@@ -12414,8 +12391,8 @@ export const startAssociationsOnce: (
   input: StartAssociationsOnceRequest,
 ) => Effect.Effect<
   StartAssociationsOnceResult,
-  AssociationDoesNotExist | InvalidAssociation | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  AssociationDoesNotExist | InvalidAssociation | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAssociationsOnceRequest,
   output: StartAssociationsOnceResult,
@@ -12429,31 +12406,22 @@ export const describeEffectiveInstanceAssociations: {
     input: DescribeEffectiveInstanceAssociationsRequest,
   ): Effect.Effect<
     DescribeEffectiveInstanceAssociationsResult,
-    | InternalServerError
-    | InvalidInstanceId
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidInstanceId | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEffectiveInstanceAssociationsRequest,
   ) => Stream.Stream<
     DescribeEffectiveInstanceAssociationsResult,
-    | InternalServerError
-    | InvalidInstanceId
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidInstanceId | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEffectiveInstanceAssociationsRequest,
   ) => Stream.Stream<
     InstanceAssociation,
-    | InternalServerError
-    | InvalidInstanceId
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidInstanceId | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEffectiveInstanceAssociationsRequest,
@@ -12474,22 +12442,22 @@ export const describeInstancePatchStates: {
     input: DescribeInstancePatchStatesRequest,
   ): Effect.Effect<
     DescribeInstancePatchStatesResult,
-    InternalServerError | InvalidNextToken | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstancePatchStatesRequest,
   ) => Stream.Stream<
     DescribeInstancePatchStatesResult,
-    InternalServerError | InvalidNextToken | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstancePatchStatesRequest,
   ) => Stream.Stream<
     InstancePatchState,
-    InternalServerError | InvalidNextToken | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancePatchStatesRequest,
@@ -12510,8 +12478,8 @@ export const deleteParameter: (
   input: DeleteParameterRequest,
 ) => Effect.Effect<
   DeleteParameterResult,
-  InternalServerError | ParameterNotFound | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ParameterNotFound | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteParameterRequest,
   output: DeleteParameterResult,
@@ -12530,8 +12498,8 @@ export const describeInstancePatches: {
     | InvalidFilter
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstancePatchesRequest,
@@ -12541,8 +12509,8 @@ export const describeInstancePatches: {
     | InvalidFilter
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstancePatchesRequest,
@@ -12552,8 +12520,8 @@ export const describeInstancePatches: {
     | InvalidFilter
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancePatchesRequest,
@@ -12580,31 +12548,22 @@ export const describeInstancePatchStatesForPatchGroup: {
     input: DescribeInstancePatchStatesForPatchGroupRequest,
   ): Effect.Effect<
     DescribeInstancePatchStatesForPatchGroupResult,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstancePatchStatesForPatchGroupRequest,
   ) => Stream.Stream<
     DescribeInstancePatchStatesForPatchGroupResult,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstancePatchStatesForPatchGroupRequest,
   ) => Stream.Stream<
     InstancePatchState,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancePatchStatesForPatchGroupRequest,
@@ -12638,11 +12597,8 @@ export const updateServiceSetting: (
   input: UpdateServiceSettingRequest,
 ) => Effect.Effect<
   UpdateServiceSettingResult,
-  | InternalServerError
-  | ServiceSettingNotFound
-  | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ServiceSettingNotFound | TooManyUpdates | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceSettingRequest,
   output: UpdateServiceSettingResult,
@@ -12669,8 +12625,8 @@ export const getServiceSetting: (
   input: GetServiceSettingRequest,
 ) => Effect.Effect<
   GetServiceSettingResult,
-  InternalServerError | ServiceSettingNotFound | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ServiceSettingNotFound | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceSettingRequest,
   output: GetServiceSettingResult,
@@ -12717,8 +12673,8 @@ export const addTagsToResource: (
   | InvalidResourceType
   | TooManyTagsError
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToResourceRequest,
   output: AddTagsToResourceResult,
@@ -12749,8 +12705,8 @@ export const deleteAssociation: (
   | InvalidDocument
   | InvalidInstanceId
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAssociationRequest,
   output: DeleteAssociationResult,
@@ -12784,11 +12740,8 @@ export const resetServiceSetting: (
   input: ResetServiceSettingRequest,
 ) => Effect.Effect<
   ResetServiceSettingResult,
-  | InternalServerError
-  | ServiceSettingNotFound
-  | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ServiceSettingNotFound | TooManyUpdates | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetServiceSettingRequest,
   output: ResetServiceSettingResult,
@@ -12812,8 +12765,8 @@ export const updateAssociationStatus: (
   | InvalidInstanceId
   | StatusUnchanged
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAssociationStatusRequest,
   output: UpdateAssociationStatusResult,
@@ -12841,8 +12794,8 @@ export const createActivation: (
   input: CreateActivationRequest,
 ) => Effect.Effect<
   CreateActivationResult,
-  InternalServerError | InvalidParameters | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidParameters | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateActivationRequest,
   output: CreateActivationResult,
@@ -12865,8 +12818,8 @@ export const createMaintenanceWindow: (
   | IdempotentParameterMismatch
   | InternalServerError
   | ResourceLimitExceededException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMaintenanceWindowRequest,
   output: CreateMaintenanceWindowResult,
@@ -12889,8 +12842,8 @@ export const createPatchBaseline: (
   | IdempotentParameterMismatch
   | InternalServerError
   | ResourceLimitExceededException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePatchBaselineRequest,
   output: CreatePatchBaselineResult,
@@ -12911,31 +12864,22 @@ export const describeActivations: {
     input: DescribeActivationsRequest,
   ): Effect.Effect<
     DescribeActivationsResult,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeActivationsRequest,
   ) => Stream.Stream<
     DescribeActivationsResult,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeActivationsRequest,
   ) => Stream.Stream<
     Activation,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeActivationsRequest,
@@ -12959,8 +12903,8 @@ export const describeAssociationExecutions: {
     | AssociationDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAssociationExecutionsRequest,
@@ -12969,8 +12913,8 @@ export const describeAssociationExecutions: {
     | AssociationDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAssociationExecutionsRequest,
@@ -12979,8 +12923,8 @@ export const describeAssociationExecutions: {
     | AssociationDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAssociationExecutionsRequest,
@@ -13007,8 +12951,8 @@ export const describeAutomationStepExecutions: {
     | InvalidFilterKey
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAutomationStepExecutionsRequest,
@@ -13019,8 +12963,8 @@ export const describeAutomationStepExecutions: {
     | InvalidFilterKey
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAutomationStepExecutionsRequest,
@@ -13031,8 +12975,8 @@ export const describeAutomationStepExecutions: {
     | InvalidFilterKey
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAutomationStepExecutionsRequest,
@@ -13062,8 +13006,8 @@ export const describeInventoryDeletions: {
     | InternalServerError
     | InvalidDeletionIdException
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInventoryDeletionsRequest,
@@ -13072,8 +13016,8 @@ export const describeInventoryDeletions: {
     | InternalServerError
     | InvalidDeletionIdException
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInventoryDeletionsRequest,
@@ -13082,8 +13026,8 @@ export const describeInventoryDeletions: {
     | InternalServerError
     | InvalidDeletionIdException
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInventoryDeletionsRequest,
@@ -13106,22 +13050,22 @@ export const describeMaintenanceWindowExecutions: {
     input: DescribeMaintenanceWindowExecutionsRequest,
   ): Effect.Effect<
     DescribeMaintenanceWindowExecutionsResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMaintenanceWindowExecutionsRequest,
   ) => Stream.Stream<
     DescribeMaintenanceWindowExecutionsResult,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMaintenanceWindowExecutionsRequest,
   ) => Stream.Stream<
     MaintenanceWindowExecution,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMaintenanceWindowExecutionsRequest,
@@ -13148,22 +13092,22 @@ export const describeOpsItems: {
     input: DescribeOpsItemsRequest,
   ): Effect.Effect<
     DescribeOpsItemsResponse,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOpsItemsRequest,
   ) => Stream.Stream<
     DescribeOpsItemsResponse,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOpsItemsRequest,
   ) => Stream.Stream<
     OpsItemSummary,
-    InternalServerError | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOpsItemsRequest,
@@ -13206,8 +13150,8 @@ export const describeParameters: {
     | InvalidFilterOption
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeParametersRequest,
@@ -13218,8 +13162,8 @@ export const describeParameters: {
     | InvalidFilterOption
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeParametersRequest,
@@ -13230,8 +13174,8 @@ export const describeParameters: {
     | InvalidFilterOption
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeParametersRequest,
@@ -13256,11 +13200,8 @@ export const getDocument: (
   input: GetDocumentRequest,
 ) => Effect.Effect<
   GetDocumentResult,
-  | InternalServerError
-  | InvalidDocument
-  | InvalidDocumentVersion
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidDocument | InvalidDocumentVersion | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentRequest,
   output: GetDocumentResult,
@@ -13276,8 +13217,8 @@ export const getOpsMetadata: (
   | InternalServerError
   | OpsMetadataInvalidArgumentException
   | OpsMetadataNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOpsMetadataRequest,
   output: GetOpsMetadataResult,
@@ -13308,8 +13249,8 @@ export const getParameterHistory: {
     | InvalidKeyId
     | InvalidNextToken
     | ParameterNotFound
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetParameterHistoryRequest,
@@ -13319,8 +13260,8 @@ export const getParameterHistory: {
     | InvalidKeyId
     | InvalidNextToken
     | ParameterNotFound
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetParameterHistoryRequest,
@@ -13330,8 +13271,8 @@ export const getParameterHistory: {
     | InvalidKeyId
     | InvalidNextToken
     | ParameterNotFound
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetParameterHistoryRequest,
@@ -13358,22 +13299,22 @@ export const listAssociations: {
     input: ListAssociationsRequest,
   ): Effect.Effect<
     ListAssociationsResult,
-    InternalServerError | InvalidNextToken | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssociationsRequest,
   ) => Stream.Stream<
     ListAssociationsResult,
-    InternalServerError | InvalidNextToken | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAssociationsRequest,
   ) => Stream.Stream<
     Association,
-    InternalServerError | InvalidNextToken | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssociationsRequest,
@@ -13401,8 +13342,8 @@ export const listComplianceItems: {
     | InvalidNextToken
     | InvalidResourceId
     | InvalidResourceType
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListComplianceItemsRequest,
@@ -13413,8 +13354,8 @@ export const listComplianceItems: {
     | InvalidNextToken
     | InvalidResourceId
     | InvalidResourceType
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListComplianceItemsRequest,
@@ -13425,8 +13366,8 @@ export const listComplianceItems: {
     | InvalidNextToken
     | InvalidResourceId
     | InvalidResourceType
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComplianceItemsRequest,
@@ -13461,8 +13402,8 @@ export const listDocumentMetadataHistory: (
   | InvalidDocument
   | InvalidDocumentVersion
   | InvalidNextToken
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDocumentMetadataHistoryRequest,
   output: ListDocumentMetadataHistoryResponse,
@@ -13482,31 +13423,22 @@ export const listDocuments: {
     input: ListDocumentsRequest,
   ): Effect.Effect<
     ListDocumentsResult,
-    | InternalServerError
-    | InvalidFilterKey
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilterKey | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListDocumentsRequest,
   ) => Stream.Stream<
     ListDocumentsResult,
-    | InternalServerError
-    | InvalidFilterKey
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilterKey | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListDocumentsRequest,
   ) => Stream.Stream<
     DocumentIdentifier,
-    | InternalServerError
-    | InvalidFilterKey
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilterKey | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDocumentsRequest,
@@ -13531,8 +13463,8 @@ export const listInventoryEntries: (
   | InvalidInstanceId
   | InvalidNextToken
   | InvalidTypeNameException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListInventoryEntriesRequest,
   output: ListInventoryEntriesResult,
@@ -13553,28 +13485,22 @@ export const listOpsItemRelatedItems: {
     input: ListOpsItemRelatedItemsRequest,
   ): Effect.Effect<
     ListOpsItemRelatedItemsResponse,
-    | InternalServerError
-    | OpsItemInvalidParameterException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | OpsItemInvalidParameterException | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListOpsItemRelatedItemsRequest,
   ) => Stream.Stream<
     ListOpsItemRelatedItemsResponse,
-    | InternalServerError
-    | OpsItemInvalidParameterException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | OpsItemInvalidParameterException | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListOpsItemRelatedItemsRequest,
   ) => Stream.Stream<
     OpsItemRelatedItemSummary,
-    | InternalServerError
-    | OpsItemInvalidParameterException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | OpsItemInvalidParameterException | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOpsItemRelatedItemsRequest,
@@ -13596,28 +13522,22 @@ export const listOpsMetadata: {
     input: ListOpsMetadataRequest,
   ): Effect.Effect<
     ListOpsMetadataResult,
-    | InternalServerError
-    | OpsMetadataInvalidArgumentException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | OpsMetadataInvalidArgumentException | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListOpsMetadataRequest,
   ) => Stream.Stream<
     ListOpsMetadataResult,
-    | InternalServerError
-    | OpsMetadataInvalidArgumentException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | OpsMetadataInvalidArgumentException | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListOpsMetadataRequest,
   ) => Stream.Stream<
     OpsMetadata,
-    | InternalServerError
-    | OpsMetadataInvalidArgumentException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | OpsMetadataInvalidArgumentException | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOpsMetadataRequest,
@@ -13650,8 +13570,8 @@ export const listResourceDataSync: {
     | InternalServerError
     | InvalidNextToken
     | ResourceDataSyncInvalidConfigurationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceDataSyncRequest,
@@ -13660,8 +13580,8 @@ export const listResourceDataSync: {
     | InternalServerError
     | InvalidNextToken
     | ResourceDataSyncInvalidConfigurationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceDataSyncRequest,
@@ -13670,8 +13590,8 @@ export const listResourceDataSync: {
     | InternalServerError
     | InvalidNextToken
     | ResourceDataSyncInvalidConfigurationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceDataSyncRequest,
@@ -13703,8 +13623,8 @@ export const modifyDocumentPermission: (
   | InternalServerError
   | InvalidDocument
   | InvalidPermissionType
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDocumentPermissionRequest,
   output: ModifyDocumentPermissionResponse,
@@ -13732,11 +13652,8 @@ export const startSession: (
   input: StartSessionRequest,
 ) => Effect.Effect<
   StartSessionResponse,
-  | InternalServerError
-  | InvalidDocument
-  | TargetNotConnected
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidDocument | TargetNotConnected | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSessionRequest,
   output: StartSessionResponse,
@@ -13757,8 +13674,8 @@ export const updateDocumentDefaultVersion: (
   | InvalidDocument
   | InvalidDocumentSchemaVersion
   | InvalidDocumentVersion
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDocumentDefaultVersionRequest,
   output: UpdateDocumentDefaultVersionResult,
@@ -13782,8 +13699,8 @@ export const deleteActivation: (
   | InvalidActivation
   | InvalidActivationId
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteActivationRequest,
   output: DeleteActivationResult,
@@ -13806,8 +13723,8 @@ export const deleteResourceDataSync: (
   | InternalServerError
   | ResourceDataSyncInvalidConfigurationException
   | ResourceDataSyncNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceDataSyncRequest,
   output: DeleteResourceDataSyncResult,
@@ -13827,8 +13744,8 @@ export const deregisterTargetFromMaintenanceWindow: (
   | DoesNotExistException
   | InternalServerError
   | TargetInUseException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterTargetFromMaintenanceWindowRequest,
   output: DeregisterTargetFromMaintenanceWindowResult,
@@ -13846,8 +13763,8 @@ export const registerPatchBaselineForPatchGroup: (
   | InternalServerError
   | InvalidResourceId
   | ResourceLimitExceededException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterPatchBaselineForPatchGroupRequest,
   output: RegisterPatchBaselineForPatchGroupResult,
@@ -13870,8 +13787,8 @@ export const registerTargetWithMaintenanceWindow: (
   | IdempotentParameterMismatch
   | InternalServerError
   | ResourceLimitExceededException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterTargetWithMaintenanceWindowRequest,
   output: RegisterTargetWithMaintenanceWindowResult,
@@ -13907,8 +13824,8 @@ export const getParametersByPath: {
     | InvalidFilterValue
     | InvalidKeyId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetParametersByPathRequest,
@@ -13920,8 +13837,8 @@ export const getParametersByPath: {
     | InvalidFilterValue
     | InvalidKeyId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetParametersByPathRequest,
@@ -13933,8 +13850,8 @@ export const getParametersByPath: {
     | InvalidFilterValue
     | InvalidKeyId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetParametersByPathRequest,
@@ -13965,8 +13882,8 @@ export const describeAutomationExecutions: {
     | InvalidFilterKey
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAutomationExecutionsRequest,
@@ -13976,8 +13893,8 @@ export const describeAutomationExecutions: {
     | InvalidFilterKey
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAutomationExecutionsRequest,
@@ -13987,8 +13904,8 @@ export const describeAutomationExecutions: {
     | InvalidFilterKey
     | InvalidFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAutomationExecutionsRequest,
@@ -14024,8 +13941,8 @@ export const updateDocumentMetadata: (
   | InvalidDocumentOperation
   | InvalidDocumentVersion
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDocumentMetadataRequest,
   output: UpdateDocumentMetadataResponse,
@@ -14052,8 +13969,8 @@ export const deleteDocument: (
   | InvalidDocument
   | InvalidDocumentOperation
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDocumentRequest,
   output: DeleteDocumentResult,
@@ -14072,11 +13989,8 @@ export const describeDocument: (
   input: DescribeDocumentRequest,
 ) => Effect.Effect<
   DescribeDocumentResult,
-  | InternalServerError
-  | InvalidDocument
-  | InvalidDocumentVersion
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidDocument | InvalidDocumentVersion | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDocumentRequest,
   output: DescribeDocumentResult,
@@ -14092,8 +14006,8 @@ export const deleteOpsMetadata: (
   | InternalServerError
   | OpsMetadataInvalidArgumentException
   | OpsMetadataNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOpsMetadataRequest,
   output: DeleteOpsMetadataResult,
@@ -14120,8 +14034,8 @@ export const getParameter: (
   | InvalidKeyId
   | ParameterNotFound
   | ParameterVersionNotFound
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetParameterRequest,
   output: GetParameterResult,
@@ -14144,8 +14058,8 @@ export const getInventorySchema: {
     | InternalServerError
     | InvalidNextToken
     | InvalidTypeNameException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetInventorySchemaRequest,
@@ -14154,8 +14068,8 @@ export const getInventorySchema: {
     | InternalServerError
     | InvalidNextToken
     | InvalidTypeNameException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetInventorySchemaRequest,
@@ -14164,8 +14078,8 @@ export const getInventorySchema: {
     | InternalServerError
     | InvalidNextToken
     | InvalidTypeNameException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetInventorySchemaRequest,
@@ -14192,8 +14106,8 @@ export const describeDocumentPermission: (
   | InvalidDocumentOperation
   | InvalidNextToken
   | InvalidPermissionType
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDocumentPermissionRequest,
   output: DescribeDocumentPermissionResponse,
@@ -14217,8 +14131,8 @@ export const sendAutomationSignal: (
   | AutomationStepNotFoundException
   | InternalServerError
   | InvalidAutomationSignalException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendAutomationSignalRequest,
   output: SendAutomationSignalResult,
@@ -14248,8 +14162,8 @@ export const updateResourceDataSync: (
   | ResourceDataSyncConflictException
   | ResourceDataSyncInvalidConfigurationException
   | ResourceDataSyncNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResourceDataSyncRequest,
   output: UpdateResourceDataSyncResult,
@@ -14277,8 +14191,8 @@ export const getOpsItem: (
   | InternalServerError
   | OpsItemAccessDeniedException
   | OpsItemNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOpsItemRequest,
   output: GetOpsItemResponse,
@@ -14306,8 +14220,8 @@ export const createOpsItem: (
   | OpsItemAlreadyExistsException
   | OpsItemInvalidParameterException
   | OpsItemLimitExceededException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOpsItemRequest,
   output: CreateOpsItemResponse,
@@ -14334,8 +14248,8 @@ export const unlabelParameterVersion: (
   | ParameterNotFound
   | ParameterVersionNotFound
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnlabelParameterVersionRequest,
   output: UnlabelParameterVersionResult,
@@ -14389,8 +14303,8 @@ export const labelParameterVersion: (
   | ParameterVersionLabelLimitExceeded
   | ParameterVersionNotFound
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: LabelParameterVersionRequest,
   output: LabelParameterVersionResult,
@@ -14422,8 +14336,8 @@ export const updateOpsItem: (
   | OpsItemInvalidParameterException
   | OpsItemLimitExceededException
   | OpsItemNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateOpsItemRequest,
   output: UpdateOpsItemResponse,
@@ -14451,8 +14365,8 @@ export const describeAssociation: (
   | InvalidAssociationVersion
   | InvalidDocument
   | InvalidInstanceId
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAssociationRequest,
   output: DescribeAssociationResult,
@@ -14477,8 +14391,8 @@ export const describeEffectivePatchesForPatchBaseline: {
     | InternalServerError
     | InvalidResourceId
     | UnsupportedOperatingSystem
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEffectivePatchesForPatchBaselineRequest,
@@ -14488,8 +14402,8 @@ export const describeEffectivePatchesForPatchBaseline: {
     | InternalServerError
     | InvalidResourceId
     | UnsupportedOperatingSystem
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEffectivePatchesForPatchBaselineRequest,
@@ -14499,8 +14413,8 @@ export const describeEffectivePatchesForPatchBaseline: {
     | InternalServerError
     | InvalidResourceId
     | UnsupportedOperatingSystem
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEffectivePatchesForPatchBaselineRequest,
@@ -14526,31 +14440,22 @@ export const describeInstanceAssociationsStatus: {
     input: DescribeInstanceAssociationsStatusRequest,
   ): Effect.Effect<
     DescribeInstanceAssociationsStatusResult,
-    | InternalServerError
-    | InvalidInstanceId
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidInstanceId | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceAssociationsStatusRequest,
   ) => Stream.Stream<
     DescribeInstanceAssociationsStatusResult,
-    | InternalServerError
-    | InvalidInstanceId
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidInstanceId | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceAssociationsStatusRequest,
   ) => Stream.Stream<
     InstanceAssociationStatusInfo,
-    | InternalServerError
-    | InvalidInstanceId
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidInstanceId | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceAssociationsStatusRequest,
@@ -14572,31 +14477,22 @@ export const describeSessions: {
     input: DescribeSessionsRequest,
   ): Effect.Effect<
     DescribeSessionsResponse,
-    | InternalServerError
-    | InvalidFilterKey
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilterKey | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSessionsRequest,
   ) => Stream.Stream<
     DescribeSessionsResponse,
-    | InternalServerError
-    | InvalidFilterKey
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilterKey | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSessionsRequest,
   ) => Stream.Stream<
     Session,
-    | InternalServerError
-    | InvalidFilterKey
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilterKey | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSessionsRequest,
@@ -14616,10 +14512,8 @@ export const getAutomationExecution: (
   input: GetAutomationExecutionRequest,
 ) => Effect.Effect<
   GetAutomationExecutionResult,
-  | AutomationExecutionNotFoundException
-  | InternalServerError
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  AutomationExecutionNotFoundException | InternalServerError | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAutomationExecutionRequest,
   output: GetAutomationExecutionResult,
@@ -14633,8 +14527,8 @@ export const getExecutionPreview: (
   input: GetExecutionPreviewRequest,
 ) => Effect.Effect<
   GetExecutionPreviewResponse,
-  InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ResourceNotFoundException | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExecutionPreviewRequest,
   output: GetExecutionPreviewResponse,
@@ -14651,8 +14545,8 @@ export const getResourcePolicies: {
     | InternalServerError
     | ResourceNotFoundException
     | ResourcePolicyInvalidParameterException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourcePoliciesRequest,
@@ -14661,8 +14555,8 @@ export const getResourcePolicies: {
     | InternalServerError
     | ResourceNotFoundException
     | ResourcePolicyInvalidParameterException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetResourcePoliciesRequest,
@@ -14671,8 +14565,8 @@ export const getResourcePolicies: {
     | InternalServerError
     | ResourceNotFoundException
     | ResourcePolicyInvalidParameterException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourcePoliciesRequest,
@@ -14706,8 +14600,8 @@ export const listCommandInvocations: {
     | InvalidFilterKey
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListCommandInvocationsRequest,
@@ -14718,8 +14612,8 @@ export const listCommandInvocations: {
     | InvalidFilterKey
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListCommandInvocationsRequest,
@@ -14730,8 +14624,8 @@ export const listCommandInvocations: {
     | InvalidFilterKey
     | InvalidInstanceId
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCommandInvocationsRequest,
@@ -14760,31 +14654,22 @@ export const listComplianceSummaries: {
     input: ListComplianceSummariesRequest,
   ): Effect.Effect<
     ListComplianceSummariesResult,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListComplianceSummariesRequest,
   ) => Stream.Stream<
     ListComplianceSummariesResult,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListComplianceSummariesRequest,
   ) => Stream.Stream<
     ComplianceSummaryItem,
-    | InternalServerError
-    | InvalidFilter
-    | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidFilter | InvalidNextToken | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComplianceSummariesRequest,
@@ -14810,8 +14695,8 @@ export const listOpsItemEvents: {
     | OpsItemInvalidParameterException
     | OpsItemLimitExceededException
     | OpsItemNotFoundException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListOpsItemEventsRequest,
@@ -14821,8 +14706,8 @@ export const listOpsItemEvents: {
     | OpsItemInvalidParameterException
     | OpsItemLimitExceededException
     | OpsItemNotFoundException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListOpsItemEventsRequest,
@@ -14832,8 +14717,8 @@ export const listOpsItemEvents: {
     | OpsItemInvalidParameterException
     | OpsItemLimitExceededException
     | OpsItemNotFoundException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOpsItemEventsRequest,
@@ -14863,8 +14748,8 @@ export const registerTaskWithMaintenanceWindow: (
   | IdempotentParameterMismatch
   | InternalServerError
   | ResourceLimitExceededException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterTaskWithMaintenanceWindowRequest,
   output: RegisterTaskWithMaintenanceWindowResult,
@@ -14884,8 +14769,8 @@ export const startExecutionPreview: (
   input: StartExecutionPreviewRequest,
 ) => Effect.Effect<
   StartExecutionPreviewResponse,
-  InternalServerError | ValidationException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ValidationException | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartExecutionPreviewRequest,
   output: StartExecutionPreviewResponse,
@@ -14905,8 +14790,8 @@ export const disassociateOpsItemRelatedItem: (
   | OpsItemInvalidParameterException
   | OpsItemNotFoundException
   | OpsItemRelatedItemAssociationNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateOpsItemRelatedItemRequest,
   output: DisassociateOpsItemRelatedItemResponse,
@@ -14939,8 +14824,8 @@ export const getCalendarState: (
   | InvalidDocument
   | InvalidDocumentType
   | UnsupportedCalendarException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCalendarStateRequest,
   output: GetCalendarStateResponse,
@@ -14968,8 +14853,8 @@ export const getDeployablePatchSnapshotForInstance: (
   | InternalServerError
   | UnsupportedFeatureRequiredException
   | UnsupportedOperatingSystem
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeployablePatchSnapshotForInstanceRequest,
   output: GetDeployablePatchSnapshotForInstanceResult,
@@ -14991,8 +14876,8 @@ export const updateOpsMetadata: (
   | OpsMetadataKeyLimitExceededException
   | OpsMetadataNotFoundException
   | OpsMetadataTooManyUpdatesException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateOpsMetadataRequest,
   output: UpdateOpsMetadataResult,
@@ -15016,8 +14901,8 @@ export const getAccessToken: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessTokenRequest,
   output: GetAccessTokenResponse,
@@ -15045,8 +14930,8 @@ export const describeInstanceProperties: {
     | InvalidInstanceId
     | InvalidInstancePropertyFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstancePropertiesRequest,
@@ -15059,8 +14944,8 @@ export const describeInstanceProperties: {
     | InvalidInstanceId
     | InvalidInstancePropertyFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstancePropertiesRequest,
@@ -15073,8 +14958,8 @@ export const describeInstanceProperties: {
     | InvalidInstanceId
     | InvalidInstancePropertyFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancePropertiesRequest,
@@ -15110,8 +14995,8 @@ export const associateOpsItemRelatedItem: (
   | OpsItemLimitExceededException
   | OpsItemNotFoundException
   | OpsItemRelatedItemAlreadyExistsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateOpsItemRelatedItemRequest,
   output: AssociateOpsItemRelatedItemResponse,
@@ -15137,8 +15022,8 @@ export const startAccessRequest: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAccessRequestRequest,
   output: StartAccessRequestResponse,
@@ -15164,8 +15049,8 @@ export const createOpsMetadata: (
   | OpsMetadataInvalidArgumentException
   | OpsMetadataLimitExceededException
   | OpsMetadataTooManyUpdatesException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOpsMetadataRequest,
   output: CreateOpsMetadataResult,
@@ -15210,8 +15095,8 @@ export const createResourceDataSync: (
   | ResourceDataSyncAlreadyExistsException
   | ResourceDataSyncCountExceededException
   | ResourceDataSyncInvalidConfigurationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceDataSyncRequest,
   output: CreateResourceDataSyncResult,
@@ -15234,8 +15119,8 @@ export const describeAssociationExecutionTargets: {
     | AssociationExecutionDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAssociationExecutionTargetsRequest,
@@ -15245,8 +15130,8 @@ export const describeAssociationExecutionTargets: {
     | AssociationExecutionDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAssociationExecutionTargetsRequest,
@@ -15256,8 +15141,8 @@ export const describeAssociationExecutionTargets: {
     | AssociationExecutionDoesNotExist
     | InternalServerError
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAssociationExecutionTargetsRequest,
@@ -15290,8 +15175,8 @@ export const listNodesSummary: {
     | InvalidNextToken
     | ResourceDataSyncNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListNodesSummaryRequest,
@@ -15303,8 +15188,8 @@ export const listNodesSummary: {
     | InvalidNextToken
     | ResourceDataSyncNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListNodesSummaryRequest,
@@ -15316,8 +15201,8 @@ export const listNodesSummary: {
     | InvalidNextToken
     | ResourceDataSyncNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesSummaryRequest,
@@ -15354,8 +15239,8 @@ export const updateDocument: (
   | InvalidDocumentSchemaVersion
   | InvalidDocumentVersion
   | MaxDocumentSizeExceeded
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDocumentRequest,
   output: UpdateDocumentResult,
@@ -15385,8 +15270,8 @@ export const listNodes: {
     | InvalidNextToken
     | ResourceDataSyncNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListNodesRequest,
@@ -15397,8 +15282,8 @@ export const listNodes: {
     | InvalidNextToken
     | ResourceDataSyncNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListNodesRequest,
@@ -15409,8 +15294,8 @@ export const listNodes: {
     | InvalidNextToken
     | ResourceDataSyncNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
@@ -15443,8 +15328,8 @@ export const startAutomationExecution: (
   | InternalServerError
   | InvalidAutomationExecutionParametersException
   | InvalidTarget
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAutomationExecutionRequest,
   output: StartAutomationExecutionResult,
@@ -15480,8 +15365,8 @@ export const deleteResourcePolicy: (
   | ResourcePolicyConflictException
   | ResourcePolicyInvalidParameterException
   | ResourcePolicyNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -15534,8 +15419,8 @@ export const putResourcePolicy: (
   | ResourcePolicyInvalidParameterException
   | ResourcePolicyLimitExceededException
   | ResourcePolicyNotFoundException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -15567,8 +15452,8 @@ export const createDocument: (
   | MaxDocumentSizeExceeded
   | NoLongerSupportedException
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDocumentRequest,
   output: CreateDocumentResult,
@@ -15596,8 +15481,8 @@ export const deleteInventory: (
   | InvalidInventoryRequestException
   | InvalidOptionException
   | InvalidTypeNameException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInventoryRequest,
   output: DeleteInventoryResult,
@@ -15632,8 +15517,8 @@ export const describeInstanceInformation: {
     | InvalidInstanceId
     | InvalidInstanceInformationFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceInformationRequest,
@@ -15644,8 +15529,8 @@ export const describeInstanceInformation: {
     | InvalidInstanceId
     | InvalidInstanceInformationFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceInformationRequest,
@@ -15656,8 +15541,8 @@ export const describeInstanceInformation: {
     | InvalidInstanceId
     | InvalidInstanceInformationFilterValue
     | InvalidNextToken
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceInformationRequest,
@@ -15736,8 +15621,8 @@ export const putComplianceItems: (
   | InvalidResourceType
   | ItemSizeLimitExceededException
   | TotalSizeLimitExceededException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutComplianceItemsRequest,
   output: PutComplianceItemsResult,
@@ -15773,8 +15658,8 @@ export const startChangeRequestExecution: (
   | InternalServerError
   | InvalidAutomationExecutionParametersException
   | NoLongerSupportedException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartChangeRequestExecutionRequest,
   output: StartChangeRequestExecutionResult,
@@ -15807,8 +15692,8 @@ export const sendCommand: (
   | InvalidRole
   | MaxDocumentSizeExceeded
   | UnsupportedPlatformType
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendCommandRequest,
   output: SendCommandResult,
@@ -15855,8 +15740,8 @@ export const createAssociation: (
   | InvalidTarget
   | InvalidTargetMaps
   | UnsupportedPlatformType
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAssociationRequest,
   output: CreateAssociationResult,
@@ -15903,8 +15788,8 @@ export const createAssociationBatch: (
   | InvalidTarget
   | InvalidTargetMaps
   | UnsupportedPlatformType
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAssociationBatchRequest,
   output: CreateAssociationBatchResult,
@@ -15940,8 +15825,8 @@ export const getOpsSummary: {
     | InvalidNextToken
     | InvalidTypeNameException
     | ResourceDataSyncNotFoundException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetOpsSummaryRequest,
@@ -15953,8 +15838,8 @@ export const getOpsSummary: {
     | InvalidNextToken
     | InvalidTypeNameException
     | ResourceDataSyncNotFoundException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetOpsSummaryRequest,
@@ -15966,8 +15851,8 @@ export const getOpsSummary: {
     | InvalidNextToken
     | InvalidTypeNameException
     | ResourceDataSyncNotFoundException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetOpsSummaryRequest,
@@ -16024,8 +15909,8 @@ export const updateAssociation: (
   | InvalidTargetMaps
   | InvalidUpdate
   | TooManyUpdates
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAssociationRequest,
   output: UpdateAssociationResult,
@@ -16061,8 +15946,8 @@ export const getInventory: {
     | InvalidNextToken
     | InvalidResultAttributeException
     | InvalidTypeNameException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetInventoryRequest,
@@ -16075,8 +15960,8 @@ export const getInventory: {
     | InvalidNextToken
     | InvalidResultAttributeException
     | InvalidTypeNameException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetInventoryRequest,
@@ -16089,8 +15974,8 @@ export const getInventory: {
     | InvalidNextToken
     | InvalidResultAttributeException
     | InvalidTypeNameException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetInventoryRequest,
@@ -16132,8 +16017,8 @@ export const putInventory: (
   | TotalSizeLimitExceededException
   | UnsupportedInventoryItemContextException
   | UnsupportedInventorySchemaVersionException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutInventoryRequest,
   output: PutInventoryResult,
@@ -16174,8 +16059,8 @@ export const putParameter: (
   | PoliciesLimitExceededException
   | TooManyUpdates
   | UnsupportedParameterType
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutParameterRequest,
   output: PutParameterResult,

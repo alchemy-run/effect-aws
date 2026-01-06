@@ -18,7 +18,7 @@ import {
   HEADER_MESSAGE_TYPE,
 } from "../../src/eventstream/codec.ts";
 import { restJson1Protocol } from "../../src/protocols/rest-json.ts";
-import { makeRequestBuilder } from "../../src/request-builder.ts";
+import { makeRequestBuilder } from "../../src/client/request-builder.ts";
 import {
   AudioEvent,
   AudioStream,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "neptunedata",
@@ -2196,170 +2194,150 @@ export const GetRDFGraphSummaryOutput = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClientTimeoutException extends S.TaggedError<ClientTimeoutException>()(
   "ClientTimeoutException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-) {}
+).pipe(C.withTimeoutError, C.withRetryableError) {}
 export class CancelledByUserException extends S.TaggedError<CancelledByUserException>()(
   "CancelledByUserException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConstraintViolationException extends S.TaggedError<ConstraintViolationException>()(
   "ConstraintViolationException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-) {}
+).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class BulkLoadIdNotFoundException extends S.TaggedError<BulkLoadIdNotFoundException>()(
   "BulkLoadIdNotFoundException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-) {}
+).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class IllegalArgumentException extends S.TaggedError<IllegalArgumentException>()(
   "IllegalArgumentException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FailureByQueryException extends S.TaggedError<FailureByQueryException>()(
   "FailureByQueryException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ExpiredStreamException extends S.TaggedError<ExpiredStreamException>()(
   "ExpiredStreamException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalFailureException extends S.TaggedError<InternalFailureException>()(
   "InternalFailureException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidArgumentException extends S.TaggedError<InvalidArgumentException>()(
   "InvalidArgumentException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNumericDataException extends S.TaggedError<InvalidNumericDataException>()(
   "InvalidNumericDataException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PreconditionsFailedException extends S.TaggedError<PreconditionsFailedException>()(
   "PreconditionsFailedException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MissingParameterException extends S.TaggedError<MissingParameterException>()(
   "MissingParameterException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MalformedQueryException extends S.TaggedError<MalformedQueryException>()(
   "MalformedQueryException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class LoadUrlAccessDeniedException extends S.TaggedError<LoadUrlAccessDeniedException>()(
   "LoadUrlAccessDeniedException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MemoryLimitExceededException extends S.TaggedError<MemoryLimitExceededException>()(
   "MemoryLimitExceededException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class MethodNotAllowedException extends S.TaggedError<MethodNotAllowedException>()(
   "MethodNotAllowedException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ParsingException extends S.TaggedError<ParsingException>()(
   "ParsingException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedOperationException extends S.TaggedError<UnsupportedOperationException>()(
   "UnsupportedOperationException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class StreamRecordsNotFoundException extends S.TaggedError<StreamRecordsNotFoundException>()(
   "StreamRecordsNotFoundException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReadOnlyViolationException extends S.TaggedError<ReadOnlyViolationException>()(
   "ReadOnlyViolationException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MLResourceNotFoundException extends S.TaggedError<MLResourceNotFoundException>()(
   "MLResourceNotFoundException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class S3Exception extends S.TaggedError<S3Exception>()(
   "S3Exception",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-) {}
+).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ServerShutdownException extends S.TaggedError<ServerShutdownException>()(
   "ServerShutdownException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class TimeLimitExceededException extends S.TaggedError<TimeLimitExceededException>()(
   "TimeLimitExceededException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class QueryLimitExceededException extends S.TaggedError<QueryLimitExceededException>()(
   "QueryLimitExceededException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class StatisticsNotAvailableException extends S.TaggedError<StatisticsNotAvailableException>()(
   "StatisticsNotAvailableException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class QueryLimitException extends S.TaggedError<QueryLimitException>()(
   "QueryLimitException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class QueryTooLargeException extends S.TaggedError<QueryTooLargeException>()(
   "QueryTooLargeException",
   { detailedMessage: S.String, requestId: S.String, code: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2379,8 +2357,8 @@ export const getEngineStatus: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEngineStatusRequest,
   output: GetEngineStatusOutput,
@@ -2415,8 +2393,8 @@ export const getMLDataProcessingJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMLDataProcessingJobInput,
   output: GetMLDataProcessingJobOutput,
@@ -2455,8 +2433,8 @@ export const listLoaderJobs: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLoaderJobsInput,
   output: ListLoaderJobsOutput,
@@ -2497,8 +2475,8 @@ export const cancelLoaderJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelLoaderJobInput,
   output: CancelLoaderJobOutput,
@@ -2542,8 +2520,8 @@ export const getLoaderJobStatus: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoaderJobStatusInput,
   output: GetLoaderJobStatusOutput,
@@ -2586,8 +2564,8 @@ export const startLoaderJob: (
   | S3Exception
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartLoaderJobInput,
   output: StartLoaderJobOutput,
@@ -2628,8 +2606,8 @@ export const getMLEndpoint: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMLEndpointInput,
   output: GetMLEndpointOutput,
@@ -2667,8 +2645,8 @@ export const startMLModelTrainingJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMLModelTrainingJobInput,
   output: StartMLModelTrainingJobOutput,
@@ -2706,8 +2684,8 @@ export const startMLModelTransformJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMLModelTransformJobInput,
   output: StartMLModelTransformJobOutput,
@@ -2745,8 +2723,8 @@ export const cancelMLDataProcessingJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMLDataProcessingJobInput,
   output: CancelMLDataProcessingJobOutput,
@@ -2784,8 +2762,8 @@ export const cancelMLModelTrainingJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMLModelTrainingJobInput,
   output: CancelMLModelTrainingJobOutput,
@@ -2823,8 +2801,8 @@ export const cancelMLModelTransformJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMLModelTransformJobInput,
   output: CancelMLModelTransformJobOutput,
@@ -2862,8 +2840,8 @@ export const createMLEndpoint: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMLEndpointInput,
   output: CreateMLEndpointOutput,
@@ -2901,8 +2879,8 @@ export const deleteMLEndpoint: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMLEndpointInput,
   output: DeleteMLEndpointOutput,
@@ -2940,8 +2918,8 @@ export const getMLModelTrainingJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMLModelTrainingJobInput,
   output: GetMLModelTrainingJobOutput,
@@ -2979,8 +2957,8 @@ export const getMLModelTransformJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMLModelTransformJobInput,
   output: GetMLModelTransformJobOutput,
@@ -3018,8 +2996,8 @@ export const listMLDataProcessingJobs: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMLDataProcessingJobsInput,
   output: ListMLDataProcessingJobsOutput,
@@ -3057,8 +3035,8 @@ export const listMLEndpoints: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMLEndpointsInput,
   output: ListMLEndpointsOutput,
@@ -3096,8 +3074,8 @@ export const listMLModelTrainingJobs: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMLModelTrainingJobsInput,
   output: ListMLModelTrainingJobsOutput,
@@ -3135,8 +3113,8 @@ export const listMLModelTransformJobs: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMLModelTransformJobsInput,
   output: ListMLModelTransformJobsOutput,
@@ -3174,8 +3152,8 @@ export const startMLDataProcessingJob: (
   | PreconditionsFailedException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMLDataProcessingJobInput,
   output: StartMLDataProcessingJobOutput,
@@ -3230,8 +3208,8 @@ export const getPropertygraphStream: (
   | ThrottlingException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPropertygraphStreamInput,
   output: GetPropertygraphStreamOutput,
@@ -3274,8 +3252,8 @@ export const executeFastReset: (
   | ServerShutdownException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteFastResetInput,
   output: ExecuteFastResetOutput,
@@ -3322,8 +3300,8 @@ export const listGremlinQueries: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListGremlinQueriesInput,
   output: ListGremlinQueriesOutput,
@@ -3375,8 +3353,8 @@ export const getSparqlStream: (
   | ThrottlingException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSparqlStreamInput,
   output: GetSparqlStreamOutput,
@@ -3417,8 +3395,8 @@ export const getPropertygraphSummary: (
   | StatisticsNotAvailableException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPropertygraphSummaryInput,
   output: GetPropertygraphSummaryOutput,
@@ -3461,8 +3439,8 @@ export const cancelGremlinQuery: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelGremlinQueryInput,
   output: CancelGremlinQueryOutput,
@@ -3507,8 +3485,8 @@ export const cancelOpenCypherQuery: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelOpenCypherQueryInput,
   output: CancelOpenCypherQueryOutput,
@@ -3558,8 +3536,8 @@ export const getOpenCypherQueryStatus: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOpenCypherQueryStatusInput,
   output: GetOpenCypherQueryStatusOutput,
@@ -3611,8 +3589,8 @@ export const listOpenCypherQueries: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListOpenCypherQueriesInput,
   output: ListOpenCypherQueriesOutput,
@@ -3663,8 +3641,8 @@ export const getGremlinQueryStatus: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGremlinQueryStatusInput,
   output: GetGremlinQueryStatusOutput,
@@ -3709,8 +3687,8 @@ export const getRDFGraphSummary: (
   | StatisticsNotAvailableException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRDFGraphSummaryInput,
   output: GetRDFGraphSummaryOutput,
@@ -3752,8 +3730,8 @@ export const getPropertygraphStatistics: (
   | StatisticsNotAvailableException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPropertygraphStatisticsRequest,
   output: GetPropertygraphStatisticsOutput,
@@ -3795,8 +3773,8 @@ export const managePropertygraphStatistics: (
   | StatisticsNotAvailableException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ManagePropertygraphStatisticsInput,
   output: ManagePropertygraphStatisticsOutput,
@@ -3838,8 +3816,8 @@ export const deleteSparqlStatistics: (
   | StatisticsNotAvailableException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSparqlStatisticsRequest,
   output: DeleteSparqlStatisticsOutput,
@@ -3881,8 +3859,8 @@ export const manageSparqlStatistics: (
   | StatisticsNotAvailableException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ManageSparqlStatisticsInput,
   output: ManageSparqlStatisticsOutput,
@@ -3922,8 +3900,8 @@ export const getSparqlStatistics: (
   | StatisticsNotAvailableException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSparqlStatisticsRequest,
   output: GetSparqlStatisticsOutput,
@@ -3965,8 +3943,8 @@ export const deletePropertygraphStatistics: (
   | StatisticsNotAvailableException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePropertygraphStatisticsRequest,
   output: DeletePropertygraphStatisticsOutput,
@@ -4027,8 +4005,8 @@ export const executeGremlinExplainQuery: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteGremlinExplainQueryInput,
   output: ExecuteGremlinExplainQueryOutput,
@@ -4086,8 +4064,8 @@ export const executeGremlinProfileQuery: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteGremlinProfileQueryInput,
   output: ExecuteGremlinProfileQueryOutput,
@@ -4151,8 +4129,8 @@ export const executeGremlinQuery: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteGremlinQueryInput,
   output: ExecuteGremlinQueryOutput,
@@ -4221,8 +4199,8 @@ export const executeOpenCypherQuery: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteOpenCypherQueryInput,
   output: ExecuteOpenCypherQueryOutput,
@@ -4282,8 +4260,8 @@ export const executeOpenCypherExplainQuery: (
   | TimeLimitExceededException
   | TooManyRequestsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteOpenCypherExplainQueryInput,
   output: ExecuteOpenCypherExplainQueryOutput,

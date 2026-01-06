@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://dynamodb.amazonaws.com/doc/2012-08-10/");
 const svc = T.AwsApiService({
@@ -5464,12 +5462,12 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     throttlingReasons: S.optional(ThrottlingReasonList),
   },
   T.AwsQueryError({ code: "Throttling", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReplicatedWriteConflictException extends S.TaggedError<ReplicatedWriteConflictException>()(
   "ReplicatedWriteConflictException",
   { message: S.optional(S.String) },
   T.Retryable(),
-) {}
+).pipe(C.withRetryableError) {}
 export class TransactionConflictException extends S.TaggedError<TransactionConflictException>()(
   "TransactionConflictException",
   { message: S.optional(S.String) },
@@ -5495,8 +5493,8 @@ export const describeEndpoints: (
   input: DescribeEndpointsRequest,
 ) => Effect.Effect<
   DescribeEndpointsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEndpointsRequest,
   output: DescribeEndpointsResponse,
@@ -5571,8 +5569,8 @@ export const describeLimits: (
   input: DescribeLimitsInput,
 ) => Effect.Effect<
   DescribeLimitsOutput,
-  InternalServerError | InvalidEndpointException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidEndpointException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLimitsInput,
   output: DescribeLimitsOutput,
@@ -5598,8 +5596,8 @@ export const listBackups: (
   input: ListBackupsInput,
 ) => Effect.Effect<
   ListBackupsOutput,
-  InternalServerError | InvalidEndpointException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidEndpointException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBackupsInput,
   output: ListBackupsOutput,
@@ -5616,8 +5614,8 @@ export const listGlobalTables: (
   input: ListGlobalTablesInput,
 ) => Effect.Effect<
   ListGlobalTablesOutput,
-  InternalServerError | InvalidEndpointException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidEndpointException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListGlobalTablesInput,
   output: ListGlobalTablesOutput,
@@ -5636,8 +5634,8 @@ export const updateContributorInsights: (
   input: UpdateContributorInsightsInput,
 ) => Effect.Effect<
   UpdateContributorInsightsOutput,
-  InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateContributorInsightsInput,
   output: UpdateContributorInsightsOutput,
@@ -5661,8 +5659,8 @@ export const describeTable: (
   | InternalServerError
   | InvalidEndpointException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTableInput,
   output: DescribeTableOutput,
@@ -5682,22 +5680,22 @@ export const listTables: {
     input: ListTablesInput,
   ): Effect.Effect<
     ListTablesOutput,
-    InternalServerError | InvalidEndpointException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidEndpointException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTablesInput,
   ) => Stream.Stream<
     ListTablesOutput,
-    InternalServerError | InvalidEndpointException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidEndpointException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTablesInput,
   ) => Stream.Stream<
     TableName,
-    InternalServerError | InvalidEndpointException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidEndpointException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesInput,
@@ -5724,8 +5722,8 @@ export const listTagsOfResource: (
   | InternalServerError
   | InvalidEndpointException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsOfResourceInput,
   output: ListTagsOfResourceOutput,
@@ -5748,8 +5746,8 @@ export const describeBackup: (
   | BackupNotFoundException
   | InternalServerError
   | InvalidEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBackupInput,
   output: DescribeBackupOutput,
@@ -5769,8 +5767,8 @@ export const describeKinesisStreamingDestination: (
   | InternalServerError
   | InvalidEndpointException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeKinesisStreamingDestinationInput,
   output: DescribeKinesisStreamingDestinationOutput,
@@ -5788,8 +5786,8 @@ export const describeContributorInsights: (
   input: DescribeContributorInsightsInput,
 ) => Effect.Effect<
   DescribeContributorInsightsOutput,
-  InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeContributorInsightsInput,
   output: DescribeContributorInsightsOutput,
@@ -5805,8 +5803,8 @@ export const describeTimeToLive: (
   | InternalServerError
   | InvalidEndpointException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTimeToLiveInput,
   output: DescribeTimeToLiveOutput,
@@ -5825,22 +5823,22 @@ export const listContributorInsights: {
     input: ListContributorInsightsInput,
   ): Effect.Effect<
     ListContributorInsightsOutput,
-    InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContributorInsightsInput,
   ) => Stream.Stream<
     ListContributorInsightsOutput,
-    InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContributorInsightsInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContributorInsightsInput,
@@ -5866,8 +5864,8 @@ export const describeGlobalTable: (
   | GlobalTableNotFoundException
   | InternalServerError
   | InvalidEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGlobalTableInput,
   output: DescribeGlobalTableOutput,
@@ -5884,8 +5882,8 @@ export const describeImport: (
   input: DescribeImportInput,
 ) => Effect.Effect<
   DescribeImportOutput,
-  ImportNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ImportNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImportInput,
   output: DescribeImportOutput,
@@ -5899,22 +5897,22 @@ export const listExports: {
     input: ListExportsInput,
   ): Effect.Effect<
     ListExportsOutput,
-    InternalServerError | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExportsInput,
   ) => Stream.Stream<
     ListExportsOutput,
-    InternalServerError | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExportsInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerError | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExportsInput,
@@ -5969,8 +5967,8 @@ export const getResourcePolicy: (
   | InvalidEndpointException
   | PolicyNotFoundException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyInput,
   output: GetResourcePolicyOutput,
@@ -5989,22 +5987,22 @@ export const listImports: {
     input: ListImportsInput,
   ): Effect.Effect<
     ListImportsOutput,
-    LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImportsInput,
   ) => Stream.Stream<
     ListImportsOutput,
-    LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImportsInput,
   ) => Stream.Stream<
     unknown,
-    LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImportsInput,
@@ -6026,8 +6024,8 @@ export const describeExport: (
   | ExportNotFoundException
   | InternalServerError
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeExportInput,
   output: DescribeExportOutput,
@@ -6052,8 +6050,8 @@ export const deleteBackup: (
   | InternalServerError
   | InvalidEndpointException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupInput,
   output: DeleteBackupOutput,
@@ -6089,8 +6087,8 @@ export const describeContinuousBackups: (
   | InternalServerError
   | InvalidEndpointException
   | TableNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeContinuousBackupsInput,
   output: DescribeContinuousBackupsOutput,
@@ -6107,8 +6105,8 @@ export const describeTableReplicaAutoScaling: (
   input: DescribeTableReplicaAutoScalingInput,
 ) => Effect.Effect<
   DescribeTableReplicaAutoScalingOutput,
-  InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTableReplicaAutoScalingInput,
   output: DescribeTableReplicaAutoScalingOutput,
@@ -6125,8 +6123,8 @@ export const updateTableReplicaAutoScaling: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTableReplicaAutoScalingInput,
   output: UpdateTableReplicaAutoScalingOutput,
@@ -6160,8 +6158,8 @@ export const updateContinuousBackups: (
   | InternalServerError
   | InvalidEndpointException
   | TableNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateContinuousBackupsInput,
   output: UpdateContinuousBackupsOutput,
@@ -6227,8 +6225,8 @@ export const createGlobalTable: (
   | InvalidEndpointException
   | LimitExceededException
   | TableNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGlobalTableInput,
   output: CreateGlobalTableOutput,
@@ -6283,8 +6281,8 @@ export const createBackup: (
   | LimitExceededException
   | TableInUseException
   | TableNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackupInput,
   output: CreateBackupOutput,
@@ -6310,8 +6308,8 @@ export const updateKinesisStreamingDestination: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateKinesisStreamingDestinationInput,
   output: UpdateKinesisStreamingDestinationOutput,
@@ -6361,8 +6359,8 @@ export const updateTimeToLive: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTimeToLiveInput,
   output: UpdateTimeToLiveOutput,
@@ -6387,8 +6385,8 @@ export const disableKinesisStreamingDestination: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: KinesisStreamingDestinationInput,
   output: KinesisStreamingDestinationOutput,
@@ -6432,8 +6430,8 @@ export const putResourcePolicy: (
   | PolicyNotFoundException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyInput,
   output: PutResourcePolicyOutput,
@@ -6461,8 +6459,8 @@ export const enableKinesisStreamingDestination: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: KinesisStreamingDestinationInput,
   output: KinesisStreamingDestinationOutput,
@@ -6505,8 +6503,8 @@ export const tagResource: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -6547,8 +6545,8 @@ export const untagResource: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -6591,8 +6589,8 @@ export const deleteResourcePolicy: (
   | PolicyNotFoundException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyInput,
   output: DeleteResourcePolicyOutput,
@@ -6630,8 +6628,8 @@ export const createTable: (
   | InvalidEndpointException
   | LimitExceededException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTableInput,
   output: CreateTableOutput,
@@ -6674,8 +6672,8 @@ export const deleteTable: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableInput,
   output: DeleteTableOutput,
@@ -6697,8 +6695,8 @@ export const importTable: (
   | ImportConflictException
   | LimitExceededException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportTableInput,
   output: ImportTableOutput,
@@ -6737,8 +6735,8 @@ export const updateTable: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTableInput,
   output: UpdateTableOutput,
@@ -6765,8 +6763,8 @@ export const exportTableToPointInTime: (
   | LimitExceededException
   | PointInTimeRecoveryUnavailableException
   | TableNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportTableToPointInTimeInput,
   output: ExportTableToPointInTimeOutput,
@@ -6831,8 +6829,8 @@ export const restoreTableToPointInTime: (
   | TableAlreadyExistsException
   | TableInUseException
   | TableNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreTableToPointInTimeInput,
   output: RestoreTableToPointInTimeOutput,
@@ -6879,8 +6877,8 @@ export const restoreTableFromBackup: (
   | LimitExceededException
   | TableAlreadyExistsException
   | TableInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreTableFromBackupInput,
   output: RestoreTableFromBackupOutput,
@@ -6908,8 +6906,8 @@ export const describeGlobalTableSettings: (
   | GlobalTableNotFoundException
   | InternalServerError
   | InvalidEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGlobalTableSettingsInput,
   output: DescribeGlobalTableSettingsOutput,
@@ -6957,8 +6955,8 @@ export const updateGlobalTable: (
   | ReplicaAlreadyExistsException
   | ReplicaNotFoundException
   | TableNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGlobalTableInput,
   output: UpdateGlobalTableOutput,
@@ -6989,8 +6987,8 @@ export const updateGlobalTableSettings: (
   | LimitExceededException
   | ReplicaNotFoundException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGlobalTableSettingsInput,
   output: UpdateGlobalTableSettingsOutput,
@@ -7024,8 +7022,8 @@ export const batchExecuteStatement: (
   | InternalServerError
   | RequestLimitExceeded
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchExecuteStatementInput,
   output: BatchExecuteStatementOutput,
@@ -7129,8 +7127,8 @@ export const batchWriteItem: (
   | RequestLimitExceeded
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchWriteItemInput,
   output: BatchWriteItemOutput,
@@ -7201,8 +7199,8 @@ export const scan: {
     | RequestLimitExceeded
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ScanInput,
@@ -7214,8 +7212,8 @@ export const scan: {
     | RequestLimitExceeded
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ScanInput,
@@ -7227,8 +7225,8 @@ export const scan: {
     | RequestLimitExceeded
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ScanInput,
@@ -7268,8 +7266,8 @@ export const getItem: (
   | RequestLimitExceeded
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetItemInput,
   output: GetItemOutput,
@@ -7347,8 +7345,8 @@ export const query: {
     | RequestLimitExceeded
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: QueryInput,
@@ -7360,8 +7358,8 @@ export const query: {
     | RequestLimitExceeded
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: QueryInput,
@@ -7373,8 +7371,8 @@ export const query: {
     | RequestLimitExceeded
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: QueryInput,
@@ -7462,8 +7460,8 @@ export const batchGetItem: (
   | RequestLimitExceeded
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetItemInput,
   output: BatchGetItemOutput,
@@ -7506,8 +7504,8 @@ export const executeStatement: (
   | ResourceNotFoundException
   | ThrottlingException
   | TransactionConflictException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteStatementInput,
   output: ExecuteStatementOutput,
@@ -7553,8 +7551,8 @@ export const deleteItem: (
   | ResourceNotFoundException
   | ThrottlingException
   | TransactionConflictException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteItemInput,
   output: DeleteItemOutput,
@@ -7611,8 +7609,8 @@ export const putItem: (
   | ResourceNotFoundException
   | ThrottlingException
   | TransactionConflictException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutItemInput,
   output: PutItemOutput,
@@ -7653,8 +7651,8 @@ export const updateItem: (
   | ResourceNotFoundException
   | ThrottlingException
   | TransactionConflictException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateItemInput,
   output: UpdateItemOutput,
@@ -7705,8 +7703,8 @@ export const transactGetItems: (
   | ResourceNotFoundException
   | ThrottlingException
   | TransactionCanceledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TransactGetItemsInput,
   output: TransactGetItemsOutput,
@@ -7741,8 +7739,8 @@ export const executeTransaction: (
   | ThrottlingException
   | TransactionCanceledException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteTransactionInput,
   output: ExecuteTransactionOutput,
@@ -7828,8 +7826,8 @@ export const transactWriteItems: (
   | ThrottlingException
   | TransactionCanceledException
   | TransactionInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TransactWriteItemsInput,
   output: TransactWriteItemsOutput,

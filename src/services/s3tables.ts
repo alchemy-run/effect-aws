@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "S3Tables",
@@ -2280,39 +2278,35 @@ export const CreateTableResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MethodNotAllowedException extends S.TaggedError<MethodNotAllowedException>()(
   "MethodNotAllowedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**
@@ -2332,8 +2326,8 @@ export const getTableBucketStorageClass: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableBucketStorageClassRequest,
   output: GetTableBucketStorageClassResponse,
@@ -2373,8 +2367,8 @@ export const createTable: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTableRequest,
   output: CreateTableResponse,
@@ -2404,8 +2398,8 @@ export const getTableRecordExpirationJobStatus: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableRecordExpirationJobStatusRequest,
   output: GetTableRecordExpirationJobStatusResponse,
@@ -2435,8 +2429,8 @@ export const putTableBucketMaintenanceConfiguration: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableBucketMaintenanceConfigurationRequest,
   output: PutTableBucketMaintenanceConfigurationResponse,
@@ -2466,8 +2460,8 @@ export const getTableReplicationStatus: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableReplicationStatusRequest,
   output: GetTableReplicationStatusResponse,
@@ -2512,8 +2506,8 @@ export const putTableReplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableReplicationRequest,
   output: PutTableReplicationResponse,
@@ -2545,8 +2539,8 @@ export const getTable: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableRequest,
   output: GetTableResponse,
@@ -2577,8 +2571,8 @@ export const getTableMaintenanceJobStatus: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableMaintenanceJobStatusRequest,
   output: GetTableMaintenanceJobStatusResponse,
@@ -2608,8 +2602,8 @@ export const putTableMaintenanceConfiguration: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableMaintenanceConfigurationRequest,
   output: PutTableMaintenanceConfigurationResponse,
@@ -2641,8 +2635,8 @@ export const listTableBuckets: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTableBucketsRequest,
@@ -2655,8 +2649,8 @@ export const listTableBuckets: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTableBucketsRequest,
@@ -2669,8 +2663,8 @@ export const listTableBuckets: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTableBucketsRequest,
@@ -2710,8 +2704,8 @@ export const getTableMaintenanceConfiguration: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableMaintenanceConfigurationRequest,
   output: GetTableMaintenanceConfigurationResponse,
@@ -2742,8 +2736,8 @@ export const listTables: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTablesRequest,
@@ -2755,8 +2749,8 @@ export const listTables: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTablesRequest,
@@ -2768,8 +2762,8 @@ export const listTables: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesRequest,
@@ -2806,8 +2800,8 @@ export const createNamespace: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNamespaceRequest,
   output: CreateNamespaceResponse,
@@ -2839,8 +2833,8 @@ export const putTableBucketEncryption: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableBucketEncryptionRequest,
   output: PutTableBucketEncryptionResponse,
@@ -2870,8 +2864,8 @@ export const getTableBucketPolicy: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableBucketPolicyRequest,
   output: GetTableBucketPolicyResponse,
@@ -2902,8 +2896,8 @@ export const deleteTableBucketReplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableBucketReplicationRequest,
   output: DeleteTableBucketReplicationResponse,
@@ -2935,8 +2929,8 @@ export const getTableBucketReplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableBucketReplicationRequest,
   output: GetTableBucketReplicationResponse,
@@ -2968,8 +2962,8 @@ export const getTableBucket: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableBucketRequest,
   output: GetTableBucketResponse,
@@ -3000,8 +2994,8 @@ export const getTableBucketMetricsConfiguration: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableBucketMetricsConfigurationRequest,
   output: GetTableBucketMetricsConfigurationResponse,
@@ -3031,8 +3025,8 @@ export const getTablePolicy: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTablePolicyRequest,
   output: GetTablePolicyResponse,
@@ -3063,8 +3057,8 @@ export const getTableReplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableReplicationRequest,
   output: GetTableReplicationResponse,
@@ -3095,8 +3089,8 @@ export const getTableMetadataLocation: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableMetadataLocationRequest,
   output: GetTableMetadataLocationResponse,
@@ -3126,8 +3120,8 @@ export const updateTableMetadataLocation: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTableMetadataLocationRequest,
   output: UpdateTableMetadataLocationResponse,
@@ -3157,8 +3151,8 @@ export const deleteNamespace: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNamespaceRequest,
   output: DeleteNamespaceResponse,
@@ -3188,8 +3182,8 @@ export const deleteTableBucketEncryption: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableBucketEncryptionRequest,
   output: DeleteTableBucketEncryptionResponse,
@@ -3219,8 +3213,8 @@ export const deleteTableBucketPolicy: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableBucketPolicyRequest,
   output: DeleteTableBucketPolicyResponse,
@@ -3250,8 +3244,8 @@ export const putTableBucketPolicy: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableBucketPolicyRequest,
   output: PutTableBucketPolicyResponse,
@@ -3281,8 +3275,8 @@ export const deleteTableBucket: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableBucketRequest,
   output: DeleteTableBucketResponse,
@@ -3312,8 +3306,8 @@ export const deleteTableBucketMetricsConfiguration: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableBucketMetricsConfigurationRequest,
   output: DeleteTableBucketMetricsConfigurationResponse,
@@ -3343,8 +3337,8 @@ export const putTableBucketMetricsConfiguration: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableBucketMetricsConfigurationRequest,
   output: PutTableBucketMetricsConfigurationResponse,
@@ -3374,8 +3368,8 @@ export const putTableBucketStorageClass: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableBucketStorageClassRequest,
   output: PutTableBucketStorageClassResponse,
@@ -3405,8 +3399,8 @@ export const deleteTablePolicy: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTablePolicyRequest,
   output: DeleteTablePolicyResponse,
@@ -3436,8 +3430,8 @@ export const putTablePolicy: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTablePolicyRequest,
   output: PutTablePolicyResponse,
@@ -3467,8 +3461,8 @@ export const deleteTable: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableRequest,
   output: DeleteTableResponse,
@@ -3498,8 +3492,8 @@ export const renameTable: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RenameTableRequest,
   output: RenameTableResponse,
@@ -3531,8 +3525,8 @@ export const listTagsForResource: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3564,8 +3558,8 @@ export const tagResource: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3596,8 +3590,8 @@ export const deleteTableReplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableReplicationRequest,
   output: DeleteTableReplicationResponse,
@@ -3629,8 +3623,8 @@ export const getNamespace: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNamespaceRequest,
   output: GetNamespaceResponse,
@@ -3661,8 +3655,8 @@ export const getTableEncryption: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableEncryptionRequest,
   output: GetTableEncryptionResponse,
@@ -3692,8 +3686,8 @@ export const getTableStorageClass: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableStorageClassRequest,
   output: GetTableStorageClassResponse,
@@ -3723,8 +3717,8 @@ export const getTableBucketEncryption: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableBucketEncryptionRequest,
   output: GetTableBucketEncryptionResponse,
@@ -3756,8 +3750,8 @@ export const untagResource: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3789,8 +3783,8 @@ export const listNamespaces: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNamespacesRequest,
@@ -3803,8 +3797,8 @@ export const listNamespaces: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNamespacesRequest,
@@ -3817,8 +3811,8 @@ export const listNamespaces: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNamespacesRequest,
@@ -3862,8 +3856,8 @@ export const createTableBucket: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTableBucketRequest,
   output: CreateTableBucketResponse,
@@ -3893,8 +3887,8 @@ export const getTableBucketMaintenanceConfiguration: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableBucketMaintenanceConfigurationRequest,
   output: GetTableBucketMaintenanceConfigurationResponse,
@@ -3941,8 +3935,8 @@ export const putTableBucketReplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableBucketReplicationRequest,
   output: PutTableBucketReplicationResponse,
@@ -3973,8 +3967,8 @@ export const putTableRecordExpirationConfiguration: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTableRecordExpirationConfigurationRequest,
   output: PutTableRecordExpirationConfigurationResponse,
@@ -4004,8 +3998,8 @@ export const getTableRecordExpirationConfiguration: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableRecordExpirationConfigurationRequest,
   output: GetTableRecordExpirationConfigurationResponse,

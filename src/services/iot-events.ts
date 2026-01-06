@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "IoT Events",
@@ -1981,31 +1979,27 @@ export const CreateDetectorModelResponse = S.suspend(() =>
 export class InternalFailureException extends S.TaggedError<InternalFailureException>()(
   "InternalFailureException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   {
@@ -2013,19 +2007,15 @@ export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlread
     resourceId: S.optional(S.String),
     resourceArn: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnsupportedOperationException extends S.TaggedError<UnsupportedOperationException>()(
   "UnsupportedOperationException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 
 //# Operations
 /**
@@ -2040,8 +2030,8 @@ export const listAlarmModels: (
   | InvalidRequestException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAlarmModelsRequest,
   output: ListAlarmModelsResponse,
@@ -2066,8 +2056,8 @@ export const startDetectorModelAnalysis: (
   | LimitExceededException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDetectorModelAnalysisRequest,
   output: StartDetectorModelAnalysisResponse,
@@ -2093,8 +2083,8 @@ export const updateDetectorModel: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDetectorModelRequest,
   output: UpdateDetectorModelResponse,
@@ -2120,8 +2110,8 @@ export const updateInput: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInputRequest,
   output: UpdateInputResponse,
@@ -2146,8 +2136,8 @@ export const listTagsForResource: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2173,8 +2163,8 @@ export const updateAlarmModel: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAlarmModelRequest,
   output: UpdateAlarmModelResponse,
@@ -2201,8 +2191,8 @@ export const deleteDetectorModel: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDetectorModelRequest,
   output: DeleteDetectorModelResponse,
@@ -2228,8 +2218,8 @@ export const deleteInput: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInputRequest,
   output: DeleteInputResponse,
@@ -2254,8 +2244,8 @@ export const untagResource: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2279,8 +2269,8 @@ export const describeInput: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInputRequest,
   output: DescribeInputResponse,
@@ -2305,8 +2295,8 @@ export const listAlarmModelVersions: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAlarmModelVersionsRequest,
   output: ListAlarmModelVersionsResponse,
@@ -2331,8 +2321,8 @@ export const listDetectorModelVersions: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDetectorModelVersionsRequest,
   output: ListDetectorModelVersionsResponse,
@@ -2357,8 +2347,8 @@ export const describeAlarmModel: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAlarmModelRequest,
   output: DescribeAlarmModelResponse,
@@ -2384,8 +2374,8 @@ export const describeDetectorModelAnalysis: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDetectorModelAnalysisRequest,
   output: DescribeDetectorModelAnalysisResponse,
@@ -2411,8 +2401,8 @@ export const deleteAlarmModel: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAlarmModelRequest,
   output: DeleteAlarmModelResponse,
@@ -2437,8 +2427,8 @@ export const listDetectorModels: (
   | InvalidRequestException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDetectorModelsRequest,
   output: ListDetectorModelsResponse,
@@ -2460,8 +2450,8 @@ export const listInputs: (
   | InvalidRequestException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListInputsRequest,
   output: ListInputsResponse,
@@ -2485,8 +2475,8 @@ export const describeDetectorModel: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDetectorModelRequest,
   output: DescribeDetectorModelResponse,
@@ -2512,8 +2502,8 @@ export const getDetectorModelAnalysisResults: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDetectorModelAnalysisResultsRequest,
   output: GetDetectorModelAnalysisResultsResponse,
@@ -2539,8 +2529,8 @@ export const tagResource: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2565,8 +2555,8 @@ export const createInput: (
   | ResourceAlreadyExistsException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInputRequest,
   output: CreateInputResponse,
@@ -2590,8 +2580,8 @@ export const listInputRoutings: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListInputRoutingsRequest,
   output: ListInputRoutingsResponse,
@@ -2621,8 +2611,8 @@ export const putLoggingOptions: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLoggingOptionsRequest,
   output: PutLoggingOptionsResponse,
@@ -2648,8 +2638,8 @@ export const describeLoggingOptions: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLoggingOptionsRequest,
   output: DescribeLoggingOptionsResponse,
@@ -2678,8 +2668,8 @@ export const createAlarmModel: (
   | ResourceInUseException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAlarmModelRequest,
   output: CreateAlarmModelResponse,
@@ -2707,8 +2697,8 @@ export const createDetectorModel: (
   | ResourceInUseException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDetectorModelRequest,
   output: CreateDetectorModelResponse,

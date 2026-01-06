@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ACM",
@@ -903,7 +901,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AccessDenied", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidArnException extends S.TaggedError<InvalidArnException>()(
   "InvalidArnException",
   { message: S.optional(S.String) },
@@ -916,7 +914,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "Throttling", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String) },
@@ -949,7 +947,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ValidationError", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
@@ -975,8 +973,8 @@ export const getAccountConfiguration: (
   input: GetAccountConfigurationRequest,
 ) => Effect.Effect<
   GetAccountConfigurationResponse,
-  AccessDeniedException | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountConfigurationRequest,
   output: GetAccountConfigurationResponse,
@@ -989,8 +987,8 @@ export const listTagsForCertificate: (
   input: ListTagsForCertificateRequest,
 ) => Effect.Effect<
   ListTagsForCertificateResponse,
-  InvalidArnException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArnException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForCertificateRequest,
   output: ListTagsForCertificateResponse,
@@ -1008,8 +1006,8 @@ export const exportCertificate: (
   | InvalidArnException
   | RequestInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportCertificateRequest,
   output: ExportCertificateResponse,
@@ -1029,8 +1027,8 @@ export const getCertificate: (
   | InvalidArnException
   | RequestInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCertificateRequest,
   output: GetCertificateResponse,
@@ -1051,8 +1049,8 @@ export const resendValidationEmail: (
   | InvalidDomainValidationOptionsException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResendValidationEmailRequest,
   output: ResendValidationEmailResponse,
@@ -1073,8 +1071,8 @@ export const renewCertificate: (
   | InvalidArnException
   | RequestInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RenewCertificateRequest,
   output: RenewCertificateResponse,
@@ -1099,8 +1097,8 @@ export const deleteCertificate: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCertificateRequest,
   output: DeleteCertificateResponse,
@@ -1126,8 +1124,8 @@ export const putAccountConfiguration: (
   | ConflictException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccountConfigurationRequest,
   output: PutAccountConfigurationResponse,
@@ -1151,8 +1149,8 @@ export const revokeCertificate: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeCertificateRequest,
   output: RevokeCertificateResponse,
@@ -1176,8 +1174,8 @@ export const updateCertificateOptions: (
   | InvalidStateException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCertificateOptionsRequest,
   output: UpdateCertificateOptionsResponse,
@@ -1197,8 +1195,8 @@ export const describeCertificate: (
   input: DescribeCertificateRequest,
 ) => Effect.Effect<
   DescribeCertificateResponse,
-  InvalidArnException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArnException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCertificateRequest,
   output: DescribeCertificateResponse,
@@ -1212,22 +1210,22 @@ export const listCertificates: {
     input: ListCertificatesRequest,
   ): Effect.Effect<
     ListCertificatesResponse,
-    InvalidArgsException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidArgsException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCertificatesRequest,
   ) => Stream.Stream<
     ListCertificatesResponse,
-    InvalidArgsException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidArgsException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCertificatesRequest,
   ) => Stream.Stream<
     CertificateSummary,
-    InvalidArgsException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidArgsException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCertificatesRequest,
@@ -1255,8 +1253,8 @@ export const removeTagsFromCertificate: (
   | ResourceNotFoundException
   | TagPolicyException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromCertificateRequest,
   output: RemoveTagsFromCertificateResponse,
@@ -1287,8 +1285,8 @@ export const addTagsToCertificate: (
   | TagPolicyException
   | ThrottlingException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToCertificateRequest,
   output: AddTagsToCertificateResponse,
@@ -1344,8 +1342,8 @@ export const importCertificate: (
   | ResourceNotFoundException
   | TagPolicyException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportCertificateRequest,
   output: ImportCertificateResponse,
@@ -1379,8 +1377,8 @@ export const requestCertificate: (
   | LimitExceededException
   | TagPolicyException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RequestCertificateRequest,
   output: RequestCertificateResponse,

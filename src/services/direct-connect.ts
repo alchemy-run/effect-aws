@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://directconnect.amazonaws.com/doc/2012-10-25/");
 const svc = T.AwsApiService({
@@ -2954,9 +2952,7 @@ export class DirectConnectClientException extends S.TaggedError<DirectConnectCli
 export class DirectConnectServerException extends S.TaggedError<DirectConnectServerException>()(
   "DirectConnectServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DuplicateTagKeysException extends S.TaggedError<DuplicateTagKeysException>()(
   "DuplicateTagKeysException",
   { message: S.optional(S.String) },
@@ -2989,10 +2985,8 @@ export const associateConnectionWithLag: (
   input: AssociateConnectionWithLagRequest,
 ) => Effect.Effect<
   Connection,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateConnectionWithLagRequest,
   output: Connection,
@@ -3016,10 +3010,8 @@ export const associateVirtualInterface: (
   input: AssociateVirtualInterfaceRequest,
 ) => Effect.Effect<
   VirtualInterface,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateVirtualInterfaceRequest,
   output: VirtualInterface,
@@ -3050,10 +3042,8 @@ export const createBGPPeer: (
   input: CreateBGPPeerRequest,
 ) => Effect.Effect<
   CreateBGPPeerResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBGPPeerRequest,
   output: CreateBGPPeerResponse,
@@ -3071,10 +3061,8 @@ export const createDirectConnectGateway: (
   input: CreateDirectConnectGatewayRequest,
 ) => Effect.Effect<
   CreateDirectConnectGatewayResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDirectConnectGatewayRequest,
   output: CreateDirectConnectGatewayResult,
@@ -3089,10 +3077,8 @@ export const createDirectConnectGatewayAssociationProposal: (
   input: CreateDirectConnectGatewayAssociationProposalRequest,
 ) => Effect.Effect<
   CreateDirectConnectGatewayAssociationProposalResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDirectConnectGatewayAssociationProposalRequest,
   output: CreateDirectConnectGatewayAssociationProposalResult,
@@ -3109,10 +3095,8 @@ export const describeDirectConnectGatewayAttachments: (
   input: DescribeDirectConnectGatewayAttachmentsRequest,
 ) => Effect.Effect<
   DescribeDirectConnectGatewayAttachmentsResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDirectConnectGatewayAttachmentsRequest,
   output: DescribeDirectConnectGatewayAttachmentsResult,
@@ -3125,10 +3109,8 @@ export const describeRouterConfiguration: (
   input: DescribeRouterConfigurationRequest,
 ) => Effect.Effect<
   DescribeRouterConfigurationResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRouterConfigurationRequest,
   output: DescribeRouterConfigurationResponse,
@@ -3141,10 +3123,8 @@ export const describeTags: (
   input: DescribeTagsRequest,
 ) => Effect.Effect<
   DescribeTagsResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTagsRequest,
   output: DescribeTagsResponse,
@@ -3157,10 +3137,8 @@ export const listVirtualInterfaceTestHistory: (
   input: ListVirtualInterfaceTestHistoryRequest,
 ) => Effect.Effect<
   ListVirtualInterfaceTestHistoryResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVirtualInterfaceTestHistoryRequest,
   output: ListVirtualInterfaceTestHistoryResponse,
@@ -3177,10 +3155,8 @@ export const associateMacSecKey: (
   input: AssociateMacSecKeyRequest,
 ) => Effect.Effect<
   AssociateMacSecKeyResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateMacSecKeyRequest,
   output: AssociateMacSecKeyResponse,
@@ -3196,10 +3172,8 @@ export const confirmConnection: (
   input: ConfirmConnectionRequest,
 ) => Effect.Effect<
   ConfirmConnectionResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmConnectionRequest,
   output: ConfirmConnectionResponse,
@@ -3212,10 +3186,8 @@ export const confirmCustomerAgreement: (
   input: ConfirmCustomerAgreementRequest,
 ) => Effect.Effect<
   ConfirmCustomerAgreementResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmCustomerAgreementRequest,
   output: ConfirmCustomerAgreementResponse,
@@ -3232,10 +3204,8 @@ export const confirmPrivateVirtualInterface: (
   input: ConfirmPrivateVirtualInterfaceRequest,
 ) => Effect.Effect<
   ConfirmPrivateVirtualInterfaceResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmPrivateVirtualInterfaceRequest,
   output: ConfirmPrivateVirtualInterfaceResponse,
@@ -3251,10 +3221,8 @@ export const confirmPublicVirtualInterface: (
   input: ConfirmPublicVirtualInterfaceRequest,
 ) => Effect.Effect<
   ConfirmPublicVirtualInterfaceResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmPublicVirtualInterfaceRequest,
   output: ConfirmPublicVirtualInterfaceResponse,
@@ -3269,10 +3237,8 @@ export const confirmTransitVirtualInterface: (
   input: ConfirmTransitVirtualInterfaceRequest,
 ) => Effect.Effect<
   ConfirmTransitVirtualInterfaceResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmTransitVirtualInterfaceRequest,
   output: ConfirmTransitVirtualInterfaceResponse,
@@ -3287,10 +3253,8 @@ export const deleteBGPPeer: (
   input: DeleteBGPPeerRequest,
 ) => Effect.Effect<
   DeleteBGPPeerResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBGPPeerRequest,
   output: DeleteBGPPeerResponse,
@@ -3305,10 +3269,8 @@ export const deleteDirectConnectGateway: (
   input: DeleteDirectConnectGatewayRequest,
 ) => Effect.Effect<
   DeleteDirectConnectGatewayResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDirectConnectGatewayRequest,
   output: DeleteDirectConnectGatewayResult,
@@ -3323,10 +3285,8 @@ export const deleteDirectConnectGatewayAssociation: (
   input: DeleteDirectConnectGatewayAssociationRequest,
 ) => Effect.Effect<
   DeleteDirectConnectGatewayAssociationResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDirectConnectGatewayAssociationRequest,
   output: DeleteDirectConnectGatewayAssociationResult,
@@ -3339,10 +3299,8 @@ export const deleteDirectConnectGatewayAssociationProposal: (
   input: DeleteDirectConnectGatewayAssociationProposalRequest,
 ) => Effect.Effect<
   DeleteDirectConnectGatewayAssociationProposalResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDirectConnectGatewayAssociationProposalRequest,
   output: DeleteDirectConnectGatewayAssociationProposalResult,
@@ -3358,10 +3316,8 @@ export const deleteInterconnect: (
   input: DeleteInterconnectRequest,
 ) => Effect.Effect<
   DeleteInterconnectResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInterconnectRequest,
   output: DeleteInterconnectResponse,
@@ -3374,10 +3330,8 @@ export const deleteVirtualInterface: (
   input: DeleteVirtualInterfaceRequest,
 ) => Effect.Effect<
   DeleteVirtualInterfaceResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVirtualInterfaceRequest,
   output: DeleteVirtualInterfaceResponse,
@@ -3397,10 +3351,8 @@ export const describeConnectionLoa: (
   input: DescribeConnectionLoaRequest,
 ) => Effect.Effect<
   DescribeConnectionLoaResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConnectionLoaRequest,
   output: DescribeConnectionLoaResponse,
@@ -3413,10 +3365,8 @@ export const describeConnections: (
   input: DescribeConnectionsRequest,
 ) => Effect.Effect<
   Connections,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConnectionsRequest,
   output: Connections,
@@ -3429,10 +3379,8 @@ export const describeCustomerMetadata: (
   input: DescribeCustomerMetadataRequest,
 ) => Effect.Effect<
   DescribeCustomerMetadataResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCustomerMetadataRequest,
   output: DescribeCustomerMetadataResponse,
@@ -3445,10 +3393,8 @@ export const describeDirectConnectGatewayAssociationProposals: (
   input: DescribeDirectConnectGatewayAssociationProposalsRequest,
 ) => Effect.Effect<
   DescribeDirectConnectGatewayAssociationProposalsResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDirectConnectGatewayAssociationProposalsRequest,
   output: DescribeDirectConnectGatewayAssociationProposalsResult,
@@ -3489,10 +3435,8 @@ export const describeDirectConnectGatewayAssociations: (
   input: DescribeDirectConnectGatewayAssociationsRequest,
 ) => Effect.Effect<
   DescribeDirectConnectGatewayAssociationsResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDirectConnectGatewayAssociationsRequest,
   output: DescribeDirectConnectGatewayAssociationsResult,
@@ -3505,10 +3449,8 @@ export const describeDirectConnectGateways: (
   input: DescribeDirectConnectGatewaysRequest,
 ) => Effect.Effect<
   DescribeDirectConnectGatewaysResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDirectConnectGatewaysRequest,
   output: DescribeDirectConnectGatewaysResult,
@@ -3527,10 +3469,8 @@ export const describeInterconnectLoa: (
   input: DescribeInterconnectLoaRequest,
 ) => Effect.Effect<
   DescribeInterconnectLoaResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInterconnectLoaRequest,
   output: DescribeInterconnectLoaResponse,
@@ -3543,10 +3483,8 @@ export const describeInterconnects: (
   input: DescribeInterconnectsRequest,
 ) => Effect.Effect<
   Interconnects,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInterconnectsRequest,
   output: Interconnects,
@@ -3559,10 +3497,8 @@ export const describeLags: (
   input: DescribeLagsRequest,
 ) => Effect.Effect<
   Lags,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLagsRequest,
   output: Lags,
@@ -3579,10 +3515,8 @@ export const describeLoa: (
   input: DescribeLoaRequest,
 ) => Effect.Effect<
   Loa,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLoaRequest,
   output: Loa,
@@ -3596,10 +3530,8 @@ export const describeLocations: (
   input: DescribeLocationsRequest,
 ) => Effect.Effect<
   Locations,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationsRequest,
   output: Locations,
@@ -3616,10 +3548,8 @@ export const describeVirtualGateways: (
   input: DescribeVirtualGatewaysRequest,
 ) => Effect.Effect<
   VirtualGateways,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVirtualGatewaysRequest,
   output: VirtualGateways,
@@ -3641,10 +3571,8 @@ export const describeVirtualInterfaces: (
   input: DescribeVirtualInterfacesRequest,
 ) => Effect.Effect<
   VirtualInterfaces,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVirtualInterfacesRequest,
   output: VirtualInterfaces,
@@ -3657,10 +3585,8 @@ export const disassociateMacSecKey: (
   input: DisassociateMacSecKeyRequest,
 ) => Effect.Effect<
   DisassociateMacSecKeyResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateMacSecKeyRequest,
   output: DisassociateMacSecKeyResponse,
@@ -3679,10 +3605,8 @@ export const startBgpFailoverTest: (
   input: StartBgpFailoverTestRequest,
 ) => Effect.Effect<
   StartBgpFailoverTestResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartBgpFailoverTestRequest,
   output: StartBgpFailoverTestResponse,
@@ -3695,10 +3619,8 @@ export const stopBgpFailoverTest: (
   input: StopBgpFailoverTestRequest,
 ) => Effect.Effect<
   StopBgpFailoverTestResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopBgpFailoverTestRequest,
   output: StopBgpFailoverTestResponse,
@@ -3711,10 +3633,8 @@ export const updateDirectConnectGateway: (
   input: UpdateDirectConnectGatewayRequest,
 ) => Effect.Effect<
   UpdateDirectConnectGatewayResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDirectConnectGatewayRequest,
   output: UpdateDirectConnectGatewayResponse,
@@ -3729,10 +3649,8 @@ export const updateDirectConnectGatewayAssociation: (
   input: UpdateDirectConnectGatewayAssociationRequest,
 ) => Effect.Effect<
   UpdateDirectConnectGatewayAssociationResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDirectConnectGatewayAssociationRequest,
   output: UpdateDirectConnectGatewayAssociationResult,
@@ -3751,10 +3669,8 @@ export const associateHostedConnection: (
   input: AssociateHostedConnectionRequest,
 ) => Effect.Effect<
   Connection,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateHostedConnectionRequest,
   output: Connection,
@@ -3771,10 +3687,8 @@ export const deleteConnection: (
   input: DeleteConnectionRequest,
 ) => Effect.Effect<
   Connection,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectionRequest,
   output: Connection,
@@ -3788,10 +3702,8 @@ export const deleteLag: (
   input: DeleteLagRequest,
 ) => Effect.Effect<
   Lag,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLagRequest,
   output: Lag,
@@ -3808,10 +3720,8 @@ export const describeConnectionsOnInterconnect: (
   input: DescribeConnectionsOnInterconnectRequest,
 ) => Effect.Effect<
   Connections,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConnectionsOnInterconnectRequest,
   output: Connections,
@@ -3827,10 +3737,8 @@ export const describeHostedConnections: (
   input: DescribeHostedConnectionsRequest,
 ) => Effect.Effect<
   Connections,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHostedConnectionsRequest,
   output: Connections,
@@ -3853,10 +3761,8 @@ export const disassociateConnectionFromLag: (
   input: DisassociateConnectionFromLagRequest,
 ) => Effect.Effect<
   Connection,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateConnectionFromLagRequest,
   output: Connection,
@@ -3869,10 +3775,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3891,10 +3795,8 @@ export const updateConnection: (
   input: UpdateConnectionRequest,
 ) => Effect.Effect<
   Connection,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectionRequest,
   output: Connection,
@@ -3924,10 +3826,8 @@ export const updateLag: (
   input: UpdateLagRequest,
 ) => Effect.Effect<
   Lag,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLagRequest,
   output: Lag,
@@ -3947,10 +3847,8 @@ export const updateVirtualInterfaceAttributes: (
   input: UpdateVirtualInterfaceAttributesRequest,
 ) => Effect.Effect<
   VirtualInterface,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVirtualInterfaceAttributesRequest,
   output: VirtualInterface,
@@ -3963,10 +3861,8 @@ export const acceptDirectConnectGatewayAssociationProposal: (
   input: AcceptDirectConnectGatewayAssociationProposalRequest,
 ) => Effect.Effect<
   AcceptDirectConnectGatewayAssociationProposalResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptDirectConnectGatewayAssociationProposalRequest,
   output: AcceptDirectConnectGatewayAssociationProposalResult,
@@ -3985,10 +3881,8 @@ export const allocateConnectionOnInterconnect: (
   input: AllocateConnectionOnInterconnectRequest,
 ) => Effect.Effect<
   Connection,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocateConnectionOnInterconnectRequest,
   output: Connection,
@@ -4002,10 +3896,8 @@ export const createDirectConnectGatewayAssociation: (
   input: CreateDirectConnectGatewayAssociationRequest,
 ) => Effect.Effect<
   CreateDirectConnectGatewayAssociationResult,
-  | DirectConnectClientException
-  | DirectConnectServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DirectConnectClientException | DirectConnectServerException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDirectConnectGatewayAssociationRequest,
   output: CreateDirectConnectGatewayAssociationResult,
@@ -4031,8 +3923,8 @@ export const createTransitVirtualInterface: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitVirtualInterfaceRequest,
   output: CreateTransitVirtualInterfaceResult,
@@ -4071,8 +3963,8 @@ export const createInterconnect: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInterconnectRequest,
   output: Interconnect,
@@ -4116,8 +4008,8 @@ export const createLag: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLagRequest,
   output: Lag,
@@ -4150,8 +4042,8 @@ export const createPrivateVirtualInterface: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePrivateVirtualInterfaceRequest,
   output: VirtualInterface,
@@ -4177,8 +4069,8 @@ export const createPublicVirtualInterface: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePublicVirtualInterfaceRequest,
   output: VirtualInterface,
@@ -4210,8 +4102,8 @@ export const createConnection: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectionRequest,
   output: Connection,
@@ -4235,8 +4127,8 @@ export const tagResource: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4263,8 +4155,8 @@ export const allocateHostedConnection: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocateHostedConnectionRequest,
   output: Connection,
@@ -4289,8 +4181,8 @@ export const allocatePrivateVirtualInterface: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocatePrivateVirtualInterfaceRequest,
   output: VirtualInterface,
@@ -4320,8 +4212,8 @@ export const allocatePublicVirtualInterface: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocatePublicVirtualInterfaceRequest,
   output: VirtualInterface,
@@ -4347,8 +4239,8 @@ export const allocateTransitVirtualInterface: (
   | DirectConnectServerException
   | DuplicateTagKeysException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocateTransitVirtualInterfaceRequest,
   output: AllocateTransitVirtualInterfaceResult,

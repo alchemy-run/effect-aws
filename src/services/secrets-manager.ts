@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Secrets Manager",
@@ -1392,8 +1390,8 @@ export const describeSecret: (
   | InternalServiceError
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSecretRequest,
   output: DescribeSecretResponse,
@@ -1430,8 +1428,8 @@ export const untagResource: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1472,8 +1470,8 @@ export const cancelRotateSecret: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelRotateSecretRequest,
   output: CancelRotateSecretResponse,
@@ -1504,8 +1502,8 @@ export const deleteResourcePolicy: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -1564,8 +1562,8 @@ export const deleteSecret: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSecretRequest,
   output: DeleteSecretResponse,
@@ -1599,8 +1597,8 @@ export const getRandomPassword: (
   | InternalServiceError
   | InvalidParameterException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRandomPasswordRequest,
   output: GetRandomPasswordResponse,
@@ -1630,8 +1628,8 @@ export const getResourcePolicy: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -1663,8 +1661,8 @@ export const removeRegionsFromReplication: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveRegionsFromReplicationRequest,
   output: RemoveRegionsFromReplicationResponse,
@@ -1699,8 +1697,8 @@ export const replicateSecretToRegions: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplicateSecretToRegionsRequest,
   output: ReplicateSecretToRegionsResponse,
@@ -1731,8 +1729,8 @@ export const restoreSecret: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreSecretRequest,
   output: RestoreSecretResponse,
@@ -1766,8 +1764,8 @@ export const stopReplicationToReplica: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopReplicationToReplicaRequest,
   output: StopReplicationToReplicaResponse,
@@ -1811,8 +1809,8 @@ export const getSecretValue: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSecretValueRequest,
   output: GetSecretValueResponse,
@@ -1860,8 +1858,8 @@ export const rotateSecret: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RotateSecretRequest,
   output: RotateSecretResponse,
@@ -1906,8 +1904,8 @@ export const listSecrets: {
     | InvalidNextTokenException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSecretsRequest,
@@ -1917,8 +1915,8 @@ export const listSecrets: {
     | InvalidNextTokenException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSecretsRequest,
@@ -1928,8 +1926,8 @@ export const listSecrets: {
     | InvalidNextTokenException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSecretsRequest,
@@ -1975,8 +1973,8 @@ export const tagResource: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2011,8 +2009,8 @@ export const listSecretVersionIds: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSecretVersionIdsRequest,
@@ -2022,8 +2020,8 @@ export const listSecretVersionIds: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSecretVersionIdsRequest,
@@ -2033,8 +2031,8 @@ export const listSecretVersionIds: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSecretVersionIdsRequest,
@@ -2087,8 +2085,8 @@ export const batchGetSecretValue: {
     | InvalidParameterException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: BatchGetSecretValueRequest,
@@ -2100,8 +2098,8 @@ export const batchGetSecretValue: {
     | InvalidParameterException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: BatchGetSecretValueRequest,
@@ -2113,8 +2111,8 @@ export const batchGetSecretValue: {
     | InvalidParameterException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: BatchGetSecretValueRequest,
@@ -2165,8 +2163,8 @@ export const validateResourcePolicy: (
   | InvalidRequestException
   | MalformedPolicyDocumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidateResourcePolicyRequest,
   output: ValidateResourcePolicyResponse,
@@ -2217,8 +2215,8 @@ export const updateSecretVersionStage: (
   | InvalidRequestException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSecretVersionStageRequest,
   output: UpdateSecretVersionStageResponse,
@@ -2282,8 +2280,8 @@ export const putSecretValue: (
   | LimitExceededException
   | ResourceExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSecretValueRequest,
   output: PutSecretValueResponse,
@@ -2359,8 +2357,8 @@ export const updateSecret: (
   | PreconditionNotMetException
   | ResourceExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSecretRequest,
   output: UpdateSecretResponse,
@@ -2401,8 +2399,8 @@ export const putResourcePolicy: (
   | MalformedPolicyDocumentException
   | PublicPolicyException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -2486,8 +2484,8 @@ export const createSecret: (
   | PreconditionNotMetException
   | ResourceExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSecretRequest,
   output: CreateSecretResponse,

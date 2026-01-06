@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "drs",
@@ -3035,16 +3033,14 @@ export const DescribeRecoveryInstancesResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   {
     message: S.String,
     retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
@@ -3053,7 +3049,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     resourceId: S.optional(S.String),
     resourceType: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -3062,7 +3058,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     resourceId: S.optional(S.String),
     resourceType: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -3073,7 +3069,7 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     serviceCode: S.optional(S.String),
     quotaCode: S.optional(S.String),
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {
@@ -3082,13 +3078,11 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     quotaCode: S.optional(S.String),
     retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UninitializedAccountException extends S.TaggedError<UninitializedAccountException>()(
   "UninitializedAccountException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -3097,7 +3091,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     reason: S.optional(S.String),
     fieldList: S.optional(ValidationExceptionFieldList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3112,8 +3106,8 @@ export const deleteJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteJobRequest,
   output: DeleteJobResponse,
@@ -3136,8 +3130,8 @@ export const getFailbackReplicationConfiguration: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFailbackReplicationConfigurationRequest,
   output: GetFailbackReplicationConfigurationResponse,
@@ -3159,8 +3153,8 @@ export const getLaunchConfiguration: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLaunchConfigurationRequest,
   output: LaunchConfiguration,
@@ -3183,8 +3177,8 @@ export const getReplicationConfiguration: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReplicationConfigurationRequest,
   output: ReplicationConfiguration,
@@ -3208,8 +3202,8 @@ export const startReplication: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReplicationRequest,
   output: StartReplicationResponse,
@@ -3233,8 +3227,8 @@ export const stopReplication: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopReplicationRequest,
   output: StopReplicationResponse,
@@ -3257,8 +3251,8 @@ export const stopFailback: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopFailbackRequest,
   output: StopFailbackResponse,
@@ -3281,8 +3275,8 @@ export const updateFailbackReplicationConfiguration: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFailbackReplicationConfigurationRequest,
   output: UpdateFailbackReplicationConfigurationResponse,
@@ -3306,8 +3300,8 @@ export const deleteLaunchConfigurationTemplate: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLaunchConfigurationTemplateRequest,
   output: DeleteLaunchConfigurationTemplateResponse,
@@ -3332,8 +3326,8 @@ export const disconnectRecoveryInstance: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisconnectRecoveryInstanceRequest,
   output: DisconnectRecoveryInstanceResponse,
@@ -3358,8 +3352,8 @@ export const deleteReplicationConfigurationTemplate: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationConfigurationTemplateRequest,
   output: DeleteReplicationConfigurationTemplateResponse,
@@ -3383,8 +3377,8 @@ export const deleteSourceNetwork: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSourceNetworkRequest,
   output: DeleteSourceNetworkResponse,
@@ -3408,8 +3402,8 @@ export const deleteSourceServer: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSourceServerRequest,
   output: DeleteSourceServerResponse,
@@ -3433,8 +3427,8 @@ export const deleteRecoveryInstance: (
   | InternalServerException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRecoveryInstanceRequest,
   output: DeleteRecoveryInstanceResponse,
@@ -3458,8 +3452,8 @@ export const terminateRecoveryInstances: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateRecoveryInstancesRequest,
   output: TerminateRecoveryInstancesResponse,
@@ -3483,8 +3477,8 @@ export const startRecovery: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRecoveryRequest,
   output: StartRecoveryResponse,
@@ -3509,8 +3503,8 @@ export const listLaunchActions: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLaunchActionsRequest,
@@ -3521,8 +3515,8 @@ export const listLaunchActions: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLaunchActionsRequest,
@@ -3533,8 +3527,8 @@ export const listLaunchActions: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLaunchActionsRequest,
@@ -3565,8 +3559,8 @@ export const startSourceNetworkReplication: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSourceNetworkReplicationRequest,
   output: StartSourceNetworkReplicationResponse,
@@ -3590,8 +3584,8 @@ export const disconnectSourceServer: (
   | ResourceNotFoundException
   | ThrottlingException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisconnectSourceServerRequest,
   output: SourceServer,
@@ -3614,8 +3608,8 @@ export const initializeService: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitializeServiceRequest,
   output: InitializeServiceResponse,
@@ -3638,8 +3632,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3663,8 +3657,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3688,8 +3682,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3714,8 +3708,8 @@ export const describeLaunchConfigurationTemplates: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLaunchConfigurationTemplatesRequest,
@@ -3726,8 +3720,8 @@ export const describeLaunchConfigurationTemplates: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLaunchConfigurationTemplatesRequest,
@@ -3738,8 +3732,8 @@ export const describeLaunchConfigurationTemplates: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLaunchConfigurationTemplatesRequest,
@@ -3774,8 +3768,8 @@ export const reverseReplication: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReverseReplicationRequest,
   output: ReverseReplicationResponse,
@@ -3802,8 +3796,8 @@ export const updateReplicationConfigurationTemplate: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReplicationConfigurationTemplateRequest,
   output: ReplicationConfigurationTemplate,
@@ -3829,8 +3823,8 @@ export const describeReplicationConfigurationTemplates: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationConfigurationTemplatesRequest,
@@ -3841,8 +3835,8 @@ export const describeReplicationConfigurationTemplates: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationConfigurationTemplatesRequest,
@@ -3853,8 +3847,8 @@ export const describeReplicationConfigurationTemplates: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationConfigurationTemplatesRequest,
@@ -3887,8 +3881,8 @@ export const createSourceNetwork: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSourceNetworkRequest,
   output: CreateSourceNetworkResponse,
@@ -3916,8 +3910,8 @@ export const associateSourceNetworkStack: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSourceNetworkStackRequest,
   output: AssociateSourceNetworkStackResponse,
@@ -3944,8 +3938,8 @@ export const exportSourceNetworkCfnTemplate: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportSourceNetworkCfnTemplateRequest,
   output: ExportSourceNetworkCfnTemplateResponse,
@@ -3971,8 +3965,8 @@ export const stopSourceNetworkReplication: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopSourceNetworkReplicationRequest,
   output: StopSourceNetworkReplicationResponse,
@@ -3998,8 +3992,8 @@ export const updateLaunchConfiguration: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLaunchConfigurationRequest,
   output: LaunchConfiguration,
@@ -4026,8 +4020,8 @@ export const updateReplicationConfiguration: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReplicationConfigurationRequest,
   output: ReplicationConfiguration,
@@ -4054,8 +4048,8 @@ export const retryDataReplication: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetryDataReplicationRequest,
   output: SourceServer,
@@ -4081,8 +4075,8 @@ export const createExtendedSourceServer: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExtendedSourceServerRequest,
   output: CreateExtendedSourceServerResponse,
@@ -4109,8 +4103,8 @@ export const createReplicationConfigurationTemplate: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicationConfigurationTemplateRequest,
   output: ReplicationConfigurationTemplate,
@@ -4136,8 +4130,8 @@ export const createLaunchConfigurationTemplate: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLaunchConfigurationTemplateRequest,
   output: CreateLaunchConfigurationTemplateResponse,
@@ -4162,8 +4156,8 @@ export const deleteLaunchAction: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLaunchActionRequest,
   output: DeleteLaunchActionResponse,
@@ -4190,8 +4184,8 @@ export const listExtensibleSourceServers: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExtensibleSourceServersRequest,
@@ -4202,8 +4196,8 @@ export const listExtensibleSourceServers: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExtensibleSourceServersRequest,
@@ -4214,8 +4208,8 @@ export const listExtensibleSourceServers: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExtensibleSourceServersRequest,
@@ -4247,8 +4241,8 @@ export const listStagingAccounts: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStagingAccountsRequest,
@@ -4259,8 +4253,8 @@ export const listStagingAccounts: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStagingAccountsRequest,
@@ -4271,8 +4265,8 @@ export const listStagingAccounts: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStagingAccountsRequest,
@@ -4303,8 +4297,8 @@ export const describeJobs: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeJobsRequest,
@@ -4314,8 +4308,8 @@ export const describeJobs: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeJobsRequest,
@@ -4325,8 +4319,8 @@ export const describeJobs: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeJobsRequest,
@@ -4357,8 +4351,8 @@ export const updateLaunchConfigurationTemplate: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLaunchConfigurationTemplateRequest,
   output: UpdateLaunchConfigurationTemplateResponse,
@@ -4383,8 +4377,8 @@ export const describeSourceNetworks: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSourceNetworksRequest,
@@ -4394,8 +4388,8 @@ export const describeSourceNetworks: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSourceNetworksRequest,
@@ -4405,8 +4399,8 @@ export const describeSourceNetworks: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSourceNetworksRequest,
@@ -4437,8 +4431,8 @@ export const startSourceNetworkRecovery: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSourceNetworkRecoveryRequest,
   output: StartSourceNetworkRecoveryResponse,
@@ -4463,8 +4457,8 @@ export const describeSourceServers: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSourceServersRequest,
@@ -4474,8 +4468,8 @@ export const describeSourceServers: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSourceServersRequest,
@@ -4485,8 +4479,8 @@ export const describeSourceServers: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSourceServersRequest,
@@ -4517,8 +4511,8 @@ export const putLaunchAction: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLaunchActionRequest,
   output: PutLaunchActionResponse,
@@ -4544,8 +4538,8 @@ export const describeRecoverySnapshots: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRecoverySnapshotsRequest,
@@ -4556,8 +4550,8 @@ export const describeRecoverySnapshots: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRecoverySnapshotsRequest,
@@ -4568,8 +4562,8 @@ export const describeRecoverySnapshots: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRecoverySnapshotsRequest,
@@ -4601,8 +4595,8 @@ export const startFailbackLaunch: (
   | ThrottlingException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFailbackLaunchRequest,
   output: StartFailbackLaunchResponse,
@@ -4627,8 +4621,8 @@ export const describeJobLogItems: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeJobLogItemsRequest,
@@ -4638,8 +4632,8 @@ export const describeJobLogItems: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeJobLogItemsRequest,
@@ -4649,8 +4643,8 @@ export const describeJobLogItems: {
     | ThrottlingException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeJobLogItemsRequest,
@@ -4680,8 +4674,8 @@ export const describeRecoveryInstances: {
     | InternalServerException
     | ThrottlingException
     | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRecoveryInstancesRequest,
@@ -4691,8 +4685,8 @@ export const describeRecoveryInstances: {
     | InternalServerException
     | ThrottlingException
     | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRecoveryInstancesRequest,
@@ -4702,8 +4696,8 @@ export const describeRecoveryInstances: {
     | InternalServerException
     | ThrottlingException
     | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRecoveryInstancesRequest,

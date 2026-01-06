@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MediaTailor",
@@ -3074,7 +3072,7 @@ export const PutPlaybackConfigurationResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3084,8 +3082,8 @@ export const deleteChannel: (
   input: DeleteChannelRequest,
 ) => Effect.Effect<
   DeleteChannelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelRequest,
   output: DeleteChannelResponse,
@@ -3098,8 +3096,8 @@ export const startChannel: (
   input: StartChannelRequest,
 ) => Effect.Effect<
   StartChannelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartChannelRequest,
   output: StartChannelResponse,
@@ -3112,8 +3110,8 @@ export const stopChannel: (
   input: StopChannelRequest,
 ) => Effect.Effect<
   StopChannelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopChannelRequest,
   output: StopChannelResponse,
@@ -3126,8 +3124,8 @@ export const putChannelPolicy: (
   input: PutChannelPolicyRequest,
 ) => Effect.Effect<
   PutChannelPolicyResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutChannelPolicyRequest,
   output: PutChannelPolicyResponse,
@@ -3140,8 +3138,8 @@ export const deleteChannelPolicy: (
   input: DeleteChannelPolicyRequest,
 ) => Effect.Effect<
   DeleteChannelPolicyResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelPolicyRequest,
   output: DeleteChannelPolicyResponse,
@@ -3154,8 +3152,8 @@ export const deleteProgram: (
   input: DeleteProgramRequest,
 ) => Effect.Effect<
   DeleteProgramResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProgramRequest,
   output: DeleteProgramResponse,
@@ -3168,8 +3166,8 @@ export const deleteLiveSource: (
   input: DeleteLiveSourceRequest,
 ) => Effect.Effect<
   DeleteLiveSourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLiveSourceRequest,
   output: DeleteLiveSourceResponse,
@@ -3182,8 +3180,8 @@ export const deletePlaybackConfiguration: (
   input: DeletePlaybackConfigurationRequest,
 ) => Effect.Effect<
   DeletePlaybackConfigurationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePlaybackConfigurationRequest,
   output: DeletePlaybackConfigurationResponse,
@@ -3196,8 +3194,8 @@ export const deletePrefetchSchedule: (
   input: DeletePrefetchScheduleRequest,
 ) => Effect.Effect<
   DeletePrefetchScheduleResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePrefetchScheduleRequest,
   output: DeletePrefetchScheduleResponse,
@@ -3210,8 +3208,8 @@ export const deleteSourceLocation: (
   input: DeleteSourceLocationRequest,
 ) => Effect.Effect<
   DeleteSourceLocationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSourceLocationRequest,
   output: DeleteSourceLocationResponse,
@@ -3224,8 +3222,8 @@ export const deleteVodSource: (
   input: DeleteVodSourceRequest,
 ) => Effect.Effect<
   DeleteVodSourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVodSourceRequest,
   output: DeleteVodSourceResponse,
@@ -3238,8 +3236,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3252,8 +3250,8 @@ export const updateChannel: (
   input: UpdateChannelRequest,
 ) => Effect.Effect<
   UpdateChannelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelRequest,
   output: UpdateChannelResponse,
@@ -3266,8 +3264,8 @@ export const configureLogsForChannel: (
   input: ConfigureLogsForChannelRequest,
 ) => Effect.Effect<
   ConfigureLogsForChannelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfigureLogsForChannelRequest,
   output: ConfigureLogsForChannelResponse,
@@ -3280,8 +3278,8 @@ export const getChannelPolicy: (
   input: GetChannelPolicyRequest,
 ) => Effect.Effect<
   GetChannelPolicyResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChannelPolicyRequest,
   output: GetChannelPolicyResponse,
@@ -3294,8 +3292,8 @@ export const describeProgram: (
   input: DescribeProgramRequest,
 ) => Effect.Effect<
   DescribeProgramResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProgramRequest,
   output: DescribeProgramResponse,
@@ -3308,8 +3306,8 @@ export const describeLiveSource: (
   input: DescribeLiveSourceRequest,
 ) => Effect.Effect<
   DescribeLiveSourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLiveSourceRequest,
   output: DescribeLiveSourceResponse,
@@ -3322,8 +3320,8 @@ export const updateLiveSource: (
   input: UpdateLiveSourceRequest,
 ) => Effect.Effect<
   UpdateLiveSourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLiveSourceRequest,
   output: UpdateLiveSourceResponse,
@@ -3336,8 +3334,8 @@ export const getPrefetchSchedule: (
   input: GetPrefetchScheduleRequest,
 ) => Effect.Effect<
   GetPrefetchScheduleResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPrefetchScheduleRequest,
   output: GetPrefetchScheduleResponse,
@@ -3350,8 +3348,8 @@ export const describeSourceLocation: (
   input: DescribeSourceLocationRequest,
 ) => Effect.Effect<
   DescribeSourceLocationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSourceLocationRequest,
   output: DescribeSourceLocationResponse,
@@ -3364,8 +3362,8 @@ export const updateSourceLocation: (
   input: UpdateSourceLocationRequest,
 ) => Effect.Effect<
   UpdateSourceLocationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSourceLocationRequest,
   output: UpdateSourceLocationResponse,
@@ -3378,8 +3376,8 @@ export const createVodSource: (
   input: CreateVodSourceRequest,
 ) => Effect.Effect<
   CreateVodSourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVodSourceRequest,
   output: CreateVodSourceResponse,
@@ -3392,8 +3390,8 @@ export const updateVodSource: (
   input: UpdateVodSourceRequest,
 ) => Effect.Effect<
   UpdateVodSourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVodSourceRequest,
   output: UpdateVodSourceResponse,
@@ -3406,8 +3404,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3420,8 +3418,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3434,8 +3432,8 @@ export const configureLogsForPlaybackConfiguration: (
   input: ConfigureLogsForPlaybackConfigurationRequest,
 ) => Effect.Effect<
   ConfigureLogsForPlaybackConfigurationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfigureLogsForPlaybackConfigurationRequest,
   output: ConfigureLogsForPlaybackConfigurationResponse,
@@ -3449,22 +3447,22 @@ export const listAlerts: {
     input: ListAlertsRequest,
   ): Effect.Effect<
     ListAlertsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAlertsRequest,
   ) => Stream.Stream<
     ListAlertsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAlertsRequest,
   ) => Stream.Stream<
     Alert,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAlertsRequest,
@@ -3484,8 +3482,8 @@ export const describeChannel: (
   input: DescribeChannelRequest,
 ) => Effect.Effect<
   DescribeChannelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelRequest,
   output: DescribeChannelResponse,
@@ -3499,22 +3497,22 @@ export const listChannels: {
     input: ListChannelsRequest,
   ): Effect.Effect<
     ListChannelsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelsRequest,
   ) => Stream.Stream<
     ListChannelsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelsRequest,
   ) => Stream.Stream<
     Channel,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
@@ -3534,8 +3532,8 @@ export const createLiveSource: (
   input: CreateLiveSourceRequest,
 ) => Effect.Effect<
   CreateLiveSourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLiveSourceRequest,
   output: CreateLiveSourceResponse,
@@ -3549,22 +3547,22 @@ export const listLiveSources: {
     input: ListLiveSourcesRequest,
   ): Effect.Effect<
     ListLiveSourcesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLiveSourcesRequest,
   ) => Stream.Stream<
     ListLiveSourcesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLiveSourcesRequest,
   ) => Stream.Stream<
     LiveSource,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLiveSourcesRequest,
@@ -3584,8 +3582,8 @@ export const getPlaybackConfiguration: (
   input: GetPlaybackConfigurationRequest,
 ) => Effect.Effect<
   GetPlaybackConfigurationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPlaybackConfigurationRequest,
   output: GetPlaybackConfigurationResponse,
@@ -3599,22 +3597,22 @@ export const listPlaybackConfigurations: {
     input: ListPlaybackConfigurationsRequest,
   ): Effect.Effect<
     ListPlaybackConfigurationsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlaybackConfigurationsRequest,
   ) => Stream.Stream<
     ListPlaybackConfigurationsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPlaybackConfigurationsRequest,
   ) => Stream.Stream<
     PlaybackConfiguration,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlaybackConfigurationsRequest,
@@ -3635,22 +3633,22 @@ export const listPrefetchSchedules: {
     input: ListPrefetchSchedulesRequest,
   ): Effect.Effect<
     ListPrefetchSchedulesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPrefetchSchedulesRequest,
   ) => Stream.Stream<
     ListPrefetchSchedulesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPrefetchSchedulesRequest,
   ) => Stream.Stream<
     PrefetchSchedule,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPrefetchSchedulesRequest,
@@ -3671,22 +3669,22 @@ export const listSourceLocations: {
     input: ListSourceLocationsRequest,
   ): Effect.Effect<
     ListSourceLocationsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSourceLocationsRequest,
   ) => Stream.Stream<
     ListSourceLocationsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSourceLocationsRequest,
   ) => Stream.Stream<
     SourceLocation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSourceLocationsRequest,
@@ -3706,8 +3704,8 @@ export const describeVodSource: (
   input: DescribeVodSourceRequest,
 ) => Effect.Effect<
   DescribeVodSourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVodSourceRequest,
   output: DescribeVodSourceResponse,
@@ -3721,22 +3719,22 @@ export const listVodSources: {
     input: ListVodSourcesRequest,
   ): Effect.Effect<
     ListVodSourcesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVodSourcesRequest,
   ) => Stream.Stream<
     ListVodSourcesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVodSourcesRequest,
   ) => Stream.Stream<
     VodSource,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVodSourcesRequest,
@@ -3756,8 +3754,8 @@ export const createChannel: (
   input: CreateChannelRequest,
 ) => Effect.Effect<
   CreateChannelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelRequest,
   output: CreateChannelResponse,
@@ -3771,22 +3769,22 @@ export const getChannelSchedule: {
     input: GetChannelScheduleRequest,
   ): Effect.Effect<
     GetChannelScheduleResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetChannelScheduleRequest,
   ) => Stream.Stream<
     GetChannelScheduleResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetChannelScheduleRequest,
   ) => Stream.Stream<
     ScheduleEntry,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetChannelScheduleRequest,
@@ -3806,8 +3804,8 @@ export const updateProgram: (
   input: UpdateProgramRequest,
 ) => Effect.Effect<
   UpdateProgramResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProgramRequest,
   output: UpdateProgramResponse,
@@ -3820,8 +3818,8 @@ export const createPrefetchSchedule: (
   input: CreatePrefetchScheduleRequest,
 ) => Effect.Effect<
   CreatePrefetchScheduleResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePrefetchScheduleRequest,
   output: CreatePrefetchScheduleResponse,
@@ -3834,8 +3832,8 @@ export const createSourceLocation: (
   input: CreateSourceLocationRequest,
 ) => Effect.Effect<
   CreateSourceLocationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSourceLocationRequest,
   output: CreateSourceLocationResponse,
@@ -3848,8 +3846,8 @@ export const createProgram: (
   input: CreateProgramRequest,
 ) => Effect.Effect<
   CreateProgramResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProgramRequest,
   output: CreateProgramResponse,
@@ -3862,8 +3860,8 @@ export const putPlaybackConfiguration: (
   input: PutPlaybackConfigurationRequest,
 ) => Effect.Effect<
   PutPlaybackConfigurationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPlaybackConfigurationRequest,
   output: PutPlaybackConfigurationResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("https://kinesisvideo.amazonaws.com/doc/2017-09-30/");
 const svc = T.AwsApiService({
@@ -1709,63 +1707,63 @@ export const StartEdgeConfigurationUpdateOutput = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ClientLimitExceededException extends S.TaggedError<ClientLimitExceededException>()(
   "ClientLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidArgumentException extends S.TaggedError<InvalidArgumentException>()(
   "InvalidArgumentException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountChannelLimitExceededException extends S.TaggedError<AccountChannelLimitExceededException>()(
   "AccountChannelLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountStreamLimitExceededException extends S.TaggedError<AccountStreamLimitExceededException>()(
   "AccountStreamLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotAuthorizedException extends S.TaggedError<NotAuthorizedException>()(
   "NotAuthorizedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoDataRetentionException extends S.TaggedError<NoDataRetentionException>()(
   "NoDataRetentionException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidResourceFormatException extends S.TaggedError<InvalidResourceFormatException>()(
   "InvalidResourceFormatException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DeviceStreamLimitExceededException extends S.TaggedError<DeviceStreamLimitExceededException>()(
   "DeviceStreamLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class VersionMismatchException extends S.TaggedError<VersionMismatchException>()(
   "VersionMismatchException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagsPerResourceExceededLimitException extends S.TaggedError<TagsPerResourceExceededLimitException>()(
   "TagsPerResourceExceededLimitException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class StreamEdgeConfigurationNotFoundException extends S.TaggedError<StreamEdgeConfigurationNotFoundException>()(
   "StreamEdgeConfigurationNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDeviceException extends S.TaggedError<InvalidDeviceException>()(
   "InvalidDeviceException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1781,8 +1779,8 @@ export const listSignalingChannels: {
     | AccessDeniedException
     | ClientLimitExceededException
     | InvalidArgumentException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSignalingChannelsInput,
@@ -1791,8 +1789,8 @@ export const listSignalingChannels: {
     | AccessDeniedException
     | ClientLimitExceededException
     | InvalidArgumentException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSignalingChannelsInput,
@@ -1801,8 +1799,8 @@ export const listSignalingChannels: {
     | AccessDeniedException
     | ClientLimitExceededException
     | InvalidArgumentException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSignalingChannelsInput,
@@ -1829,28 +1827,22 @@ export const listStreams: {
     input: ListStreamsInput,
   ): Effect.Effect<
     ListStreamsOutput,
-    | ClientLimitExceededException
-    | InvalidArgumentException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientLimitExceededException | InvalidArgumentException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamsInput,
   ) => Stream.Stream<
     ListStreamsOutput,
-    | ClientLimitExceededException
-    | InvalidArgumentException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientLimitExceededException | InvalidArgumentException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamsInput,
   ) => Stream.Stream<
     StreamInfo,
-    | ClientLimitExceededException
-    | InvalidArgumentException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientLimitExceededException | InvalidArgumentException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamsInput,
@@ -1876,8 +1868,8 @@ export const describeMappedResourceConfiguration: {
     | ClientLimitExceededException
     | InvalidArgumentException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMappedResourceConfigurationInput,
@@ -1887,8 +1879,8 @@ export const describeMappedResourceConfiguration: {
     | ClientLimitExceededException
     | InvalidArgumentException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMappedResourceConfigurationInput,
@@ -1898,8 +1890,8 @@ export const describeMappedResourceConfiguration: {
     | ClientLimitExceededException
     | InvalidArgumentException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMappedResourceConfigurationInput,
@@ -1932,8 +1924,8 @@ export const listTagsForStream: (
   | InvalidResourceFormatException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForStreamInput,
   output: ListTagsForStreamOutput,
@@ -1957,8 +1949,8 @@ export const describeStream: (
   | InvalidArgumentException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStreamInput,
   output: DescribeStreamOutput,
@@ -1982,8 +1974,8 @@ export const listEdgeAgentConfigurations: {
     | ClientLimitExceededException
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEdgeAgentConfigurationsInput,
@@ -1992,8 +1984,8 @@ export const listEdgeAgentConfigurations: {
     | ClientLimitExceededException
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEdgeAgentConfigurationsInput,
@@ -2002,8 +1994,8 @@ export const listEdgeAgentConfigurations: {
     | ClientLimitExceededException
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEdgeAgentConfigurationsInput,
@@ -2040,8 +2032,8 @@ export const getDataEndpoint: (
   | InvalidArgumentException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataEndpointInput,
   output: GetDataEndpointOutput,
@@ -2065,8 +2057,8 @@ export const describeSignalingChannel: (
   | ClientLimitExceededException
   | InvalidArgumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSignalingChannelInput,
   output: DescribeSignalingChannelOutput,
@@ -2088,8 +2080,8 @@ export const describeImageGenerationConfiguration: (
   | ClientLimitExceededException
   | InvalidArgumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImageGenerationConfigurationInput,
   output: DescribeImageGenerationConfigurationOutput,
@@ -2112,8 +2104,8 @@ export const describeMediaStorageConfiguration: (
   | ClientLimitExceededException
   | InvalidArgumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMediaStorageConfigurationInput,
   output: DescribeMediaStorageConfigurationOutput,
@@ -2135,8 +2127,8 @@ export const describeNotificationConfiguration: (
   | ClientLimitExceededException
   | InvalidArgumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNotificationConfigurationInput,
   output: DescribeNotificationConfigurationOutput,
@@ -2162,8 +2154,8 @@ export const describeStreamStorageConfiguration: (
   | ClientLimitExceededException
   | InvalidArgumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStreamStorageConfigurationInput,
   output: DescribeStreamStorageConfigurationOutput,
@@ -2185,8 +2177,8 @@ export const listTagsForResource: (
   | ClientLimitExceededException
   | InvalidArgumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -2210,8 +2202,8 @@ export const untagResource: (
   | ClientLimitExceededException
   | InvalidArgumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -2235,8 +2227,8 @@ export const updateNotificationConfiguration: (
   | NoDataRetentionException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNotificationConfigurationInput,
   output: UpdateNotificationConfigurationOutput,
@@ -2275,8 +2267,8 @@ export const updateMediaStorageConfiguration: (
   | NoDataRetentionException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMediaStorageConfigurationInput,
   output: UpdateMediaStorageConfigurationOutput,
@@ -2306,8 +2298,8 @@ export const untagStream: (
   | InvalidResourceFormatException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagStreamInput,
   output: UntagStreamOutput,
@@ -2345,8 +2337,8 @@ export const getSignalingChannelEndpoint: (
   | InvalidArgumentException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSignalingChannelEndpointInput,
   output: GetSignalingChannelEndpointOutput,
@@ -2371,8 +2363,8 @@ export const updateImageGenerationConfiguration: (
   | NoDataRetentionException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateImageGenerationConfigurationInput,
   output: UpdateImageGenerationConfigurationOutput,
@@ -2413,8 +2405,8 @@ export const startEdgeConfigurationUpdate: (
   | NoDataRetentionException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartEdgeConfigurationUpdateInput,
   output: StartEdgeConfigurationUpdateOutput,
@@ -2442,8 +2434,8 @@ export const deleteSignalingChannel: (
   | ResourceInUseException
   | ResourceNotFoundException
   | VersionMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSignalingChannelInput,
   output: DeleteSignalingChannelOutput,
@@ -2473,8 +2465,8 @@ export const tagResource: (
   | InvalidArgumentException
   | ResourceNotFoundException
   | TagsPerResourceExceededLimitException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -2502,8 +2494,8 @@ export const deleteEdgeConfiguration: (
   | InvalidArgumentException
   | ResourceNotFoundException
   | StreamEdgeConfigurationNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEdgeConfigurationInput,
   output: DeleteEdgeConfigurationOutput,
@@ -2547,8 +2539,8 @@ export const updateDataRetention: (
   | ResourceInUseException
   | ResourceNotFoundException
   | VersionMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataRetentionInput,
   output: UpdateDataRetentionOutput,
@@ -2585,8 +2577,8 @@ export const updateStream: (
   | ResourceInUseException
   | ResourceNotFoundException
   | VersionMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStreamInput,
   output: UpdateStreamOutput,
@@ -2618,8 +2610,8 @@ export const updateSignalingChannel: (
   | ResourceInUseException
   | ResourceNotFoundException
   | VersionMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSignalingChannelInput,
   output: UpdateSignalingChannelOutput,
@@ -2651,8 +2643,8 @@ export const updateStreamStorageConfiguration: (
   | ResourceInUseException
   | ResourceNotFoundException
   | VersionMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStreamStorageConfigurationInput,
   output: UpdateStreamStorageConfigurationOutput,
@@ -2689,8 +2681,8 @@ export const deleteStream: (
   | ResourceInUseException
   | ResourceNotFoundException
   | VersionMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStreamInput,
   output: DeleteStreamOutput,
@@ -2728,8 +2720,8 @@ export const tagStream: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TagsPerResourceExceededLimitException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagStreamInput,
   output: TagStreamOutput,
@@ -2757,8 +2749,8 @@ export const createSignalingChannel: (
   | InvalidArgumentException
   | ResourceInUseException
   | TagsPerResourceExceededLimitException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSignalingChannelInput,
   output: CreateSignalingChannelOutput,
@@ -2787,8 +2779,8 @@ export const describeEdgeConfiguration: (
   | InvalidArgumentException
   | ResourceNotFoundException
   | StreamEdgeConfigurationNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEdgeConfigurationInput,
   output: DescribeEdgeConfigurationOutput,
@@ -2824,8 +2816,8 @@ export const createStream: (
   | InvalidDeviceException
   | ResourceInUseException
   | TagsPerResourceExceededLimitException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStreamInput,
   output: CreateStreamOutput,

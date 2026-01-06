@@ -12,9 +12,9 @@ import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import type * as AST from "effect/SchemaAST";
 import * as Stream from "effect/Stream";
-import { parseEventStream } from "./eventstream/parser.ts";
-import { isStreamingType } from "./traits.ts";
-import { getEncodedPropertySignatures } from "./util/ast.ts";
+import { parseEventStream } from "../eventstream/parser.ts";
+import { isStreamingType } from "../traits.ts";
+import { getEncodedPropertySignatures } from "../util/ast.ts";
 
 /**
  * Stream parser function - transforms deserialized response if it contains an event stream.

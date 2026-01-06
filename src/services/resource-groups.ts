@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Resource Groups",
@@ -1348,35 +1346,31 @@ export const ListGroupResourcesOutput = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class MethodNotAllowedException extends S.TaggedError<MethodNotAllowedException>()(
   "MethodNotAllowedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -1401,8 +1395,8 @@ export const createGroup: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupInput,
   output: CreateGroupOutput,
@@ -1428,8 +1422,8 @@ export const listGroupingStatuses: {
     | InternalServerErrorException
     | MethodNotAllowedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupingStatusesInput,
@@ -1440,8 +1434,8 @@ export const listGroupingStatuses: {
     | InternalServerErrorException
     | MethodNotAllowedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupingStatusesInput,
@@ -1452,8 +1446,8 @@ export const listGroupingStatuses: {
     | InternalServerErrorException
     | MethodNotAllowedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupingStatusesInput,
@@ -1491,8 +1485,8 @@ export const listGroups: {
     | InternalServerErrorException
     | MethodNotAllowedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupsInput,
@@ -1503,8 +1497,8 @@ export const listGroups: {
     | InternalServerErrorException
     | MethodNotAllowedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupsInput,
@@ -1515,8 +1509,8 @@ export const listGroups: {
     | InternalServerErrorException
     | MethodNotAllowedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsInput,
@@ -1547,8 +1541,8 @@ export const getAccountSettings: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsOutput,
@@ -1577,8 +1571,8 @@ export const updateAccountSettings: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountSettingsInput,
   output: UpdateAccountSettingsOutput,
@@ -1610,8 +1604,8 @@ export const deleteGroup: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupInput,
   output: DeleteGroupOutput,
@@ -1644,8 +1638,8 @@ export const getGroupConfiguration: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupConfigurationInput,
   output: GetGroupConfigurationOutput,
@@ -1679,8 +1673,8 @@ export const getGroupQuery: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupQueryInput,
   output: GetGroupQueryOutput,
@@ -1723,8 +1717,8 @@ export const groupResources: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GroupResourcesInput,
   output: GroupResourcesOutput,
@@ -1756,8 +1750,8 @@ export const getGroup: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupInput,
   output: GetGroupOutput,
@@ -1790,8 +1784,8 @@ export const getTags: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTagsInput,
   output: GetTagsOutput,
@@ -1829,8 +1823,8 @@ export const tag: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagInput,
   output: TagOutput,
@@ -1865,8 +1859,8 @@ export const ungroupResources: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UngroupResourcesInput,
   output: UngroupResourcesOutput,
@@ -1898,8 +1892,8 @@ export const untag: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagInput,
   output: UntagOutput,
@@ -1932,8 +1926,8 @@ export const updateGroup: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupInput,
   output: UpdateGroupOutput,
@@ -1966,8 +1960,8 @@ export const updateGroupQuery: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupQueryInput,
   output: UpdateGroupQueryOutput,
@@ -2001,8 +1995,8 @@ export const putGroupConfiguration: (
   | MethodNotAllowedException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutGroupConfigurationInput,
   output: PutGroupConfigurationOutput,
@@ -2036,8 +2030,8 @@ export const cancelTagSyncTask: (
   | MethodNotAllowedException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelTagSyncTaskInput,
   output: CancelTagSyncTaskResponse,
@@ -2078,8 +2072,8 @@ export const listGroupResources: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupResourcesInput,
@@ -2092,8 +2086,8 @@ export const listGroupResources: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupResourcesInput,
@@ -2106,8 +2100,8 @@ export const listGroupResources: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupResourcesInput,
@@ -2149,8 +2143,8 @@ export const listTagSyncTasks: {
     | MethodNotAllowedException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagSyncTasksInput,
@@ -2162,8 +2156,8 @@ export const listTagSyncTasks: {
     | MethodNotAllowedException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagSyncTasksInput,
@@ -2175,8 +2169,8 @@ export const listTagSyncTasks: {
     | MethodNotAllowedException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagSyncTasksInput,
@@ -2224,8 +2218,8 @@ export const searchResources: {
     | MethodNotAllowedException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchResourcesInput,
@@ -2237,8 +2231,8 @@ export const searchResources: {
     | MethodNotAllowedException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchResourcesInput,
@@ -2250,8 +2244,8 @@ export const searchResources: {
     | MethodNotAllowedException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchResourcesInput,
@@ -2291,8 +2285,8 @@ export const getTagSyncTask: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTagSyncTaskInput,
   output: GetTagSyncTaskOutput,
@@ -2336,8 +2330,8 @@ export const startTagSyncTask: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTagSyncTaskInput,
   output: StartTagSyncTaskOutput,

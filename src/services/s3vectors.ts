@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "S3Vectors",
@@ -908,42 +906,40 @@ export const QueryVectorsOutput = S.suspend(() =>
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.String },
-) {}
+).pipe(C.withConflictError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class KmsDisabledException extends S.TaggedError<KmsDisabledException>()(
   "KmsDisabledException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.String },
-) {}
+).pipe(C.withQuotaError) {}
 export class KmsInvalidKeyUsageException extends S.TaggedError<KmsInvalidKeyUsageException>()(
   "KmsInvalidKeyUsageException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsInvalidStateException extends S.TaggedError<KmsInvalidStateException>()(
   "KmsInvalidStateException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsNotFoundException extends S.TaggedError<KmsNotFoundException>()(
   "KmsNotFoundException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -957,8 +953,8 @@ export const deleteVectorBucketPolicy: (
   input: DeleteVectorBucketPolicyInput,
 ) => Effect.Effect<
   DeleteVectorBucketPolicyOutput,
-  NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVectorBucketPolicyInput,
   output: DeleteVectorBucketPolicyOutput,
@@ -975,8 +971,8 @@ export const getVectorBucket: (
   input: GetVectorBucketInput,
 ) => Effect.Effect<
   GetVectorBucketOutput,
-  NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVectorBucketInput,
   output: GetVectorBucketOutput,
@@ -994,22 +990,22 @@ export const listVectorBuckets: {
     input: ListVectorBucketsInput,
   ): Effect.Effect<
     ListVectorBucketsOutput,
-    ServiceUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServiceUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVectorBucketsInput,
   ) => Stream.Stream<
     ListVectorBucketsOutput,
-    ServiceUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServiceUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVectorBucketsInput,
   ) => Stream.Stream<
     VectorBucketSummary,
-    ServiceUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServiceUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVectorBucketsInput,
@@ -1033,8 +1029,8 @@ export const getIndex: (
   input: GetIndexInput,
 ) => Effect.Effect<
   GetIndexOutput,
-  NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIndexInput,
   output: GetIndexOutput,
@@ -1052,22 +1048,22 @@ export const listIndexes: {
     input: ListIndexesInput,
   ): Effect.Effect<
     ListIndexesOutput,
-    NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NotFoundException | ServiceUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIndexesInput,
   ) => Stream.Stream<
     ListIndexesOutput,
-    NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NotFoundException | ServiceUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIndexesInput,
   ) => Stream.Stream<
     IndexSummary,
-    NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NotFoundException | ServiceUnavailableException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIndexesInput,
@@ -1101,8 +1097,8 @@ export const listVectors: {
     | AccessDeniedException
     | NotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVectorsInput,
@@ -1111,8 +1107,8 @@ export const listVectors: {
     | AccessDeniedException
     | NotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVectorsInput,
@@ -1121,8 +1117,8 @@ export const listVectors: {
     | AccessDeniedException
     | NotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVectorsInput,
@@ -1150,8 +1146,8 @@ export const getVectorBucketPolicy: (
   input: GetVectorBucketPolicyInput,
 ) => Effect.Effect<
   GetVectorBucketPolicyOutput,
-  NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVectorBucketPolicyInput,
   output: GetVectorBucketPolicyOutput,
@@ -1171,8 +1167,8 @@ export const deleteVectorBucket: (
   | ConflictException
   | NotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVectorBucketInput,
   output: DeleteVectorBucketOutput,
@@ -1194,8 +1190,8 @@ export const tagResource: (
   | ConflictException
   | NotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1212,8 +1208,8 @@ export const putVectorBucketPolicy: (
   input: PutVectorBucketPolicyInput,
 ) => Effect.Effect<
   PutVectorBucketPolicyOutput,
-  NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVectorBucketPolicyInput,
   output: PutVectorBucketPolicyOutput,
@@ -1230,8 +1226,8 @@ export const deleteIndex: (
   input: DeleteIndexInput,
 ) => Effect.Effect<
   DeleteIndexOutput,
-  NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIndexInput,
   output: DeleteIndexOutput,
@@ -1250,8 +1246,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceInput,
 ) => Effect.Effect<
   ListTagsForResourceOutput,
-  NotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1273,8 +1269,8 @@ export const untagResource: (
   | ConflictException
   | NotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1296,8 +1292,8 @@ export const createVectorBucket: (
   | ConflictException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVectorBucketInput,
   output: CreateVectorBucketOutput,
@@ -1324,8 +1320,8 @@ export const createIndex: (
   | NotFoundException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIndexInput,
   output: CreateIndexOutput,
@@ -1354,8 +1350,8 @@ export const deleteVectors: (
   | KmsNotFoundException
   | NotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVectorsInput,
   output: DeleteVectorsOutput,
@@ -1392,8 +1388,8 @@ export const queryVectors: (
   | KmsNotFoundException
   | NotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: QueryVectorsInput,
   output: QueryVectorsOutput,
@@ -1423,8 +1419,8 @@ export const getVectors: (
   | KmsNotFoundException
   | NotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVectorsInput,
   output: GetVectorsOutput,
@@ -1460,8 +1456,8 @@ export const putVectors: (
   | NotFoundException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVectorsInput,
   output: PutVectorsOutput,

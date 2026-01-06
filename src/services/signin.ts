@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "Signin", serviceShapeName: "Signin" });
 const auth = T.AwsAuthSigv4({ name: "signin" });
@@ -462,19 +460,15 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { error: S.String, message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class TooManyRequestsError extends S.TaggedError<TooManyRequestsError>()(
   "TooManyRequestsError",
   { error: S.String, message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { error: S.String, message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -515,8 +509,8 @@ export const createOAuth2Token: (
   | InternalServerException
   | TooManyRequestsError
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOAuth2TokenRequest,
   output: CreateOAuth2TokenResponse,

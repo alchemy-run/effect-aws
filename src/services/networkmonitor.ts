@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "NetworkMonitor",
@@ -888,37 +886,33 @@ export const CreateProbeOutput = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
   T.Retryable({ throttling: true }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -933,8 +927,8 @@ export const listMonitors: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMonitorsInput,
@@ -944,8 +938,8 @@ export const listMonitors: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMonitorsInput,
@@ -955,8 +949,8 @@ export const listMonitors: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMonitorsInput,
@@ -1007,8 +1001,8 @@ export const createMonitor: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMonitorInput,
   output: CreateMonitorOutput,
@@ -1038,8 +1032,8 @@ export const createProbe: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProbeInput,
   output: CreateProbeOutput,
@@ -1065,8 +1059,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1092,8 +1086,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1121,8 +1115,8 @@ export const getProbe: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProbeInput,
   output: GetProbeOutput,
@@ -1167,8 +1161,8 @@ export const updateProbe: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProbeInput,
   output: UpdateProbeOutput,
@@ -1196,8 +1190,8 @@ export const deleteMonitor: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMonitorInput,
   output: DeleteMonitorOutput,
@@ -1228,8 +1222,8 @@ export const deleteProbe: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProbeInput,
   output: DeleteProbeOutput,
@@ -1255,8 +1249,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1284,8 +1278,8 @@ export const getMonitor: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMonitorInput,
   output: GetMonitorOutput,
@@ -1313,8 +1307,8 @@ export const updateMonitor: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMonitorInput,
   output: UpdateMonitorOutput,

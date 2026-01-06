@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://swf.amazonaws.com/doc/2015-07-20/");
 const svc = T.AwsApiService({
@@ -2728,7 +2726,7 @@ export class InvalidArn extends S.TaggedError<InvalidArn>()("InvalidArn", {
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidToken extends S.TaggedError<InvalidToken>()(
   "InvalidToken",
   { message: S.optional(S.String) },
@@ -2740,7 +2738,7 @@ export class InvalidOutput extends S.TaggedError<InvalidOutput>()(
 export class ResourceNotFound extends S.TaggedError<ResourceNotFound>()(
   "ResourceNotFound",
   { message: S.optional(S.String), resourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ActivityDoesNotExist extends S.TaggedError<ActivityDoesNotExist>()(
   "ActivityDoesNotExist",
   { message: S.optional(S.String) },
@@ -2752,7 +2750,7 @@ export class ExecutionDoesNotExist extends S.TaggedError<ExecutionDoesNotExist>(
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class KmsAccessDeniedException extends S.TaggedError<KmsAccessDeniedException>()(
   "KmsAccessDeniedException",
   { message: S.optional(S.String) },
@@ -2768,7 +2766,7 @@ export class InvalidDefinition extends S.TaggedError<InvalidDefinition>()(
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String), reason: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TaskDoesNotExist extends S.TaggedError<TaskDoesNotExist>()(
   "TaskDoesNotExist",
   { message: S.optional(S.String) },
@@ -2807,7 +2805,7 @@ export class InvalidEncryptionConfiguration extends S.TaggedError<InvalidEncrypt
 export class TooManyTags extends S.TaggedError<TooManyTags>()("TooManyTags", {
   message: S.optional(S.String),
   resourceName: S.optional(S.String),
-}) {}
+}).pipe(C.withBadRequestError) {}
 export class ActivityWorkerLimitExceeded extends S.TaggedError<ActivityWorkerLimitExceeded>()(
   "ActivityWorkerLimitExceeded",
   { message: S.optional(S.String) },
@@ -2861,8 +2859,8 @@ export const deleteActivity: (
   input: DeleteActivityInput,
 ) => Effect.Effect<
   DeleteActivityOutput,
-  InvalidArn | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteActivityInput,
   output: DeleteActivityOutput,
@@ -2877,8 +2875,8 @@ export const describeActivity: (
   input: DescribeActivityInput,
 ) => Effect.Effect<
   DescribeActivityOutput,
-  ActivityDoesNotExist | InvalidArn | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ActivityDoesNotExist | InvalidArn | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeActivityInput,
   output: DescribeActivityOutput,
@@ -2891,8 +2889,8 @@ export const describeMapRun: (
   input: DescribeMapRunInput,
 ) => Effect.Effect<
   DescribeMapRunOutput,
-  InvalidArn | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMapRunInput,
   output: DescribeMapRunOutput,
@@ -2911,22 +2909,22 @@ export const listActivities: {
     input: ListActivitiesInput,
   ): Effect.Effect<
     ListActivitiesOutput,
-    InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListActivitiesInput,
   ) => Stream.Stream<
     ListActivitiesOutput,
-    InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListActivitiesInput,
   ) => Stream.Stream<
     ActivityListItem,
-    InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActivitiesInput,
@@ -2947,22 +2945,22 @@ export const listMapRuns: {
     input: ListMapRunsInput,
   ): Effect.Effect<
     ListMapRunsOutput,
-    ExecutionDoesNotExist | InvalidArn | InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ExecutionDoesNotExist | InvalidArn | InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMapRunsInput,
   ) => Stream.Stream<
     ListMapRunsOutput,
-    ExecutionDoesNotExist | InvalidArn | InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ExecutionDoesNotExist | InvalidArn | InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMapRunsInput,
   ) => Stream.Stream<
     MapRunListItem,
-    ExecutionDoesNotExist | InvalidArn | InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ExecutionDoesNotExist | InvalidArn | InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMapRunsInput,
@@ -2988,22 +2986,22 @@ export const listStateMachines: {
     input: ListStateMachinesInput,
   ): Effect.Effect<
     ListStateMachinesOutput,
-    InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStateMachinesInput,
   ) => Stream.Stream<
     ListStateMachinesOutput,
-    InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStateMachinesInput,
   ) => Stream.Stream<
     StateMachineListItem,
-    InvalidToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStateMachinesInput,
@@ -3044,8 +3042,8 @@ export const deleteStateMachine: (
   input: DeleteStateMachineInput,
 ) => Effect.Effect<
   DeleteStateMachineOutput,
-  InvalidArn | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStateMachineInput,
   output: DeleteStateMachineOutput,
@@ -3068,8 +3066,8 @@ export const describeStateMachineAlias: (
   input: DescribeStateMachineAliasInput,
 ) => Effect.Effect<
   DescribeStateMachineAliasOutput,
-  InvalidArn | ResourceNotFound | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | ResourceNotFound | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStateMachineAliasInput,
   output: DescribeStateMachineAliasOutput,
@@ -3084,8 +3082,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceInput,
 ) => Effect.Effect<
   ListTagsForResourceOutput,
-  InvalidArn | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -3098,8 +3096,8 @@ export const untagResource: (
   input: UntagResourceInput,
 ) => Effect.Effect<
   UntagResourceOutput,
-  InvalidArn | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -3112,8 +3110,8 @@ export const updateMapRun: (
   input: UpdateMapRunInput,
 ) => Effect.Effect<
   UpdateMapRunOutput,
-  InvalidArn | ResourceNotFound | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | ResourceNotFound | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMapRunInput,
   output: UpdateMapRunOutput,
@@ -3138,8 +3136,8 @@ export const deleteStateMachineVersion: (
   input: DeleteStateMachineVersionInput,
 ) => Effect.Effect<
   DeleteStateMachineVersionOutput,
-  ConflictException | InvalidArn | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | InvalidArn | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStateMachineVersionInput,
   output: DeleteStateMachineVersionOutput,
@@ -3170,8 +3168,8 @@ export const deleteStateMachineAlias: (
   | InvalidArn
   | ResourceNotFound
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStateMachineAliasInput,
   output: DeleteStateMachineAliasOutput,
@@ -3200,8 +3198,8 @@ export const listStateMachineVersions: (
   input: ListStateMachineVersionsInput,
 ) => Effect.Effect<
   ListStateMachineVersionsOutput,
-  InvalidArn | InvalidToken | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | InvalidToken | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListStateMachineVersionsInput,
   output: ListStateMachineVersionsOutput,
@@ -3245,8 +3243,8 @@ export const validateStateMachineDefinition: (
   input: ValidateStateMachineDefinitionInput,
 ) => Effect.Effect<
   ValidateStateMachineDefinitionOutput,
-  ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidateStateMachineDefinitionInput,
   output: ValidateStateMachineDefinitionOutput,
@@ -3279,8 +3277,8 @@ export const listStateMachineAliases: (
   | ResourceNotFound
   | StateMachineDeleting
   | StateMachineDoesNotExist
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListStateMachineAliasesInput,
   output: ListStateMachineAliasesOutput,
@@ -3306,8 +3304,8 @@ export const tagResource: (
   input: TagResourceInput,
 ) => Effect.Effect<
   TagResourceOutput,
-  InvalidArn | ResourceNotFound | TooManyTags | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArn | ResourceNotFound | TooManyTags | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -3344,8 +3342,8 @@ export const publishStateMachineVersion: (
   | StateMachineDeleting
   | StateMachineDoesNotExist
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PublishStateMachineVersionInput,
   output: PublishStateMachineVersionOutput,
@@ -3392,8 +3390,8 @@ export const updateStateMachineAlias: (
   | ResourceNotFound
   | StateMachineDeleting
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStateMachineAliasInput,
   output: UpdateStateMachineAliasOutput,
@@ -3447,8 +3445,8 @@ export const createStateMachineAlias: (
   | ServiceQuotaExceededException
   | StateMachineDeleting
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStateMachineAliasInput,
   output: CreateStateMachineAliasOutput,
@@ -3482,8 +3480,8 @@ export const sendTaskHeartbeat: (
   input: SendTaskHeartbeatInput,
 ) => Effect.Effect<
   SendTaskHeartbeatOutput,
-  InvalidToken | TaskDoesNotExist | TaskTimedOut | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidToken | TaskDoesNotExist | TaskTimedOut | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendTaskHeartbeatInput,
   output: SendTaskHeartbeatOutput,
@@ -3515,8 +3513,8 @@ export const listExecutions: {
     | StateMachineDoesNotExist
     | StateMachineTypeNotSupported
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExecutionsInput,
@@ -3528,8 +3526,8 @@ export const listExecutions: {
     | StateMachineDoesNotExist
     | StateMachineTypeNotSupported
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExecutionsInput,
@@ -3541,8 +3539,8 @@ export const listExecutions: {
     | StateMachineDoesNotExist
     | StateMachineTypeNotSupported
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExecutionsInput,
@@ -3580,8 +3578,8 @@ export const sendTaskFailure: (
   | KmsThrottlingException
   | TaskDoesNotExist
   | TaskTimedOut
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendTaskFailureInput,
   output: SendTaskFailureOutput,
@@ -3619,8 +3617,8 @@ export const startSyncExecution: (
   | StateMachineDeleting
   | StateMachineDoesNotExist
   | StateMachineTypeNotSupported
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSyncExecutionInput,
   output: StartSyncExecutionOutput,
@@ -3663,8 +3661,8 @@ export const getActivityTask: (
   | KmsAccessDeniedException
   | KmsInvalidStateException
   | KmsThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetActivityTaskInput,
   output: GetActivityTaskOutput,
@@ -3696,8 +3694,8 @@ export const stopExecution: (
   | KmsInvalidStateException
   | KmsThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopExecutionInput,
   output: StopExecutionOutput,
@@ -3729,8 +3727,8 @@ export const describeExecution: (
   | KmsAccessDeniedException
   | KmsInvalidStateException
   | KmsThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeExecutionInput,
   output: DescribeExecutionOutput,
@@ -3758,8 +3756,8 @@ export const sendTaskSuccess: (
   | KmsThrottlingException
   | TaskDoesNotExist
   | TaskTimedOut
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendTaskSuccessInput,
   output: SendTaskSuccessOutput,
@@ -3810,8 +3808,8 @@ export const describeStateMachine: (
   | KmsInvalidStateException
   | KmsThrottlingException
   | StateMachineDoesNotExist
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStateMachineInput,
   output: DescribeStateMachineOutput,
@@ -3842,8 +3840,8 @@ export const describeStateMachineForExecution: (
   | KmsAccessDeniedException
   | KmsInvalidStateException
   | KmsThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStateMachineForExecutionInput,
   output: DescribeStateMachineForExecutionOutput,
@@ -3906,8 +3904,8 @@ export const startExecution: (
   | StateMachineDeleting
   | StateMachineDoesNotExist
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartExecutionInput,
   output: StartExecutionOutput,
@@ -3952,8 +3950,8 @@ export const createActivity: (
   | KmsAccessDeniedException
   | KmsThrottlingException
   | TooManyTags
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateActivityInput,
   output: CreateActivityOutput,
@@ -3988,8 +3986,8 @@ export const getExecutionHistory: {
     | KmsAccessDeniedException
     | KmsInvalidStateException
     | KmsThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetExecutionHistoryInput,
@@ -4001,8 +3999,8 @@ export const getExecutionHistory: {
     | KmsAccessDeniedException
     | KmsInvalidStateException
     | KmsThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetExecutionHistoryInput,
@@ -4014,8 +4012,8 @@ export const getExecutionHistory: {
     | KmsAccessDeniedException
     | KmsInvalidStateException
     | KmsThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetExecutionHistoryInput,
@@ -4065,8 +4063,8 @@ export const redriveExecution: (
   | ExecutionNotRedrivable
   | InvalidArn
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RedriveExecutionInput,
   output: RedriveExecutionOutput,
@@ -4116,8 +4114,8 @@ export const testState: (
   | InvalidDefinition
   | InvalidExecutionInput
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestStateInput,
   output: TestStateOutput,
@@ -4185,8 +4183,8 @@ export const updateStateMachine: (
   | StateMachineDeleting
   | StateMachineDoesNotExist
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStateMachineInput,
   output: UpdateStateMachineOutput,
@@ -4249,8 +4247,8 @@ export const createStateMachine: (
   | StateMachineTypeNotSupported
   | TooManyTags
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStateMachineInput,
   output: CreateStateMachineOutput,

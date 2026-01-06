@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://organizations.amazonaws.com/doc/2016-11-28/");
 const svc = T.AwsApiService({
@@ -2877,65 +2875,63 @@ export const DescribeResponsibilityTransferResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class AWSOrganizationsNotInUseException extends S.TaggedError<AWSOrganizationsNotInUseException>()(
   "AWSOrganizationsNotInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountNotFoundException extends S.TaggedError<AccountNotFoundException>()(
   "AccountNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountAlreadyRegisteredException extends S.TaggedError<AccountAlreadyRegisteredException>()(
   "AccountAlreadyRegisteredException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class AccountAlreadyClosedException extends S.TaggedError<AccountAlreadyClosedException>()(
   "AccountAlreadyClosedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class AccessDeniedForDependencyException extends S.TaggedError<AccessDeniedForDependencyException>()(
   "AccessDeniedForDependencyException",
   { Message: S.optional(S.String), Reason: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class AccountNotRegisteredException extends S.TaggedError<AccountNotRegisteredException>()(
   "AccountNotRegisteredException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class CreateAccountStatusNotFoundException extends S.TaggedError<CreateAccountStatusNotFoundException>()(
   "CreateAccountStatusNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidInputException extends S.TaggedError<InvalidInputException>()(
   "InvalidInputException",
   { Message: S.optional(S.String), Reason: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConstraintViolationException extends S.TaggedError<ConstraintViolationException>()(
   "ConstraintViolationException",
   { Message: S.optional(S.String), Reason: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class HandshakeAlreadyInStateException extends S.TaggedError<HandshakeAlreadyInStateException>()(
   "HandshakeAlreadyInStateException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ServiceException extends S.TaggedError<ServiceException>()(
   "ServiceException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class OrganizationalUnitNotFoundException extends S.TaggedError<OrganizationalUnitNotFoundException>()(
   "OrganizationalUnitNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountOwnerNotVerifiedException extends S.TaggedError<AccountOwnerNotVerifiedException>()(
   "AccountOwnerNotVerifiedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class EffectivePolicyNotFoundException extends S.TaggedError<EffectivePolicyNotFoundException>()(
   "EffectivePolicyNotFoundException",
   { Message: S.optional(S.String) },
@@ -2943,27 +2939,27 @@ export class EffectivePolicyNotFoundException extends S.TaggedError<EffectivePol
 export class ParentNotFoundException extends S.TaggedError<ParentNotFoundException>()(
   "ParentNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ChildNotFoundException extends S.TaggedError<ChildNotFoundException>()(
   "ChildNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PolicyNotFoundException extends S.TaggedError<PolicyNotFoundException>()(
   "PolicyNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AlreadyInOrganizationException extends S.TaggedError<AlreadyInOrganizationException>()(
   "AlreadyInOrganizationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class OrganizationNotEmptyException extends S.TaggedError<OrganizationNotEmptyException>()(
   "OrganizationNotEmptyException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class HandshakeNotFoundException extends S.TaggedError<HandshakeNotFoundException>()(
   "HandshakeNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PolicyChangesInProgressException extends S.TaggedError<PolicyChangesInProgressException>()(
   "PolicyChangesInProgressException",
   { Message: S.optional(S.String) },
@@ -2971,113 +2967,111 @@ export class PolicyChangesInProgressException extends S.TaggedError<PolicyChange
 export class DuplicateHandshakeException extends S.TaggedError<DuplicateHandshakeException>()(
   "DuplicateHandshakeException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidResponsibilityTransferTransitionException extends S.TaggedError<InvalidResponsibilityTransferTransitionException>()(
   "InvalidResponsibilityTransferTransitionException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class DuplicateOrganizationalUnitException extends S.TaggedError<DuplicateOrganizationalUnitException>()(
   "DuplicateOrganizationalUnitException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class DuplicatePolicyException extends S.TaggedError<DuplicatePolicyException>()(
   "DuplicatePolicyException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class OrganizationalUnitNotEmptyException extends S.TaggedError<OrganizationalUnitNotEmptyException>()(
   "OrganizationalUnitNotEmptyException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class PolicyInUseException extends S.TaggedError<PolicyInUseException>()(
   "PolicyInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourcePolicyNotFoundException extends S.TaggedError<ResourcePolicyNotFoundException>()(
   "ResourcePolicyNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicatePolicyAttachmentException extends S.TaggedError<DuplicatePolicyAttachmentException>()(
   "DuplicatePolicyAttachmentException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class DestinationParentNotFoundException extends S.TaggedError<DestinationParentNotFoundException>()(
   "DestinationParentNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MasterCannotLeaveOrganizationException extends S.TaggedError<MasterCannotLeaveOrganizationException>()(
   "MasterCannotLeaveOrganizationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResponsibilityTransferNotFoundException extends S.TaggedError<ResponsibilityTransferNotFoundException>()(
   "ResponsibilityTransferNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FinalizingOrganizationException extends S.TaggedError<FinalizingOrganizationException>()(
   "FinalizingOrganizationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class HandshakeConstraintViolationException extends S.TaggedError<HandshakeConstraintViolationException>()(
   "HandshakeConstraintViolationException",
   { Message: S.optional(S.String), Reason: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class PolicyTypeAlreadyEnabledException extends S.TaggedError<PolicyTypeAlreadyEnabledException>()(
   "PolicyTypeAlreadyEnabledException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResponsibilityTransferAlreadyInStatusException extends S.TaggedError<ResponsibilityTransferAlreadyInStatusException>()(
   "ResponsibilityTransferAlreadyInStatusException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class MalformedPolicyDocumentException extends S.TaggedError<MalformedPolicyDocumentException>()(
   "MalformedPolicyDocumentException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PolicyTypeNotEnabledException extends S.TaggedError<PolicyTypeNotEnabledException>()(
   "PolicyTypeNotEnabledException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class DuplicateAccountException extends S.TaggedError<DuplicateAccountException>()(
   "DuplicateAccountException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidHandshakeTransitionException extends S.TaggedError<InvalidHandshakeTransitionException>()(
   "InvalidHandshakeTransitionException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class TargetNotFoundException extends S.TaggedError<TargetNotFoundException>()(
   "TargetNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PolicyNotAttachedException extends S.TaggedError<PolicyNotAttachedException>()(
   "PolicyNotAttachedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class PolicyTypeNotAvailableForOrganizationException extends S.TaggedError<PolicyTypeNotAvailableForOrganizationException>()(
   "PolicyTypeNotAvailableForOrganizationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class UnsupportedAPIEndpointException extends S.TaggedError<UnsupportedAPIEndpointException>()(
   "UnsupportedAPIEndpointException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class SourceParentNotFoundException extends S.TaggedError<SourceParentNotFoundException>()(
   "SourceParentNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RootNotFoundException extends S.TaggedError<RootNotFoundException>()(
   "RootNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3099,8 +3093,8 @@ export const describeOrganization: (
   | ConcurrentModificationException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeOrganizationRequest,
   output: DescribeOrganizationResponse,
@@ -3133,8 +3127,8 @@ export const declineHandshake: (
   | InvalidInputException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeclineHandshakeRequest,
   output: DeclineHandshakeResponse,
@@ -3176,8 +3170,8 @@ export const tagResource: (
   | ServiceException
   | TargetNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3207,8 +3201,8 @@ export const describeOrganizationalUnit: (
   | OrganizationalUnitNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeOrganizationalUnitRequest,
   output: DescribeOrganizationalUnitResponse,
@@ -3243,8 +3237,8 @@ export const listChildren: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChildrenRequest,
@@ -3256,8 +3250,8 @@ export const listChildren: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChildrenRequest,
@@ -3269,8 +3263,8 @@ export const listChildren: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChildrenRequest,
@@ -3313,8 +3307,8 @@ export const listParents: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListParentsRequest,
@@ -3326,8 +3320,8 @@ export const listParents: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListParentsRequest,
@@ -3339,8 +3333,8 @@ export const listParents: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListParentsRequest,
@@ -3386,8 +3380,8 @@ export const createOrganization: (
   | InvalidInputException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOrganizationRequest,
   output: CreateOrganizationResponse,
@@ -3418,8 +3412,8 @@ export const deleteOrganization: (
   | OrganizationNotEmptyException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOrganizationRequest,
   output: DeleteOrganizationResponse,
@@ -3453,8 +3447,8 @@ export const describeHandshake: (
   | InvalidInputException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHandshakeRequest,
   output: DescribeHandshakeResponse,
@@ -3486,8 +3480,8 @@ export const updateOrganizationalUnit: (
   | OrganizationalUnitNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateOrganizationalUnitRequest,
   output: UpdateOrganizationalUnitResponse,
@@ -3520,8 +3514,8 @@ export const deleteOrganizationalUnit: (
   | OrganizationalUnitNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOrganizationalUnitRequest,
   output: DeleteOrganizationalUnitResponse,
@@ -3577,8 +3571,8 @@ export const removeAccountFromOrganization: (
   | MasterCannotLeaveOrganizationException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveAccountFromOrganizationRequest,
   output: RemoveAccountFromOrganizationResponse,
@@ -3617,8 +3611,8 @@ export const listHandshakesForAccount: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHandshakesForAccountRequest,
@@ -3629,8 +3623,8 @@ export const listHandshakesForAccount: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHandshakesForAccountRequest,
@@ -3641,8 +3635,8 @@ export const listHandshakesForAccount: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHandshakesForAccountRequest,
@@ -3684,8 +3678,8 @@ export const listHandshakesForOrganization: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHandshakesForOrganizationRequest,
@@ -3697,8 +3691,8 @@ export const listHandshakesForOrganization: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHandshakesForOrganizationRequest,
@@ -3710,8 +3704,8 @@ export const listHandshakesForOrganization: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHandshakesForOrganizationRequest,
@@ -3750,8 +3744,8 @@ export const listAccounts: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccountsRequest,
@@ -3762,8 +3756,8 @@ export const listAccounts: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccountsRequest,
@@ -3774,8 +3768,8 @@ export const listAccounts: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsRequest,
@@ -3818,8 +3812,8 @@ export const listRoots: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRootsRequest,
@@ -3830,8 +3824,8 @@ export const listRoots: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRootsRequest,
@@ -3842,8 +3836,8 @@ export const listRoots: {
     | InvalidInputException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRootsRequest,
@@ -3876,8 +3870,8 @@ export const describeAccount: (
   | InvalidInputException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountRequest,
   output: DescribeAccountResponse,
@@ -3932,8 +3926,8 @@ export const enableAllFeatures: (
   | InvalidInputException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableAllFeaturesRequest,
   output: EnableAllFeaturesResponse,
@@ -3972,8 +3966,8 @@ export const listAccountsForParent: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccountsForParentRequest,
@@ -3985,8 +3979,8 @@ export const listAccountsForParent: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccountsForParentRequest,
@@ -3998,8 +3992,8 @@ export const listAccountsForParent: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsForParentRequest,
@@ -4038,8 +4032,8 @@ export const listOrganizationalUnitsForParent: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOrganizationalUnitsForParentRequest,
@@ -4051,8 +4045,8 @@ export const listOrganizationalUnitsForParent: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOrganizationalUnitsForParentRequest,
@@ -4064,8 +4058,8 @@ export const listOrganizationalUnitsForParent: {
     | ParentNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationalUnitsForParentRequest,
@@ -4116,8 +4110,8 @@ export const inviteAccountToOrganization: (
   | InvalidInputException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InviteAccountToOrganizationRequest,
   output: InviteAccountToOrganizationResponse,
@@ -4163,8 +4157,8 @@ export const createOrganizationalUnit: (
   | ParentNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOrganizationalUnitRequest,
   output: CreateOrganizationalUnitResponse,
@@ -4244,8 +4238,8 @@ export const leaveOrganization: (
   | MasterCannotLeaveOrganizationException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: LeaveOrganizationRequest,
   output: LeaveOrganizationResponse,
@@ -4282,8 +4276,8 @@ export const cancelHandshake: (
   | InvalidInputException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelHandshakeRequest,
   output: CancelHandshakeResponse,
@@ -4340,8 +4334,8 @@ export const acceptHandshake: (
   | MasterCannotLeaveOrganizationException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptHandshakeRequest,
   output: AcceptHandshakeResponse,
@@ -4388,8 +4382,8 @@ export const untagResource: (
   | ServiceException
   | TargetNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4430,8 +4424,8 @@ export const listTagsForResource: {
     | ServiceException
     | TargetNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -4443,8 +4437,8 @@ export const listTagsForResource: {
     | ServiceException
     | TargetNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -4456,8 +4450,8 @@ export const listTagsForResource: {
     | ServiceException
     | TargetNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -4496,8 +4490,8 @@ export const terminateResponsibilityTransfer: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateResponsibilityTransferRequest,
   output: TerminateResponsibilityTransferResponse,
@@ -4535,8 +4529,8 @@ export const moveAccount: (
   | ServiceException
   | SourceParentNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MoveAccountRequest,
   output: MoveAccountResponse,
@@ -4580,8 +4574,8 @@ export const createPolicy: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePolicyRequest,
   output: CreatePolicyResponse,
@@ -4622,8 +4616,8 @@ export const updatePolicy: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePolicyRequest,
   output: UpdatePolicyResponse,
@@ -4663,8 +4657,8 @@ export const listAccountsWithInvalidEffectivePolicy: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccountsWithInvalidEffectivePolicyRequest,
@@ -4678,8 +4672,8 @@ export const listAccountsWithInvalidEffectivePolicy: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccountsWithInvalidEffectivePolicyRequest,
@@ -4693,8 +4687,8 @@ export const listAccountsWithInvalidEffectivePolicy: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsWithInvalidEffectivePolicyRequest,
@@ -4738,8 +4732,8 @@ export const listTargetsForPolicy: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTargetsForPolicyRequest,
@@ -4752,8 +4746,8 @@ export const listTargetsForPolicy: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTargetsForPolicyRequest,
@@ -4766,8 +4760,8 @@ export const listTargetsForPolicy: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTargetsForPolicyRequest,
@@ -4841,8 +4835,8 @@ export const closeAccount: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CloseAccountRequest,
   output: CloseAccountResponse,
@@ -4880,8 +4874,8 @@ export const deletePolicy: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePolicyRequest,
   output: DeletePolicyResponse,
@@ -4914,8 +4908,8 @@ export const deleteResourcePolicy: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -4953,8 +4947,8 @@ export const listAWSServiceAccessForOrganization: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAWSServiceAccessForOrganizationRequest,
@@ -4967,8 +4961,8 @@ export const listAWSServiceAccessForOrganization: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAWSServiceAccessForOrganizationRequest,
@@ -4981,8 +4975,8 @@ export const listAWSServiceAccessForOrganization: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAWSServiceAccessForOrganizationRequest,
@@ -5020,8 +5014,8 @@ export const listDelegatedAdministrators: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDelegatedAdministratorsRequest,
@@ -5034,8 +5028,8 @@ export const listDelegatedAdministrators: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDelegatedAdministratorsRequest,
@@ -5048,8 +5042,8 @@ export const listDelegatedAdministrators: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDelegatedAdministratorsRequest,
@@ -5090,8 +5084,8 @@ export const listDelegatedServicesForAccount: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDelegatedServicesForAccountRequest,
@@ -5106,8 +5100,8 @@ export const listDelegatedServicesForAccount: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDelegatedServicesForAccountRequest,
@@ -5122,8 +5116,8 @@ export const listDelegatedServicesForAccount: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDelegatedServicesForAccountRequest,
@@ -5166,8 +5160,8 @@ export const listPolicies: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPoliciesRequest,
@@ -5179,8 +5173,8 @@ export const listPolicies: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPoliciesRequest,
@@ -5192,8 +5186,8 @@ export const listPolicies: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPoliciesRequest,
@@ -5229,8 +5223,8 @@ export const putResourcePolicy: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -5271,8 +5265,8 @@ export const registerDelegatedAdministrator: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterDelegatedAdministratorRequest,
   output: RegisterDelegatedAdministratorResponse,
@@ -5358,8 +5352,8 @@ export const disableAWSServiceAccess: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableAWSServiceAccessRequest,
   output: DisableAWSServiceAccessResponse,
@@ -5407,8 +5401,8 @@ export const enableAWSServiceAccess: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableAWSServiceAccessRequest,
   output: EnableAWSServiceAccessResponse,
@@ -5444,8 +5438,8 @@ export const listCreateAccountStatus: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCreateAccountStatusRequest,
@@ -5457,8 +5451,8 @@ export const listCreateAccountStatus: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCreateAccountStatusRequest,
@@ -5470,8 +5464,8 @@ export const listCreateAccountStatus: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCreateAccountStatusRequest,
@@ -5506,8 +5500,8 @@ export const describeCreateAccountStatus: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCreateAccountStatusRequest,
   output: DescribeCreateAccountStatusResponse,
@@ -5541,8 +5535,8 @@ export const listOutboundResponsibilityTransfers: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListOutboundResponsibilityTransfersRequest,
   output: ListOutboundResponsibilityTransfersResponse,
@@ -5586,8 +5580,8 @@ export const deregisterDelegatedAdministrator: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterDelegatedAdministratorRequest,
   output: DeregisterDelegatedAdministratorResponse,
@@ -5624,8 +5618,8 @@ export const listInboundResponsibilityTransfers: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListInboundResponsibilityTransfersRequest,
   output: ListInboundResponsibilityTransfersResponse,
@@ -5720,8 +5714,8 @@ export const createAccount: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccountRequest,
   output: CreateAccountResponse,
@@ -5757,8 +5751,8 @@ export const listEffectivePolicyValidationErrors: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEffectivePolicyValidationErrorsRequest,
@@ -5773,8 +5767,8 @@ export const listEffectivePolicyValidationErrors: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEffectivePolicyValidationErrorsRequest,
@@ -5789,8 +5783,8 @@ export const listEffectivePolicyValidationErrors: {
     | ServiceException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEffectivePolicyValidationErrorsRequest,
@@ -5829,8 +5823,8 @@ export const describePolicy: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePolicyRequest,
   output: DescribePolicyResponse,
@@ -5860,8 +5854,8 @@ export const describeResourcePolicy: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResourcePolicyRequest,
   output: DescribeResourcePolicyResponse,
@@ -5894,8 +5888,8 @@ export const updateResponsibilityTransfer: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResponsibilityTransferRequest,
   output: UpdateResponsibilityTransferResponse,
@@ -5926,8 +5920,8 @@ export const describeResponsibilityTransfer: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResponsibilityTransferRequest,
   output: DescribeResponsibilityTransferResponse,
@@ -6064,8 +6058,8 @@ export const createGovCloudAccount: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGovCloudAccountRequest,
   output: CreateGovCloudAccountResponse,
@@ -6102,8 +6096,8 @@ export const inviteOrganizationToTransferResponsibility: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InviteOrganizationToTransferResponsibilityRequest,
   output: InviteOrganizationToTransferResponsibilityResponse,
@@ -6154,8 +6148,8 @@ export const detachPolicy: (
   | TargetNotFoundException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachPolicyRequest,
   output: DetachPolicyResponse,
@@ -6197,8 +6191,8 @@ export const listPoliciesForTarget: {
     | TargetNotFoundException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPoliciesForTargetRequest,
@@ -6211,8 +6205,8 @@ export const listPoliciesForTarget: {
     | TargetNotFoundException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPoliciesForTargetRequest,
@@ -6225,8 +6219,8 @@ export const listPoliciesForTarget: {
     | TargetNotFoundException
     | TooManyRequestsException
     | UnsupportedAPIEndpointException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPoliciesForTargetRequest,
@@ -6274,8 +6268,8 @@ export const describeEffectivePolicy: (
   | TargetNotFoundException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEffectivePolicyRequest,
   output: DescribeEffectivePolicyResponse,
@@ -6341,8 +6335,8 @@ export const attachPolicy: (
   | TargetNotFoundException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachPolicyRequest,
   output: AttachPolicyResponse,
@@ -6393,8 +6387,8 @@ export const disablePolicyType: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisablePolicyTypeRequest,
   output: DisablePolicyTypeResponse,
@@ -6444,8 +6438,8 @@ export const enablePolicyType: (
   | ServiceException
   | TooManyRequestsException
   | UnsupportedAPIEndpointException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnablePolicyTypeRequest,
   output: EnablePolicyTypeResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CloudHSM",
@@ -850,8 +848,8 @@ export const modifyLunaClient: (
   input: ModifyLunaClientRequest,
 ) => Effect.Effect<
   ModifyLunaClientResponse,
-  CloudHsmServiceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CloudHsmServiceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyLunaClientRequest,
   output: ModifyLunaClientResponse,
@@ -878,8 +876,8 @@ export const listAvailableZones: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAvailableZonesRequest,
   output: ListAvailableZonesResponse,
@@ -915,8 +913,8 @@ export const listHapgs: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListHapgsRequest,
   output: ListHapgsResponse,
@@ -953,8 +951,8 @@ export const listHsms: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListHsmsRequest,
   output: ListHsmsResponse,
@@ -990,8 +988,8 @@ export const listLunaClients: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLunaClientsRequest,
   output: ListLunaClientsResponse,
@@ -1022,8 +1020,8 @@ export const listTagsForResource: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1054,8 +1052,8 @@ export const modifyHapg: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyHapgRequest,
   output: ModifyHapgResponse,
@@ -1091,8 +1089,8 @@ export const modifyHsm: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyHsmRequest,
   output: ModifyHsmResponse,
@@ -1126,8 +1124,8 @@ export const removeTagsFromResource: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceRequest,
   output: RemoveTagsFromResourceResponse,
@@ -1159,8 +1157,8 @@ export const createHapg: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHapgRequest,
   output: CreateHapgResponse,
@@ -1200,8 +1198,8 @@ export const createHsm: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHsmRequest,
   output: CreateHsmResponse,
@@ -1232,8 +1230,8 @@ export const createLunaClient: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLunaClientRequest,
   output: CreateLunaClientResponse,
@@ -1264,8 +1262,8 @@ export const deleteHapg: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHapgRequest,
   output: DeleteHapgResponse,
@@ -1297,8 +1295,8 @@ export const deleteHsm: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHsmRequest,
   output: DeleteHsmResponse,
@@ -1329,8 +1327,8 @@ export const deleteLunaClient: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLunaClientRequest,
   output: DeleteLunaClientResponse,
@@ -1361,8 +1359,8 @@ export const describeHapg: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHapgRequest,
   output: DescribeHapgResponse,
@@ -1394,8 +1392,8 @@ export const describeHsm: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHsmRequest,
   output: DescribeHsmResponse,
@@ -1426,8 +1424,8 @@ export const describeLunaClient: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLunaClientRequest,
   output: DescribeLunaClientResponse,
@@ -1459,8 +1457,8 @@ export const getConfig: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConfigRequest,
   output: GetConfigResponse,
@@ -1494,8 +1492,8 @@ export const addTagsToResource: (
   | CloudHsmInternalException
   | CloudHsmServiceException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToResourceRequest,
   output: AddTagsToResourceResponse,

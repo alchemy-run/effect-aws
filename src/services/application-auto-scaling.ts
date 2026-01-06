@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Application Auto Scaling",
@@ -1264,44 +1262,40 @@ export class ConcurrentUpdateException extends S.TaggedError<ConcurrentUpdateExc
   "ConcurrentUpdateException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConcurrentUpdateException", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServiceException extends S.TaggedError<InternalServiceException>()(
   "InternalServiceException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InternalServiceException", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ObjectNotFoundException extends S.TaggedError<ObjectNotFoundException>()(
   "ObjectNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ObjectNotFoundException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidNextTokenException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceededException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class FailedResourceAccessException extends S.TaggedError<FailedResourceAccessException>()(
   "FailedResourceAccessException",
   { Message: S.optional(S.String) },
@@ -1309,7 +1303,7 @@ export class FailedResourceAccessException extends S.TaggedError<FailedResourceA
     code: "FailedResourceAccessException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1322,8 +1316,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1337,8 +1331,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1359,8 +1353,8 @@ export const getPredictiveScalingForecast: (
   input: GetPredictiveScalingForecastRequest,
 ) => Effect.Effect<
   GetPredictiveScalingForecastResponse,
-  InternalServiceException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServiceException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPredictiveScalingForecastRequest,
   output: GetPredictiveScalingForecastResponse,
@@ -1392,8 +1386,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | TooManyTagsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1421,8 +1415,8 @@ export const deleteScalingPolicy: (
   | InternalServiceException
   | ObjectNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteScalingPolicyRequest,
   output: DeleteScalingPolicyResponse,
@@ -1448,8 +1442,8 @@ export const describeScalableTargets: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScalableTargetsRequest,
@@ -1459,8 +1453,8 @@ export const describeScalableTargets: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScalableTargetsRequest,
@@ -1470,8 +1464,8 @@ export const describeScalableTargets: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalableTargetsRequest,
@@ -1507,8 +1501,8 @@ export const describeScalingActivities: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScalingActivitiesRequest,
@@ -1518,8 +1512,8 @@ export const describeScalingActivities: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScalingActivitiesRequest,
@@ -1529,8 +1523,8 @@ export const describeScalingActivities: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalingActivitiesRequest,
@@ -1595,8 +1589,8 @@ export const registerScalableTarget: (
   | InternalServiceException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterScalableTargetRequest,
   output: RegisterScalableTargetResponse,
@@ -1620,8 +1614,8 @@ export const deleteScheduledAction: (
   | InternalServiceException
   | ObjectNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteScheduledActionRequest,
   output: DeleteScheduledActionResponse,
@@ -1647,8 +1641,8 @@ export const deregisterScalableTarget: (
   | InternalServiceException
   | ObjectNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterScalableTargetRequest,
   output: DeregisterScalableTargetResponse,
@@ -1676,8 +1670,8 @@ export const describeScheduledActions: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScheduledActionsRequest,
@@ -1687,8 +1681,8 @@ export const describeScheduledActions: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScheduledActionsRequest,
@@ -1698,8 +1692,8 @@ export const describeScheduledActions: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduledActionsRequest,
@@ -1746,8 +1740,8 @@ export const putScheduledAction: (
   | LimitExceededException
   | ObjectNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutScheduledActionRequest,
   output: PutScheduledActionResponse,
@@ -1777,8 +1771,8 @@ export const describeScalingPolicies: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScalingPoliciesRequest,
@@ -1789,8 +1783,8 @@ export const describeScalingPolicies: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScalingPoliciesRequest,
@@ -1801,8 +1795,8 @@ export const describeScalingPolicies: {
     | InternalServiceException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalingPoliciesRequest,
@@ -1862,8 +1856,8 @@ export const putScalingPolicy: (
   | LimitExceededException
   | ObjectNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutScalingPolicyRequest,
   output: PutScalingPolicyResponse,

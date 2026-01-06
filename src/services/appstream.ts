@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "AppStream",
@@ -3548,59 +3546,59 @@ export const DescribeUsageReportSubscriptionsResult = S.suspend(() =>
 export class InvalidAccountStatusException extends S.TaggedError<InvalidAccountStatusException>()(
   "InvalidAccountStatusException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EntitlementNotFoundException extends S.TaggedError<EntitlementNotFoundException>()(
   "EntitlementNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotAvailableException extends S.TaggedError<ResourceNotAvailableException>()(
   "ResourceNotAvailableException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRoleException extends S.TaggedError<InvalidRoleException>()(
   "InvalidRoleException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterCombinationException extends S.TaggedError<InvalidParameterCombinationException>()(
   "InvalidParameterCombinationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IncompatibleImageException extends S.TaggedError<IncompatibleImageException>()(
   "IncompatibleImageException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class OperationNotPermittedException extends S.TaggedError<OperationNotPermittedException>()(
   "OperationNotPermittedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EntitlementAlreadyExistsException extends S.TaggedError<EntitlementAlreadyExistsException>()(
   "EntitlementAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RequestLimitExceededException extends S.TaggedError<RequestLimitExceededException>()(
   "RequestLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DryRunOperationException extends S.TaggedError<DryRunOperationException>()(
   "DryRunOperationException",
   { Message: S.optional(S.String) },
@@ -3614,8 +3612,8 @@ export const expireSession: (
   input: ExpireSessionRequest,
 ) => Effect.Effect<
   ExpireSessionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExpireSessionRequest,
   output: ExpireSessionResult,
@@ -3628,10 +3626,8 @@ export const deleteUsageReportSubscription: (
   input: DeleteUsageReportSubscriptionRequest,
 ) => Effect.Effect<
   DeleteUsageReportSubscriptionResult,
-  | InvalidAccountStatusException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidAccountStatusException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUsageReportSubscriptionRequest,
   output: DeleteUsageReportSubscriptionResult,
@@ -3644,8 +3640,8 @@ export const describeImageBuilders: (
   input: DescribeImageBuildersRequest,
 ) => Effect.Effect<
   DescribeImageBuildersResult,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImageBuildersRequest,
   output: DescribeImageBuildersResult,
@@ -3658,8 +3654,8 @@ export const listAssociatedFleets: (
   input: ListAssociatedFleetsRequest,
 ) => Effect.Effect<
   ListAssociatedFleetsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAssociatedFleetsRequest,
   output: ListAssociatedFleetsResult,
@@ -3672,8 +3668,8 @@ export const listAssociatedStacks: (
   input: ListAssociatedStacksRequest,
 ) => Effect.Effect<
   ListAssociatedStacksResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAssociatedStacksRequest,
   output: ListAssociatedStacksResult,
@@ -3688,8 +3684,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3713,8 +3709,8 @@ export const tagResource: (
   | InvalidAccountStatusException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3734,8 +3730,8 @@ export const updateImagePermissions: (
   | LimitExceededException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateImagePermissionsRequest,
   output: UpdateImagePermissionsResult,
@@ -3755,8 +3751,8 @@ export const deleteAppBlock: (
   | ConcurrentModificationException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppBlockRequest,
   output: DeleteAppBlockResult,
@@ -3776,8 +3772,8 @@ export const deleteFleet: (
   | ConcurrentModificationException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFleetRequest,
   output: DeleteFleetResult,
@@ -3794,10 +3790,8 @@ export const stopFleet: (
   input: StopFleetRequest,
 ) => Effect.Effect<
   StopFleetResult,
-  | ConcurrentModificationException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConcurrentModificationException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopFleetRequest,
   output: StopFleetResult,
@@ -3813,8 +3807,8 @@ export const createUsageReportSubscription: (
   | InvalidAccountStatusException
   | InvalidRoleException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUsageReportSubscriptionRequest,
   output: CreateUsageReportSubscriptionResult,
@@ -3831,8 +3825,8 @@ export const deleteUser: (
   input: DeleteUserRequest,
 ) => Effect.Effect<
   DeleteUserResult,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResult,
@@ -3845,8 +3839,8 @@ export const disableUser: (
   input: DisableUserRequest,
 ) => Effect.Effect<
   DisableUserResult,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableUserRequest,
   output: DisableUserResult,
@@ -3859,10 +3853,8 @@ export const enableUser: (
   input: EnableUserRequest,
 ) => Effect.Effect<
   EnableUserResult,
-  | InvalidAccountStatusException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidAccountStatusException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableUserRequest,
   output: EnableUserResult,
@@ -3879,8 +3871,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3893,8 +3885,8 @@ export const deleteDirectoryConfig: (
   input: DeleteDirectoryConfigRequest,
 ) => Effect.Effect<
   DeleteDirectoryConfigResult,
-  ResourceInUseException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUseException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDirectoryConfigRequest,
   output: DeleteDirectoryConfigResult,
@@ -3907,10 +3899,8 @@ export const deleteImagePermissions: (
   input: DeleteImagePermissionsRequest,
 ) => Effect.Effect<
   DeleteImagePermissionsResult,
-  | ResourceNotAvailableException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotAvailableException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImagePermissionsRequest,
   output: DeleteImagePermissionsResult,
@@ -3926,8 +3916,8 @@ export const describeImages: {
     DescribeImagesResult,
     | InvalidParameterCombinationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImagesRequest,
@@ -3935,8 +3925,8 @@ export const describeImages: {
     DescribeImagesResult,
     | InvalidParameterCombinationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImagesRequest,
@@ -3944,8 +3934,8 @@ export const describeImages: {
     unknown,
     | InvalidParameterCombinationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImagesRequest,
@@ -3964,10 +3954,8 @@ export const createAppBlockBuilderStreamingURL: (
   input: CreateAppBlockBuilderStreamingURLRequest,
 ) => Effect.Effect<
   CreateAppBlockBuilderStreamingURLResult,
-  | OperationNotPermittedException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppBlockBuilderStreamingURLRequest,
   output: CreateAppBlockBuilderStreamingURLResult,
@@ -3980,10 +3968,8 @@ export const describeAppBlocks: (
   input: DescribeAppBlocksRequest,
 ) => Effect.Effect<
   DescribeAppBlocksResult,
-  | OperationNotPermittedException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppBlocksRequest,
   output: DescribeAppBlocksResult,
@@ -3999,8 +3985,8 @@ export const describeAppLicenseUsage: (
   | InvalidParameterCombinationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppLicenseUsageRequest,
   output: DescribeAppLicenseUsageResult,
@@ -4019,8 +4005,8 @@ export const describeDirectoryConfigs: (
   input: DescribeDirectoryConfigsRequest,
 ) => Effect.Effect<
   DescribeDirectoryConfigsResult,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDirectoryConfigsRequest,
   output: DescribeDirectoryConfigsResult,
@@ -4036,8 +4022,8 @@ export const describeEntitlements: (
   | EntitlementNotFoundException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntitlementsRequest,
   output: DescribeEntitlementsResult,
@@ -4055,22 +4041,22 @@ export const describeImagePermissions: {
     input: DescribeImagePermissionsRequest,
   ): Effect.Effect<
     DescribeImagePermissionsResult,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImagePermissionsRequest,
   ) => Stream.Stream<
     DescribeImagePermissionsResult,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImagePermissionsRequest,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImagePermissionsRequest,
@@ -4091,8 +4077,8 @@ export const describeSessions: (
   input: DescribeSessionsRequest,
 ) => Effect.Effect<
   DescribeSessionsResult,
-  InvalidParameterCombinationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterCombinationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSessionsRequest,
   output: DescribeSessionsResult,
@@ -4105,10 +4091,8 @@ export const describeSoftwareAssociations: (
   input: DescribeSoftwareAssociationsRequest,
 ) => Effect.Effect<
   DescribeSoftwareAssociationsResult,
-  | OperationNotPermittedException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSoftwareAssociationsRequest,
   output: DescribeSoftwareAssociationsResult,
@@ -4121,10 +4105,8 @@ export const describeThemeForStack: (
   input: DescribeThemeForStackRequest,
 ) => Effect.Effect<
   DescribeThemeForStackResult,
-  | OperationNotPermittedException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeThemeForStackRequest,
   output: DescribeThemeForStackResult,
@@ -4140,8 +4122,8 @@ export const describeUsers: (
   | InvalidParameterCombinationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUsersRequest,
   output: DescribeUsersResult,
@@ -4161,8 +4143,8 @@ export const listEntitledApplications: (
   | EntitlementNotFoundException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListEntitledApplicationsRequest,
   output: ListEntitledApplicationsResult,
@@ -4179,8 +4161,8 @@ export const listExportImageTasks: (
   input: ListExportImageTasksRequest,
 ) => Effect.Effect<
   ListExportImageTasksResult,
-  OperationNotPermittedException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListExportImageTasksRequest,
   output: ListExportImageTasksResult,
@@ -4198,8 +4180,8 @@ export const startImageBuilder: (
   | InvalidAccountStatusException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartImageBuilderRequest,
   output: StartImageBuilderResult,
@@ -4224,8 +4206,8 @@ export const updateDirectoryConfig: (
   | OperationNotPermittedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDirectoryConfigRequest,
   output: UpdateDirectoryConfigResult,
@@ -4254,8 +4236,8 @@ export const updateStack: (
   | OperationNotPermittedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStackRequest,
   output: UpdateStackResult,
@@ -4283,8 +4265,8 @@ export const associateSoftwareToImageBuilder: (
   | InvalidParameterCombinationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSoftwareToImageBuilderRequest,
   output: AssociateSoftwareToImageBuilderResult,
@@ -4303,10 +4285,8 @@ export const createImageBuilderStreamingURL: (
   input: CreateImageBuilderStreamingURLRequest,
 ) => Effect.Effect<
   CreateImageBuilderStreamingURLResult,
-  | OperationNotPermittedException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImageBuilderStreamingURLRequest,
   output: CreateImageBuilderStreamingURLResult,
@@ -4324,8 +4304,8 @@ export const deleteImage: (
   | OperationNotPermittedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImageRequest,
   output: DeleteImageResult,
@@ -4346,8 +4326,8 @@ export const deleteImageBuilder: (
   | ConcurrentModificationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImageBuilderRequest,
   output: DeleteImageBuilderResult,
@@ -4364,10 +4344,8 @@ export const describeApplications: (
   input: DescribeApplicationsRequest,
 ) => Effect.Effect<
   DescribeApplicationsResult,
-  | OperationNotPermittedException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationsRequest,
   output: DescribeApplicationsResult,
@@ -4380,10 +4358,8 @@ export const getExportImageTask: (
   input: GetExportImageTaskRequest,
 ) => Effect.Effect<
   GetExportImageTaskResult,
-  | OperationNotPermittedException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExportImageTaskRequest,
   output: GetExportImageTaskResult,
@@ -4402,8 +4378,8 @@ export const stopAppBlockBuilder: (
   | ConcurrentModificationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopAppBlockBuilderRequest,
   output: StopAppBlockBuilderResult,
@@ -4423,8 +4399,8 @@ export const stopImageBuilder: (
   | ConcurrentModificationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopImageBuilderRequest,
   output: StopImageBuilderResult,
@@ -4444,8 +4420,8 @@ export const updateApplication: (
   | ConcurrentModificationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResult,
@@ -4466,8 +4442,8 @@ export const updateEntitlement: (
   | EntitlementNotFoundException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEntitlementRequest,
   output: UpdateEntitlementResult,
@@ -4488,8 +4464,8 @@ export const disassociateApplicationFromEntitlement: (
   | EntitlementNotFoundException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateApplicationFromEntitlementRequest,
   output: DisassociateApplicationFromEntitlementResult,
@@ -4513,8 +4489,8 @@ export const deleteAppBlockBuilder: (
   | OperationNotPermittedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppBlockBuilderRequest,
   output: DeleteAppBlockBuilderResult,
@@ -4536,8 +4512,8 @@ export const deleteApplication: (
   | OperationNotPermittedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResult,
@@ -4559,8 +4535,8 @@ export const deleteEntitlement: (
   | EntitlementNotFoundException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEntitlementRequest,
   output: DeleteEntitlementResult,
@@ -4582,8 +4558,8 @@ export const deleteStack: (
   | OperationNotPermittedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStackRequest,
   output: DeleteStackResult,
@@ -4604,8 +4580,8 @@ export const deleteThemeForStack: (
   | ConcurrentModificationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteThemeForStackRequest,
   output: DeleteThemeForStackResult,
@@ -4626,8 +4602,8 @@ export const disassociateFleet: (
   | OperationNotPermittedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateFleetRequest,
   output: DisassociateFleetResult,
@@ -4648,8 +4624,8 @@ export const startSoftwareDeploymentToImageBuilder: (
   | ConcurrentModificationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSoftwareDeploymentToImageBuilderRequest,
   output: StartSoftwareDeploymentToImageBuilderResult,
@@ -4670,8 +4646,8 @@ export const associateApplicationToEntitlement: (
   | LimitExceededException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateApplicationToEntitlementRequest,
   output: AssociateApplicationToEntitlementResult,
@@ -4693,8 +4669,8 @@ export const createStreamingURL: (
   | OperationNotPermittedException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStreamingURLRequest,
   output: CreateStreamingURLResult,
@@ -4715,8 +4691,8 @@ export const describeAppBlockBuilderAppBlockAssociations: {
     DescribeAppBlockBuilderAppBlockAssociationsResult,
     | InvalidParameterCombinationException
     | OperationNotPermittedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAppBlockBuilderAppBlockAssociationsRequest,
@@ -4724,8 +4700,8 @@ export const describeAppBlockBuilderAppBlockAssociations: {
     DescribeAppBlockBuilderAppBlockAssociationsResult,
     | InvalidParameterCombinationException
     | OperationNotPermittedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAppBlockBuilderAppBlockAssociationsRequest,
@@ -4733,8 +4709,8 @@ export const describeAppBlockBuilderAppBlockAssociations: {
     unknown,
     | InvalidParameterCombinationException
     | OperationNotPermittedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAppBlockBuilderAppBlockAssociationsRequest,
@@ -4758,8 +4734,8 @@ export const describeApplicationFleetAssociations: (
   DescribeApplicationFleetAssociationsResult,
   | InvalidParameterCombinationException
   | OperationNotPermittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationFleetAssociationsRequest,
   output: DescribeApplicationFleetAssociationsResult,
@@ -4781,8 +4757,8 @@ export const describeUserStackAssociations: (
   DescribeUserStackAssociationsResult,
   | InvalidParameterCombinationException
   | OperationNotPermittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserStackAssociationsRequest,
   output: DescribeUserStackAssociationsResult,
@@ -4804,8 +4780,8 @@ export const updateThemeForStack: (
   | LimitExceededException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateThemeForStackRequest,
   output: UpdateThemeForStackResult,
@@ -4829,8 +4805,8 @@ export const disassociateAppBlockBuilderAppBlock: (
   | InvalidParameterCombinationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateAppBlockBuilderAppBlockRequest,
   output: DisassociateAppBlockBuilderAppBlockResult,
@@ -4851,8 +4827,8 @@ export const disassociateApplicationFleet: (
   | ConcurrentModificationException
   | InvalidParameterCombinationException
   | OperationNotPermittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateApplicationFleetRequest,
   output: DisassociateApplicationFleetResult,
@@ -4873,8 +4849,8 @@ export const disassociateSoftwareFromImageBuilder: (
   | InvalidParameterCombinationException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateSoftwareFromImageBuilderRequest,
   output: DisassociateSoftwareFromImageBuilderResult,
@@ -4897,8 +4873,8 @@ export const associateAppBlockBuilderAppBlock: (
   | LimitExceededException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateAppBlockBuilderAppBlockRequest,
   output: AssociateAppBlockBuilderAppBlockResult,
@@ -4922,8 +4898,8 @@ export const associateApplicationFleet: (
   | LimitExceededException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateApplicationFleetRequest,
   output: AssociateApplicationFleetResult,
@@ -4948,8 +4924,8 @@ export const associateFleet: (
   | LimitExceededException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateFleetRequest,
   output: AssociateFleetResult,
@@ -4971,8 +4947,8 @@ export const batchAssociateUserStack: (
   BatchAssociateUserStackResult,
   | InvalidParameterCombinationException
   | OperationNotPermittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchAssociateUserStackRequest,
   output: BatchAssociateUserStackResult,
@@ -4990,8 +4966,8 @@ export const batchDisassociateUserStack: (
   BatchDisassociateUserStackResult,
   | InvalidParameterCombinationException
   | OperationNotPermittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDisassociateUserStackRequest,
   output: BatchDisassociateUserStackResult,
@@ -5013,8 +4989,8 @@ export const createDirectoryConfig: (
   | OperationNotPermittedException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDirectoryConfigRequest,
   output: CreateDirectoryConfigResult,
@@ -5043,8 +5019,8 @@ export const createEntitlement: (
   | LimitExceededException
   | OperationNotPermittedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEntitlementRequest,
   output: CreateEntitlementResult,
@@ -5069,8 +5045,8 @@ export const createExportImageTask: (
   | OperationNotPermittedException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExportImageTaskRequest,
   output: CreateExportImageTaskResult,
@@ -5102,8 +5078,8 @@ export const createFleet: (
   | ResourceAlreadyExistsException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFleetRequest,
   output: CreateFleetResult,
@@ -5141,8 +5117,8 @@ export const createImageBuilder: (
   | ResourceAlreadyExistsException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImageBuilderRequest,
   output: CreateImageBuilderResult,
@@ -5175,8 +5151,8 @@ export const createImportedImage: (
   | OperationNotPermittedException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImportedImageRequest,
   output: CreateImportedImageResult,
@@ -5208,8 +5184,8 @@ export const createUpdatedImage: (
   | OperationNotPermittedException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUpdatedImageRequest,
   output: CreateUpdatedImageResult,
@@ -5231,28 +5207,22 @@ export const describeAppBlockBuilders: {
     input: DescribeAppBlockBuildersRequest,
   ): Effect.Effect<
     DescribeAppBlockBuildersResult,
-    | OperationNotPermittedException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAppBlockBuildersRequest,
   ) => Stream.Stream<
     DescribeAppBlockBuildersResult,
-    | OperationNotPermittedException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAppBlockBuildersRequest,
   ) => Stream.Stream<
     unknown,
-    | OperationNotPermittedException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAppBlockBuildersRequest,
@@ -5271,8 +5241,8 @@ export const describeFleets: (
   input: DescribeFleetsRequest,
 ) => Effect.Effect<
   DescribeFleetsResult,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFleetsRequest,
   output: DescribeFleetsResult,
@@ -5285,8 +5255,8 @@ export const describeStacks: (
   input: DescribeStacksRequest,
 ) => Effect.Effect<
   DescribeStacksResult,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStacksRequest,
   output: DescribeStacksResult,
@@ -5299,10 +5269,8 @@ export const describeUsageReportSubscriptions: (
   input: DescribeUsageReportSubscriptionsRequest,
 ) => Effect.Effect<
   DescribeUsageReportSubscriptionsResult,
-  | InvalidAccountStatusException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidAccountStatusException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUsageReportSubscriptionsRequest,
   output: DescribeUsageReportSubscriptionsResult,
@@ -5323,8 +5291,8 @@ export const createStack: (
   | OperationNotPermittedException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStackRequest,
   output: CreateStackResult,
@@ -5352,8 +5320,8 @@ export const createThemeForStack: (
   | OperationNotPermittedException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateThemeForStackRequest,
   output: CreateThemeForStackResult,
@@ -5379,8 +5347,8 @@ export const copyImage: (
   | ResourceAlreadyExistsException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyImageRequest,
   output: CopyImageResponse,
@@ -5405,8 +5373,8 @@ export const createUser: (
   | LimitExceededException
   | OperationNotPermittedException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResult,
@@ -5437,8 +5405,8 @@ export const createAppBlock: (
   | LimitExceededException
   | OperationNotPermittedException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppBlockRequest,
   output: CreateAppBlockResult,
@@ -5469,8 +5437,8 @@ export const createApplication: (
   | OperationNotPermittedException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResult,
@@ -5522,8 +5490,8 @@ export const updateFleet: (
   | ResourceInUseException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFleetRequest,
   output: UpdateFleetResult,
@@ -5561,8 +5529,8 @@ export const startAppBlockBuilder: (
   | RequestLimitExceededException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAppBlockBuilderRequest,
   output: StartAppBlockBuilderResult,
@@ -5591,8 +5559,8 @@ export const startFleet: (
   | RequestLimitExceededException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFleetRequest,
   output: StartFleetResult,
@@ -5629,8 +5597,8 @@ export const updateAppBlockBuilder: (
   | ResourceInUseException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAppBlockBuilderRequest,
   output: UpdateAppBlockBuilderResult,
@@ -5664,8 +5632,8 @@ export const createAppBlockBuilder: (
   | ResourceAlreadyExistsException
   | ResourceNotAvailableException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppBlockBuilderRequest,
   output: CreateAppBlockBuilderResult,

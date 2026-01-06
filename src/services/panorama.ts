@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Panorama",
@@ -2263,20 +2261,18 @@ export const ProvisionDeviceResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   {
     Message: S.String,
     RetryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.String, ResourceId: S.String, ResourceType: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -2286,7 +2282,7 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     QuotaCode: S.String,
     ServiceCode: S.String,
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
@@ -2296,7 +2292,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     ErrorId: S.optional(S.String),
     ErrorArguments: S.optional(ConflictExceptionErrorArgumentList),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -2306,7 +2302,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     ErrorArguments: S.optional(ValidationExceptionErrorArgumentList),
     Fields: S.optional(ValidationExceptionFieldList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2317,22 +2313,22 @@ export const listApplicationInstanceDependencies: {
     input: ListApplicationInstanceDependenciesRequest,
   ): Effect.Effect<
     ListApplicationInstanceDependenciesResponse,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationInstanceDependenciesRequest,
   ) => Stream.Stream<
     ListApplicationInstanceDependenciesResponse,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationInstanceDependenciesRequest,
   ) => Stream.Stream<
     unknown,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationInstanceDependenciesRequest,
@@ -2352,22 +2348,22 @@ export const listApplicationInstanceNodeInstances: {
     input: ListApplicationInstanceNodeInstancesRequest,
   ): Effect.Effect<
     ListApplicationInstanceNodeInstancesResponse,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationInstanceNodeInstancesRequest,
   ) => Stream.Stream<
     ListApplicationInstanceNodeInstancesResponse,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationInstanceNodeInstancesRequest,
   ) => Stream.Stream<
     unknown,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationInstanceNodeInstancesRequest,
@@ -2387,22 +2383,22 @@ export const listApplicationInstances: {
     input: ListApplicationInstancesRequest,
   ): Effect.Effect<
     ListApplicationInstancesResponse,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationInstancesRequest,
   ) => Stream.Stream<
     ListApplicationInstancesResponse,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationInstancesRequest,
   ) => Stream.Stream<
     unknown,
-    AccessDeniedException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | InternalServerException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationInstancesRequest,
@@ -2424,8 +2420,8 @@ export const tagResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2445,8 +2441,8 @@ export const untagResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2466,8 +2462,8 @@ export const listTagsForResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2488,8 +2484,8 @@ export const createApplicationInstance: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationInstanceRequest,
   output: CreateApplicationInstanceResponse,
@@ -2515,8 +2511,8 @@ export const deletePackage: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePackageRequest,
   output: DeletePackageResponse,
@@ -2539,8 +2535,8 @@ export const describeDevice: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDeviceRequest,
   output: DescribeDeviceResponse,
@@ -2563,8 +2559,8 @@ export const describeNode: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNodeRequest,
   output: DescribeNodeResponse,
@@ -2587,8 +2583,8 @@ export const describePackageImportJob: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePackageImportJobRequest,
   output: DescribePackageImportJobResponse,
@@ -2610,8 +2606,8 @@ export const signalApplicationInstanceNodeInstances: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SignalApplicationInstanceNodeInstancesRequest,
   output: SignalApplicationInstanceNodeInstancesResponse,
@@ -2634,8 +2630,8 @@ export const describeApplicationInstanceDetails: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationInstanceDetailsRequest,
   output: DescribeApplicationInstanceDetailsResponse,
@@ -2659,8 +2655,8 @@ export const describeDeviceJob: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDeviceJobRequest,
   output: DescribeDeviceJobResponse,
@@ -2683,8 +2679,8 @@ export const describeNodeFromTemplateJob: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNodeFromTemplateJobRequest,
   output: DescribeNodeFromTemplateJobResponse,
@@ -2707,8 +2703,8 @@ export const describePackage: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePackageRequest,
   output: DescribePackageResponse,
@@ -2732,8 +2728,8 @@ export const describePackageVersion: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePackageVersionRequest,
   output: DescribePackageVersionResponse,
@@ -2757,8 +2753,8 @@ export const updateDeviceMetadata: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeviceMetadataRequest,
   output: UpdateDeviceMetadataResponse,
@@ -2782,8 +2778,8 @@ export const deregisterPackageVersion: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterPackageVersionRequest,
   output: DeregisterPackageVersionResponse,
@@ -2806,8 +2802,8 @@ export const registerPackageVersion: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterPackageVersionRequest,
   output: RegisterPackageVersionResponse,
@@ -2830,8 +2826,8 @@ export const removeApplicationInstance: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveApplicationInstanceRequest,
   output: RemoveApplicationInstanceResponse,
@@ -2855,8 +2851,8 @@ export const deleteDevice: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeviceRequest,
   output: DeleteDeviceResponse,
@@ -2879,8 +2875,8 @@ export const createNodeFromTemplateJob: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNodeFromTemplateJobRequest,
   output: CreateNodeFromTemplateJobResponse,
@@ -2902,8 +2898,8 @@ export const createPackage: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePackageRequest,
   output: CreatePackageResponse,
@@ -2926,8 +2922,8 @@ export const describeApplicationInstance: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationInstanceRequest,
   output: DescribeApplicationInstanceResponse,
@@ -2951,8 +2947,8 @@ export const listDevices: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevicesRequest,
@@ -2962,8 +2958,8 @@ export const listDevices: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListDevicesRequest,
@@ -2973,8 +2969,8 @@ export const listDevices: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesRequest,
@@ -3004,8 +3000,8 @@ export const listDevicesJobs: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevicesJobsRequest,
@@ -3016,8 +3012,8 @@ export const listDevicesJobs: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListDevicesJobsRequest,
@@ -3028,8 +3024,8 @@ export const listDevicesJobs: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesJobsRequest,
@@ -3059,8 +3055,8 @@ export const listNodeFromTemplateJobs: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListNodeFromTemplateJobsRequest,
@@ -3070,8 +3066,8 @@ export const listNodeFromTemplateJobs: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListNodeFromTemplateJobsRequest,
@@ -3081,8 +3077,8 @@ export const listNodeFromTemplateJobs: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodeFromTemplateJobsRequest,
@@ -3110,8 +3106,8 @@ export const listNodes: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListNodesRequest,
@@ -3120,8 +3116,8 @@ export const listNodes: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListNodesRequest,
@@ -3130,8 +3126,8 @@ export const listNodes: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
@@ -3155,8 +3151,8 @@ export const listPackageImportJobs: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPackageImportJobsRequest,
@@ -3166,8 +3162,8 @@ export const listPackageImportJobs: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPackageImportJobsRequest,
@@ -3177,8 +3173,8 @@ export const listPackageImportJobs: {
     | ConflictException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPackageImportJobsRequest,
@@ -3208,8 +3204,8 @@ export const listPackages: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPackagesRequest,
@@ -3220,8 +3216,8 @@ export const listPackages: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPackagesRequest,
@@ -3232,8 +3228,8 @@ export const listPackages: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPackagesRequest,
@@ -3263,8 +3259,8 @@ export const createJobForDevices: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateJobForDevicesRequest,
   output: CreateJobForDevicesResponse,
@@ -3287,8 +3283,8 @@ export const createPackageImportJob: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePackageImportJobRequest,
   output: CreatePackageImportJobResponse,
@@ -3314,8 +3310,8 @@ export const provisionDevice: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProvisionDeviceRequest,
   output: ProvisionDeviceResponse,

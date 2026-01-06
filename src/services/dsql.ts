@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "DSQL", serviceShapeName: "DSQL" });
 const auth = T.AwsAuthSigv4({ name: "dsql" });
@@ -596,7 +594,7 @@ export const ValidationExceptionFieldList = S.Array(ValidationExceptionField);
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.String, resourceId: S.String, resourceType: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
@@ -604,7 +602,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     resourceId: S.optional(S.String),
     resourceType: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   {
@@ -612,9 +610,7 @@ export class InternalServerException extends S.TaggedError<InternalServerExcepti
     retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
   },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -624,7 +620,7 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     serviceCode: S.String,
     quotaCode: S.String,
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -632,7 +628,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     reason: S.String,
     fieldList: S.optional(ValidationExceptionFieldList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {
@@ -642,9 +638,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
   },
   T.Retryable({ throttling: true }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 
 //# Operations
 /**
@@ -654,8 +648,8 @@ export const untagResource: (
   input: UntagResourceInput,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -668,8 +662,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceInput,
 ) => Effect.Effect<
   ListTagsForResourceOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -682,8 +676,8 @@ export const getCluster: (
   input: GetClusterInput,
 ) => Effect.Effect<
   GetClusterOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetClusterInput,
   output: GetClusterOutput,
@@ -697,22 +691,22 @@ export const listClusters: {
     input: ListClustersInput,
   ): Effect.Effect<
     ListClustersOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListClustersInput,
   ) => Stream.Stream<
     ListClustersOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListClustersInput,
   ) => Stream.Stream<
     ClusterSummary,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClustersInput,
@@ -732,10 +726,8 @@ export const tagResource: (
   input: TagResourceInput,
 ) => Effect.Effect<
   TagResourceResponse,
-  | ResourceNotFoundException
-  | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ServiceQuotaExceededException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -748,8 +740,8 @@ export const deleteCluster: (
   input: DeleteClusterInput,
 ) => Effect.Effect<
   DeleteClusterOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterInput,
   output: DeleteClusterOutput,
@@ -762,8 +754,8 @@ export const getClusterPolicy: (
   input: GetClusterPolicyInput,
 ) => Effect.Effect<
   GetClusterPolicyOutput,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetClusterPolicyInput,
   output: GetClusterPolicyOutput,
@@ -780,8 +772,8 @@ export const getVpcEndpointServiceName: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVpcEndpointServiceNameInput,
   output: GetVpcEndpointServiceNameOutput,
@@ -856,8 +848,8 @@ export const updateCluster: (
   | ConflictException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterInput,
   output: UpdateClusterOutput,
@@ -873,8 +865,8 @@ export const deleteClusterPolicy: (
   | ConflictException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterPolicyInput,
   output: DeleteClusterPolicyOutput,
@@ -890,8 +882,8 @@ export const putClusterPolicy: (
   | ConflictException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutClusterPolicyInput,
   output: PutClusterPolicyOutput,
@@ -949,8 +941,8 @@ export const createCluster: (
   | ConflictException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterInput,
   output: CreateClusterOutput,

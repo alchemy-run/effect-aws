@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Bedrock Runtime",
@@ -2468,23 +2466,19 @@ export const ApplyGuardrailResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ModelErrorException extends S.TaggedError<ModelErrorException>()(
   "ModelErrorException",
   {
@@ -2496,28 +2490,24 @@ export class ModelErrorException extends S.TaggedError<ModelErrorException>()(
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ModelNotReadyException extends S.TaggedError<ModelNotReadyException>()(
   "ModelNotReadyException",
   { message: S.optional(S.String) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ModelTimeoutException extends S.TaggedError<ModelTimeoutException>()(
   "ModelTimeoutException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withTimeoutError) {}
 export class ModelStreamErrorException extends S.TaggedError<ModelStreamErrorException>()(
   "ModelStreamErrorException",
   {
@@ -2529,7 +2519,7 @@ export class ModelStreamErrorException extends S.TaggedError<ModelStreamErrorExc
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2543,8 +2533,8 @@ export const getAsyncInvoke: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAsyncInvokeRequest,
   output: GetAsyncInvokeResponse,
@@ -2567,8 +2557,8 @@ export const listAsyncInvokes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAsyncInvokesRequest,
@@ -2578,8 +2568,8 @@ export const listAsyncInvokes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAsyncInvokesRequest,
@@ -2589,8 +2579,8 @@ export const listAsyncInvokes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAsyncInvokesRequest,
@@ -2639,8 +2629,8 @@ export const countTokens: (
   | ServiceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CountTokensRequest,
   output: CountTokensResponse,
@@ -2672,8 +2662,8 @@ export const startAsyncInvoke: (
   | ServiceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAsyncInvokeRequest,
   output: StartAsyncInvokeResponse,
@@ -2713,8 +2703,8 @@ export const invokeModel: (
   | ServiceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvokeModelRequest,
   output: InvokeModelResponse,
@@ -2761,8 +2751,8 @@ export const invokeModelWithResponseStream: (
   | ServiceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvokeModelWithResponseStreamRequest,
   output: InvokeModelWithResponseStreamResponse,
@@ -2800,8 +2790,8 @@ export const invokeModelWithBidirectionalStream: (
   | ServiceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvokeModelWithBidirectionalStreamRequest,
   output: InvokeModelWithBidirectionalStreamResponse,
@@ -2855,8 +2845,8 @@ export const converseStream: (
   | ServiceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConverseStreamRequest,
   output: ConverseStreamResponse,
@@ -2904,8 +2894,8 @@ export const converse: (
   | ServiceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConverseRequest,
   output: ConverseResponse,
@@ -2937,8 +2927,8 @@ export const applyGuardrail: (
   | ServiceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ApplyGuardrailRequest,
   output: ApplyGuardrailResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://elasticbeanstalk.amazonaws.com/docs/2010-12-01/",
@@ -2904,7 +2902,7 @@ export class InsufficientPrivilegesException extends S.TaggedError<InsufficientP
     code: "InsufficientPrivilegesException",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class OperationInProgressException extends S.TaggedError<OperationInProgressException>()(
   "OperationInProgressException",
   { message: S.optional(S.String) },
@@ -2912,7 +2910,7 @@ export class OperationInProgressException extends S.TaggedError<OperationInProgr
     code: "OperationInProgressFailure",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ElasticBeanstalkServiceException extends S.TaggedError<ElasticBeanstalkServiceException>()(
   "ElasticBeanstalkServiceException",
   { message: S.optional(S.String) },
@@ -2924,7 +2922,7 @@ export class TooManyEnvironmentsException extends S.TaggedError<TooManyEnvironme
     code: "TooManyEnvironmentsException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CodeBuildNotInServiceRegionException extends S.TaggedError<CodeBuildNotInServiceRegionException>()(
   "CodeBuildNotInServiceRegionException",
   { message: S.optional(S.String) },
@@ -2932,17 +2930,17 @@ export class CodeBuildNotInServiceRegionException extends S.TaggedError<CodeBuil
     code: "CodeBuildNotInServiceRegionException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyBucketsException extends S.TaggedError<TooManyBucketsException>()(
   "TooManyBucketsException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyBucketsException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFoundException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class S3SubscriptionRequiredException extends S.TaggedError<S3SubscriptionRequiredException>()(
   "S3SubscriptionRequiredException",
   { message: S.optional(S.String) },
@@ -2950,7 +2948,7 @@ export class S3SubscriptionRequiredException extends S.TaggedError<S3Subscriptio
     code: "S3SubscriptionRequiredException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class S3LocationNotInServiceRegionException extends S.TaggedError<S3LocationNotInServiceRegionException>()(
   "S3LocationNotInServiceRegionException",
   { message: S.optional(S.String) },
@@ -2958,7 +2956,7 @@ export class S3LocationNotInServiceRegionException extends S.TaggedError<S3Locat
     code: "S3LocationNotInServiceRegionException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ManagedActionInvalidStateException extends S.TaggedError<ManagedActionInvalidStateException>()(
   "ManagedActionInvalidStateException",
   { message: S.optional(S.String) },
@@ -2966,7 +2964,7 @@ export class ManagedActionInvalidStateException extends S.TaggedError<ManagedAct
     code: "ManagedActionInvalidStateException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyConfigurationTemplatesException extends S.TaggedError<TooManyConfigurationTemplatesException>()(
   "TooManyConfigurationTemplatesException",
   { message: S.optional(S.String) },
@@ -2974,12 +2972,12 @@ export class TooManyConfigurationTemplatesException extends S.TaggedError<TooMan
     code: "TooManyConfigurationTemplatesException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyPlatformsException extends S.TaggedError<TooManyPlatformsException>()(
   "TooManyPlatformsException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyPlatformsException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceTypeNotSupportedException extends S.TaggedError<ResourceTypeNotSupportedException>()(
   "ResourceTypeNotSupportedException",
   { message: S.optional(S.String) },
@@ -2987,7 +2985,7 @@ export class ResourceTypeNotSupportedException extends S.TaggedError<ResourceTyp
     code: "ResourceTypeNotSupportedException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SourceBundleDeletionException extends S.TaggedError<SourceBundleDeletionException>()(
   "SourceBundleDeletionException",
   { message: S.optional(S.String) },
@@ -2995,7 +2993,7 @@ export class SourceBundleDeletionException extends S.TaggedError<SourceBundleDel
     code: "SourceBundleDeletionFailure",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PlatformVersionStillReferencedException extends S.TaggedError<PlatformVersionStillReferencedException>()(
   "PlatformVersionStillReferencedException",
   { message: S.optional(S.String) },
@@ -3003,7 +3001,7 @@ export class PlatformVersionStillReferencedException extends S.TaggedError<Platf
     code: "PlatformVersionStillReferencedException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyApplicationsException extends S.TaggedError<TooManyApplicationsException>()(
   "TooManyApplicationsException",
   { message: S.optional(S.String) },
@@ -3011,17 +3009,17 @@ export class TooManyApplicationsException extends S.TaggedError<TooManyApplicati
     code: "TooManyApplicationsException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidRequestException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyTagsException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyApplicationVersionsException extends S.TaggedError<TooManyApplicationVersionsException>()(
   "TooManyApplicationVersionsException",
   { message: S.optional(S.String) },
@@ -3041,8 +3039,8 @@ export const deleteEnvironmentConfiguration: (
   input: DeleteEnvironmentConfigurationMessage,
 ) => Effect.Effect<
   DeleteEnvironmentConfigurationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentConfigurationMessage,
   output: DeleteEnvironmentConfigurationResponse,
@@ -3055,8 +3053,8 @@ export const describeEnvironments: (
   input: DescribeEnvironmentsMessage,
 ) => Effect.Effect<
   EnvironmentDescriptionsMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEnvironmentsMessage,
   output: EnvironmentDescriptionsMessage,
@@ -3083,8 +3081,8 @@ export const requestEnvironmentInfo: (
   input: RequestEnvironmentInfoMessage,
 ) => Effect.Effect<
   RequestEnvironmentInfoResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RequestEnvironmentInfoMessage,
   output: RequestEnvironmentInfoResponse,
@@ -3098,8 +3096,8 @@ export const restartAppServer: (
   input: RestartAppServerMessage,
 ) => Effect.Effect<
   RestartAppServerResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestartAppServerMessage,
   output: RestartAppServerResponse,
@@ -3112,8 +3110,8 @@ export const swapEnvironmentCNAMEs: (
   input: SwapEnvironmentCNAMEsMessage,
 ) => Effect.Effect<
   SwapEnvironmentCNAMEsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SwapEnvironmentCNAMEsMessage,
   output: SwapEnvironmentCNAMEsResponse,
@@ -3127,8 +3125,8 @@ export const abortEnvironmentUpdate: (
   input: AbortEnvironmentUpdateMessage,
 ) => Effect.Effect<
   AbortEnvironmentUpdateResponse,
-  InsufficientPrivilegesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AbortEnvironmentUpdateMessage,
   output: AbortEnvironmentUpdateResponse,
@@ -3141,8 +3139,8 @@ export const checkDNSAvailability: (
   input: CheckDNSAvailabilityMessage,
 ) => Effect.Effect<
   CheckDNSAvailabilityResultMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckDNSAvailabilityMessage,
   output: CheckDNSAvailabilityResultMessage,
@@ -3159,8 +3157,8 @@ export const deleteApplication: (
   input: DeleteApplicationMessage,
 ) => Effect.Effect<
   DeleteApplicationResponse,
-  OperationInProgressException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationInProgressException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationMessage,
   output: DeleteApplicationResponse,
@@ -3174,8 +3172,8 @@ export const listAvailableSolutionStacks: (
   input: ListAvailableSolutionStacksRequest,
 ) => Effect.Effect<
   ListAvailableSolutionStacksResultMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAvailableSolutionStacksRequest,
   output: ListAvailableSolutionStacksResultMessage,
@@ -3191,8 +3189,8 @@ export const updateApplication: (
   input: UpdateApplicationMessage,
 ) => Effect.Effect<
   ApplicationDescriptionMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationMessage,
   output: ApplicationDescriptionMessage,
@@ -3205,8 +3203,8 @@ export const updateApplicationResourceLifecycle: (
   input: UpdateApplicationResourceLifecycleMessage,
 ) => Effect.Effect<
   ApplicationResourceLifecycleDescriptionMessage,
-  InsufficientPrivilegesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationResourceLifecycleMessage,
   output: ApplicationResourceLifecycleDescriptionMessage,
@@ -3222,8 +3220,8 @@ export const updateApplicationVersion: (
   input: UpdateApplicationVersionMessage,
 ) => Effect.Effect<
   ApplicationVersionDescriptionMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationVersionMessage,
   output: ApplicationVersionDescriptionMessage,
@@ -3239,8 +3237,8 @@ export const associateEnvironmentOperationsRole: (
   input: AssociateEnvironmentOperationsRoleMessage,
 ) => Effect.Effect<
   AssociateEnvironmentOperationsRoleResponse,
-  InsufficientPrivilegesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateEnvironmentOperationsRoleMessage,
   output: AssociateEnvironmentOperationsRoleResponse,
@@ -3256,8 +3254,8 @@ export const disassociateEnvironmentOperationsRole: (
   input: DisassociateEnvironmentOperationsRoleMessage,
 ) => Effect.Effect<
   DisassociateEnvironmentOperationsRoleResponse,
-  InsufficientPrivilegesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateEnvironmentOperationsRoleMessage,
   output: DisassociateEnvironmentOperationsRoleResponse,
@@ -3271,8 +3269,8 @@ export const rebuildEnvironment: (
   input: RebuildEnvironmentMessage,
 ) => Effect.Effect<
   RebuildEnvironmentResponse,
-  InsufficientPrivilegesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebuildEnvironmentMessage,
   output: RebuildEnvironmentResponse,
@@ -3289,8 +3287,8 @@ export const deleteConfigurationTemplate: (
   input: DeleteConfigurationTemplateMessage,
 ) => Effect.Effect<
   DeleteConfigurationTemplateResponse,
-  OperationInProgressException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationInProgressException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationTemplateMessage,
   output: DeleteConfigurationTemplateResponse,
@@ -3308,10 +3306,8 @@ export const composeEnvironments: (
   input: ComposeEnvironmentsMessage,
 ) => Effect.Effect<
   EnvironmentDescriptionsMessage,
-  | InsufficientPrivilegesException
-  | TooManyEnvironmentsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | TooManyEnvironmentsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ComposeEnvironmentsMessage,
   output: EnvironmentDescriptionsMessage,
@@ -3327,8 +3323,8 @@ export const describeAccountAttributes: (
   input: DescribeAccountAttributesRequest,
 ) => Effect.Effect<
   DescribeAccountAttributesResult,
-  InsufficientPrivilegesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountAttributesRequest,
   output: DescribeAccountAttributesResult,
@@ -3341,8 +3337,8 @@ export const describeApplications: (
   input: DescribeApplicationsMessage,
 ) => Effect.Effect<
   ApplicationDescriptionsMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationsMessage,
   output: ApplicationDescriptionsMessage,
@@ -3355,8 +3351,8 @@ export const describeApplicationVersions: (
   input: DescribeApplicationVersionsMessage,
 ) => Effect.Effect<
   ApplicationVersionDescriptionsMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationVersionsMessage,
   output: ApplicationVersionDescriptionsMessage,
@@ -3370,22 +3366,22 @@ export const describeEnvironmentManagedActionHistory: {
     input: DescribeEnvironmentManagedActionHistoryRequest,
   ): Effect.Effect<
     DescribeEnvironmentManagedActionHistoryResult,
-    ElasticBeanstalkServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ElasticBeanstalkServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEnvironmentManagedActionHistoryRequest,
   ) => Stream.Stream<
     DescribeEnvironmentManagedActionHistoryResult,
-    ElasticBeanstalkServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ElasticBeanstalkServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEnvironmentManagedActionHistoryRequest,
   ) => Stream.Stream<
     ManagedActionHistoryItem,
-    ElasticBeanstalkServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ElasticBeanstalkServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEnvironmentManagedActionHistoryRequest,
@@ -3405,8 +3401,8 @@ export const describeEnvironmentManagedActions: (
   input: DescribeEnvironmentManagedActionsRequest,
 ) => Effect.Effect<
   DescribeEnvironmentManagedActionsResult,
-  ElasticBeanstalkServiceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ElasticBeanstalkServiceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEnvironmentManagedActionsRequest,
   output: DescribeEnvironmentManagedActionsResult,
@@ -3423,22 +3419,22 @@ export const describeEvents: {
     input: DescribeEventsMessage,
   ): Effect.Effect<
     EventDescriptionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsMessage,
   ) => Stream.Stream<
     EventDescriptionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsMessage,
   ) => Stream.Stream<
     EventDescription,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsMessage,
@@ -3466,8 +3462,8 @@ export const listPlatformVersions: {
     ListPlatformVersionsResult,
     | ElasticBeanstalkServiceException
     | InsufficientPrivilegesException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlatformVersionsRequest,
@@ -3475,8 +3471,8 @@ export const listPlatformVersions: {
     ListPlatformVersionsResult,
     | ElasticBeanstalkServiceException
     | InsufficientPrivilegesException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPlatformVersionsRequest,
@@ -3484,8 +3480,8 @@ export const listPlatformVersions: {
     PlatformSummary,
     | ElasticBeanstalkServiceException
     | InsufficientPrivilegesException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlatformVersionsRequest,
@@ -3510,8 +3506,8 @@ export const retrieveEnvironmentInfo: (
   input: RetrieveEnvironmentInfoMessage,
 ) => Effect.Effect<
   RetrieveEnvironmentInfoResultMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetrieveEnvironmentInfoMessage,
   output: RetrieveEnvironmentInfoResultMessage,
@@ -3528,10 +3524,8 @@ export const validateConfigurationSettings: (
   input: ValidateConfigurationSettingsMessage,
 ) => Effect.Effect<
   ConfigurationSettingsValidationMessages,
-  | InsufficientPrivilegesException
-  | TooManyBucketsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | TooManyBucketsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidateConfigurationSettingsMessage,
   output: ConfigurationSettingsValidationMessages,
@@ -3551,8 +3545,8 @@ export const createStorageLocation: (
   | InsufficientPrivilegesException
   | S3SubscriptionRequiredException
   | TooManyBucketsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStorageLocationRequest,
   output: CreateStorageLocationResultMessage,
@@ -3570,10 +3564,8 @@ export const createEnvironment: (
   input: CreateEnvironmentMessage,
 ) => Effect.Effect<
   EnvironmentDescription,
-  | InsufficientPrivilegesException
-  | TooManyEnvironmentsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | TooManyEnvironmentsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEnvironmentMessage,
   output: EnvironmentDescription,
@@ -3597,8 +3589,8 @@ export const describeConfigurationSettings: (
   input: DescribeConfigurationSettingsMessage,
 ) => Effect.Effect<
   ConfigurationSettingsDescriptions,
-  TooManyBucketsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TooManyBucketsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationSettingsMessage,
   output: ConfigurationSettingsDescriptions,
@@ -3619,10 +3611,8 @@ export const updateConfigurationTemplate: (
   input: UpdateConfigurationTemplateMessage,
 ) => Effect.Effect<
   ConfigurationSettingsDescription,
-  | InsufficientPrivilegesException
-  | TooManyBucketsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | TooManyBucketsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationTemplateMessage,
   output: ConfigurationSettingsDescription,
@@ -3645,10 +3635,8 @@ export const updateEnvironment: (
   input: UpdateEnvironmentMessage,
 ) => Effect.Effect<
   EnvironmentDescription,
-  | InsufficientPrivilegesException
-  | TooManyBucketsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | TooManyBucketsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEnvironmentMessage,
   output: EnvironmentDescription,
@@ -3665,8 +3653,8 @@ export const applyEnvironmentManagedAction: (
   ApplyEnvironmentManagedActionResult,
   | ElasticBeanstalkServiceException
   | ManagedActionInvalidStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ApplyEnvironmentManagedActionRequest,
   output: ApplyEnvironmentManagedActionResult,
@@ -3699,8 +3687,8 @@ export const createConfigurationTemplate: (
   | InsufficientPrivilegesException
   | TooManyBucketsException
   | TooManyConfigurationTemplatesException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationTemplateMessage,
   output: ConfigurationSettingsDescription,
@@ -3720,8 +3708,8 @@ export const createPlatformVersion: (
   | ElasticBeanstalkServiceException
   | InsufficientPrivilegesException
   | TooManyPlatformsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePlatformVersionRequest,
   output: CreatePlatformVersionResult,
@@ -3741,8 +3729,8 @@ export const describeConfigurationOptions: (
   input: DescribeConfigurationOptionsMessage,
 ) => Effect.Effect<
   ConfigurationOptionsDescription,
-  TooManyBucketsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TooManyBucketsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationOptionsMessage,
   output: ConfigurationOptionsDescription,
@@ -3755,8 +3743,8 @@ export const describeEnvironmentResources: (
   input: DescribeEnvironmentResourcesMessage,
 ) => Effect.Effect<
   EnvironmentResourceDescriptionsMessage,
-  InsufficientPrivilegesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEnvironmentResourcesMessage,
   output: EnvironmentResourceDescriptionsMessage,
@@ -3775,8 +3763,8 @@ export const describePlatformVersion: (
   DescribePlatformVersionResult,
   | ElasticBeanstalkServiceException
   | InsufficientPrivilegesException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePlatformVersionRequest,
   output: DescribePlatformVersionResult,
@@ -3794,22 +3782,22 @@ export const listPlatformBranches: {
     input: ListPlatformBranchesRequest,
   ): Effect.Effect<
     ListPlatformBranchesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlatformBranchesRequest,
   ) => Stream.Stream<
     ListPlatformBranchesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPlatformBranchesRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlatformBranchesRequest,
@@ -3835,8 +3823,8 @@ export const listTagsForResource: (
   | InsufficientPrivilegesException
   | ResourceNotFoundException
   | ResourceTypeNotSupportedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceMessage,
   output: ResourceTagsDescriptionMessage,
@@ -3860,8 +3848,8 @@ export const deleteApplicationVersion: (
   | OperationInProgressException
   | S3LocationNotInServiceRegionException
   | SourceBundleDeletionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationVersionMessage,
   output: DeleteApplicationVersionResponse,
@@ -3883,8 +3871,8 @@ export const deletePlatformVersion: (
   | InsufficientPrivilegesException
   | OperationInProgressException
   | PlatformVersionStillReferencedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePlatformVersionRequest,
   output: DeletePlatformVersionResult,
@@ -3903,8 +3891,8 @@ export const createApplication: (
   input: CreateApplicationMessage,
 ) => Effect.Effect<
   ApplicationDescriptionMessage,
-  TooManyApplicationsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TooManyApplicationsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationMessage,
   output: ApplicationDescriptionMessage,
@@ -3919,10 +3907,8 @@ export const describeEnvironmentHealth: (
   input: DescribeEnvironmentHealthRequest,
 ) => Effect.Effect<
   DescribeEnvironmentHealthResult,
-  | ElasticBeanstalkServiceException
-  | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ElasticBeanstalkServiceException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEnvironmentHealthRequest,
   output: DescribeEnvironmentHealthResult,
@@ -3937,10 +3923,8 @@ export const describeInstancesHealth: (
   input: DescribeInstancesHealthRequest,
 ) => Effect.Effect<
   DescribeInstancesHealthResult,
-  | ElasticBeanstalkServiceException
-  | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ElasticBeanstalkServiceException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInstancesHealthRequest,
   output: DescribeInstancesHealthResult,
@@ -3953,8 +3937,8 @@ export const terminateEnvironment: (
   input: TerminateEnvironmentMessage,
 ) => Effect.Effect<
   EnvironmentDescription,
-  InsufficientPrivilegesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InsufficientPrivilegesException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateEnvironmentMessage,
   output: EnvironmentDescription,
@@ -3992,8 +3976,8 @@ export const updateTagsForResource: (
   | ResourceNotFoundException
   | ResourceTypeNotSupportedException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTagsForResourceMessage,
   output: UpdateTagsForResourceResponse,
@@ -4035,8 +4019,8 @@ export const createApplicationVersion: (
   | S3LocationNotInServiceRegionException
   | TooManyApplicationsException
   | TooManyApplicationVersionsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationVersionMessage,
   output: ApplicationVersionDescriptionMessage,

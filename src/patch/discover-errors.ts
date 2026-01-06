@@ -11,12 +11,12 @@ import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
 import * as Logger from "effect/Logger";
 import * as S from "effect/Schema";
-import * as Credentials from "../aws/credentials.ts";
-import { Endpoint } from "../aws/endpoint.ts";
-import { COMMON_ERRORS, UnknownAwsError } from "../aws/errors.ts";
-import type { AWSRegion } from "../aws/region.ts";
-import { Region } from "../aws/region.ts";
-import type { Operation } from "../operation.ts";
+import type { Operation } from "../client/operation.ts";
+import * as Credentials from "../credentials.ts";
+import { Endpoint } from "../endpoint.ts";
+import { COMMON_ERRORS, UnknownAwsError } from "../errors.ts";
+import type { RegionName } from "../region.ts";
+import { Region } from "../region.ts";
 // import * as AWS from "../services/index.ts";
 const AWS = (await import("../services/index.ts")) as any;
 // import { OpenAiClient, OpenAiLanguageModel } from "@effect/ai-openai";
@@ -202,7 +202,7 @@ const tools = toolkit.toLayer(
                     const result = yield* api(decodedInput).pipe(
                       Effect.provideService(
                         Region,
-                        effectiveRegion as AWSRegion,
+                        effectiveRegion as RegionName,
                       ),
                       Effect.map((response) => {
                         const responseStr = `Success: Operation completed successfully.`;

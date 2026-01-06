@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Strm from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ivs",
@@ -1866,49 +1864,43 @@ export const GetStreamSessionResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { exceptionMessage: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { exceptionMessage: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { exceptionMessage: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { exceptionMessage: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PendingVerification extends S.TaggedError<PendingVerification>()(
   "PendingVerification",
   { exceptionMessage: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ChannelNotBroadcasting extends S.TaggedError<ChannelNotBroadcasting>()(
   "ChannelNotBroadcasting",
   { exceptionMessage: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { exceptionMessage: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { exceptionMessage: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { exceptionMessage: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class StreamUnavailable extends S.TaggedError<StreamUnavailable>()(
   "StreamUnavailable",
   { exceptionMessage: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 
 //# Operations
 /**
@@ -1918,8 +1910,8 @@ export const batchGetStreamKey: (
   input: BatchGetStreamKeyRequest,
 ) => Effect.Effect<
   BatchGetStreamKeyResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetStreamKeyRequest,
   output: BatchGetStreamKeyResponse,
@@ -1932,8 +1924,8 @@ export const batchGetChannel: (
   input: BatchGetChannelRequest,
 ) => Effect.Effect<
   BatchGetChannelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetChannelRequest,
   output: BatchGetChannelResponse,
@@ -1949,8 +1941,8 @@ export const getChannel: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChannelRequest,
   output: GetChannelResponse,
@@ -1969,22 +1961,22 @@ export const listStreams: {
     input: ListStreamsRequest,
   ): Effect.Effect<
     ListStreamsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamsRequest,
   ) => Strm.Stream<
     ListStreamsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamsRequest,
   ) => Strm.Stream<
     unknown,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamsRequest,
@@ -2012,8 +2004,8 @@ export const putMetadata: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMetadataRequest,
   output: PutMetadataResponse,
@@ -2041,8 +2033,8 @@ export const importPlaybackKeyPair: (
   | PendingVerification
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportPlaybackKeyPairRequest,
   output: ImportPlaybackKeyPairResponse,
@@ -2068,8 +2060,8 @@ export const getPlaybackKeyPair: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPlaybackKeyPairRequest,
   output: GetPlaybackKeyPairResponse,
@@ -2090,8 +2082,8 @@ export const getPlaybackRestrictionPolicy: (
   | PendingVerification
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPlaybackRestrictionPolicyRequest,
   output: GetPlaybackRestrictionPolicyResponse,
@@ -2113,8 +2105,8 @@ export const getRecordingConfiguration: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRecordingConfigurationRequest,
   output: GetRecordingConfigurationResponse,
@@ -2139,8 +2131,8 @@ export const listChannels: {
     | AccessDeniedException
     | ConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelsRequest,
@@ -2149,8 +2141,8 @@ export const listChannels: {
     | AccessDeniedException
     | ConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelsRequest,
@@ -2159,8 +2151,8 @@ export const listChannels: {
     | AccessDeniedException
     | ConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
@@ -2181,22 +2173,22 @@ export const listPlaybackKeyPairs: {
     input: ListPlaybackKeyPairsRequest,
   ): Effect.Effect<
     ListPlaybackKeyPairsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlaybackKeyPairsRequest,
   ) => Strm.Stream<
     ListPlaybackKeyPairsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPlaybackKeyPairsRequest,
   ) => Strm.Stream<
     unknown,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlaybackKeyPairsRequest,
@@ -2220,8 +2212,8 @@ export const listPlaybackRestrictionPolicies: {
     | ConflictException
     | PendingVerification
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlaybackRestrictionPoliciesRequest,
@@ -2231,8 +2223,8 @@ export const listPlaybackRestrictionPolicies: {
     | ConflictException
     | PendingVerification
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPlaybackRestrictionPoliciesRequest,
@@ -2242,8 +2234,8 @@ export const listPlaybackRestrictionPolicies: {
     | ConflictException
     | PendingVerification
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlaybackRestrictionPoliciesRequest,
@@ -2272,8 +2264,8 @@ export const listRecordingConfigurations: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecordingConfigurationsRequest,
@@ -2282,8 +2274,8 @@ export const listRecordingConfigurations: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRecordingConfigurationsRequest,
@@ -2292,8 +2284,8 @@ export const listRecordingConfigurations: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecordingConfigurationsRequest,
@@ -2316,8 +2308,8 @@ export const listStreamKeys: {
     | AccessDeniedException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamKeysRequest,
@@ -2326,8 +2318,8 @@ export const listStreamKeys: {
     | AccessDeniedException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamKeysRequest,
@@ -2336,8 +2328,8 @@ export const listStreamKeys: {
     | AccessDeniedException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamKeysRequest,
@@ -2365,8 +2357,8 @@ export const listStreamSessions: {
     | AccessDeniedException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamSessionsRequest,
@@ -2375,8 +2367,8 @@ export const listStreamSessions: {
     | AccessDeniedException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamSessionsRequest,
@@ -2385,8 +2377,8 @@ export const listStreamSessions: {
     | AccessDeniedException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamSessionsRequest,
@@ -2416,8 +2408,8 @@ export const updateChannel: (
   | PendingVerification
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelRequest,
   output: UpdateChannelResponse,
@@ -2441,8 +2433,8 @@ export const updatePlaybackRestrictionPolicy: (
   | PendingVerification
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePlaybackRestrictionPolicyRequest,
   output: UpdatePlaybackRestrictionPolicyResponse,
@@ -2466,8 +2458,8 @@ export const deletePlaybackRestrictionPolicy: (
   | PendingVerification
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePlaybackRestrictionPolicyRequest,
   output: DeletePlaybackRestrictionPolicyResponse,
@@ -2497,8 +2489,8 @@ export const deleteRecordingConfiguration: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRecordingConfigurationRequest,
   output: DeleteRecordingConfigurationResponse,
@@ -2520,8 +2512,8 @@ export const getStreamKey: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStreamKeyRequest,
   output: GetStreamKeyResponse,
@@ -2541,8 +2533,8 @@ export const tagResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2562,8 +2554,8 @@ export const untagResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2583,8 +2575,8 @@ export const listTagsForResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2607,8 +2599,8 @@ export const deletePlaybackKeyPair: (
   | PendingVerification
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePlaybackKeyPairRequest,
   output: DeletePlaybackKeyPairResponse,
@@ -2631,8 +2623,8 @@ export const deleteStreamKey: (
   | PendingVerification
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStreamKeyRequest,
   output: DeleteStreamKeyResponse,
@@ -2660,8 +2652,8 @@ export const deleteChannel: (
   | PendingVerification
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelRequest,
   output: DeleteChannelResponse,
@@ -2684,8 +2676,8 @@ export const getStream: (
   | ChannelNotBroadcasting
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStreamRequest,
   output: GetStreamResponse,
@@ -2714,8 +2706,8 @@ export const stopStream: (
   | ResourceNotFoundException
   | StreamUnavailable
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopStreamRequest,
   output: StopStreamResponse,
@@ -2744,8 +2736,8 @@ export const startViewerSessionRevocation: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartViewerSessionRevocationRequest,
   output: StartViewerSessionRevocationResponse,
@@ -2770,8 +2762,8 @@ export const batchStartViewerSessionRevocation: (
   | PendingVerification
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchStartViewerSessionRevocationRequest,
   output: BatchStartViewerSessionRevocationResponse,
@@ -2798,8 +2790,8 @@ export const createStreamKey: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStreamKeyRequest,
   output: CreateStreamKeyResponse,
@@ -2823,8 +2815,8 @@ export const createChannel: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelRequest,
   output: CreateChannelResponse,
@@ -2849,8 +2841,8 @@ export const createPlaybackRestrictionPolicy: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePlaybackRestrictionPolicyRequest,
   output: CreatePlaybackRestrictionPolicyResponse,
@@ -2886,8 +2878,8 @@ export const createRecordingConfiguration: (
   | PendingVerification
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRecordingConfigurationRequest,
   output: CreateRecordingConfigurationResponse,
@@ -2910,8 +2902,8 @@ export const getStreamSession: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStreamSessionRequest,
   output: GetStreamSessionResponse,

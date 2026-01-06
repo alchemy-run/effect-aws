@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://machinelearning.amazonaws.com/doc/2014-12-12/",
@@ -1762,21 +1760,19 @@ export const PredictOutput = S.suspend(() =>
 export class IdempotentParameterMismatchException extends S.TaggedError<IdempotentParameterMismatchException>()(
   "IdempotentParameterMismatchException",
   { message: S.optional(S.String), code: S.optional(S.Number) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String), code: S.optional(S.Number) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidInputException extends S.TaggedError<InvalidInputException>()(
   "InvalidInputException",
   { message: S.optional(S.String), code: S.optional(S.Number) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String), code: S.optional(S.Number) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTagException extends S.TaggedError<InvalidTagException>()(
   "InvalidTagException",
   { message: S.optional(S.String) },
@@ -1792,7 +1788,7 @@ export class TagLimitExceededException extends S.TaggedError<TagLimitExceededExc
 export class PredictorNotMountedException extends S.TaggedError<PredictorNotMountedException>()(
   "PredictorNotMountedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1803,22 +1799,22 @@ export const describeBatchPredictions: {
     input: DescribeBatchPredictionsInput,
   ): Effect.Effect<
     DescribeBatchPredictionsOutput,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBatchPredictionsInput,
   ) => Stream.Stream<
     DescribeBatchPredictionsOutput,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBatchPredictionsInput,
   ) => Stream.Stream<
     BatchPrediction,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBatchPredictionsInput,
@@ -1839,22 +1835,22 @@ export const describeDataSources: {
     input: DescribeDataSourcesInput,
   ): Effect.Effect<
     DescribeDataSourcesOutput,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDataSourcesInput,
   ) => Stream.Stream<
     DescribeDataSourcesOutput,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDataSourcesInput,
   ) => Stream.Stream<
     DataSource,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataSourcesInput,
@@ -1875,22 +1871,22 @@ export const describeEvaluations: {
     input: DescribeEvaluationsInput,
   ): Effect.Effect<
     DescribeEvaluationsOutput,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEvaluationsInput,
   ) => Stream.Stream<
     DescribeEvaluationsOutput,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEvaluationsInput,
   ) => Stream.Stream<
     Evaluation,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEvaluationsInput,
@@ -1911,22 +1907,22 @@ export const describeMLModels: {
     input: DescribeMLModelsInput,
   ): Effect.Effect<
     DescribeMLModelsOutput,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMLModelsInput,
   ) => Stream.Stream<
     DescribeMLModelsOutput,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMLModelsInput,
   ) => Stream.Stream<
     MLModel,
-    InternalServerException | InvalidInputException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidInputException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMLModelsInput,
@@ -1958,8 +1954,8 @@ export const createEvaluation: (
   | IdempotentParameterMismatchException
   | InternalServerException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEvaluationInput,
   output: CreateEvaluationOutput,
@@ -1988,8 +1984,8 @@ export const createBatchPrediction: (
   | IdempotentParameterMismatchException
   | InternalServerException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBatchPredictionInput,
   output: CreateBatchPredictionOutput,
@@ -2039,8 +2035,8 @@ export const createDataSourceFromS3: (
   | IdempotentParameterMismatchException
   | InternalServerException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataSourceFromS3Input,
   output: CreateDataSourceFromS3Output,
@@ -2079,8 +2075,8 @@ export const createMLModel: (
   | IdempotentParameterMismatchException
   | InternalServerException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMLModelInput,
   output: CreateMLModelOutput,
@@ -2108,8 +2104,8 @@ export const createDataSourceFromRDS: (
   | IdempotentParameterMismatchException
   | InternalServerException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataSourceFromRDSInput,
   output: CreateDataSourceFromRDSOutput,
@@ -2158,8 +2154,8 @@ export const createDataSourceFromRedshift: (
   | IdempotentParameterMismatchException
   | InternalServerException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataSourceFromRedshiftInput,
   output: CreateDataSourceFromRedshiftOutput,
@@ -2184,8 +2180,8 @@ export const deleteBatchPrediction: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBatchPredictionInput,
   output: DeleteBatchPredictionOutput,
@@ -2208,8 +2204,8 @@ export const deleteTags: (
   | InvalidInputException
   | InvalidTagException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsInput,
   output: DeleteTagsOutput,
@@ -2230,8 +2226,8 @@ export const getEvaluation: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEvaluationInput,
   output: GetEvaluationOutput,
@@ -2254,8 +2250,8 @@ export const getDataSource: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataSourceInput,
   output: GetDataSourceOutput,
@@ -2279,8 +2275,8 @@ export const deleteDataSource: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataSourceInput,
   output: DeleteDataSourceOutput,
@@ -2305,8 +2301,8 @@ export const deleteEvaluation: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEvaluationInput,
   output: DeleteEvaluationOutput,
@@ -2331,8 +2327,8 @@ export const deleteMLModel: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMLModelInput,
   output: DeleteMLModelOutput,
@@ -2352,8 +2348,8 @@ export const deleteRealtimeEndpoint: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRealtimeEndpointInput,
   output: DeleteRealtimeEndpointOutput,
@@ -2373,8 +2369,8 @@ export const describeTags: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTagsInput,
   output: DescribeTagsOutput,
@@ -2395,8 +2391,8 @@ export const getBatchPrediction: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBatchPredictionInput,
   output: GetBatchPredictionOutput,
@@ -2418,8 +2414,8 @@ export const getMLModel: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMLModelInput,
   output: GetMLModelOutput,
@@ -2441,8 +2437,8 @@ export const updateBatchPrediction: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBatchPredictionInput,
   output: UpdateBatchPredictionOutput,
@@ -2464,8 +2460,8 @@ export const updateDataSource: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataSourceInput,
   output: UpdateDataSourceOutput,
@@ -2487,8 +2483,8 @@ export const updateEvaluation: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEvaluationInput,
   output: UpdateEvaluationOutput,
@@ -2510,8 +2506,8 @@ export const updateMLModel: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMLModelInput,
   output: UpdateMLModelOutput,
@@ -2531,8 +2527,8 @@ export const createRealtimeEndpoint: (
   | InternalServerException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRealtimeEndpointInput,
   output: CreateRealtimeEndpointOutput,
@@ -2556,8 +2552,8 @@ export const addTags: (
   | InvalidTagException
   | ResourceNotFoundException
   | TagLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsInput,
   output: AddTagsOutput,
@@ -2584,8 +2580,8 @@ export const predict: (
   | LimitExceededException
   | PredictorNotMountedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PredictInput,
   output: PredictOutput,

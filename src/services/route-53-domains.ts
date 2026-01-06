@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "https://route53domains.amazonaws.com/doc/2014-05-15/",
@@ -1677,31 +1675,31 @@ export const RegisterDomainResponse = S.suspend(() =>
 export class InvalidInput extends S.TaggedError<InvalidInput>()(
   "InvalidInput",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DomainLimitExceeded extends S.TaggedError<DomainLimitExceeded>()(
   "DomainLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateRequest extends S.TaggedError<DuplicateRequest>()(
   "DuplicateRequest",
   { requestId: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class OperationLimitExceeded extends S.TaggedError<OperationLimitExceeded>()(
   "OperationLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedTLD extends S.TaggedError<UnsupportedTLD>()(
   "UnsupportedTLD",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TLDRulesViolation extends S.TaggedError<TLDRulesViolation>()(
   "TLDRulesViolation",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DnssecLimitExceeded extends S.TaggedError<DnssecLimitExceeded>()(
   "DnssecLimitExceeded",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1712,8 +1710,8 @@ export const getOperationDetail: (
   input: GetOperationDetailRequest,
 ) => Effect.Effect<
   GetOperationDetailResponse,
-  InvalidInput | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOperationDetailRequest,
   output: GetOperationDetailResponse,
@@ -1726,8 +1724,8 @@ export const resendOperationAuthorization: (
   input: ResendOperationAuthorizationRequest,
 ) => Effect.Effect<
   ResendOperationAuthorizationResponse,
-  InvalidInput | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResendOperationAuthorizationRequest,
   output: ResendOperationAuthorizationResponse,
@@ -1744,22 +1742,22 @@ export const listOperations: {
     input: ListOperationsRequest,
   ): Effect.Effect<
     ListOperationsResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOperationsRequest,
   ) => Stream.Stream<
     ListOperationsResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOperationsRequest,
   ) => Stream.Stream<
     OperationSummary,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOperationsRequest,
@@ -1780,8 +1778,8 @@ export const retrieveDomainAuthCode: (
   input: RetrieveDomainAuthCodeRequest,
 ) => Effect.Effect<
   RetrieveDomainAuthCodeResponse,
-  InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetrieveDomainAuthCodeRequest,
   output: RetrieveDomainAuthCodeResponse,
@@ -1795,22 +1793,22 @@ export const viewBilling: {
     input: ViewBillingRequest,
   ): Effect.Effect<
     ViewBillingResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ViewBillingRequest,
   ) => Stream.Stream<
     ViewBillingResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ViewBillingRequest,
   ) => Stream.Stream<
     BillingRecord,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ViewBillingRequest,
@@ -1853,8 +1851,8 @@ export const transferDomainToAnotherAwsAccount: (
   | InvalidInput
   | OperationLimitExceeded
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TransferDomainToAnotherAwsAccountRequest,
   output: TransferDomainToAnotherAwsAccountResponse,
@@ -1880,8 +1878,8 @@ export const enableDomainAutoRenew: (
   input: EnableDomainAutoRenewRequest,
 ) => Effect.Effect<
   EnableDomainAutoRenewResponse,
-  InvalidInput | TLDRulesViolation | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | TLDRulesViolation | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableDomainAutoRenewRequest,
   output: EnableDomainAutoRenewResponse,
@@ -1899,8 +1897,8 @@ export const getContactReachabilityStatus: (
   input: GetContactReachabilityStatusRequest,
 ) => Effect.Effect<
   GetContactReachabilityStatusResponse,
-  InvalidInput | OperationLimitExceeded | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationLimitExceeded | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContactReachabilityStatusRequest,
   output: GetContactReachabilityStatusResponse,
@@ -1917,8 +1915,8 @@ export const listTagsForDomain: (
   input: ListTagsForDomainRequest,
 ) => Effect.Effect<
   ListTagsForDomainResponse,
-  InvalidInput | OperationLimitExceeded | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationLimitExceeded | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForDomainRequest,
   output: ListTagsForDomainResponse,
@@ -1935,8 +1933,8 @@ export const rejectDomainTransferFromAnotherAwsAccount: (
   input: RejectDomainTransferFromAnotherAwsAccountRequest,
 ) => Effect.Effect<
   RejectDomainTransferFromAnotherAwsAccountResponse,
-  InvalidInput | OperationLimitExceeded | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationLimitExceeded | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectDomainTransferFromAnotherAwsAccountRequest,
   output: RejectDomainTransferFromAnotherAwsAccountResponse,
@@ -1951,8 +1949,8 @@ export const resendContactReachabilityEmail: (
   input: ResendContactReachabilityEmailRequest,
 ) => Effect.Effect<
   ResendContactReachabilityEmailResponse,
-  InvalidInput | OperationLimitExceeded | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationLimitExceeded | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResendContactReachabilityEmailRequest,
   output: ResendContactReachabilityEmailResponse,
@@ -1968,8 +1966,8 @@ export const updateTagsForDomain: (
   input: UpdateTagsForDomainRequest,
 ) => Effect.Effect<
   UpdateTagsForDomainResponse,
-  InvalidInput | OperationLimitExceeded | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationLimitExceeded | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTagsForDomainRequest,
   output: UpdateTagsForDomainResponse,
@@ -1987,8 +1985,8 @@ export const pushDomain: (
   input: PushDomainRequest,
 ) => Effect.Effect<
   PushDomainResponse,
-  InvalidInput | OperationLimitExceeded | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationLimitExceeded | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PushDomainRequest,
   output: PushDomainResponse,
@@ -2008,8 +2006,8 @@ export const cancelDomainTransferToAnotherAwsAccount: (
   input: CancelDomainTransferToAnotherAwsAccountRequest,
 ) => Effect.Effect<
   CancelDomainTransferToAnotherAwsAccountResponse,
-  InvalidInput | OperationLimitExceeded | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationLimitExceeded | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelDomainTransferToAnotherAwsAccountRequest,
   output: CancelDomainTransferToAnotherAwsAccountResponse,
@@ -2034,8 +2032,8 @@ export const acceptDomainTransferFromAnotherAwsAccount: (
   | InvalidInput
   | OperationLimitExceeded
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptDomainTransferFromAnotherAwsAccountRequest,
   output: AcceptDomainTransferFromAnotherAwsAccountResponse,
@@ -2054,8 +2052,8 @@ export const disableDomainAutoRenew: (
   input: DisableDomainAutoRenewRequest,
 ) => Effect.Effect<
   DisableDomainAutoRenewResponse,
-  InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableDomainAutoRenewRequest,
   output: DisableDomainAutoRenewResponse,
@@ -2070,8 +2068,8 @@ export const checkDomainAvailability: (
   input: CheckDomainAvailabilityRequest,
 ) => Effect.Effect<
   CheckDomainAvailabilityResponse,
-  InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckDomainAvailabilityRequest,
   output: CheckDomainAvailabilityResponse,
@@ -2084,8 +2082,8 @@ export const checkDomainTransferability: (
   input: CheckDomainTransferabilityRequest,
 ) => Effect.Effect<
   CheckDomainTransferabilityResponse,
-  InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckDomainTransferabilityRequest,
   output: CheckDomainTransferabilityResponse,
@@ -2101,8 +2099,8 @@ export const deleteTagsForDomain: (
   input: DeleteTagsForDomainRequest,
 ) => Effect.Effect<
   DeleteTagsForDomainResponse,
-  InvalidInput | OperationLimitExceeded | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationLimitExceeded | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsForDomainRequest,
   output: DeleteTagsForDomainResponse,
@@ -2117,8 +2115,8 @@ export const getDomainDetail: (
   input: GetDomainDetailRequest,
 ) => Effect.Effect<
   GetDomainDetailResponse,
-  InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainDetailRequest,
   output: GetDomainDetailResponse,
@@ -2131,8 +2129,8 @@ export const getDomainSuggestions: (
   input: GetDomainSuggestionsRequest,
 ) => Effect.Effect<
   GetDomainSuggestionsResponse,
-  InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | UnsupportedTLD | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainSuggestionsRequest,
   output: GetDomainSuggestionsResponse,
@@ -2165,8 +2163,8 @@ export const deleteDomain: (
   | InvalidInput
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -2218,8 +2216,8 @@ export const transferDomain: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TransferDomainRequest,
   output: TransferDomainResponse,
@@ -2250,8 +2248,8 @@ export const updateDomainContact: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainContactRequest,
   output: UpdateDomainContactResponse,
@@ -2280,8 +2278,8 @@ export const disableDomainTransferLock: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableDomainTransferLockRequest,
   output: DisableDomainTransferLockResponse,
@@ -2306,8 +2304,8 @@ export const disassociateDelegationSignerFromDomain: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateDelegationSignerFromDomainRequest,
   output: DisassociateDelegationSignerFromDomainResponse,
@@ -2335,8 +2333,8 @@ export const enableDomainTransferLock: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableDomainTransferLockRequest,
   output: EnableDomainTransferLockResponse,
@@ -2367,8 +2365,8 @@ export const renewDomain: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RenewDomainRequest,
   output: RenewDomainResponse,
@@ -2412,8 +2410,8 @@ export const updateDomainContactPrivacy: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainContactPrivacyRequest,
   output: UpdateDomainContactPrivacyResponse,
@@ -2443,8 +2441,8 @@ export const updateDomainNameservers: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainNameserversRequest,
   output: UpdateDomainNameserversResponse,
@@ -2477,8 +2475,8 @@ export const associateDelegationSignerToDomain: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateDelegationSignerToDomainRequest,
   output: AssociateDelegationSignerToDomainResponse,
@@ -2500,22 +2498,22 @@ export const listDomains: {
     input: ListDomainsRequest,
   ): Effect.Effect<
     ListDomainsResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDomainsRequest,
   ) => Stream.Stream<
     ListDomainsResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDomainsRequest,
   ) => Stream.Stream<
     DomainSummary,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsRequest,
@@ -2547,22 +2545,22 @@ export const listPrices: {
     input: ListPricesRequest,
   ): Effect.Effect<
     ListPricesResponse,
-    InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | UnsupportedTLD | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPricesRequest,
   ) => Stream.Stream<
     ListPricesResponse,
-    InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | UnsupportedTLD | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPricesRequest,
   ) => Stream.Stream<
     DomainPrice,
-    InvalidInput | UnsupportedTLD | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | UnsupportedTLD | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPricesRequest,
@@ -2615,8 +2613,8 @@ export const registerDomain: (
   | OperationLimitExceeded
   | TLDRulesViolation
   | UnsupportedTLD
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterDomainRequest,
   output: RegisterDomainResponse,

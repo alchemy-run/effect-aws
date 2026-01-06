@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Route53Resolver",
@@ -2623,8 +2621,8 @@ export const getResolverRulePolicy: (
   | InternalServiceErrorException
   | InvalidParameterException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverRulePolicyRequest,
   output: GetResolverRulePolicyResponse,
@@ -2649,8 +2647,8 @@ export const putResolverQueryLogConfigPolicy: (
   | InvalidPolicyDocument
   | InvalidRequestException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResolverQueryLogConfigPolicyRequest,
   output: PutResolverQueryLogConfigPolicyResponse,
@@ -2674,8 +2672,8 @@ export const getFirewallDomainList: (
   | InternalServiceErrorException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFirewallDomainListRequest,
   output: GetFirewallDomainListResponse,
@@ -2697,8 +2695,8 @@ export const getFirewallRuleGroup: (
   | InternalServiceErrorException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFirewallRuleGroupRequest,
   output: GetFirewallRuleGroupResponse,
@@ -2720,8 +2718,8 @@ export const getFirewallRuleGroupAssociation: (
   | InternalServiceErrorException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFirewallRuleGroupAssociationRequest,
   output: GetFirewallRuleGroupAssociationResponse,
@@ -2746,8 +2744,8 @@ export const disassociateResolverRule: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateResolverRuleRequest,
   output: DisassociateResolverRuleResponse,
@@ -2770,8 +2768,8 @@ export const getResolverEndpoint: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverEndpointRequest,
   output: GetResolverEndpointResponse,
@@ -2794,8 +2792,8 @@ export const getResolverRule: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverRuleRequest,
   output: GetResolverRuleResponse,
@@ -2818,8 +2816,8 @@ export const getResolverRuleAssociation: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverRuleAssociationRequest,
   output: GetResolverRuleAssociationResponse,
@@ -2843,8 +2841,8 @@ export const listResolverEndpointIpAddresses: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolverEndpointIpAddressesRequest,
@@ -2855,8 +2853,8 @@ export const listResolverEndpointIpAddresses: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolverEndpointIpAddressesRequest,
@@ -2867,8 +2865,8 @@ export const listResolverEndpointIpAddresses: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolverEndpointIpAddressesRequest,
@@ -2899,8 +2897,8 @@ export const deleteFirewallDomainList: (
   | InternalServiceErrorException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFirewallDomainListRequest,
   output: DeleteFirewallDomainListResponse,
@@ -2926,8 +2924,8 @@ export const deleteResolverRule: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResolverRuleRequest,
   output: DeleteResolverRuleResponse,
@@ -2953,8 +2951,8 @@ export const updateResolverEndpoint: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResolverEndpointRequest,
   output: UpdateResolverEndpointResponse,
@@ -2990,8 +2988,8 @@ export const deleteResolverQueryLogConfig: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResolverQueryLogConfigRequest,
   output: DeleteResolverQueryLogConfigResponse,
@@ -3026,8 +3024,8 @@ export const disassociateResolverQueryLogConfig: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateResolverQueryLogConfigRequest,
   output: DisassociateResolverQueryLogConfigResponse,
@@ -3054,8 +3052,8 @@ export const getResolverQueryLogConfig: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverQueryLogConfigRequest,
   output: GetResolverQueryLogConfigResponse,
@@ -3082,8 +3080,8 @@ export const getResolverQueryLogConfigAssociation: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverQueryLogConfigAssociationRequest,
   output: GetResolverQueryLogConfigAssociationResponse,
@@ -3109,8 +3107,8 @@ export const getResolverQueryLogConfigPolicy: (
   | InvalidParameterException
   | InvalidRequestException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverQueryLogConfigPolicyRequest,
   output: GetResolverQueryLogConfigPolicyResponse,
@@ -3136,8 +3134,8 @@ export const listResolverQueryLogConfigAssociations: {
     | InvalidRequestException
     | LimitExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolverQueryLogConfigAssociationsRequest,
@@ -3149,8 +3147,8 @@ export const listResolverQueryLogConfigAssociations: {
     | InvalidRequestException
     | LimitExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolverQueryLogConfigAssociationsRequest,
@@ -3162,8 +3160,8 @@ export const listResolverQueryLogConfigAssociations: {
     | InvalidRequestException
     | LimitExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolverQueryLogConfigAssociationsRequest,
@@ -3196,8 +3194,8 @@ export const updateResolverDnssecConfig: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResolverDnssecConfigRequest,
   output: UpdateResolverDnssecConfigResponse,
@@ -3223,8 +3221,8 @@ export const listResolverEndpoints: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolverEndpointsRequest,
@@ -3235,8 +3233,8 @@ export const listResolverEndpoints: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolverEndpointsRequest,
@@ -3247,8 +3245,8 @@ export const listResolverEndpoints: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolverEndpointsRequest,
@@ -3279,8 +3277,8 @@ export const untagResource: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3310,8 +3308,8 @@ export const deleteResolverEndpoint: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResolverEndpointRequest,
   output: DeleteResolverEndpointResponse,
@@ -3336,8 +3334,8 @@ export const getResolverDnssecConfig: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverDnssecConfigRequest,
   output: GetResolverDnssecConfigResponse,
@@ -3363,8 +3361,8 @@ export const listResolverRuleAssociations: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolverRuleAssociationsRequest,
@@ -3375,8 +3373,8 @@ export const listResolverRuleAssociations: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolverRuleAssociationsRequest,
@@ -3387,8 +3385,8 @@ export const listResolverRuleAssociations: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolverRuleAssociationsRequest,
@@ -3420,8 +3418,8 @@ export const listResolverRules: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolverRulesRequest,
@@ -3432,8 +3430,8 @@ export const listResolverRules: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolverRulesRequest,
@@ -3444,8 +3442,8 @@ export const listResolverRules: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolverRulesRequest,
@@ -3478,8 +3476,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -3491,8 +3489,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -3504,8 +3502,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -3539,8 +3537,8 @@ export const listResolverDnssecConfigs: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolverDnssecConfigsRequest,
@@ -3552,8 +3550,8 @@ export const listResolverDnssecConfigs: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolverDnssecConfigsRequest,
@@ -3565,8 +3563,8 @@ export const listResolverDnssecConfigs: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolverDnssecConfigsRequest,
@@ -3601,8 +3599,8 @@ export const listResolverQueryLogConfigs: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolverQueryLogConfigsRequest,
@@ -3614,8 +3612,8 @@ export const listResolverQueryLogConfigs: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolverQueryLogConfigsRequest,
@@ -3627,8 +3625,8 @@ export const listResolverQueryLogConfigs: {
     | InvalidParameterException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolverQueryLogConfigsRequest,
@@ -3661,8 +3659,8 @@ export const putResolverRulePolicy: (
   | InvalidParameterException
   | InvalidPolicyDocument
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResolverRulePolicyRequest,
   output: PutResolverRulePolicyResponse,
@@ -3688,8 +3686,8 @@ export const listFirewallDomainLists: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFirewallDomainListsRequest,
@@ -3699,8 +3697,8 @@ export const listFirewallDomainLists: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFirewallDomainListsRequest,
@@ -3710,8 +3708,8 @@ export const listFirewallDomainLists: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallDomainListsRequest,
@@ -3743,8 +3741,8 @@ export const tagResource: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3772,8 +3770,8 @@ export const updateOutpostResolver: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateOutpostResolverRequest,
   output: UpdateOutpostResolverResponse,
@@ -3799,8 +3797,8 @@ export const createFirewallDomainList: (
   | LimitExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFirewallDomainListRequest,
   output: CreateFirewallDomainListResponse,
@@ -3825,8 +3823,8 @@ export const disassociateFirewallRuleGroup: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateFirewallRuleGroupRequest,
   output: DisassociateFirewallRuleGroupResponse,
@@ -3852,8 +3850,8 @@ export const deleteFirewallRuleGroup: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFirewallRuleGroupRequest,
   output: DeleteFirewallRuleGroupResponse,
@@ -3879,8 +3877,8 @@ export const deleteOutpostResolver: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOutpostResolverRequest,
   output: DeleteOutpostResolverResponse,
@@ -3918,8 +3916,8 @@ export const importFirewallDomains: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportFirewallDomainsRequest,
   output: ImportFirewallDomainsResponse,
@@ -3947,8 +3945,8 @@ export const updateFirewallDomains: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallDomainsRequest,
   output: UpdateFirewallDomainsResponse,
@@ -3975,8 +3973,8 @@ export const updateFirewallRule: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallRuleRequest,
   output: UpdateFirewallRuleResponse,
@@ -4002,8 +4000,8 @@ export const updateFirewallRuleGroupAssociation: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallRuleGroupAssociationRequest,
   output: UpdateFirewallRuleGroupAssociationResponse,
@@ -4030,8 +4028,8 @@ export const associateFirewallRuleGroup: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateFirewallRuleGroupRequest,
   output: AssociateFirewallRuleGroupResponse,
@@ -4057,8 +4055,8 @@ export const deleteFirewallRule: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFirewallRuleRequest,
   output: DeleteFirewallRuleResponse,
@@ -4083,8 +4081,8 @@ export const getFirewallRuleGroupPolicy: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFirewallRuleGroupPolicyRequest,
   output: GetFirewallRuleGroupPolicyResponse,
@@ -4109,8 +4107,8 @@ export const getOutpostResolver: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOutpostResolverRequest,
   output: GetOutpostResolverResponse,
@@ -4137,8 +4135,8 @@ export const listFirewallDomains: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFirewallDomainsRequest,
@@ -4149,8 +4147,8 @@ export const listFirewallDomains: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFirewallDomainsRequest,
@@ -4161,8 +4159,8 @@ export const listFirewallDomains: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallDomainsRequest,
@@ -4196,8 +4194,8 @@ export const listFirewallRules: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFirewallRulesRequest,
@@ -4208,8 +4206,8 @@ export const listFirewallRules: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFirewallRulesRequest,
@@ -4220,8 +4218,8 @@ export const listFirewallRules: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallRulesRequest,
@@ -4253,8 +4251,8 @@ export const listOutpostResolvers: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOutpostResolversRequest,
@@ -4265,8 +4263,8 @@ export const listOutpostResolvers: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOutpostResolversRequest,
@@ -4277,8 +4275,8 @@ export const listOutpostResolvers: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOutpostResolversRequest,
@@ -4311,8 +4309,8 @@ export const putFirewallRuleGroupPolicy: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutFirewallRuleGroupPolicyRequest,
   output: PutFirewallRuleGroupPolicyResponse,
@@ -4337,8 +4335,8 @@ export const updateFirewallConfig: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallConfigRequest,
   output: UpdateFirewallConfigResponse,
@@ -4364,8 +4362,8 @@ export const getResolverConfig: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverConfigRequest,
   output: GetResolverConfigResponse,
@@ -4392,8 +4390,8 @@ export const listFirewallRuleGroups: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFirewallRuleGroupsRequest,
@@ -4403,8 +4401,8 @@ export const listFirewallRuleGroups: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFirewallRuleGroupsRequest,
@@ -4414,8 +4412,8 @@ export const listFirewallRuleGroups: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallRuleGroupsRequest,
@@ -4447,8 +4445,8 @@ export const listFirewallConfigs: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFirewallConfigsRequest,
@@ -4458,8 +4456,8 @@ export const listFirewallConfigs: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFirewallConfigsRequest,
@@ -4469,8 +4467,8 @@ export const listFirewallConfigs: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallConfigsRequest,
@@ -4502,8 +4500,8 @@ export const listFirewallRuleGroupAssociations: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFirewallRuleGroupAssociationsRequest,
@@ -4513,8 +4511,8 @@ export const listFirewallRuleGroupAssociations: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFirewallRuleGroupAssociationsRequest,
@@ -4524,8 +4522,8 @@ export const listFirewallRuleGroupAssociations: {
     | InternalServiceErrorException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallRuleGroupAssociationsRequest,
@@ -4556,8 +4554,8 @@ export const getFirewallConfig: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFirewallConfigRequest,
   output: GetFirewallConfigResponse,
@@ -4585,8 +4583,8 @@ export const listResolverConfigs: {
     | InvalidRequestException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolverConfigsRequest,
@@ -4599,8 +4597,8 @@ export const listResolverConfigs: {
     | InvalidRequestException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolverConfigsRequest,
@@ -4613,8 +4611,8 @@ export const listResolverConfigs: {
     | InvalidRequestException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolverConfigsRequest,
@@ -4648,8 +4646,8 @@ export const createFirewallRule: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFirewallRuleRequest,
   output: CreateFirewallRuleResponse,
@@ -4675,8 +4673,8 @@ export const createFirewallRuleGroup: (
   | LimitExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFirewallRuleGroupRequest,
   output: CreateFirewallRuleGroupResponse,
@@ -4704,8 +4702,8 @@ export const updateResolverRule: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResolverRuleRequest,
   output: UpdateResolverRuleResponse,
@@ -4742,8 +4740,8 @@ export const associateResolverQueryLogConfig: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateResolverQueryLogConfigRequest,
   output: AssociateResolverQueryLogConfigResponse,
@@ -4771,8 +4769,8 @@ export const createOutpostResolver: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOutpostResolverRequest,
   output: CreateOutpostResolverResponse,
@@ -4802,8 +4800,8 @@ export const updateResolverConfig: (
   | ResourceUnavailableException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResolverConfigRequest,
   output: UpdateResolverConfigResponse,
@@ -4840,8 +4838,8 @@ export const createResolverEndpoint: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResolverEndpointRequest,
   output: CreateResolverEndpointResponse,
@@ -4879,8 +4877,8 @@ export const createResolverQueryLogConfig: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResolverQueryLogConfigRequest,
   output: CreateResolverQueryLogConfigResponse,
@@ -4912,8 +4910,8 @@ export const createResolverRule: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResolverRuleRequest,
   output: CreateResolverRuleResponse,
@@ -4946,8 +4944,8 @@ export const disassociateResolverEndpointIpAddress: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateResolverEndpointIpAddressRequest,
   output: DisassociateResolverEndpointIpAddressResponse,
@@ -4978,8 +4976,8 @@ export const associateResolverEndpointIpAddress: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateResolverEndpointIpAddressRequest,
   output: AssociateResolverEndpointIpAddressResponse,
@@ -5011,8 +5009,8 @@ export const associateResolverRule: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateResolverRuleRequest,
   output: AssociateResolverRuleResponse,

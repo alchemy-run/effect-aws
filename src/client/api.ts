@@ -7,14 +7,14 @@ import * as Redacted from "effect/Redacted";
 import * as Ref from "effect/Ref";
 import * as Stream from "effect/Stream";
 
+import { makeDefault, Retry } from "../retry.ts";
+import { makeRulesResolver } from "../rules-engine/resolver.ts";
+import { getAwsAuthSigv4, getPath } from "../traits.ts";
 import type { Operation } from "./operation.ts";
 import { makeRequestBuilder } from "./request-builder.ts";
 import { makeResponseParser } from "./response-parser.ts";
-import { makeDefault, Retry } from "./retry-policy.ts";
-import { makeRulesResolver } from "./rules-engine/resolver.ts";
-import { getAwsAuthSigv4, getPath } from "./traits.ts";
 
-import { Credentials, Endpoint, Region } from "./index.ts";
+import { Credentials, Endpoint, Region } from "../index.ts";
 
 export const make = <Op extends Operation>(initOperation: () => Op): any => {
   const op = initOperation();

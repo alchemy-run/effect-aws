@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://storagegateway.amazonaws.com/doc/2013-06-30");
 const svc = T.AwsApiService({
@@ -4463,19 +4461,15 @@ export const StorageGatewayError = S.suspend(() =>
 export class InternalServerError extends S.TaggedError<InternalServerError>()(
   "InternalServerError",
   { message: S.optional(S.String), error: S.optional(StorageGatewayError) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidGatewayRequestException extends S.TaggedError<InvalidGatewayRequestException>()(
   "InvalidGatewayRequestException",
   { message: S.optional(S.String), error: S.optional(StorageGatewayError) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableError extends S.TaggedError<ServiceUnavailableError>()(
   "ServiceUnavailableError",
   { message: S.optional(S.String), error: S.optional(StorageGatewayError) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 
 //# Operations
 /**
@@ -4489,8 +4483,8 @@ export const addCache: (
   input: AddCacheInput,
 ) => Effect.Effect<
   AddCacheOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddCacheInput,
   output: AddCacheOutput,
@@ -4519,8 +4513,8 @@ export const addTagsToResource: (
   input: AddTagsToResourceInput,
 ) => Effect.Effect<
   AddTagsToResourceOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToResourceInput,
   output: AddTagsToResourceOutput,
@@ -4539,8 +4533,8 @@ export const addUploadBuffer: (
   input: AddUploadBufferInput,
 ) => Effect.Effect<
   AddUploadBufferOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddUploadBufferInput,
   output: AddUploadBufferOutput,
@@ -4563,8 +4557,8 @@ export const addWorkingStorage: (
   input: AddWorkingStorageInput,
 ) => Effect.Effect<
   AddWorkingStorageOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddWorkingStorageInput,
   output: AddWorkingStorageOutput,
@@ -4580,8 +4574,8 @@ export const assignTapePool: (
   input: AssignTapePoolInput,
 ) => Effect.Effect<
   AssignTapePoolOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssignTapePoolInput,
   output: AssignTapePoolOutput,
@@ -4597,8 +4591,8 @@ export const attachVolume: (
   input: AttachVolumeInput,
 ) => Effect.Effect<
   AttachVolumeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachVolumeInput,
   output: AttachVolumeOutput,
@@ -4612,8 +4606,8 @@ export const cancelArchival: (
   input: CancelArchivalInput,
 ) => Effect.Effect<
   CancelArchivalOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelArchivalInput,
   output: CancelArchivalOutput,
@@ -4630,8 +4624,8 @@ export const cancelCacheReport: (
   input: CancelCacheReportInput,
 ) => Effect.Effect<
   CancelCacheReportOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelCacheReportInput,
   output: CancelCacheReportOutput,
@@ -4646,8 +4640,8 @@ export const cancelRetrieval: (
   input: CancelRetrievalInput,
 ) => Effect.Effect<
   CancelRetrievalOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelRetrievalInput,
   output: CancelRetrievalOutput,
@@ -4675,8 +4669,8 @@ export const createCachediSCSIVolume: (
   input: CreateCachediSCSIVolumeInput,
 ) => Effect.Effect<
   CreateCachediSCSIVolumeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCachediSCSIVolumeInput,
   output: CreateCachediSCSIVolumeOutput,
@@ -4703,8 +4697,8 @@ export const createSMBFileShare: (
   input: CreateSMBFileShareInput,
 ) => Effect.Effect<
   CreateSMBFileShareOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSMBFileShareInput,
   output: CreateSMBFileShareOutput,
@@ -4728,8 +4722,8 @@ export const createStorediSCSIVolume: (
   input: CreateStorediSCSIVolumeInput,
 ) => Effect.Effect<
   CreateStorediSCSIVolumeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStorediSCSIVolumeInput,
   output: CreateStorediSCSIVolumeOutput,
@@ -4743,8 +4737,8 @@ export const createTapePool: (
   input: CreateTapePoolInput,
 ) => Effect.Effect<
   CreateTapePoolOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTapePoolInput,
   output: CreateTapePoolOutput,
@@ -4761,8 +4755,8 @@ export const createTapes: (
   input: CreateTapesInput,
 ) => Effect.Effect<
   CreateTapesOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTapesInput,
   output: CreateTapesOutput,
@@ -4781,8 +4775,8 @@ export const createTapeWithBarcode: (
   input: CreateTapeWithBarcodeInput,
 ) => Effect.Effect<
   CreateTapeWithBarcodeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTapeWithBarcodeInput,
   output: CreateTapeWithBarcodeOutput,
@@ -4797,8 +4791,8 @@ export const deleteAutomaticTapeCreationPolicy: (
   input: DeleteAutomaticTapeCreationPolicyInput,
 ) => Effect.Effect<
   DeleteAutomaticTapeCreationPolicyOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAutomaticTapeCreationPolicyInput,
   output: DeleteAutomaticTapeCreationPolicyOutput,
@@ -4815,8 +4809,8 @@ export const deleteBandwidthRateLimit: (
   input: DeleteBandwidthRateLimitInput,
 ) => Effect.Effect<
   DeleteBandwidthRateLimitOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBandwidthRateLimitInput,
   output: DeleteBandwidthRateLimitOutput,
@@ -4833,8 +4827,8 @@ export const deleteCacheReport: (
   input: DeleteCacheReportInput,
 ) => Effect.Effect<
   DeleteCacheReportOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCacheReportInput,
   output: DeleteCacheReportOutput,
@@ -4849,8 +4843,8 @@ export const deleteChapCredentials: (
   input: DeleteChapCredentialsInput,
 ) => Effect.Effect<
   DeleteChapCredentialsOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChapCredentialsInput,
   output: DeleteChapCredentialsOutput,
@@ -4864,8 +4858,8 @@ export const deleteFileShare: (
   input: DeleteFileShareInput,
 ) => Effect.Effect<
   DeleteFileShareOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFileShareInput,
   output: DeleteFileShareOutput,
@@ -4893,8 +4887,8 @@ export const deleteGateway: (
   input: DeleteGatewayInput,
 ) => Effect.Effect<
   DeleteGatewayOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGatewayInput,
   output: DeleteGatewayOutput,
@@ -4918,8 +4912,8 @@ export const deleteSnapshotSchedule: (
   input: DeleteSnapshotScheduleInput,
 ) => Effect.Effect<
   DeleteSnapshotScheduleOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSnapshotScheduleInput,
   output: DeleteSnapshotScheduleOutput,
@@ -4933,8 +4927,8 @@ export const deleteTape: (
   input: DeleteTapeInput,
 ) => Effect.Effect<
   DeleteTapeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTapeInput,
   output: DeleteTapeOutput,
@@ -4948,8 +4942,8 @@ export const deleteTapeArchive: (
   input: DeleteTapeArchiveInput,
 ) => Effect.Effect<
   DeleteTapeArchiveOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTapeArchiveInput,
   output: DeleteTapeArchiveOutput,
@@ -4964,8 +4958,8 @@ export const deleteTapePool: (
   input: DeleteTapePoolInput,
 ) => Effect.Effect<
   DeleteTapePoolOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTapePoolInput,
   output: DeleteTapePoolOutput,
@@ -4990,8 +4984,8 @@ export const deleteVolume: (
   input: DeleteVolumeInput,
 ) => Effect.Effect<
   DeleteVolumeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVolumeInput,
   output: DeleteVolumeOutput,
@@ -5006,8 +5000,8 @@ export const describeAvailabilityMonitorTest: (
   input: DescribeAvailabilityMonitorTestInput,
 ) => Effect.Effect<
   DescribeAvailabilityMonitorTestOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAvailabilityMonitorTestInput,
   output: DescribeAvailabilityMonitorTestOutput,
@@ -5028,8 +5022,8 @@ export const describeBandwidthRateLimit: (
   input: DescribeBandwidthRateLimitInput,
 ) => Effect.Effect<
   DescribeBandwidthRateLimitOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBandwidthRateLimitInput,
   output: DescribeBandwidthRateLimitOutput,
@@ -5058,8 +5052,8 @@ export const describeBandwidthRateLimitSchedule: (
   input: DescribeBandwidthRateLimitScheduleInput,
 ) => Effect.Effect<
   DescribeBandwidthRateLimitScheduleOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBandwidthRateLimitScheduleInput,
   output: DescribeBandwidthRateLimitScheduleOutput,
@@ -5076,8 +5070,8 @@ export const describeCache: (
   input: DescribeCacheInput,
 ) => Effect.Effect<
   DescribeCacheOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCacheInput,
   output: DescribeCacheOutput,
@@ -5092,8 +5086,8 @@ export const describeMaintenanceStartTime: (
   input: DescribeMaintenanceStartTimeInput,
 ) => Effect.Effect<
   DescribeMaintenanceStartTimeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMaintenanceStartTimeInput,
   output: DescribeMaintenanceStartTimeOutput,
@@ -5107,8 +5101,8 @@ export const describeSMBSettings: (
   input: DescribeSMBSettingsInput,
 ) => Effect.Effect<
   DescribeSMBSettingsOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSMBSettingsInput,
   output: DescribeSMBSettingsOutput,
@@ -5124,8 +5118,8 @@ export const describeSnapshotSchedule: (
   input: DescribeSnapshotScheduleInput,
 ) => Effect.Effect<
   DescribeSnapshotScheduleOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSnapshotScheduleInput,
   output: DescribeSnapshotScheduleOutput,
@@ -5142,8 +5136,8 @@ export const describeUploadBuffer: (
   input: DescribeUploadBufferInput,
 ) => Effect.Effect<
   DescribeUploadBufferOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUploadBufferInput,
   output: DescribeUploadBufferOutput,
@@ -5164,8 +5158,8 @@ export const describeWorkingStorage: (
   input: DescribeWorkingStorageInput,
 ) => Effect.Effect<
   DescribeWorkingStorageOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkingStorageInput,
   output: DescribeWorkingStorageOutput,
@@ -5182,8 +5176,8 @@ export const detachVolume: (
   input: DetachVolumeInput,
 ) => Effect.Effect<
   DetachVolumeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachVolumeInput,
   output: DetachVolumeOutput,
@@ -5202,8 +5196,8 @@ export const disableGateway: (
   input: DisableGatewayInput,
 ) => Effect.Effect<
   DisableGatewayOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableGatewayInput,
   output: DisableGatewayOutput,
@@ -5218,8 +5212,8 @@ export const disassociateFileSystem: (
   input: DisassociateFileSystemInput,
 ) => Effect.Effect<
   DisassociateFileSystemOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateFileSystemInput,
   output: DisassociateFileSystemOutput,
@@ -5243,8 +5237,8 @@ export const evictFilesFailingUpload: (
   input: EvictFilesFailingUploadInput,
 ) => Effect.Effect<
   EvictFilesFailingUploadOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EvictFilesFailingUploadInput,
   output: EvictFilesFailingUploadOutput,
@@ -5267,8 +5261,8 @@ export const joinDomain: (
   input: JoinDomainInput,
 ) => Effect.Effect<
   JoinDomainOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: JoinDomainInput,
   output: JoinDomainOutput,
@@ -5285,22 +5279,22 @@ export const listCacheReports: {
     input: ListCacheReportsInput,
   ): Effect.Effect<
     ListCacheReportsOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCacheReportsInput,
   ) => Stream.Stream<
     ListCacheReportsOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCacheReportsInput,
   ) => Stream.Stream<
     CacheReportInfo,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCacheReportsInput,
@@ -5321,22 +5315,22 @@ export const listTagsForResource: {
     input: ListTagsForResourceInput,
   ): Effect.Effect<
     ListTagsForResourceOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceInput,
   ) => Stream.Stream<
     ListTagsForResourceOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceInput,
   ) => Stream.Stream<
     Tag,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceInput,
@@ -5358,8 +5352,8 @@ export const listVolumeInitiators: (
   input: ListVolumeInitiatorsInput,
 ) => Effect.Effect<
   ListVolumeInitiatorsOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVolumeInitiatorsInput,
   output: ListVolumeInitiatorsOutput,
@@ -5384,8 +5378,8 @@ export const notifyWhenUploaded: (
   input: NotifyWhenUploadedInput,
 ) => Effect.Effect<
   NotifyWhenUploadedOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: NotifyWhenUploadedInput,
   output: NotifyWhenUploadedOutput,
@@ -5435,8 +5429,8 @@ export const refreshCache: (
   input: RefreshCacheInput,
 ) => Effect.Effect<
   RefreshCacheOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RefreshCacheInput,
   output: RefreshCacheOutput,
@@ -5450,8 +5444,8 @@ export const removeTagsFromResource: (
   input: RemoveTagsFromResourceInput,
 ) => Effect.Effect<
   RemoveTagsFromResourceOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceInput,
   output: RemoveTagsFromResourceOutput,
@@ -5474,8 +5468,8 @@ export const resetCache: (
   input: ResetCacheInput,
 ) => Effect.Effect<
   ResetCacheOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetCacheInput,
   output: ResetCacheOutput,
@@ -5495,8 +5489,8 @@ export const retrieveTapeArchive: (
   input: RetrieveTapeArchiveInput,
 ) => Effect.Effect<
   RetrieveTapeArchiveOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetrieveTapeArchiveInput,
   output: RetrieveTapeArchiveOutput,
@@ -5518,8 +5512,8 @@ export const retrieveTapeRecoveryPoint: (
   input: RetrieveTapeRecoveryPointInput,
 ) => Effect.Effect<
   RetrieveTapeRecoveryPointOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetrieveTapeRecoveryPointInput,
   output: RetrieveTapeRecoveryPointOutput,
@@ -5535,8 +5529,8 @@ export const setLocalConsolePassword: (
   input: SetLocalConsolePasswordInput,
 ) => Effect.Effect<
   SetLocalConsolePasswordOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetLocalConsolePasswordInput,
   output: SetLocalConsolePasswordOutput,
@@ -5551,8 +5545,8 @@ export const setSMBGuestPassword: (
   input: SetSMBGuestPasswordInput,
 ) => Effect.Effect<
   SetSMBGuestPasswordOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetSMBGuestPasswordInput,
   output: SetSMBGuestPasswordOutput,
@@ -5587,8 +5581,8 @@ export const shutdownGateway: (
   input: ShutdownGatewayInput,
 ) => Effect.Effect<
   ShutdownGatewayOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ShutdownGatewayInput,
   output: ShutdownGatewayOutput,
@@ -5607,8 +5601,8 @@ export const startAvailabilityMonitorTest: (
   input: StartAvailabilityMonitorTestInput,
 ) => Effect.Effect<
   StartAvailabilityMonitorTestOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAvailabilityMonitorTestInput,
   output: StartAvailabilityMonitorTestOutput,
@@ -5631,8 +5625,8 @@ export const startGateway: (
   input: StartGatewayInput,
 ) => Effect.Effect<
   StartGatewayOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartGatewayInput,
   output: StartGatewayOutput,
@@ -5656,8 +5650,8 @@ export const updateBandwidthRateLimit: (
   input: UpdateBandwidthRateLimitInput,
 ) => Effect.Effect<
   UpdateBandwidthRateLimitOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBandwidthRateLimitInput,
   output: UpdateBandwidthRateLimitOutput,
@@ -5676,8 +5670,8 @@ export const updateChapCredentials: (
   input: UpdateChapCredentialsInput,
 ) => Effect.Effect<
   UpdateChapCredentialsOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChapCredentialsInput,
   output: UpdateChapCredentialsOutput,
@@ -5691,8 +5685,8 @@ export const updateFileSystemAssociation: (
   input: UpdateFileSystemAssociationInput,
 ) => Effect.Effect<
   UpdateFileSystemAssociationOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFileSystemAssociationInput,
   output: UpdateFileSystemAssociationOutput,
@@ -5711,8 +5705,8 @@ export const updateGatewayInformation: (
   input: UpdateGatewayInformationInput,
 ) => Effect.Effect<
   UpdateGatewayInformationOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGatewayInformationInput,
   output: UpdateGatewayInformationOutput,
@@ -5736,8 +5730,8 @@ export const updateGatewaySoftwareNow: (
   input: UpdateGatewaySoftwareNowInput,
 ) => Effect.Effect<
   UpdateGatewaySoftwareNowOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGatewaySoftwareNowInput,
   output: UpdateGatewaySoftwareNowOutput,
@@ -5766,8 +5760,8 @@ export const updateNFSFileShare: (
   input: UpdateNFSFileShareInput,
 ) => Effect.Effect<
   UpdateNFSFileShareOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNFSFileShareInput,
   output: UpdateNFSFileShareOutput,
@@ -5795,8 +5789,8 @@ export const updateSMBFileShare: (
   input: UpdateSMBFileShareInput,
 ) => Effect.Effect<
   UpdateSMBFileShareOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSMBFileShareInput,
   output: UpdateSMBFileShareOutput,
@@ -5810,8 +5804,8 @@ export const updateSMBFileShareVisibility: (
   input: UpdateSMBFileShareVisibilityInput,
 ) => Effect.Effect<
   UpdateSMBFileShareVisibilityOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSMBFileShareVisibilityInput,
   output: UpdateSMBFileShareVisibilityOutput,
@@ -5831,8 +5825,8 @@ export const updateSMBSecurityStrategy: (
   input: UpdateSMBSecurityStrategyInput,
 ) => Effect.Effect<
   UpdateSMBSecurityStrategyOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSMBSecurityStrategyInput,
   output: UpdateSMBSecurityStrategyOutput,
@@ -5854,8 +5848,8 @@ export const updateSnapshotSchedule: (
   input: UpdateSnapshotScheduleInput,
 ) => Effect.Effect<
   UpdateSnapshotScheduleOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSnapshotScheduleInput,
   output: UpdateSnapshotScheduleOutput,
@@ -5871,8 +5865,8 @@ export const updateVTLDeviceType: (
   input: UpdateVTLDeviceTypeInput,
 ) => Effect.Effect<
   UpdateVTLDeviceTypeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVTLDeviceTypeInput,
   output: UpdateVTLDeviceTypeOutput,
@@ -5891,8 +5885,8 @@ export const activateGateway: (
   input: ActivateGatewayInput,
 ) => Effect.Effect<
   ActivateGatewayOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ActivateGatewayInput,
   output: ActivateGatewayOutput,
@@ -5908,8 +5902,8 @@ export const associateFileSystem: (
   input: AssociateFileSystemInput,
 ) => Effect.Effect<
   AssociateFileSystemOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateFileSystemInput,
   output: AssociateFileSystemOutput,
@@ -5936,8 +5930,8 @@ export const createNFSFileShare: (
   input: CreateNFSFileShareInput,
 ) => Effect.Effect<
   CreateNFSFileShareOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNFSFileShareInput,
   output: CreateNFSFileShareOutput,
@@ -5951,8 +5945,8 @@ export const describeCacheReport: (
   input: DescribeCacheReportInput,
 ) => Effect.Effect<
   DescribeCacheReportOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCacheReportInput,
   output: DescribeCacheReportOutput,
@@ -5967,8 +5961,8 @@ export const describeChapCredentials: (
   input: DescribeChapCredentialsInput,
 ) => Effect.Effect<
   DescribeChapCredentialsOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChapCredentialsInput,
   output: DescribeChapCredentialsOutput,
@@ -5983,8 +5977,8 @@ export const describeGatewayInformation: (
   input: DescribeGatewayInformationInput,
 ) => Effect.Effect<
   DescribeGatewayInformationOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGatewayInformationInput,
   output: DescribeGatewayInformationOutput,
@@ -5998,8 +5992,8 @@ export const describeNFSFileShares: (
   input: DescribeNFSFileSharesInput,
 ) => Effect.Effect<
   DescribeNFSFileSharesOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNFSFileSharesInput,
   output: DescribeNFSFileSharesOutput,
@@ -6013,8 +6007,8 @@ export const describeSMBFileShares: (
   input: DescribeSMBFileSharesInput,
 ) => Effect.Effect<
   DescribeSMBFileSharesOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSMBFileSharesInput,
   output: DescribeSMBFileSharesOutput,
@@ -6029,8 +6023,8 @@ export const describeStorediSCSIVolumes: (
   input: DescribeStorediSCSIVolumesInput,
 ) => Effect.Effect<
   DescribeStorediSCSIVolumesOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStorediSCSIVolumesInput,
   output: DescribeStorediSCSIVolumesOutput,
@@ -6048,22 +6042,22 @@ export const describeTapeArchives: {
     input: DescribeTapeArchivesInput,
   ): Effect.Effect<
     DescribeTapeArchivesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTapeArchivesInput,
   ) => Stream.Stream<
     DescribeTapeArchivesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTapeArchivesInput,
   ) => Stream.Stream<
     TapeArchive,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTapeArchivesInput,
@@ -6090,22 +6084,22 @@ export const describeTapeRecoveryPoints: {
     input: DescribeTapeRecoveryPointsInput,
   ): Effect.Effect<
     DescribeTapeRecoveryPointsOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTapeRecoveryPointsInput,
   ) => Stream.Stream<
     DescribeTapeRecoveryPointsOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTapeRecoveryPointsInput,
   ) => Stream.Stream<
     TapeRecoveryPointInfo,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTapeRecoveryPointsInput,
@@ -6136,22 +6130,22 @@ export const describeTapes: {
     input: DescribeTapesInput,
   ): Effect.Effect<
     DescribeTapesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTapesInput,
   ) => Stream.Stream<
     DescribeTapesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTapesInput,
   ) => Stream.Stream<
     Tape,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTapesInput,
@@ -6174,8 +6168,8 @@ export const listAutomaticTapeCreationPolicies: (
   input: ListAutomaticTapeCreationPoliciesInput,
 ) => Effect.Effect<
   ListAutomaticTapeCreationPoliciesOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAutomaticTapeCreationPoliciesInput,
   output: ListAutomaticTapeCreationPoliciesOutput,
@@ -6191,22 +6185,22 @@ export const listFileShares: {
     input: ListFileSharesInput,
   ): Effect.Effect<
     ListFileSharesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFileSharesInput,
   ) => Stream.Stream<
     ListFileSharesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFileSharesInput,
   ) => Stream.Stream<
     FileShareInfo,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFileSharesInput,
@@ -6229,22 +6223,22 @@ export const listFileSystemAssociations: {
     input: ListFileSystemAssociationsInput,
   ): Effect.Effect<
     ListFileSystemAssociationsOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFileSystemAssociationsInput,
   ) => Stream.Stream<
     ListFileSystemAssociationsOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFileSystemAssociationsInput,
   ) => Stream.Stream<
     FileSystemAssociationSummary,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFileSystemAssociationsInput,
@@ -6275,22 +6269,22 @@ export const listGateways: {
     input: ListGatewaysInput,
   ): Effect.Effect<
     ListGatewaysOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGatewaysInput,
   ) => Stream.Stream<
     ListGatewaysOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGatewaysInput,
   ) => Stream.Stream<
     GatewayInfo,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGatewaysInput,
@@ -6318,8 +6312,8 @@ export const listLocalDisks: (
   input: ListLocalDisksInput,
 ) => Effect.Effect<
   ListLocalDisksOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLocalDisksInput,
   output: ListLocalDisksOutput,
@@ -6341,22 +6335,22 @@ export const listTapePools: {
     input: ListTapePoolsInput,
   ): Effect.Effect<
     ListTapePoolsOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTapePoolsInput,
   ) => Stream.Stream<
     ListTapePoolsOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTapePoolsInput,
   ) => Stream.Stream<
     PoolInfo,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTapePoolsInput,
@@ -6387,22 +6381,22 @@ export const listTapes: {
     input: ListTapesInput,
   ): Effect.Effect<
     ListTapesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTapesInput,
   ) => Stream.Stream<
     ListTapesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTapesInput,
   ) => Stream.Stream<
     TapeInfo,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTapesInput,
@@ -6428,8 +6422,8 @@ export const listVolumeRecoveryPoints: (
   input: ListVolumeRecoveryPointsInput,
 ) => Effect.Effect<
   ListVolumeRecoveryPointsOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVolumeRecoveryPointsInput,
   output: ListVolumeRecoveryPointsOutput,
@@ -6452,22 +6446,22 @@ export const listVolumes: {
     input: ListVolumesInput,
   ): Effect.Effect<
     ListVolumesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVolumesInput,
   ) => Stream.Stream<
     ListVolumesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVolumesInput,
   ) => Stream.Stream<
     VolumeInfo,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVolumesInput,
@@ -6514,8 +6508,8 @@ export const startCacheReport: (
   input: StartCacheReportInput,
 ) => Effect.Effect<
   StartCacheReportOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCacheReportInput,
   output: StartCacheReportOutput,
@@ -6534,8 +6528,8 @@ export const updateAutomaticTapeCreationPolicy: (
   input: UpdateAutomaticTapeCreationPolicyInput,
 ) => Effect.Effect<
   UpdateAutomaticTapeCreationPolicyOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAutomaticTapeCreationPolicyInput,
   output: UpdateAutomaticTapeCreationPolicyOutput,
@@ -6553,8 +6547,8 @@ export const updateBandwidthRateLimitSchedule: (
   input: UpdateBandwidthRateLimitScheduleInput,
 ) => Effect.Effect<
   UpdateBandwidthRateLimitScheduleOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBandwidthRateLimitScheduleInput,
   output: UpdateBandwidthRateLimitScheduleOutput,
@@ -6582,8 +6576,8 @@ export const updateMaintenanceStartTime: (
   input: UpdateMaintenanceStartTimeInput,
 ) => Effect.Effect<
   UpdateMaintenanceStartTimeOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMaintenanceStartTimeInput,
   output: UpdateMaintenanceStartTimeOutput,
@@ -6597,8 +6591,8 @@ export const updateSMBLocalGroups: (
   input: UpdateSMBLocalGroupsInput,
 ) => Effect.Effect<
   UpdateSMBLocalGroupsOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSMBLocalGroupsInput,
   output: UpdateSMBLocalGroupsOutput,
@@ -6616,8 +6610,8 @@ export const describeCachediSCSIVolumes: (
   input: DescribeCachediSCSIVolumesInput,
 ) => Effect.Effect<
   DescribeCachediSCSIVolumesOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCachediSCSIVolumesInput,
   output: DescribeCachediSCSIVolumesOutput,
@@ -6631,8 +6625,8 @@ export const describeFileSystemAssociations: (
   input: DescribeFileSystemAssociationsInput,
 ) => Effect.Effect<
   DescribeFileSystemAssociationsOutput,
-  InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | InvalidGatewayRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFileSystemAssociationsInput,
   output: DescribeFileSystemAssociationsOutput,
@@ -6649,22 +6643,22 @@ export const describeVTLDevices: {
     input: DescribeVTLDevicesInput,
   ): Effect.Effect<
     DescribeVTLDevicesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVTLDevicesInput,
   ) => Stream.Stream<
     DescribeVTLDevicesOutput,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVTLDevicesInput,
   ) => Stream.Stream<
     VTLDevice,
-    InternalServerError | InvalidGatewayRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | InvalidGatewayRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVTLDevicesInput,
@@ -6710,8 +6704,8 @@ export const createSnapshot: (
   | InternalServerError
   | InvalidGatewayRequestException
   | ServiceUnavailableError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotInput,
   output: CreateSnapshotOutput,
@@ -6749,8 +6743,8 @@ export const createSnapshotFromVolumeRecoveryPoint: (
   | InternalServerError
   | InvalidGatewayRequestException
   | ServiceUnavailableError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotFromVolumeRecoveryPointInput,
   output: CreateSnapshotFromVolumeRecoveryPointOutput,

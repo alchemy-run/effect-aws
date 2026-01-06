@@ -4,7 +4,7 @@
  * Handles extraction and parsing of query parameters from URI paths.
  */
 
-import type { Request } from "../request.ts";
+import type { Request } from "../client/request.ts";
 
 /**
  * Extract static query params from the URI path (e.g., "/{Bucket}?tagging").

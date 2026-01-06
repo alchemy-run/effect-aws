@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Backup Gateway",
@@ -1053,15 +1051,15 @@ export const GetVirtualMachineOutput = S.suspend(() =>
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -1072,8 +1070,8 @@ export const createGateway: (
   input: CreateGatewayInput,
 ) => Effect.Effect<
   CreateGatewayOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGatewayInput,
   output: CreateGatewayOutput,
@@ -1087,8 +1085,8 @@ export const associateGatewayToServer: (
   input: AssociateGatewayToServerInput,
 ) => Effect.Effect<
   AssociateGatewayToServerOutput,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateGatewayToServerInput,
   output: AssociateGatewayToServerOutput,
@@ -1102,8 +1100,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceInput,
 ) => Effect.Effect<
   ListTagsForResourceOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1116,8 +1114,8 @@ export const tagResource: (
   input: TagResourceInput,
 ) => Effect.Effect<
   TagResourceOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1131,22 +1129,22 @@ export const listGateways: {
     input: ListGatewaysInput,
   ): Effect.Effect<
     ListGatewaysOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGatewaysInput,
   ) => Stream.Stream<
     ListGatewaysOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGatewaysInput,
   ) => Stream.Stream<
     Gateway,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGatewaysInput,
@@ -1169,8 +1167,8 @@ export const putBandwidthRateLimitSchedule: (
   input: PutBandwidthRateLimitScheduleInput,
 ) => Effect.Effect<
   PutBandwidthRateLimitScheduleOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBandwidthRateLimitScheduleInput,
   output: PutBandwidthRateLimitScheduleOutput,
@@ -1183,8 +1181,8 @@ export const importHypervisorConfiguration: (
   input: ImportHypervisorConfigurationInput,
 ) => Effect.Effect<
   ImportHypervisorConfigurationOutput,
-  AccessDeniedException | ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportHypervisorConfigurationInput,
   output: ImportHypervisorConfigurationOutput,
@@ -1199,8 +1197,8 @@ export const getHypervisor: (
   input: GetHypervisorInput,
 ) => Effect.Effect<
   GetHypervisorOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHypervisorInput,
   output: GetHypervisorOutput,
@@ -1214,22 +1212,22 @@ export const listHypervisors: {
     input: ListHypervisorsInput,
   ): Effect.Effect<
     ListHypervisorsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHypervisorsInput,
   ) => Stream.Stream<
     ListHypervisorsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHypervisorsInput,
   ) => Stream.Stream<
     Hypervisor,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHypervisorsInput,
@@ -1254,8 +1252,8 @@ export const putHypervisorPropertyMappings: (
   | AccessDeniedException
   | ConflictException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutHypervisorPropertyMappingsInput,
   output: PutHypervisorPropertyMappingsOutput,
@@ -1269,22 +1267,22 @@ export const listVirtualMachines: {
     input: ListVirtualMachinesInput,
   ): Effect.Effect<
     ListVirtualMachinesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVirtualMachinesInput,
   ) => Stream.Stream<
     ListVirtualMachinesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVirtualMachinesInput,
   ) => Stream.Stream<
     VirtualMachine,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVirtualMachinesInput,
@@ -1304,8 +1302,8 @@ export const untagResource: (
   input: UntagResourceInput,
 ) => Effect.Effect<
   UntagResourceOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1318,8 +1316,8 @@ export const deleteGateway: (
   input: DeleteGatewayInput,
 ) => Effect.Effect<
   DeleteGatewayOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGatewayInput,
   output: DeleteGatewayOutput,
@@ -1333,8 +1331,8 @@ export const testHypervisorConfiguration: (
   input: TestHypervisorConfigurationInput,
 ) => Effect.Effect<
   TestHypervisorConfigurationOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestHypervisorConfigurationInput,
   output: TestHypervisorConfigurationOutput,
@@ -1352,8 +1350,8 @@ export const updateGatewaySoftwareNow: (
   input: UpdateGatewaySoftwareNowInput,
 ) => Effect.Effect<
   UpdateGatewaySoftwareNowOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGatewaySoftwareNowInput,
   output: UpdateGatewaySoftwareNowOutput,
@@ -1369,8 +1367,8 @@ export const getBandwidthRateLimitSchedule: (
   input: GetBandwidthRateLimitScheduleInput,
 ) => Effect.Effect<
   GetBandwidthRateLimitScheduleOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBandwidthRateLimitScheduleInput,
   output: GetBandwidthRateLimitScheduleOutput,
@@ -1385,8 +1383,8 @@ export const getHypervisorPropertyMappings: (
   input: GetHypervisorPropertyMappingsInput,
 ) => Effect.Effect<
   GetHypervisorPropertyMappingsOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHypervisorPropertyMappingsInput,
   output: GetHypervisorPropertyMappingsOutput,
@@ -1400,8 +1398,8 @@ export const updateGatewayInformation: (
   input: UpdateGatewayInformationInput,
 ) => Effect.Effect<
   UpdateGatewayInformationOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGatewayInformationInput,
   output: UpdateGatewayInformationOutput,
@@ -1415,8 +1413,8 @@ export const disassociateGatewayFromServer: (
   input: DisassociateGatewayFromServerInput,
 ) => Effect.Effect<
   DisassociateGatewayFromServerOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateGatewayFromServerInput,
   output: DisassociateGatewayFromServerOutput,
@@ -1429,8 +1427,8 @@ export const putMaintenanceStartTime: (
   input: PutMaintenanceStartTimeInput,
 ) => Effect.Effect<
   PutMaintenanceStartTimeOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMaintenanceStartTimeInput,
   output: PutMaintenanceStartTimeOutput,
@@ -1448,8 +1446,8 @@ export const updateHypervisor: (
   | AccessDeniedException
   | ConflictException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHypervisorInput,
   output: UpdateHypervisorOutput,
@@ -1465,8 +1463,8 @@ export const deleteHypervisor: (
   | AccessDeniedException
   | ConflictException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHypervisorInput,
   output: DeleteHypervisorOutput,
@@ -1479,8 +1477,8 @@ export const startVirtualMachinesMetadataSync: (
   input: StartVirtualMachinesMetadataSyncInput,
 ) => Effect.Effect<
   StartVirtualMachinesMetadataSyncOutput,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartVirtualMachinesMetadataSyncInput,
   output: StartVirtualMachinesMetadataSyncOutput,
@@ -1494,8 +1492,8 @@ export const getGateway: (
   input: GetGatewayInput,
 ) => Effect.Effect<
   GetGatewayOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGatewayInput,
   output: GetGatewayOutput,
@@ -1508,8 +1506,8 @@ export const getVirtualMachine: (
   input: GetVirtualMachineInput,
 ) => Effect.Effect<
   GetVirtualMachineOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVirtualMachineInput,
   output: GetVirtualMachineOutput,

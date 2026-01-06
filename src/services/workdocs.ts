@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("https://aws.amazon.com/api/v1/");
 const svc = T.AwsApiService({
@@ -2579,19 +2577,19 @@ export const SearchResourcesResponse = S.suspend(() =>
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class EntityNotExistsException extends S.TaggedError<EntityNotExistsException>()(
   "EntityNotExistsException",
   { Message: S.optional(S.String), EntityIds: S.optional(EntityIdList) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DocumentLockedForCommentsException extends S.TaggedError<DocumentLockedForCommentsException>()(
   "DocumentLockedForCommentsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ConflictingOperationException extends S.TaggedError<ConflictingOperationException>()(
   "ConflictingOperationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class FailedDependencyException extends S.TaggedError<FailedDependencyException>()(
   "FailedDependencyException",
   { Message: S.optional(S.String) },
@@ -2599,91 +2597,83 @@ export class FailedDependencyException extends S.TaggedError<FailedDependencyExc
 export class CustomMetadataLimitExceededException extends S.TaggedError<CustomMetadataLimitExceededException>()(
   "CustomMetadataLimitExceededException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DeactivatingLastSystemUserException extends S.TaggedError<DeactivatingLastSystemUserException>()(
   "DeactivatingLastSystemUserException",
   { Message: S.optional(S.String), Code: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidOperationException extends S.TaggedError<InvalidOperationException>()(
   "InvalidOperationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EntityAlreadyExistsException extends S.TaggedError<EntityAlreadyExistsException>()(
   "EntityAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ProhibitedStateException extends S.TaggedError<ProhibitedStateException>()(
   "ProhibitedStateException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidArgumentException extends S.TaggedError<InvalidArgumentException>()(
   "InvalidArgumentException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidPasswordException extends S.TaggedError<InvalidPasswordException>()(
   "InvalidPasswordException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidCommentOperationException extends S.TaggedError<InvalidCommentOperationException>()(
   "InvalidCommentOperationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class UnauthorizedResourceAccessException extends S.TaggedError<UnauthorizedResourceAccessException>()(
   "UnauthorizedResourceAccessException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IllegalUserStateException extends S.TaggedError<IllegalUserStateException>()(
   "IllegalUserStateException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class UnauthorizedOperationException extends S.TaggedError<UnauthorizedOperationException>()(
   "UnauthorizedOperationException",
   { Message: S.optional(S.String), Code: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class TooManyLabelsException extends S.TaggedError<TooManyLabelsException>()(
   "TooManyLabelsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class RequestedEntityTooLargeException extends S.TaggedError<RequestedEntityTooLargeException>()(
   "RequestedEntityTooLargeException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManySubscriptionsException extends S.TaggedError<TooManySubscriptionsException>()(
   "TooManySubscriptionsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class DraftUploadOutOfSyncException extends S.TaggedError<DraftUploadOutOfSyncException>()(
   "DraftUploadOutOfSyncException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceAlreadyCheckedOutException extends S.TaggedError<ResourceAlreadyCheckedOutException>()(
   "ResourceAlreadyCheckedOutException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class StorageLimitExceededException extends S.TaggedError<StorageLimitExceededException>()(
   "StorageLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class StorageLimitWillExceedException extends S.TaggedError<StorageLimitWillExceedException>()(
   "StorageLimitWillExceedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2697,8 +2687,8 @@ export const describeNotificationSubscriptions: {
     | EntityNotExistsException
     | ServiceUnavailableException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNotificationSubscriptionsRequest,
@@ -2707,8 +2697,8 @@ export const describeNotificationSubscriptions: {
     | EntityNotExistsException
     | ServiceUnavailableException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNotificationSubscriptionsRequest,
@@ -2717,8 +2707,8 @@ export const describeNotificationSubscriptions: {
     | EntityNotExistsException
     | ServiceUnavailableException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNotificationSubscriptionsRequest,
@@ -2748,8 +2738,8 @@ export const deleteCustomMetadata: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomMetadataRequest,
   output: DeleteCustomMetadataResponse,
@@ -2776,8 +2766,8 @@ export const createLabels: (
   | TooManyLabelsException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLabelsRequest,
   output: CreateLabelsResponse,
@@ -2801,8 +2791,8 @@ export const deleteNotificationSubscription: (
   | ProhibitedStateException
   | ServiceUnavailableException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNotificationSubscriptionRequest,
   output: DeleteNotificationSubscriptionResponse,
@@ -2833,8 +2823,8 @@ export const describeFolderContents: {
     | ProhibitedStateException
     | ServiceUnavailableException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFolderContentsRequest,
@@ -2846,8 +2836,8 @@ export const describeFolderContents: {
     | ProhibitedStateException
     | ServiceUnavailableException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFolderContentsRequest,
@@ -2859,8 +2849,8 @@ export const describeFolderContents: {
     | ProhibitedStateException
     | ServiceUnavailableException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFolderContentsRequest,
@@ -2890,8 +2880,8 @@ export const removeAllResourcePermissions: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveAllResourcePermissionsRequest,
   output: RemoveAllResourcePermissionsResponse,
@@ -2915,8 +2905,8 @@ export const deactivateUser: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeactivateUserRequest,
   output: DeactivateUserResponse,
@@ -2942,8 +2932,8 @@ export const deleteUser: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -2967,8 +2957,8 @@ export const removeResourcePermission: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveResourcePermissionRequest,
   output: RemoveResourcePermissionResponse,
@@ -2998,8 +2988,8 @@ export const getCurrentUser: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCurrentUserRequest,
   output: GetCurrentUserResponse,
@@ -3029,8 +3019,8 @@ export const getFolderPath: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFolderPathRequest,
   output: GetFolderPathResponse,
@@ -3055,8 +3045,8 @@ export const describeGroups: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeGroupsRequest,
@@ -3066,8 +3056,8 @@ export const describeGroups: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeGroupsRequest,
@@ -3077,8 +3067,8 @@ export const describeGroups: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeGroupsRequest,
@@ -3118,8 +3108,8 @@ export const describeRootFolders: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRootFoldersRequest,
@@ -3130,8 +3120,8 @@ export const describeRootFolders: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRootFoldersRequest,
@@ -3142,8 +3132,8 @@ export const describeRootFolders: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRootFoldersRequest,
@@ -3176,8 +3166,8 @@ export const getDocumentVersion: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentVersionRequest,
   output: GetDocumentVersionResponse,
@@ -3207,8 +3197,8 @@ export const deleteFolder: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFolderRequest,
   output: DeleteFolderResponse,
@@ -3239,8 +3229,8 @@ export const restoreDocumentVersions: (
   | ProhibitedStateException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreDocumentVersionsRequest,
   output: RestoreDocumentVersionsResponse,
@@ -3274,8 +3264,8 @@ export const updateDocumentVersion: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDocumentVersionRequest,
   output: UpdateDocumentVersionResponse,
@@ -3308,8 +3298,8 @@ export const updateFolder: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFolderRequest,
   output: UpdateFolderResponse,
@@ -3343,8 +3333,8 @@ export const createFolder: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFolderRequest,
   output: CreateFolderResponse,
@@ -3374,8 +3364,8 @@ export const createUser: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -3400,8 +3390,8 @@ export const deleteLabels: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLabelsRequest,
   output: DeleteLabelsResponse,
@@ -3431,8 +3421,8 @@ export const abortDocumentVersionUpload: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AbortDocumentVersionUploadRequest,
   output: AbortDocumentVersionUploadResponse,
@@ -3460,8 +3450,8 @@ export const deleteComment: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCommentRequest,
   output: DeleteCommentResponse,
@@ -3489,8 +3479,8 @@ export const deleteFolderContents: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFolderContentsRequest,
   output: DeleteFolderContentsResponse,
@@ -3518,8 +3508,8 @@ export const describeComments: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCommentsRequest,
@@ -3531,8 +3521,8 @@ export const describeComments: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCommentsRequest,
@@ -3544,8 +3534,8 @@ export const describeComments: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCommentsRequest,
@@ -3580,8 +3570,8 @@ export const createCustomMetadata: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomMetadataRequest,
   output: CreateCustomMetadataResponse,
@@ -3611,8 +3601,8 @@ export const deleteDocument: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDocumentRequest,
   output: DeleteDocumentResponse,
@@ -3643,8 +3633,8 @@ export const deleteDocumentVersion: (
   | ProhibitedStateException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDocumentVersionRequest,
   output: DeleteDocumentVersionResponse,
@@ -3677,8 +3667,8 @@ export const updateDocument: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDocumentRequest,
   output: UpdateDocumentResponse,
@@ -3709,8 +3699,8 @@ export const getDocument: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentRequest,
   output: GetDocumentResponse,
@@ -3738,8 +3728,8 @@ export const getFolder: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFolderRequest,
   output: GetFolderResponse,
@@ -3766,8 +3756,8 @@ export const getResources: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcesRequest,
   output: GetResourcesResponse,
@@ -3792,8 +3782,8 @@ export const activateUser: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ActivateUserRequest,
   output: ActivateUserResponse,
@@ -3819,8 +3809,8 @@ export const addResourcePermissions: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddResourcePermissionsRequest,
   output: AddResourcePermissionsResponse,
@@ -3847,8 +3837,8 @@ export const createComment: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCommentRequest,
   output: CreateCommentResponse,
@@ -3876,8 +3866,8 @@ export const describeActivities: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeActivitiesRequest,
@@ -3888,8 +3878,8 @@ export const describeActivities: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeActivitiesRequest,
@@ -3900,8 +3890,8 @@ export const describeActivities: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeActivitiesRequest,
@@ -3938,8 +3928,8 @@ export const describeDocumentVersions: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDocumentVersionsRequest,
@@ -3953,8 +3943,8 @@ export const describeDocumentVersions: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDocumentVersionsRequest,
@@ -3968,8 +3958,8 @@ export const describeDocumentVersions: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDocumentVersionsRequest,
@@ -4004,8 +3994,8 @@ export const describeResourcePermissions: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeResourcePermissionsRequest,
@@ -4016,8 +4006,8 @@ export const describeResourcePermissions: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeResourcePermissionsRequest,
@@ -4028,8 +4018,8 @@ export const describeResourcePermissions: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeResourcePermissionsRequest,
@@ -4066,8 +4056,8 @@ export const getDocumentPath: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentPathRequest,
   output: GetDocumentPathResponse,
@@ -4096,8 +4086,8 @@ export const updateUser: (
   | ServiceUnavailableException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,
@@ -4133,8 +4123,8 @@ export const describeUsers: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeUsersRequest,
@@ -4147,8 +4137,8 @@ export const describeUsers: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeUsersRequest,
@@ -4161,8 +4151,8 @@ export const describeUsers: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeUsersRequest,
@@ -4198,8 +4188,8 @@ export const createNotificationSubscription: (
   | ServiceUnavailableException
   | TooManySubscriptionsException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNotificationSubscriptionRequest,
   output: CreateNotificationSubscriptionResponse,
@@ -4222,8 +4212,8 @@ export const searchResources: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchResourcesRequest,
@@ -4233,8 +4223,8 @@ export const searchResources: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchResourcesRequest,
@@ -4244,8 +4234,8 @@ export const searchResources: {
     | ServiceUnavailableException
     | UnauthorizedOperationException
     | UnauthorizedResourceAccessException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchResourcesRequest,
@@ -4291,8 +4281,8 @@ export const initiateDocumentVersionUpload: (
   | StorageLimitWillExceedException
   | UnauthorizedOperationException
   | UnauthorizedResourceAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitiateDocumentVersionUploadRequest,
   output: InitiateDocumentVersionUploadResponse,

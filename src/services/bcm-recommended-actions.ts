@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "BCM Recommended Actions",
@@ -237,7 +235,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
     code: "BCMRecommendedActionsAccessDenied",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.String },
@@ -245,9 +243,7 @@ export class InternalServerException extends S.TaggedError<InternalServerExcepti
     code: "BCMRecommendedActionsInternalServer",
     httpResponseCode: 500,
   }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.String },
@@ -255,9 +251,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     code: "BCMRecommendedActionsThrottling",
     httpResponseCode: 429,
   }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -269,7 +263,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     code: "BCMRecommendedActionsValidation",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -284,8 +278,8 @@ export const listRecommendedActions: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecommendedActionsRequest,
@@ -295,8 +289,8 @@ export const listRecommendedActions: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRecommendedActionsRequest,
@@ -306,8 +300,8 @@ export const listRecommendedActions: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendedActionsRequest,

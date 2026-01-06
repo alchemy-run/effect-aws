@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "DLM", serviceShapeName: "dlm_20180112" });
 const auth = T.AwsAuthSigv4({ name: "dlm" });
@@ -993,9 +991,7 @@ export const CreateLifecyclePolicyResponse = S.suspend(() =>
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.optional(S.String), Code: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   {
@@ -1003,9 +999,7 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
     Code: S.optional(S.String),
     ResourceType: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   {
@@ -1014,7 +1008,7 @@ export class InvalidRequestException extends S.TaggedError<InvalidRequestExcepti
     RequiredParameters: S.optional(ParameterList),
     MutuallyExclusiveParameters: S.optional(ParameterList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -1023,7 +1017,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     ResourceType: S.optional(S.String),
     ResourceIds: S.optional(PolicyIdList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1040,8 +1034,8 @@ export const deleteLifecyclePolicy: (
   | InternalServerException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLifecyclePolicyRequest,
   output: DeleteLifecyclePolicyResponse,
@@ -1061,8 +1055,8 @@ export const getLifecyclePolicy: (
   | InternalServerException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLifecyclePolicyRequest,
   output: GetLifecyclePolicyResponse,
@@ -1082,8 +1076,8 @@ export const listTagsForResource: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1103,8 +1097,8 @@ export const tagResource: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1124,8 +1118,8 @@ export const untagResource: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1149,8 +1143,8 @@ export const updateLifecyclePolicy: (
   | InvalidRequestException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLifecyclePolicyRequest,
   output: UpdateLifecyclePolicyResponse,
@@ -1174,8 +1168,8 @@ export const getLifecyclePolicies: (
   | InvalidRequestException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLifecyclePoliciesRequest,
   output: GetLifecyclePoliciesResponse,
@@ -1212,8 +1206,8 @@ export const createLifecyclePolicy: (
   | InternalServerException
   | InvalidRequestException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLifecyclePolicyRequest,
   output: CreateLifecyclePolicyResponse,

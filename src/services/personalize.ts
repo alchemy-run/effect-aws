@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Personalize",
@@ -3503,35 +3501,35 @@ export const CreateSolutionResponse = S.suspend(() =>
 export class InvalidInputException extends S.TaggedError<InvalidInputException>()(
   "InvalidInputException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagKeysException extends S.TaggedError<TooManyTagKeysException>()(
   "TooManyTagKeysException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3542,22 +3540,22 @@ export const listMetricAttributionMetrics: {
     input: ListMetricAttributionMetricsRequest,
   ): Effect.Effect<
     ListMetricAttributionMetricsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMetricAttributionMetricsRequest,
   ) => Stream.Stream<
     ListMetricAttributionMetricsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMetricAttributionMetricsRequest,
   ) => Stream.Stream<
     MetricAttribute,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMetricAttributionMetricsRequest,
@@ -3578,22 +3576,22 @@ export const listMetricAttributions: {
     input: ListMetricAttributionsRequest,
   ): Effect.Effect<
     ListMetricAttributionsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMetricAttributionsRequest,
   ) => Stream.Stream<
     ListMetricAttributionsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMetricAttributionsRequest,
   ) => Stream.Stream<
     MetricAttributionSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMetricAttributionsRequest,
@@ -3615,22 +3613,22 @@ export const listRecipes: {
     input: ListRecipesRequest,
   ): Effect.Effect<
     ListRecipesResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecipesRequest,
   ) => Stream.Stream<
     ListRecipesResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRecipesRequest,
   ) => Stream.Stream<
     RecipeSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecipesRequest,
@@ -3654,22 +3652,22 @@ export const listRecommenders: {
     input: ListRecommendersRequest,
   ): Effect.Effect<
     ListRecommendersResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecommendersRequest,
   ) => Stream.Stream<
     ListRecommendersResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRecommendersRequest,
   ) => Stream.Stream<
     RecommenderSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendersRequest,
@@ -3692,22 +3690,22 @@ export const listSchemas: {
     input: ListSchemasRequest,
   ): Effect.Effect<
     ListSchemasResponse,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSchemasRequest,
   ) => Stream.Stream<
     ListSchemasResponse,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSchemasRequest,
   ) => Stream.Stream<
     DatasetSchemaSummary,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSchemasRequest,
@@ -3731,22 +3729,22 @@ export const listSolutions: {
     input: ListSolutionsRequest,
   ): Effect.Effect<
     ListSolutionsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSolutionsRequest,
   ) => Stream.Stream<
     ListSolutionsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSolutionsRequest,
   ) => Stream.Stream<
     SolutionSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSolutionsRequest,
@@ -3768,22 +3766,22 @@ export const listBatchInferenceJobs: {
     input: ListBatchInferenceJobsRequest,
   ): Effect.Effect<
     ListBatchInferenceJobsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBatchInferenceJobsRequest,
   ) => Stream.Stream<
     ListBatchInferenceJobsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBatchInferenceJobsRequest,
   ) => Stream.Stream<
     BatchInferenceJobSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBatchInferenceJobsRequest,
@@ -3805,22 +3803,22 @@ export const listBatchSegmentJobs: {
     input: ListBatchSegmentJobsRequest,
   ): Effect.Effect<
     ListBatchSegmentJobsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBatchSegmentJobsRequest,
   ) => Stream.Stream<
     ListBatchSegmentJobsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBatchSegmentJobsRequest,
   ) => Stream.Stream<
     BatchSegmentJobSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBatchSegmentJobsRequest,
@@ -3844,22 +3842,22 @@ export const listCampaigns: {
     input: ListCampaignsRequest,
   ): Effect.Effect<
     ListCampaignsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCampaignsRequest,
   ) => Stream.Stream<
     ListCampaignsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCampaignsRequest,
   ) => Stream.Stream<
     CampaignSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCampaignsRequest,
@@ -3885,8 +3883,8 @@ export const listDataDeletionJobs: (
   input: ListDataDeletionJobsRequest,
 ) => Effect.Effect<
   ListDataDeletionJobsResponse,
-  InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | InvalidNextTokenException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDataDeletionJobsRequest,
   output: ListDataDeletionJobsResponse,
@@ -3905,22 +3903,22 @@ export const listDatasetExportJobs: {
     input: ListDatasetExportJobsRequest,
   ): Effect.Effect<
     ListDatasetExportJobsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDatasetExportJobsRequest,
   ) => Stream.Stream<
     ListDatasetExportJobsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDatasetExportJobsRequest,
   ) => Stream.Stream<
     DatasetExportJobSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetExportJobsRequest,
@@ -3943,22 +3941,22 @@ export const listDatasetGroups: {
     input: ListDatasetGroupsRequest,
   ): Effect.Effect<
     ListDatasetGroupsResponse,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDatasetGroupsRequest,
   ) => Stream.Stream<
     ListDatasetGroupsResponse,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDatasetGroupsRequest,
   ) => Stream.Stream<
     DatasetGroupSummary,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetGroupsRequest,
@@ -3984,22 +3982,22 @@ export const listDatasetImportJobs: {
     input: ListDatasetImportJobsRequest,
   ): Effect.Effect<
     ListDatasetImportJobsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDatasetImportJobsRequest,
   ) => Stream.Stream<
     ListDatasetImportJobsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDatasetImportJobsRequest,
   ) => Stream.Stream<
     DatasetImportJobSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetImportJobsRequest,
@@ -4022,22 +4020,22 @@ export const listDatasets: {
     input: ListDatasetsRequest,
   ): Effect.Effect<
     ListDatasetsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDatasetsRequest,
   ) => Stream.Stream<
     ListDatasetsResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDatasetsRequest,
   ) => Stream.Stream<
     DatasetSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetsRequest,
@@ -4061,22 +4059,22 @@ export const listEventTrackers: {
     input: ListEventTrackersRequest,
   ): Effect.Effect<
     ListEventTrackersResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventTrackersRequest,
   ) => Stream.Stream<
     ListEventTrackersResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventTrackersRequest,
   ) => Stream.Stream<
     EventTrackerSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventTrackersRequest,
@@ -4097,22 +4095,22 @@ export const listFilters: {
     input: ListFiltersRequest,
   ): Effect.Effect<
     ListFiltersResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFiltersRequest,
   ) => Stream.Stream<
     ListFiltersResponse,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFiltersRequest,
   ) => Stream.Stream<
     FilterSummary,
-    InvalidInputException | InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInputException | InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFiltersRequest,
@@ -4149,8 +4147,8 @@ export const createSchema: (
   | InvalidInputException
   | LimitExceededException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSchemaRequest,
   output: CreateSchemaResponse,
@@ -4175,8 +4173,8 @@ export const deleteCampaign: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCampaignRequest,
   output: DeleteCampaignResponse,
@@ -4204,8 +4202,8 @@ export const describeCampaign: (
   input: DescribeCampaignRequest,
 ) => Effect.Effect<
   DescribeCampaignResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCampaignRequest,
   output: DescribeCampaignResponse,
@@ -4219,8 +4217,8 @@ export const describeDataset: (
   input: DescribeDatasetRequest,
 ) => Effect.Effect<
   DescribeDatasetResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -4233,8 +4231,8 @@ export const describeFeatureTransformation: (
   input: DescribeFeatureTransformationRequest,
 ) => Effect.Effect<
   DescribeFeatureTransformationResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFeatureTransformationRequest,
   output: DescribeFeatureTransformationResponse,
@@ -4263,8 +4261,8 @@ export const describeRecommender: (
   input: DescribeRecommenderRequest,
 ) => Effect.Effect<
   DescribeRecommenderResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRecommenderRequest,
   output: DescribeRecommenderResponse,
@@ -4278,8 +4276,8 @@ export const describeSolution: (
   input: DescribeSolutionRequest,
 ) => Effect.Effect<
   DescribeSolutionResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSolutionRequest,
   output: DescribeSolutionResponse,
@@ -4292,8 +4290,8 @@ export const describeSolutionVersion: (
   input: DescribeSolutionVersionRequest,
 ) => Effect.Effect<
   DescribeSolutionVersionResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSolutionVersionRequest,
   output: DescribeSolutionVersionResponse,
@@ -4308,8 +4306,8 @@ export const describeBatchInferenceJob: (
   input: DescribeBatchInferenceJobRequest,
 ) => Effect.Effect<
   DescribeBatchInferenceJobResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBatchInferenceJobRequest,
   output: DescribeBatchInferenceJobResponse,
@@ -4324,8 +4322,8 @@ export const describeBatchSegmentJob: (
   input: DescribeBatchSegmentJobRequest,
 ) => Effect.Effect<
   DescribeBatchSegmentJobResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBatchSegmentJobRequest,
   output: DescribeBatchSegmentJobResponse,
@@ -4338,8 +4336,8 @@ export const describeDataDeletionJob: (
   input: DescribeDataDeletionJobRequest,
 ) => Effect.Effect<
   DescribeDataDeletionJobResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDataDeletionJobRequest,
   output: DescribeDataDeletionJobResponse,
@@ -4352,8 +4350,8 @@ export const describeDatasetExportJob: (
   input: DescribeDatasetExportJobRequest,
 ) => Effect.Effect<
   DescribeDatasetExportJobResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDatasetExportJobRequest,
   output: DescribeDatasetExportJobResponse,
@@ -4367,8 +4365,8 @@ export const describeDatasetGroup: (
   input: DescribeDatasetGroupRequest,
 ) => Effect.Effect<
   DescribeDatasetGroupResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDatasetGroupRequest,
   output: DescribeDatasetGroupResponse,
@@ -4381,8 +4379,8 @@ export const describeDatasetImportJob: (
   input: DescribeDatasetImportJobRequest,
 ) => Effect.Effect<
   DescribeDatasetImportJobResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDatasetImportJobRequest,
   output: DescribeDatasetImportJobResponse,
@@ -4397,8 +4395,8 @@ export const describeEventTracker: (
   input: DescribeEventTrackerRequest,
 ) => Effect.Effect<
   DescribeEventTrackerResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventTrackerRequest,
   output: DescribeEventTrackerResponse,
@@ -4411,8 +4409,8 @@ export const describeFilter: (
   input: DescribeFilterRequest,
 ) => Effect.Effect<
   DescribeFilterResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFilterRequest,
   output: DescribeFilterResponse,
@@ -4425,8 +4423,8 @@ export const describeMetricAttribution: (
   input: DescribeMetricAttributionRequest,
 ) => Effect.Effect<
   DescribeMetricAttributionResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMetricAttributionRequest,
   output: DescribeMetricAttributionResponse,
@@ -4454,8 +4452,8 @@ export const describeRecipe: (
   input: DescribeRecipeRequest,
 ) => Effect.Effect<
   DescribeRecipeResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRecipeRequest,
   output: DescribeRecipeResponse,
@@ -4469,8 +4467,8 @@ export const describeSchema: (
   input: DescribeSchemaRequest,
 ) => Effect.Effect<
   DescribeSchemaResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSchemaRequest,
   output: DescribeSchemaResponse,
@@ -4486,8 +4484,8 @@ export const getSolutionMetrics: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSolutionMetricsRequest,
   output: GetSolutionMetricsResponse,
@@ -4510,8 +4508,8 @@ export const listSolutionVersions: {
     | InvalidInputException
     | InvalidNextTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSolutionVersionsRequest,
@@ -4520,8 +4518,8 @@ export const listSolutionVersions: {
     | InvalidInputException
     | InvalidNextTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSolutionVersionsRequest,
@@ -4530,8 +4528,8 @@ export const listSolutionVersions: {
     | InvalidInputException
     | InvalidNextTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSolutionVersionsRequest,
@@ -4559,8 +4557,8 @@ export const updateMetricAttribution: (
   | ResourceAlreadyExistsException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMetricAttributionRequest,
   output: UpdateMetricAttributionResponse,
@@ -4581,8 +4579,8 @@ export const listTagsForResource: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4603,8 +4601,8 @@ export const startRecommender: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRecommenderRequest,
   output: StartRecommenderResponse,
@@ -4624,8 +4622,8 @@ export const stopRecommender: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopRecommenderRequest,
   output: StopRecommenderResponse,
@@ -4662,8 +4660,8 @@ export const updateCampaign: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignRequest,
   output: UpdateCampaignResponse,
@@ -4683,8 +4681,8 @@ export const updateDataset: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDatasetRequest,
   output: UpdateDatasetResponse,
@@ -4710,8 +4708,8 @@ export const updateRecommender: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRecommenderRequest,
   output: UpdateRecommenderResponse,
@@ -4734,8 +4732,8 @@ export const deleteDataset: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -4762,8 +4760,8 @@ export const deleteDatasetGroup: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDatasetGroupRequest,
   output: DeleteDatasetGroupResponse,
@@ -4785,8 +4783,8 @@ export const deleteEventTracker: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventTrackerRequest,
   output: DeleteEventTrackerResponse,
@@ -4806,8 +4804,8 @@ export const deleteFilter: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFilterRequest,
   output: DeleteFilterResponse,
@@ -4827,8 +4825,8 @@ export const deleteMetricAttribution: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMetricAttributionRequest,
   output: DeleteMetricAttributionResponse,
@@ -4849,8 +4847,8 @@ export const deleteRecommender: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRecommenderRequest,
   output: DeleteRecommenderResponse,
@@ -4872,8 +4870,8 @@ export const deleteSchema: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSchemaRequest,
   output: DeleteSchemaResponse,
@@ -4899,8 +4897,8 @@ export const deleteSolution: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSolutionRequest,
   output: DeleteSolutionResponse,
@@ -4931,8 +4929,8 @@ export const stopSolutionVersionCreation: (
   | InvalidInputException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopSolutionVersionCreationRequest,
   output: StopSolutionVersionCreationResponse,
@@ -4956,8 +4954,8 @@ export const createMetricAttribution: (
   | ResourceAlreadyExistsException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMetricAttributionRequest,
   output: CreateMetricAttributionResponse,
@@ -4992,8 +4990,8 @@ export const updateSolution: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSolutionRequest,
   output: UpdateSolutionResponse,
@@ -5069,8 +5067,8 @@ export const createDatasetGroup: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDatasetGroupRequest,
   output: CreateDatasetGroupResponse,
@@ -5093,8 +5091,8 @@ export const tagResource: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5156,8 +5154,8 @@ export const createDataset: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
@@ -5220,8 +5218,8 @@ export const createDatasetImportJob: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDatasetImportJobRequest,
   output: CreateDatasetImportJobResponse,
@@ -5276,8 +5274,8 @@ export const createEventTracker: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventTrackerRequest,
   output: CreateEventTrackerResponse,
@@ -5302,8 +5300,8 @@ export const createFilter: (
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFilterRequest,
   output: CreateFilterResponse,
@@ -5367,8 +5365,8 @@ export const createSolutionVersion: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSolutionVersionRequest,
   output: CreateSolutionVersionResponse,
@@ -5396,8 +5394,8 @@ export const createBatchSegmentJob: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBatchSegmentJobRequest,
   output: CreateBatchSegmentJobResponse,
@@ -5477,8 +5475,8 @@ export const createCampaign: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCampaignRequest,
   output: CreateCampaignResponse,
@@ -5538,8 +5536,8 @@ export const createDataDeletionJob: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataDeletionJobRequest,
   output: CreateDataDeletionJobResponse,
@@ -5581,8 +5579,8 @@ export const createDatasetExportJob: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDatasetExportJobRequest,
   output: CreateDatasetExportJobResponse,
@@ -5627,8 +5625,8 @@ export const createBatchInferenceJob: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBatchInferenceJobRequest,
   output: CreateBatchInferenceJobResponse,
@@ -5707,8 +5705,8 @@ export const createRecommender: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRecommenderRequest,
   output: CreateRecommenderResponse,
@@ -5728,8 +5726,8 @@ export const describeAlgorithm: (
   input: DescribeAlgorithmRequest,
 ) => Effect.Effect<
   DescribeAlgorithmResponse,
-  InvalidInputException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAlgorithmRequest,
   output: DescribeAlgorithmResponse,
@@ -5746,8 +5744,8 @@ export const untagResource: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagKeysException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5827,8 +5825,8 @@ export const createSolution: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSolutionRequest,
   output: CreateSolutionResponse,

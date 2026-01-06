@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Cloud9",
@@ -715,8 +713,8 @@ export const listTagsForResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -744,8 +742,8 @@ export const tagResource: (
   | ConcurrentAccessException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -771,8 +769,8 @@ export const untagResource: (
   | ConcurrentAccessException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -802,8 +800,8 @@ export const deleteEnvironment: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentRequest,
   output: DeleteEnvironmentResult,
@@ -835,8 +833,8 @@ export const describeEnvironments: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEnvironmentsRequest,
   output: DescribeEnvironmentsResult,
@@ -869,8 +867,8 @@ export const describeEnvironmentMemberships: {
     | LimitExceededException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEnvironmentMembershipsRequest,
@@ -883,8 +881,8 @@ export const describeEnvironmentMemberships: {
     | LimitExceededException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEnvironmentMembershipsRequest,
@@ -897,8 +895,8 @@ export const describeEnvironmentMemberships: {
     | LimitExceededException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEnvironmentMembershipsRequest,
@@ -936,8 +934,8 @@ export const describeEnvironmentStatus: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEnvironmentStatusRequest,
   output: DescribeEnvironmentStatusResult,
@@ -974,8 +972,8 @@ export const listEnvironments: {
     | LimitExceededException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEnvironmentsRequest,
@@ -988,8 +986,8 @@ export const listEnvironments: {
     | LimitExceededException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEnvironmentsRequest,
@@ -1002,8 +1000,8 @@ export const listEnvironments: {
     | LimitExceededException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEnvironmentsRequest,
@@ -1042,8 +1040,8 @@ export const updateEnvironmentMembership: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEnvironmentMembershipRequest,
   output: UpdateEnvironmentMembershipResult,
@@ -1075,8 +1073,8 @@ export const deleteEnvironmentMembership: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentMembershipRequest,
   output: DeleteEnvironmentMembershipResult,
@@ -1108,8 +1106,8 @@ export const updateEnvironment: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEnvironmentRequest,
   output: UpdateEnvironmentResult,
@@ -1142,8 +1140,8 @@ export const createEnvironmentEC2: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEnvironmentEC2Request,
   output: CreateEnvironmentEC2Result,
@@ -1175,8 +1173,8 @@ export const createEnvironmentMembership: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEnvironmentMembershipRequest,
   output: CreateEnvironmentMembershipResult,

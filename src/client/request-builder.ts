@@ -10,10 +10,10 @@
  */
 
 import * as Effect from "effect/Effect";
-import { makeStreamingBodyMiddleware } from "./middleware/streaming-body.ts";
+import { makeStreamingBodyMiddleware } from "../middleware/streaming-body.ts";
+import { getMiddleware, getProtocol } from "../traits.ts";
 import type { Operation } from "./operation.ts";
 import type { Protocol, ProtocolHandler } from "./protocol.ts";
-import { getMiddleware, getProtocol } from "./traits.ts";
 
 export interface RequestBuilderOptions {
   /** Override the protocol (otherwise discovered from schema annotations) */

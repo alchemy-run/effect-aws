@@ -46,7 +46,7 @@ import * as Option from "effect/Option";
 import * as Redacted from "effect/Redacted";
 import { createHash } from "node:crypto";
 import * as path from "node:path";
-import { parseIni, parseSSOSessionData } from "./parse-ini.ts";
+import { parseIni, parseSSOSessionData } from "./util/parse-ini.ts";
 
 export class Credentials extends Context.Tag("AWS::Credentials")<
   Credentials,

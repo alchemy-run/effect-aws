@@ -2,11 +2,11 @@ import { it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
 import * as S from "effect/Schema";
 import { describe, expect } from "vitest";
-import { UnknownAwsError, ValidationException } from "../../src/aws/errors.ts";
+import { UnknownAwsError, ValidationException } from "../../src/errors.ts";
 import { ec2QueryProtocol } from "../../src/protocols/ec2-query.ts";
-import { makeRequestBuilder } from "../../src/request-builder.ts";
-import { makeResponseParser } from "../../src/response-parser.ts";
-import type { Response } from "../../src/response.ts";
+import { makeRequestBuilder } from "../../src/client/request-builder.ts";
+import { makeResponseParser } from "../../src/client/response-parser.ts";
+import type { Response } from "../../src/client/response.ts";
 import {
   // Simple request/response operations
   AcceptVpcPeeringConnectionRequest,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://events.amazonaws.com/doc/2015-10-07");
 const svc = T.AwsApiService({
@@ -3833,8 +3831,8 @@ export const listApiDestinations: (
   input: ListApiDestinationsRequest,
 ) => Effect.Effect<
   ListApiDestinationsResponse,
-  InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListApiDestinationsRequest,
   output: ListApiDestinationsResponse,
@@ -3847,8 +3845,8 @@ export const listConnections: (
   input: ListConnectionsRequest,
 ) => Effect.Effect<
   ListConnectionsResponse,
-  InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListConnectionsRequest,
   output: ListConnectionsResponse,
@@ -3866,8 +3864,8 @@ export const listEndpoints: (
   input: ListEndpointsRequest,
 ) => Effect.Effect<
   ListEndpointsResponse,
-  InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListEndpointsRequest,
   output: ListEndpointsResponse,
@@ -3881,8 +3879,8 @@ export const listEventBuses: (
   input: ListEventBusesRequest,
 ) => Effect.Effect<
   ListEventBusesResponse,
-  InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListEventBusesRequest,
   output: ListEventBusesResponse,
@@ -3896,8 +3894,8 @@ export const listReplays: (
   input: ListReplaysRequest,
 ) => Effect.Effect<
   ListReplaysResponse,
-  InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListReplaysRequest,
   output: ListReplaysResponse,
@@ -3911,8 +3909,8 @@ export const deleteEventBus: (
   input: DeleteEventBusRequest,
 ) => Effect.Effect<
   DeleteEventBusResponse,
-  ConcurrentModificationException | InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConcurrentModificationException | InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventBusRequest,
   output: DeleteEventBusResponse,
@@ -3929,8 +3927,8 @@ export const cancelReplay: (
   | IllegalStatusException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelReplayRequest,
   output: CancelReplayResponse,
@@ -3949,8 +3947,8 @@ export const listEventSources: (
   input: ListEventSourcesRequest,
 ) => Effect.Effect<
   ListEventSourcesResponse,
-  InternalException | OperationDisabledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | OperationDisabledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListEventSourcesRequest,
   output: ListEventSourcesResponse,
@@ -3976,8 +3974,8 @@ export const putEvents: (
   input: PutEventsRequest,
 ) => Effect.Effect<
   PutEventsResponse,
-  InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEventsRequest,
   output: PutEventsResponse,
@@ -3993,8 +3991,8 @@ export const putPartnerEvents: (
   input: PutPartnerEventsRequest,
 ) => Effect.Effect<
   PutPartnerEventsResponse,
-  InternalException | OperationDisabledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | OperationDisabledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPartnerEventsRequest,
   output: PutPartnerEventsResponse,
@@ -4024,8 +4022,8 @@ export const removeTargets: (
   | InternalException
   | ManagedRuleException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTargetsRequest,
   output: RemoveTargetsResponse,
@@ -4046,8 +4044,8 @@ export const describeArchive: (
   | InternalException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeArchiveRequest,
   output: DescribeArchiveResponse,
@@ -4073,8 +4071,8 @@ export const createEventBus: (
   | OperationDisabledException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventBusRequest,
   output: CreateEventBusResponse,
@@ -4106,8 +4104,8 @@ export const deactivateEventSource: (
   | InvalidStateException
   | OperationDisabledException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeactivateEventSourceRequest,
   output: DeactivateEventSourceResponse,
@@ -4127,8 +4125,8 @@ export const listArchives: (
   input: ListArchivesRequest,
 ) => Effect.Effect<
   ListArchivesResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListArchivesRequest,
   output: ListArchivesResponse,
@@ -4147,8 +4145,8 @@ export const listRules: (
   input: ListRulesRequest,
 ) => Effect.Effect<
   ListRulesResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRulesRequest,
   output: ListRulesResponse,
@@ -4165,8 +4163,8 @@ export const deauthorizeConnection: (
   | ConcurrentModificationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeauthorizeConnectionRequest,
   output: DeauthorizeConnectionResponse,
@@ -4186,8 +4184,8 @@ export const deleteConnection: (
   | ConcurrentModificationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectionRequest,
   output: DeleteConnectionResponse,
@@ -4204,8 +4202,8 @@ export const describeApiDestination: (
   input: DescribeApiDestinationRequest,
 ) => Effect.Effect<
   DescribeApiDestinationResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApiDestinationRequest,
   output: DescribeApiDestinationResponse,
@@ -4223,8 +4221,8 @@ export const describeEndpoint: (
   input: DescribeEndpointRequest,
 ) => Effect.Effect<
   DescribeEndpointResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEndpointRequest,
   output: DescribeEndpointResponse,
@@ -4244,8 +4242,8 @@ export const describeEventBus: (
   input: DescribeEventBusRequest,
 ) => Effect.Effect<
   DescribeEventBusResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventBusRequest,
   output: DescribeEventBusResponse,
@@ -4266,8 +4264,8 @@ export const describeReplay: (
   input: DescribeReplayRequest,
 ) => Effect.Effect<
   DescribeReplayResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReplayRequest,
   output: DescribeReplayResponse,
@@ -4283,8 +4281,8 @@ export const describeRule: (
   input: DescribeRuleRequest,
 ) => Effect.Effect<
   DescribeRuleResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRuleRequest,
   output: DescribeRuleResponse,
@@ -4300,8 +4298,8 @@ export const listRuleNamesByTarget: (
   input: ListRuleNamesByTargetRequest,
 ) => Effect.Effect<
   ListRuleNamesByTargetResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRuleNamesByTargetRequest,
   output: ListRuleNamesByTargetResponse,
@@ -4315,8 +4313,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4331,8 +4329,8 @@ export const listTargetsByRule: (
   input: ListTargetsByRuleRequest,
 ) => Effect.Effect<
   ListTargetsByRuleResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTargetsByRuleRequest,
   output: ListTargetsByRuleResponse,
@@ -4352,8 +4350,8 @@ export const updateEndpoint: (
   | ConcurrentModificationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEndpointRequest,
   output: UpdateEndpointResponse,
@@ -4373,8 +4371,8 @@ export const deleteApiDestination: (
   | ConcurrentModificationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApiDestinationRequest,
   output: DeleteApiDestinationResponse,
@@ -4394,8 +4392,8 @@ export const deleteArchive: (
   | ConcurrentModificationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteArchiveRequest,
   output: DeleteArchiveResponse,
@@ -4419,8 +4417,8 @@ export const deleteEndpoint: (
   | ConcurrentModificationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointRequest,
   output: DeleteEndpointResponse,
@@ -4441,8 +4439,8 @@ export const listPartnerEventSourceAccounts: (
   | InternalException
   | OperationDisabledException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListPartnerEventSourceAccountsRequest,
   output: ListPartnerEventSourceAccountsResponse,
@@ -4460,8 +4458,8 @@ export const listPartnerEventSources: (
   input: ListPartnerEventSourcesRequest,
 ) => Effect.Effect<
   ListPartnerEventSourcesResponse,
-  InternalException | OperationDisabledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | OperationDisabledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListPartnerEventSourcesRequest,
   output: ListPartnerEventSourcesResponse,
@@ -4478,8 +4476,8 @@ export const describeEventSource: (
   | InternalException
   | OperationDisabledException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventSourceRequest,
   output: DescribeEventSourceResponse,
@@ -4501,8 +4499,8 @@ export const describePartnerEventSource: (
   | InternalException
   | OperationDisabledException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePartnerEventSourceRequest,
   output: DescribePartnerEventSourceResponse,
@@ -4523,8 +4521,8 @@ export const updateEventBus: (
   | InternalException
   | OperationDisabledException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEventBusRequest,
   output: UpdateEventBusResponse,
@@ -4549,8 +4547,8 @@ export const deletePartnerEventSource: (
   | ConcurrentModificationException
   | InternalException
   | OperationDisabledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePartnerEventSourceRequest,
   output: DeletePartnerEventSourceResponse,
@@ -4574,8 +4572,8 @@ export const removePermission: (
   | InternalException
   | OperationDisabledException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemovePermissionRequest,
   output: RemovePermissionResponse,
@@ -4599,8 +4597,8 @@ export const activateEventSource: (
   | InvalidStateException
   | OperationDisabledException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ActivateEventSourceRequest,
   output: ActivateEventSourceResponse,
@@ -4638,8 +4636,8 @@ export const deleteRule: (
   | InternalException
   | ManagedRuleException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRuleRequest,
   output: DeleteRuleResponse,
@@ -4665,8 +4663,8 @@ export const disableRule: (
   | InternalException
   | ManagedRuleException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableRuleRequest,
   output: DisableRuleResponse,
@@ -4691,8 +4689,8 @@ export const enableRule: (
   | InternalException
   | ManagedRuleException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableRuleRequest,
   output: EnableRuleResponse,
@@ -4727,8 +4725,8 @@ export const tagResource: (
   | InternalException
   | ManagedRuleException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4750,8 +4748,8 @@ export const untagResource: (
   | InternalException
   | ManagedRuleException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4784,8 +4782,8 @@ export const createArchive: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateArchiveRequest,
   output: CreateArchiveResponse,
@@ -4863,8 +4861,8 @@ export const putRule: (
   | LimitExceededException
   | ManagedRuleException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRuleRequest,
   output: PutRuleResponse,
@@ -4889,8 +4887,8 @@ export const testEventPattern: (
   input: TestEventPatternRequest,
 ) => Effect.Effect<
   TestEventPatternResponse,
-  InternalException | InvalidEventPatternException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidEventPatternException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestEventPatternRequest,
   output: TestEventPatternResponse,
@@ -4908,8 +4906,8 @@ export const updateArchive: (
   | InvalidEventPatternException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateArchiveRequest,
   output: UpdateArchiveResponse,
@@ -4967,8 +4965,8 @@ export const createPartnerEventSource: (
   | LimitExceededException
   | OperationDisabledException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePartnerEventSourceRequest,
   output: CreatePartnerEventSourceResponse,
@@ -4991,8 +4989,8 @@ export const updateApiDestination: (
   | InternalException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApiDestinationRequest,
   output: UpdateApiDestinationResponse,
@@ -5023,8 +5021,8 @@ export const startReplay: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReplayRequest,
   output: StartReplayResponse,
@@ -5054,8 +5052,8 @@ export const createApiDestination: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApiDestinationRequest,
   output: CreateApiDestinationResponse,
@@ -5081,8 +5079,8 @@ export const createEndpoint: (
   | InternalException
   | LimitExceededException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEndpointRequest,
   output: CreateEndpointResponse,
@@ -5099,8 +5097,8 @@ export const describeConnection: (
   input: DescribeConnectionRequest,
 ) => Effect.Effect<
   DescribeConnectionResponse,
-  InternalException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConnectionRequest,
   output: DescribeConnectionResponse,
@@ -5137,8 +5135,8 @@ export const putPermission: (
   | OperationDisabledException
   | PolicyLengthExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPermissionRequest,
   output: PutPermissionResponse,
@@ -5166,8 +5164,8 @@ export const createConnection: (
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectionRequest,
   output: CreateConnectionResponse,
@@ -5289,8 +5287,8 @@ export const putTargets: (
   | LimitExceededException
   | ManagedRuleException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTargetsRequest,
   output: PutTargetsResponse,
@@ -5315,8 +5313,8 @@ export const updateConnection: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectionRequest,
   output: UpdateConnectionResponse,

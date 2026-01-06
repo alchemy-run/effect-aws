@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "API Gateway",
@@ -4788,46 +4786,40 @@ export const TestInvokeAuthorizerResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   {
     retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
     message: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   {
     retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
     message: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   {
     retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
     message: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -4840,8 +4832,8 @@ export const getDocumentationVersion: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentationVersionRequest,
   output: DocumentationVersion,
@@ -4860,8 +4852,8 @@ export const getStage: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStageRequest,
   output: Stage,
@@ -4885,8 +4877,8 @@ export const getDomainName: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainNameRequest,
   output: DomainName,
@@ -4908,8 +4900,8 @@ export const getIntegration: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIntegrationRequest,
   output: Integration,
@@ -4930,8 +4922,8 @@ export const getMethod: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMethodRequest,
   output: Method,
@@ -4948,8 +4940,8 @@ export const getSdkType: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSdkTypeRequest,
   output: SdkType,
@@ -4972,8 +4964,8 @@ export const getUsage: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetUsageRequest,
@@ -4983,8 +4975,8 @@ export const getUsage: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetUsageRequest,
@@ -4994,8 +4986,8 @@ export const getUsage: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetUsageRequest,
@@ -5024,8 +5016,8 @@ export const testInvokeAuthorizer: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestInvokeAuthorizerRequest,
   output: TestInvokeAuthorizerResponse,
@@ -5049,8 +5041,8 @@ export const getExport: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExportRequest,
   output: ExportResponse,
@@ -5076,8 +5068,8 @@ export const getSdk: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSdkRequest,
   output: SdkResponse,
@@ -5103,8 +5095,8 @@ export const getStages: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStagesRequest,
   output: Stages,
@@ -5130,8 +5122,8 @@ export const importApiKeys: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportApiKeysRequest,
   output: ApiKeyIds,
@@ -5157,8 +5149,8 @@ export const importDocumentationParts: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportDocumentationPartsRequest,
   output: DocumentationPartIds,
@@ -5184,8 +5176,8 @@ export const putIntegration: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutIntegrationRequest,
   output: Integration,
@@ -5211,8 +5203,8 @@ export const putMethod: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMethodRequest,
   output: Method,
@@ -5238,8 +5230,8 @@ export const updateAccount: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountRequest,
   output: Account,
@@ -5265,8 +5257,8 @@ export const deleteDeployment: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeploymentRequest,
   output: DeleteDeploymentResponse,
@@ -5292,8 +5284,8 @@ export const deleteStage: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStageRequest,
   output: DeleteStageResponse,
@@ -5319,8 +5311,8 @@ export const flushStageAuthorizersCache: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FlushStageAuthorizersCacheRequest,
   output: FlushStageAuthorizersCacheResponse,
@@ -5346,8 +5338,8 @@ export const flushStageCache: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FlushStageCacheRequest,
   output: FlushStageCacheResponse,
@@ -5373,8 +5365,8 @@ export const importRestApi: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportRestApiRequest,
   output: RestApi,
@@ -5400,8 +5392,8 @@ export const putGatewayResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutGatewayResponseRequest,
   output: GatewayResponse,
@@ -5427,8 +5419,8 @@ export const putIntegrationResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutIntegrationResponseRequest,
   output: IntegrationResponse,
@@ -5454,8 +5446,8 @@ export const putMethodResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMethodResponseRequest,
   output: MethodResponse,
@@ -5482,8 +5474,8 @@ export const putRestApi: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRestApiRequest,
   output: RestApi,
@@ -5509,8 +5501,8 @@ export const tagResource: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5536,8 +5528,8 @@ export const untagResource: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5563,8 +5555,8 @@ export const updateApiKey: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApiKeyRequest,
   output: ApiKey,
@@ -5590,8 +5582,8 @@ export const updateAuthorizer: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAuthorizerRequest,
   output: Authorizer,
@@ -5617,8 +5609,8 @@ export const updateBasePathMapping: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBasePathMappingRequest,
   output: BasePathMapping,
@@ -5644,8 +5636,8 @@ export const updateClientCertificate: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClientCertificateRequest,
   output: ClientCertificate,
@@ -5671,8 +5663,8 @@ export const updateDocumentationPart: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDocumentationPartRequest,
   output: DocumentationPart,
@@ -5698,8 +5690,8 @@ export const updateDocumentationVersion: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDocumentationVersionRequest,
   output: DocumentationVersion,
@@ -5725,8 +5717,8 @@ export const updateDomainName: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainNameRequest,
   output: DomainName,
@@ -5752,8 +5744,8 @@ export const updateGatewayResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGatewayResponseRequest,
   output: GatewayResponse,
@@ -5779,8 +5771,8 @@ export const updateIntegration: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIntegrationRequest,
   output: Integration,
@@ -5806,8 +5798,8 @@ export const updateIntegrationResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIntegrationResponseRequest,
   output: IntegrationResponse,
@@ -5833,8 +5825,8 @@ export const updateMethodResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMethodResponseRequest,
   output: MethodResponse,
@@ -5860,8 +5852,8 @@ export const updateModel: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateModelRequest,
   output: Model,
@@ -5887,8 +5879,8 @@ export const updateRequestValidator: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRequestValidatorRequest,
   output: RequestValidator,
@@ -5914,8 +5906,8 @@ export const updateRestApi: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRestApiRequest,
   output: RestApi,
@@ -5941,8 +5933,8 @@ export const updateStage: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStageRequest,
   output: Stage,
@@ -5968,8 +5960,8 @@ export const updateUsage: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUsageRequest,
   output: Usage,
@@ -5995,8 +5987,8 @@ export const updateUsagePlan: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUsagePlanRequest,
   output: UsagePlan,
@@ -6022,8 +6014,8 @@ export const updateVpcLink: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVpcLinkRequest,
   output: VpcLink,
@@ -6049,8 +6041,8 @@ export const createApiKey: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApiKeyRequest,
   output: ApiKey,
@@ -6076,8 +6068,8 @@ export const createAuthorizer: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAuthorizerRequest,
   output: Authorizer,
@@ -6103,8 +6095,8 @@ export const createBasePathMapping: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBasePathMappingRequest,
   output: BasePathMapping,
@@ -6130,8 +6122,8 @@ export const createDocumentationPart: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDocumentationPartRequest,
   output: DocumentationPart,
@@ -6157,8 +6149,8 @@ export const createDocumentationVersion: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDocumentationVersionRequest,
   output: DocumentationVersion,
@@ -6183,8 +6175,8 @@ export const createDomainName: (
   | LimitExceededException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainNameRequest,
   output: DomainName,
@@ -6209,8 +6201,8 @@ export const createDomainNameAccessAssociation: (
   | LimitExceededException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainNameAccessAssociationRequest,
   output: DomainNameAccessAssociation,
@@ -6235,8 +6227,8 @@ export const createModel: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelRequest,
   output: Model,
@@ -6262,8 +6254,8 @@ export const createRequestValidator: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRequestValidatorRequest,
   output: RequestValidator,
@@ -6288,8 +6280,8 @@ export const createRestApi: (
   | LimitExceededException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRestApiRequest,
   output: RestApi,
@@ -6314,8 +6306,8 @@ export const createStage: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStageRequest,
   output: Stage,
@@ -6341,8 +6333,8 @@ export const createUsagePlanKey: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUsagePlanKeyRequest,
   output: UsagePlanKey,
@@ -6367,8 +6359,8 @@ export const createVpcLink: (
   | LimitExceededException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcLinkRequest,
   output: VpcLink,
@@ -6393,8 +6385,8 @@ export const createResource: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceRequest,
   output: Resource,
@@ -6420,8 +6412,8 @@ export const createUsagePlan: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUsagePlanRequest,
   output: UsagePlan,
@@ -6447,8 +6439,8 @@ export const getDeployments: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetDeploymentsRequest,
@@ -6459,8 +6451,8 @@ export const getDeployments: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetDeploymentsRequest,
@@ -6471,8 +6463,8 @@ export const getDeployments: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetDeploymentsRequest,
@@ -6502,8 +6494,8 @@ export const getDocumentationVersions: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentationVersionsRequest,
   output: DocumentationVersions,
@@ -6525,8 +6517,8 @@ export const getDomainNameAccessAssociations: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainNameAccessAssociationsRequest,
   output: DomainNameAccessAssociations,
@@ -6549,8 +6541,8 @@ export const getDomainNames: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetDomainNamesRequest,
@@ -6560,8 +6552,8 @@ export const getDomainNames: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetDomainNamesRequest,
@@ -6571,8 +6563,8 @@ export const getDomainNames: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetDomainNamesRequest,
@@ -6601,8 +6593,8 @@ export const getGatewayResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGatewayResponseRequest,
   output: GatewayResponse,
@@ -6624,8 +6616,8 @@ export const getGatewayResponses: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGatewayResponsesRequest,
   output: GatewayResponses,
@@ -6647,8 +6639,8 @@ export const getIntegrationResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIntegrationResponseRequest,
   output: IntegrationResponse,
@@ -6669,8 +6661,8 @@ export const getMethodResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMethodResponseRequest,
   output: MethodResponse,
@@ -6688,8 +6680,8 @@ export const getModels: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetModelsRequest,
@@ -6699,8 +6691,8 @@ export const getModels: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetModelsRequest,
@@ -6710,8 +6702,8 @@ export const getModels: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetModelsRequest,
@@ -6740,8 +6732,8 @@ export const getModelTemplate: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetModelTemplateRequest,
   output: Template,
@@ -6763,8 +6755,8 @@ export const getRequestValidators: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRequestValidatorsRequest,
   output: RequestValidators,
@@ -6787,8 +6779,8 @@ export const getResources: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourcesRequest,
@@ -6798,8 +6790,8 @@ export const getResources: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetResourcesRequest,
@@ -6809,8 +6801,8 @@ export const getResources: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourcesRequest,
@@ -6840,8 +6832,8 @@ export const getRestApis: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetRestApisRequest,
@@ -6851,8 +6843,8 @@ export const getRestApis: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetRestApisRequest,
@@ -6862,8 +6854,8 @@ export const getRestApis: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetRestApisRequest,
@@ -6892,8 +6884,8 @@ export const getSdkTypes: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSdkTypesRequest,
   output: SdkTypes,
@@ -6915,8 +6907,8 @@ export const getTags: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTagsRequest,
   output: Tags,
@@ -6938,8 +6930,8 @@ export const getUsagePlan: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUsagePlanRequest,
   output: UsagePlan,
@@ -6962,8 +6954,8 @@ export const getUsagePlanKeys: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetUsagePlanKeysRequest,
@@ -6973,8 +6965,8 @@ export const getUsagePlanKeys: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetUsagePlanKeysRequest,
@@ -6984,8 +6976,8 @@ export const getUsagePlanKeys: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetUsagePlanKeysRequest,
@@ -7015,8 +7007,8 @@ export const getUsagePlans: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetUsagePlansRequest,
@@ -7026,8 +7018,8 @@ export const getUsagePlans: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetUsagePlansRequest,
@@ -7037,8 +7029,8 @@ export const getUsagePlans: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetUsagePlansRequest,
@@ -7068,8 +7060,8 @@ export const getVpcLinks: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetVpcLinksRequest,
@@ -7079,8 +7071,8 @@ export const getVpcLinks: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetVpcLinksRequest,
@@ -7090,8 +7082,8 @@ export const getVpcLinks: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetVpcLinksRequest,
@@ -7120,8 +7112,8 @@ export const testInvokeMethod: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestInvokeMethodRequest,
   output: TestInvokeMethodResponse,
@@ -7144,8 +7136,8 @@ export const deleteAuthorizer: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAuthorizerRequest,
   output: DeleteAuthorizerResponse,
@@ -7169,8 +7161,8 @@ export const deleteBasePathMapping: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBasePathMappingRequest,
   output: DeleteBasePathMappingResponse,
@@ -7194,8 +7186,8 @@ export const deleteClientCertificate: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClientCertificateRequest,
   output: DeleteClientCertificateResponse,
@@ -7219,8 +7211,8 @@ export const deleteDocumentationPart: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDocumentationPartRequest,
   output: DeleteDocumentationPartResponse,
@@ -7244,8 +7236,8 @@ export const deleteDocumentationVersion: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDocumentationVersionRequest,
   output: DeleteDocumentationVersionResponse,
@@ -7269,8 +7261,8 @@ export const deleteDomainName: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainNameRequest,
   output: DeleteDomainNameResponse,
@@ -7296,8 +7288,8 @@ export const deleteDomainNameAccessAssociation: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainNameAccessAssociationRequest,
   output: DeleteDomainNameAccessAssociationResponse,
@@ -7321,8 +7313,8 @@ export const deleteGatewayResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGatewayResponseRequest,
   output: DeleteGatewayResponseResponse,
@@ -7346,8 +7338,8 @@ export const deleteIntegration: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIntegrationRequest,
   output: DeleteIntegrationResponse,
@@ -7371,8 +7363,8 @@ export const deleteIntegrationResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIntegrationResponseRequest,
   output: DeleteIntegrationResponseResponse,
@@ -7396,8 +7388,8 @@ export const deleteMethodResponse: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMethodResponseRequest,
   output: DeleteMethodResponseResponse,
@@ -7421,8 +7413,8 @@ export const deleteModel: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelRequest,
   output: DeleteModelResponse,
@@ -7446,8 +7438,8 @@ export const deleteRequestValidator: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRequestValidatorRequest,
   output: DeleteRequestValidatorResponse,
@@ -7471,8 +7463,8 @@ export const deleteResource: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceRequest,
   output: DeleteResourceResponse,
@@ -7496,8 +7488,8 @@ export const deleteRestApi: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRestApiRequest,
   output: DeleteRestApiResponse,
@@ -7521,8 +7513,8 @@ export const deleteUsagePlan: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUsagePlanRequest,
   output: DeleteUsagePlanResponse,
@@ -7546,8 +7538,8 @@ export const deleteUsagePlanKey: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUsagePlanKeyRequest,
   output: DeleteUsagePlanKeyResponse,
@@ -7571,8 +7563,8 @@ export const deleteVpcLink: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcLinkRequest,
   output: DeleteVpcLinkResponse,
@@ -7595,8 +7587,8 @@ export const getAccount: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountRequest,
   output: Account,
@@ -7618,8 +7610,8 @@ export const getAuthorizer: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAuthorizerRequest,
   output: Authorizer,
@@ -7641,8 +7633,8 @@ export const getBasePathMapping: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBasePathMappingRequest,
   output: BasePathMapping,
@@ -7664,8 +7656,8 @@ export const getClientCertificate: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetClientCertificateRequest,
   output: ClientCertificate,
@@ -7687,8 +7679,8 @@ export const getModel: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetModelRequest,
   output: Model,
@@ -7710,8 +7702,8 @@ export const getRequestValidator: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRequestValidatorRequest,
   output: RequestValidator,
@@ -7733,8 +7725,8 @@ export const getRestApi: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRestApiRequest,
   output: RestApi,
@@ -7756,8 +7748,8 @@ export const getUsagePlanKey: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUsagePlanKeyRequest,
   output: UsagePlanKey,
@@ -7779,8 +7771,8 @@ export const getVpcLink: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVpcLinkRequest,
   output: VpcLink,
@@ -7805,8 +7797,8 @@ export const rejectDomainNameAccessAssociation: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectDomainNameAccessAssociationRequest,
   output: RejectDomainNameAccessAssociationResponse,
@@ -7830,8 +7822,8 @@ export const updateMethod: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMethodRequest,
   output: Method,
@@ -7855,8 +7847,8 @@ export const updateResource: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResourceRequest,
   output: Resource,
@@ -7880,8 +7872,8 @@ export const deleteApiKey: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApiKeyRequest,
   output: DeleteApiKeyResponse,
@@ -7903,8 +7895,8 @@ export const getResource: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceRequest,
   output: Resource,
@@ -7921,8 +7913,8 @@ export const deleteMethod: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMethodRequest,
   output: DeleteMethodResponse,
@@ -7944,8 +7936,8 @@ export const getApiKey: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApiKeyRequest,
   output: ApiKey,
@@ -7968,8 +7960,8 @@ export const getApiKeys: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetApiKeysRequest,
@@ -7979,8 +7971,8 @@ export const getApiKeys: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetApiKeysRequest,
@@ -7990,8 +7982,8 @@ export const getApiKeys: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetApiKeysRequest,
@@ -8020,8 +8012,8 @@ export const getAuthorizers: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAuthorizersRequest,
   output: Authorizers,
@@ -8044,8 +8036,8 @@ export const getBasePathMappings: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetBasePathMappingsRequest,
@@ -8055,8 +8047,8 @@ export const getBasePathMappings: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetBasePathMappingsRequest,
@@ -8066,8 +8058,8 @@ export const getBasePathMappings: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetBasePathMappingsRequest,
@@ -8097,8 +8089,8 @@ export const getClientCertificates: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetClientCertificatesRequest,
@@ -8108,8 +8100,8 @@ export const getClientCertificates: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetClientCertificatesRequest,
@@ -8119,8 +8111,8 @@ export const getClientCertificates: {
     | NotFoundException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetClientCertificatesRequest,
@@ -8149,8 +8141,8 @@ export const getDocumentationPart: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentationPartRequest,
   output: DocumentationPart,
@@ -8172,8 +8164,8 @@ export const getDocumentationParts: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentationPartsRequest,
   output: DocumentationParts,
@@ -8196,8 +8188,8 @@ export const generateClientCertificate: (
   | LimitExceededException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GenerateClientCertificateRequest,
   output: ClientCertificate,
@@ -8223,8 +8215,8 @@ export const updateDeployment: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeploymentRequest,
   output: Deployment,
@@ -8252,8 +8244,8 @@ export const createDeployment: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeploymentRequest,
   output: Deployment,
@@ -8279,8 +8271,8 @@ export const getDeployment: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentRequest,
   output: Deployment,

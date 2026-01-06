@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors as Err,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "IoTTwinMaker",
@@ -3176,44 +3174,40 @@ export const BatchPutPropertyValuesResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class QueryTimeoutException extends S.TaggedError<QueryTimeoutException>()(
   "QueryTimeoutException",
   { message: S.optional(S.String) },
   T.Retryable(),
-) {}
+).pipe(C.withBadRequestError, C.withRetryableError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConnectorFailureException extends S.TaggedError<ConnectorFailureException>()(
   "ConnectorFailureException",
   { message: S.optional(S.String) },
@@ -3231,8 +3225,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  AccessDeniedException | ResourceNotFoundException | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3245,8 +3239,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  AccessDeniedException | ResourceNotFoundException | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3262,8 +3256,8 @@ export const tagResource: (
   | AccessDeniedException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3284,8 +3278,8 @@ export const getPricingPlan: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPricingPlanRequest,
   output: GetPricingPlanResponse,
@@ -3309,8 +3303,8 @@ export const listComponents: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListComponentsRequest,
@@ -3321,8 +3315,8 @@ export const listComponents: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListComponentsRequest,
@@ -3333,8 +3327,8 @@ export const listComponents: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComponentsRequest,
@@ -3365,8 +3359,8 @@ export const listSyncResources: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSyncResourcesRequest,
@@ -3377,8 +3371,8 @@ export const listSyncResources: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSyncResourcesRequest,
@@ -3389,8 +3383,8 @@ export const listSyncResources: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSyncResourcesRequest,
@@ -3420,8 +3414,8 @@ export const listComponentTypes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListComponentTypesRequest,
@@ -3431,8 +3425,8 @@ export const listComponentTypes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListComponentTypesRequest,
@@ -3442,8 +3436,8 @@ export const listComponentTypes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComponentTypesRequest,
@@ -3472,8 +3466,8 @@ export const listMetadataTransferJobs: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMetadataTransferJobsRequest,
@@ -3483,8 +3477,8 @@ export const listMetadataTransferJobs: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMetadataTransferJobsRequest,
@@ -3494,8 +3488,8 @@ export const listMetadataTransferJobs: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMetadataTransferJobsRequest,
@@ -3525,8 +3519,8 @@ export const listSyncJobs: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSyncJobsRequest,
@@ -3537,8 +3531,8 @@ export const listSyncJobs: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSyncJobsRequest,
@@ -3549,8 +3543,8 @@ export const listSyncJobs: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSyncJobsRequest,
@@ -3582,8 +3576,8 @@ export const updateEntity: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEntityRequest,
   output: UpdateEntityResponse,
@@ -3609,8 +3603,8 @@ export const listScenes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListScenesRequest,
@@ -3620,8 +3614,8 @@ export const listScenes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListScenesRequest,
@@ -3631,8 +3625,8 @@ export const listScenes: {
     | InternalServerException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListScenesRequest,
@@ -3661,8 +3655,8 @@ export const deleteScene: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSceneRequest,
   output: DeleteSceneResponse,
@@ -3686,8 +3680,8 @@ export const deleteWorkspace: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceRequest,
   output: DeleteWorkspaceResponse,
@@ -3711,8 +3705,8 @@ export const getMetadataTransferJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMetadataTransferJobRequest,
   output: GetMetadataTransferJobResponse,
@@ -3735,8 +3729,8 @@ export const updatePricingPlan: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePricingPlanRequest,
   output: UpdatePricingPlanResponse,
@@ -3759,8 +3753,8 @@ export const updateScene: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSceneRequest,
   output: UpdateSceneResponse,
@@ -3784,8 +3778,8 @@ export const deleteComponentType: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteComponentTypeRequest,
   output: DeleteComponentTypeResponse,
@@ -3809,8 +3803,8 @@ export const getScene: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSceneRequest,
   output: GetSceneResponse,
@@ -3835,8 +3829,8 @@ export const listProperties: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPropertiesRequest,
@@ -3847,8 +3841,8 @@ export const listProperties: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPropertiesRequest,
@@ -3859,8 +3853,8 @@ export const listProperties: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPropertiesRequest,
@@ -3891,8 +3885,8 @@ export const cancelMetadataTransferJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMetadataTransferJobRequest,
   output: CancelMetadataTransferJobResponse,
@@ -3917,8 +3911,8 @@ export const getComponentType: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComponentTypeRequest,
   output: GetComponentTypeResponse,
@@ -3942,8 +3936,8 @@ export const listWorkspaces: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkspacesRequest,
@@ -3953,8 +3947,8 @@ export const listWorkspaces: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkspacesRequest,
@@ -3964,8 +3958,8 @@ export const listWorkspaces: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkspacesRequest,
@@ -3995,8 +3989,8 @@ export const deleteSyncJob: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSyncJobRequest,
   output: DeleteSyncJobResponse,
@@ -4021,8 +4015,8 @@ export const getWorkspace: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkspaceRequest,
   output: GetWorkspaceResponse,
@@ -4047,8 +4041,8 @@ export const updateComponentType: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateComponentTypeRequest,
   output: UpdateComponentTypeResponse,
@@ -4074,8 +4068,8 @@ export const updateWorkspace: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWorkspaceRequest,
   output: UpdateWorkspaceResponse,
@@ -4101,8 +4095,8 @@ export const createSyncJob: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSyncJobRequest,
   output: CreateSyncJobResponse,
@@ -4127,8 +4121,8 @@ export const deleteEntity: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEntityRequest,
   output: DeleteEntityResponse,
@@ -4153,8 +4147,8 @@ export const getSyncJob: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSyncJobRequest,
   output: GetSyncJobResponse,
@@ -4180,8 +4174,8 @@ export const createWorkspace: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkspaceRequest,
   output: CreateWorkspaceResponse,
@@ -4207,8 +4201,8 @@ export const createScene: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSceneRequest,
   output: CreateSceneResponse,
@@ -4239,8 +4233,8 @@ export const executeQuery: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ExecuteQueryRequest,
@@ -4252,8 +4246,8 @@ export const executeQuery: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ExecuteQueryRequest,
@@ -4265,8 +4259,8 @@ export const executeQuery: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ExecuteQueryRequest,
@@ -4297,8 +4291,8 @@ export const listEntities: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEntitiesRequest,
@@ -4308,8 +4302,8 @@ export const listEntities: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEntitiesRequest,
@@ -4319,8 +4313,8 @@ export const listEntities: {
     | ServiceQuotaExceededException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEntitiesRequest,
@@ -4350,8 +4344,8 @@ export const createComponentType: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateComponentTypeRequest,
   output: CreateComponentTypeResponse,
@@ -4377,8 +4371,8 @@ export const createEntity: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEntityRequest,
   output: CreateEntityResponse,
@@ -4405,8 +4399,8 @@ export const createMetadataTransferJob: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMetadataTransferJobRequest,
   output: CreateMetadataTransferJobResponse,
@@ -4432,8 +4426,8 @@ export const getEntity: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEntityRequest,
   output: GetEntityResponse,
@@ -4456,8 +4450,8 @@ export const batchPutPropertyValues: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchPutPropertyValuesRequest,
   output: BatchPutPropertyValuesResponse,
@@ -4486,8 +4480,8 @@ export const getPropertyValue: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetPropertyValueRequest,
@@ -4500,8 +4494,8 @@ export const getPropertyValue: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetPropertyValueRequest,
@@ -4514,8 +4508,8 @@ export const getPropertyValue: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetPropertyValueRequest,
@@ -4555,8 +4549,8 @@ export const getPropertyValueHistory: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetPropertyValueHistoryRequest,
@@ -4569,8 +4563,8 @@ export const getPropertyValueHistory: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetPropertyValueHistoryRequest,
@@ -4583,8 +4577,8 @@ export const getPropertyValueHistory: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetPropertyValueHistoryRequest,

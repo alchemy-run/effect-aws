@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Backup",
@@ -6173,7 +6171,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     Context: S.optional(S.String),
   },
   T.AwsQueryError({ code: "ConflictException", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   {
@@ -6257,8 +6255,8 @@ export const getSupportedResourceTypes: (
   input: GetSupportedResourceTypesRequest,
 ) => Effect.Effect<
   GetSupportedResourceTypesOutput,
-  ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ServiceUnavailableException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSupportedResourceTypesRequest,
   output: GetSupportedResourceTypesOutput,
@@ -6272,28 +6270,22 @@ export const listCopyJobs: {
     input: ListCopyJobsInput,
   ): Effect.Effect<
     ListCopyJobsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListCopyJobsInput,
   ) => Stream.Stream<
     ListCopyJobsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListCopyJobsInput,
   ) => Stream.Stream<
     CopyJob,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCopyJobsInput,
@@ -6317,8 +6309,8 @@ export const listProtectedResourcesByBackupVault: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListProtectedResourcesByBackupVaultInput,
@@ -6327,8 +6319,8 @@ export const listProtectedResourcesByBackupVault: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListProtectedResourcesByBackupVaultInput,
@@ -6337,8 +6329,8 @@ export const listProtectedResourcesByBackupVault: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProtectedResourcesByBackupVaultInput,
@@ -6366,8 +6358,8 @@ export const listReportJobs: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListReportJobsInput,
@@ -6376,8 +6368,8 @@ export const listReportJobs: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListReportJobsInput,
@@ -6386,8 +6378,8 @@ export const listReportJobs: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReportJobsInput,
@@ -6412,28 +6404,22 @@ export const listReportPlans: {
     input: ListReportPlansInput,
   ): Effect.Effect<
     ListReportPlansOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListReportPlansInput,
   ) => Stream.Stream<
     ListReportPlansOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListReportPlansInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReportPlansInput,
@@ -6455,8 +6441,8 @@ export const deleteRestoreTestingPlan: (
   input: DeleteRestoreTestingPlanInput,
 ) => Effect.Effect<
   DeleteRestoreTestingPlanResponse,
-  InvalidRequestException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ServiceUnavailableException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRestoreTestingPlanInput,
   output: DeleteRestoreTestingPlanResponse,
@@ -6473,8 +6459,8 @@ export const deleteRestoreTestingSelection: (
   input: DeleteRestoreTestingSelectionInput,
 ) => Effect.Effect<
   DeleteRestoreTestingSelectionResponse,
-  ResourceNotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRestoreTestingSelectionInput,
   output: DeleteRestoreTestingSelectionResponse,
@@ -6489,8 +6475,8 @@ export const describeGlobalSettings: (
   input: DescribeGlobalSettingsInput,
 ) => Effect.Effect<
   DescribeGlobalSettingsOutput,
-  InvalidRequestException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ServiceUnavailableException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGlobalSettingsInput,
   output: DescribeGlobalSettingsOutput,
@@ -6507,8 +6493,8 @@ export const describeRegionSettings: (
   input: DescribeRegionSettingsInput,
 ) => Effect.Effect<
   DescribeRegionSettingsOutput,
-  ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ServiceUnavailableException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRegionSettingsInput,
   output: DescribeRegionSettingsOutput,
@@ -6526,8 +6512,8 @@ export const deleteFramework: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFrameworkInput,
   output: DeleteFrameworkResponse,
@@ -6550,8 +6536,8 @@ export const describeBackupVault: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBackupVaultInput,
   output: DescribeBackupVaultOutput,
@@ -6574,8 +6560,8 @@ export const describeRecoveryPoint: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRecoveryPointInput,
   output: DescribeRecoveryPointOutput,
@@ -6597,8 +6583,8 @@ export const describeReportPlan: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReportPlanInput,
   output: DescribeReportPlanOutput,
@@ -6620,8 +6606,8 @@ export const describeScanJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeScanJobInput,
   output: DescribeScanJobOutput,
@@ -6644,8 +6630,8 @@ export const getBackupPlanFromJSON: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackupPlanFromJSONInput,
   output: GetBackupPlanFromJSONOutput,
@@ -6666,8 +6652,8 @@ export const getRestoreTestingPlan: (
   input: GetRestoreTestingPlanInput,
 ) => Effect.Effect<
   GetRestoreTestingPlanOutput,
-  ResourceNotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRestoreTestingPlanInput,
   output: GetRestoreTestingPlanOutput,
@@ -6681,8 +6667,8 @@ export const getRestoreTestingSelection: (
   input: GetRestoreTestingSelectionInput,
 ) => Effect.Effect<
   GetRestoreTestingSelectionOutput,
-  ResourceNotFoundException | ServiceUnavailableException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ServiceUnavailableException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRestoreTestingSelectionInput,
   output: GetRestoreTestingSelectionOutput,
@@ -6701,8 +6687,8 @@ export const getTieringConfiguration: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTieringConfigurationInput,
   output: GetTieringConfigurationOutput,
@@ -6722,28 +6708,22 @@ export const listBackupJobs: {
     input: ListBackupJobsInput,
   ): Effect.Effect<
     ListBackupJobsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBackupJobsInput,
   ) => Stream.Stream<
     ListBackupJobsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBackupJobsInput,
   ) => Stream.Stream<
     BackupJob,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBackupJobsInput,
@@ -6772,28 +6752,22 @@ export const listBackupJobSummaries: {
     input: ListBackupJobSummariesInput,
   ): Effect.Effect<
     ListBackupJobSummariesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBackupJobSummariesInput,
   ) => Stream.Stream<
     ListBackupJobSummariesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBackupJobSummariesInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBackupJobSummariesInput,
@@ -6817,8 +6791,8 @@ export const listBackupPlans: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBackupPlansInput,
@@ -6828,8 +6802,8 @@ export const listBackupPlans: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBackupPlansInput,
@@ -6839,8 +6813,8 @@ export const listBackupPlans: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBackupPlansInput,
@@ -6870,8 +6844,8 @@ export const listBackupPlanTemplates: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBackupPlanTemplatesInput,
@@ -6881,8 +6855,8 @@ export const listBackupPlanTemplates: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBackupPlanTemplatesInput,
@@ -6892,8 +6866,8 @@ export const listBackupPlanTemplates: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBackupPlanTemplatesInput,
@@ -6924,8 +6898,8 @@ export const listBackupSelections: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBackupSelectionsInput,
@@ -6935,8 +6909,8 @@ export const listBackupSelections: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBackupSelectionsInput,
@@ -6946,8 +6920,8 @@ export const listBackupSelections: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBackupSelectionsInput,
@@ -6978,8 +6952,8 @@ export const listBackupVaults: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBackupVaultsInput,
@@ -6989,8 +6963,8 @@ export const listBackupVaults: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBackupVaultsInput,
@@ -7000,8 +6974,8 @@ export const listBackupVaults: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBackupVaultsInput,
@@ -7035,28 +7009,22 @@ export const listCopyJobSummaries: {
     input: ListCopyJobSummariesInput,
   ): Effect.Effect<
     ListCopyJobSummariesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListCopyJobSummariesInput,
   ) => Stream.Stream<
     ListCopyJobSummariesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListCopyJobSummariesInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCopyJobSummariesInput,
@@ -7076,28 +7044,22 @@ export const listFrameworks: {
     input: ListFrameworksInput,
   ): Effect.Effect<
     ListFrameworksOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListFrameworksInput,
   ) => Stream.Stream<
     ListFrameworksOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListFrameworksInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFrameworksInput,
@@ -7125,8 +7087,8 @@ export const listIndexedRecoveryPoints: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListIndexedRecoveryPointsInput,
@@ -7135,8 +7097,8 @@ export const listIndexedRecoveryPoints: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListIndexedRecoveryPointsInput,
@@ -7145,8 +7107,8 @@ export const listIndexedRecoveryPoints: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIndexedRecoveryPointsInput,
@@ -7171,28 +7133,22 @@ export const listLegalHolds: {
     input: ListLegalHoldsInput,
   ): Effect.Effect<
     ListLegalHoldsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListLegalHoldsInput,
   ) => Stream.Stream<
     ListLegalHoldsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListLegalHoldsInput,
   ) => Stream.Stream<
     LegalHold,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLegalHoldsInput,
@@ -7215,28 +7171,22 @@ export const listProtectedResources: {
     input: ListProtectedResourcesInput,
   ): Effect.Effect<
     ListProtectedResourcesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListProtectedResourcesInput,
   ) => Stream.Stream<
     ListProtectedResourcesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListProtectedResourcesInput,
   ) => Stream.Stream<
     ProtectedResource,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProtectedResourcesInput,
@@ -7261,8 +7211,8 @@ export const listRecoveryPointsByLegalHold: {
     | InvalidParameterValueException
     | MissingParameterValueException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecoveryPointsByLegalHoldInput,
@@ -7271,8 +7221,8 @@ export const listRecoveryPointsByLegalHold: {
     | InvalidParameterValueException
     | MissingParameterValueException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRecoveryPointsByLegalHoldInput,
@@ -7281,8 +7231,8 @@ export const listRecoveryPointsByLegalHold: {
     | InvalidParameterValueException
     | MissingParameterValueException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecoveryPointsByLegalHoldInput,
@@ -7315,8 +7265,8 @@ export const listRecoveryPointsByResource: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecoveryPointsByResourceInput,
@@ -7326,8 +7276,8 @@ export const listRecoveryPointsByResource: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRecoveryPointsByResourceInput,
@@ -7337,8 +7287,8 @@ export const listRecoveryPointsByResource: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecoveryPointsByResourceInput,
@@ -7369,8 +7319,8 @@ export const listRestoreJobs: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRestoreJobsInput,
@@ -7380,8 +7330,8 @@ export const listRestoreJobs: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRestoreJobsInput,
@@ -7391,8 +7341,8 @@ export const listRestoreJobs: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreJobsInput,
@@ -7426,28 +7376,22 @@ export const listRestoreJobSummaries: {
     input: ListRestoreJobSummariesInput,
   ): Effect.Effect<
     ListRestoreJobSummariesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRestoreJobSummariesInput,
   ) => Stream.Stream<
     ListRestoreJobSummariesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRestoreJobSummariesInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreJobSummariesInput,
@@ -7467,28 +7411,22 @@ export const listRestoreTestingPlans: {
     input: ListRestoreTestingPlansInput,
   ): Effect.Effect<
     ListRestoreTestingPlansOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRestoreTestingPlansInput,
   ) => Stream.Stream<
     ListRestoreTestingPlansOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRestoreTestingPlansInput,
   ) => Stream.Stream<
     RestoreTestingPlanForList,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreTestingPlansInput,
@@ -7513,8 +7451,8 @@ export const listRestoreTestingSelections: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRestoreTestingSelectionsInput,
@@ -7523,8 +7461,8 @@ export const listRestoreTestingSelections: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRestoreTestingSelectionsInput,
@@ -7533,8 +7471,8 @@ export const listRestoreTestingSelections: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreTestingSelectionsInput,
@@ -7559,28 +7497,22 @@ export const listScanJobs: {
     input: ListScanJobsInput,
   ): Effect.Effect<
     ListScanJobsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListScanJobsInput,
   ) => Stream.Stream<
     ListScanJobsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListScanJobsInput,
   ) => Stream.Stream<
     ScanJob,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListScanJobsInput,
@@ -7601,28 +7533,22 @@ export const listScanJobSummaries: {
     input: ListScanJobSummariesInput,
   ): Effect.Effect<
     ListScanJobSummariesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListScanJobSummariesInput,
   ) => Stream.Stream<
     ListScanJobSummariesOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListScanJobSummariesInput,
   ) => Stream.Stream<
     ScanJobSummary,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListScanJobSummariesInput,
@@ -7643,28 +7569,22 @@ export const listTieringConfigurations: {
     input: ListTieringConfigurationsInput,
   ): Effect.Effect<
     ListTieringConfigurationsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTieringConfigurationsInput,
   ) => Stream.Stream<
     ListTieringConfigurationsOutput,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTieringConfigurationsInput,
   ) => Stream.Stream<
     TieringConfigurationsListMember,
-    | InvalidParameterValueException
-    | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceUnavailableException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTieringConfigurationsInput,
@@ -7690,8 +7610,8 @@ export const startBackupJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartBackupJobInput,
   output: StartBackupJobOutput,
@@ -7716,8 +7636,8 @@ export const startRestoreJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRestoreJobInput,
   output: StartRestoreJobOutput,
@@ -7755,8 +7675,8 @@ export const updateRestoreTestingPlan: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRestoreTestingPlanInput,
   output: UpdateRestoreTestingPlanOutput,
@@ -7785,8 +7705,8 @@ export const updateRestoreTestingSelection: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRestoreTestingSelectionInput,
   output: UpdateRestoreTestingSelectionOutput,
@@ -7822,8 +7742,8 @@ export const updateTieringConfiguration: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTieringConfigurationInput,
   output: UpdateTieringConfigurationOutput,
@@ -7850,8 +7770,8 @@ export const cancelLegalHold: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelLegalHoldInput,
   output: CancelLegalHoldOutput,
@@ -7883,8 +7803,8 @@ export const createLogicallyAirGappedBackupVault: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLogicallyAirGappedBackupVaultInput,
   output: CreateLogicallyAirGappedBackupVaultOutput,
@@ -7911,8 +7831,8 @@ export const createRestoreAccessBackupVault: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRestoreAccessBackupVaultInput,
   output: CreateRestoreAccessBackupVaultOutput,
@@ -7940,8 +7860,8 @@ export const updateFramework: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFrameworkInput,
   output: UpdateFrameworkOutput,
@@ -7966,8 +7886,8 @@ export const describeFramework: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFrameworkInput,
   output: DescribeFrameworkOutput,
@@ -7991,8 +7911,8 @@ export const describeProtectedResource: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProtectedResourceInput,
   output: DescribeProtectedResourceOutput,
@@ -8014,8 +7934,8 @@ export const exportBackupPlanTemplate: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportBackupPlanTemplateInput,
   output: ExportBackupPlanTemplateOutput,
@@ -8037,8 +7957,8 @@ export const getBackupPlanFromTemplate: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackupPlanFromTemplateInput,
   output: GetBackupPlanFromTemplateOutput,
@@ -8061,8 +7981,8 @@ export const getBackupSelection: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackupSelectionInput,
   output: GetBackupSelectionOutput,
@@ -8085,8 +8005,8 @@ export const getBackupVaultAccessPolicy: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackupVaultAccessPolicyInput,
   output: GetBackupVaultAccessPolicyOutput,
@@ -8108,8 +8028,8 @@ export const getBackupVaultNotifications: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackupVaultNotificationsInput,
   output: GetBackupVaultNotificationsOutput,
@@ -8132,8 +8052,8 @@ export const getLegalHold: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLegalHoldInput,
   output: GetLegalHoldOutput,
@@ -8156,8 +8076,8 @@ export const getRecoveryPointIndexDetails: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRecoveryPointIndexDetailsInput,
   output: GetRecoveryPointIndexDetailsOutput,
@@ -8179,8 +8099,8 @@ export const getRecoveryPointRestoreMetadata: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRecoveryPointRestoreMetadataInput,
   output: GetRecoveryPointRestoreMetadataOutput,
@@ -8202,8 +8122,8 @@ export const getRestoreJobMetadata: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRestoreJobMetadataInput,
   output: GetRestoreJobMetadataOutput,
@@ -8228,8 +8148,8 @@ export const getRestoreTestingInferredMetadata: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRestoreTestingInferredMetadataInput,
   output: GetRestoreTestingInferredMetadataOutput,
@@ -8253,8 +8173,8 @@ export const listBackupPlanVersions: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBackupPlanVersionsInput,
@@ -8264,8 +8184,8 @@ export const listBackupPlanVersions: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBackupPlanVersionsInput,
@@ -8275,8 +8195,8 @@ export const listBackupPlanVersions: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBackupPlanVersionsInput,
@@ -8311,8 +8231,8 @@ export const listRestoreJobsByProtectedResource: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRestoreJobsByProtectedResourceInput,
@@ -8322,8 +8242,8 @@ export const listRestoreJobsByProtectedResource: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRestoreJobsByProtectedResourceInput,
@@ -8333,8 +8253,8 @@ export const listRestoreJobsByProtectedResource: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreJobsByProtectedResourceInput,
@@ -8378,8 +8298,8 @@ export const listTags: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsInput,
@@ -8389,8 +8309,8 @@ export const listTags: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsInput,
@@ -8400,8 +8320,8 @@ export const listTags: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsInput,
@@ -8429,8 +8349,8 @@ export const startReportJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReportJobInput,
   output: StartReportJobOutput,
@@ -8452,8 +8372,8 @@ export const updateBackupPlan: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBackupPlanInput,
   output: UpdateBackupPlanOutput,
@@ -8478,8 +8398,8 @@ export const updateRecoveryPointIndexSettings: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRecoveryPointIndexSettingsInput,
   output: UpdateRecoveryPointIndexSettingsOutput,
@@ -8521,8 +8441,8 @@ export const updateRecoveryPointLifecycle: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRecoveryPointLifecycleInput,
   output: UpdateRecoveryPointLifecycleOutput,
@@ -8546,8 +8466,8 @@ export const updateReportPlan: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReportPlanInput,
   output: UpdateReportPlanOutput,
@@ -8571,8 +8491,8 @@ export const deleteBackupSelection: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupSelectionInput,
   output: DeleteBackupSelectionResponse,
@@ -8596,8 +8516,8 @@ export const deleteBackupVault: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupVaultInput,
   output: DeleteBackupVaultResponse,
@@ -8620,8 +8540,8 @@ export const deleteBackupVaultAccessPolicy: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupVaultAccessPolicyInput,
   output: DeleteBackupVaultAccessPolicyResponse,
@@ -8650,8 +8570,8 @@ export const deleteBackupVaultLockConfiguration: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupVaultLockConfigurationInput,
   output: DeleteBackupVaultLockConfigurationResponse,
@@ -8674,8 +8594,8 @@ export const deleteBackupVaultNotifications: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupVaultNotificationsInput,
   output: DeleteBackupVaultNotificationsResponse,
@@ -8697,8 +8617,8 @@ export const deleteTieringConfiguration: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTieringConfigurationInput,
   output: DeleteTieringConfigurationOutput,
@@ -8721,8 +8641,8 @@ export const disassociateBackupVaultMpaApprovalTeam: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateBackupVaultMpaApprovalTeamInput,
   output: DisassociateBackupVaultMpaApprovalTeamResponse,
@@ -8747,8 +8667,8 @@ export const disassociateRecoveryPointFromParent: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateRecoveryPointFromParentInput,
   output: DisassociateRecoveryPointFromParentResponse,
@@ -8773,8 +8693,8 @@ export const putBackupVaultAccessPolicy: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBackupVaultAccessPolicyInput,
   output: PutBackupVaultAccessPolicyResponse,
@@ -8809,8 +8729,8 @@ export const putBackupVaultLockConfiguration: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBackupVaultLockConfigurationInput,
   output: PutBackupVaultLockConfigurationResponse,
@@ -8833,8 +8753,8 @@ export const putBackupVaultNotifications: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBackupVaultNotificationsInput,
   output: PutBackupVaultNotificationsResponse,
@@ -8861,8 +8781,8 @@ export const putRestoreValidationResult: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRestoreValidationResultInput,
   output: PutRestoreValidationResultResponse,
@@ -8886,8 +8806,8 @@ export const revokeRestoreAccessBackupVault: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeRestoreAccessBackupVaultInput,
   output: RevokeRestoreAccessBackupVaultResponse,
@@ -8931,8 +8851,8 @@ export const stopBackupJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopBackupJobInput,
   output: StopBackupJobResponse,
@@ -8960,8 +8880,8 @@ export const untagResource: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -8985,8 +8905,8 @@ export const updateGlobalSettings: (
   | InvalidRequestException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGlobalSettingsInput,
   output: UpdateGlobalSettingsResponse,
@@ -9011,8 +8931,8 @@ export const updateRegionSettings: (
   | InvalidParameterValueException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRegionSettingsInput,
   output: UpdateRegionSettingsResponse,
@@ -9034,8 +8954,8 @@ export const deleteReportPlan: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReportPlanInput,
   output: DeleteReportPlanResponse,
@@ -9059,8 +8979,8 @@ export const associateBackupVaultMpaApprovalTeam: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateBackupVaultMpaApprovalTeamInput,
   output: AssociateBackupVaultMpaApprovalTeamResponse,
@@ -9086,8 +9006,8 @@ export const deleteBackupPlan: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupPlanInput,
   output: DeleteBackupPlanOutput,
@@ -9118,8 +9038,8 @@ export const startCopyJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCopyJobInput,
   output: StartCopyJobOutput,
@@ -9145,8 +9065,8 @@ export const startScanJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartScanJobInput,
   output: StartScanJobOutput,
@@ -9171,8 +9091,8 @@ export const tagResource: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -9201,8 +9121,8 @@ export const createBackupVault: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackupVaultInput,
   output: CreateBackupVaultOutput,
@@ -9230,8 +9150,8 @@ export const createReportPlan: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReportPlanInput,
   output: CreateReportPlanOutput,
@@ -9271,8 +9191,8 @@ export const deleteRecoveryPoint: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRecoveryPointInput,
   output: DeleteRecoveryPointResponse,
@@ -9302,8 +9222,8 @@ export const disassociateRecoveryPoint: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateRecoveryPointInput,
   output: DisassociateRecoveryPointResponse,
@@ -9331,8 +9251,8 @@ export const createFramework: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFrameworkInput,
   output: CreateFrameworkOutput,
@@ -9358,8 +9278,8 @@ export const createLegalHold: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLegalHoldInput,
   output: CreateLegalHoldOutput,
@@ -9387,8 +9307,8 @@ export const createRestoreTestingPlan: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRestoreTestingPlanInput,
   output: CreateRestoreTestingPlanOutput,
@@ -9418,8 +9338,8 @@ export const createTieringConfiguration: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTieringConfigurationInput,
   output: CreateTieringConfigurationOutput,
@@ -9444,8 +9364,8 @@ export const describeBackupJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBackupJobInput,
   output: DescribeBackupJobOutput,
@@ -9468,8 +9388,8 @@ export const describeCopyJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCopyJobInput,
   output: DescribeCopyJobOutput,
@@ -9491,8 +9411,8 @@ export const describeReportJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReportJobInput,
   output: DescribeReportJobOutput,
@@ -9514,8 +9434,8 @@ export const getBackupPlan: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackupPlanInput,
   output: GetBackupPlanOutput,
@@ -9538,8 +9458,8 @@ export const listRecoveryPointsByBackupVault: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecoveryPointsByBackupVaultInput,
@@ -9549,8 +9469,8 @@ export const listRecoveryPointsByBackupVault: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRecoveryPointsByBackupVaultInput,
@@ -9560,8 +9480,8 @@ export const listRecoveryPointsByBackupVault: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecoveryPointsByBackupVaultInput,
@@ -9591,8 +9511,8 @@ export const listRestoreAccessBackupVaults: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRestoreAccessBackupVaultsInput,
@@ -9602,8 +9522,8 @@ export const listRestoreAccessBackupVaults: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRestoreAccessBackupVaultsInput,
@@ -9613,8 +9533,8 @@ export const listRestoreAccessBackupVaults: {
     | MissingParameterValueException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRestoreAccessBackupVaultsInput,
@@ -9644,8 +9564,8 @@ export const describeRestoreJob: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRestoreJobInput,
   output: DescribeRestoreJobOutput,
@@ -9674,8 +9594,8 @@ export const createBackupPlan: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackupPlanInput,
   output: CreateBackupPlanOutput,
@@ -9700,8 +9620,8 @@ export const createBackupSelection: (
   | LimitExceededException
   | MissingParameterValueException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackupSelectionInput,
   output: CreateBackupSelectionOutput,
@@ -9745,8 +9665,8 @@ export const createRestoreTestingSelection: (
   | MissingParameterValueException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRestoreTestingSelectionInput,
   output: CreateRestoreTestingSelectionOutput,

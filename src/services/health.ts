@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Health",
@@ -1303,8 +1301,8 @@ export const describeHealthServiceStatusForOrganization: (
   input: DescribeHealthServiceStatusForOrganizationRequest,
 ) => Effect.Effect<
   DescribeHealthServiceStatusForOrganizationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHealthServiceStatusForOrganizationRequest,
   output: DescribeHealthServiceStatusForOrganizationResponse,
@@ -1330,8 +1328,8 @@ export const disableHealthServiceAccessForOrganization: (
   input: DisableHealthServiceAccessForOrganizationRequest,
 ) => Effect.Effect<
   DisableHealthServiceAccessForOrganizationResponse,
-  ConcurrentModificationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConcurrentModificationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableHealthServiceAccessForOrganizationRequest,
   output: DisableHealthServiceAccessForOrganizationResponse,
@@ -1363,8 +1361,8 @@ export const enableHealthServiceAccessForOrganization: (
   input: EnableHealthServiceAccessForOrganizationRequest,
 ) => Effect.Effect<
   EnableHealthServiceAccessForOrganizationResponse,
-  ConcurrentModificationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConcurrentModificationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableHealthServiceAccessForOrganizationRequest,
   output: EnableHealthServiceAccessForOrganizationResponse,
@@ -1386,22 +1384,22 @@ export const describeAffectedAccountsForOrganization: {
     input: DescribeAffectedAccountsForOrganizationRequest,
   ): Effect.Effect<
     DescribeAffectedAccountsForOrganizationResponse,
-    InvalidPaginationToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAffectedAccountsForOrganizationRequest,
   ) => Stream.Stream<
     DescribeAffectedAccountsForOrganizationResponse,
-    InvalidPaginationToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAffectedAccountsForOrganizationRequest,
   ) => Stream.Stream<
     accountId,
-    InvalidPaginationToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedAccountsForOrganizationRequest,
@@ -1421,8 +1419,8 @@ export const describeEntityAggregates: (
   input: DescribeEntityAggregatesRequest,
 ) => Effect.Effect<
   DescribeEntityAggregatesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntityAggregatesRequest,
   output: DescribeEntityAggregatesResponse,
@@ -1435,8 +1433,8 @@ export const describeEntityAggregatesForOrganization: (
   input: DescribeEntityAggregatesForOrganizationRequest,
 ) => Effect.Effect<
   DescribeEntityAggregatesForOrganizationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntityAggregatesForOrganizationRequest,
   output: DescribeEntityAggregatesForOrganizationResponse,
@@ -1454,22 +1452,22 @@ export const describeEventAggregates: {
     input: DescribeEventAggregatesRequest,
   ): Effect.Effect<
     DescribeEventAggregatesResponse,
-    InvalidPaginationToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventAggregatesRequest,
   ) => Stream.Stream<
     DescribeEventAggregatesResponse,
-    InvalidPaginationToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventAggregatesRequest,
   ) => Stream.Stream<
     EventAggregate,
-    InvalidPaginationToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventAggregatesRequest,
@@ -1516,8 +1514,8 @@ export const describeEventDetailsForOrganization: (
   input: DescribeEventDetailsForOrganizationRequest,
 ) => Effect.Effect<
   DescribeEventDetailsForOrganizationResponse,
-  UnsupportedLocale | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  UnsupportedLocale | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventDetailsForOrganizationRequest,
   output: DescribeEventDetailsForOrganizationResponse,
@@ -1553,22 +1551,22 @@ export const describeEventsForOrganization: {
     input: DescribeEventsForOrganizationRequest,
   ): Effect.Effect<
     DescribeEventsForOrganizationResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsForOrganizationRequest,
   ) => Stream.Stream<
     DescribeEventsForOrganizationResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsForOrganizationRequest,
   ) => Stream.Stream<
     OrganizationEvent,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsForOrganizationRequest,
@@ -1595,22 +1593,22 @@ export const describeEventTypes: {
     input: DescribeEventTypesRequest,
   ): Effect.Effect<
     DescribeEventTypesResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventTypesRequest,
   ) => Stream.Stream<
     DescribeEventTypesResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventTypesRequest,
   ) => Stream.Stream<
     EventType,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventTypesRequest,
@@ -1648,22 +1646,22 @@ export const describeEvents: {
     input: DescribeEventsRequest,
   ): Effect.Effect<
     DescribeEventsResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsRequest,
   ) => Stream.Stream<
     DescribeEventsResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsRequest,
   ) => Stream.Stream<
     Event,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsRequest,
@@ -1695,22 +1693,22 @@ export const describeAffectedEntities: {
     input: DescribeAffectedEntitiesRequest,
   ): Effect.Effect<
     DescribeAffectedEntitiesResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAffectedEntitiesRequest,
   ) => Stream.Stream<
     DescribeAffectedEntitiesResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAffectedEntitiesRequest,
   ) => Stream.Stream<
     AffectedEntity,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedEntitiesRequest,
@@ -1739,8 +1737,8 @@ export const describeEventDetails: (
   input: DescribeEventDetailsRequest,
 ) => Effect.Effect<
   DescribeEventDetailsResponse,
-  UnsupportedLocale | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  UnsupportedLocale | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventDetailsRequest,
   output: DescribeEventDetailsResponse,
@@ -1768,22 +1766,22 @@ export const describeAffectedEntitiesForOrganization: {
     input: DescribeAffectedEntitiesForOrganizationRequest,
   ): Effect.Effect<
     DescribeAffectedEntitiesForOrganizationResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAffectedEntitiesForOrganizationRequest,
   ) => Stream.Stream<
     DescribeAffectedEntitiesForOrganizationResponse,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAffectedEntitiesForOrganizationRequest,
   ) => Stream.Stream<
     AffectedEntity,
-    InvalidPaginationToken | UnsupportedLocale | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidPaginationToken | UnsupportedLocale | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedEntitiesForOrganizationRequest,

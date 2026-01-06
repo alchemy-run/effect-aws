@@ -54,7 +54,7 @@ class SdkFile extends Context.Tag("SdkFile")<
     // Import reference names (resolved based on conflicts)
     credsRef: string;
     rgnRef: string;
-    errRef: string;
+    commonErrorsRef: string;
     streamRef: string;
     // Map of newtype names to their underlying TypeScript type (e.g., PhoneNumber -> string)
     newtypes: Ref.Ref<Map<string, string>>;
@@ -600,6 +600,8 @@ function findCyclicSchemasFromDeps(
   const allArrayNames = new Set<string>();
   const allMapNames = new Set<string>();
   const allUnionNames = new Set<string>();
+  // Collect ALL newtype names (type aliases for primitive types like string/number)
+  const allNewtypeNames = new Set<string>();
   for (const [name, info] of shapeDeps) {
     if (info.type === "structure") {
       allStructNames.add(name);
@@ -612,6 +614,15 @@ function findCyclicSchemasFromDeps(
       allMapNames.add(name);
     } else if (info.type === "union") {
       allUnionNames.add(name);
+    } else if (
+      info.type === "string" ||
+      info.type === "integer" ||
+      info.type === "long" ||
+      info.type === "double" ||
+      info.type === "float"
+    ) {
+      // These generate type aliases (newtypes) like `type Region = string`
+      allNewtypeNames.add(name);
     }
   }
 
@@ -621,6 +632,7 @@ function findCyclicSchemasFromDeps(
     ...allArrayNames,
     ...allMapNames,
     ...allUnionNames,
+    ...allNewtypeNames,
   ]);
 
   return {
@@ -1681,12 +1693,44 @@ const addError = Effect.fn(function* (error: {
       }
     }
 
-    // Add error categories based on HTTP status code
+    // Map HTTP status codes to categories
     if (errorTraits?.httpError) {
-      if (errorTraits.httpError === 429) {
-        categories.push("ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR");
-      } else if (errorTraits.httpError >= 500 && errorTraits.httpError < 600) {
-        categories.push("ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR");
+      const code = errorTraits.httpError;
+      if (code === 401 || code === 403) {
+        categories.push("C.withAuthError");
+      } else if (code === 402) {
+        categories.push("C.withQuotaError");
+      } else if (
+        code === 400 ||
+        code === 404 ||
+        code === 405 ||
+        code === 406 ||
+        code === 410 ||
+        code === 413 ||
+        code === 415 ||
+        code === 422
+      ) {
+        categories.push("C.withBadRequestError");
+      } else if (code === 408 || code === 504) {
+        categories.push("C.withTimeoutError");
+      } else if (code === 409) {
+        categories.push("C.withConflictError");
+      } else if (code === 429) {
+        categories.push("C.withThrottlingError");
+      } else if (code >= 500 && code < 600) {
+        categories.push("C.withServerError");
+      }
+    }
+
+    // Add retryableError if Smithy @retryable trait is present
+    if (errorTraits?.retryable) {
+      categories.push("C.withRetryableError");
+      // Also add throttlingError if throttling flag is set
+      if (
+        errorTraits.retryable.throttling &&
+        !categories.includes("C.withThrottlingError")
+      ) {
+        categories.push("C.withThrottlingError");
       }
     }
 
@@ -1698,11 +1742,9 @@ const addError = Effect.fn(function* (error: {
       annotationsArg = `, T.all(${annotations.join(", ")})`;
     }
 
-    // Build the category pipe if needed
+    // Build category pipe only if we have categories
     const categoryPipe =
-      categories.length > 0
-        ? `.pipe(ErrorCategory.withCategory(${categories.join(", ")}))`
-        : "";
+      categories.length > 0 ? `.pipe(${categories.join(", ")})` : "";
 
     yield* Ref.update(sdkFile.errors, (errors) => [
       ...errors,
@@ -1989,15 +2031,15 @@ const generateClient = Effect.fn(function* (
         // Errors include operation-specific errors plus common API errors
         const errorUnion =
           errorNames.length > 0
-            ? `${errorNames.join(" | ")} | ${sdkFile.errRef}.CommonErrors`
-            : `${sdkFile.errRef}.CommonErrors`;
+            ? `${errorNames.join(" | ")} | ${sdkFile.commonErrorsRef}`
+            : `${sdkFile.commonErrorsRef}`;
 
         // Explicit type annotations are required to avoid TypeScript resolving internal imports
         // in emitted .d.ts files, which would break type portability for consumers
         const apiFn = paginatedTrait ? "API.makePaginated" : "API.make";
 
         // Dependencies type for operations
-        const depsType = `${sdkFile.credsRef}.Credentials | ${sdkFile.rgnRef}.Region | HttpClient.HttpClient`;
+        const depsType = `${sdkFile.credsRef} | ${sdkFile.rgnRef} | HttpClient.HttpClient`;
 
         // Map Smithy primitives to TypeScript types
         const smithyPrimitiveToTs: Record<string, string> = {
@@ -2143,10 +2185,19 @@ const generateClient = Effect.fn(function* (
     const operations = yield* Ref.get(sdkFile.operations);
 
     // Build imports with aliases only where conflicts exist (detected upfront)
+    // Use type-only imports since these are only used in type annotations
     const credentialsImport =
-      sdkFile.credsRef === "Creds" ? "Credentials as Creds" : "Credentials";
-    const regionImport = sdkFile.rgnRef === "Rgn" ? "Region as Rgn" : "Region";
-    const errorsImport = sdkFile.errRef === "Err" ? "Errors as Err" : "Errors";
+      sdkFile.credsRef === "Creds"
+        ? 'import type { Credentials as Creds } from "../credentials.ts";'
+        : 'import type { Credentials } from "../credentials.ts";';
+    const regionImport =
+      sdkFile.rgnRef === "Rgn"
+        ? 'import type { Region as Rgn } from "../region.ts";'
+        : 'import type { Region } from "../region.ts";';
+    const commonErrorsImport =
+      sdkFile.commonErrorsRef === "CommonErr"
+        ? 'import type { CommonErrors as CommonErr } from "../errors.ts";'
+        : 'import type { CommonErrors } from "../errors.ts";';
     const streamImport =
       sdkFile.streamRef === "Strm"
         ? 'import * as Strm from "effect/Stream";'
@@ -2160,8 +2211,12 @@ const generateClient = Effect.fn(function* (
       import * as Redacted from "effect/Redacted";
       import * as S from "effect/Schema";
       ${streamImport}
-      import * as API from "../api.ts";
-      import { ${credentialsImport}, ${regionImport}, Traits as T, ErrorCategory, ${errorsImport} } from "../index.ts";
+      import * as API from "../client/api.ts";
+      import * as T from "../traits.ts";
+      import * as C from "../category.ts";
+      ${credentialsImport}
+      ${commonErrorsImport}
+      ${regionImport}
       import { SensitiveString, SensitiveBlob } from "../sensitive.ts";`;
 
     // Define service-level constants
@@ -2248,12 +2303,14 @@ const generateClient = Effect.fn(function* (
   // Pre-compute conflict resolution for imports
   const hasCredentialsConflict = allSchemaNames.has("Credentials");
   const hasRegionConflict = allSchemaNames.has("Region");
-  const hasErrorsConflict = allSchemaNames.has("Errors");
+  const hasCommonErrorsConflict = allSchemaNames.has("CommonErrors");
   const hasStreamConflict = allSchemaNames.has("Stream");
 
   const credsRef = hasCredentialsConflict ? "Creds" : "Credentials";
   const rgnRef = hasRegionConflict ? "Rgn" : "Region";
-  const errRef = hasErrorsConflict ? "Err" : "Errors";
+  const commonErrorsRef = hasCommonErrorsConflict
+    ? "CommonErr"
+    : "CommonErrors";
   const streamRef = hasStreamConflict ? "Strm" : "Stream";
 
   // Pre-collect error shape IDs so we can inline their fields in TaggedError
@@ -2325,7 +2382,7 @@ const generateClient = Effect.fn(function* (
       allSchemaNames,
       credsRef,
       rgnRef,
-      errRef,
+      commonErrorsRef,
       streamRef,
       newtypes: yield* Ref.make<Map<string, string>>(new Map()),
       errorShapeIds,

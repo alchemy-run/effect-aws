@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://sns.amazonaws.com/doc/2010-03-31/");
 const svc = T.AwsApiService({
@@ -1712,36 +1710,32 @@ export class AuthorizationErrorException extends S.TaggedError<AuthorizationErro
   "AuthorizationErrorException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AuthorizationError", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class InternalErrorException extends S.TaggedError<InternalErrorException>()(
   "InternalErrorException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class FilterPolicyLimitExceededException extends S.TaggedError<FilterPolicyLimitExceededException>()(
   "FilterPolicyLimitExceededException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "FilterPolicyLimitExceeded", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class ConcurrentAccessException extends S.TaggedError<ConcurrentAccessException>()(
   "ConcurrentAccessException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConcurrentAccess", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottledException extends S.TaggedError<ThrottledException>()(
   "ThrottledException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "Throttled", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class InvalidClientTokenId extends S.TaggedError<InvalidClientTokenId>()(
   "InvalidClientTokenId",
   {},
@@ -1750,72 +1744,72 @@ export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "NotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointDisabledException extends S.TaggedError<EndpointDisabledException>()(
   "EndpointDisabledException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "EndpointDisabled", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BatchEntryIdsNotDistinctException extends S.TaggedError<BatchEntryIdsNotDistinctException>()(
   "BatchEntryIdsNotDistinctException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "BatchEntryIdsNotDistinct", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.String },
   T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSecurityException extends S.TaggedError<InvalidSecurityException>()(
   "InvalidSecurityException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSecurity", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class OptedOutException extends S.TaggedError<OptedOutException>()(
   "OptedOutException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "OptedOut", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidStateException extends S.TaggedError<InvalidStateException>()(
   "InvalidStateException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ParameterValueInvalid", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BatchRequestTooLongException extends S.TaggedError<BatchRequestTooLongException>()(
   "BatchRequestTooLongException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "BatchRequestTooLong", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReplayLimitExceededException extends S.TaggedError<ReplayLimitExceededException>()(
   "ReplayLimitExceededException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReplayLimitExceeded", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class UserErrorException extends S.TaggedError<UserErrorException>()(
   "UserErrorException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserError", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class StaleTagException extends S.TaggedError<StaleTagException>()(
   "StaleTagException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "StaleTag", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagPolicyException extends S.TaggedError<TagPolicyException>()(
   "TagPolicyException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TagPolicy", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class VerificationException extends S.TaggedError<VerificationException>()(
   "VerificationException",
   { Message: S.String, Status: S.String },
@@ -1824,57 +1818,57 @@ export class KMSAccessDeniedException extends S.TaggedError<KMSAccessDeniedExcep
   "KMSAccessDeniedException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMSAccessDenied", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EmptyBatchRequestException extends S.TaggedError<EmptyBatchRequestException>()(
   "EmptyBatchRequestException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "EmptyBatchRequest", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionLimitExceededException extends S.TaggedError<SubscriptionLimitExceededException>()(
   "SubscriptionLimitExceededException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubscriptionLimitExceeded", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class TagLimitExceededException extends S.TaggedError<TagLimitExceededException>()(
   "TagLimitExceededException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TagLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KMSDisabledException extends S.TaggedError<KMSDisabledException>()(
   "KMSDisabledException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMSDisabled", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidBatchEntryIdException extends S.TaggedError<InvalidBatchEntryIdException>()(
   "InvalidBatchEntryIdException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidBatchEntryId", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TopicLimitExceededException extends S.TaggedError<TopicLimitExceededException>()(
   "TopicLimitExceededException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TopicLimitExceeded", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class KMSInvalidStateException extends S.TaggedError<KMSInvalidStateException>()(
   "KMSInvalidStateException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMSInvalidState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KMSNotFoundException extends S.TaggedError<KMSNotFoundException>()(
   "KMSNotFoundException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMSNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KMSOptInRequired extends S.TaggedError<KMSOptInRequired>()(
   "KMSOptInRequired",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMSOptInRequired", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class KMSThrottlingException extends S.TaggedError<KMSThrottlingException>()(
   "KMSThrottlingException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMSThrottling", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PlatformApplicationDisabledException extends S.TaggedError<PlatformApplicationDisabledException>()(
   "PlatformApplicationDisabledException",
   { message: S.optional(S.String) },
@@ -1882,7 +1876,7 @@ export class PlatformApplicationDisabledException extends S.TaggedError<Platform
     code: "PlatformApplicationDisabled",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyEntriesInBatchRequestException extends S.TaggedError<TooManyEntriesInBatchRequestException>()(
   "TooManyEntriesInBatchRequestException",
   { message: S.optional(S.String) },
@@ -1890,7 +1884,7 @@ export class TooManyEntriesInBatchRequestException extends S.TaggedError<TooMany
     code: "TooManyEntriesInBatchRequest",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1913,8 +1907,8 @@ export const getSMSSandboxAccountStatus: (
   | AuthorizationErrorException
   | InternalErrorException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSMSSandboxAccountStatusInput,
   output: GetSMSSandboxAccountStatusResult,
@@ -1971,8 +1965,8 @@ export const createPlatformApplication: (
   | AuthorizationErrorException
   | InternalErrorException
   | InvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePlatformApplicationInput,
   output: CreatePlatformApplicationResponse,
@@ -2003,8 +1997,8 @@ export const listPlatformApplications: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlatformApplicationsInput,
@@ -2013,8 +2007,8 @@ export const listPlatformApplications: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPlatformApplicationsInput,
@@ -2023,8 +2017,8 @@ export const listPlatformApplications: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlatformApplicationsInput,
@@ -2056,8 +2050,8 @@ export const listSubscriptions: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSubscriptionsInput,
@@ -2066,8 +2060,8 @@ export const listSubscriptions: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSubscriptionsInput,
@@ -2076,8 +2070,8 @@ export const listSubscriptions: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSubscriptionsInput,
@@ -2109,8 +2103,8 @@ export const listTopics: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTopicsInput,
@@ -2119,8 +2113,8 @@ export const listTopics: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTopicsInput,
@@ -2129,8 +2123,8 @@ export const listTopics: {
     | AuthorizationErrorException
     | InternalErrorException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsInput,
@@ -2162,8 +2156,8 @@ export const checkIfPhoneNumberIsOptedOut: (
   | InternalErrorException
   | InvalidParameterException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckIfPhoneNumberIsOptedOutInput,
   output: CheckIfPhoneNumberIsOptedOutResponse,
@@ -2187,8 +2181,8 @@ export const getSMSAttributes: (
   | InternalErrorException
   | InvalidParameterException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSMSAttributesInput,
   output: GetSMSAttributesResponse,
@@ -2219,8 +2213,8 @@ export const listPhoneNumbersOptedOut: {
     | InternalErrorException
     | InvalidParameterException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPhoneNumbersOptedOutInput,
@@ -2230,8 +2224,8 @@ export const listPhoneNumbersOptedOut: {
     | InternalErrorException
     | InvalidParameterException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPhoneNumbersOptedOutInput,
@@ -2241,8 +2235,8 @@ export const listPhoneNumbersOptedOut: {
     | InternalErrorException
     | InvalidParameterException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPhoneNumbersOptedOutInput,
@@ -2275,8 +2269,8 @@ export const deleteEndpoint: (
   | InternalErrorException
   | InvalidParameterException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointInput,
   output: DeleteEndpointResponse,
@@ -2301,8 +2295,8 @@ export const deletePlatformApplication: (
   | InternalErrorException
   | InvalidParameterException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePlatformApplicationInput,
   output: DeletePlatformApplicationResponse,
@@ -2327,8 +2321,8 @@ export const optInPhoneNumber: (
   | InternalErrorException
   | InvalidParameterException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: OptInPhoneNumberInput,
   output: OptInPhoneNumberResponse,
@@ -2360,8 +2354,8 @@ export const setSMSAttributes: (
   | InternalErrorException
   | InvalidParameterException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetSMSAttributesInput,
   output: SetSMSAttributesResponse,
@@ -2389,8 +2383,8 @@ export const addPermission: (
   | InvalidParameterException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddPermissionInput,
   output: AddPermissionResponse,
@@ -2417,8 +2411,8 @@ export const listOriginationNumbers: {
     | InvalidParameterException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOriginationNumbersRequest,
@@ -2429,8 +2423,8 @@ export const listOriginationNumbers: {
     | InvalidParameterException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOriginationNumbersRequest,
@@ -2441,8 +2435,8 @@ export const listOriginationNumbers: {
     | InvalidParameterException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOriginationNumbersRequest,
@@ -2484,8 +2478,8 @@ export const listSMSSandboxPhoneNumbers: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSMSSandboxPhoneNumbersInput,
@@ -2496,8 +2490,8 @@ export const listSMSSandboxPhoneNumbers: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSMSSandboxPhoneNumbersInput,
@@ -2508,8 +2502,8 @@ export const listSMSSandboxPhoneNumbers: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSMSSandboxPhoneNumbersInput,
@@ -2551,8 +2545,8 @@ export const listEndpointsByPlatformApplication: {
     | InvalidParameterException
     | NotFoundException
     | InvalidClientTokenId
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEndpointsByPlatformApplicationInput,
@@ -2563,8 +2557,8 @@ export const listEndpointsByPlatformApplication: {
     | InvalidParameterException
     | NotFoundException
     | InvalidClientTokenId
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEndpointsByPlatformApplicationInput,
@@ -2575,8 +2569,8 @@ export const listEndpointsByPlatformApplication: {
     | InvalidParameterException
     | NotFoundException
     | InvalidClientTokenId
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEndpointsByPlatformApplicationInput,
@@ -2620,8 +2614,8 @@ export const createPlatformEndpoint: (
   | InvalidParameterException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePlatformEndpointInput,
   output: CreateEndpointResponse,
@@ -2647,8 +2641,8 @@ export const getEndpointAttributes: (
   | InvalidParameterException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEndpointAttributesInput,
   output: GetEndpointAttributesResponse,
@@ -2674,8 +2668,8 @@ export const getPlatformApplicationAttributes: (
   | InvalidParameterException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPlatformApplicationAttributesInput,
   output: GetPlatformApplicationAttributesResponse,
@@ -2698,8 +2692,8 @@ export const getSubscriptionAttributes: (
   | InternalErrorException
   | InvalidParameterException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSubscriptionAttributesInput,
   output: GetSubscriptionAttributesResponse,
@@ -2728,8 +2722,8 @@ export const listSubscriptionsByTopic: {
     | InvalidParameterException
     | NotFoundException
     | InvalidClientTokenId
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSubscriptionsByTopicInput,
@@ -2740,8 +2734,8 @@ export const listSubscriptionsByTopic: {
     | InvalidParameterException
     | NotFoundException
     | InvalidClientTokenId
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSubscriptionsByTopicInput,
@@ -2752,8 +2746,8 @@ export const listSubscriptionsByTopic: {
     | InvalidParameterException
     | NotFoundException
     | InvalidClientTokenId
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSubscriptionsByTopicInput,
@@ -2787,8 +2781,8 @@ export const removePermission: (
   | InvalidParameterException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemovePermissionInput,
   output: RemovePermissionResponse,
@@ -2814,8 +2808,8 @@ export const setEndpointAttributes: (
   | InvalidParameterException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetEndpointAttributesInput,
   output: SetEndpointAttributesResponse,
@@ -2843,8 +2837,8 @@ export const setPlatformApplicationAttributes: (
   | InvalidParameterException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetPlatformApplicationAttributesInput,
   output: SetPlatformApplicationAttributesResponse,
@@ -2870,8 +2864,8 @@ export const getDataProtectionPolicy: (
   | InvalidSecurityException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataProtectionPolicyInput,
   output: GetDataProtectionPolicyResponse,
@@ -2898,8 +2892,8 @@ export const getTopicAttributes: (
   | InvalidSecurityException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTopicAttributesInput,
   output: GetTopicAttributesResponse,
@@ -2926,8 +2920,8 @@ export const putDataProtectionPolicy: (
   | InvalidSecurityException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDataProtectionPolicyInput,
   output: PutDataProtectionPolicyResponse,
@@ -2957,8 +2951,8 @@ export const setTopicAttributes: (
   | InvalidSecurityException
   | NotFoundException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetTopicAttributesInput,
   output: SetTopicAttributesResponse,
@@ -2990,8 +2984,8 @@ export const unsubscribe: (
   | InvalidParameterException
   | InvalidSecurityException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnsubscribeInput,
   output: UnsubscribeResponse,
@@ -3026,8 +3020,8 @@ export const createSMSSandboxPhoneNumber: (
   | OptedOutException
   | ThrottledException
   | UserErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSMSSandboxPhoneNumberInput,
   output: CreateSMSSandboxPhoneNumberResult,
@@ -3054,8 +3048,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | TagPolicyException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3091,8 +3085,8 @@ export const verifySMSSandboxPhoneNumber: (
   | ResourceNotFoundException
   | ThrottledException
   | VerificationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifySMSSandboxPhoneNumberInput,
   output: VerifySMSSandboxPhoneNumberResult,
@@ -3119,8 +3113,8 @@ export const setSubscriptionAttributes: (
   | InvalidParameterException
   | NotFoundException
   | ReplayLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetSubscriptionAttributesInput,
   output: SetSubscriptionAttributesResponse,
@@ -3156,8 +3150,8 @@ export const deleteSMSSandboxPhoneNumber: (
   | ResourceNotFoundException
   | ThrottledException
   | UserErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSMSSandboxPhoneNumberInput,
   output: DeleteSMSSandboxPhoneNumberResult,
@@ -3189,8 +3183,8 @@ export const deleteTopic: (
   | StaleTagException
   | TagPolicyException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTopicInput,
   output: DeleteTopicResponse,
@@ -3229,8 +3223,8 @@ export const subscribe: (
   | ReplayLimitExceededException
   | SubscriptionLimitExceededException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubscribeInput,
   output: SubscribeResponse,
@@ -3264,8 +3258,8 @@ export const confirmSubscription: (
   | NotFoundException
   | ReplayLimitExceededException
   | SubscriptionLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmSubscriptionInput,
   output: ConfirmSubscriptionResponse,
@@ -3310,8 +3304,8 @@ export const tagResource: (
   | TagLimitExceededException
   | TagPolicyException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3342,8 +3336,8 @@ export const untagResource: (
   | TagLimitExceededException
   | TagPolicyException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3378,8 +3372,8 @@ export const createTopic: (
   | TagLimitExceededException
   | TagPolicyException
   | TopicLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTopicInput,
   output: CreateTopicResponse,
@@ -3438,8 +3432,8 @@ export const publish: (
   | PlatformApplicationDisabledException
   | ValidationException
   | InvalidClientTokenId
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PublishInput,
   output: PublishResponse,
@@ -3526,8 +3520,8 @@ export const publishBatch: (
   | PlatformApplicationDisabledException
   | TooManyEntriesInBatchRequestException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PublishBatchInput,
   output: PublishBatchResponse,

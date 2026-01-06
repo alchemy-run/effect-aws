@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "LakeFormation",
@@ -3027,7 +3025,7 @@ export class ConcurrentModificationException extends S.TaggedError<ConcurrentMod
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class EntityNotFoundException extends S.TaggedError<EntityNotFoundException>()(
   "EntityNotFoundException",
   { Message: S.optional(S.String) },
@@ -3035,17 +3033,15 @@ export class EntityNotFoundException extends S.TaggedError<EntityNotFoundExcepti
 export class InternalServiceException extends S.TaggedError<InternalServiceException>()(
   "InternalServiceException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ExpiredException extends S.TaggedError<ExpiredException>()(
   "ExpiredException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidInputException extends S.TaggedError<InvalidInputException>()(
   "InvalidInputException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException>()(
   "AlreadyExistsException",
   { Message: S.optional(S.String) },
@@ -3066,9 +3062,7 @@ export class ThrottledException extends S.TaggedError<ThrottledException>()(
   "ThrottledException",
   { Message: S.optional(S.String) },
   T.Retryable({ throttling: true }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class WorkUnitsNotReadyYetException extends S.TaggedError<WorkUnitsNotReadyYetException>()(
   "WorkUnitsNotReadyYetException",
   { Message: S.optional(S.String) },
@@ -3080,15 +3074,15 @@ export class ResourceNumberLimitExceededException extends S.TaggedError<Resource
 export class TransactionCanceledException extends S.TaggedError<TransactionCanceledException>()(
   "TransactionCanceledException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TransactionCommitInProgressException extends S.TaggedError<TransactionCommitInProgressException>()(
   "TransactionCommitInProgressException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotReadyException extends S.TaggedError<ResourceNotReadyException>()(
   "ResourceNotReadyException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PermissionTypeMismatchException extends S.TaggedError<PermissionTypeMismatchException>()(
   "PermissionTypeMismatchException",
   { Message: S.optional(S.String) },
@@ -3096,7 +3090,7 @@ export class PermissionTypeMismatchException extends S.TaggedError<PermissionTyp
 export class TransactionCommittedException extends S.TaggedError<TransactionCommittedException>()(
   "TransactionCommittedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3111,8 +3105,8 @@ export const grantPermissions: (
   | ConcurrentModificationException
   | EntityNotFoundException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GrantPermissionsRequest,
   output: GrantPermissionsResponse,
@@ -3132,8 +3126,8 @@ export const getDataLakeSettings: (
   | EntityNotFoundException
   | InternalServiceException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataLakeSettingsRequest,
   output: GetDataLakeSettingsResponse,
@@ -3153,8 +3147,8 @@ export const getQueryState: (
   | AccessDeniedException
   | InternalServiceException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQueryStateRequest,
   output: GetQueryStateResponse,
@@ -3174,8 +3168,8 @@ export const revokePermissions: (
   | ConcurrentModificationException
   | EntityNotFoundException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokePermissionsRequest,
   output: RevokePermissionsResponse,
@@ -3197,8 +3191,8 @@ export const listTableStorageOptimizers: {
     | EntityNotFoundException
     | InternalServiceException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTableStorageOptimizersRequest,
@@ -3208,8 +3202,8 @@ export const listTableStorageOptimizers: {
     | EntityNotFoundException
     | InternalServiceException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTableStorageOptimizersRequest,
@@ -3219,8 +3213,8 @@ export const listTableStorageOptimizers: {
     | EntityNotFoundException
     | InternalServiceException
     | InvalidInputException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTableStorageOptimizersRequest,
@@ -3246,8 +3240,8 @@ export const putDataLakeSettings: (
   input: PutDataLakeSettingsRequest,
 ) => Effect.Effect<
   PutDataLakeSettingsResponse,
-  InternalServiceException | InvalidInputException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServiceException | InvalidInputException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDataLakeSettingsRequest,
   output: PutDataLakeSettingsResponse,
@@ -3264,8 +3258,8 @@ export const updateTableStorageOptimizer: (
   | EntityNotFoundException
   | InternalServiceException
   | InvalidInputException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTableStorageOptimizerRequest,
   output: UpdateTableStorageOptimizerResponse,
@@ -3290,8 +3284,8 @@ export const removeLFTagsFromResource: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveLFTagsFromResourceRequest,
   output: RemoveLFTagsFromResourceResponse,
@@ -3319,8 +3313,8 @@ export const searchDatabasesByLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchDatabasesByLFTagsRequest,
@@ -3332,8 +3326,8 @@ export const searchDatabasesByLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchDatabasesByLFTagsRequest,
@@ -3345,8 +3339,8 @@ export const searchDatabasesByLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchDatabasesByLFTagsRequest,
@@ -3380,8 +3374,8 @@ export const searchTablesByLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchTablesByLFTagsRequest,
@@ -3393,8 +3387,8 @@ export const searchTablesByLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchTablesByLFTagsRequest,
@@ -3406,8 +3400,8 @@ export const searchTablesByLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchTablesByLFTagsRequest,
@@ -3439,8 +3433,8 @@ export const getWorkUnitResults: (
   | InternalServiceException
   | InvalidInputException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkUnitResultsRequest,
   output: GetWorkUnitResultsResponse,
@@ -3465,8 +3459,8 @@ export const getWorkUnits: {
     | InternalServiceException
     | InvalidInputException
     | WorkUnitsNotReadyYetException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetWorkUnitsRequest,
@@ -3477,8 +3471,8 @@ export const getWorkUnits: {
     | InternalServiceException
     | InvalidInputException
     | WorkUnitsNotReadyYetException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetWorkUnitsRequest,
@@ -3489,8 +3483,8 @@ export const getWorkUnits: {
     | InternalServiceException
     | InvalidInputException
     | WorkUnitsNotReadyYetException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetWorkUnitsRequest,
@@ -3521,8 +3515,8 @@ export const describeLakeFormationIdentityCenterConfiguration: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLakeFormationIdentityCenterConfigurationRequest,
   output: DescribeLakeFormationIdentityCenterConfigurationResponse,
@@ -3546,8 +3540,8 @@ export const getDataCellsFilter: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataCellsFilterRequest,
   output: GetDataCellsFilterResponse,
@@ -3571,8 +3565,8 @@ export const getLFTag: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLFTagRequest,
   output: GetLFTagResponse,
@@ -3596,8 +3590,8 @@ export const getLFTagExpression: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLFTagExpressionRequest,
   output: GetLFTagExpressionResponse,
@@ -3622,8 +3616,8 @@ export const listLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLFTagsRequest,
@@ -3634,8 +3628,8 @@ export const listLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLFTagsRequest,
@@ -3646,8 +3640,8 @@ export const listLFTags: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLFTagsRequest,
@@ -3683,8 +3677,8 @@ export const listPermissions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPermissionsRequest,
@@ -3693,8 +3687,8 @@ export const listPermissions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPermissionsRequest,
@@ -3703,8 +3697,8 @@ export const listPermissions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionsRequest,
@@ -3733,8 +3727,8 @@ export const listTransactions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTransactionsRequest,
@@ -3743,8 +3737,8 @@ export const listTransactions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTransactionsRequest,
@@ -3753,8 +3747,8 @@ export const listTransactions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTransactionsRequest,
@@ -3777,8 +3771,8 @@ export const startTransaction: (
   input: StartTransactionRequest,
 ) => Effect.Effect<
   StartTransactionResponse,
-  InternalServiceException | OperationTimeoutException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServiceException | OperationTimeoutException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTransactionRequest,
   output: StartTransactionResponse,
@@ -3796,8 +3790,8 @@ export const deleteDataCellsFilter: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataCellsFilterRequest,
   output: DeleteDataCellsFilterResponse,
@@ -3822,8 +3816,8 @@ export const deleteLakeFormationIdentityCenterConfiguration: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLakeFormationIdentityCenterConfigurationRequest,
   output: DeleteLakeFormationIdentityCenterConfigurationResponse,
@@ -3849,8 +3843,8 @@ export const deleteLakeFormationOptIn: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLakeFormationOptInRequest,
   output: DeleteLakeFormationOptInResponse,
@@ -3881,8 +3875,8 @@ export const deleteLFTag: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLFTagRequest,
   output: DeleteLFTagResponse,
@@ -3907,8 +3901,8 @@ export const deleteLFTagExpression: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLFTagExpressionRequest,
   output: DeleteLFTagExpressionResponse,
@@ -3930,8 +3924,8 @@ export const getDataLakePrincipal: (
   | AccessDeniedException
   | InternalServiceException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataLakePrincipalRequest,
   output: GetDataLakePrincipalResponse,
@@ -3954,8 +3948,8 @@ export const updateDataCellsFilter: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataCellsFilterRequest,
   output: UpdateDataCellsFilterResponse,
@@ -3981,8 +3975,8 @@ export const updateLakeFormationIdentityCenterConfiguration: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLakeFormationIdentityCenterConfigurationRequest,
   output: UpdateLakeFormationIdentityCenterConfigurationResponse,
@@ -4008,8 +4002,8 @@ export const updateLFTag: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLFTagRequest,
   output: UpdateLFTagResponse,
@@ -4049,8 +4043,8 @@ export const assumeDecoratedRoleWithSAML: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssumeDecoratedRoleWithSAMLRequest,
   output: AssumeDecoratedRoleWithSAMLResponse,
@@ -4073,8 +4067,8 @@ export const updateResource: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResourceRequest,
   output: UpdateResourceResponse,
@@ -4092,8 +4086,8 @@ export const batchGrantPermissions: (
   input: BatchGrantPermissionsRequest,
 ) => Effect.Effect<
   BatchGrantPermissionsResponse,
-  InvalidInputException | OperationTimeoutException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | OperationTimeoutException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGrantPermissionsRequest,
   output: BatchGrantPermissionsResponse,
@@ -4112,8 +4106,8 @@ export const deregisterResource: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterResourceRequest,
   output: DeregisterResourceResponse,
@@ -4135,8 +4129,8 @@ export const describeResource: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResourceRequest,
   output: DescribeResourceResponse,
@@ -4158,8 +4152,8 @@ export const describeTransaction: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTransactionRequest,
   output: DescribeTransactionResponse,
@@ -4182,8 +4176,8 @@ export const listDataCellsFilter: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDataCellsFilterRequest,
@@ -4193,8 +4187,8 @@ export const listDataCellsFilter: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDataCellsFilterRequest,
@@ -4204,8 +4198,8 @@ export const listDataCellsFilter: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDataCellsFilterRequest,
@@ -4235,8 +4229,8 @@ export const listLakeFormationOptIns: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLakeFormationOptInsRequest,
@@ -4246,8 +4240,8 @@ export const listLakeFormationOptIns: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLakeFormationOptInsRequest,
@@ -4257,8 +4251,8 @@ export const listLakeFormationOptIns: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLakeFormationOptInsRequest,
@@ -4288,8 +4282,8 @@ export const listLFTagExpressions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLFTagExpressionsRequest,
@@ -4300,8 +4294,8 @@ export const listLFTagExpressions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLFTagExpressionsRequest,
@@ -4312,8 +4306,8 @@ export const listLFTagExpressions: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLFTagExpressionsRequest,
@@ -4343,8 +4337,8 @@ export const listResources: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourcesRequest,
@@ -4353,8 +4347,8 @@ export const listResources: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourcesRequest,
@@ -4363,8 +4357,8 @@ export const listResources: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesRequest,
@@ -4393,8 +4387,8 @@ export const addLFTagsToResource: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddLFTagsToResourceRequest,
   output: AddLFTagsToResourceResponse,
@@ -4414,8 +4408,8 @@ export const batchRevokePermissions: (
   input: BatchRevokePermissionsRequest,
 ) => Effect.Effect<
   BatchRevokePermissionsResponse,
-  InvalidInputException | OperationTimeoutException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInputException | OperationTimeoutException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchRevokePermissionsRequest,
   output: BatchRevokePermissionsResponse,
@@ -4434,8 +4428,8 @@ export const getEffectivePermissionsForPath: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetEffectivePermissionsForPathRequest,
@@ -4445,8 +4439,8 @@ export const getEffectivePermissionsForPath: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetEffectivePermissionsForPathRequest,
@@ -4456,8 +4450,8 @@ export const getEffectivePermissionsForPath: {
     | InternalServiceException
     | InvalidInputException
     | OperationTimeoutException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetEffectivePermissionsForPathRequest,
@@ -4487,8 +4481,8 @@ export const getResourceLFTags: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceLFTagsRequest,
   output: GetResourceLFTagsResponse,
@@ -4514,8 +4508,8 @@ export const startQueryPlanning: (
   | InternalServiceException
   | InvalidInputException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartQueryPlanningRequest,
   output: StartQueryPlanningResponse,
@@ -4539,8 +4533,8 @@ export const getQueryStatistics: (
   | InvalidInputException
   | StatisticsNotReadyYetException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQueryStatisticsRequest,
   output: GetQueryStatisticsResponse,
@@ -4566,8 +4560,8 @@ export const createLakeFormationIdentityCenterConfiguration: (
   | InternalServiceException
   | InvalidInputException
   | OperationTimeoutException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLakeFormationIdentityCenterConfigurationRequest,
   output: CreateLakeFormationIdentityCenterConfigurationResponse,
@@ -4605,8 +4599,8 @@ export const registerResource: (
   | InvalidInputException
   | OperationTimeoutException
   | ResourceNumberLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterResourceRequest,
   output: RegisterResourceResponse,
@@ -4633,8 +4627,8 @@ export const getTemporaryGluePartitionCredentials: (
   | InvalidInputException
   | OperationTimeoutException
   | PermissionTypeMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTemporaryGluePartitionCredentialsRequest,
   output: GetTemporaryGluePartitionCredentialsResponse,
@@ -4661,8 +4655,8 @@ export const updateLFTagExpression: (
   | InvalidInputException
   | OperationTimeoutException
   | ResourceNumberLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLFTagExpressionRequest,
   output: UpdateLFTagExpressionResponse,
@@ -4689,8 +4683,8 @@ export const createLakeFormationOptIn: (
   | InvalidInputException
   | OperationTimeoutException
   | ResourceNumberLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLakeFormationOptInRequest,
   output: CreateLakeFormationOptInResponse,
@@ -4717,8 +4711,8 @@ export const createLFTag: (
   | InvalidInputException
   | OperationTimeoutException
   | ResourceNumberLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLFTagRequest,
   output: CreateLFTagResponse,
@@ -4752,8 +4746,8 @@ export const createLFTagExpression: (
   | InvalidInputException
   | OperationTimeoutException
   | ResourceNumberLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLFTagExpressionRequest,
   output: CreateLFTagExpressionResponse,
@@ -4780,8 +4774,8 @@ export const createDataCellsFilter: (
   | InvalidInputException
   | OperationTimeoutException
   | ResourceNumberLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataCellsFilterRequest,
   output: CreateDataCellsFilterResponse,
@@ -4808,8 +4802,8 @@ export const commitTransaction: (
   | InvalidInputException
   | OperationTimeoutException
   | TransactionCanceledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CommitTransactionRequest,
   output: CommitTransactionResponse,
@@ -4837,8 +4831,8 @@ export const getTemporaryGlueTableCredentials: (
   | InvalidInputException
   | OperationTimeoutException
   | PermissionTypeMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTemporaryGlueTableCredentialsRequest,
   output: GetTemporaryGlueTableCredentialsResponse,
@@ -4865,8 +4859,8 @@ export const cancelTransaction: (
   | OperationTimeoutException
   | TransactionCommitInProgressException
   | TransactionCommittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelTransactionRequest,
   output: CancelTransactionResponse,
@@ -4900,8 +4894,8 @@ export const deleteObjectsOnCancel: (
   | ResourceNotReadyException
   | TransactionCanceledException
   | TransactionCommittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectsOnCancelRequest,
   output: DeleteObjectsOnCancelResponse,
@@ -4932,8 +4926,8 @@ export const extendTransaction: (
   | TransactionCanceledException
   | TransactionCommitInProgressException
   | TransactionCommittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExtendTransactionRequest,
   output: ExtendTransactionResponse,
@@ -4963,8 +4957,8 @@ export const updateTableObjects: (
   | TransactionCanceledException
   | TransactionCommitInProgressException
   | TransactionCommittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTableObjectsRequest,
   output: UpdateTableObjectsResponse,
@@ -4995,8 +4989,8 @@ export const getTableObjects: {
     | ResourceNotReadyException
     | TransactionCanceledException
     | TransactionCommittedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetTableObjectsRequest,
@@ -5009,8 +5003,8 @@ export const getTableObjects: {
     | ResourceNotReadyException
     | TransactionCanceledException
     | TransactionCommittedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetTableObjectsRequest,
@@ -5023,8 +5017,8 @@ export const getTableObjects: {
     | ResourceNotReadyException
     | TransactionCanceledException
     | TransactionCommittedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTableObjectsRequest,

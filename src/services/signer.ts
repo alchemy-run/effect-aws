@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "signer",
@@ -1296,49 +1294,43 @@ export const StartSigningJobResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServiceErrorException extends S.TaggedError<InternalServiceErrorException>()(
   "InternalServiceErrorException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ServiceLimitExceededException extends S.TaggedError<ServiceLimitExceededException>()(
   "ServiceLimitExceededException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -1355,8 +1347,8 @@ export const tagResource: (
   | InternalServiceErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1378,8 +1370,8 @@ export const getSigningProfile: (
   | InternalServiceErrorException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSigningProfileRequest,
   output: GetSigningProfileResponse,
@@ -1408,8 +1400,8 @@ export const listSigningProfiles: {
     | AccessDeniedException
     | InternalServiceErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSigningProfilesRequest,
@@ -1418,8 +1410,8 @@ export const listSigningProfiles: {
     | AccessDeniedException
     | InternalServiceErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSigningProfilesRequest,
@@ -1428,8 +1420,8 @@ export const listSigningProfiles: {
     | AccessDeniedException
     | InternalServiceErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSigningProfilesRequest,
@@ -1458,8 +1450,8 @@ export const cancelSigningProfile: (
   | InternalServiceErrorException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelSigningProfileRequest,
   output: CancelSigningProfileResponse,
@@ -1483,8 +1475,8 @@ export const describeSigningJob: (
   | InternalServiceErrorException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSigningJobRequest,
   output: DescribeSigningJobResponse,
@@ -1506,8 +1498,8 @@ export const getSigningPlatform: (
   | InternalServiceErrorException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSigningPlatformRequest,
   output: GetSigningPlatformResponse,
@@ -1530,8 +1522,8 @@ export const untagResource: (
   | InternalServiceErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1553,8 +1545,8 @@ export const listTagsForResource: (
   | InternalServiceErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1583,8 +1575,8 @@ export const listSigningJobs: {
     | InternalServiceErrorException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSigningJobsRequest,
@@ -1594,8 +1586,8 @@ export const listSigningJobs: {
     | InternalServiceErrorException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSigningJobsRequest,
@@ -1605,8 +1597,8 @@ export const listSigningJobs: {
     | InternalServiceErrorException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSigningJobsRequest,
@@ -1657,8 +1649,8 @@ export const startSigningJob: (
   | ThrottlingException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSigningJobRequest,
   output: StartSigningJobResponse,
@@ -1685,8 +1677,8 @@ export const addProfilePermission: (
   | ServiceLimitExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddProfilePermissionRequest,
   output: AddProfilePermissionResponse,
@@ -1713,8 +1705,8 @@ export const putSigningProfile: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSigningProfileRequest,
   output: PutSigningProfileResponse,
@@ -1738,8 +1730,8 @@ export const listProfilePermissions: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListProfilePermissionsRequest,
   output: ListProfilePermissionsResponse,
@@ -1764,8 +1756,8 @@ export const removeProfilePermission: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveProfilePermissionRequest,
   output: RemoveProfilePermissionResponse,
@@ -1790,8 +1782,8 @@ export const signPayload: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SignPayloadRequest,
   output: SignPayloadResponse,
@@ -1816,8 +1808,8 @@ export const revokeSignature: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeSignatureRequest,
   output: RevokeSignatureResponse,
@@ -1845,8 +1837,8 @@ export const revokeSigningProfile: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeSigningProfileRequest,
   output: RevokeSigningProfileResponse,
@@ -1876,8 +1868,8 @@ export const listSigningPlatforms: {
     | InternalServiceErrorException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSigningPlatformsRequest,
@@ -1887,8 +1879,8 @@ export const listSigningPlatforms: {
     | InternalServiceErrorException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSigningPlatformsRequest,
@@ -1898,8 +1890,8 @@ export const listSigningPlatforms: {
     | InternalServiceErrorException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSigningPlatformsRequest,
@@ -1928,8 +1920,8 @@ export const getRevocationStatus: (
   | InternalServiceErrorException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRevocationStatusRequest,
   output: GetRevocationStatusResponse,

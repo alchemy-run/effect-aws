@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "FMS",
@@ -2907,8 +2905,8 @@ export const deleteNotificationChannel: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNotificationChannelRequest,
   output: DeleteNotificationChannelResponse,
@@ -2930,8 +2928,8 @@ export const deletePolicy: (
   | InvalidOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePolicyRequest,
   output: DeletePolicyResponse,
@@ -2954,8 +2952,8 @@ export const getPolicy: (
   | InvalidOperationException
   | InvalidTypeException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
@@ -2980,8 +2978,8 @@ export const listAdminAccountsForOrganization: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAdminAccountsForOrganizationRequest,
@@ -2991,8 +2989,8 @@ export const listAdminAccountsForOrganization: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAdminAccountsForOrganizationRequest,
@@ -3002,8 +3000,8 @@ export const listAdminAccountsForOrganization: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAdminAccountsForOrganizationRequest,
@@ -3033,8 +3031,8 @@ export const listAppsLists: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppsListsRequest,
@@ -3044,8 +3042,8 @@ export const listAppsLists: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppsListsRequest,
@@ -3055,8 +3053,8 @@ export const listAppsLists: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppsListsRequest,
@@ -3084,8 +3082,8 @@ export const listDiscoveredResources: (
   | InternalErrorException
   | InvalidInputException
   | InvalidOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDiscoveredResourcesRequest,
   output: ListDiscoveredResourcesResponse,
@@ -3107,8 +3105,8 @@ export const listPolicies: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPoliciesRequest,
@@ -3118,8 +3116,8 @@ export const listPolicies: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPoliciesRequest,
@@ -3129,8 +3127,8 @@ export const listPolicies: {
     | InvalidOperationException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPoliciesRequest,
@@ -3159,8 +3157,8 @@ export const listProtocolsLists: {
     | InternalErrorException
     | InvalidOperationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProtocolsListsRequest,
@@ -3169,8 +3167,8 @@ export const listProtocolsLists: {
     | InternalErrorException
     | InvalidOperationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProtocolsListsRequest,
@@ -3179,8 +3177,8 @@ export const listProtocolsLists: {
     | InternalErrorException
     | InvalidOperationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProtocolsListsRequest,
@@ -3208,8 +3206,8 @@ export const listResourceSetResources: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListResourceSetResourcesRequest,
   output: ListResourceSetResourcesResponse,
@@ -3230,8 +3228,8 @@ export const listResourceSets: (
   | InternalErrorException
   | InvalidInputException
   | InvalidOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListResourceSetsRequest,
   output: ListResourceSetsResponse,
@@ -3253,8 +3251,8 @@ export const listThirdPartyFirewallFirewallPolicies: {
     | InvalidInputException
     | InvalidOperationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListThirdPartyFirewallFirewallPoliciesRequest,
@@ -3264,8 +3262,8 @@ export const listThirdPartyFirewallFirewallPolicies: {
     | InvalidInputException
     | InvalidOperationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListThirdPartyFirewallFirewallPoliciesRequest,
@@ -3275,8 +3273,8 @@ export const listThirdPartyFirewallFirewallPolicies: {
     | InvalidInputException
     | InvalidOperationException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThirdPartyFirewallFirewallPoliciesRequest,
@@ -3306,8 +3304,8 @@ export const putAdminAccount: (
   | InvalidInputException
   | InvalidOperationException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAdminAccountRequest,
   output: PutAdminAccountResponse,
@@ -3331,8 +3329,8 @@ export const putResourceSet: (
   | InvalidInputException
   | InvalidOperationException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourceSetRequest,
   output: PutResourceSetResponse,
@@ -3354,8 +3352,8 @@ export const disassociateThirdPartyFirewall: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateThirdPartyFirewallRequest,
   output: DisassociateThirdPartyFirewallResponse,
@@ -3376,8 +3374,8 @@ export const getAppsList: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAppsListRequest,
   output: GetAppsListResponse,
@@ -3398,8 +3396,8 @@ export const getProtectionStatus: (
   | InternalErrorException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProtectionStatusRequest,
   output: GetProtectionStatusResponse,
@@ -3419,8 +3417,8 @@ export const getProtocolsList: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProtocolsListRequest,
   output: GetProtocolsListResponse,
@@ -3441,8 +3439,8 @@ export const getResourceSet: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceSetRequest,
   output: GetResourceSetResponse,
@@ -3464,8 +3462,8 @@ export const getThirdPartyFirewallAssociationStatus: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetThirdPartyFirewallAssociationStatusRequest,
   output: GetThirdPartyFirewallAssociationStatusResponse,
@@ -3487,8 +3485,8 @@ export const listAdminsManagingAccount: {
     | InternalErrorException
     | InvalidInputException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAdminsManagingAccountRequest,
@@ -3497,8 +3495,8 @@ export const listAdminsManagingAccount: {
     | InternalErrorException
     | InvalidInputException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAdminsManagingAccountRequest,
@@ -3507,8 +3505,8 @@ export const listAdminsManagingAccount: {
     | InternalErrorException
     | InvalidInputException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAdminsManagingAccountRequest,
@@ -3536,22 +3534,22 @@ export const listMemberAccounts: {
     input: ListMemberAccountsRequest,
   ): Effect.Effect<
     ListMemberAccountsResponse,
-    InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalErrorException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMemberAccountsRequest,
   ) => Stream.Stream<
     ListMemberAccountsResponse,
-    InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalErrorException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMemberAccountsRequest,
   ) => Stream.Stream<
     AWSAccountId,
-    InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalErrorException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMemberAccountsRequest,
@@ -3575,8 +3573,8 @@ export const listTagsForResource: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3597,8 +3595,8 @@ export const deleteProtocolsList: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProtocolsListRequest,
   output: DeleteProtocolsListResponse,
@@ -3619,8 +3617,8 @@ export const getAdminAccount: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAdminAccountRequest,
   output: GetAdminAccountResponse,
@@ -3642,8 +3640,8 @@ export const getNotificationChannel: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNotificationChannelRequest,
   output: GetNotificationChannelResponse,
@@ -3667,8 +3665,8 @@ export const putNotificationChannel: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutNotificationChannelRequest,
   output: PutNotificationChannelResponse,
@@ -3690,8 +3688,8 @@ export const disassociateAdminAccount: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateAdminAccountRequest,
   output: DisassociateAdminAccountResponse,
@@ -3711,8 +3709,8 @@ export const deleteAppsList: (
   | InternalErrorException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppsListRequest,
   output: DeleteAppsListResponse,
@@ -3733,8 +3731,8 @@ export const deleteResourceSet: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceSetRequest,
   output: DeleteResourceSetResponse,
@@ -3756,8 +3754,8 @@ export const untagResource: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3779,8 +3777,8 @@ export const associateThirdPartyFirewall: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateThirdPartyFirewallRequest,
   output: AssociateThirdPartyFirewallResponse,
@@ -3802,8 +3800,8 @@ export const batchDisassociateResource: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDisassociateResourceRequest,
   output: BatchDisassociateResourceResponse,
@@ -3826,8 +3824,8 @@ export const getAdminScope: (
   | InvalidOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAdminScopeRequest,
   output: GetAdminScopeResponse,
@@ -3851,8 +3849,8 @@ export const tagResource: (
   | InvalidOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3878,8 +3876,8 @@ export const associateAdminAccount: (
   | InvalidOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateAdminAccountRequest,
   output: AssociateAdminAccountResponse,
@@ -3903,8 +3901,8 @@ export const batchAssociateResource: (
   | InvalidOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchAssociateResourceRequest,
   output: BatchAssociateResourceResponse,
@@ -3926,22 +3924,22 @@ export const listComplianceStatus: {
     input: ListComplianceStatusRequest,
   ): Effect.Effect<
     ListComplianceStatusResponse,
-    InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalErrorException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListComplianceStatusRequest,
   ) => Stream.Stream<
     ListComplianceStatusResponse,
-    InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalErrorException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListComplianceStatusRequest,
   ) => Stream.Stream<
     PolicyComplianceStatus,
-    InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalErrorException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComplianceStatusRequest,
@@ -3966,8 +3964,8 @@ export const putAppsList: (
   | InvalidOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAppsListRequest,
   output: PutAppsListResponse,
@@ -3991,8 +3989,8 @@ export const putProtocolsList: (
   | InvalidOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutProtocolsListRequest,
   output: PutProtocolsListResponse,
@@ -4018,8 +4016,8 @@ export const getComplianceDetail: (
   | InvalidInputException
   | InvalidOperationException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComplianceDetailRequest,
   output: GetComplianceDetailResponse,
@@ -4080,8 +4078,8 @@ export const putPolicy: (
   | InvalidTypeException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPolicyRequest,
   output: PutPolicyResponse,
@@ -4104,8 +4102,8 @@ export const getViolationDetails: (
   | InternalErrorException
   | InvalidInputException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetViolationDetailsRequest,
   output: GetViolationDetailsResponse,

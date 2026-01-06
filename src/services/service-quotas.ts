@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Service Quotas",
@@ -1180,75 +1178,71 @@ export const GetAWSDefaultServiceQuotaResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class AWSServiceAccessNotEnabledException extends S.TaggedError<AWSServiceAccessNotEnabledException>()(
   "AWSServiceAccessNotEnabledException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class DependencyAccessDeniedException extends S.TaggedError<DependencyAccessDeniedException>()(
   "DependencyAccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class IllegalArgumentException extends S.TaggedError<IllegalArgumentException>()(
   "IllegalArgumentException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidPaginationTokenException extends S.TaggedError<InvalidPaginationTokenException>()(
   "InvalidPaginationTokenException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchResourceException extends S.TaggedError<NoSuchResourceException>()(
   "NoSuchResourceException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoAvailableOrganizationException extends S.TaggedError<NoAvailableOrganizationException>()(
   "NoAvailableOrganizationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidResourceStateException extends S.TaggedError<InvalidResourceStateException>()(
   "InvalidResourceStateException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceException extends S.TaggedError<ServiceException>()(
   "ServiceException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class OrganizationNotInAllFeaturesModeException extends S.TaggedError<OrganizationNotInAllFeaturesModeException>()(
   "OrganizationNotInAllFeaturesModeException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class QuotaExceededException extends S.TaggedError<QuotaExceededException>()(
   "QuotaExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class TagPolicyViolationException extends S.TaggedError<TagPolicyViolationException>()(
   "TagPolicyViolationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class TemplatesNotAvailableInRegionException extends S.TaggedError<TemplatesNotAvailableInRegionException>()(
   "TemplatesNotAvailableInRegionException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaTemplateNotInUseException extends S.TaggedError<ServiceQuotaTemplateNotInUseException>()(
   "ServiceQuotaTemplateNotInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1267,8 +1261,8 @@ export const createSupportCase: (
   | ResourceAlreadyExistsException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSupportCaseRequest,
   output: CreateSupportCaseResponse,
@@ -1300,8 +1294,8 @@ export const deleteServiceQuotaIncreaseRequestFromTemplate: (
   | ServiceException
   | TemplatesNotAvailableInRegionException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceQuotaIncreaseRequestFromTemplateRequest,
   output: DeleteServiceQuotaIncreaseRequestFromTemplateResponse,
@@ -1332,8 +1326,8 @@ export const getAssociationForServiceQuotaTemplate: (
   | ServiceQuotaTemplateNotInUseException
   | TemplatesNotAvailableInRegionException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAssociationForServiceQuotaTemplateRequest,
   output: GetAssociationForServiceQuotaTemplateResponse,
@@ -1363,8 +1357,8 @@ export const listAWSDefaultServiceQuotas: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAWSDefaultServiceQuotasRequest,
@@ -1376,8 +1370,8 @@ export const listAWSDefaultServiceQuotas: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAWSDefaultServiceQuotasRequest,
@@ -1389,8 +1383,8 @@ export const listAWSDefaultServiceQuotas: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAWSDefaultServiceQuotasRequest,
@@ -1426,8 +1420,8 @@ export const listRequestedServiceQuotaChangeHistory: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRequestedServiceQuotaChangeHistoryRequest,
@@ -1439,8 +1433,8 @@ export const listRequestedServiceQuotaChangeHistory: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRequestedServiceQuotaChangeHistoryRequest,
@@ -1452,8 +1446,8 @@ export const listRequestedServiceQuotaChangeHistory: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRequestedServiceQuotaChangeHistoryRequest,
@@ -1488,8 +1482,8 @@ export const listRequestedServiceQuotaChangeHistoryByQuota: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
@@ -1501,8 +1495,8 @@ export const listRequestedServiceQuotaChangeHistoryByQuota: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
@@ -1514,8 +1508,8 @@ export const listRequestedServiceQuotaChangeHistoryByQuota: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
@@ -1552,8 +1546,8 @@ export const listServiceQuotas: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceQuotasRequest,
@@ -1565,8 +1559,8 @@ export const listServiceQuotas: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceQuotasRequest,
@@ -1578,8 +1572,8 @@ export const listServiceQuotas: {
     | NoSuchResourceException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceQuotasRequest,
@@ -1612,8 +1606,8 @@ export const listServices: {
     | InvalidPaginationTokenException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServicesRequest,
@@ -1624,8 +1618,8 @@ export const listServices: {
     | InvalidPaginationTokenException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServicesRequest,
@@ -1636,8 +1630,8 @@ export const listServices: {
     | InvalidPaginationTokenException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServicesRequest,
@@ -1669,8 +1663,8 @@ export const untagResource: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1696,8 +1690,8 @@ export const updateAutoManagement: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAutoManagementRequest,
   output: UpdateAutoManagementResponse,
@@ -1723,8 +1717,8 @@ export const stopAutoManagement: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopAutoManagementRequest,
   output: StopAutoManagementResponse,
@@ -1750,8 +1744,8 @@ export const getServiceQuota: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceQuotaRequest,
   output: GetServiceQuotaResponse,
@@ -1775,8 +1769,8 @@ export const listTagsForResource: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1802,8 +1796,8 @@ export const startAutoManagement: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAutoManagementRequest,
   output: StartAutoManagementResponse,
@@ -1828,8 +1822,8 @@ export const getAutoManagementConfiguration: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAutoManagementConfigurationRequest,
   output: GetAutoManagementConfigurationResponse,
@@ -1864,8 +1858,8 @@ export const getQuotaUtilizationReport: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQuotaUtilizationReportRequest,
   output: GetQuotaUtilizationReportResponse,
@@ -1889,8 +1883,8 @@ export const getRequestedServiceQuotaChange: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRequestedServiceQuotaChangeRequest,
   output: GetRequestedServiceQuotaChangeResponse,
@@ -1921,8 +1915,8 @@ export const startQuotaUtilizationReport: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartQuotaUtilizationReportRequest,
   output: StartQuotaUtilizationReportResponse,
@@ -1952,8 +1946,8 @@ export const requestServiceQuotaIncrease: (
   | ResourceAlreadyExistsException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RequestServiceQuotaIncreaseRequest,
   output: RequestServiceQuotaIncreaseResponse,
@@ -1982,8 +1976,8 @@ export const getAWSDefaultServiceQuota: (
   | NoSuchResourceException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAWSDefaultServiceQuotaRequest,
   output: GetAWSDefaultServiceQuotaResponse,
@@ -2011,8 +2005,8 @@ export const listServiceQuotaIncreaseRequestsInTemplate: {
     | ServiceException
     | TemplatesNotAvailableInRegionException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
@@ -2026,8 +2020,8 @@ export const listServiceQuotaIncreaseRequestsInTemplate: {
     | ServiceException
     | TemplatesNotAvailableInRegionException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
@@ -2041,8 +2035,8 @@ export const listServiceQuotaIncreaseRequestsInTemplate: {
     | ServiceException
     | TemplatesNotAvailableInRegionException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
@@ -2081,8 +2075,8 @@ export const getServiceQuotaIncreaseRequestFromTemplate: (
   | ServiceException
   | TemplatesNotAvailableInRegionException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceQuotaIncreaseRequestFromTemplateRequest,
   output: GetServiceQuotaIncreaseRequestFromTemplateResponse,
@@ -2116,8 +2110,8 @@ export const associateServiceQuotaTemplate: (
   | ServiceException
   | TemplatesNotAvailableInRegionException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateServiceQuotaTemplateRequest,
   output: AssociateServiceQuotaTemplateResponse,
@@ -2149,8 +2143,8 @@ export const putServiceQuotaIncreaseRequestIntoTemplate: (
   | ServiceException
   | TemplatesNotAvailableInRegionException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutServiceQuotaIncreaseRequestIntoTemplateRequest,
   output: PutServiceQuotaIncreaseRequestIntoTemplateResponse,
@@ -2184,8 +2178,8 @@ export const disassociateServiceQuotaTemplate: (
   | ServiceQuotaTemplateNotInUseException
   | TemplatesNotAvailableInRegionException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateServiceQuotaTemplateRequest,
   output: DisassociateServiceQuotaTemplateResponse,
@@ -2215,8 +2209,8 @@ export const tagResource: (
   | TagPolicyViolationException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,

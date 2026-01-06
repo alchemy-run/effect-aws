@@ -450,6 +450,82 @@ const program = lambda.invoke({
 );
 ```
 
+### Error Categories
+
+AWS errors are classified into categories for easier handling. You can catch errors by category instead of individual error types:
+
+```typescript
+import { Category } from "distilled-aws";
+// or
+import * as Category from "distilled-aws/Category";
+```
+
+#### Available Categories
+
+| Category | Description | HTTP Codes |
+|----------|-------------|------------|
+| `AuthError` | Authentication/authorization failures | 401, 403 |
+| `BadRequestError` | Invalid request parameters | 400, 404, 405, 406, 410, 413, 415, 422 |
+| `ConflictError` | Resource state conflicts | 409 |
+| `QuotaError` | Service quota exceeded | 402 |
+| `ThrottlingError` | Rate limiting | 429 |
+| `TimeoutError` | Request timeouts | 408, 504 |
+| `ServerError` | AWS service errors | 5xx |
+| `RetryableError` | Errors with Smithy `@retryable` trait | - |
+| `NetworkError` | Network/transport failures | - |
+| `AbortedError` | Aborted operations | - |
+
+#### Catching Errors by Category
+
+Use `catchErrors` to catch multiple categories at once:
+
+```typescript
+import { Effect } from "effect";
+import { Category } from "distilled-aws";
+import * as s3 from "distilled-aws/s3";
+
+const program = s3.getObject({ Bucket: "my-bucket", Key: "file.txt" }).pipe(
+  // Catch auth and quota errors together
+  Category.catchErrors(
+    "AuthError",
+    "QuotaError",
+    (error) => Effect.succeed({ fallback: true }),
+  ),
+);
+```
+
+Or use the convenience helpers for single categories:
+
+```typescript
+const program = s3.getObject({ Bucket: "my-bucket", Key: "file.txt" }).pipe(
+  Category.catchAuthError((error) => Effect.succeed({ unauthorized: true })),
+  Category.catchThrottlingError((error) => Effect.succeed({ retry: true })),
+);
+```
+
+#### Using Categories with Retry
+
+Category predicates work with `Effect.retry`:
+
+```typescript
+import { Effect } from "effect";
+import { Category } from "distilled-aws";
+import * as s3 from "distilled-aws/s3";
+
+const program = s3.putObject({
+  Bucket: "my-bucket",
+  Key: "file.txt",
+  Body: "content",
+}).pipe(
+  Effect.retry({
+    times: 3,
+    while: Category.isThrottlingError,
+  }),
+);
+```
+
+Available predicates: `isAuthError`, `isBadRequestError`, `isConflictError`, `isQuotaError`, `isThrottlingError`, `isTimeoutError`, `isServerError`, `isRetryableError`, `isNetworkError`, `isAbortedError`.
+
 ## Sensitive Data
 
 AWS APIs often include sensitive data like passwords, secret keys, and encryption keys. Fields marked with the Smithy `@sensitive` trait are automatically wrapped in Effect's `Redacted` type to prevent accidental exposure in logs.

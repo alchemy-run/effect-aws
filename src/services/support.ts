@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://support.amazonaws.com/doc/2013-04-15/");
 const svc = T.AwsApiService({
@@ -1349,7 +1347,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "Throttling", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CaseCreationLimitExceeded extends S.TaggedError<CaseCreationLimitExceeded>()(
   "CaseCreationLimitExceeded",
   { message: S.optional(S.String) },
@@ -1389,8 +1387,8 @@ export const refreshTrustedAdvisorCheck: (
   input: RefreshTrustedAdvisorCheckRequest,
 ) => Effect.Effect<
   RefreshTrustedAdvisorCheckResponse,
-  InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RefreshTrustedAdvisorCheckRequest,
   output: RefreshTrustedAdvisorCheckResponse,
@@ -1412,8 +1410,8 @@ export const resolveCase: (
   input: ResolveCaseRequest,
 ) => Effect.Effect<
   ResolveCaseResponse,
-  CaseIdNotFound | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CaseIdNotFound | InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResolveCaseRequest,
   output: ResolveCaseResponse,
@@ -1436,8 +1434,8 @@ export const describeSeverityLevels: (
   input: DescribeSeverityLevelsRequest,
 ) => Effect.Effect<
   DescribeSeverityLevelsResponse,
-  InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSeverityLevelsRequest,
   output: DescribeSeverityLevelsResponse,
@@ -1466,8 +1464,8 @@ export const addCommunicationToCase: (
   | AttachmentSetIdNotFound
   | CaseIdNotFound
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddCommunicationToCaseRequest,
   output: AddCommunicationToCaseResponse,
@@ -1500,8 +1498,8 @@ export const describeAttachment: (
   | AttachmentIdNotFound
   | DescribeAttachmentLimitExceeded
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAttachmentRequest,
   output: DescribeAttachmentResponse,
@@ -1541,22 +1539,22 @@ export const describeCases: {
     input: DescribeCasesRequest,
   ): Effect.Effect<
     DescribeCasesResponse,
-    CaseIdNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CaseIdNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCasesRequest,
   ) => Stream.Stream<
     DescribeCasesResponse,
-    CaseIdNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CaseIdNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCasesRequest,
   ) => Stream.Stream<
     CaseDetails,
-    CaseIdNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CaseIdNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCasesRequest,
@@ -1596,22 +1594,22 @@ export const describeCommunications: {
     input: DescribeCommunicationsRequest,
   ): Effect.Effect<
     DescribeCommunicationsResponse,
-    CaseIdNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CaseIdNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCommunicationsRequest,
   ) => Stream.Stream<
     DescribeCommunicationsResponse,
-    CaseIdNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CaseIdNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCommunicationsRequest,
   ) => Stream.Stream<
     Communication,
-    CaseIdNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CaseIdNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCommunicationsRequest,
@@ -1648,8 +1646,8 @@ export const describeServices: (
   input: DescribeServicesRequest,
 ) => Effect.Effect<
   DescribeServicesResponse,
-  InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServicesRequest,
   output: DescribeServicesResponse,
@@ -1672,8 +1670,8 @@ export const describeSupportedLanguages: (
   input: DescribeSupportedLanguagesRequest,
 ) => Effect.Effect<
   DescribeSupportedLanguagesResponse,
-  InternalServerError | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSupportedLanguagesRequest,
   output: DescribeSupportedLanguagesResponse,
@@ -1705,8 +1703,8 @@ export const describeTrustedAdvisorCheckRefreshStatuses: (
   input: DescribeTrustedAdvisorCheckRefreshStatusesRequest,
 ) => Effect.Effect<
   DescribeTrustedAdvisorCheckRefreshStatusesResponse,
-  InternalServerError | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrustedAdvisorCheckRefreshStatusesRequest,
   output: DescribeTrustedAdvisorCheckRefreshStatusesResponse,
@@ -1739,8 +1737,8 @@ export const describeTrustedAdvisorChecks: (
   input: DescribeTrustedAdvisorChecksRequest,
 ) => Effect.Effect<
   DescribeTrustedAdvisorChecksResponse,
-  InternalServerError | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrustedAdvisorChecksRequest,
   output: DescribeTrustedAdvisorChecksResponse,
@@ -1770,8 +1768,8 @@ export const describeTrustedAdvisorCheckSummaries: (
   input: DescribeTrustedAdvisorCheckSummariesRequest,
 ) => Effect.Effect<
   DescribeTrustedAdvisorCheckSummariesResponse,
-  InternalServerError | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrustedAdvisorCheckSummariesRequest,
   output: DescribeTrustedAdvisorCheckSummariesResponse,
@@ -1795,8 +1793,8 @@ export const describeCreateCaseOptions: (
   input: DescribeCreateCaseOptionsRequest,
 ) => Effect.Effect<
   DescribeCreateCaseOptionsResponse,
-  InternalServerError | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCreateCaseOptionsRequest,
   output: DescribeCreateCaseOptionsResponse,
@@ -1845,8 +1843,8 @@ export const describeTrustedAdvisorCheckResult: (
   input: DescribeTrustedAdvisorCheckResultRequest,
 ) => Effect.Effect<
   DescribeTrustedAdvisorCheckResultResponse,
-  InternalServerError | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrustedAdvisorCheckResultRequest,
   output: DescribeTrustedAdvisorCheckResultResponse,
@@ -1888,8 +1886,8 @@ export const createCase: (
   | AttachmentSetIdNotFound
   | CaseCreationLimitExceeded
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCaseRequest,
   output: CreateCaseResponse,
@@ -1924,8 +1922,8 @@ export const addAttachmentsToSet: (
   | AttachmentSetIdNotFound
   | AttachmentSetSizeLimitExceeded
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddAttachmentsToSetRequest,
   output: AddAttachmentsToSetResponse,

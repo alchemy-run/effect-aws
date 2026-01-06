@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ec2.amazon.com/awsposiedon/V2015_11_01/");
 const svc = T.AwsApiService({
@@ -1735,47 +1733,43 @@ export const StartExportTaskResponse = S.suspend(() =>
 export class AuthorizationErrorException extends S.TaggedError<AuthorizationErrorException>()(
   "AuthorizationErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class HomeRegionNotSetException extends S.TaggedError<HomeRegionNotSetException>()(
   "HomeRegionNotSetException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictErrorException extends S.TaggedError<ConflictErrorException>()(
   "ConflictErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerInternalErrorException extends S.TaggedError<ServerInternalErrorException>()(
   "ServerInternalErrorException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class OperationNotPermittedException extends S.TaggedError<OperationNotPermittedException>()(
   "OperationNotPermittedException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1790,8 +1784,8 @@ export const associateConfigurationItemsToApplication: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateConfigurationItemsToApplicationRequest,
   output: AssociateConfigurationItemsToApplicationResponse,
@@ -1839,8 +1833,8 @@ export const startExportTask: (
   | InvalidParameterValueException
   | OperationNotPermittedException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartExportTaskRequest,
   output: StartExportTaskResponse,
@@ -1879,8 +1873,8 @@ export const describeTags: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTagsRequest,
@@ -1892,8 +1886,8 @@ export const describeTags: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTagsRequest,
@@ -1905,8 +1899,8 @@ export const describeTags: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTagsRequest,
@@ -1966,8 +1960,8 @@ export const startImportTask: (
   | InvalidParameterValueException
   | ResourceInUseException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartImportTaskRequest,
   output: StartImportTaskResponse,
@@ -1995,8 +1989,8 @@ export const startBatchDeleteConfigurationTask: (
   | LimitExceededException
   | OperationNotPermittedException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartBatchDeleteConfigurationTaskRequest,
   output: StartBatchDeleteConfigurationTaskResponse,
@@ -2025,8 +2019,8 @@ export const describeAgents: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAgentsRequest,
@@ -2037,8 +2031,8 @@ export const describeAgents: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAgentsRequest,
@@ -2049,8 +2043,8 @@ export const describeAgents: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAgentsRequest,
@@ -2082,8 +2076,8 @@ export const batchDeleteAgents: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteAgentsRequest,
   output: BatchDeleteAgentsResponse,
@@ -2105,8 +2099,8 @@ export const describeBatchDeleteConfigurationTask: (
   | HomeRegionNotSetException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBatchDeleteConfigurationTaskRequest,
   output: DescribeBatchDeleteConfigurationTaskResponse,
@@ -2136,8 +2130,8 @@ export const batchDeleteImportData: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteImportDataRequest,
   output: BatchDeleteImportDataResponse,
@@ -2179,8 +2173,8 @@ export const describeConfigurations: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationsRequest,
   output: DescribeConfigurationsResponse,
@@ -2206,8 +2200,8 @@ export const describeExportTasks: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeExportTasksRequest,
@@ -2218,8 +2212,8 @@ export const describeExportTasks: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeExportTasksRequest,
@@ -2230,8 +2224,8 @@ export const describeExportTasks: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeExportTasksRequest,
@@ -2264,8 +2258,8 @@ export const describeImportTasks: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImportTasksRequest,
@@ -2276,8 +2270,8 @@ export const describeImportTasks: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImportTasksRequest,
@@ -2288,8 +2282,8 @@ export const describeImportTasks: {
     | InvalidParameterException
     | InvalidParameterValueException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImportTasksRequest,
@@ -2321,8 +2315,8 @@ export const listServerNeighbors: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListServerNeighborsRequest,
   output: ListServerNeighborsResponse,
@@ -2346,8 +2340,8 @@ export const startDataCollectionByAgentIds: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDataCollectionByAgentIdsRequest,
   output: StartDataCollectionByAgentIdsResponse,
@@ -2371,8 +2365,8 @@ export const createApplication: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -2399,8 +2393,8 @@ export const getDiscoverySummary: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDiscoverySummaryRequest,
   output: GetDiscoverySummaryResponse,
@@ -2424,8 +2418,8 @@ export const stopDataCollectionByAgentIds: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDataCollectionByAgentIdsRequest,
   output: StopDataCollectionByAgentIdsResponse,
@@ -2450,8 +2444,8 @@ export const deleteApplications: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationsRequest,
   output: DeleteApplicationsResponse,
@@ -2475,8 +2469,8 @@ export const disassociateConfigurationItemsFromApplication: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateConfigurationItemsFromApplicationRequest,
   output: DisassociateConfigurationItemsFromApplicationResponse,
@@ -2500,8 +2494,8 @@ export const updateApplication: (
   | InvalidParameterException
   | InvalidParameterValueException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -2530,8 +2524,8 @@ export const describeContinuousExports: {
     | OperationNotPermittedException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeContinuousExportsRequest,
@@ -2544,8 +2538,8 @@ export const describeContinuousExports: {
     | OperationNotPermittedException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeContinuousExportsRequest,
@@ -2558,8 +2552,8 @@ export const describeContinuousExports: {
     | OperationNotPermittedException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeContinuousExportsRequest,
@@ -2595,8 +2589,8 @@ export const startContinuousExport: (
   | OperationNotPermittedException
   | ResourceInUseException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartContinuousExportRequest,
   output: StartContinuousExportResponse,
@@ -2626,8 +2620,8 @@ export const stopContinuousExport: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopContinuousExportRequest,
   output: StopContinuousExportResponse,
@@ -2661,8 +2655,8 @@ export const exportConfigurations: (
   | InvalidParameterValueException
   | OperationNotPermittedException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportConfigurationsRequest,
   output: ExportConfigurationsResponse,
@@ -2691,8 +2685,8 @@ export const listConfigurations: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConfigurationsRequest,
@@ -2704,8 +2698,8 @@ export const listConfigurations: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConfigurationsRequest,
@@ -2717,8 +2711,8 @@ export const listConfigurations: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationsRequest,
@@ -2752,8 +2746,8 @@ export const describeExportConfigurations: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeExportConfigurationsRequest,
@@ -2765,8 +2759,8 @@ export const describeExportConfigurations: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeExportConfigurationsRequest,
@@ -2778,8 +2772,8 @@ export const describeExportConfigurations: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServerInternalErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeExportConfigurationsRequest,
@@ -2815,8 +2809,8 @@ export const createTags: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTagsRequest,
   output: CreateTagsResponse,
@@ -2843,8 +2837,8 @@ export const deleteTags: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ServerInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsRequest,
   output: DeleteTagsResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "mq", serviceShapeName: "mq" });
 const auth = T.AwsAuthSigv4({ name: "mq" });
@@ -1789,44 +1787,42 @@ export class BadRequestException extends S.TaggedError<BadRequestException>()(
     ErrorAttribute: S.optional(S.String).pipe(T.JsonName("errorAttribute")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   {
     ErrorAttribute: S.optional(S.String).pipe(T.JsonName("errorAttribute")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
     ErrorAttribute: S.optional(S.String).pipe(T.JsonName("errorAttribute")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   {
     ErrorAttribute: S.optional(S.String).pipe(T.JsonName("errorAttribute")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   {
     ErrorAttribute: S.optional(S.String).pipe(T.JsonName("errorAttribute")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   {
     ErrorAttribute: S.optional(S.String).pipe(T.JsonName("errorAttribute")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -1839,8 +1835,8 @@ export const describeBrokerEngineTypes: (
   | BadRequestException
   | ForbiddenException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBrokerEngineTypesRequest,
   output: DescribeBrokerEngineTypesResponse,
@@ -1860,8 +1856,8 @@ export const describeBrokerInstanceOptions: (
   | BadRequestException
   | ForbiddenException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBrokerInstanceOptionsRequest,
   output: DescribeBrokerInstanceOptionsResponse,
@@ -1882,8 +1878,8 @@ export const listBrokers: {
     | BadRequestException
     | ForbiddenException
     | InternalServerErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBrokersRequest,
@@ -1892,8 +1888,8 @@ export const listBrokers: {
     | BadRequestException
     | ForbiddenException
     | InternalServerErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBrokersRequest,
@@ -1902,8 +1898,8 @@ export const listBrokers: {
     | BadRequestException
     | ForbiddenException
     | InternalServerErrorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBrokersRequest,
@@ -1930,8 +1926,8 @@ export const listConfigurations: (
   | BadRequestException
   | ForbiddenException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListConfigurationsRequest,
   output: ListConfigurationsResponse,
@@ -1952,8 +1948,8 @@ export const createConfiguration: (
   | ConflictException
   | ForbiddenException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationRequest,
   output: CreateConfigurationResponse,
@@ -1975,8 +1971,8 @@ export const createTags: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTagsRequest,
   output: CreateTagsResponse,
@@ -2031,8 +2027,8 @@ export const createBroker: (
   | ForbiddenException
   | InternalServerErrorException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBrokerRequest,
   output: CreateBrokerResponse,
@@ -2055,8 +2051,8 @@ export const describeBroker: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBrokerRequest,
   output: DescribeBrokerResponse,
@@ -2079,8 +2075,8 @@ export const deleteConfiguration: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationRequest,
   output: DeleteConfigurationResponse,
@@ -2103,8 +2099,8 @@ export const describeUser: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserRequest,
   output: DescribeUserResponse,
@@ -2127,8 +2123,8 @@ export const updateConfiguration: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationRequest,
   output: UpdateConfigurationResponse,
@@ -2151,8 +2147,8 @@ export const deleteBroker: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBrokerRequest,
   output: DeleteBrokerResponse,
@@ -2174,8 +2170,8 @@ export const describeConfiguration: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRequest,
   output: DescribeConfigurationResponse,
@@ -2197,8 +2193,8 @@ export const describeConfigurationRevision: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRevisionRequest,
   output: DescribeConfigurationRevisionResponse,
@@ -2220,8 +2216,8 @@ export const listConfigurationRevisions: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListConfigurationRevisionsRequest,
   output: ListConfigurationRevisionsResponse,
@@ -2243,8 +2239,8 @@ export const listTags: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -2266,8 +2262,8 @@ export const listUsers: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
@@ -2289,8 +2285,8 @@ export const promote: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PromoteRequest,
   output: PromoteResponse,
@@ -2312,8 +2308,8 @@ export const deleteTags: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsRequest,
   output: DeleteTagsResponse,
@@ -2335,8 +2331,8 @@ export const deleteUser: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -2358,8 +2354,8 @@ export const rebootBroker: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootBrokerRequest,
   output: RebootBrokerResponse,
@@ -2382,8 +2378,8 @@ export const updateBroker: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBrokerRequest,
   output: UpdateBrokerResponse,
@@ -2409,8 +2405,8 @@ export const createUser: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -2434,8 +2430,8 @@ export const updateUser: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,

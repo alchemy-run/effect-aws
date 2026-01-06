@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ddp.amazonaws.com/doc/2016-06-02/");
 const svc = T.AwsApiService({
@@ -1793,8 +1791,8 @@ export const getSubscriptionState: (
   input: GetSubscriptionStateRequest,
 ) => Effect.Effect<
   GetSubscriptionStateResponse,
-  InternalErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSubscriptionStateRequest,
   output: GetSubscriptionStateResponse,
@@ -1812,8 +1810,8 @@ export const createSubscription: (
   input: CreateSubscriptionRequest,
 ) => Effect.Effect<
   CreateSubscriptionResponse,
-  InternalErrorException | ResourceAlreadyExistsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalErrorException | ResourceAlreadyExistsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSubscriptionRequest,
   output: CreateSubscriptionResponse,
@@ -1826,8 +1824,8 @@ export const describeDRTAccess: (
   input: DescribeDRTAccessRequest,
 ) => Effect.Effect<
   DescribeDRTAccessResponse,
-  InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalErrorException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDRTAccessRequest,
   output: DescribeDRTAccessResponse,
@@ -1843,8 +1841,8 @@ export const deleteSubscription: (
   | InternalErrorException
   | LockedSubscriptionException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSubscriptionRequest,
   output: DeleteSubscriptionResponse,
@@ -1864,8 +1862,8 @@ export const deleteProtectionGroup: (
   | InternalErrorException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProtectionGroupRequest,
   output: DeleteProtectionGroupResponse,
@@ -1882,8 +1880,8 @@ export const describeEmergencyContactSettings: (
   input: DescribeEmergencyContactSettingsRequest,
 ) => Effect.Effect<
   DescribeEmergencyContactSettingsResponse,
-  InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalErrorException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEmergencyContactSettingsRequest,
   output: DescribeEmergencyContactSettingsResponse,
@@ -1899,8 +1897,8 @@ export const deleteProtection: (
   | InternalErrorException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProtectionRequest,
   output: DeleteProtectionResponse,
@@ -1921,8 +1919,8 @@ export const disassociateDRTRole: (
   | InvalidOperationException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateDRTRoleRequest,
   output: DisassociateDRTRoleResponse,
@@ -1940,8 +1938,8 @@ export const describeProtectionGroup: (
   input: DescribeProtectionGroupRequest,
 ) => Effect.Effect<
   DescribeProtectionGroupResponse,
-  InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalErrorException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProtectionGroupRequest,
   output: DescribeProtectionGroupResponse,
@@ -1958,8 +1956,8 @@ export const listResourcesInProtectionGroup: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourcesInProtectionGroupRequest,
@@ -1968,8 +1966,8 @@ export const listResourcesInProtectionGroup: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourcesInProtectionGroupRequest,
@@ -1978,8 +1976,8 @@ export const listResourcesInProtectionGroup: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesInProtectionGroupRequest,
@@ -2005,8 +2003,8 @@ export const listTagsForResource: (
   | InternalErrorException
   | InvalidResourceException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2029,8 +2027,8 @@ export const disassociateDRTLogBucket: (
   | NoAssociatedRoleException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateDRTLogBucketRequest,
   output: DisassociateDRTLogBucketResponse,
@@ -2054,8 +2052,8 @@ export const tagResource: (
   | InvalidParameterException
   | InvalidResourceException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2077,8 +2075,8 @@ export const untagResource: (
   | InvalidParameterException
   | InvalidResourceException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2100,8 +2098,8 @@ export const updateEmergencyContactSettings: (
   | InvalidParameterException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEmergencyContactSettingsRequest,
   output: UpdateEmergencyContactSettingsResponse,
@@ -2123,8 +2121,8 @@ export const updateProtectionGroup: (
   | InvalidParameterException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProtectionGroupRequest,
   output: UpdateProtectionGroupResponse,
@@ -2150,8 +2148,8 @@ export const updateSubscription: (
   | LockedSubscriptionException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSubscriptionRequest,
   output: UpdateSubscriptionResponse,
@@ -2176,8 +2174,8 @@ export const disableApplicationLayerAutomaticResponse: (
   | InvalidParameterException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableApplicationLayerAutomaticResponseRequest,
   output: DisableApplicationLayerAutomaticResponseResponse,
@@ -2213,8 +2211,8 @@ export const associateDRTRole: (
   | InvalidParameterException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateDRTRoleRequest,
   output: AssociateDRTRoleResponse,
@@ -2239,8 +2237,8 @@ export const updateApplicationLayerAutomaticResponse: (
   | InvalidParameterException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationLayerAutomaticResponseRequest,
   output: UpdateApplicationLayerAutomaticResponseResponse,
@@ -2264,8 +2262,8 @@ export const disableProactiveEngagement: (
   | InvalidParameterException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableProactiveEngagementRequest,
   output: DisableProactiveEngagementResponse,
@@ -2289,8 +2287,8 @@ export const enableProactiveEngagement: (
   | InvalidParameterException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableProactiveEngagementRequest,
   output: EnableProactiveEngagementResponse,
@@ -2320,8 +2318,8 @@ export const associateProactiveEngagementDetails: (
   | InvalidParameterException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateProactiveEngagementDetailsRequest,
   output: AssociateProactiveEngagementDetailsResponse,
@@ -2345,8 +2343,8 @@ export const listProtectionGroups: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProtectionGroupsRequest,
@@ -2355,8 +2353,8 @@ export const listProtectionGroups: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProtectionGroupsRequest,
@@ -2365,8 +2363,8 @@ export const listProtectionGroups: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProtectionGroupsRequest,
@@ -2394,8 +2392,8 @@ export const listProtections: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProtectionsRequest,
@@ -2404,8 +2402,8 @@ export const listProtections: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProtectionsRequest,
@@ -2414,8 +2412,8 @@ export const listProtections: {
     | InternalErrorException
     | InvalidPaginationTokenException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProtectionsRequest,
@@ -2446,8 +2444,8 @@ export const disassociateHealthCheck: (
   | InvalidResourceException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateHealthCheckRequest,
   output: DisassociateHealthCheckResponse,
@@ -2470,8 +2468,8 @@ export const describeAttackStatistics: (
   input: DescribeAttackStatisticsRequest,
 ) => Effect.Effect<
   DescribeAttackStatisticsResponse,
-  InternalErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAttackStatisticsRequest,
   output: DescribeAttackStatisticsResponse,
@@ -2487,8 +2485,8 @@ export const describeProtection: (
   | InternalErrorException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProtectionRequest,
   output: DescribeProtectionResponse,
@@ -2510,8 +2508,8 @@ export const listAttacks: {
     | InternalErrorException
     | InvalidOperationException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAttacksRequest,
@@ -2520,8 +2518,8 @@ export const listAttacks: {
     | InternalErrorException
     | InvalidOperationException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAttacksRequest,
@@ -2530,8 +2528,8 @@ export const listAttacks: {
     | InternalErrorException
     | InvalidOperationException
     | InvalidParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAttacksRequest,
@@ -2563,8 +2561,8 @@ export const associateHealthCheck: (
   | LimitsExceededException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateHealthCheckRequest,
   output: AssociateHealthCheckResponse,
@@ -2590,8 +2588,8 @@ export const createProtectionGroup: (
   | OptimisticLockException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProtectionGroupRequest,
   output: CreateProtectionGroupResponse,
@@ -2631,8 +2629,8 @@ export const enableApplicationLayerAutomaticResponse: (
   | LimitsExceededException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableApplicationLayerAutomaticResponseRequest,
   output: EnableApplicationLayerAutomaticResponseResponse,
@@ -2662,8 +2660,8 @@ export const associateDRTLogBucket: (
   | NoAssociatedRoleException
   | OptimisticLockException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateDRTLogBucketRequest,
   output: AssociateDRTLogBucketResponse,
@@ -2699,8 +2697,8 @@ export const createProtection: (
   | OptimisticLockException
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProtectionRequest,
   output: CreateProtectionResponse,
@@ -2722,8 +2720,8 @@ export const describeAttack: (
   input: DescribeAttackRequest,
 ) => Effect.Effect<
   DescribeAttackResponse,
-  AccessDeniedException | InternalErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | InternalErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAttackRequest,
   output: DescribeAttackResponse,
@@ -2736,8 +2734,8 @@ export const describeSubscription: (
   input: DescribeSubscriptionRequest,
 ) => Effect.Effect<
   DescribeSubscriptionResponse,
-  InternalErrorException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalErrorException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSubscriptionRequest,
   output: DescribeSubscriptionResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials as Creds,
-  Region as Rgn,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials as Creds } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://awss3control.amazonaws.com/doc/2018-08-20/");
 const svc = T.AwsApiService({
@@ -8645,7 +8643,7 @@ export class NotFoundException extends S.TaggedError<NotFoundException>()(
 export class NoSuchPublicAccessBlockConfiguration extends S.TaggedError<NoSuchPublicAccessBlockConfiguration>()(
   "NoSuchPublicAccessBlockConfiguration",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String) },
@@ -8691,8 +8689,8 @@ export const associateAccessGrantsIdentityCenter: (
   input: AssociateAccessGrantsIdentityCenterRequest,
 ) => Effect.Effect<
   AssociateAccessGrantsIdentityCenterResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateAccessGrantsIdentityCenterRequest,
   output: AssociateAccessGrantsIdentityCenterResponse,
@@ -8709,8 +8707,8 @@ export const deleteAccessGrant: (
   input: DeleteAccessGrantRequest,
 ) => Effect.Effect<
   DeleteAccessGrantResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessGrantRequest,
   output: DeleteAccessGrantResponse,
@@ -8727,8 +8725,8 @@ export const deleteAccessGrantsInstance: (
   input: DeleteAccessGrantsInstanceRequest,
 ) => Effect.Effect<
   DeleteAccessGrantsInstanceResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessGrantsInstanceRequest,
   output: DeleteAccessGrantsInstanceResponse,
@@ -8745,8 +8743,8 @@ export const deleteAccessGrantsInstanceResourcePolicy: (
   input: DeleteAccessGrantsInstanceResourcePolicyRequest,
 ) => Effect.Effect<
   DeleteAccessGrantsInstanceResourcePolicyResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessGrantsInstanceResourcePolicyRequest,
   output: DeleteAccessGrantsInstanceResourcePolicyResponse,
@@ -8763,8 +8761,8 @@ export const deleteAccessGrantsLocation: (
   input: DeleteAccessGrantsLocationRequest,
 ) => Effect.Effect<
   DeleteAccessGrantsLocationResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessGrantsLocationRequest,
   output: DeleteAccessGrantsLocationResponse,
@@ -8787,8 +8785,8 @@ export const deleteAccessPoint: (
   input: DeleteAccessPointRequest,
 ) => Effect.Effect<
   DeleteAccessPointResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessPointRequest,
   output: DeleteAccessPointResponse,
@@ -8812,8 +8810,8 @@ export const deleteAccessPointForObjectLambda: (
   input: DeleteAccessPointForObjectLambdaRequest,
 ) => Effect.Effect<
   DeleteAccessPointForObjectLambdaResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessPointForObjectLambdaRequest,
   output: DeleteAccessPointForObjectLambdaResponse,
@@ -8834,8 +8832,8 @@ export const deleteAccessPointPolicy: (
   input: DeleteAccessPointPolicyRequest,
 ) => Effect.Effect<
   DeleteAccessPointPolicyResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessPointPolicyRequest,
   output: DeleteAccessPointPolicyResponse,
@@ -8857,8 +8855,8 @@ export const deleteAccessPointPolicyForObjectLambda: (
   input: DeleteAccessPointPolicyForObjectLambdaRequest,
 ) => Effect.Effect<
   DeleteAccessPointPolicyForObjectLambdaResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessPointPolicyForObjectLambdaRequest,
   output: DeleteAccessPointPolicyForObjectLambdaResponse,
@@ -8878,8 +8876,8 @@ export const deleteAccessPointScope: (
   input: DeleteAccessPointScopeRequest,
 ) => Effect.Effect<
   DeleteAccessPointScopeResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessPointScopeRequest,
   output: DeleteAccessPointScopeResponse,
@@ -8907,8 +8905,8 @@ export const deleteBucket: (
   input: DeleteBucketRequest,
 ) => Effect.Effect<
   DeleteBucketResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketRequest,
   output: DeleteBucketResponse,
@@ -8944,8 +8942,8 @@ export const deleteBucketLifecycleConfiguration: (
   input: DeleteBucketLifecycleConfigurationRequest,
 ) => Effect.Effect<
   DeleteBucketLifecycleConfigurationResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketLifecycleConfigurationRequest,
   output: DeleteBucketLifecycleConfigurationResponse,
@@ -8987,8 +8985,8 @@ export const deleteBucketPolicy: (
   input: DeleteBucketPolicyRequest,
 ) => Effect.Effect<
   DeleteBucketPolicyResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketPolicyRequest,
   output: DeleteBucketPolicyResponse,
@@ -9029,8 +9027,8 @@ export const deleteBucketReplication: (
   input: DeleteBucketReplicationRequest,
 ) => Effect.Effect<
   DeleteBucketReplicationResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketReplicationRequest,
   output: DeleteBucketReplicationResponse,
@@ -9059,8 +9057,8 @@ export const deleteBucketTagging: (
   input: DeleteBucketTaggingRequest,
 ) => Effect.Effect<
   DeleteBucketTaggingResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketTaggingRequest,
   output: DeleteBucketTaggingResponse,
@@ -9087,8 +9085,8 @@ export const deletePublicAccessBlock: (
   input: DeletePublicAccessBlockRequest,
 ) => Effect.Effect<
   DeletePublicAccessBlockResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePublicAccessBlockRequest,
   output: DeletePublicAccessBlockResponse,
@@ -9110,8 +9108,8 @@ export const deleteStorageLensConfiguration: (
   input: DeleteStorageLensConfigurationRequest,
 ) => Effect.Effect<
   DeleteStorageLensConfigurationResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStorageLensConfigurationRequest,
   output: DeleteStorageLensConfigurationResponse,
@@ -9134,8 +9132,8 @@ export const deleteStorageLensConfigurationTagging: (
   input: DeleteStorageLensConfigurationTaggingRequest,
 ) => Effect.Effect<
   DeleteStorageLensConfigurationTaggingResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStorageLensConfigurationTaggingRequest,
   output: DeleteStorageLensConfigurationTaggingResult,
@@ -9155,8 +9153,8 @@ export const deleteStorageLensGroup: (
   input: DeleteStorageLensGroupRequest,
 ) => Effect.Effect<
   DeleteStorageLensGroupResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStorageLensGroupRequest,
   output: DeleteStorageLensGroupResponse,
@@ -9177,8 +9175,8 @@ export const dissociateAccessGrantsIdentityCenter: (
   input: DissociateAccessGrantsIdentityCenterRequest,
 ) => Effect.Effect<
   DissociateAccessGrantsIdentityCenterResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DissociateAccessGrantsIdentityCenterRequest,
   output: DissociateAccessGrantsIdentityCenterResponse,
@@ -9198,8 +9196,8 @@ export const putAccessPointConfigurationForObjectLambda: (
   input: PutAccessPointConfigurationForObjectLambdaRequest,
 ) => Effect.Effect<
   PutAccessPointConfigurationForObjectLambdaResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccessPointConfigurationForObjectLambdaRequest,
   output: PutAccessPointConfigurationForObjectLambdaResponse,
@@ -9222,8 +9220,8 @@ export const putAccessPointPolicy: (
   input: PutAccessPointPolicyRequest,
 ) => Effect.Effect<
   PutAccessPointPolicyResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccessPointPolicyRequest,
   output: PutAccessPointPolicyResponse,
@@ -9245,8 +9243,8 @@ export const putAccessPointPolicyForObjectLambda: (
   input: PutAccessPointPolicyForObjectLambdaRequest,
 ) => Effect.Effect<
   PutAccessPointPolicyForObjectLambdaResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccessPointPolicyForObjectLambdaRequest,
   output: PutAccessPointPolicyForObjectLambdaResponse,
@@ -9266,8 +9264,8 @@ export const putAccessPointScope: (
   input: PutAccessPointScopeRequest,
 ) => Effect.Effect<
   PutAccessPointScopeResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccessPointScopeRequest,
   output: PutAccessPointScopeResponse,
@@ -9310,8 +9308,8 @@ export const putBucketPolicy: (
   input: PutBucketPolicyRequest,
 ) => Effect.Effect<
   PutBucketPolicyResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketPolicyRequest,
   output: PutBucketPolicyResponse,
@@ -9339,8 +9337,8 @@ export const putPublicAccessBlock: (
   input: PutPublicAccessBlockRequest,
 ) => Effect.Effect<
   PutPublicAccessBlockResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPublicAccessBlockRequest,
   output: PutPublicAccessBlockResponse,
@@ -9362,8 +9360,8 @@ export const putStorageLensConfigurationTagging: (
   input: PutStorageLensConfigurationTaggingRequest,
 ) => Effect.Effect<
   PutStorageLensConfigurationTaggingResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutStorageLensConfigurationTaggingRequest,
   output: PutStorageLensConfigurationTaggingResult,
@@ -9404,8 +9402,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResult,
@@ -9447,8 +9445,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResult,
@@ -9468,8 +9466,8 @@ export const updateStorageLensGroup: (
   input: UpdateStorageLensGroupRequest,
 ) => Effect.Effect<
   UpdateStorageLensGroupResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStorageLensGroupRequest,
   output: UpdateStorageLensGroupResponse,
@@ -9490,8 +9488,8 @@ export const createAccessGrantsInstance: (
   input: CreateAccessGrantsInstanceRequest,
 ) => Effect.Effect<
   CreateAccessGrantsInstanceResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessGrantsInstanceRequest,
   output: CreateAccessGrantsInstanceResult,
@@ -9520,8 +9518,8 @@ export const createAccessGrantsLocation: (
   input: CreateAccessGrantsLocationRequest,
 ) => Effect.Effect<
   CreateAccessGrantsLocationResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessGrantsLocationRequest,
   output: CreateAccessGrantsLocationResult,
@@ -9538,8 +9536,8 @@ export const getAccessGrant: (
   input: GetAccessGrantRequest,
 ) => Effect.Effect<
   GetAccessGrantResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessGrantRequest,
   output: GetAccessGrantResult,
@@ -9558,8 +9556,8 @@ export const getAccessGrantsInstance: (
   input: GetAccessGrantsInstanceRequest,
 ) => Effect.Effect<
   GetAccessGrantsInstanceResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessGrantsInstanceRequest,
   output: GetAccessGrantsInstanceResult,
@@ -9580,8 +9578,8 @@ export const getAccessGrantsInstanceForPrefix: (
   input: GetAccessGrantsInstanceForPrefixRequest,
 ) => Effect.Effect<
   GetAccessGrantsInstanceForPrefixResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessGrantsInstanceForPrefixRequest,
   output: GetAccessGrantsInstanceForPrefixResult,
@@ -9598,8 +9596,8 @@ export const getAccessGrantsInstanceResourcePolicy: (
   input: GetAccessGrantsInstanceResourcePolicyRequest,
 ) => Effect.Effect<
   GetAccessGrantsInstanceResourcePolicyResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessGrantsInstanceResourcePolicyRequest,
   output: GetAccessGrantsInstanceResourcePolicyResult,
@@ -9616,8 +9614,8 @@ export const getAccessGrantsLocation: (
   input: GetAccessGrantsLocationRequest,
 ) => Effect.Effect<
   GetAccessGrantsLocationResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessGrantsLocationRequest,
   output: GetAccessGrantsLocationResult,
@@ -9637,8 +9635,8 @@ export const getAccessPointConfigurationForObjectLambda: (
   input: GetAccessPointConfigurationForObjectLambdaRequest,
 ) => Effect.Effect<
   GetAccessPointConfigurationForObjectLambdaResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPointConfigurationForObjectLambdaRequest,
   output: GetAccessPointConfigurationForObjectLambdaResult,
@@ -9657,8 +9655,8 @@ export const getAccessPointPolicy: (
   input: GetAccessPointPolicyRequest,
 ) => Effect.Effect<
   GetAccessPointPolicyResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPointPolicyRequest,
   output: GetAccessPointPolicyResult,
@@ -9680,8 +9678,8 @@ export const getAccessPointPolicyForObjectLambda: (
   input: GetAccessPointPolicyForObjectLambdaRequest,
 ) => Effect.Effect<
   GetAccessPointPolicyForObjectLambdaResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPointPolicyForObjectLambdaRequest,
   output: GetAccessPointPolicyForObjectLambdaResult,
@@ -9696,8 +9694,8 @@ export const getAccessPointPolicyStatusForObjectLambda: (
   input: GetAccessPointPolicyStatusForObjectLambdaRequest,
 ) => Effect.Effect<
   GetAccessPointPolicyStatusForObjectLambdaResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPointPolicyStatusForObjectLambdaRequest,
   output: GetAccessPointPolicyStatusForObjectLambdaResult,
@@ -9715,8 +9713,8 @@ export const getAccessPointScope: (
   input: GetAccessPointScopeRequest,
 ) => Effect.Effect<
   GetAccessPointScopeResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPointScopeRequest,
   output: GetAccessPointScopeResult,
@@ -9750,8 +9748,8 @@ export const getBucket: (
   input: GetBucketRequest,
 ) => Effect.Effect<
   GetBucketResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketRequest,
   output: GetBucketResult,
@@ -9795,8 +9793,8 @@ export const getBucketLifecycleConfiguration: (
   input: GetBucketLifecycleConfigurationRequest,
 ) => Effect.Effect<
   GetBucketLifecycleConfigurationResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketLifecycleConfigurationRequest,
   output: GetBucketLifecycleConfigurationResult,
@@ -9841,8 +9839,8 @@ export const getBucketPolicy: (
   input: GetBucketPolicyRequest,
 ) => Effect.Effect<
   GetBucketPolicyResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketPolicyRequest,
   output: GetBucketPolicyResult,
@@ -9891,8 +9889,8 @@ export const getBucketReplication: (
   input: GetBucketReplicationRequest,
 ) => Effect.Effect<
   GetBucketReplicationResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketReplicationRequest,
   output: GetBucketReplicationResult,
@@ -9928,8 +9926,8 @@ export const getBucketTagging: (
   input: GetBucketTaggingRequest,
 ) => Effect.Effect<
   GetBucketTaggingResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketTaggingRequest,
   output: GetBucketTaggingResult,
@@ -9971,8 +9969,8 @@ export const getBucketVersioning: (
   input: GetBucketVersioningRequest,
 ) => Effect.Effect<
   GetBucketVersioningResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketVersioningRequest,
   output: GetBucketVersioningResult,
@@ -9999,8 +9997,8 @@ export const getMultiRegionAccessPointPolicyStatus: (
   input: GetMultiRegionAccessPointPolicyStatusRequest,
 ) => Effect.Effect<
   GetMultiRegionAccessPointPolicyStatusResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMultiRegionAccessPointPolicyStatusRequest,
   output: GetMultiRegionAccessPointPolicyStatusResult,
@@ -10029,8 +10027,8 @@ export const getMultiRegionAccessPointRoutes: (
   input: GetMultiRegionAccessPointRoutesRequest,
 ) => Effect.Effect<
   GetMultiRegionAccessPointRoutesResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMultiRegionAccessPointRoutesRequest,
   output: GetMultiRegionAccessPointRoutesResult,
@@ -10051,8 +10049,8 @@ export const getStorageLensConfiguration: (
   input: GetStorageLensConfigurationRequest,
 ) => Effect.Effect<
   GetStorageLensConfigurationResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStorageLensConfigurationRequest,
   output: GetStorageLensConfigurationResult,
@@ -10075,8 +10073,8 @@ export const getStorageLensConfigurationTagging: (
   input: GetStorageLensConfigurationTaggingRequest,
 ) => Effect.Effect<
   GetStorageLensConfigurationTaggingResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStorageLensConfigurationTaggingRequest,
   output: GetStorageLensConfigurationTaggingResult,
@@ -10096,8 +10094,8 @@ export const getStorageLensGroup: (
   input: GetStorageLensGroupRequest,
 ) => Effect.Effect<
   GetStorageLensGroupResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStorageLensGroupRequest,
   output: GetStorageLensGroupResult,
@@ -10118,22 +10116,22 @@ export const listAccessPointsForDirectoryBuckets: {
     input: ListAccessPointsForDirectoryBucketsRequest,
   ): Effect.Effect<
     ListAccessPointsForDirectoryBucketsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessPointsForDirectoryBucketsRequest,
   ) => Stream.Stream<
     ListAccessPointsForDirectoryBucketsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessPointsForDirectoryBucketsRequest,
   ) => Stream.Stream<
     AccessPoint,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessPointsForDirectoryBucketsRequest,
@@ -10172,22 +10170,22 @@ export const listMultiRegionAccessPoints: {
     input: ListMultiRegionAccessPointsRequest,
   ): Effect.Effect<
     ListMultiRegionAccessPointsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListMultiRegionAccessPointsRequest,
   ) => Stream.Stream<
     ListMultiRegionAccessPointsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListMultiRegionAccessPointsRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMultiRegionAccessPointsRequest,
@@ -10234,8 +10232,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResult,
@@ -10252,8 +10250,8 @@ export const putAccessGrantsInstanceResourcePolicy: (
   input: PutAccessGrantsInstanceResourcePolicyRequest,
 ) => Effect.Effect<
   PutAccessGrantsInstanceResourcePolicyResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccessGrantsInstanceResourcePolicyRequest,
   output: PutAccessGrantsInstanceResourcePolicyResult,
@@ -10320,8 +10318,8 @@ export const putBucketTagging: (
   input: PutBucketTaggingRequest,
 ) => Effect.Effect<
   PutBucketTaggingResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketTaggingRequest,
   output: PutBucketTaggingResponse,
@@ -10383,8 +10381,8 @@ export const putBucketVersioning: (
   input: PutBucketVersioningRequest,
 ) => Effect.Effect<
   PutBucketVersioningResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketVersioningRequest,
   output: PutBucketVersioningResponse,
@@ -10425,8 +10423,8 @@ export const submitMultiRegionAccessPointRoutes: (
   input: SubmitMultiRegionAccessPointRoutesRequest,
 ) => Effect.Effect<
   SubmitMultiRegionAccessPointRoutesResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubmitMultiRegionAccessPointRoutesRequest,
   output: SubmitMultiRegionAccessPointRoutesResult,
@@ -10447,8 +10445,8 @@ export const updateAccessGrantsLocation: (
   input: UpdateAccessGrantsLocationRequest,
 ) => Effect.Effect<
   UpdateAccessGrantsLocationResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccessGrantsLocationRequest,
   output: UpdateAccessGrantsLocationResult,
@@ -10473,8 +10471,8 @@ export const createAccessGrant: (
   input: CreateAccessGrantRequest,
 ) => Effect.Effect<
   CreateAccessGrantResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessGrantRequest,
   output: CreateAccessGrantResult,
@@ -10512,8 +10510,8 @@ export const createAccessPoint: (
   input: CreateAccessPointRequest,
 ) => Effect.Effect<
   CreateAccessPointResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessPointRequest,
   output: CreateAccessPointResult,
@@ -10562,8 +10560,8 @@ export const createBucket: (
   input: CreateBucketRequest,
 ) => Effect.Effect<
   CreateBucketResult,
-  BucketAlreadyExists | BucketAlreadyOwnedByYou | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  BucketAlreadyExists | BucketAlreadyOwnedByYou | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBucketRequest,
   output: CreateBucketResult,
@@ -10598,8 +10596,8 @@ export const deleteMultiRegionAccessPoint: (
   input: DeleteMultiRegionAccessPointRequest,
 ) => Effect.Effect<
   DeleteMultiRegionAccessPointResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMultiRegionAccessPointRequest,
   output: DeleteMultiRegionAccessPointResult,
@@ -10622,8 +10620,8 @@ export const getAccessPoint: (
   input: GetAccessPointRequest,
 ) => Effect.Effect<
   GetAccessPointResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPointRequest,
   output: GetAccessPointResult,
@@ -10646,8 +10644,8 @@ export const getAccessPointForObjectLambda: (
   input: GetAccessPointForObjectLambdaRequest,
 ) => Effect.Effect<
   GetAccessPointForObjectLambdaResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPointForObjectLambdaRequest,
   output: GetAccessPointForObjectLambdaResult,
@@ -10664,8 +10662,8 @@ export const getAccessPointPolicyStatus: (
   input: GetAccessPointPolicyStatusRequest,
 ) => Effect.Effect<
   GetAccessPointPolicyStatusResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPointPolicyStatusRequest,
   output: GetAccessPointPolicyStatusResult,
@@ -10686,8 +10684,8 @@ export const getDataAccess: (
   input: GetDataAccessRequest,
 ) => Effect.Effect<
   GetDataAccessResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataAccessRequest,
   output: GetDataAccessResult,
@@ -10711,8 +10709,8 @@ export const getPublicAccessBlock: (
   input: GetPublicAccessBlockRequest,
 ) => Effect.Effect<
   GetPublicAccessBlockOutput,
-  NoSuchPublicAccessBlockConfiguration | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  NoSuchPublicAccessBlockConfiguration | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPublicAccessBlockRequest,
   output: GetPublicAccessBlockOutput,
@@ -10730,22 +10728,22 @@ export const listAccessGrants: {
     input: ListAccessGrantsRequest,
   ): Effect.Effect<
     ListAccessGrantsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessGrantsRequest,
   ) => Stream.Stream<
     ListAccessGrantsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessGrantsRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessGrantsRequest,
@@ -10769,22 +10767,22 @@ export const listAccessGrantsInstances: {
     input: ListAccessGrantsInstancesRequest,
   ): Effect.Effect<
     ListAccessGrantsInstancesResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessGrantsInstancesRequest,
   ) => Stream.Stream<
     ListAccessGrantsInstancesResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessGrantsInstancesRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessGrantsInstancesRequest,
@@ -10808,22 +10806,22 @@ export const listAccessGrantsLocations: {
     input: ListAccessGrantsLocationsRequest,
   ): Effect.Effect<
     ListAccessGrantsLocationsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessGrantsLocationsRequest,
   ) => Stream.Stream<
     ListAccessGrantsLocationsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessGrantsLocationsRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessGrantsLocationsRequest,
@@ -10861,22 +10859,22 @@ export const listAccessPoints: {
     input: ListAccessPointsRequest,
   ): Effect.Effect<
     ListAccessPointsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessPointsRequest,
   ) => Stream.Stream<
     ListAccessPointsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessPointsRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessPointsRequest,
@@ -10909,22 +10907,22 @@ export const listAccessPointsForObjectLambda: {
     input: ListAccessPointsForObjectLambdaRequest,
   ): Effect.Effect<
     ListAccessPointsForObjectLambdaResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessPointsForObjectLambdaRequest,
   ) => Stream.Stream<
     ListAccessPointsForObjectLambdaResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessPointsForObjectLambdaRequest,
   ) => Stream.Stream<
     ObjectLambdaAccessPoint,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessPointsForObjectLambdaRequest,
@@ -10949,22 +10947,22 @@ export const listCallerAccessGrants: {
     input: ListCallerAccessGrantsRequest,
   ): Effect.Effect<
     ListCallerAccessGrantsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListCallerAccessGrantsRequest,
   ) => Stream.Stream<
     ListCallerAccessGrantsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListCallerAccessGrantsRequest,
   ) => Stream.Stream<
     ListCallerAccessGrantsEntry,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCallerAccessGrantsRequest,
@@ -10992,22 +10990,22 @@ export const listRegionalBuckets: {
     input: ListRegionalBucketsRequest,
   ): Effect.Effect<
     ListRegionalBucketsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRegionalBucketsRequest,
   ) => Stream.Stream<
     ListRegionalBucketsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRegionalBucketsRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRegionalBucketsRequest,
@@ -11037,22 +11035,22 @@ export const listStorageLensConfigurations: {
     input: ListStorageLensConfigurationsRequest,
   ): Effect.Effect<
     ListStorageLensConfigurationsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStorageLensConfigurationsRequest,
   ) => Stream.Stream<
     ListStorageLensConfigurationsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStorageLensConfigurationsRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStorageLensConfigurationsRequest,
@@ -11075,22 +11073,22 @@ export const listStorageLensGroups: {
     input: ListStorageLensGroupsRequest,
   ): Effect.Effect<
     ListStorageLensGroupsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStorageLensGroupsRequest,
   ) => Stream.Stream<
     ListStorageLensGroupsResult,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStorageLensGroupsRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStorageLensGroupsRequest,
@@ -11120,8 +11118,8 @@ export const putMultiRegionAccessPointPolicy: (
   input: PutMultiRegionAccessPointPolicyRequest,
 ) => Effect.Effect<
   PutMultiRegionAccessPointPolicyResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMultiRegionAccessPointPolicyRequest,
   output: PutMultiRegionAccessPointPolicyResult,
@@ -11156,8 +11154,8 @@ export const createMultiRegionAccessPoint: (
   input: CreateMultiRegionAccessPointRequest,
 ) => Effect.Effect<
   CreateMultiRegionAccessPointResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMultiRegionAccessPointRequest,
   output: CreateMultiRegionAccessPointResult,
@@ -11184,8 +11182,8 @@ export const createStorageLensGroup: (
   input: CreateStorageLensGroupRequest,
 ) => Effect.Effect<
   CreateStorageLensGroupResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStorageLensGroupRequest,
   output: CreateStorageLensGroupResponse,
@@ -11217,8 +11215,8 @@ export const deleteJobTagging: (
   | InternalServiceException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteJobTaggingRequest,
   output: DeleteJobTaggingResult,
@@ -11251,8 +11249,8 @@ export const getMultiRegionAccessPoint: (
   input: GetMultiRegionAccessPointRequest,
 ) => Effect.Effect<
   GetMultiRegionAccessPointResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMultiRegionAccessPointRequest,
   output: GetMultiRegionAccessPointResult,
@@ -11278,8 +11276,8 @@ export const getMultiRegionAccessPointPolicy: (
   input: GetMultiRegionAccessPointPolicyRequest,
 ) => Effect.Effect<
   GetMultiRegionAccessPointPolicyResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMultiRegionAccessPointPolicyRequest,
   output: GetMultiRegionAccessPointPolicyResult,
@@ -11312,8 +11310,8 @@ export const updateJobPriority: (
   | InternalServiceException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateJobPriorityRequest,
   output: UpdateJobPriorityResult,
@@ -11350,8 +11348,8 @@ export const getJobTagging: (
   | InternalServiceException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobTaggingRequest,
   output: GetJobTaggingResult,
@@ -11390,8 +11388,8 @@ export const updateJobStatus: (
   | JobStatusException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateJobStatusRequest,
   output: UpdateJobStatusResult,
@@ -11429,8 +11427,8 @@ export const describeJob: (
   | InternalServiceException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeJobRequest,
   output: DescribeJobResult,
@@ -11469,8 +11467,8 @@ export const listJobs: {
     | InternalServiceException
     | InvalidNextTokenException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobsRequest,
@@ -11479,8 +11477,8 @@ export const listJobs: {
     | InternalServiceException
     | InvalidNextTokenException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListJobsRequest,
@@ -11489,8 +11487,8 @@ export const listJobs: {
     | InternalServiceException
     | InvalidNextTokenException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
@@ -11528,8 +11526,8 @@ export const putBucketLifecycleConfiguration: (
   input: PutBucketLifecycleConfigurationRequest,
 ) => Effect.Effect<
   PutBucketLifecycleConfigurationResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketLifecycleConfigurationRequest,
   output: PutBucketLifecycleConfigurationResponse,
@@ -11589,8 +11587,8 @@ export const putJobTagging: (
   | NotFoundException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutJobTaggingRequest,
   output: PutJobTaggingResult,
@@ -11620,8 +11618,8 @@ export const createAccessPointForObjectLambda: (
   input: CreateAccessPointForObjectLambdaRequest,
 ) => Effect.Effect<
   CreateAccessPointForObjectLambdaResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessPointForObjectLambdaRequest,
   output: CreateAccessPointForObjectLambdaResult,
@@ -11647,8 +11645,8 @@ export const describeMultiRegionAccessPointOperation: (
   input: DescribeMultiRegionAccessPointOperationRequest,
 ) => Effect.Effect<
   DescribeMultiRegionAccessPointOperationResult,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMultiRegionAccessPointOperationRequest,
   output: DescribeMultiRegionAccessPointOperationResult,
@@ -11733,8 +11731,8 @@ export const putBucketReplication: (
   input: PutBucketReplicationRequest,
 ) => Effect.Effect<
   PutBucketReplicationResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketReplicationRequest,
   output: PutBucketReplicationResponse,
@@ -11754,8 +11752,8 @@ export const putStorageLensConfiguration: (
   input: PutStorageLensConfigurationRequest,
 ) => Effect.Effect<
   PutStorageLensConfigurationResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutStorageLensConfigurationRequest,
   output: PutStorageLensConfigurationResponse,
@@ -11793,8 +11791,8 @@ export const createJob: (
   | IdempotencyException
   | InternalServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateJobRequest,
   output: CreateJobResult,

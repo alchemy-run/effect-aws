@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("https://mediastore.amazonaws.com/doc/2017-09-01");
 const svc = T.AwsApiService({
@@ -928,22 +926,22 @@ export const listContainers: {
     input: ListContainersInput,
   ): Effect.Effect<
     ListContainersOutput,
-    InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContainersInput,
   ) => Stream.Stream<
     ListContainersOutput,
-    InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContainersInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContainersInput,
@@ -965,8 +963,8 @@ export const putMetricPolicy: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMetricPolicyInput,
   output: PutMetricPolicyOutput,
@@ -986,8 +984,8 @@ export const listTagsForResource: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1019,8 +1017,8 @@ export const putCorsPolicy: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutCorsPolicyInput,
   output: PutCorsPolicyOutput,
@@ -1047,8 +1045,8 @@ export const putContainerPolicy: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutContainerPolicyInput,
   output: PutContainerPolicyOutput,
@@ -1070,8 +1068,8 @@ export const putLifecyclePolicy: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLifecyclePolicyInput,
   output: PutLifecyclePolicyOutput,
@@ -1091,8 +1089,8 @@ export const startAccessLogging: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAccessLoggingInput,
   output: StartAccessLoggingOutput,
@@ -1112,8 +1110,8 @@ export const stopAccessLogging: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopAccessLoggingInput,
   output: StopAccessLoggingOutput,
@@ -1135,8 +1133,8 @@ export const tagResource: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1156,8 +1154,8 @@ export const untagResource: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1179,8 +1177,8 @@ export const deleteContainer: (
   | ContainerInUseException
   | ContainerNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContainerInput,
   output: DeleteContainerOutput,
@@ -1203,8 +1201,8 @@ export const describeContainer: (
   input: DescribeContainerInput,
 ) => Effect.Effect<
   DescribeContainerOutput,
-  ContainerNotFoundException | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ContainerNotFoundException | InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeContainerInput,
   output: DescribeContainerOutput,
@@ -1223,8 +1221,8 @@ export const getContainerPolicy: (
   | ContainerNotFoundException
   | InternalServerError
   | PolicyNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerPolicyInput,
   output: GetContainerPolicyOutput,
@@ -1251,8 +1249,8 @@ export const getCorsPolicy: (
   | ContainerNotFoundException
   | CorsPolicyNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCorsPolicyInput,
   output: GetCorsPolicyOutput,
@@ -1274,8 +1272,8 @@ export const createContainer: (
   | ContainerInUseException
   | InternalServerError
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContainerInput,
   output: CreateContainerOutput,
@@ -1296,8 +1294,8 @@ export const getLifecyclePolicy: (
   | ContainerNotFoundException
   | InternalServerError
   | PolicyNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLifecyclePolicyInput,
   output: GetLifecyclePolicyOutput,
@@ -1319,8 +1317,8 @@ export const getMetricPolicy: (
   | ContainerNotFoundException
   | InternalServerError
   | PolicyNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMetricPolicyInput,
   output: GetMetricPolicyOutput,
@@ -1342,8 +1340,8 @@ export const deleteContainerPolicy: (
   | ContainerNotFoundException
   | InternalServerError
   | PolicyNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContainerPolicyInput,
   output: DeleteContainerPolicyOutput,
@@ -1365,8 +1363,8 @@ export const deleteLifecyclePolicy: (
   | ContainerNotFoundException
   | InternalServerError
   | PolicyNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLifecyclePolicyInput,
   output: DeleteLifecyclePolicyOutput,
@@ -1388,8 +1386,8 @@ export const deleteMetricPolicy: (
   | ContainerNotFoundException
   | InternalServerError
   | PolicyNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMetricPolicyInput,
   output: DeleteMetricPolicyOutput,
@@ -1416,8 +1414,8 @@ export const deleteCorsPolicy: (
   | ContainerNotFoundException
   | CorsPolicyNotFoundException
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCorsPolicyInput,
   output: DeleteCorsPolicyOutput,

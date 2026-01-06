@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "BackupSearch",
@@ -853,11 +851,11 @@ export const StartSearchJobOutput = S.suspend(() =>
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.String, resourceId: S.String, resourceType: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.String, resourceId: S.String, resourceType: S.String },
-) {}
+).pipe(C.withConflictError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -867,7 +865,7 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     serviceCode: S.String,
     quotaCode: S.String,
   },
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -877,8 +875,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -893,8 +891,8 @@ export const stopSearchJob: (
   input: StopSearchJobInput,
 ) => Effect.Effect<
   StopSearchJobOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopSearchJobInput,
   output: StopSearchJobOutput,
@@ -911,8 +909,8 @@ export const getSearchResultExportJob: (
   input: GetSearchResultExportJobInput,
 ) => Effect.Effect<
   GetSearchResultExportJobOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSearchResultExportJobInput,
   output: GetSearchResultExportJobOutput,
@@ -925,8 +923,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -939,8 +937,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -958,22 +956,22 @@ export const listSearchJobBackups: {
     input: ListSearchJobBackupsInput,
   ): Effect.Effect<
     ListSearchJobBackupsOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSearchJobBackupsInput,
   ) => Stream.Stream<
     ListSearchJobBackupsOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSearchJobBackupsInput,
   ) => Stream.Stream<
     SearchJobBackupsResult,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSearchJobBackupsInput,
@@ -993,8 +991,8 @@ export const getSearchJob: (
   input: GetSearchJobInput,
 ) => Effect.Effect<
   GetSearchJobOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSearchJobInput,
   output: GetSearchJobOutput,
@@ -1008,22 +1006,22 @@ export const listSearchJobs: {
     input: ListSearchJobsInput,
   ): Effect.Effect<
     ListSearchJobsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSearchJobsInput,
   ) => Stream.Stream<
     ListSearchJobsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSearchJobsInput,
   ) => Stream.Stream<
     SearchJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSearchJobsInput,
@@ -1044,22 +1042,22 @@ export const listSearchJobResults: {
     input: ListSearchJobResultsInput,
   ): Effect.Effect<
     ListSearchJobResultsOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSearchJobResultsInput,
   ) => Stream.Stream<
     ListSearchJobResultsOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSearchJobResultsInput,
   ) => Stream.Stream<
     ResultItem,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSearchJobResultsInput,
@@ -1080,28 +1078,22 @@ export const listSearchResultExportJobs: {
     input: ListSearchResultExportJobsInput,
   ): Effect.Effect<
     ListSearchResultExportJobsOutput,
-    | ResourceNotFoundException
-    | ServiceQuotaExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ServiceQuotaExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSearchResultExportJobsInput,
   ) => Stream.Stream<
     ListSearchResultExportJobsOutput,
-    | ResourceNotFoundException
-    | ServiceQuotaExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ServiceQuotaExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSearchResultExportJobsInput,
   ) => Stream.Stream<
     ExportJobSummary,
-    | ResourceNotFoundException
-    | ServiceQuotaExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ServiceQuotaExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSearchResultExportJobsInput,
@@ -1124,8 +1116,8 @@ export const startSearchResultExportJob: (
   | ConflictException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSearchResultExportJobInput,
   output: StartSearchResultExportJobOutput,
@@ -1147,8 +1139,8 @@ export const startSearchJob: (
   | ConflictException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSearchJobInput,
   output: StartSearchJobOutput,

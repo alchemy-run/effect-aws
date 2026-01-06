@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Compute Optimizer",
@@ -3085,45 +3083,39 @@ export const GetRDSDatabaseRecommendationsResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MissingAuthenticationToken extends S.TaggedError<MissingAuthenticationToken>()(
   "MissingAuthenticationToken",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class OptInRequiredException extends S.TaggedError<OptInRequiredException>()(
   "OptInRequiredException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3144,8 +3136,8 @@ export const getEnrollmentStatus: (
   | MissingAuthenticationToken
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEnrollmentStatusRequest,
   output: GetEnrollmentStatusResponse,
@@ -3178,8 +3170,8 @@ export const getLicenseRecommendations: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLicenseRecommendationsRequest,
   output: GetLicenseRecommendationsResponse,
@@ -3211,8 +3203,8 @@ export const getEnrollmentStatusesForOrganization: {
     | MissingAuthenticationToken
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetEnrollmentStatusesForOrganizationRequest,
@@ -3224,8 +3216,8 @@ export const getEnrollmentStatusesForOrganization: {
     | MissingAuthenticationToken
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetEnrollmentStatusesForOrganizationRequest,
@@ -3237,8 +3229,8 @@ export const getEnrollmentStatusesForOrganization: {
     | MissingAuthenticationToken
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetEnrollmentStatusesForOrganizationRequest,
@@ -3281,8 +3273,8 @@ export const updateEnrollmentStatus: (
   | MissingAuthenticationToken
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEnrollmentStatusRequest,
   output: UpdateEnrollmentStatusResponse,
@@ -3334,8 +3326,8 @@ export const getRecommendationSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetRecommendationSummariesRequest,
@@ -3348,8 +3340,8 @@ export const getRecommendationSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetRecommendationSummariesRequest,
@@ -3362,8 +3354,8 @@ export const getRecommendationSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetRecommendationSummariesRequest,
@@ -3406,8 +3398,8 @@ export const exportAutoScalingGroupRecommendations: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportAutoScalingGroupRecommendationsRequest,
   output: ExportAutoScalingGroupRecommendationsResponse,
@@ -3444,8 +3436,8 @@ export const exportEBSVolumeRecommendations: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportEBSVolumeRecommendationsRequest,
   output: ExportEBSVolumeRecommendationsResponse,
@@ -3482,8 +3474,8 @@ export const exportEC2InstanceRecommendations: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportEC2InstanceRecommendationsRequest,
   output: ExportEC2InstanceRecommendationsResponse,
@@ -3520,8 +3512,8 @@ export const exportECSServiceRecommendations: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportECSServiceRecommendationsRequest,
   output: ExportECSServiceRecommendationsResponse,
@@ -3558,8 +3550,8 @@ export const exportIdleRecommendations: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportIdleRecommendationsRequest,
   output: ExportIdleRecommendationsResponse,
@@ -3596,8 +3588,8 @@ export const exportLambdaFunctionRecommendations: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportLambdaFunctionRecommendationsRequest,
   output: ExportLambdaFunctionRecommendationsResponse,
@@ -3634,8 +3626,8 @@ export const exportLicenseRecommendations: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportLicenseRecommendationsRequest,
   output: ExportLicenseRecommendationsResponse,
@@ -3672,8 +3664,8 @@ export const exportRDSDatabaseRecommendations: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportRDSDatabaseRecommendationsRequest,
   output: ExportRDSDatabaseRecommendationsResponse,
@@ -3709,8 +3701,8 @@ export const getLambdaFunctionRecommendations: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetLambdaFunctionRecommendationsRequest,
@@ -3724,8 +3716,8 @@ export const getLambdaFunctionRecommendations: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetLambdaFunctionRecommendationsRequest,
@@ -3739,8 +3731,8 @@ export const getLambdaFunctionRecommendations: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetLambdaFunctionRecommendationsRequest,
@@ -3783,8 +3775,8 @@ export const getRDSDatabaseRecommendations: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRDSDatabaseRecommendationsRequest,
   output: GetRDSDatabaseRecommendationsResponse,
@@ -3814,8 +3806,8 @@ export const getRDSDatabaseRecommendationProjectedMetrics: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRDSDatabaseRecommendationProjectedMetricsRequest,
   output: GetRDSDatabaseRecommendationProjectedMetricsResponse,
@@ -3855,8 +3847,8 @@ export const getRecommendationPreferences: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetRecommendationPreferencesRequest,
@@ -3870,8 +3862,8 @@ export const getRecommendationPreferences: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetRecommendationPreferencesRequest,
@@ -3885,8 +3877,8 @@ export const getRecommendationPreferences: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetRecommendationPreferencesRequest,
@@ -3928,8 +3920,8 @@ export const putRecommendationPreferences: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRecommendationPreferencesRequest,
   output: PutRecommendationPreferencesResponse,
@@ -3963,8 +3955,8 @@ export const deleteRecommendationPreferences: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRecommendationPreferencesRequest,
   output: DeleteRecommendationPreferencesResponse,
@@ -4000,8 +3992,8 @@ export const getEffectiveRecommendationPreferences: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEffectiveRecommendationPreferencesRequest,
   output: GetEffectiveRecommendationPreferencesResponse,
@@ -4037,8 +4029,8 @@ export const getEC2RecommendationProjectedMetrics: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEC2RecommendationProjectedMetricsRequest,
   output: GetEC2RecommendationProjectedMetricsResponse,
@@ -4068,8 +4060,8 @@ export const getECSServiceRecommendationProjectedMetrics: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetECSServiceRecommendationProjectedMetricsRequest,
   output: GetECSServiceRecommendationProjectedMetricsResponse,
@@ -4104,8 +4096,8 @@ export const describeRecommendationExportJobs: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRecommendationExportJobsRequest,
@@ -4119,8 +4111,8 @@ export const describeRecommendationExportJobs: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRecommendationExportJobsRequest,
@@ -4134,8 +4126,8 @@ export const describeRecommendationExportJobs: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRecommendationExportJobsRequest,
@@ -4177,8 +4169,8 @@ export const getAutoScalingGroupRecommendations: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAutoScalingGroupRecommendationsRequest,
   output: GetAutoScalingGroupRecommendationsResponse,
@@ -4213,8 +4205,8 @@ export const getEBSVolumeRecommendations: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEBSVolumeRecommendationsRequest,
   output: GetEBSVolumeRecommendationsResponse,
@@ -4249,8 +4241,8 @@ export const getEC2InstanceRecommendations: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEC2InstanceRecommendationsRequest,
   output: GetEC2InstanceRecommendationsResponse,
@@ -4286,8 +4278,8 @@ export const getECSServiceRecommendations: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetECSServiceRecommendationsRequest,
   output: GetECSServiceRecommendationsResponse,
@@ -4320,8 +4312,8 @@ export const getIdleRecommendations: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdleRecommendationsRequest,
   output: GetIdleRecommendationsResponse,

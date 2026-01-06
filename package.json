@@ -32,6 +32,41 @@
       "bun": "./src/services/*.ts",
       "default": "./lib/services/*.js"
     },
+    "./Category": {
+      "types": "./lib/category.d.ts",
+      "bun": "./src/category.ts",
+      "default": "./lib/category.js"
+    },
+    "./Credentials": {
+      "types": "./lib/aws/credentials.d.ts",
+      "bun": "./src/aws/credentials.ts",
+      "default": "./lib/aws/credentials.js"
+    },
+    "./Errors": {
+      "types": "./lib/aws/errors.d.ts",
+      "bun": "./src/aws/errors.ts",
+      "default": "./lib/aws/errors.js"
+    },
+    "./Region": {
+      "types": "./lib/aws/region.d.ts",
+      "bun": "./src/aws/region.ts",
+      "default": "./lib/aws/region.js"
+    },
+    "./Retry": {
+      "types": "./lib/retry-policy.d.ts",
+      "bun": "./src/retry-policy.ts",
+      "default": "./lib/retry-policy.js"
+    },
+    "./Sensitive": {
+      "types": "./lib/sensitive.d.ts",
+      "bun": "./src/sensitive.ts",
+      "default": "./lib/sensitive.js"
+    },
+    "./Traits": {
+      "types": "./lib/traits.d.ts",
+      "bun": "./src/traits.ts",
+      "default": "./lib/traits.js"
+    },
     ".": {
       "types": "./lib/index.d.ts",
       "bun": "./src/index.ts",

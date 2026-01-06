@@ -1,5 +1,5 @@
 import type * as Effect from "effect/Effect";
-import type { ParseError } from "./error-parser.ts";
+import type { ParseError } from "../errors.ts";
 import type { Operation } from "./operation.ts";
 import type { Request } from "./request.ts";
 import type { Response } from "./response.ts";

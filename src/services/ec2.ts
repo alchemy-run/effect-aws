@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region as Rgn,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ec2.amazonaws.com/doc/2016-11-15");
 const svc = T.AwsApiService({ sdkId: "EC2", serviceShapeName: "AmazonEC2" });
@@ -65643,8 +65641,8 @@ export const associateDhcpOptions: (
   input: AssociateDhcpOptionsRequest,
 ) => Effect.Effect<
   AssociateDhcpOptionsResponse,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateDhcpOptionsRequest,
   output: AssociateDhcpOptionsResponse,
@@ -65659,8 +65657,8 @@ export const attachInternetGateway: (
   input: AttachInternetGatewayRequest,
 ) => Effect.Effect<
   AttachInternetGatewayResponse,
-  InvalidInternetGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInternetGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachInternetGatewayRequest,
   output: AttachInternetGatewayResponse,
@@ -65675,8 +65673,8 @@ export const cancelConversionTask: (
   input: CancelConversionRequest,
 ) => Effect.Effect<
   CancelConversionTaskResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelConversionRequest,
   output: CancelConversionTaskResponse,
@@ -65691,8 +65689,8 @@ export const cancelExportTask: (
   input: CancelExportTaskRequest,
 ) => Effect.Effect<
   CancelExportTaskResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelExportTaskRequest,
   output: CancelExportTaskResponse,
@@ -65710,8 +65708,8 @@ export const createVpnConnectionRoute: (
   input: CreateVpnConnectionRouteRequest,
 ) => Effect.Effect<
   CreateVpnConnectionRouteResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpnConnectionRouteRequest,
   output: CreateVpnConnectionRouteResponse,
@@ -65725,8 +65723,8 @@ export const deleteCustomerGateway: (
   input: DeleteCustomerGatewayRequest,
 ) => Effect.Effect<
   DeleteCustomerGatewayResponse,
-  InvalidCustomerGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidCustomerGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomerGatewayRequest,
   output: DeleteCustomerGatewayResponse,
@@ -65739,8 +65737,8 @@ export const deleteDhcpOptions: (
   input: DeleteDhcpOptionsRequest,
 ) => Effect.Effect<
   DeleteDhcpOptionsResponse,
-  InvalidDhcpOptionIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidDhcpOptionIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDhcpOptionsRequest,
   output: DeleteDhcpOptionsResponse,
@@ -65754,8 +65752,8 @@ export const deleteInternetGateway: (
   input: DeleteInternetGatewayRequest,
 ) => Effect.Effect<
   DeleteInternetGatewayResponse,
-  InvalidInternetGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInternetGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInternetGatewayRequest,
   output: DeleteInternetGatewayResponse,
@@ -65768,8 +65766,8 @@ export const deleteNetworkAcl: (
   input: DeleteNetworkAclRequest,
 ) => Effect.Effect<
   DeleteNetworkAclResponse,
-  InvalidNetworkAclIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkAclIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkAclRequest,
   output: DeleteNetworkAclResponse,
@@ -65782,8 +65780,8 @@ export const deleteNetworkAclEntry: (
   input: DeleteNetworkAclEntryRequest,
 ) => Effect.Effect<
   DeleteNetworkAclEntryResponse,
-  InvalidNetworkAclIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkAclIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkAclEntryRequest,
   output: DeleteNetworkAclEntryResponse,
@@ -65797,8 +65795,8 @@ export const deleteNetworkInterface: (
   input: DeleteNetworkInterfaceRequest,
 ) => Effect.Effect<
   DeleteNetworkInterfaceResponse,
-  InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInterfaceRequest,
   output: DeleteNetworkInterfaceResponse,
@@ -65813,8 +65811,8 @@ export const deletePlacementGroup: (
   input: DeletePlacementGroupRequest,
 ) => Effect.Effect<
   DeletePlacementGroupResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePlacementGroupRequest,
   output: DeletePlacementGroupResponse,
@@ -65827,8 +65825,8 @@ export const deleteRoute: (
   input: DeleteRouteRequest,
 ) => Effect.Effect<
   DeleteRouteResponse,
-  InvalidRouteTableIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidRouteTableIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteRequest,
   output: DeleteRouteResponse,
@@ -65841,8 +65839,8 @@ export const deleteRouteTable: (
   input: DeleteRouteTableRequest,
 ) => Effect.Effect<
   DeleteRouteTableResponse,
-  DependencyViolation | InvalidRouteTableIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  DependencyViolation | InvalidRouteTableIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteTableRequest,
   output: DeleteRouteTableResponse,
@@ -65867,8 +65865,8 @@ export const deleteSnapshot: (
   input: DeleteSnapshotRequest,
 ) => Effect.Effect<
   DeleteSnapshotResponse,
-  InvalidSnapshotNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSnapshotNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSnapshotRequest,
   output: DeleteSnapshotResponse,
@@ -65881,8 +65879,8 @@ export const deleteSpotDatafeedSubscription: (
   input: DeleteSpotDatafeedSubscriptionRequest,
 ) => Effect.Effect<
   DeleteSpotDatafeedSubscriptionResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSpotDatafeedSubscriptionRequest,
   output: DeleteSpotDatafeedSubscriptionResponse,
@@ -65895,8 +65893,8 @@ export const deleteSubnet: (
   input: DeleteSubnetRequest,
 ) => Effect.Effect<
   DeleteSubnetResponse,
-  InvalidSubnetIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSubnetIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSubnetRequest,
   output: DeleteSubnetResponse,
@@ -65914,8 +65912,8 @@ export const deleteTags: (
   input: DeleteTagsRequest,
 ) => Effect.Effect<
   DeleteTagsResponse,
-  InvalidID | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidID | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsRequest,
   output: DeleteTagsResponse,
@@ -65934,8 +65932,8 @@ export const deleteVolume: (
   input: DeleteVolumeRequest,
 ) => Effect.Effect<
   DeleteVolumeResponse,
-  InvalidVolumeNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVolumeNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVolumeRequest,
   output: DeleteVolumeResponse,
@@ -65955,8 +65953,8 @@ export const deleteVpc: (
   input: DeleteVpcRequest,
 ) => Effect.Effect<
   DeleteVpcResponse,
-  DependencyViolation | InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  DependencyViolation | InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcRequest,
   output: DeleteVpcResponse,
@@ -65981,8 +65979,8 @@ export const deleteVpnConnection: (
   input: DeleteVpnConnectionRequest,
 ) => Effect.Effect<
   DeleteVpnConnectionResponse,
-  InvalidVpnConnectionIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpnConnectionIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpnConnectionRequest,
   output: DeleteVpnConnectionResponse,
@@ -65998,8 +65996,8 @@ export const deleteVpnConnectionRoute: (
   input: DeleteVpnConnectionRouteRequest,
 ) => Effect.Effect<
   DeleteVpnConnectionRouteResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpnConnectionRouteRequest,
   output: DeleteVpnConnectionRouteResponse,
@@ -66015,8 +66013,8 @@ export const deleteVpnGateway: (
   input: DeleteVpnGatewayRequest,
 ) => Effect.Effect<
   DeleteVpnGatewayResponse,
-  InvalidVpnGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpnGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpnGatewayRequest,
   output: DeleteVpnGatewayResponse,
@@ -66031,8 +66029,8 @@ export const detachInternetGateway: (
   input: DetachInternetGatewayRequest,
 ) => Effect.Effect<
   DetachInternetGatewayResponse,
-  InvalidInternetGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInternetGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachInternetGatewayRequest,
   output: DetachInternetGatewayResponse,
@@ -66045,8 +66043,8 @@ export const detachNetworkInterface: (
   input: DetachNetworkInterfaceRequest,
 ) => Effect.Effect<
   DetachNetworkInterfaceResponse,
-  InvalidAttachmentIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidAttachmentIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachNetworkInterfaceRequest,
   output: DetachNetworkInterfaceResponse,
@@ -66075,8 +66073,8 @@ export const detachVolume: (
   input: DetachVolumeRequest,
 ) => Effect.Effect<
   VolumeAttachment,
-  InvalidVolumeNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVolumeNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachVolumeRequest,
   output: VolumeAttachment,
@@ -66095,8 +66093,8 @@ export const detachVpnGateway: (
   input: DetachVpnGatewayRequest,
 ) => Effect.Effect<
   DetachVpnGatewayResponse,
-  InvalidVpnGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpnGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachVpnGatewayRequest,
   output: DetachVpnGatewayResponse,
@@ -66110,8 +66108,8 @@ export const disableVgwRoutePropagation: (
   input: DisableVgwRoutePropagationRequest,
 ) => Effect.Effect<
   DisableVgwRoutePropagationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableVgwRoutePropagationRequest,
   output: DisableVgwRoutePropagationResponse,
@@ -66134,8 +66132,8 @@ export const disassociateAddress: (
   input: DisassociateAddressRequest,
 ) => Effect.Effect<
   DisassociateAddressResponse,
-  InvalidAssociationIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidAssociationIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateAddressRequest,
   output: DisassociateAddressResponse,
@@ -66153,8 +66151,8 @@ export const disassociateRouteTable: (
   input: DisassociateRouteTableRequest,
 ) => Effect.Effect<
   DisassociateRouteTableResponse,
-  InvalidAssociationIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidAssociationIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateRouteTableRequest,
   output: DisassociateRouteTableResponse,
@@ -66168,8 +66166,8 @@ export const enableVgwRoutePropagation: (
   input: EnableVgwRoutePropagationRequest,
 ) => Effect.Effect<
   EnableVgwRoutePropagationResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableVgwRoutePropagationRequest,
   output: EnableVgwRoutePropagationResponse,
@@ -66183,8 +66181,8 @@ export const enableVolumeIO: (
   input: EnableVolumeIORequest,
 ) => Effect.Effect<
   EnableVolumeIOResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableVolumeIORequest,
   output: EnableVolumeIOResponse,
@@ -66222,8 +66220,8 @@ export const modifyIdentityIdFormat: (
   input: ModifyIdentityIdFormatRequest,
 ) => Effect.Effect<
   ModifyIdentityIdFormatResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIdentityIdFormatRequest,
   output: ModifyIdentityIdFormatResponse,
@@ -66262,8 +66260,8 @@ export const modifyIdFormat: (
   input: ModifyIdFormatRequest,
 ) => Effect.Effect<
   ModifyIdFormatResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIdFormatRequest,
   output: ModifyIdFormatResponse,
@@ -66293,8 +66291,8 @@ export const modifySubnetAttribute: (
   input: ModifySubnetAttributeRequest,
 ) => Effect.Effect<
   ModifySubnetAttributeResponse,
-  InvalidSubnetIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSubnetIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySubnetAttributeRequest,
   output: ModifySubnetAttributeResponse,
@@ -66315,8 +66313,8 @@ export const modifyVolumeAttribute: (
   input: ModifyVolumeAttributeRequest,
 ) => Effect.Effect<
   ModifyVolumeAttributeResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVolumeAttributeRequest,
   output: ModifyVolumeAttributeResponse,
@@ -66329,8 +66327,8 @@ export const modifyVpcAttribute: (
   input: ModifyVpcAttributeRequest,
 ) => Effect.Effect<
   ModifyVpcAttributeResponse,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcAttributeRequest,
   output: ModifyVpcAttributeResponse,
@@ -66352,8 +66350,8 @@ export const rebootInstances: (
   input: RebootInstancesRequest,
 ) => Effect.Effect<
   RebootInstancesResponse,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootInstancesRequest,
   output: RebootInstancesResponse,
@@ -66381,8 +66379,8 @@ export const releaseAddress: (
   input: ReleaseAddressRequest,
 ) => Effect.Effect<
   ReleaseAddressResponse,
-  InvalidAllocationIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidAllocationIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReleaseAddressRequest,
   output: ReleaseAddressResponse,
@@ -66396,8 +66394,8 @@ export const replaceNetworkAclEntry: (
   input: ReplaceNetworkAclEntryRequest,
 ) => Effect.Effect<
   ReplaceNetworkAclEntryResponse,
-  InvalidNetworkAclIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkAclIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceNetworkAclEntryRequest,
   output: ReplaceNetworkAclEntryResponse,
@@ -66417,8 +66415,8 @@ export const replaceRoute: (
   input: ReplaceRouteRequest,
 ) => Effect.Effect<
   ReplaceRouteResponse,
-  InvalidRouteTableIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidRouteTableIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceRouteRequest,
   output: ReplaceRouteResponse,
@@ -66436,8 +66434,8 @@ export const reportInstanceStatus: (
   input: ReportInstanceStatusRequest,
 ) => Effect.Effect<
   ReportInstanceStatusResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReportInstanceStatusRequest,
   output: ReportInstanceStatusResponse,
@@ -66450,8 +66448,8 @@ export const resetImageAttribute: (
   input: ResetImageAttributeRequest,
 ) => Effect.Effect<
   ResetImageAttributeResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetImageAttributeRequest,
   output: ResetImageAttributeResponse,
@@ -66473,8 +66471,8 @@ export const resetInstanceAttribute: (
   input: ResetInstanceAttributeRequest,
 ) => Effect.Effect<
   ResetInstanceAttributeResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetInstanceAttributeRequest,
   output: ResetInstanceAttributeResponse,
@@ -66488,8 +66486,8 @@ export const resetNetworkInterfaceAttribute: (
   input: ResetNetworkInterfaceAttributeRequest,
 ) => Effect.Effect<
   ResetNetworkInterfaceAttributeResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetNetworkInterfaceAttributeRequest,
   output: ResetNetworkInterfaceAttributeResponse,
@@ -66505,8 +66503,8 @@ export const resetSnapshotAttribute: (
   input: ResetSnapshotAttributeRequest,
 ) => Effect.Effect<
   ResetSnapshotAttributeResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetSnapshotAttributeRequest,
   output: ResetSnapshotAttributeResponse,
@@ -66535,8 +66533,8 @@ export const sendDiagnosticInterrupt: (
   input: SendDiagnosticInterruptRequest,
 ) => Effect.Effect<
   SendDiagnosticInterruptResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendDiagnosticInterruptRequest,
   output: SendDiagnosticInterruptResponse,
@@ -66550,8 +66548,8 @@ export const unassignPrivateIpAddresses: (
   input: UnassignPrivateIpAddressesRequest,
 ) => Effect.Effect<
   UnassignPrivateIpAddressesResponse,
-  InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnassignPrivateIpAddressesRequest,
   output: UnassignPrivateIpAddressesResponse,
@@ -66566,8 +66564,8 @@ export const acceptCapacityReservationBillingOwnership: (
   input: AcceptCapacityReservationBillingOwnershipRequest,
 ) => Effect.Effect<
   AcceptCapacityReservationBillingOwnershipResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptCapacityReservationBillingOwnershipRequest,
   output: AcceptCapacityReservationBillingOwnershipResult,
@@ -66604,8 +66602,8 @@ export const allocateAddress: (
   input: AllocateAddressRequest,
 ) => Effect.Effect<
   AllocateAddressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocateAddressRequest,
   output: AllocateAddressResult,
@@ -66620,8 +66618,8 @@ export const allocateHosts: (
   input: AllocateHostsRequest,
 ) => Effect.Effect<
   AllocateHostsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocateHostsRequest,
   output: AllocateHostsResult,
@@ -66635,8 +66633,8 @@ export const applySecurityGroupsToClientVpnTargetNetwork: (
   input: ApplySecurityGroupsToClientVpnTargetNetworkRequest,
 ) => Effect.Effect<
   ApplySecurityGroupsToClientVpnTargetNetworkResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ApplySecurityGroupsToClientVpnTargetNetworkRequest,
   output: ApplySecurityGroupsToClientVpnTargetNetworkResult,
@@ -66660,8 +66658,8 @@ export const assignIpv6Addresses: (
   input: AssignIpv6AddressesRequest,
 ) => Effect.Effect<
   AssignIpv6AddressesResult,
-  InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssignIpv6AddressesRequest,
   output: AssignIpv6AddressesResult,
@@ -66693,8 +66691,8 @@ export const associateAddress: (
   input: AssociateAddressRequest,
 ) => Effect.Effect<
   AssociateAddressResult,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateAddressRequest,
   output: AssociateAddressResult,
@@ -66710,8 +66708,8 @@ export const associateCapacityReservationBillingOwner: (
   input: AssociateCapacityReservationBillingOwnerRequest,
 ) => Effect.Effect<
   AssociateCapacityReservationBillingOwnerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateCapacityReservationBillingOwnerRequest,
   output: AssociateCapacityReservationBillingOwnerResult,
@@ -66738,8 +66736,8 @@ export const associateEnclaveCertificateIamRole: (
   input: AssociateEnclaveCertificateIamRoleRequest,
 ) => Effect.Effect<
   AssociateEnclaveCertificateIamRoleResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateEnclaveCertificateIamRoleRequest,
   output: AssociateEnclaveCertificateIamRoleResult,
@@ -66762,8 +66760,8 @@ export const associateNatGatewayAddress: (
   input: AssociateNatGatewayAddressRequest,
 ) => Effect.Effect<
   AssociateNatGatewayAddressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateNatGatewayAddressRequest,
   output: AssociateNatGatewayAddressResult,
@@ -66786,8 +66784,8 @@ export const associateSecurityGroupVpc: (
   input: AssociateSecurityGroupVpcRequest,
 ) => Effect.Effect<
   AssociateSecurityGroupVpcResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSecurityGroupVpcRequest,
   output: AssociateSecurityGroupVpcResult,
@@ -66803,8 +66801,8 @@ export const associateTransitGatewayMulticastDomain: (
   input: AssociateTransitGatewayMulticastDomainRequest,
 ) => Effect.Effect<
   AssociateTransitGatewayMulticastDomainResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateTransitGatewayMulticastDomainRequest,
   output: AssociateTransitGatewayMulticastDomainResult,
@@ -66827,8 +66825,8 @@ export const attachClassicLinkVpc: (
   input: AttachClassicLinkVpcRequest,
 ) => Effect.Effect<
   AttachClassicLinkVpcResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachClassicLinkVpcRequest,
   output: AttachClassicLinkVpcResult,
@@ -66867,8 +66865,8 @@ export const attachVolume: (
   input: AttachVolumeRequest,
 ) => Effect.Effect<
   VolumeAttachment,
-  InvalidVolumeNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVolumeNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachVolumeRequest,
   output: VolumeAttachment,
@@ -66902,8 +66900,8 @@ export const cancelCapacityReservation: (
   input: CancelCapacityReservationRequest,
 ) => Effect.Effect<
   CancelCapacityReservationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelCapacityReservationRequest,
   output: CancelCapacityReservationResult,
@@ -66923,8 +66921,8 @@ export const cancelDeclarativePoliciesReport: (
   input: CancelDeclarativePoliciesReportRequest,
 ) => Effect.Effect<
   CancelDeclarativePoliciesReportResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelDeclarativePoliciesReportRequest,
   output: CancelDeclarativePoliciesReportResult,
@@ -66939,8 +66937,8 @@ export const cancelImageLaunchPermission: (
   input: CancelImageLaunchPermissionRequest,
 ) => Effect.Effect<
   CancelImageLaunchPermissionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelImageLaunchPermissionRequest,
   output: CancelImageLaunchPermissionResult,
@@ -66953,8 +66951,8 @@ export const cancelImportTask: (
   input: CancelImportTaskRequest,
 ) => Effect.Effect<
   CancelImportTaskResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelImportTaskRequest,
   output: CancelImportTaskResult,
@@ -66969,8 +66967,8 @@ export const confirmProductInstance: (
   input: ConfirmProductInstanceRequest,
 ) => Effect.Effect<
   ConfirmProductInstanceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmProductInstanceRequest,
   output: ConfirmProductInstanceResult,
@@ -66983,8 +66981,8 @@ export const copyFpgaImage: (
   input: CopyFpgaImageRequest,
 ) => Effect.Effect<
   CopyFpgaImageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyFpgaImageRequest,
   output: CopyFpgaImageResult,
@@ -67058,8 +67056,8 @@ export const copyImage: (
   input: CopyImageRequest,
 ) => Effect.Effect<
   CopyImageResult,
-  InvalidAMIIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidAMIIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyImageRequest,
   output: CopyImageResult,
@@ -67100,8 +67098,8 @@ export const copySnapshot: (
   input: CopySnapshotRequest,
 ) => Effect.Effect<
   CopySnapshotResult,
-  InvalidSnapshotNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSnapshotNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopySnapshotRequest,
   output: CopySnapshotResult,
@@ -67116,8 +67114,8 @@ export const copyVolumes: (
   input: CopyVolumesRequest,
 ) => Effect.Effect<
   CopyVolumesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyVolumesRequest,
   output: CopyVolumesResult,
@@ -67131,8 +67129,8 @@ export const createCapacityManagerDataExport: (
   input: CreateCapacityManagerDataExportRequest,
 ) => Effect.Effect<
   CreateCapacityManagerDataExportResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCapacityManagerDataExportRequest,
   output: CreateCapacityManagerDataExportResult,
@@ -67148,8 +67146,8 @@ export const createCapacityReservationBySplitting: (
   input: CreateCapacityReservationBySplittingRequest,
 ) => Effect.Effect<
   CreateCapacityReservationBySplittingResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCapacityReservationBySplittingRequest,
   output: CreateCapacityReservationBySplittingResult,
@@ -67162,8 +67160,8 @@ export const createInterruptibleCapacityReservationAllocation: (
   input: CreateInterruptibleCapacityReservationAllocationRequest,
 ) => Effect.Effect<
   CreateInterruptibleCapacityReservationAllocationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInterruptibleCapacityReservationAllocationRequest,
   output: CreateInterruptibleCapacityReservationAllocationResult,
@@ -67189,8 +67187,8 @@ export const createKeyPair: (
   input: CreateKeyPairRequest,
 ) => Effect.Effect<
   KeyPair,
-  InvalidKeyPairDuplicate | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidKeyPairDuplicate | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateKeyPairRequest,
   output: KeyPair,
@@ -67214,8 +67212,8 @@ export const createNetworkAclEntry: (
   input: CreateNetworkAclEntryRequest,
 ) => Effect.Effect<
   CreateNetworkAclEntryResponse,
-  InvalidNetworkAclIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkAclIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkAclEntryRequest,
   output: CreateNetworkAclEntryResponse,
@@ -67228,8 +67226,8 @@ export const createPublicIpv4Pool: (
   input: CreatePublicIpv4PoolRequest,
 ) => Effect.Effect<
   CreatePublicIpv4PoolResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePublicIpv4PoolRequest,
   output: CreatePublicIpv4PoolResult,
@@ -67249,8 +67247,8 @@ export const createRestoreImageTask: (
   input: CreateRestoreImageTaskRequest,
 ) => Effect.Effect<
   CreateRestoreImageTaskResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRestoreImageTaskRequest,
   output: CreateRestoreImageTaskResult,
@@ -67281,8 +67279,8 @@ export const createRoute: (
   input: CreateRouteRequest,
 ) => Effect.Effect<
   CreateRouteResult,
-  InvalidRouteTableIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidRouteTableIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteRequest,
   output: CreateRouteResult,
@@ -67318,8 +67316,8 @@ export const createSecurityGroup: (
   input: CreateSecurityGroupRequest,
 ) => Effect.Effect<
   CreateSecurityGroupResult,
-  InvalidGroupDuplicate | MissingParameter | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidGroupDuplicate | MissingParameter | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSecurityGroupRequest,
   output: CreateSecurityGroupResult,
@@ -67365,8 +67363,8 @@ export const createSnapshot: (
   input: CreateSnapshotRequest,
 ) => Effect.Effect<
   Snapshot,
-  InvalidVolumeNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVolumeNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotRequest,
   output: Snapshot,
@@ -67401,8 +67399,8 @@ export const createSubnet: (
   input: CreateSubnetRequest,
 ) => Effect.Effect<
   CreateSubnetResult,
-  InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSubnetRequest,
   output: CreateSubnetResult,
@@ -67424,8 +67422,8 @@ export const createTags: (
   input: CreateTagsRequest,
 ) => Effect.Effect<
   CreateTagsResponse,
-  InvalidID | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidID | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTagsRequest,
   output: CreateTagsResponse,
@@ -67439,8 +67437,8 @@ export const createVerifiedAccessInstance: (
   input: CreateVerifiedAccessInstanceRequest,
 ) => Effect.Effect<
   CreateVerifiedAccessInstanceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVerifiedAccessInstanceRequest,
   output: CreateVerifiedAccessInstanceResult,
@@ -67466,8 +67464,8 @@ export const createVpcPeeringConnection: (
   input: CreateVpcPeeringConnectionRequest,
 ) => Effect.Effect<
   CreateVpcPeeringConnectionResult,
-  InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcPeeringConnectionRequest,
   output: CreateVpcPeeringConnectionResult,
@@ -67480,8 +67478,8 @@ export const deleteCapacityManagerDataExport: (
   input: DeleteCapacityManagerDataExportRequest,
 ) => Effect.Effect<
   DeleteCapacityManagerDataExportResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCapacityManagerDataExportRequest,
   output: DeleteCapacityManagerDataExportResult,
@@ -67498,8 +67496,8 @@ export const deleteCarrierGateway: (
   input: DeleteCarrierGatewayRequest,
 ) => Effect.Effect<
   DeleteCarrierGatewayResult,
-  InvalidCarrierGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidCarrierGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCarrierGatewayRequest,
   output: DeleteCarrierGatewayResult,
@@ -67515,8 +67513,8 @@ export const deleteClientVpnRoute: (
   input: DeleteClientVpnRouteRequest,
 ) => Effect.Effect<
   DeleteClientVpnRouteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClientVpnRouteRequest,
   output: DeleteClientVpnRouteResult,
@@ -67529,8 +67527,8 @@ export const deleteCoipCidr: (
   input: DeleteCoipCidrRequest,
 ) => Effect.Effect<
   DeleteCoipCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCoipCidrRequest,
   output: DeleteCoipCidrResult,
@@ -67543,8 +67541,8 @@ export const deleteCoipPool: (
   input: DeleteCoipPoolRequest,
 ) => Effect.Effect<
   DeleteCoipPoolResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCoipPoolRequest,
   output: DeleteCoipPoolResult,
@@ -67557,8 +67555,8 @@ export const deleteEgressOnlyInternetGateway: (
   input: DeleteEgressOnlyInternetGatewayRequest,
 ) => Effect.Effect<
   DeleteEgressOnlyInternetGatewayResult,
-  InvalidGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEgressOnlyInternetGatewayRequest,
   output: DeleteEgressOnlyInternetGatewayResult,
@@ -67571,8 +67569,8 @@ export const deleteFlowLogs: (
   input: DeleteFlowLogsRequest,
 ) => Effect.Effect<
   DeleteFlowLogsResult,
-  InvalidFlowLogIdNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidFlowLogIdNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFlowLogsRequest,
   output: DeleteFlowLogsResult,
@@ -67585,8 +67583,8 @@ export const deleteFpgaImage: (
   input: DeleteFpgaImageRequest,
 ) => Effect.Effect<
   DeleteFpgaImageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFpgaImageRequest,
   output: DeleteFpgaImageResult,
@@ -67602,8 +67600,8 @@ export const deleteImageUsageReport: (
   input: DeleteImageUsageReportRequest,
 ) => Effect.Effect<
   DeleteImageUsageReportResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImageUsageReportRequest,
   output: DeleteImageUsageReportResult,
@@ -67616,8 +67614,8 @@ export const deleteInstanceConnectEndpoint: (
   input: DeleteInstanceConnectEndpointRequest,
 ) => Effect.Effect<
   DeleteInstanceConnectEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInstanceConnectEndpointRequest,
   output: DeleteInstanceConnectEndpointResult,
@@ -67632,8 +67630,8 @@ export const deleteIpamExternalResourceVerificationToken: (
   input: DeleteIpamExternalResourceVerificationTokenRequest,
 ) => Effect.Effect<
   DeleteIpamExternalResourceVerificationTokenResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamExternalResourceVerificationTokenRequest,
   output: DeleteIpamExternalResourceVerificationTokenResult,
@@ -67648,8 +67646,8 @@ export const deleteIpamPolicy: (
   input: DeleteIpamPolicyRequest,
 ) => Effect.Effect<
   DeleteIpamPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamPolicyRequest,
   output: DeleteIpamPolicyResult,
@@ -67664,8 +67662,8 @@ export const deleteIpamPrefixListResolverTarget: (
   input: DeleteIpamPrefixListResolverTargetRequest,
 ) => Effect.Effect<
   DeleteIpamPrefixListResolverTargetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamPrefixListResolverTargetRequest,
   output: DeleteIpamPrefixListResolverTargetResult,
@@ -67678,8 +67676,8 @@ export const deleteIpamResourceDiscovery: (
   input: DeleteIpamResourceDiscoveryRequest,
 ) => Effect.Effect<
   DeleteIpamResourceDiscoveryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamResourceDiscoveryRequest,
   output: DeleteIpamResourceDiscoveryResult,
@@ -67692,8 +67690,8 @@ export const deleteKeyPair: (
   input: DeleteKeyPairRequest,
 ) => Effect.Effect<
   DeleteKeyPairResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteKeyPairRequest,
   output: DeleteKeyPairResult,
@@ -67706,8 +67704,8 @@ export const deleteLocalGatewayRoute: (
   input: DeleteLocalGatewayRouteRequest,
 ) => Effect.Effect<
   DeleteLocalGatewayRouteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLocalGatewayRouteRequest,
   output: DeleteLocalGatewayRouteResult,
@@ -67720,8 +67718,8 @@ export const deleteLocalGatewayRouteTable: (
   input: DeleteLocalGatewayRouteTableRequest,
 ) => Effect.Effect<
   DeleteLocalGatewayRouteTableResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLocalGatewayRouteTableRequest,
   output: DeleteLocalGatewayRouteTableResult,
@@ -67734,8 +67732,8 @@ export const deleteLocalGatewayRouteTableVirtualInterfaceGroupAssociation: (
   input: DeleteLocalGatewayRouteTableVirtualInterfaceGroupAssociationRequest,
 ) => Effect.Effect<
   DeleteLocalGatewayRouteTableVirtualInterfaceGroupAssociationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLocalGatewayRouteTableVirtualInterfaceGroupAssociationRequest,
   output: DeleteLocalGatewayRouteTableVirtualInterfaceGroupAssociationResult,
@@ -67748,8 +67746,8 @@ export const deleteLocalGatewayRouteTableVpcAssociation: (
   input: DeleteLocalGatewayRouteTableVpcAssociationRequest,
 ) => Effect.Effect<
   DeleteLocalGatewayRouteTableVpcAssociationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLocalGatewayRouteTableVpcAssociationRequest,
   output: DeleteLocalGatewayRouteTableVpcAssociationResult,
@@ -67762,8 +67760,8 @@ export const deleteLocalGatewayVirtualInterface: (
   input: DeleteLocalGatewayVirtualInterfaceRequest,
 ) => Effect.Effect<
   DeleteLocalGatewayVirtualInterfaceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLocalGatewayVirtualInterfaceRequest,
   output: DeleteLocalGatewayVirtualInterfaceResult,
@@ -67776,8 +67774,8 @@ export const deleteLocalGatewayVirtualInterfaceGroup: (
   input: DeleteLocalGatewayVirtualInterfaceGroupRequest,
 ) => Effect.Effect<
   DeleteLocalGatewayVirtualInterfaceGroupResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLocalGatewayVirtualInterfaceGroupRequest,
   output: DeleteLocalGatewayVirtualInterfaceGroupResult,
@@ -67792,8 +67790,8 @@ export const deleteNatGateway: (
   input: DeleteNatGatewayRequest,
 ) => Effect.Effect<
   DeleteNatGatewayResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNatGatewayRequest,
   output: DeleteNatGatewayResult,
@@ -67806,8 +67804,8 @@ export const deleteNetworkInsightsAccessScope: (
   input: DeleteNetworkInsightsAccessScopeRequest,
 ) => Effect.Effect<
   DeleteNetworkInsightsAccessScopeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInsightsAccessScopeRequest,
   output: DeleteNetworkInsightsAccessScopeResult,
@@ -67820,8 +67818,8 @@ export const deleteNetworkInsightsAccessScopeAnalysis: (
   input: DeleteNetworkInsightsAccessScopeAnalysisRequest,
 ) => Effect.Effect<
   DeleteNetworkInsightsAccessScopeAnalysisResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInsightsAccessScopeAnalysisRequest,
   output: DeleteNetworkInsightsAccessScopeAnalysisResult,
@@ -67834,8 +67832,8 @@ export const deleteNetworkInsightsAnalysis: (
   input: DeleteNetworkInsightsAnalysisRequest,
 ) => Effect.Effect<
   DeleteNetworkInsightsAnalysisResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInsightsAnalysisRequest,
   output: DeleteNetworkInsightsAnalysisResult,
@@ -67848,8 +67846,8 @@ export const deleteNetworkInsightsPath: (
   input: DeleteNetworkInsightsPathRequest,
 ) => Effect.Effect<
   DeleteNetworkInsightsPathResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInsightsPathRequest,
   output: DeleteNetworkInsightsPathResult,
@@ -67865,8 +67863,8 @@ export const deleteNetworkInterfacePermission: (
   input: DeleteNetworkInterfacePermissionRequest,
 ) => Effect.Effect<
   DeleteNetworkInterfacePermissionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInterfacePermissionRequest,
   output: DeleteNetworkInterfacePermissionResult,
@@ -67879,8 +67877,8 @@ export const deletePublicIpv4Pool: (
   input: DeletePublicIpv4PoolRequest,
 ) => Effect.Effect<
   DeletePublicIpv4PoolResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePublicIpv4PoolRequest,
   output: DeletePublicIpv4PoolResult,
@@ -67908,8 +67906,8 @@ export const deleteRouteServer: (
   input: DeleteRouteServerRequest,
 ) => Effect.Effect<
   DeleteRouteServerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteServerRequest,
   output: DeleteRouteServerResult,
@@ -67924,8 +67922,8 @@ export const deleteRouteServerEndpoint: (
   input: DeleteRouteServerEndpointRequest,
 ) => Effect.Effect<
   DeleteRouteServerEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteServerEndpointRequest,
   output: DeleteRouteServerEndpointResult,
@@ -67942,8 +67940,8 @@ export const deleteSecurityGroup: (
   input: DeleteSecurityGroupRequest,
 ) => Effect.Effect<
   DeleteSecurityGroupResult,
-  InvalidGroupNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidGroupNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSecurityGroupRequest,
   output: DeleteSecurityGroupResult,
@@ -67956,8 +67954,8 @@ export const deleteSubnetCidrReservation: (
   input: DeleteSubnetCidrReservationRequest,
 ) => Effect.Effect<
   DeleteSubnetCidrReservationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSubnetCidrReservationRequest,
   output: DeleteSubnetCidrReservationResult,
@@ -67972,8 +67970,8 @@ export const deleteTrafficMirrorFilter: (
   input: DeleteTrafficMirrorFilterRequest,
 ) => Effect.Effect<
   DeleteTrafficMirrorFilterResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficMirrorFilterRequest,
   output: DeleteTrafficMirrorFilterResult,
@@ -67986,8 +67984,8 @@ export const deleteTrafficMirrorFilterRule: (
   input: DeleteTrafficMirrorFilterRuleRequest,
 ) => Effect.Effect<
   DeleteTrafficMirrorFilterRuleResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficMirrorFilterRuleRequest,
   output: DeleteTrafficMirrorFilterRuleResult,
@@ -68000,8 +67998,8 @@ export const deleteTrafficMirrorSession: (
   input: DeleteTrafficMirrorSessionRequest,
 ) => Effect.Effect<
   DeleteTrafficMirrorSessionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficMirrorSessionRequest,
   output: DeleteTrafficMirrorSessionResult,
@@ -68016,8 +68014,8 @@ export const deleteTrafficMirrorTarget: (
   input: DeleteTrafficMirrorTargetRequest,
 ) => Effect.Effect<
   DeleteTrafficMirrorTargetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficMirrorTargetRequest,
   output: DeleteTrafficMirrorTargetResult,
@@ -68030,8 +68028,8 @@ export const deleteTransitGatewayMeteringPolicy: (
   input: DeleteTransitGatewayMeteringPolicyRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayMeteringPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayMeteringPolicyRequest,
   output: DeleteTransitGatewayMeteringPolicyResult,
@@ -68044,8 +68042,8 @@ export const deleteTransitGatewayMeteringPolicyEntry: (
   input: DeleteTransitGatewayMeteringPolicyEntryRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayMeteringPolicyEntryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayMeteringPolicyEntryRequest,
   output: DeleteTransitGatewayMeteringPolicyEntryResult,
@@ -68058,8 +68056,8 @@ export const deleteTransitGatewayPeeringAttachment: (
   input: DeleteTransitGatewayPeeringAttachmentRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayPeeringAttachmentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayPeeringAttachmentRequest,
   output: DeleteTransitGatewayPeeringAttachmentResult,
@@ -68072,8 +68070,8 @@ export const deleteTransitGatewayPolicyTable: (
   input: DeleteTransitGatewayPolicyTableRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayPolicyTableResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayPolicyTableRequest,
   output: DeleteTransitGatewayPolicyTableResult,
@@ -68086,8 +68084,8 @@ export const deleteTransitGatewayPrefixListReference: (
   input: DeleteTransitGatewayPrefixListReferenceRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayPrefixListReferenceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayPrefixListReferenceRequest,
   output: DeleteTransitGatewayPrefixListReferenceResult,
@@ -68100,8 +68098,8 @@ export const deleteTransitGatewayRoute: (
   input: DeleteTransitGatewayRouteRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayRouteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayRouteRequest,
   output: DeleteTransitGatewayRouteResult,
@@ -68115,8 +68113,8 @@ export const deleteTransitGatewayRouteTable: (
   input: DeleteTransitGatewayRouteTableRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayRouteTableResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayRouteTableRequest,
   output: DeleteTransitGatewayRouteTableResult,
@@ -68129,8 +68127,8 @@ export const deleteTransitGatewayRouteTableAnnouncement: (
   input: DeleteTransitGatewayRouteTableAnnouncementRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayRouteTableAnnouncementResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayRouteTableAnnouncementRequest,
   output: DeleteTransitGatewayRouteTableAnnouncementResult,
@@ -68143,8 +68141,8 @@ export const deleteTransitGatewayVpcAttachment: (
   input: DeleteTransitGatewayVpcAttachmentRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayVpcAttachmentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayVpcAttachmentRequest,
   output: DeleteTransitGatewayVpcAttachmentResult,
@@ -68157,8 +68155,8 @@ export const deleteVerifiedAccessGroup: (
   input: DeleteVerifiedAccessGroupRequest,
 ) => Effect.Effect<
   DeleteVerifiedAccessGroupResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedAccessGroupRequest,
   output: DeleteVerifiedAccessGroupResult,
@@ -68171,8 +68169,8 @@ export const deleteVerifiedAccessInstance: (
   input: DeleteVerifiedAccessInstanceRequest,
 ) => Effect.Effect<
   DeleteVerifiedAccessInstanceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedAccessInstanceRequest,
   output: DeleteVerifiedAccessInstanceResult,
@@ -68185,8 +68183,8 @@ export const deleteVerifiedAccessTrustProvider: (
   input: DeleteVerifiedAccessTrustProviderRequest,
 ) => Effect.Effect<
   DeleteVerifiedAccessTrustProviderResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedAccessTrustProviderRequest,
   output: DeleteVerifiedAccessTrustProviderResult,
@@ -68199,8 +68197,8 @@ export const deleteVpcBlockPublicAccessExclusion: (
   input: DeleteVpcBlockPublicAccessExclusionRequest,
 ) => Effect.Effect<
   DeleteVpcBlockPublicAccessExclusionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcBlockPublicAccessExclusionRequest,
   output: DeleteVpcBlockPublicAccessExclusionResult,
@@ -68215,8 +68213,8 @@ export const deleteVpcEncryptionControl: (
   input: DeleteVpcEncryptionControlRequest,
 ) => Effect.Effect<
   DeleteVpcEncryptionControlResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEncryptionControlRequest,
   output: DeleteVpcEncryptionControlResult,
@@ -68229,8 +68227,8 @@ export const deleteVpcEndpointConnectionNotifications: (
   input: DeleteVpcEndpointConnectionNotificationsRequest,
 ) => Effect.Effect<
   DeleteVpcEndpointConnectionNotificationsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointConnectionNotificationsRequest,
   output: DeleteVpcEndpointConnectionNotificationsResult,
@@ -68250,8 +68248,8 @@ export const deleteVpcEndpoints: (
   input: DeleteVpcEndpointsRequest,
 ) => Effect.Effect<
   DeleteVpcEndpointsResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointsRequest,
   output: DeleteVpcEndpointsResult,
@@ -68267,8 +68265,8 @@ export const deleteVpcEndpointServiceConfigurations: (
   input: DeleteVpcEndpointServiceConfigurationsRequest,
 ) => Effect.Effect<
   DeleteVpcEndpointServiceConfigurationsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointServiceConfigurationsRequest,
   output: DeleteVpcEndpointServiceConfigurationsResult,
@@ -68285,8 +68283,8 @@ export const deleteVpcPeeringConnection: (
   input: DeleteVpcPeeringConnectionRequest,
 ) => Effect.Effect<
   DeleteVpcPeeringConnectionResult,
-  InvalidVpcPeeringConnectionIdNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcPeeringConnectionIdNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcPeeringConnectionRequest,
   output: DeleteVpcPeeringConnectionResult,
@@ -68299,8 +68297,8 @@ export const deleteVpnConcentrator: (
   input: DeleteVpnConcentratorRequest,
 ) => Effect.Effect<
   DeleteVpnConcentratorResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpnConcentratorRequest,
   output: DeleteVpnConcentratorResult,
@@ -68317,8 +68315,8 @@ export const deprovisionByoipCidr: (
   input: DeprovisionByoipCidrRequest,
 ) => Effect.Effect<
   DeprovisionByoipCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprovisionByoipCidrRequest,
   output: DeprovisionByoipCidrResult,
@@ -68331,8 +68329,8 @@ export const deprovisionPublicIpv4PoolCidr: (
   input: DeprovisionPublicIpv4PoolCidrRequest,
 ) => Effect.Effect<
   DeprovisionPublicIpv4PoolCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprovisionPublicIpv4PoolCidrRequest,
   output: DeprovisionPublicIpv4PoolCidrResult,
@@ -68353,8 +68351,8 @@ export const describeBundleTasks: (
   input: DescribeBundleTasksRequest,
 ) => Effect.Effect<
   DescribeBundleTasksResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBundleTasksRequest,
   output: DescribeBundleTasksResult,
@@ -68369,22 +68367,22 @@ export const describeByoipCidrs: {
     input: DescribeByoipCidrsRequest,
   ): Effect.Effect<
     DescribeByoipCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeByoipCidrsRequest,
   ) => Stream.Stream<
     DescribeByoipCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeByoipCidrsRequest,
   ) => Stream.Stream<
     ByoipCidr,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeByoipCidrsRequest,
@@ -68407,22 +68405,22 @@ export const describeCapacityReservations: {
     input: DescribeCapacityReservationsRequest,
   ): Effect.Effect<
     DescribeCapacityReservationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityReservationsRequest,
   ) => Stream.Stream<
     DescribeCapacityReservationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityReservationsRequest,
   ) => Stream.Stream<
     CapacityReservation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityReservationsRequest,
@@ -68443,22 +68441,22 @@ export const describeCarrierGateways: {
     input: DescribeCarrierGatewaysRequest,
   ): Effect.Effect<
     DescribeCarrierGatewaysResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCarrierGatewaysRequest,
   ) => Stream.Stream<
     DescribeCarrierGatewaysResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCarrierGatewaysRequest,
   ) => Stream.Stream<
     CarrierGateway,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCarrierGatewaysRequest,
@@ -68479,22 +68477,22 @@ export const describeCoipPools: {
     input: DescribeCoipPoolsRequest,
   ): Effect.Effect<
     DescribeCoipPoolsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCoipPoolsRequest,
   ) => Stream.Stream<
     DescribeCoipPoolsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCoipPoolsRequest,
   ) => Stream.Stream<
     CoipPool,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCoipPoolsRequest,
@@ -68517,8 +68515,8 @@ export const describeCustomerGateways: (
   input: DescribeCustomerGatewaysRequest,
 ) => Effect.Effect<
   DescribeCustomerGatewaysResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCustomerGatewaysRequest,
   output: DescribeCustomerGatewaysResult,
@@ -68534,22 +68532,22 @@ export const describeEgressOnlyInternetGateways: {
     input: DescribeEgressOnlyInternetGatewaysRequest,
   ): Effect.Effect<
     DescribeEgressOnlyInternetGatewaysResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEgressOnlyInternetGatewaysRequest,
   ) => Stream.Stream<
     DescribeEgressOnlyInternetGatewaysResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEgressOnlyInternetGatewaysRequest,
   ) => Stream.Stream<
     EgressOnlyInternetGateway,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEgressOnlyInternetGatewaysRequest,
@@ -68589,8 +68587,8 @@ export const describeIdentityIdFormat: (
   input: DescribeIdentityIdFormatRequest,
 ) => Effect.Effect<
   DescribeIdentityIdFormatResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdentityIdFormatRequest,
   output: DescribeIdentityIdFormatResult,
@@ -68624,8 +68622,8 @@ export const describeIdFormat: (
   input: DescribeIdFormatRequest,
 ) => Effect.Effect<
   DescribeIdFormatResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdFormatRequest,
   output: DescribeIdFormatResult,
@@ -68639,22 +68637,22 @@ export const describeInstanceConnectEndpoints: {
     input: DescribeInstanceConnectEndpointsRequest,
   ): Effect.Effect<
     DescribeInstanceConnectEndpointsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceConnectEndpointsRequest,
   ) => Stream.Stream<
     DescribeInstanceConnectEndpointsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceConnectEndpointsRequest,
   ) => Stream.Stream<
     Ec2InstanceConnectEndpoint,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceConnectEndpointsRequest,
@@ -68675,8 +68673,8 @@ export const describeInstanceSqlHaStates: (
   input: DescribeInstanceSqlHaStatesRequest,
 ) => Effect.Effect<
   DescribeInstanceSqlHaStatesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInstanceSqlHaStatesRequest,
   output: DescribeInstanceSqlHaStatesResult,
@@ -68692,22 +68690,22 @@ export const describeInternetGateways: {
     input: DescribeInternetGatewaysRequest,
   ): Effect.Effect<
     DescribeInternetGatewaysResult,
-    InvalidInternetGatewayIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInternetGatewayIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInternetGatewaysRequest,
   ) => Stream.Stream<
     DescribeInternetGatewaysResult,
-    InvalidInternetGatewayIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInternetGatewayIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInternetGatewaysRequest,
   ) => Stream.Stream<
     InternetGateway,
-    InvalidInternetGatewayIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInternetGatewayIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInternetGatewaysRequest,
@@ -68727,8 +68725,8 @@ export const describeIpamByoasn: (
   input: DescribeIpamByoasnRequest,
 ) => Effect.Effect<
   DescribeIpamByoasnResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIpamByoasnRequest,
   output: DescribeIpamByoasnResult,
@@ -68743,8 +68741,8 @@ export const describeIpamExternalResourceVerificationTokens: (
   input: DescribeIpamExternalResourceVerificationTokensRequest,
 ) => Effect.Effect<
   DescribeIpamExternalResourceVerificationTokensResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIpamExternalResourceVerificationTokensRequest,
   output: DescribeIpamExternalResourceVerificationTokensResult,
@@ -68759,8 +68757,8 @@ export const describeIpamPolicies: (
   input: DescribeIpamPoliciesRequest,
 ) => Effect.Effect<
   DescribeIpamPoliciesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIpamPoliciesRequest,
   output: DescribeIpamPoliciesResult,
@@ -68774,22 +68772,22 @@ export const describeIpamPools: {
     input: DescribeIpamPoolsRequest,
   ): Effect.Effect<
     DescribeIpamPoolsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIpamPoolsRequest,
   ) => Stream.Stream<
     DescribeIpamPoolsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIpamPoolsRequest,
   ) => Stream.Stream<
     IpamPool,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIpamPoolsRequest,
@@ -68810,22 +68808,22 @@ export const describeIpamPrefixListResolvers: {
     input: DescribeIpamPrefixListResolversRequest,
   ): Effect.Effect<
     DescribeIpamPrefixListResolversResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIpamPrefixListResolversRequest,
   ) => Stream.Stream<
     DescribeIpamPrefixListResolversResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIpamPrefixListResolversRequest,
   ) => Stream.Stream<
     IpamPrefixListResolver,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIpamPrefixListResolversRequest,
@@ -68846,22 +68844,22 @@ export const describeIpamPrefixListResolverTargets: {
     input: DescribeIpamPrefixListResolverTargetsRequest,
   ): Effect.Effect<
     DescribeIpamPrefixListResolverTargetsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIpamPrefixListResolverTargetsRequest,
   ) => Stream.Stream<
     DescribeIpamPrefixListResolverTargetsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIpamPrefixListResolverTargetsRequest,
   ) => Stream.Stream<
     IpamPrefixListResolverTarget,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIpamPrefixListResolverTargetsRequest,
@@ -68882,22 +68880,22 @@ export const describeIpamResourceDiscoveries: {
     input: DescribeIpamResourceDiscoveriesRequest,
   ): Effect.Effect<
     DescribeIpamResourceDiscoveriesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIpamResourceDiscoveriesRequest,
   ) => Stream.Stream<
     DescribeIpamResourceDiscoveriesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIpamResourceDiscoveriesRequest,
   ) => Stream.Stream<
     IpamResourceDiscovery,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIpamResourceDiscoveriesRequest,
@@ -68918,22 +68916,22 @@ export const describeIpamResourceDiscoveryAssociations: {
     input: DescribeIpamResourceDiscoveryAssociationsRequest,
   ): Effect.Effect<
     DescribeIpamResourceDiscoveryAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIpamResourceDiscoveryAssociationsRequest,
   ) => Stream.Stream<
     DescribeIpamResourceDiscoveryAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIpamResourceDiscoveryAssociationsRequest,
   ) => Stream.Stream<
     IpamResourceDiscoveryAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIpamResourceDiscoveryAssociationsRequest,
@@ -68956,22 +68954,22 @@ export const describeIpams: {
     input: DescribeIpamsRequest,
   ): Effect.Effect<
     DescribeIpamsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIpamsRequest,
   ) => Stream.Stream<
     DescribeIpamsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIpamsRequest,
   ) => Stream.Stream<
     Ipam,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIpamsRequest,
@@ -68992,22 +68990,22 @@ export const describeIpamScopes: {
     input: DescribeIpamScopesRequest,
   ): Effect.Effect<
     DescribeIpamScopesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIpamScopesRequest,
   ) => Stream.Stream<
     DescribeIpamScopesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIpamScopesRequest,
   ) => Stream.Stream<
     IpamScope,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIpamScopesRequest,
@@ -69028,22 +69026,22 @@ export const describeLaunchTemplates: {
     input: DescribeLaunchTemplatesRequest,
   ): Effect.Effect<
     DescribeLaunchTemplatesResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLaunchTemplatesRequest,
   ) => Stream.Stream<
     DescribeLaunchTemplatesResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLaunchTemplatesRequest,
   ) => Stream.Stream<
     LaunchTemplate,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLaunchTemplatesRequest,
@@ -69067,22 +69065,22 @@ export const describeLaunchTemplateVersions: {
     input: DescribeLaunchTemplateVersionsRequest,
   ): Effect.Effect<
     DescribeLaunchTemplateVersionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLaunchTemplateVersionsRequest,
   ) => Stream.Stream<
     DescribeLaunchTemplateVersionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLaunchTemplateVersionsRequest,
   ) => Stream.Stream<
     LaunchTemplateVersion,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLaunchTemplateVersionsRequest,
@@ -69104,22 +69102,22 @@ export const describeLocalGatewayRouteTables: {
     input: DescribeLocalGatewayRouteTablesRequest,
   ): Effect.Effect<
     DescribeLocalGatewayRouteTablesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLocalGatewayRouteTablesRequest,
   ) => Stream.Stream<
     DescribeLocalGatewayRouteTablesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLocalGatewayRouteTablesRequest,
   ) => Stream.Stream<
     LocalGatewayRouteTable,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLocalGatewayRouteTablesRequest,
@@ -69140,22 +69138,22 @@ export const describeLocalGatewayRouteTableVirtualInterfaceGroupAssociations: {
     input: DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsRequest,
   ): Effect.Effect<
     DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsRequest,
   ) => Stream.Stream<
     DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsRequest,
   ) => Stream.Stream<
     LocalGatewayRouteTableVirtualInterfaceGroupAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsRequest,
@@ -69176,22 +69174,22 @@ export const describeLocalGatewayRouteTableVpcAssociations: {
     input: DescribeLocalGatewayRouteTableVpcAssociationsRequest,
   ): Effect.Effect<
     DescribeLocalGatewayRouteTableVpcAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLocalGatewayRouteTableVpcAssociationsRequest,
   ) => Stream.Stream<
     DescribeLocalGatewayRouteTableVpcAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLocalGatewayRouteTableVpcAssociationsRequest,
   ) => Stream.Stream<
     LocalGatewayRouteTableVpcAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLocalGatewayRouteTableVpcAssociationsRequest,
@@ -69212,22 +69210,22 @@ export const describeLocalGatewayVirtualInterfaceGroups: {
     input: DescribeLocalGatewayVirtualInterfaceGroupsRequest,
   ): Effect.Effect<
     DescribeLocalGatewayVirtualInterfaceGroupsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLocalGatewayVirtualInterfaceGroupsRequest,
   ) => Stream.Stream<
     DescribeLocalGatewayVirtualInterfaceGroupsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLocalGatewayVirtualInterfaceGroupsRequest,
   ) => Stream.Stream<
     LocalGatewayVirtualInterfaceGroup,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLocalGatewayVirtualInterfaceGroupsRequest,
@@ -69248,22 +69246,22 @@ export const describeLocalGatewayVirtualInterfaces: {
     input: DescribeLocalGatewayVirtualInterfacesRequest,
   ): Effect.Effect<
     DescribeLocalGatewayVirtualInterfacesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLocalGatewayVirtualInterfacesRequest,
   ) => Stream.Stream<
     DescribeLocalGatewayVirtualInterfacesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLocalGatewayVirtualInterfacesRequest,
   ) => Stream.Stream<
     LocalGatewayVirtualInterface,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLocalGatewayVirtualInterfacesRequest,
@@ -69286,22 +69284,22 @@ export const describeMacModificationTasks: {
     input: DescribeMacModificationTasksRequest,
   ): Effect.Effect<
     DescribeMacModificationTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMacModificationTasksRequest,
   ) => Stream.Stream<
     DescribeMacModificationTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMacModificationTasksRequest,
   ) => Stream.Stream<
     MacModificationTask,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMacModificationTasksRequest,
@@ -69322,22 +69320,22 @@ export const describeManagedPrefixLists: {
     input: DescribeManagedPrefixListsRequest,
   ): Effect.Effect<
     DescribeManagedPrefixListsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeManagedPrefixListsRequest,
   ) => Stream.Stream<
     DescribeManagedPrefixListsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeManagedPrefixListsRequest,
   ) => Stream.Stream<
     ManagedPrefixList,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeManagedPrefixListsRequest,
@@ -69363,22 +69361,22 @@ export const describeNetworkAcls: {
     input: DescribeNetworkAclsRequest,
   ): Effect.Effect<
     DescribeNetworkAclsResult,
-    InvalidRouteTableIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidRouteTableIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkAclsRequest,
   ) => Stream.Stream<
     DescribeNetworkAclsResult,
-    InvalidRouteTableIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidRouteTableIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkAclsRequest,
   ) => Stream.Stream<
     NetworkAcl,
-    InvalidRouteTableIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidRouteTableIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkAclsRequest,
@@ -69399,22 +69397,22 @@ export const describeNetworkInterfacePermissions: {
     input: DescribeNetworkInterfacePermissionsRequest,
   ): Effect.Effect<
     DescribeNetworkInterfacePermissionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkInterfacePermissionsRequest,
   ) => Stream.Stream<
     DescribeNetworkInterfacePermissionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkInterfacePermissionsRequest,
   ) => Stream.Stream<
     NetworkInterfacePermission,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkInterfacePermissionsRequest,
@@ -69443,8 +69441,8 @@ export const describePlacementGroups: (
   input: DescribePlacementGroupsRequest,
 ) => Effect.Effect<
   DescribePlacementGroupsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePlacementGroupsRequest,
   output: DescribePlacementGroupsResult,
@@ -69459,22 +69457,22 @@ export const describeReplaceRootVolumeTasks: {
     input: DescribeReplaceRootVolumeTasksRequest,
   ): Effect.Effect<
     DescribeReplaceRootVolumeTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplaceRootVolumeTasksRequest,
   ) => Stream.Stream<
     DescribeReplaceRootVolumeTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplaceRootVolumeTasksRequest,
   ) => Stream.Stream<
     ReplaceRootVolumeTask,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplaceRootVolumeTasksRequest,
@@ -69516,8 +69514,8 @@ export const describeReservedInstancesListings: (
   input: DescribeReservedInstancesListingsRequest,
 ) => Effect.Effect<
   DescribeReservedInstancesListingsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReservedInstancesListingsRequest,
   output: DescribeReservedInstancesListingsResult,
@@ -69535,22 +69533,22 @@ export const describeRouteServerEndpoints: {
     input: DescribeRouteServerEndpointsRequest,
   ): Effect.Effect<
     DescribeRouteServerEndpointsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRouteServerEndpointsRequest,
   ) => Stream.Stream<
     DescribeRouteServerEndpointsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRouteServerEndpointsRequest,
   ) => Stream.Stream<
     RouteServerEndpoint,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRouteServerEndpointsRequest,
@@ -69581,22 +69579,22 @@ export const describeRouteServerPeers: {
     input: DescribeRouteServerPeersRequest,
   ): Effect.Effect<
     DescribeRouteServerPeersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRouteServerPeersRequest,
   ) => Stream.Stream<
     DescribeRouteServerPeersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRouteServerPeersRequest,
   ) => Stream.Stream<
     RouteServerPeer,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRouteServerPeersRequest,
@@ -69632,22 +69630,22 @@ export const describeRouteServers: {
     input: DescribeRouteServersRequest,
   ): Effect.Effect<
     DescribeRouteServersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRouteServersRequest,
   ) => Stream.Stream<
     DescribeRouteServersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRouteServersRequest,
   ) => Stream.Stream<
     RouteServer,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRouteServersRequest,
@@ -69675,22 +69673,22 @@ export const describeRouteTables: {
     input: DescribeRouteTablesRequest,
   ): Effect.Effect<
     DescribeRouteTablesResult,
-    InvalidRouteTableIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidRouteTableIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRouteTablesRequest,
   ) => Stream.Stream<
     DescribeRouteTablesResult,
-    InvalidRouteTableIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidRouteTableIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRouteTablesRequest,
   ) => Stream.Stream<
     RouteTable,
-    InvalidRouteTableIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidRouteTableIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRouteTablesRequest,
@@ -69711,22 +69709,22 @@ export const describeSecurityGroupRules: {
     input: DescribeSecurityGroupRulesRequest,
   ): Effect.Effect<
     DescribeSecurityGroupRulesResult,
-    InvalidSecurityGroupRuleIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSecurityGroupRuleIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSecurityGroupRulesRequest,
   ) => Stream.Stream<
     DescribeSecurityGroupRulesResult,
-    InvalidSecurityGroupRuleIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSecurityGroupRuleIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSecurityGroupRulesRequest,
   ) => Stream.Stream<
     SecurityGroupRule,
-    InvalidSecurityGroupRuleIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSecurityGroupRuleIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSecurityGroupRulesRequest,
@@ -69749,8 +69747,8 @@ export const describeSnapshotAttribute: (
   input: DescribeSnapshotAttributeRequest,
 ) => Effect.Effect<
   DescribeSnapshotAttributeResult,
-  InvalidSnapshotNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSnapshotNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSnapshotAttributeRequest,
   output: DescribeSnapshotAttributeResult,
@@ -69808,22 +69806,22 @@ export const describeSnapshots: {
     input: DescribeSnapshotsRequest,
   ): Effect.Effect<
     DescribeSnapshotsResult,
-    InvalidSnapshotNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSnapshotNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSnapshotsRequest,
   ) => Stream.Stream<
     DescribeSnapshotsResult,
-    InvalidSnapshotNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSnapshotNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSnapshotsRequest,
   ) => Stream.Stream<
     Snapshot,
-    InvalidSnapshotNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSnapshotNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsRequest,
@@ -69844,8 +69842,8 @@ export const describeSpotDatafeedSubscription: (
   input: DescribeSpotDatafeedSubscriptionRequest,
 ) => Effect.Effect<
   DescribeSpotDatafeedSubscriptionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSpotDatafeedSubscriptionRequest,
   output: DescribeSpotDatafeedSubscriptionResult,
@@ -69858,8 +69856,8 @@ export const describeSpotFleetInstances: (
   input: DescribeSpotFleetInstancesRequest,
 ) => Effect.Effect<
   DescribeSpotFleetInstancesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSpotFleetInstancesRequest,
   output: DescribeSpotFleetInstancesResponse,
@@ -69878,22 +69876,22 @@ export const describeSubnets: {
     input: DescribeSubnetsRequest,
   ): Effect.Effect<
     DescribeSubnetsResult,
-    InvalidSubnetIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSubnetIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSubnetsRequest,
   ) => Stream.Stream<
     DescribeSubnetsResult,
-    InvalidSubnetIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSubnetIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSubnetsRequest,
   ) => Stream.Stream<
     Subnet,
-    InvalidSubnetIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidSubnetIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSubnetsRequest,
@@ -69914,22 +69912,22 @@ export const describeTrafficMirrorFilters: {
     input: DescribeTrafficMirrorFiltersRequest,
   ): Effect.Effect<
     DescribeTrafficMirrorFiltersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrafficMirrorFiltersRequest,
   ) => Stream.Stream<
     DescribeTrafficMirrorFiltersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrafficMirrorFiltersRequest,
   ) => Stream.Stream<
     TrafficMirrorFilter,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrafficMirrorFiltersRequest,
@@ -69950,22 +69948,22 @@ export const describeTrafficMirrorSessions: {
     input: DescribeTrafficMirrorSessionsRequest,
   ): Effect.Effect<
     DescribeTrafficMirrorSessionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrafficMirrorSessionsRequest,
   ) => Stream.Stream<
     DescribeTrafficMirrorSessionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrafficMirrorSessionsRequest,
   ) => Stream.Stream<
     TrafficMirrorSession,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrafficMirrorSessionsRequest,
@@ -69986,22 +69984,22 @@ export const describeTrafficMirrorTargets: {
     input: DescribeTrafficMirrorTargetsRequest,
   ): Effect.Effect<
     DescribeTrafficMirrorTargetsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrafficMirrorTargetsRequest,
   ) => Stream.Stream<
     DescribeTrafficMirrorTargetsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrafficMirrorTargetsRequest,
   ) => Stream.Stream<
     TrafficMirrorTarget,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrafficMirrorTargetsRequest,
@@ -70022,22 +70020,22 @@ export const describeTransitGatewayConnectPeers: {
     input: DescribeTransitGatewayConnectPeersRequest,
   ): Effect.Effect<
     DescribeTransitGatewayConnectPeersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayConnectPeersRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayConnectPeersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayConnectPeersRequest,
   ) => Stream.Stream<
     TransitGatewayConnectPeer,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayConnectPeersRequest,
@@ -70058,22 +70056,22 @@ export const describeTransitGatewayConnects: {
     input: DescribeTransitGatewayConnectsRequest,
   ): Effect.Effect<
     DescribeTransitGatewayConnectsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayConnectsRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayConnectsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayConnectsRequest,
   ) => Stream.Stream<
     TransitGatewayConnect,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayConnectsRequest,
@@ -70093,8 +70091,8 @@ export const describeTransitGatewayMeteringPolicies: (
   input: DescribeTransitGatewayMeteringPoliciesRequest,
 ) => Effect.Effect<
   DescribeTransitGatewayMeteringPoliciesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTransitGatewayMeteringPoliciesRequest,
   output: DescribeTransitGatewayMeteringPoliciesResult,
@@ -70108,22 +70106,22 @@ export const describeTransitGatewayMulticastDomains: {
     input: DescribeTransitGatewayMulticastDomainsRequest,
   ): Effect.Effect<
     DescribeTransitGatewayMulticastDomainsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayMulticastDomainsRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayMulticastDomainsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayMulticastDomainsRequest,
   ) => Stream.Stream<
     TransitGatewayMulticastDomain,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayMulticastDomainsRequest,
@@ -70144,22 +70142,22 @@ export const describeTransitGatewayPeeringAttachments: {
     input: DescribeTransitGatewayPeeringAttachmentsRequest,
   ): Effect.Effect<
     DescribeTransitGatewayPeeringAttachmentsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayPeeringAttachmentsRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayPeeringAttachmentsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayPeeringAttachmentsRequest,
   ) => Stream.Stream<
     TransitGatewayPeeringAttachment,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayPeeringAttachmentsRequest,
@@ -70180,22 +70178,22 @@ export const describeTransitGatewayPolicyTables: {
     input: DescribeTransitGatewayPolicyTablesRequest,
   ): Effect.Effect<
     DescribeTransitGatewayPolicyTablesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayPolicyTablesRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayPolicyTablesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayPolicyTablesRequest,
   ) => Stream.Stream<
     TransitGatewayPolicyTable,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayPolicyTablesRequest,
@@ -70216,22 +70214,22 @@ export const describeTransitGatewayRouteTableAnnouncements: {
     input: DescribeTransitGatewayRouteTableAnnouncementsRequest,
   ): Effect.Effect<
     DescribeTransitGatewayRouteTableAnnouncementsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayRouteTableAnnouncementsRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayRouteTableAnnouncementsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayRouteTableAnnouncementsRequest,
   ) => Stream.Stream<
     TransitGatewayRouteTableAnnouncement,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayRouteTableAnnouncementsRequest,
@@ -70253,22 +70251,22 @@ export const describeTransitGatewayRouteTables: {
     input: DescribeTransitGatewayRouteTablesRequest,
   ): Effect.Effect<
     DescribeTransitGatewayRouteTablesResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayRouteTablesRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayRouteTablesResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayRouteTablesRequest,
   ) => Stream.Stream<
     TransitGatewayRouteTable,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayRouteTablesRequest,
@@ -70290,22 +70288,22 @@ export const describeTransitGateways: {
     input: DescribeTransitGatewaysRequest,
   ): Effect.Effect<
     DescribeTransitGatewaysResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewaysRequest,
   ) => Stream.Stream<
     DescribeTransitGatewaysResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewaysRequest,
   ) => Stream.Stream<
     TransitGateway,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewaysRequest,
@@ -70327,22 +70325,22 @@ export const describeTransitGatewayVpcAttachments: {
     input: DescribeTransitGatewayVpcAttachmentsRequest,
   ): Effect.Effect<
     DescribeTransitGatewayVpcAttachmentsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayVpcAttachmentsRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayVpcAttachmentsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayVpcAttachmentsRequest,
   ) => Stream.Stream<
     TransitGatewayVpcAttachment,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayVpcAttachmentsRequest,
@@ -70363,22 +70361,22 @@ export const describeTrunkInterfaceAssociations: {
     input: DescribeTrunkInterfaceAssociationsRequest,
   ): Effect.Effect<
     DescribeTrunkInterfaceAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrunkInterfaceAssociationsRequest,
   ) => Stream.Stream<
     DescribeTrunkInterfaceAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrunkInterfaceAssociationsRequest,
   ) => Stream.Stream<
     TrunkInterfaceAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrunkInterfaceAssociationsRequest,
@@ -70399,22 +70397,22 @@ export const describeVerifiedAccessEndpoints: {
     input: DescribeVerifiedAccessEndpointsRequest,
   ): Effect.Effect<
     DescribeVerifiedAccessEndpointsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVerifiedAccessEndpointsRequest,
   ) => Stream.Stream<
     DescribeVerifiedAccessEndpointsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVerifiedAccessEndpointsRequest,
   ) => Stream.Stream<
     VerifiedAccessEndpoint,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVerifiedAccessEndpointsRequest,
@@ -70435,22 +70433,22 @@ export const describeVerifiedAccessGroups: {
     input: DescribeVerifiedAccessGroupsRequest,
   ): Effect.Effect<
     DescribeVerifiedAccessGroupsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVerifiedAccessGroupsRequest,
   ) => Stream.Stream<
     DescribeVerifiedAccessGroupsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVerifiedAccessGroupsRequest,
   ) => Stream.Stream<
     VerifiedAccessGroup,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVerifiedAccessGroupsRequest,
@@ -70471,22 +70469,22 @@ export const describeVerifiedAccessInstances: {
     input: DescribeVerifiedAccessInstancesRequest,
   ): Effect.Effect<
     DescribeVerifiedAccessInstancesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVerifiedAccessInstancesRequest,
   ) => Stream.Stream<
     DescribeVerifiedAccessInstancesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVerifiedAccessInstancesRequest,
   ) => Stream.Stream<
     VerifiedAccessInstance,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVerifiedAccessInstancesRequest,
@@ -70507,22 +70505,22 @@ export const describeVerifiedAccessTrustProviders: {
     input: DescribeVerifiedAccessTrustProvidersRequest,
   ): Effect.Effect<
     DescribeVerifiedAccessTrustProvidersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVerifiedAccessTrustProvidersRequest,
   ) => Stream.Stream<
     DescribeVerifiedAccessTrustProvidersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVerifiedAccessTrustProvidersRequest,
   ) => Stream.Stream<
     VerifiedAccessTrustProvider,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVerifiedAccessTrustProvidersRequest,
@@ -70545,8 +70543,8 @@ export const describeVolumeAttribute: (
   input: DescribeVolumeAttributeRequest,
 ) => Effect.Effect<
   DescribeVolumeAttributeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVolumeAttributeRequest,
   output: DescribeVolumeAttributeResult,
@@ -70572,22 +70570,22 @@ export const describeVolumes: {
     input: DescribeVolumesRequest,
   ): Effect.Effect<
     DescribeVolumesResult,
-    InvalidVolumeNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVolumeNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVolumesRequest,
   ) => Stream.Stream<
     DescribeVolumesResult,
-    InvalidVolumeNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVolumeNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVolumesRequest,
   ) => Stream.Stream<
     Volume,
-    InvalidVolumeNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVolumeNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVolumesRequest,
@@ -70607,8 +70605,8 @@ export const describeVpcAttribute: (
   input: DescribeVpcAttributeRequest,
 ) => Effect.Effect<
   DescribeVpcAttributeResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcAttributeRequest,
   output: DescribeVpcAttributeResult,
@@ -70621,8 +70619,8 @@ export const describeVpcBlockPublicAccessExclusions: (
   input: DescribeVpcBlockPublicAccessExclusionsRequest,
 ) => Effect.Effect<
   DescribeVpcBlockPublicAccessExclusionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcBlockPublicAccessExclusionsRequest,
   output: DescribeVpcBlockPublicAccessExclusionsResult,
@@ -70637,8 +70635,8 @@ export const describeVpcEncryptionControls: (
   input: DescribeVpcEncryptionControlsRequest,
 ) => Effect.Effect<
   DescribeVpcEncryptionControlsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcEncryptionControlsRequest,
   output: DescribeVpcEncryptionControlsResult,
@@ -70653,22 +70651,22 @@ export const describeVpcEndpointConnectionNotifications: {
     input: DescribeVpcEndpointConnectionNotificationsRequest,
   ): Effect.Effect<
     DescribeVpcEndpointConnectionNotificationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcEndpointConnectionNotificationsRequest,
   ) => Stream.Stream<
     DescribeVpcEndpointConnectionNotificationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcEndpointConnectionNotificationsRequest,
   ) => Stream.Stream<
     ConnectionNotification,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcEndpointConnectionNotificationsRequest,
@@ -70689,22 +70687,22 @@ export const describeVpcEndpointServiceConfigurations: {
     input: DescribeVpcEndpointServiceConfigurationsRequest,
   ): Effect.Effect<
     DescribeVpcEndpointServiceConfigurationsResult,
-    InvalidVpcEndpointServiceIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcEndpointServiceIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcEndpointServiceConfigurationsRequest,
   ) => Stream.Stream<
     DescribeVpcEndpointServiceConfigurationsResult,
-    InvalidVpcEndpointServiceIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcEndpointServiceIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcEndpointServiceConfigurationsRequest,
   ) => Stream.Stream<
     ServiceConfiguration,
-    InvalidVpcEndpointServiceIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcEndpointServiceIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcEndpointServiceConfigurationsRequest,
@@ -70727,22 +70725,22 @@ export const describeVpcPeeringConnections: {
     input: DescribeVpcPeeringConnectionsRequest,
   ): Effect.Effect<
     DescribeVpcPeeringConnectionsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcPeeringConnectionsRequest,
   ) => Stream.Stream<
     DescribeVpcPeeringConnectionsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcPeeringConnectionsRequest,
   ) => Stream.Stream<
     VpcPeeringConnection,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcPeeringConnectionsRequest,
@@ -70765,22 +70763,22 @@ export const describeVpcs: {
     input: DescribeVpcsRequest,
   ): Effect.Effect<
     DescribeVpcsResult,
-    InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcsRequest,
   ) => Stream.Stream<
     DescribeVpcsResult,
-    InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcsRequest,
   ) => Stream.Stream<
     Vpc,
-    InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcsRequest,
@@ -70801,22 +70799,22 @@ export const describeVpnConcentrators: {
     input: DescribeVpnConcentratorsRequest,
   ): Effect.Effect<
     DescribeVpnConcentratorsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpnConcentratorsRequest,
   ) => Stream.Stream<
     DescribeVpnConcentratorsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpnConcentratorsRequest,
   ) => Stream.Stream<
     VpnConcentrator,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpnConcentratorsRequest,
@@ -70839,8 +70837,8 @@ export const describeVpnGateways: (
   input: DescribeVpnGatewaysRequest,
 ) => Effect.Effect<
   DescribeVpnGatewaysResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpnGatewaysRequest,
   output: DescribeVpnGatewaysResult,
@@ -70857,8 +70855,8 @@ export const detachClassicLinkVpc: (
   input: DetachClassicLinkVpcRequest,
 ) => Effect.Effect<
   DetachClassicLinkVpcResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachClassicLinkVpcRequest,
   output: DetachClassicLinkVpcResult,
@@ -70871,8 +70869,8 @@ export const detachVerifiedAccessTrustProvider: (
   input: DetachVerifiedAccessTrustProviderRequest,
 ) => Effect.Effect<
   DetachVerifiedAccessTrustProviderResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachVerifiedAccessTrustProviderRequest,
   output: DetachVerifiedAccessTrustProviderResult,
@@ -70885,8 +70883,8 @@ export const disableAddressTransfer: (
   input: DisableAddressTransferRequest,
 ) => Effect.Effect<
   DisableAddressTransferResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableAddressTransferRequest,
   output: DisableAddressTransferResult,
@@ -70910,8 +70908,8 @@ export const disableAllowedImagesSettings: (
   input: DisableAllowedImagesSettingsRequest,
 ) => Effect.Effect<
   DisableAllowedImagesSettingsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableAllowedImagesSettingsRequest,
   output: DisableAllowedImagesSettingsResult,
@@ -70924,8 +70922,8 @@ export const disableAwsNetworkPerformanceMetricSubscription: (
   input: DisableAwsNetworkPerformanceMetricSubscriptionRequest,
 ) => Effect.Effect<
   DisableAwsNetworkPerformanceMetricSubscriptionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableAwsNetworkPerformanceMetricSubscriptionRequest,
   output: DisableAwsNetworkPerformanceMetricSubscriptionResult,
@@ -70939,8 +70937,8 @@ export const disableCapacityManager: (
   input: DisableCapacityManagerRequest,
 ) => Effect.Effect<
   DisableCapacityManagerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableCapacityManagerRequest,
   output: DisableCapacityManagerResult,
@@ -70962,8 +70960,8 @@ export const disableEbsEncryptionByDefault: (
   input: DisableEbsEncryptionByDefaultRequest,
 ) => Effect.Effect<
   DisableEbsEncryptionByDefaultResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableEbsEncryptionByDefaultRequest,
   output: DisableEbsEncryptionByDefaultResult,
@@ -70991,8 +70989,8 @@ export const disableImage: (
   input: DisableImageRequest,
 ) => Effect.Effect<
   DisableImageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableImageRequest,
   output: DisableImageResult,
@@ -71011,8 +71009,8 @@ export const disableImageBlockPublicAccess: (
   input: DisableImageBlockPublicAccessRequest,
 ) => Effect.Effect<
   DisableImageBlockPublicAccessResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableImageBlockPublicAccessRequest,
   output: DisableImageBlockPublicAccessResult,
@@ -71028,8 +71026,8 @@ export const disableImageDeprecation: (
   input: DisableImageDeprecationRequest,
 ) => Effect.Effect<
   DisableImageDeprecationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableImageDeprecationRequest,
   output: DisableImageDeprecationResult,
@@ -71050,8 +71048,8 @@ export const disableImageDeregistrationProtection: (
   input: DisableImageDeregistrationProtectionRequest,
 ) => Effect.Effect<
   DisableImageDeregistrationProtectionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableImageDeregistrationProtectionRequest,
   output: DisableImageDeregistrationProtectionResult,
@@ -71067,8 +71065,8 @@ export const disableInstanceSqlHaStandbyDetections: (
   input: DisableInstanceSqlHaStandbyDetectionsRequest,
 ) => Effect.Effect<
   DisableInstanceSqlHaStandbyDetectionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableInstanceSqlHaStandbyDetectionsRequest,
   output: DisableInstanceSqlHaStandbyDetectionsResult,
@@ -71081,8 +71079,8 @@ export const disableIpamOrganizationAdminAccount: (
   input: DisableIpamOrganizationAdminAccountRequest,
 ) => Effect.Effect<
   DisableIpamOrganizationAdminAccountResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableIpamOrganizationAdminAccountRequest,
   output: DisableIpamOrganizationAdminAccountResult,
@@ -71097,8 +71095,8 @@ export const disableIpamPolicy: (
   input: DisableIpamPolicyRequest,
 ) => Effect.Effect<
   DisableIpamPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableIpamPolicyRequest,
   output: DisableIpamPolicyResult,
@@ -71114,8 +71112,8 @@ export const disableSerialConsoleAccess: (
   input: DisableSerialConsoleAccessRequest,
 ) => Effect.Effect<
   DisableSerialConsoleAccessResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableSerialConsoleAccessRequest,
   output: DisableSerialConsoleAccessResult,
@@ -71142,8 +71140,8 @@ export const disableSnapshotBlockPublicAccess: (
   input: DisableSnapshotBlockPublicAccessRequest,
 ) => Effect.Effect<
   DisableSnapshotBlockPublicAccessResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableSnapshotBlockPublicAccessRequest,
   output: DisableSnapshotBlockPublicAccessResult,
@@ -71159,8 +71157,8 @@ export const disableVpcClassicLink: (
   input: DisableVpcClassicLinkRequest,
 ) => Effect.Effect<
   DisableVpcClassicLinkResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableVpcClassicLinkRequest,
   output: DisableVpcClassicLinkResult,
@@ -71179,8 +71177,8 @@ export const disableVpcClassicLinkDnsSupport: (
   input: DisableVpcClassicLinkDnsSupportRequest,
 ) => Effect.Effect<
   DisableVpcClassicLinkDnsSupportResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableVpcClassicLinkDnsSupportRequest,
   output: DisableVpcClassicLinkDnsSupportResult,
@@ -71196,8 +71194,8 @@ export const disassociateCapacityReservationBillingOwner: (
   input: DisassociateCapacityReservationBillingOwnerRequest,
 ) => Effect.Effect<
   DisassociateCapacityReservationBillingOwnerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateCapacityReservationBillingOwnerRequest,
   output: DisassociateCapacityReservationBillingOwnerResult,
@@ -71219,8 +71217,8 @@ export const disassociateClientVpnTargetNetwork: (
   input: DisassociateClientVpnTargetNetworkRequest,
 ) => Effect.Effect<
   DisassociateClientVpnTargetNetworkResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateClientVpnTargetNetworkRequest,
   output: DisassociateClientVpnTargetNetworkResult,
@@ -71237,8 +71235,8 @@ export const disassociateEnclaveCertificateIamRole: (
   input: DisassociateEnclaveCertificateIamRoleRequest,
 ) => Effect.Effect<
   DisassociateEnclaveCertificateIamRoleResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateEnclaveCertificateIamRoleRequest,
   output: DisassociateEnclaveCertificateIamRoleResult,
@@ -71254,8 +71252,8 @@ export const disassociateIamInstanceProfile: (
   input: DisassociateIamInstanceProfileRequest,
 ) => Effect.Effect<
   DisassociateIamInstanceProfileResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateIamInstanceProfileRequest,
   output: DisassociateIamInstanceProfileResult,
@@ -71269,8 +71267,8 @@ export const disassociateIpamByoasn: (
   input: DisassociateIpamByoasnRequest,
 ) => Effect.Effect<
   DisassociateIpamByoasnResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateIpamByoasnRequest,
   output: DisassociateIpamByoasnResult,
@@ -71283,8 +71281,8 @@ export const disassociateIpamResourceDiscovery: (
   input: DisassociateIpamResourceDiscoveryRequest,
 ) => Effect.Effect<
   DisassociateIpamResourceDiscoveryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateIpamResourceDiscoveryRequest,
   output: DisassociateIpamResourceDiscoveryResult,
@@ -71306,8 +71304,8 @@ export const disassociateNatGatewayAddress: (
   input: DisassociateNatGatewayAddressRequest,
 ) => Effect.Effect<
   DisassociateNatGatewayAddressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateNatGatewayAddressRequest,
   output: DisassociateNatGatewayAddressResult,
@@ -71324,8 +71322,8 @@ export const disassociateRouteServer: (
   input: DisassociateRouteServerRequest,
 ) => Effect.Effect<
   DisassociateRouteServerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateRouteServerRequest,
   output: DisassociateRouteServerResult,
@@ -71340,8 +71338,8 @@ export const disassociateSecurityGroupVpc: (
   input: DisassociateSecurityGroupVpcRequest,
 ) => Effect.Effect<
   DisassociateSecurityGroupVpcResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateSecurityGroupVpcRequest,
   output: DisassociateSecurityGroupVpcResult,
@@ -71354,8 +71352,8 @@ export const disassociateSubnetCidrBlock: (
   input: DisassociateSubnetCidrBlockRequest,
 ) => Effect.Effect<
   DisassociateSubnetCidrBlockResult,
-  InvalidSubnetCidrBlockAssociationIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSubnetCidrBlockAssociationIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateSubnetCidrBlockRequest,
   output: DisassociateSubnetCidrBlockResult,
@@ -71368,8 +71366,8 @@ export const disassociateTransitGatewayMulticastDomain: (
   input: DisassociateTransitGatewayMulticastDomainRequest,
 ) => Effect.Effect<
   DisassociateTransitGatewayMulticastDomainResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateTransitGatewayMulticastDomainRequest,
   output: DisassociateTransitGatewayMulticastDomainResult,
@@ -71382,8 +71380,8 @@ export const disassociateTransitGatewayPolicyTable: (
   input: DisassociateTransitGatewayPolicyTableRequest,
 ) => Effect.Effect<
   DisassociateTransitGatewayPolicyTableResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateTransitGatewayPolicyTableRequest,
   output: DisassociateTransitGatewayPolicyTableResult,
@@ -71396,8 +71394,8 @@ export const disassociateTransitGatewayRouteTable: (
   input: DisassociateTransitGatewayRouteTableRequest,
 ) => Effect.Effect<
   DisassociateTransitGatewayRouteTableResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateTransitGatewayRouteTableRequest,
   output: DisassociateTransitGatewayRouteTableResult,
@@ -71410,8 +71408,8 @@ export const disassociateTrunkInterface: (
   input: DisassociateTrunkInterfaceRequest,
 ) => Effect.Effect<
   DisassociateTrunkInterfaceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateTrunkInterfaceRequest,
   output: DisassociateTrunkInterfaceResult,
@@ -71430,8 +71428,8 @@ export const disassociateVpcCidrBlock: (
   input: DisassociateVpcCidrBlockRequest,
 ) => Effect.Effect<
   DisassociateVpcCidrBlockResult,
-  InvalidVpcCidrBlockAssociationIdErrorNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcCidrBlockAssociationIdErrorNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateVpcCidrBlockRequest,
   output: DisassociateVpcCidrBlockResult,
@@ -71444,8 +71442,8 @@ export const enableAddressTransfer: (
   input: EnableAddressTransferRequest,
 ) => Effect.Effect<
   EnableAddressTransferResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableAddressTransferRequest,
   output: EnableAddressTransferResult,
@@ -71481,8 +71479,8 @@ export const enableAllowedImagesSettings: (
   input: EnableAllowedImagesSettingsRequest,
 ) => Effect.Effect<
   EnableAllowedImagesSettingsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableAllowedImagesSettingsRequest,
   output: EnableAllowedImagesSettingsResult,
@@ -71495,8 +71493,8 @@ export const enableAwsNetworkPerformanceMetricSubscription: (
   input: EnableAwsNetworkPerformanceMetricSubscriptionRequest,
 ) => Effect.Effect<
   EnableAwsNetworkPerformanceMetricSubscriptionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableAwsNetworkPerformanceMetricSubscriptionRequest,
   output: EnableAwsNetworkPerformanceMetricSubscriptionResult,
@@ -71510,8 +71508,8 @@ export const enableCapacityManager: (
   input: EnableCapacityManagerRequest,
 ) => Effect.Effect<
   EnableCapacityManagerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableCapacityManagerRequest,
   output: EnableCapacityManagerResult,
@@ -71536,8 +71534,8 @@ export const enableEbsEncryptionByDefault: (
   input: EnableEbsEncryptionByDefaultRequest,
 ) => Effect.Effect<
   EnableEbsEncryptionByDefaultResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableEbsEncryptionByDefaultRequest,
   output: EnableEbsEncryptionByDefaultResult,
@@ -71559,8 +71557,8 @@ export const enableImage: (
   input: EnableImageRequest,
 ) => Effect.Effect<
   EnableImageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableImageRequest,
   output: EnableImageResult,
@@ -71583,8 +71581,8 @@ export const enableImageBlockPublicAccess: (
   input: EnableImageBlockPublicAccessRequest,
 ) => Effect.Effect<
   EnableImageBlockPublicAccessResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableImageBlockPublicAccessRequest,
   output: EnableImageBlockPublicAccessResult,
@@ -71600,8 +71598,8 @@ export const enableImageDeprecation: (
   input: EnableImageDeprecationRequest,
 ) => Effect.Effect<
   EnableImageDeprecationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableImageDeprecationRequest,
   output: EnableImageDeprecationResult,
@@ -71620,8 +71618,8 @@ export const enableImageDeregistrationProtection: (
   input: EnableImageDeregistrationProtectionRequest,
 ) => Effect.Effect<
   EnableImageDeregistrationProtectionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableImageDeregistrationProtectionRequest,
   output: EnableImageDeregistrationProtectionResult,
@@ -71644,8 +71642,8 @@ export const enableInstanceSqlHaStandbyDetections: (
   input: EnableInstanceSqlHaStandbyDetectionsRequest,
 ) => Effect.Effect<
   EnableInstanceSqlHaStandbyDetectionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableInstanceSqlHaStandbyDetectionsRequest,
   output: EnableInstanceSqlHaStandbyDetectionsResult,
@@ -71658,8 +71656,8 @@ export const enableIpamOrganizationAdminAccount: (
   input: EnableIpamOrganizationAdminAccountRequest,
 ) => Effect.Effect<
   EnableIpamOrganizationAdminAccountResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableIpamOrganizationAdminAccountRequest,
   output: EnableIpamOrganizationAdminAccountResult,
@@ -71676,8 +71674,8 @@ export const enableIpamPolicy: (
   input: EnableIpamPolicyRequest,
 ) => Effect.Effect<
   EnableIpamPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableIpamPolicyRequest,
   output: EnableIpamPolicyResult,
@@ -71695,8 +71693,8 @@ export const enableReachabilityAnalyzerOrganizationSharing: (
   input: EnableReachabilityAnalyzerOrganizationSharingRequest,
 ) => Effect.Effect<
   EnableReachabilityAnalyzerOrganizationSharingResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableReachabilityAnalyzerOrganizationSharingRequest,
   output: EnableReachabilityAnalyzerOrganizationSharingResult,
@@ -71713,8 +71711,8 @@ export const enableRouteServerPropagation: (
   input: EnableRouteServerPropagationRequest,
 ) => Effect.Effect<
   EnableRouteServerPropagationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableRouteServerPropagationRequest,
   output: EnableRouteServerPropagationResult,
@@ -71729,8 +71727,8 @@ export const enableSerialConsoleAccess: (
   input: EnableSerialConsoleAccessRequest,
 ) => Effect.Effect<
   EnableSerialConsoleAccessResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableSerialConsoleAccessRequest,
   output: EnableSerialConsoleAccessResult,
@@ -71760,8 +71758,8 @@ export const enableSnapshotBlockPublicAccess: (
   input: EnableSnapshotBlockPublicAccessRequest,
 ) => Effect.Effect<
   EnableSnapshotBlockPublicAccessResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableSnapshotBlockPublicAccessRequest,
   output: EnableSnapshotBlockPublicAccessResult,
@@ -71775,8 +71773,8 @@ export const enableTransitGatewayRouteTablePropagation: (
   input: EnableTransitGatewayRouteTablePropagationRequest,
 ) => Effect.Effect<
   EnableTransitGatewayRouteTablePropagationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableTransitGatewayRouteTablePropagationRequest,
   output: EnableTransitGatewayRouteTablePropagationResult,
@@ -71796,8 +71794,8 @@ export const enableVpcClassicLink: (
   input: EnableVpcClassicLinkRequest,
 ) => Effect.Effect<
   EnableVpcClassicLinkResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableVpcClassicLinkRequest,
   output: EnableVpcClassicLinkResult,
@@ -71818,8 +71816,8 @@ export const enableVpcClassicLinkDnsSupport: (
   input: EnableVpcClassicLinkDnsSupportRequest,
 ) => Effect.Effect<
   EnableVpcClassicLinkDnsSupportResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableVpcClassicLinkDnsSupportRequest,
   output: EnableVpcClassicLinkDnsSupportResult,
@@ -71834,8 +71832,8 @@ export const exportClientVpnClientConfiguration: (
   input: ExportClientVpnClientConfigurationRequest,
 ) => Effect.Effect<
   ExportClientVpnClientConfigurationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportClientVpnClientConfigurationRequest,
   output: ExportClientVpnClientConfigurationResult,
@@ -71853,8 +71851,8 @@ export const exportTransitGatewayRoutes: (
   input: ExportTransitGatewayRoutesRequest,
 ) => Effect.Effect<
   ExportTransitGatewayRoutesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportTransitGatewayRoutesRequest,
   output: ExportTransitGatewayRoutesResult,
@@ -71867,8 +71865,8 @@ export const getCapacityManagerAttributes: (
   input: GetCapacityManagerAttributesRequest,
 ) => Effect.Effect<
   GetCapacityManagerAttributesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCapacityManagerAttributesRequest,
   output: GetCapacityManagerAttributesResult,
@@ -71887,8 +71885,8 @@ export const getConsoleOutput: (
   input: GetConsoleOutputRequest,
 ) => Effect.Effect<
   GetConsoleOutputResult,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConsoleOutputRequest,
   output: GetConsoleOutputResult,
@@ -71906,8 +71904,8 @@ export const getConsoleScreenshot: (
   input: GetConsoleScreenshotRequest,
 ) => Effect.Effect<
   GetConsoleScreenshotResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConsoleScreenshotRequest,
   output: GetConsoleScreenshotResult,
@@ -71923,8 +71921,8 @@ export const getEbsDefaultKmsKeyId: (
   input: GetEbsDefaultKmsKeyIdRequest,
 ) => Effect.Effect<
   GetEbsDefaultKmsKeyIdResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEbsDefaultKmsKeyIdRequest,
   output: GetEbsDefaultKmsKeyIdResult,
@@ -71941,8 +71939,8 @@ export const getEbsEncryptionByDefault: (
   input: GetEbsEncryptionByDefaultRequest,
 ) => Effect.Effect<
   GetEbsEncryptionByDefaultResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEbsEncryptionByDefaultRequest,
   output: GetEbsEncryptionByDefaultResult,
@@ -71957,8 +71955,8 @@ export const getEnabledIpamPolicy: (
   input: GetEnabledIpamPolicyRequest,
 ) => Effect.Effect<
   GetEnabledIpamPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEnabledIpamPolicyRequest,
   output: GetEnabledIpamPolicyResult,
@@ -71975,8 +71973,8 @@ export const getImageBlockPublicAccessState: (
   input: GetImageBlockPublicAccessStateRequest,
 ) => Effect.Effect<
   GetImageBlockPublicAccessStateResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImageBlockPublicAccessStateRequest,
   output: GetImageBlockPublicAccessStateResult,
@@ -71990,8 +71988,8 @@ export const getInstanceTpmEkPub: (
   input: GetInstanceTpmEkPubRequest,
 ) => Effect.Effect<
   GetInstanceTpmEkPubResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceTpmEkPubRequest,
   output: GetInstanceTpmEkPubResult,
@@ -72016,8 +72014,8 @@ export const getInstanceUefiData: (
   input: GetInstanceUefiDataRequest,
 ) => Effect.Effect<
   GetInstanceUefiDataResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceUefiDataRequest,
   output: GetInstanceUefiDataResult,
@@ -72033,22 +72031,22 @@ export const getIpamPoolAllocations: {
     input: GetIpamPoolAllocationsRequest,
   ): Effect.Effect<
     GetIpamPoolAllocationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamPoolAllocationsRequest,
   ) => Stream.Stream<
     GetIpamPoolAllocationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamPoolAllocationsRequest,
   ) => Stream.Stream<
     IpamPoolAllocation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamPoolAllocationsRequest,
@@ -72069,22 +72067,22 @@ export const getIpamPoolCidrs: {
     input: GetIpamPoolCidrsRequest,
   ): Effect.Effect<
     GetIpamPoolCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamPoolCidrsRequest,
   ) => Stream.Stream<
     GetIpamPoolCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamPoolCidrsRequest,
   ) => Stream.Stream<
     IpamPoolCidr,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamPoolCidrsRequest,
@@ -72120,8 +72118,8 @@ export const getPasswordData: (
   input: GetPasswordDataRequest,
 ) => Effect.Effect<
   GetPasswordDataResult,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPasswordDataRequest,
   output: GetPasswordDataResult,
@@ -72138,8 +72136,8 @@ export const getRouteServerAssociations: (
   input: GetRouteServerAssociationsRequest,
 ) => Effect.Effect<
   GetRouteServerAssociationsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouteServerAssociationsRequest,
   output: GetRouteServerAssociationsResult,
@@ -72167,8 +72165,8 @@ export const getRouteServerPropagations: (
   input: GetRouteServerPropagationsRequest,
 ) => Effect.Effect<
   GetRouteServerPropagationsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouteServerPropagationsRequest,
   output: GetRouteServerPropagationsResult,
@@ -72184,8 +72182,8 @@ export const getSerialConsoleAccessStatus: (
   input: GetSerialConsoleAccessStatusRequest,
 ) => Effect.Effect<
   GetSerialConsoleAccessStatusResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSerialConsoleAccessStatusRequest,
   output: GetSerialConsoleAccessStatusResult,
@@ -72202,8 +72200,8 @@ export const getSnapshotBlockPublicAccessState: (
   input: GetSnapshotBlockPublicAccessStateRequest,
 ) => Effect.Effect<
   GetSnapshotBlockPublicAccessStateResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSnapshotBlockPublicAccessStateRequest,
   output: GetSnapshotBlockPublicAccessStateResult,
@@ -72216,8 +72214,8 @@ export const getSubnetCidrReservations: (
   input: GetSubnetCidrReservationsRequest,
 ) => Effect.Effect<
   GetSubnetCidrReservationsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSubnetCidrReservationsRequest,
   output: GetSubnetCidrReservationsResult,
@@ -72230,8 +72228,8 @@ export const getTransitGatewayMeteringPolicyEntries: (
   input: GetTransitGatewayMeteringPolicyEntriesRequest,
 ) => Effect.Effect<
   GetTransitGatewayMeteringPolicyEntriesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTransitGatewayMeteringPolicyEntriesRequest,
   output: GetTransitGatewayMeteringPolicyEntriesResult,
@@ -72245,22 +72243,22 @@ export const getTransitGatewayPolicyTableAssociations: {
     input: GetTransitGatewayPolicyTableAssociationsRequest,
   ): Effect.Effect<
     GetTransitGatewayPolicyTableAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetTransitGatewayPolicyTableAssociationsRequest,
   ) => Stream.Stream<
     GetTransitGatewayPolicyTableAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetTransitGatewayPolicyTableAssociationsRequest,
   ) => Stream.Stream<
     TransitGatewayPolicyTableAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTransitGatewayPolicyTableAssociationsRequest,
@@ -72281,22 +72279,22 @@ export const getTransitGatewayPrefixListReferences: {
     input: GetTransitGatewayPrefixListReferencesRequest,
   ): Effect.Effect<
     GetTransitGatewayPrefixListReferencesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetTransitGatewayPrefixListReferencesRequest,
   ) => Stream.Stream<
     GetTransitGatewayPrefixListReferencesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetTransitGatewayPrefixListReferencesRequest,
   ) => Stream.Stream<
     TransitGatewayPrefixListReference,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTransitGatewayPrefixListReferencesRequest,
@@ -72316,8 +72314,8 @@ export const getVerifiedAccessEndpointPolicy: (
   input: GetVerifiedAccessEndpointPolicyRequest,
 ) => Effect.Effect<
   GetVerifiedAccessEndpointPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVerifiedAccessEndpointPolicyRequest,
   output: GetVerifiedAccessEndpointPolicyResult,
@@ -72330,8 +72328,8 @@ export const getVerifiedAccessGroupPolicy: (
   input: GetVerifiedAccessGroupPolicyRequest,
 ) => Effect.Effect<
   GetVerifiedAccessGroupPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVerifiedAccessGroupPolicyRequest,
   output: GetVerifiedAccessGroupPolicyResult,
@@ -72345,8 +72343,8 @@ export const getVpnConnectionDeviceSampleConfiguration: (
   input: GetVpnConnectionDeviceSampleConfigurationRequest,
 ) => Effect.Effect<
   GetVpnConnectionDeviceSampleConfigurationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVpnConnectionDeviceSampleConfigurationRequest,
   output: GetVpnConnectionDeviceSampleConfigurationResult,
@@ -72361,8 +72359,8 @@ export const importClientVpnClientCertificateRevocationList: (
   input: ImportClientVpnClientCertificateRevocationListRequest,
 ) => Effect.Effect<
   ImportClientVpnClientCertificateRevocationListResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportClientVpnClientCertificateRevocationListRequest,
   output: ImportClientVpnClientCertificateRevocationListResult,
@@ -72378,8 +72376,8 @@ export const importKeyPair: (
   input: ImportKeyPairRequest,
 ) => Effect.Effect<
   ImportKeyPairResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportKeyPairRequest,
   output: ImportKeyPairResult,
@@ -72406,8 +72404,8 @@ export const lockSnapshot: (
   input: LockSnapshotRequest,
 ) => Effect.Effect<
   LockSnapshotResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: LockSnapshotRequest,
   output: LockSnapshotResult,
@@ -72420,8 +72418,8 @@ export const modifyAddressAttribute: (
   input: ModifyAddressAttributeRequest,
 ) => Effect.Effect<
   ModifyAddressAttributeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyAddressAttributeRequest,
   output: ModifyAddressAttributeResult,
@@ -72434,8 +72432,8 @@ export const modifyAvailabilityZoneGroup: (
   input: ModifyAvailabilityZoneGroupRequest,
 ) => Effect.Effect<
   ModifyAvailabilityZoneGroupResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyAvailabilityZoneGroupRequest,
   output: ModifyAvailabilityZoneGroupResult,
@@ -72473,8 +72471,8 @@ export const modifyCapacityReservation: (
   input: ModifyCapacityReservationRequest,
 ) => Effect.Effect<
   ModifyCapacityReservationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCapacityReservationRequest,
   output: ModifyCapacityReservationResult,
@@ -72493,8 +72491,8 @@ export const modifyCapacityReservationFleet: (
   input: ModifyCapacityReservationFleetRequest,
 ) => Effect.Effect<
   ModifyCapacityReservationFleetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCapacityReservationFleetRequest,
   output: ModifyCapacityReservationFleetResult,
@@ -72521,8 +72519,8 @@ export const modifyDefaultCreditSpecification: (
   input: ModifyDefaultCreditSpecificationRequest,
 ) => Effect.Effect<
   ModifyDefaultCreditSpecificationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDefaultCreditSpecificationRequest,
   output: ModifyDefaultCreditSpecificationResult,
@@ -72545,8 +72543,8 @@ export const modifyEbsDefaultKmsKeyId: (
   input: ModifyEbsDefaultKmsKeyIdRequest,
 ) => Effect.Effect<
   ModifyEbsDefaultKmsKeyIdResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyEbsDefaultKmsKeyIdRequest,
   output: ModifyEbsDefaultKmsKeyIdResult,
@@ -72585,8 +72583,8 @@ export const modifyFleet: (
   input: ModifyFleetRequest,
 ) => Effect.Effect<
   ModifyFleetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyFleetRequest,
   output: ModifyFleetResult,
@@ -72608,8 +72606,8 @@ export const modifyHosts: (
   input: ModifyHostsRequest,
 ) => Effect.Effect<
   ModifyHostsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyHostsRequest,
   output: ModifyHostsResult,
@@ -72626,8 +72624,8 @@ export const modifyInstanceConnectEndpoint: (
   input: ModifyInstanceConnectEndpointRequest,
 ) => Effect.Effect<
   ModifyInstanceConnectEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceConnectEndpointRequest,
   output: ModifyInstanceConnectEndpointResult,
@@ -72649,8 +72647,8 @@ export const modifyInstanceCpuOptions: (
   input: ModifyInstanceCpuOptionsRequest,
 ) => Effect.Effect<
   ModifyInstanceCpuOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceCpuOptionsRequest,
   output: ModifyInstanceCpuOptionsResult,
@@ -72674,8 +72672,8 @@ export const modifyInstanceEventWindow: (
   input: ModifyInstanceEventWindowRequest,
 ) => Effect.Effect<
   ModifyInstanceEventWindowResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceEventWindowRequest,
   output: ModifyInstanceEventWindowResult,
@@ -72694,8 +72692,8 @@ export const modifyInstanceMaintenanceOptions: (
   input: ModifyInstanceMaintenanceOptionsRequest,
 ) => Effect.Effect<
   ModifyInstanceMaintenanceOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceMaintenanceOptionsRequest,
   output: ModifyInstanceMaintenanceOptionsResult,
@@ -72716,8 +72714,8 @@ export const modifyInstanceMetadataDefaults: (
   input: ModifyInstanceMetadataDefaultsRequest,
 ) => Effect.Effect<
   ModifyInstanceMetadataDefaultsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceMetadataDefaultsRequest,
   output: ModifyInstanceMetadataDefaultsResult,
@@ -72731,8 +72729,8 @@ export const modifyInstanceNetworkPerformanceOptions: (
   input: ModifyInstanceNetworkPerformanceRequest,
 ) => Effect.Effect<
   ModifyInstanceNetworkPerformanceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceNetworkPerformanceRequest,
   output: ModifyInstanceNetworkPerformanceResult,
@@ -72766,8 +72764,8 @@ export const modifyInstancePlacement: (
   input: ModifyInstancePlacementRequest,
 ) => Effect.Effect<
   ModifyInstancePlacementResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstancePlacementRequest,
   output: ModifyInstancePlacementResult,
@@ -72782,8 +72780,8 @@ export const modifyIpamPool: (
   input: ModifyIpamPoolRequest,
 ) => Effect.Effect<
   ModifyIpamPoolResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpamPoolRequest,
   output: ModifyIpamPoolResult,
@@ -72796,8 +72794,8 @@ export const modifyIpamPrefixListResolver: (
   input: ModifyIpamPrefixListResolverRequest,
 ) => Effect.Effect<
   ModifyIpamPrefixListResolverResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpamPrefixListResolverRequest,
   output: ModifyIpamPrefixListResolverResult,
@@ -72810,8 +72808,8 @@ export const modifyIpamPrefixListResolverTarget: (
   input: ModifyIpamPrefixListResolverTargetRequest,
 ) => Effect.Effect<
   ModifyIpamPrefixListResolverTargetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpamPrefixListResolverTargetRequest,
   output: ModifyIpamPrefixListResolverTargetResult,
@@ -72826,8 +72824,8 @@ export const modifyIpamResourceCidr: (
   input: ModifyIpamResourceCidrRequest,
 ) => Effect.Effect<
   ModifyIpamResourceCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpamResourceCidrRequest,
   output: ModifyIpamResourceCidrResult,
@@ -72840,8 +72838,8 @@ export const modifyIpamScope: (
   input: ModifyIpamScopeRequest,
 ) => Effect.Effect<
   ModifyIpamScopeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpamScopeRequest,
   output: ModifyIpamScopeResult,
@@ -72856,8 +72854,8 @@ export const modifyLaunchTemplate: (
   input: ModifyLaunchTemplateRequest,
 ) => Effect.Effect<
   ModifyLaunchTemplateResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyLaunchTemplateRequest,
   output: ModifyLaunchTemplateResult,
@@ -72870,8 +72868,8 @@ export const modifyLocalGatewayRoute: (
   input: ModifyLocalGatewayRouteRequest,
 ) => Effect.Effect<
   ModifyLocalGatewayRouteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyLocalGatewayRouteRequest,
   output: ModifyLocalGatewayRouteResult,
@@ -72886,8 +72884,8 @@ export const modifyNetworkInterfaceAttribute: (
   input: ModifyNetworkInterfaceAttributeRequest,
 ) => Effect.Effect<
   ModifyNetworkInterfaceAttributeResponse,
-  InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyNetworkInterfaceAttributeRequest,
   output: ModifyNetworkInterfaceAttributeResponse,
@@ -72900,8 +72898,8 @@ export const modifyPrivateDnsNameOptions: (
   input: ModifyPrivateDnsNameOptionsRequest,
 ) => Effect.Effect<
   ModifyPrivateDnsNameOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyPrivateDnsNameOptionsRequest,
   output: ModifyPrivateDnsNameOptionsResult,
@@ -72914,8 +72912,8 @@ export const modifyPublicIpDnsNameOptions: (
   input: ModifyPublicIpDnsNameOptionsRequest,
 ) => Effect.Effect<
   ModifyPublicIpDnsNameOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyPublicIpDnsNameOptionsRequest,
   output: ModifyPublicIpDnsNameOptionsResult,
@@ -72943,8 +72941,8 @@ export const modifyRouteServer: (
   input: ModifyRouteServerRequest,
 ) => Effect.Effect<
   ModifyRouteServerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyRouteServerRequest,
   output: ModifyRouteServerResult,
@@ -72961,8 +72959,8 @@ export const modifySnapshotTier: (
   input: ModifySnapshotTierRequest,
 ) => Effect.Effect<
   ModifySnapshotTierResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySnapshotTierRequest,
   output: ModifySnapshotTierResult,
@@ -72978,8 +72976,8 @@ export const modifyTrafficMirrorFilterNetworkServices: (
   input: ModifyTrafficMirrorFilterNetworkServicesRequest,
 ) => Effect.Effect<
   ModifyTrafficMirrorFilterNetworkServicesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTrafficMirrorFilterNetworkServicesRequest,
   output: ModifyTrafficMirrorFilterNetworkServicesResult,
@@ -72995,8 +72993,8 @@ export const modifyTrafficMirrorFilterRule: (
   input: ModifyTrafficMirrorFilterRuleRequest,
 ) => Effect.Effect<
   ModifyTrafficMirrorFilterRuleResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTrafficMirrorFilterRuleRequest,
   output: ModifyTrafficMirrorFilterRuleResult,
@@ -73009,8 +73007,8 @@ export const modifyTrafficMirrorSession: (
   input: ModifyTrafficMirrorSessionRequest,
 ) => Effect.Effect<
   ModifyTrafficMirrorSessionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTrafficMirrorSessionRequest,
   output: ModifyTrafficMirrorSessionResult,
@@ -73023,8 +73021,8 @@ export const modifyTransitGatewayMeteringPolicy: (
   input: ModifyTransitGatewayMeteringPolicyRequest,
 ) => Effect.Effect<
   ModifyTransitGatewayMeteringPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTransitGatewayMeteringPolicyRequest,
   output: ModifyTransitGatewayMeteringPolicyResult,
@@ -73037,8 +73035,8 @@ export const modifyTransitGatewayPrefixListReference: (
   input: ModifyTransitGatewayPrefixListReferenceRequest,
 ) => Effect.Effect<
   ModifyTransitGatewayPrefixListReferenceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTransitGatewayPrefixListReferenceRequest,
   output: ModifyTransitGatewayPrefixListReferenceResult,
@@ -73051,8 +73049,8 @@ export const modifyVerifiedAccessGroup: (
   input: ModifyVerifiedAccessGroupRequest,
 ) => Effect.Effect<
   ModifyVerifiedAccessGroupResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVerifiedAccessGroupRequest,
   output: ModifyVerifiedAccessGroupResult,
@@ -73065,8 +73063,8 @@ export const modifyVerifiedAccessGroupPolicy: (
   input: ModifyVerifiedAccessGroupPolicyRequest,
 ) => Effect.Effect<
   ModifyVerifiedAccessGroupPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVerifiedAccessGroupPolicyRequest,
   output: ModifyVerifiedAccessGroupPolicyResult,
@@ -73079,8 +73077,8 @@ export const modifyVerifiedAccessInstance: (
   input: ModifyVerifiedAccessInstanceRequest,
 ) => Effect.Effect<
   ModifyVerifiedAccessInstanceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVerifiedAccessInstanceRequest,
   output: ModifyVerifiedAccessInstanceResult,
@@ -73109,8 +73107,8 @@ export const modifyVolume: (
   input: ModifyVolumeRequest,
 ) => Effect.Effect<
   ModifyVolumeResult,
-  InvalidVolumeNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVolumeNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVolumeRequest,
   output: ModifyVolumeResult,
@@ -73123,8 +73121,8 @@ export const modifyVpcBlockPublicAccessExclusion: (
   input: ModifyVpcBlockPublicAccessExclusionRequest,
 ) => Effect.Effect<
   ModifyVpcBlockPublicAccessExclusionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcBlockPublicAccessExclusionRequest,
   output: ModifyVpcBlockPublicAccessExclusionResult,
@@ -73137,8 +73135,8 @@ export const modifyVpcBlockPublicAccessOptions: (
   input: ModifyVpcBlockPublicAccessOptionsRequest,
 ) => Effect.Effect<
   ModifyVpcBlockPublicAccessOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcBlockPublicAccessOptionsRequest,
   output: ModifyVpcBlockPublicAccessOptionsResult,
@@ -73153,8 +73151,8 @@ export const modifyVpcEncryptionControl: (
   input: ModifyVpcEncryptionControlRequest,
 ) => Effect.Effect<
   ModifyVpcEncryptionControlResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcEncryptionControlRequest,
   output: ModifyVpcEncryptionControlResult,
@@ -73170,8 +73168,8 @@ export const modifyVpcEndpoint: (
   input: ModifyVpcEndpointRequest,
 ) => Effect.Effect<
   ModifyVpcEndpointResult,
-  InvalidVpcEndpointIdNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcEndpointIdNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcEndpointRequest,
   output: ModifyVpcEndpointResult,
@@ -73185,8 +73183,8 @@ export const modifyVpcEndpointConnectionNotification: (
   input: ModifyVpcEndpointConnectionNotificationRequest,
 ) => Effect.Effect<
   ModifyVpcEndpointConnectionNotificationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcEndpointConnectionNotificationRequest,
   output: ModifyVpcEndpointConnectionNotificationResult,
@@ -73202,8 +73200,8 @@ export const modifyVpcEndpointServiceConfiguration: (
   input: ModifyVpcEndpointServiceConfigurationRequest,
 ) => Effect.Effect<
   ModifyVpcEndpointServiceConfigurationResult,
-  InvalidVpcEndpointServiceIdNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcEndpointServiceIdNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcEndpointServiceConfigurationRequest,
   output: ModifyVpcEndpointServiceConfigurationResult,
@@ -73216,8 +73214,8 @@ export const modifyVpcEndpointServicePayerResponsibility: (
   input: ModifyVpcEndpointServicePayerResponsibilityRequest,
 ) => Effect.Effect<
   ModifyVpcEndpointServicePayerResponsibilityResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcEndpointServicePayerResponsibilityRequest,
   output: ModifyVpcEndpointServicePayerResponsibilityResult,
@@ -73239,8 +73237,8 @@ export const modifyVpcTenancy: (
   input: ModifyVpcTenancyRequest,
 ) => Effect.Effect<
   ModifyVpcTenancyResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcTenancyRequest,
   output: ModifyVpcTenancyResult,
@@ -73290,8 +73288,8 @@ export const modifyVpnConnection: (
   input: ModifyVpnConnectionRequest,
 ) => Effect.Effect<
   ModifyVpnConnectionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpnConnectionRequest,
   output: ModifyVpnConnectionResult,
@@ -73309,8 +73307,8 @@ export const modifyVpnConnectionOptions: (
   input: ModifyVpnConnectionOptionsRequest,
 ) => Effect.Effect<
   ModifyVpnConnectionOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpnConnectionOptionsRequest,
   output: ModifyVpnConnectionOptionsResult,
@@ -73323,8 +73321,8 @@ export const modifyVpnTunnelCertificate: (
   input: ModifyVpnTunnelCertificateRequest,
 ) => Effect.Effect<
   ModifyVpnTunnelCertificateResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpnTunnelCertificateRequest,
   output: ModifyVpnTunnelCertificateResult,
@@ -73343,8 +73341,8 @@ export const moveAddressToVpc: (
   input: MoveAddressToVpcRequest,
 ) => Effect.Effect<
   MoveAddressToVpcResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MoveAddressToVpcRequest,
   output: MoveAddressToVpcResult,
@@ -73359,8 +73357,8 @@ export const moveByoipCidrToIpam: (
   input: MoveByoipCidrToIpamRequest,
 ) => Effect.Effect<
   MoveByoipCidrToIpamResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MoveByoipCidrToIpamRequest,
   output: MoveByoipCidrToIpamResult,
@@ -73388,8 +73386,8 @@ export const moveCapacityReservationInstances: (
   input: MoveCapacityReservationInstancesRequest,
 ) => Effect.Effect<
   MoveCapacityReservationInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MoveCapacityReservationInstancesRequest,
   output: MoveCapacityReservationInstancesResult,
@@ -73404,8 +73402,8 @@ export const purchaseCapacityBlock: (
   input: PurchaseCapacityBlockRequest,
 ) => Effect.Effect<
   PurchaseCapacityBlockResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseCapacityBlockRequest,
   output: PurchaseCapacityBlockResult,
@@ -73419,8 +73417,8 @@ export const purchaseCapacityBlockExtension: (
   input: PurchaseCapacityBlockExtensionRequest,
 ) => Effect.Effect<
   PurchaseCapacityBlockExtensionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseCapacityBlockExtensionRequest,
   output: PurchaseCapacityBlockExtensionResult,
@@ -73436,8 +73434,8 @@ export const purchaseHostReservation: (
   input: PurchaseHostReservationRequest,
 ) => Effect.Effect<
   PurchaseHostReservationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseHostReservationRequest,
   output: PurchaseHostReservationResult,
@@ -73491,8 +73489,8 @@ export const registerImage: (
   input: RegisterImageRequest,
 ) => Effect.Effect<
   RegisterImageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterImageRequest,
   output: RegisterImageResult,
@@ -73507,8 +73505,8 @@ export const rejectCapacityReservationBillingOwnership: (
   input: RejectCapacityReservationBillingOwnershipRequest,
 ) => Effect.Effect<
   RejectCapacityReservationBillingOwnershipResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectCapacityReservationBillingOwnershipRequest,
   output: RejectCapacityReservationBillingOwnershipResult,
@@ -73521,8 +73519,8 @@ export const rejectTransitGatewayMulticastDomainAssociations: (
   input: RejectTransitGatewayMulticastDomainAssociationsRequest,
 ) => Effect.Effect<
   RejectTransitGatewayMulticastDomainAssociationsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectTransitGatewayMulticastDomainAssociationsRequest,
   output: RejectTransitGatewayMulticastDomainAssociationsResult,
@@ -73535,8 +73533,8 @@ export const rejectTransitGatewayPeeringAttachment: (
   input: RejectTransitGatewayPeeringAttachmentRequest,
 ) => Effect.Effect<
   RejectTransitGatewayPeeringAttachmentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectTransitGatewayPeeringAttachmentRequest,
   output: RejectTransitGatewayPeeringAttachmentResult,
@@ -73553,8 +73551,8 @@ export const rejectTransitGatewayVpcAttachment: (
   input: RejectTransitGatewayVpcAttachmentRequest,
 ) => Effect.Effect<
   RejectTransitGatewayVpcAttachmentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectTransitGatewayVpcAttachmentRequest,
   output: RejectTransitGatewayVpcAttachmentResult,
@@ -73567,8 +73565,8 @@ export const rejectVpcEndpointConnections: (
   input: RejectVpcEndpointConnectionsRequest,
 ) => Effect.Effect<
   RejectVpcEndpointConnectionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectVpcEndpointConnectionsRequest,
   output: RejectVpcEndpointConnectionsResult,
@@ -73584,8 +73582,8 @@ export const rejectVpcPeeringConnection: (
   input: RejectVpcPeeringConnectionRequest,
 ) => Effect.Effect<
   RejectVpcPeeringConnectionResult,
-  InvalidVpcPeeringConnectionIdNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcPeeringConnectionIdNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectVpcPeeringConnectionRequest,
   output: RejectVpcPeeringConnectionResult,
@@ -73608,8 +73606,8 @@ export const releaseHosts: (
   input: ReleaseHostsRequest,
 ) => Effect.Effect<
   ReleaseHostsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReleaseHostsRequest,
   output: ReleaseHostsResult,
@@ -73624,8 +73622,8 @@ export const releaseIpamPoolAllocation: (
   input: ReleaseIpamPoolAllocationRequest,
 ) => Effect.Effect<
   ReleaseIpamPoolAllocationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReleaseIpamPoolAllocationRequest,
   output: ReleaseIpamPoolAllocationResult,
@@ -73643,8 +73641,8 @@ export const replaceIamInstanceProfileAssociation: (
   input: ReplaceIamInstanceProfileAssociationRequest,
 ) => Effect.Effect<
   ReplaceIamInstanceProfileAssociationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceIamInstanceProfileAssociationRequest,
   output: ReplaceIamInstanceProfileAssociationResult,
@@ -73661,8 +73659,8 @@ export const replaceNetworkAclAssociation: (
   input: ReplaceNetworkAclAssociationRequest,
 ) => Effect.Effect<
   ReplaceNetworkAclAssociationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceNetworkAclAssociationRequest,
   output: ReplaceNetworkAclAssociationResult,
@@ -73680,8 +73678,8 @@ export const replaceRouteTableAssociation: (
   input: ReplaceRouteTableAssociationRequest,
 ) => Effect.Effect<
   ReplaceRouteTableAssociationResult,
-  InvalidRouteTableIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidRouteTableIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceRouteTableAssociationRequest,
   output: ReplaceRouteTableAssociationResult,
@@ -73694,8 +73692,8 @@ export const replaceTransitGatewayRoute: (
   input: ReplaceTransitGatewayRouteRequest,
 ) => Effect.Effect<
   ReplaceTransitGatewayRouteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceTransitGatewayRouteRequest,
   output: ReplaceTransitGatewayRouteResult,
@@ -73708,8 +73706,8 @@ export const replaceVpnTunnel: (
   input: ReplaceVpnTunnelRequest,
 ) => Effect.Effect<
   ReplaceVpnTunnelResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceVpnTunnelRequest,
   output: ReplaceVpnTunnelResult,
@@ -73722,8 +73720,8 @@ export const resetAddressAttribute: (
   input: ResetAddressAttributeRequest,
 ) => Effect.Effect<
   ResetAddressAttributeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetAddressAttributeRequest,
   output: ResetAddressAttributeResult,
@@ -73742,8 +73740,8 @@ export const resetEbsDefaultKmsKeyId: (
   input: ResetEbsDefaultKmsKeyIdRequest,
 ) => Effect.Effect<
   ResetEbsDefaultKmsKeyIdResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetEbsDefaultKmsKeyIdRequest,
   output: ResetEbsDefaultKmsKeyIdResult,
@@ -73757,8 +73755,8 @@ export const resetFpgaImageAttribute: (
   input: ResetFpgaImageAttributeRequest,
 ) => Effect.Effect<
   ResetFpgaImageAttributeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetFpgaImageAttributeRequest,
   output: ResetFpgaImageAttributeResult,
@@ -73773,8 +73771,8 @@ export const restoreAddressToClassic: (
   input: RestoreAddressToClassicRequest,
 ) => Effect.Effect<
   RestoreAddressToClassicResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreAddressToClassicRequest,
   output: RestoreAddressToClassicResult,
@@ -73789,8 +73787,8 @@ export const restoreImageFromRecycleBin: (
   input: RestoreImageFromRecycleBinRequest,
 ) => Effect.Effect<
   RestoreImageFromRecycleBinResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreImageFromRecycleBinRequest,
   output: RestoreImageFromRecycleBinResult,
@@ -73803,8 +73801,8 @@ export const restoreManagedPrefixListVersion: (
   input: RestoreManagedPrefixListVersionRequest,
 ) => Effect.Effect<
   RestoreManagedPrefixListVersionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreManagedPrefixListVersionRequest,
   output: RestoreManagedPrefixListVersionResult,
@@ -73818,8 +73816,8 @@ export const restoreSnapshotFromRecycleBin: (
   input: RestoreSnapshotFromRecycleBinRequest,
 ) => Effect.Effect<
   RestoreSnapshotFromRecycleBinResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreSnapshotFromRecycleBinRequest,
   output: RestoreSnapshotFromRecycleBinResult,
@@ -73837,8 +73835,8 @@ export const restoreSnapshotTier: (
   input: RestoreSnapshotTierRequest,
 ) => Effect.Effect<
   RestoreSnapshotTierResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreSnapshotTierRequest,
   output: RestoreSnapshotTierResult,
@@ -73852,8 +73850,8 @@ export const restoreVolumeFromRecycleBin: (
   input: RestoreVolumeFromRecycleBinRequest,
 ) => Effect.Effect<
   RestoreVolumeFromRecycleBinResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreVolumeFromRecycleBinRequest,
   output: RestoreVolumeFromRecycleBinResult,
@@ -73866,8 +73864,8 @@ export const revokeClientVpnIngress: (
   input: RevokeClientVpnIngressRequest,
 ) => Effect.Effect<
   RevokeClientVpnIngressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeClientVpnIngressRequest,
   output: RevokeClientVpnIngressResult,
@@ -73901,8 +73899,8 @@ export const revokeSecurityGroupIngress: (
   input: RevokeSecurityGroupIngressRequest,
 ) => Effect.Effect<
   RevokeSecurityGroupIngressResult,
-  InvalidGroupNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidGroupNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeSecurityGroupIngressRequest,
   output: RevokeSecurityGroupIngressResult,
@@ -73916,22 +73914,22 @@ export const searchLocalGatewayRoutes: {
     input: SearchLocalGatewayRoutesRequest,
   ): Effect.Effect<
     SearchLocalGatewayRoutesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: SearchLocalGatewayRoutesRequest,
   ) => Stream.Stream<
     SearchLocalGatewayRoutesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: SearchLocalGatewayRoutesRequest,
   ) => Stream.Stream<
     LocalGatewayRoute,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchLocalGatewayRoutesRequest,
@@ -73951,8 +73949,8 @@ export const searchTransitGatewayRoutes: (
   input: SearchTransitGatewayRoutesRequest,
 ) => Effect.Effect<
   SearchTransitGatewayRoutesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SearchTransitGatewayRoutesRequest,
   output: SearchTransitGatewayRoutesResult,
@@ -74003,8 +74001,8 @@ export const startDeclarativePoliciesReport: (
   input: StartDeclarativePoliciesReportRequest,
 ) => Effect.Effect<
   StartDeclarativePoliciesReportResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDeclarativePoliciesReportRequest,
   output: StartDeclarativePoliciesReportResult,
@@ -74017,8 +74015,8 @@ export const startNetworkInsightsAccessScopeAnalysis: (
   input: StartNetworkInsightsAccessScopeAnalysisRequest,
 ) => Effect.Effect<
   StartNetworkInsightsAccessScopeAnalysisResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartNetworkInsightsAccessScopeAnalysisRequest,
   output: StartNetworkInsightsAccessScopeAnalysisResult,
@@ -74032,8 +74030,8 @@ export const startNetworkInsightsAnalysis: (
   input: StartNetworkInsightsAnalysisRequest,
 ) => Effect.Effect<
   StartNetworkInsightsAnalysisResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartNetworkInsightsAnalysisRequest,
   output: StartNetworkInsightsAnalysisResult,
@@ -74051,8 +74049,8 @@ export const startVpcEndpointServicePrivateDnsVerification: (
   input: StartVpcEndpointServicePrivateDnsVerificationRequest,
 ) => Effect.Effect<
   StartVpcEndpointServicePrivateDnsVerificationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartVpcEndpointServicePrivateDnsVerificationRequest,
   output: StartVpcEndpointServicePrivateDnsVerificationResult,
@@ -74101,8 +74099,8 @@ export const stopInstances: (
   input: StopInstancesRequest,
 ) => Effect.Effect<
   StopInstancesResult,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopInstancesRequest,
   output: StopInstancesResult,
@@ -74187,8 +74185,8 @@ export const terminateInstances: (
   input: TerminateInstancesRequest,
 ) => Effect.Effect<
   TerminateInstancesResult,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateInstancesRequest,
   output: TerminateInstancesResult,
@@ -74202,8 +74200,8 @@ export const unassignIpv6Addresses: (
   input: UnassignIpv6AddressesRequest,
 ) => Effect.Effect<
   UnassignIpv6AddressesResult,
-  InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnassignIpv6AddressesRequest,
   output: UnassignIpv6AddressesResult,
@@ -74226,8 +74224,8 @@ export const unassignPrivateNatGatewayAddress: (
   input: UnassignPrivateNatGatewayAddressRequest,
 ) => Effect.Effect<
   UnassignPrivateNatGatewayAddressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnassignPrivateNatGatewayAddressRequest,
   output: UnassignPrivateNatGatewayAddressResult,
@@ -74242,8 +74240,8 @@ export const unlockSnapshot: (
   input: UnlockSnapshotRequest,
 ) => Effect.Effect<
   UnlockSnapshotResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnlockSnapshotRequest,
   output: UnlockSnapshotResult,
@@ -74258,8 +74256,8 @@ export const unmonitorInstances: (
   input: UnmonitorInstancesRequest,
 ) => Effect.Effect<
   UnmonitorInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnmonitorInstancesRequest,
   output: UnmonitorInstancesResult,
@@ -74273,8 +74271,8 @@ export const updateCapacityManagerOrganizationsAccess: (
   input: UpdateCapacityManagerOrganizationsAccessRequest,
 ) => Effect.Effect<
   UpdateCapacityManagerOrganizationsAccessResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCapacityManagerOrganizationsAccessRequest,
   output: UpdateCapacityManagerOrganizationsAccessResult,
@@ -74287,8 +74285,8 @@ export const updateInterruptibleCapacityReservationAllocation: (
   input: UpdateInterruptibleCapacityReservationAllocationRequest,
 ) => Effect.Effect<
   UpdateInterruptibleCapacityReservationAllocationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInterruptibleCapacityReservationAllocationRequest,
   output: UpdateInterruptibleCapacityReservationAllocationResult,
@@ -74304,8 +74302,8 @@ export const updateSecurityGroupRuleDescriptionsIngress: (
   input: UpdateSecurityGroupRuleDescriptionsIngressRequest,
 ) => Effect.Effect<
   UpdateSecurityGroupRuleDescriptionsIngressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSecurityGroupRuleDescriptionsIngressRequest,
   output: UpdateSecurityGroupRuleDescriptionsIngressResult,
@@ -74324,8 +74322,8 @@ export const withdrawByoipCidr: (
   input: WithdrawByoipCidrRequest,
 ) => Effect.Effect<
   WithdrawByoipCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: WithdrawByoipCidrRequest,
   output: WithdrawByoipCidrResult,
@@ -74338,8 +74336,8 @@ export const acceptAddressTransfer: (
   input: AcceptAddressTransferRequest,
 ) => Effect.Effect<
   AcceptAddressTransferResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptAddressTransferRequest,
   output: AcceptAddressTransferResult,
@@ -74352,8 +74350,8 @@ export const acceptReservedInstancesExchangeQuote: (
   input: AcceptReservedInstancesExchangeQuoteRequest,
 ) => Effect.Effect<
   AcceptReservedInstancesExchangeQuoteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptReservedInstancesExchangeQuoteRequest,
   output: AcceptReservedInstancesExchangeQuoteResult,
@@ -74378,8 +74376,8 @@ export const advertiseByoipCidr: (
   input: AdvertiseByoipCidrRequest,
 ) => Effect.Effect<
   AdvertiseByoipCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdvertiseByoipCidrRequest,
   output: AdvertiseByoipCidrResult,
@@ -74396,8 +74394,8 @@ export const allocateIpamPoolCidr: (
   input: AllocateIpamPoolCidrRequest,
 ) => Effect.Effect<
   AllocateIpamPoolCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocateIpamPoolCidrRequest,
   output: AllocateIpamPoolCidrResult,
@@ -74433,8 +74431,8 @@ export const assignPrivateIpAddresses: (
   input: AssignPrivateIpAddressesRequest,
 ) => Effect.Effect<
   AssignPrivateIpAddressesResult,
-  InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssignPrivateIpAddressesRequest,
   output: AssignPrivateIpAddressesResult,
@@ -74448,8 +74446,8 @@ export const assignPrivateNatGatewayAddress: (
   input: AssignPrivateNatGatewayAddressRequest,
 ) => Effect.Effect<
   AssignPrivateNatGatewayAddressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssignPrivateNatGatewayAddressRequest,
   output: AssignPrivateNatGatewayAddressResult,
@@ -74464,8 +74462,8 @@ export const associateClientVpnTargetNetwork: (
   input: AssociateClientVpnTargetNetworkRequest,
 ) => Effect.Effect<
   AssociateClientVpnTargetNetworkResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateClientVpnTargetNetworkRequest,
   output: AssociateClientVpnTargetNetworkResult,
@@ -74479,8 +74477,8 @@ export const associateIamInstanceProfile: (
   input: AssociateIamInstanceProfileRequest,
 ) => Effect.Effect<
   AssociateIamInstanceProfileResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateIamInstanceProfileRequest,
   output: AssociateIamInstanceProfileResult,
@@ -74497,8 +74495,8 @@ export const associateInstanceEventWindow: (
   input: AssociateInstanceEventWindowRequest,
 ) => Effect.Effect<
   AssociateInstanceEventWindowResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateInstanceEventWindowRequest,
   output: AssociateInstanceEventWindowResult,
@@ -74515,8 +74513,8 @@ export const associateIpamByoasn: (
   input: AssociateIpamByoasnRequest,
 ) => Effect.Effect<
   AssociateIpamByoasnResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateIpamByoasnRequest,
   output: AssociateIpamByoasnResult,
@@ -74529,8 +74527,8 @@ export const associateIpamResourceDiscovery: (
   input: AssociateIpamResourceDiscoveryRequest,
 ) => Effect.Effect<
   AssociateIpamResourceDiscoveryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateIpamResourceDiscoveryRequest,
   output: AssociateIpamResourceDiscoveryResult,
@@ -74547,8 +74545,8 @@ export const associateRouteServer: (
   input: AssociateRouteServerRequest,
 ) => Effect.Effect<
   AssociateRouteServerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateRouteServerRequest,
   output: AssociateRouteServerResult,
@@ -74568,8 +74566,8 @@ export const associateRouteTable: (
   input: AssociateRouteTableRequest,
 ) => Effect.Effect<
   AssociateRouteTableResult,
-  InvalidRouteTableIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidRouteTableIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateRouteTableRequest,
   output: AssociateRouteTableResult,
@@ -74582,8 +74580,8 @@ export const associateTransitGatewayPolicyTable: (
   input: AssociateTransitGatewayPolicyTableRequest,
 ) => Effect.Effect<
   AssociateTransitGatewayPolicyTableResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateTransitGatewayPolicyTableRequest,
   output: AssociateTransitGatewayPolicyTableResult,
@@ -74597,8 +74595,8 @@ export const associateTransitGatewayRouteTable: (
   input: AssociateTransitGatewayRouteTableRequest,
 ) => Effect.Effect<
   AssociateTransitGatewayRouteTableResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateTransitGatewayRouteTableRequest,
   output: AssociateTransitGatewayRouteTableResult,
@@ -74616,8 +74614,8 @@ export const associateTrunkInterface: (
   input: AssociateTrunkInterfaceRequest,
 ) => Effect.Effect<
   AssociateTrunkInterfaceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateTrunkInterfaceRequest,
   output: AssociateTrunkInterfaceResult,
@@ -74634,8 +74632,8 @@ export const attachVpnGateway: (
   input: AttachVpnGatewayRequest,
 ) => Effect.Effect<
   AttachVpnGatewayResult,
-  InvalidVpnGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpnGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachVpnGatewayRequest,
   output: AttachVpnGatewayResult,
@@ -74650,8 +74648,8 @@ export const authorizeClientVpnIngress: (
   input: AuthorizeClientVpnIngressRequest,
 ) => Effect.Effect<
   AuthorizeClientVpnIngressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeClientVpnIngressRequest,
   output: AuthorizeClientVpnIngressResult,
@@ -74667,8 +74665,8 @@ export const cancelSpotInstanceRequests: (
   input: CancelSpotInstanceRequestsRequest,
 ) => Effect.Effect<
   CancelSpotInstanceRequestsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelSpotInstanceRequestsRequest,
   output: CancelSpotInstanceRequestsResult,
@@ -74683,8 +74681,8 @@ export const createCapacityReservationFleet: (
   input: CreateCapacityReservationFleetRequest,
 ) => Effect.Effect<
   CreateCapacityReservationFleetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCapacityReservationFleetRequest,
   output: CreateCapacityReservationFleetResult,
@@ -74697,8 +74695,8 @@ export const createCarrierGateway: (
   input: CreateCarrierGatewayRequest,
 ) => Effect.Effect<
   CreateCarrierGatewayResult,
-  InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCarrierGatewayRequest,
   output: CreateCarrierGatewayResult,
@@ -74712,8 +74710,8 @@ export const createClientVpnRoute: (
   input: CreateClientVpnRouteRequest,
 ) => Effect.Effect<
   CreateClientVpnRouteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClientVpnRouteRequest,
   output: CreateClientVpnRouteResult,
@@ -74726,8 +74724,8 @@ export const createCoipCidr: (
   input: CreateCoipCidrRequest,
 ) => Effect.Effect<
   CreateCoipCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCoipCidrRequest,
   output: CreateCoipCidrResult,
@@ -74740,8 +74738,8 @@ export const createCoipPool: (
   input: CreateCoipPoolRequest,
 ) => Effect.Effect<
   CreateCoipPoolResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCoipPoolRequest,
   output: CreateCoipPoolResult,
@@ -74769,8 +74767,8 @@ export const createCustomerGateway: (
   input: CreateCustomerGatewayRequest,
 ) => Effect.Effect<
   CreateCustomerGatewayResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomerGatewayRequest,
   output: CreateCustomerGatewayResult,
@@ -74790,8 +74788,8 @@ export const createDefaultVpc: (
   input: CreateDefaultVpcRequest,
 ) => Effect.Effect<
   CreateDefaultVpcResult,
-  DefaultVpcAlreadyExists | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  DefaultVpcAlreadyExists | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDefaultVpcRequest,
   output: CreateDefaultVpcResult,
@@ -74841,8 +74839,8 @@ export const createDhcpOptions: (
   input: CreateDhcpOptionsRequest,
 ) => Effect.Effect<
   CreateDhcpOptionsResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDhcpOptionsRequest,
   output: CreateDhcpOptionsResult,
@@ -74869,8 +74867,8 @@ export const createFlowLogs: (
   input: CreateFlowLogsRequest,
 ) => Effect.Effect<
   CreateFlowLogsResult,
-  InvalidID | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidID | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFlowLogsRequest,
   output: CreateFlowLogsResult,
@@ -74890,8 +74888,8 @@ export const createFpgaImage: (
   input: CreateFpgaImageRequest,
 ) => Effect.Effect<
   CreateFpgaImageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFpgaImageRequest,
   output: CreateFpgaImageResult,
@@ -74926,8 +74924,8 @@ export const createInstanceEventWindow: (
   input: CreateInstanceEventWindowRequest,
 ) => Effect.Effect<
   CreateInstanceEventWindowResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstanceEventWindowRequest,
   output: CreateInstanceEventWindowResult,
@@ -74944,8 +74942,8 @@ export const createInstanceExportTask: (
   input: CreateInstanceExportTaskRequest,
 ) => Effect.Effect<
   CreateInstanceExportTaskResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstanceExportTaskRequest,
   output: CreateInstanceExportTaskResult,
@@ -74962,8 +74960,8 @@ export const createInternetGateway: (
   input: CreateInternetGatewayRequest,
 ) => Effect.Effect<
   CreateInternetGatewayResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInternetGatewayRequest,
   output: CreateInternetGatewayResult,
@@ -74981,8 +74979,8 @@ export const createIpam: (
   input: CreateIpamRequest,
 ) => Effect.Effect<
   CreateIpamResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamRequest,
   output: CreateIpamResult,
@@ -74997,8 +74995,8 @@ export const createIpamExternalResourceVerificationToken: (
   input: CreateIpamExternalResourceVerificationTokenRequest,
 ) => Effect.Effect<
   CreateIpamExternalResourceVerificationTokenResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamExternalResourceVerificationTokenRequest,
   output: CreateIpamExternalResourceVerificationTokenResult,
@@ -75015,8 +75013,8 @@ export const createIpamPolicy: (
   input: CreateIpamPolicyRequest,
 ) => Effect.Effect<
   CreateIpamPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamPolicyRequest,
   output: CreateIpamPolicyResult,
@@ -75031,8 +75029,8 @@ export const createIpamPool: (
   input: CreateIpamPoolRequest,
 ) => Effect.Effect<
   CreateIpamPoolResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamPoolRequest,
   output: CreateIpamPoolResult,
@@ -75049,8 +75047,8 @@ export const createIpamPrefixListResolverTarget: (
   input: CreateIpamPrefixListResolverTargetRequest,
 ) => Effect.Effect<
   CreateIpamPrefixListResolverTargetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamPrefixListResolverTargetRequest,
   output: CreateIpamPrefixListResolverTargetResult,
@@ -75065,8 +75063,8 @@ export const createIpamScope: (
   input: CreateIpamScopeRequest,
 ) => Effect.Effect<
   CreateIpamScopeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamScopeRequest,
   output: CreateIpamScopeResult,
@@ -75084,8 +75082,8 @@ export const createLocalGatewayRoute: (
   input: CreateLocalGatewayRouteRequest,
 ) => Effect.Effect<
   CreateLocalGatewayRouteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocalGatewayRouteRequest,
   output: CreateLocalGatewayRouteResult,
@@ -75098,8 +75096,8 @@ export const createLocalGatewayRouteTableVirtualInterfaceGroupAssociation: (
   input: CreateLocalGatewayRouteTableVirtualInterfaceGroupAssociationRequest,
 ) => Effect.Effect<
   CreateLocalGatewayRouteTableVirtualInterfaceGroupAssociationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocalGatewayRouteTableVirtualInterfaceGroupAssociationRequest,
   output: CreateLocalGatewayRouteTableVirtualInterfaceGroupAssociationResult,
@@ -75112,8 +75110,8 @@ export const createLocalGatewayRouteTableVpcAssociation: (
   input: CreateLocalGatewayRouteTableVpcAssociationRequest,
 ) => Effect.Effect<
   CreateLocalGatewayRouteTableVpcAssociationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocalGatewayRouteTableVpcAssociationRequest,
   output: CreateLocalGatewayRouteTableVpcAssociationResult,
@@ -75126,8 +75124,8 @@ export const createLocalGatewayVirtualInterface: (
   input: CreateLocalGatewayVirtualInterfaceRequest,
 ) => Effect.Effect<
   CreateLocalGatewayVirtualInterfaceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocalGatewayVirtualInterfaceRequest,
   output: CreateLocalGatewayVirtualInterfaceResult,
@@ -75140,8 +75138,8 @@ export const createLocalGatewayVirtualInterfaceGroup: (
   input: CreateLocalGatewayVirtualInterfaceGroupRequest,
 ) => Effect.Effect<
   CreateLocalGatewayVirtualInterfaceGroupResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocalGatewayVirtualInterfaceGroupRequest,
   output: CreateLocalGatewayVirtualInterfaceGroupResult,
@@ -75187,8 +75185,8 @@ export const createMacSystemIntegrityProtectionModificationTask: (
   input: CreateMacSystemIntegrityProtectionModificationTaskRequest,
 ) => Effect.Effect<
   CreateMacSystemIntegrityProtectionModificationTaskResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMacSystemIntegrityProtectionModificationTaskRequest,
   output: CreateMacSystemIntegrityProtectionModificationTaskResult,
@@ -75202,8 +75200,8 @@ export const createManagedPrefixList: (
   input: CreateManagedPrefixListRequest,
 ) => Effect.Effect<
   CreateManagedPrefixListResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateManagedPrefixListRequest,
   output: CreateManagedPrefixListResult,
@@ -75236,8 +75234,8 @@ export const createNatGateway: (
   input: CreateNatGatewayRequest,
 ) => Effect.Effect<
   CreateNatGatewayResult,
-  InvalidSubnetIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSubnetIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNatGatewayRequest,
   output: CreateNatGatewayResult,
@@ -75256,8 +75254,8 @@ export const createNetworkInterface: (
   input: CreateNetworkInterfaceRequest,
 ) => Effect.Effect<
   CreateNetworkInterfaceResult,
-  InvalidSubnetIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSubnetIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkInterfaceRequest,
   output: CreateNetworkInterfaceResult,
@@ -75281,8 +75279,8 @@ export const createPlacementGroup: (
   input: CreatePlacementGroupRequest,
 ) => Effect.Effect<
   CreatePlacementGroupResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePlacementGroupRequest,
   output: CreatePlacementGroupResult,
@@ -75300,8 +75298,8 @@ export const createReplaceRootVolumeTask: (
   input: CreateReplaceRootVolumeTaskRequest,
 ) => Effect.Effect<
   CreateReplaceRootVolumeTaskResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplaceRootVolumeTaskRequest,
   output: CreateReplaceRootVolumeTaskResult,
@@ -75334,8 +75332,8 @@ export const createReservedInstancesListing: (
   input: CreateReservedInstancesListingRequest,
 ) => Effect.Effect<
   CreateReservedInstancesListingResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReservedInstancesListingRequest,
   output: CreateReservedInstancesListingResult,
@@ -75363,8 +75361,8 @@ export const createRouteServer: (
   input: CreateRouteServerRequest,
 ) => Effect.Effect<
   CreateRouteServerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteServerRequest,
   output: CreateRouteServerResult,
@@ -75381,8 +75379,8 @@ export const createRouteServerEndpoint: (
   input: CreateRouteServerEndpointRequest,
 ) => Effect.Effect<
   CreateRouteServerEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteServerEndpointRequest,
   output: CreateRouteServerEndpointResult,
@@ -75405,8 +75403,8 @@ export const createRouteServerPeer: (
   input: CreateRouteServerPeerRequest,
 ) => Effect.Effect<
   CreateRouteServerPeerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteServerPeerRequest,
   output: CreateRouteServerPeerResult,
@@ -75425,8 +75423,8 @@ export const createStoreImageTask: (
   input: CreateStoreImageTaskRequest,
 ) => Effect.Effect<
   CreateStoreImageTaskResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStoreImageTaskRequest,
   output: CreateStoreImageTaskResult,
@@ -75441,8 +75439,8 @@ export const createSubnetCidrReservation: (
   input: CreateSubnetCidrReservationRequest,
 ) => Effect.Effect<
   CreateSubnetCidrReservationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSubnetCidrReservationRequest,
   output: CreateSubnetCidrReservationResult,
@@ -75461,8 +75459,8 @@ export const createTrafficMirrorFilter: (
   input: CreateTrafficMirrorFilterRequest,
 ) => Effect.Effect<
   CreateTrafficMirrorFilterResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrafficMirrorFilterRequest,
   output: CreateTrafficMirrorFilterResult,
@@ -75479,8 +75477,8 @@ export const createTrafficMirrorFilterRule: (
   input: CreateTrafficMirrorFilterRuleRequest,
 ) => Effect.Effect<
   CreateTrafficMirrorFilterRuleResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrafficMirrorFilterRuleRequest,
   output: CreateTrafficMirrorFilterRuleResult,
@@ -75502,8 +75500,8 @@ export const createTrafficMirrorSession: (
   input: CreateTrafficMirrorSessionRequest,
 ) => Effect.Effect<
   CreateTrafficMirrorSessionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrafficMirrorSessionRequest,
   output: CreateTrafficMirrorSessionResult,
@@ -75524,8 +75522,8 @@ export const createTrafficMirrorTarget: (
   input: CreateTrafficMirrorTargetRequest,
 ) => Effect.Effect<
   CreateTrafficMirrorTargetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrafficMirrorTargetRequest,
   output: CreateTrafficMirrorTargetResult,
@@ -75554,8 +75552,8 @@ export const createTransitGateway: (
   input: CreateTransitGatewayRequest,
 ) => Effect.Effect<
   CreateTransitGatewayResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayRequest,
   output: CreateTransitGatewayResult,
@@ -75570,8 +75568,8 @@ export const createTransitGatewayConnect: (
   input: CreateTransitGatewayConnectRequest,
 ) => Effect.Effect<
   CreateTransitGatewayConnectResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayConnectRequest,
   output: CreateTransitGatewayConnectResult,
@@ -75590,8 +75588,8 @@ export const createTransitGatewayConnectPeer: (
   input: CreateTransitGatewayConnectPeerRequest,
 ) => Effect.Effect<
   CreateTransitGatewayConnectPeerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayConnectPeerRequest,
   output: CreateTransitGatewayConnectPeerResult,
@@ -75604,8 +75602,8 @@ export const createTransitGatewayMeteringPolicy: (
   input: CreateTransitGatewayMeteringPolicyRequest,
 ) => Effect.Effect<
   CreateTransitGatewayMeteringPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayMeteringPolicyRequest,
   output: CreateTransitGatewayMeteringPolicyResult,
@@ -75620,8 +75618,8 @@ export const createTransitGatewayMulticastDomain: (
   input: CreateTransitGatewayMulticastDomainRequest,
 ) => Effect.Effect<
   CreateTransitGatewayMulticastDomainResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayMulticastDomainRequest,
   output: CreateTransitGatewayMulticastDomainResult,
@@ -75639,8 +75637,8 @@ export const createTransitGatewayPeeringAttachment: (
   input: CreateTransitGatewayPeeringAttachmentRequest,
 ) => Effect.Effect<
   CreateTransitGatewayPeeringAttachmentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayPeeringAttachmentRequest,
   output: CreateTransitGatewayPeeringAttachmentResult,
@@ -75653,8 +75651,8 @@ export const createTransitGatewayPolicyTable: (
   input: CreateTransitGatewayPolicyTableRequest,
 ) => Effect.Effect<
   CreateTransitGatewayPolicyTableResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayPolicyTableRequest,
   output: CreateTransitGatewayPolicyTableResult,
@@ -75667,8 +75665,8 @@ export const createTransitGatewayRouteTable: (
   input: CreateTransitGatewayRouteTableRequest,
 ) => Effect.Effect<
   CreateTransitGatewayRouteTableResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayRouteTableRequest,
   output: CreateTransitGatewayRouteTableResult,
@@ -75681,8 +75679,8 @@ export const createTransitGatewayRouteTableAnnouncement: (
   input: CreateTransitGatewayRouteTableAnnouncementRequest,
 ) => Effect.Effect<
   CreateTransitGatewayRouteTableAnnouncementResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayRouteTableAnnouncementRequest,
   output: CreateTransitGatewayRouteTableAnnouncementResult,
@@ -75700,8 +75698,8 @@ export const createTransitGatewayVpcAttachment: (
   input: CreateTransitGatewayVpcAttachmentRequest,
 ) => Effect.Effect<
   CreateTransitGatewayVpcAttachmentResult,
-  InvalidTransitGatewayIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidTransitGatewayIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayVpcAttachmentRequest,
   output: CreateTransitGatewayVpcAttachmentResult,
@@ -75717,8 +75715,8 @@ export const createVerifiedAccessGroup: (
   input: CreateVerifiedAccessGroupRequest,
 ) => Effect.Effect<
   CreateVerifiedAccessGroupResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVerifiedAccessGroupRequest,
   output: CreateVerifiedAccessGroupResult,
@@ -75734,8 +75732,8 @@ export const createVerifiedAccessTrustProvider: (
   input: CreateVerifiedAccessTrustProviderRequest,
 ) => Effect.Effect<
   CreateVerifiedAccessTrustProviderResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVerifiedAccessTrustProviderRequest,
   output: CreateVerifiedAccessTrustProviderResult,
@@ -75762,8 +75760,8 @@ export const createVolume: (
   input: CreateVolumeRequest,
 ) => Effect.Effect<
   Volume,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVolumeRequest,
   output: Volume,
@@ -75791,8 +75789,8 @@ export const createVpc: (
   input: CreateVpcRequest,
 ) => Effect.Effect<
   CreateVpcResult,
-  InvalidParameterValue | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidParameterValue | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcRequest,
   output: CreateVpcResult,
@@ -75805,8 +75803,8 @@ export const createVpcBlockPublicAccessExclusion: (
   input: CreateVpcBlockPublicAccessExclusionRequest,
 ) => Effect.Effect<
   CreateVpcBlockPublicAccessExclusionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcBlockPublicAccessExclusionRequest,
   output: CreateVpcBlockPublicAccessExclusionResult,
@@ -75822,8 +75820,8 @@ export const createVpcEndpoint: (
   input: CreateVpcEndpointRequest,
 ) => Effect.Effect<
   CreateVpcEndpointResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointRequest,
   output: CreateVpcEndpointResult,
@@ -75841,8 +75839,8 @@ export const createVpcEndpointConnectionNotification: (
   input: CreateVpcEndpointConnectionNotificationRequest,
 ) => Effect.Effect<
   CreateVpcEndpointConnectionNotificationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointConnectionNotificationRequest,
   output: CreateVpcEndpointConnectionNotificationResult,
@@ -75855,8 +75853,8 @@ export const createVpnConcentrator: (
   input: CreateVpnConcentratorRequest,
 ) => Effect.Effect<
   CreateVpnConcentratorResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpnConcentratorRequest,
   output: CreateVpnConcentratorResult,
@@ -75874,8 +75872,8 @@ export const createVpnGateway: (
   input: CreateVpnGatewayRequest,
 ) => Effect.Effect<
   CreateVpnGatewayResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpnGatewayRequest,
   output: CreateVpnGatewayResult,
@@ -75889,8 +75887,8 @@ export const deleteClientVpnEndpoint: (
   input: DeleteClientVpnEndpointRequest,
 ) => Effect.Effect<
   DeleteClientVpnEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClientVpnEndpointRequest,
   output: DeleteClientVpnEndpointResult,
@@ -75906,8 +75904,8 @@ export const deleteInstanceEventWindow: (
   input: DeleteInstanceEventWindowRequest,
 ) => Effect.Effect<
   DeleteInstanceEventWindowResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInstanceEventWindowRequest,
   output: DeleteInstanceEventWindowResult,
@@ -75922,8 +75920,8 @@ export const deleteIpam: (
   input: DeleteIpamRequest,
 ) => Effect.Effect<
   DeleteIpamResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamRequest,
   output: DeleteIpamResult,
@@ -75936,8 +75934,8 @@ export const deleteIpamPrefixListResolver: (
   input: DeleteIpamPrefixListResolverRequest,
 ) => Effect.Effect<
   DeleteIpamPrefixListResolverResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamPrefixListResolverRequest,
   output: DeleteIpamPrefixListResolverResult,
@@ -75951,10 +75949,8 @@ export const deleteLaunchTemplate: (
   input: DeleteLaunchTemplateRequest,
 ) => Effect.Effect<
   DeleteLaunchTemplateResult,
-  | InvalidLaunchTemplateNameNotFoundException
-  | MissingParameter
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidLaunchTemplateNameNotFoundException | MissingParameter | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLaunchTemplateRequest,
   output: DeleteLaunchTemplateResult,
@@ -75967,8 +75963,8 @@ export const deleteManagedPrefixList: (
   input: DeleteManagedPrefixListRequest,
 ) => Effect.Effect<
   DeleteManagedPrefixListResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteManagedPrefixListRequest,
   output: DeleteManagedPrefixListResult,
@@ -75982,8 +75978,8 @@ export const deprovisionIpamByoasn: (
   input: DeprovisionIpamByoasnRequest,
 ) => Effect.Effect<
   DeprovisionIpamByoasnResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprovisionIpamByoasnRequest,
   output: DeprovisionIpamByoasnResult,
@@ -76022,8 +76018,8 @@ export const deregisterImage: (
   input: DeregisterImageRequest,
 ) => Effect.Effect<
   DeregisterImageResult,
-  InvalidAMIIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidAMIIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterImageRequest,
   output: DeregisterImageResult,
@@ -76037,8 +76033,8 @@ export const deregisterInstanceEventNotificationAttributes: (
   input: DeregisterInstanceEventNotificationAttributesRequest,
 ) => Effect.Effect<
   DeregisterInstanceEventNotificationAttributesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterInstanceEventNotificationAttributesRequest,
   output: DeregisterInstanceEventNotificationAttributesResult,
@@ -76051,8 +76047,8 @@ export const deregisterTransitGatewayMulticastGroupMembers: (
   input: DeregisterTransitGatewayMulticastGroupMembersRequest,
 ) => Effect.Effect<
   DeregisterTransitGatewayMulticastGroupMembersResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterTransitGatewayMulticastGroupMembersRequest,
   output: DeregisterTransitGatewayMulticastGroupMembersResult,
@@ -76065,8 +76061,8 @@ export const deregisterTransitGatewayMulticastGroupSources: (
   input: DeregisterTransitGatewayMulticastGroupSourcesRequest,
 ) => Effect.Effect<
   DeregisterTransitGatewayMulticastGroupSourcesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterTransitGatewayMulticastGroupSourcesRequest,
   output: DeregisterTransitGatewayMulticastGroupSourcesResult,
@@ -76090,22 +76086,22 @@ export const describeAddressTransfers: {
     input: DescribeAddressTransfersRequest,
   ): Effect.Effect<
     DescribeAddressTransfersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAddressTransfersRequest,
   ) => Stream.Stream<
     DescribeAddressTransfersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAddressTransfersRequest,
   ) => Stream.Stream<
     AddressTransfer,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAddressTransfersRequest,
@@ -76143,8 +76139,8 @@ export const describeAggregateIdFormat: (
   input: DescribeAggregateIdFormatRequest,
 ) => Effect.Effect<
   DescribeAggregateIdFormatResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAggregateIdFormatRequest,
   output: DescribeAggregateIdFormatResult,
@@ -76158,22 +76154,22 @@ export const describeAwsNetworkPerformanceMetricSubscriptions: {
     input: DescribeAwsNetworkPerformanceMetricSubscriptionsRequest,
   ): Effect.Effect<
     DescribeAwsNetworkPerformanceMetricSubscriptionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAwsNetworkPerformanceMetricSubscriptionsRequest,
   ) => Stream.Stream<
     DescribeAwsNetworkPerformanceMetricSubscriptionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAwsNetworkPerformanceMetricSubscriptionsRequest,
   ) => Stream.Stream<
     Subscription,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAwsNetworkPerformanceMetricSubscriptionsRequest,
@@ -76195,22 +76191,22 @@ export const describeCapacityBlockExtensionHistory: {
     input: DescribeCapacityBlockExtensionHistoryRequest,
   ): Effect.Effect<
     DescribeCapacityBlockExtensionHistoryResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityBlockExtensionHistoryRequest,
   ) => Stream.Stream<
     DescribeCapacityBlockExtensionHistoryResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityBlockExtensionHistoryRequest,
   ) => Stream.Stream<
     CapacityBlockExtension,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityBlockExtensionHistoryRequest,
@@ -76232,22 +76228,22 @@ export const describeCapacityBlockExtensionOfferings: {
     input: DescribeCapacityBlockExtensionOfferingsRequest,
   ): Effect.Effect<
     DescribeCapacityBlockExtensionOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityBlockExtensionOfferingsRequest,
   ) => Stream.Stream<
     DescribeCapacityBlockExtensionOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityBlockExtensionOfferingsRequest,
   ) => Stream.Stream<
     CapacityBlockExtensionOffering,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityBlockExtensionOfferingsRequest,
@@ -76272,22 +76268,22 @@ export const describeCapacityBlockOfferings: {
     input: DescribeCapacityBlockOfferingsRequest,
   ): Effect.Effect<
     DescribeCapacityBlockOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityBlockOfferingsRequest,
   ) => Stream.Stream<
     DescribeCapacityBlockOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityBlockOfferingsRequest,
   ) => Stream.Stream<
     CapacityBlockOffering,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityBlockOfferingsRequest,
@@ -76308,22 +76304,22 @@ export const describeCapacityBlocks: {
     input: DescribeCapacityBlocksRequest,
   ): Effect.Effect<
     DescribeCapacityBlocksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityBlocksRequest,
   ) => Stream.Stream<
     DescribeCapacityBlocksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityBlocksRequest,
   ) => Stream.Stream<
     CapacityBlock,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityBlocksRequest,
@@ -76344,22 +76340,22 @@ export const describeCapacityManagerDataExports: {
     input: DescribeCapacityManagerDataExportsRequest,
   ): Effect.Effect<
     DescribeCapacityManagerDataExportsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityManagerDataExportsRequest,
   ) => Stream.Stream<
     DescribeCapacityManagerDataExportsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityManagerDataExportsRequest,
   ) => Stream.Stream<
     CapacityManagerDataExportResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityManagerDataExportsRequest,
@@ -76400,8 +76396,8 @@ export const describeCapacityReservationTopology: (
   input: DescribeCapacityReservationTopologyRequest,
 ) => Effect.Effect<
   DescribeCapacityReservationTopologyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCapacityReservationTopologyRequest,
   output: DescribeCapacityReservationTopologyResult,
@@ -76419,22 +76415,22 @@ export const describeClassicLinkInstances: {
     input: DescribeClassicLinkInstancesRequest,
   ): Effect.Effect<
     DescribeClassicLinkInstancesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClassicLinkInstancesRequest,
   ) => Stream.Stream<
     DescribeClassicLinkInstancesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClassicLinkInstancesRequest,
   ) => Stream.Stream<
     ClassicLinkInstance,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClassicLinkInstancesRequest,
@@ -76455,22 +76451,22 @@ export const describeClientVpnAuthorizationRules: {
     input: DescribeClientVpnAuthorizationRulesRequest,
   ): Effect.Effect<
     DescribeClientVpnAuthorizationRulesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClientVpnAuthorizationRulesRequest,
   ) => Stream.Stream<
     DescribeClientVpnAuthorizationRulesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClientVpnAuthorizationRulesRequest,
   ) => Stream.Stream<
     AuthorizationRule,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClientVpnAuthorizationRulesRequest,
@@ -76491,22 +76487,22 @@ export const describeClientVpnRoutes: {
     input: DescribeClientVpnRoutesRequest,
   ): Effect.Effect<
     DescribeClientVpnRoutesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClientVpnRoutesRequest,
   ) => Stream.Stream<
     DescribeClientVpnRoutesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClientVpnRoutesRequest,
   ) => Stream.Stream<
     ClientVpnRoute,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClientVpnRoutesRequest,
@@ -76527,22 +76523,22 @@ export const describeClientVpnTargetNetworks: {
     input: DescribeClientVpnTargetNetworksRequest,
   ): Effect.Effect<
     DescribeClientVpnTargetNetworksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClientVpnTargetNetworksRequest,
   ) => Stream.Stream<
     DescribeClientVpnTargetNetworksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClientVpnTargetNetworksRequest,
   ) => Stream.Stream<
     TargetNetwork,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClientVpnTargetNetworksRequest,
@@ -76573,8 +76569,8 @@ export const describeDeclarativePoliciesReports: (
   input: DescribeDeclarativePoliciesReportsRequest,
 ) => Effect.Effect<
   DescribeDeclarativePoliciesReportsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDeclarativePoliciesReportsRequest,
   output: DescribeDeclarativePoliciesReportsResult,
@@ -76588,22 +76584,22 @@ export const describeFastLaunchImages: {
     input: DescribeFastLaunchImagesRequest,
   ): Effect.Effect<
     DescribeFastLaunchImagesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFastLaunchImagesRequest,
   ) => Stream.Stream<
     DescribeFastLaunchImagesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFastLaunchImagesRequest,
   ) => Stream.Stream<
     DescribeFastLaunchImagesSuccessItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFastLaunchImagesRequest,
@@ -76624,22 +76620,22 @@ export const describeFastSnapshotRestores: {
     input: DescribeFastSnapshotRestoresRequest,
   ): Effect.Effect<
     DescribeFastSnapshotRestoresResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFastSnapshotRestoresRequest,
   ) => Stream.Stream<
     DescribeFastSnapshotRestoresResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFastSnapshotRestoresRequest,
   ) => Stream.Stream<
     DescribeFastSnapshotRestoreSuccessItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFastSnapshotRestoresRequest,
@@ -76666,8 +76662,8 @@ export const describeFleetInstances: (
   input: DescribeFleetInstancesRequest,
 ) => Effect.Effect<
   DescribeFleetInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFleetInstancesRequest,
   output: DescribeFleetInstancesResult,
@@ -76688,22 +76684,22 @@ export const describeHostReservationOfferings: {
     input: DescribeHostReservationOfferingsRequest,
   ): Effect.Effect<
     DescribeHostReservationOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeHostReservationOfferingsRequest,
   ) => Stream.Stream<
     DescribeHostReservationOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeHostReservationOfferingsRequest,
   ) => Stream.Stream<
     HostOffering,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeHostReservationOfferingsRequest,
@@ -76725,22 +76721,22 @@ export const describeHostReservations: {
     input: DescribeHostReservationsRequest,
   ): Effect.Effect<
     DescribeHostReservationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeHostReservationsRequest,
   ) => Stream.Stream<
     DescribeHostReservationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeHostReservationsRequest,
   ) => Stream.Stream<
     HostReservation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeHostReservationsRequest,
@@ -76764,8 +76760,8 @@ export const describeImageAttribute: (
   input: DescribeImageAttributeRequest,
 ) => Effect.Effect<
   ImageAttribute,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImageAttributeRequest,
   output: ImageAttribute,
@@ -76807,22 +76803,22 @@ export const describeImages: {
     input: DescribeImagesRequest,
   ): Effect.Effect<
     DescribeImagesResult,
-    InvalidAMIIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidAMIIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImagesRequest,
   ) => Stream.Stream<
     DescribeImagesResult,
-    InvalidAMIIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidAMIIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImagesRequest,
   ) => Stream.Stream<
     Image,
-    InvalidAMIIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidAMIIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImagesRequest,
@@ -76847,22 +76843,22 @@ export const describeImageUsageReportEntries: {
     input: DescribeImageUsageReportEntriesRequest,
   ): Effect.Effect<
     DescribeImageUsageReportEntriesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImageUsageReportEntriesRequest,
   ) => Stream.Stream<
     DescribeImageUsageReportEntriesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImageUsageReportEntriesRequest,
   ) => Stream.Stream<
     ImageUsageReportEntry,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImageUsageReportEntriesRequest,
@@ -76907,22 +76903,22 @@ export const describeInstanceCreditSpecifications: {
     input: DescribeInstanceCreditSpecificationsRequest,
   ): Effect.Effect<
     DescribeInstanceCreditSpecificationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceCreditSpecificationsRequest,
   ) => Stream.Stream<
     DescribeInstanceCreditSpecificationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceCreditSpecificationsRequest,
   ) => Stream.Stream<
     InstanceCreditSpecification,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceCreditSpecificationsRequest,
@@ -76943,8 +76939,8 @@ export const describeInstanceEventNotificationAttributes: (
   input: DescribeInstanceEventNotificationAttributesRequest,
 ) => Effect.Effect<
   DescribeInstanceEventNotificationAttributesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInstanceEventNotificationAttributesRequest,
   output: DescribeInstanceEventNotificationAttributesResult,
@@ -76958,8 +76954,8 @@ export const describeInstanceSqlHaHistoryStates: (
   input: DescribeInstanceSqlHaHistoryStatesRequest,
 ) => Effect.Effect<
   DescribeInstanceSqlHaHistoryStatesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInstanceSqlHaHistoryStatesRequest,
   output: DescribeInstanceSqlHaHistoryStatesResult,
@@ -76993,22 +76989,22 @@ export const describeInstanceTopology: {
     input: DescribeInstanceTopologyRequest,
   ): Effect.Effect<
     DescribeInstanceTopologyResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceTopologyRequest,
   ) => Stream.Stream<
     DescribeInstanceTopologyResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceTopologyRequest,
   ) => Stream.Stream<
     InstanceTopology,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceTopologyRequest,
@@ -77031,22 +77027,22 @@ export const describeInstanceTypeOfferings: {
     input: DescribeInstanceTypeOfferingsRequest,
   ): Effect.Effect<
     DescribeInstanceTypeOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceTypeOfferingsRequest,
   ) => Stream.Stream<
     DescribeInstanceTypeOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceTypeOfferingsRequest,
   ) => Stream.Stream<
     InstanceTypeOffering,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceTypeOfferingsRequest,
@@ -77069,8 +77065,8 @@ export const describeKeyPairs: (
   input: DescribeKeyPairsRequest,
 ) => Effect.Effect<
   DescribeKeyPairsResult,
-  InvalidKeyPairNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidKeyPairNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeKeyPairsRequest,
   output: DescribeKeyPairsResult,
@@ -77085,22 +77081,22 @@ export const describeLocalGateways: {
     input: DescribeLocalGatewaysRequest,
   ): Effect.Effect<
     DescribeLocalGatewaysResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLocalGatewaysRequest,
   ) => Stream.Stream<
     DescribeLocalGatewaysResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLocalGatewaysRequest,
   ) => Stream.Stream<
     LocalGateway,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLocalGatewaysRequest,
@@ -77120,8 +77116,8 @@ export const describeLockedSnapshots: (
   input: DescribeLockedSnapshotsRequest,
 ) => Effect.Effect<
   DescribeLockedSnapshotsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLockedSnapshotsRequest,
   output: DescribeLockedSnapshotsResult,
@@ -77135,22 +77131,22 @@ export const describeMacHosts: {
     input: DescribeMacHostsRequest,
   ): Effect.Effect<
     DescribeMacHostsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMacHostsRequest,
   ) => Stream.Stream<
     DescribeMacHostsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMacHostsRequest,
   ) => Stream.Stream<
     MacHost,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMacHostsRequest,
@@ -77174,22 +77170,22 @@ export const describeMovingAddresses: {
     input: DescribeMovingAddressesRequest,
   ): Effect.Effect<
     DescribeMovingAddressesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMovingAddressesRequest,
   ) => Stream.Stream<
     DescribeMovingAddressesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMovingAddressesRequest,
   ) => Stream.Stream<
     MovingAddressStatus,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMovingAddressesRequest,
@@ -77210,22 +77206,22 @@ export const describeNetworkInsightsAccessScopeAnalyses: {
     input: DescribeNetworkInsightsAccessScopeAnalysesRequest,
   ): Effect.Effect<
     DescribeNetworkInsightsAccessScopeAnalysesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkInsightsAccessScopeAnalysesRequest,
   ) => Stream.Stream<
     DescribeNetworkInsightsAccessScopeAnalysesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkInsightsAccessScopeAnalysesRequest,
   ) => Stream.Stream<
     NetworkInsightsAccessScopeAnalysis,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkInsightsAccessScopeAnalysesRequest,
@@ -77246,22 +77242,22 @@ export const describeNetworkInsightsAccessScopes: {
     input: DescribeNetworkInsightsAccessScopesRequest,
   ): Effect.Effect<
     DescribeNetworkInsightsAccessScopesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkInsightsAccessScopesRequest,
   ) => Stream.Stream<
     DescribeNetworkInsightsAccessScopesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkInsightsAccessScopesRequest,
   ) => Stream.Stream<
     NetworkInsightsAccessScope,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkInsightsAccessScopesRequest,
@@ -77283,8 +77279,8 @@ export const describeOutpostLags: (
   input: DescribeOutpostLagsRequest,
 ) => Effect.Effect<
   DescribeOutpostLagsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeOutpostLagsRequest,
   output: DescribeOutpostLagsResult,
@@ -77299,22 +77295,22 @@ export const describePrefixLists: {
     input: DescribePrefixListsRequest,
   ): Effect.Effect<
     DescribePrefixListsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePrefixListsRequest,
   ) => Stream.Stream<
     DescribePrefixListsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePrefixListsRequest,
   ) => Stream.Stream<
     PrefixList,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePrefixListsRequest,
@@ -77354,22 +77350,22 @@ export const describePrincipalIdFormat: {
     input: DescribePrincipalIdFormatRequest,
   ): Effect.Effect<
     DescribePrincipalIdFormatResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePrincipalIdFormatRequest,
   ) => Stream.Stream<
     DescribePrincipalIdFormatResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePrincipalIdFormatRequest,
   ) => Stream.Stream<
     PrincipalIdFormat,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePrincipalIdFormatRequest,
@@ -77390,22 +77386,22 @@ export const describePublicIpv4Pools: {
     input: DescribePublicIpv4PoolsRequest,
   ): Effect.Effect<
     DescribePublicIpv4PoolsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePublicIpv4PoolsRequest,
   ) => Stream.Stream<
     DescribePublicIpv4PoolsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePublicIpv4PoolsRequest,
   ) => Stream.Stream<
     PublicIpv4Pool,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePublicIpv4PoolsRequest,
@@ -77433,8 +77429,8 @@ export const describeRegions: (
   input: DescribeRegionsRequest,
 ) => Effect.Effect<
   DescribeRegionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRegionsRequest,
   output: DescribeRegionsResult,
@@ -77447,8 +77443,8 @@ export const describeSecurityGroupReferences: (
   input: DescribeSecurityGroupReferencesRequest,
 ) => Effect.Effect<
   DescribeSecurityGroupReferencesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSecurityGroupReferencesRequest,
   output: DescribeSecurityGroupReferencesResult,
@@ -77462,22 +77458,22 @@ export const describeSecurityGroups: {
     input: DescribeSecurityGroupsRequest,
   ): Effect.Effect<
     DescribeSecurityGroupsResult,
-    InvalidGroupNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidGroupNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSecurityGroupsRequest,
   ) => Stream.Stream<
     DescribeSecurityGroupsResult,
-    InvalidGroupNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidGroupNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSecurityGroupsRequest,
   ) => Stream.Stream<
     SecurityGroup,
-    InvalidGroupNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidGroupNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSecurityGroupsRequest,
@@ -77498,22 +77494,22 @@ export const describeSecurityGroupVpcAssociations: {
     input: DescribeSecurityGroupVpcAssociationsRequest,
   ): Effect.Effect<
     DescribeSecurityGroupVpcAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSecurityGroupVpcAssociationsRequest,
   ) => Stream.Stream<
     DescribeSecurityGroupVpcAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSecurityGroupVpcAssociationsRequest,
   ) => Stream.Stream<
     SecurityGroupVpcAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSecurityGroupVpcAssociationsRequest,
@@ -77533,8 +77529,8 @@ export const describeServiceLinkVirtualInterfaces: (
   input: DescribeServiceLinkVirtualInterfacesRequest,
 ) => Effect.Effect<
   DescribeServiceLinkVirtualInterfacesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServiceLinkVirtualInterfacesRequest,
   output: DescribeServiceLinkVirtualInterfacesResult,
@@ -77548,22 +77544,22 @@ export const describeSnapshotTierStatus: {
     input: DescribeSnapshotTierStatusRequest,
   ): Effect.Effect<
     DescribeSnapshotTierStatusResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSnapshotTierStatusRequest,
   ) => Stream.Stream<
     DescribeSnapshotTierStatusResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSnapshotTierStatusRequest,
   ) => Stream.Stream<
     SnapshotTierStatus,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotTierStatusRequest,
@@ -77591,8 +77587,8 @@ export const describeSpotFleetRequestHistory: (
   input: DescribeSpotFleetRequestHistoryRequest,
 ) => Effect.Effect<
   DescribeSpotFleetRequestHistoryResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSpotFleetRequestHistoryRequest,
   output: DescribeSpotFleetRequestHistoryResponse,
@@ -77609,22 +77605,22 @@ export const describeSpotFleetRequests: {
     input: DescribeSpotFleetRequestsRequest,
   ): Effect.Effect<
     DescribeSpotFleetRequestsResponse,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSpotFleetRequestsRequest,
   ) => Stream.Stream<
     DescribeSpotFleetRequestsResponse,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSpotFleetRequestsRequest,
   ) => Stream.Stream<
     SpotFleetRequestConfig,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSpotFleetRequestsRequest,
@@ -77650,22 +77646,22 @@ export const describeSpotPriceHistory: {
     input: DescribeSpotPriceHistoryRequest,
   ): Effect.Effect<
     DescribeSpotPriceHistoryResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSpotPriceHistoryRequest,
   ) => Stream.Stream<
     DescribeSpotPriceHistoryResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSpotPriceHistoryRequest,
   ) => Stream.Stream<
     SpotPrice,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSpotPriceHistoryRequest,
@@ -77701,22 +77697,22 @@ export const describeStoreImageTasks: {
     input: DescribeStoreImageTasksRequest,
   ): Effect.Effect<
     DescribeStoreImageTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeStoreImageTasksRequest,
   ) => Stream.Stream<
     DescribeStoreImageTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeStoreImageTasksRequest,
   ) => Stream.Stream<
     StoreImageTaskResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeStoreImageTasksRequest,
@@ -77747,22 +77743,22 @@ export const describeTags: {
     input: DescribeTagsRequest,
   ): Effect.Effect<
     DescribeTagsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTagsRequest,
   ) => Stream.Stream<
     DescribeTagsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTagsRequest,
   ) => Stream.Stream<
     TagDescription,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTagsRequest,
@@ -77786,22 +77782,22 @@ export const describeVolumesModifications: {
     input: DescribeVolumesModificationsRequest,
   ): Effect.Effect<
     DescribeVolumesModificationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVolumesModificationsRequest,
   ) => Stream.Stream<
     DescribeVolumesModificationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVolumesModificationsRequest,
   ) => Stream.Stream<
     VolumeModification,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVolumesModificationsRequest,
@@ -77821,8 +77817,8 @@ export const describeVpcBlockPublicAccessOptions: (
   input: DescribeVpcBlockPublicAccessOptionsRequest,
 ) => Effect.Effect<
   DescribeVpcBlockPublicAccessOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcBlockPublicAccessOptionsRequest,
   output: DescribeVpcBlockPublicAccessOptionsResult,
@@ -77837,8 +77833,8 @@ export const describeVpcClassicLink: (
   input: DescribeVpcClassicLinkRequest,
 ) => Effect.Effect<
   DescribeVpcClassicLinkResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcClassicLinkRequest,
   output: DescribeVpcClassicLinkResult,
@@ -77858,22 +77854,22 @@ export const describeVpcClassicLinkDnsSupport: {
     input: DescribeVpcClassicLinkDnsSupportRequest,
   ): Effect.Effect<
     DescribeVpcClassicLinkDnsSupportResult,
-    InvalidVpcIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcClassicLinkDnsSupportRequest,
   ) => Stream.Stream<
     DescribeVpcClassicLinkDnsSupportResult,
-    InvalidVpcIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcClassicLinkDnsSupportRequest,
   ) => Stream.Stream<
     ClassicLinkDnsSupport,
-    InvalidVpcIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcClassicLinkDnsSupportRequest,
@@ -77895,22 +77891,22 @@ export const describeVpcEndpointConnections: {
     input: DescribeVpcEndpointConnectionsRequest,
   ): Effect.Effect<
     DescribeVpcEndpointConnectionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcEndpointConnectionsRequest,
   ) => Stream.Stream<
     DescribeVpcEndpointConnectionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcEndpointConnectionsRequest,
   ) => Stream.Stream<
     VpcEndpointConnection,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcEndpointConnectionsRequest,
@@ -77932,22 +77928,22 @@ export const describeVpcEndpointServicePermissions: {
     input: DescribeVpcEndpointServicePermissionsRequest,
   ): Effect.Effect<
     DescribeVpcEndpointServicePermissionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcEndpointServicePermissionsRequest,
   ) => Stream.Stream<
     DescribeVpcEndpointServicePermissionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcEndpointServicePermissionsRequest,
   ) => Stream.Stream<
     AllowedPrincipal,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcEndpointServicePermissionsRequest,
@@ -77973,8 +77969,8 @@ export const disableFastLaunch: (
   input: DisableFastLaunchRequest,
 ) => Effect.Effect<
   DisableFastLaunchResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableFastLaunchRequest,
   output: DisableFastLaunchResult,
@@ -78004,8 +78000,8 @@ export const disableRouteServerPropagation: (
   input: DisableRouteServerPropagationRequest,
 ) => Effect.Effect<
   DisableRouteServerPropagationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableRouteServerPropagationRequest,
   output: DisableRouteServerPropagationResult,
@@ -78019,8 +78015,8 @@ export const disableTransitGatewayRouteTablePropagation: (
   input: DisableTransitGatewayRouteTablePropagationRequest,
 ) => Effect.Effect<
   DisableTransitGatewayRouteTablePropagationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableTransitGatewayRouteTablePropagationRequest,
   output: DisableTransitGatewayRouteTablePropagationResult,
@@ -78036,8 +78032,8 @@ export const disassociateInstanceEventWindow: (
   input: DisassociateInstanceEventWindowRequest,
 ) => Effect.Effect<
   DisassociateInstanceEventWindowResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateInstanceEventWindowRequest,
   output: DisassociateInstanceEventWindowResult,
@@ -78058,8 +78054,8 @@ export const enableFastLaunch: (
   input: EnableFastLaunchRequest,
 ) => Effect.Effect<
   EnableFastLaunchResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableFastLaunchRequest,
   output: EnableFastLaunchResult,
@@ -78072,8 +78068,8 @@ export const exportClientVpnClientCertificateRevocationList: (
   input: ExportClientVpnClientCertificateRevocationListRequest,
 ) => Effect.Effect<
   ExportClientVpnClientCertificateRevocationListResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportClientVpnClientCertificateRevocationListRequest,
   output: ExportClientVpnClientCertificateRevocationListResult,
@@ -78088,8 +78084,8 @@ export const exportImage: (
   input: ExportImageRequest,
 ) => Effect.Effect<
   ExportImageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportImageRequest,
   output: ExportImageResult,
@@ -78102,8 +78098,8 @@ export const getActiveVpnTunnelStatus: (
   input: GetActiveVpnTunnelStatusRequest,
 ) => Effect.Effect<
   GetActiveVpnTunnelStatusResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetActiveVpnTunnelStatusRequest,
   output: GetActiveVpnTunnelStatusResult,
@@ -78119,8 +78115,8 @@ export const getAssociatedEnclaveCertificateIamRoles: (
   input: GetAssociatedEnclaveCertificateIamRolesRequest,
 ) => Effect.Effect<
   GetAssociatedEnclaveCertificateIamRolesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAssociatedEnclaveCertificateIamRolesRequest,
   output: GetAssociatedEnclaveCertificateIamRolesResult,
@@ -78134,22 +78130,22 @@ export const getAssociatedIpv6PoolCidrs: {
     input: GetAssociatedIpv6PoolCidrsRequest,
   ): Effect.Effect<
     GetAssociatedIpv6PoolCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetAssociatedIpv6PoolCidrsRequest,
   ) => Stream.Stream<
     GetAssociatedIpv6PoolCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetAssociatedIpv6PoolCidrsRequest,
   ) => Stream.Stream<
     Ipv6CidrAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAssociatedIpv6PoolCidrsRequest,
@@ -78171,22 +78167,22 @@ export const getCapacityManagerMetricDimensions: {
     input: GetCapacityManagerMetricDimensionsRequest,
   ): Effect.Effect<
     GetCapacityManagerMetricDimensionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetCapacityManagerMetricDimensionsRequest,
   ) => Stream.Stream<
     GetCapacityManagerMetricDimensionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetCapacityManagerMetricDimensionsRequest,
   ) => Stream.Stream<
     CapacityManagerDimension,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCapacityManagerMetricDimensionsRequest,
@@ -78208,8 +78204,8 @@ export const getCapacityReservationUsage: (
   input: GetCapacityReservationUsageRequest,
 ) => Effect.Effect<
   GetCapacityReservationUsageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCapacityReservationUsageRequest,
   output: GetCapacityReservationUsageResult,
@@ -78222,8 +78218,8 @@ export const getCoipPoolUsage: (
   input: GetCoipPoolUsageRequest,
 ) => Effect.Effect<
   GetCoipPoolUsageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCoipPoolUsageRequest,
   output: GetCoipPoolUsageResult,
@@ -78240,8 +78236,8 @@ export const getDefaultCreditSpecification: (
   input: GetDefaultCreditSpecificationRequest,
 ) => Effect.Effect<
   GetDefaultCreditSpecificationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDefaultCreditSpecificationRequest,
   output: GetDefaultCreditSpecificationResult,
@@ -78255,22 +78251,22 @@ export const getGroupsForCapacityReservation: {
     input: GetGroupsForCapacityReservationRequest,
   ): Effect.Effect<
     GetGroupsForCapacityReservationResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetGroupsForCapacityReservationRequest,
   ) => Stream.Stream<
     GetGroupsForCapacityReservationResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetGroupsForCapacityReservationRequest,
   ) => Stream.Stream<
     CapacityReservationGroup,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetGroupsForCapacityReservationRequest,
@@ -78295,8 +78291,8 @@ export const getHostReservationPurchasePreview: (
   input: GetHostReservationPurchasePreviewRequest,
 ) => Effect.Effect<
   GetHostReservationPurchasePreviewResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHostReservationPurchasePreviewRequest,
   output: GetHostReservationPurchasePreviewResult,
@@ -78311,8 +78307,8 @@ export const getImageAncestry: (
   input: GetImageAncestryRequest,
 ) => Effect.Effect<
   GetImageAncestryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImageAncestryRequest,
   output: GetImageAncestryResult,
@@ -78330,8 +78326,8 @@ export const getInstanceMetadataDefaults: (
   input: GetInstanceMetadataDefaultsRequest,
 ) => Effect.Effect<
   GetInstanceMetadataDefaultsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceMetadataDefaultsRequest,
   output: GetInstanceMetadataDefaultsResult,
@@ -78345,22 +78341,22 @@ export const getIpamAddressHistory: {
     input: GetIpamAddressHistoryRequest,
   ): Effect.Effect<
     GetIpamAddressHistoryResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamAddressHistoryRequest,
   ) => Stream.Stream<
     GetIpamAddressHistoryResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamAddressHistoryRequest,
   ) => Stream.Stream<
     IpamAddressHistoryRecord,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamAddressHistoryRequest,
@@ -78381,22 +78377,22 @@ export const getIpamDiscoveredResourceCidrs: {
     input: GetIpamDiscoveredResourceCidrsRequest,
   ): Effect.Effect<
     GetIpamDiscoveredResourceCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamDiscoveredResourceCidrsRequest,
   ) => Stream.Stream<
     GetIpamDiscoveredResourceCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamDiscoveredResourceCidrsRequest,
   ) => Stream.Stream<
     IpamDiscoveredResourceCidr,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamDiscoveredResourceCidrsRequest,
@@ -78420,8 +78416,8 @@ export const getIpamPolicyOrganizationTargets: (
   input: GetIpamPolicyOrganizationTargetsRequest,
 ) => Effect.Effect<
   GetIpamPolicyOrganizationTargetsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIpamPolicyOrganizationTargetsRequest,
   output: GetIpamPolicyOrganizationTargetsResult,
@@ -78435,22 +78431,22 @@ export const getIpamPrefixListResolverVersionEntries: {
     input: GetIpamPrefixListResolverVersionEntriesRequest,
   ): Effect.Effect<
     GetIpamPrefixListResolverVersionEntriesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamPrefixListResolverVersionEntriesRequest,
   ) => Stream.Stream<
     GetIpamPrefixListResolverVersionEntriesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamPrefixListResolverVersionEntriesRequest,
   ) => Stream.Stream<
     IpamPrefixListResolverVersionEntry,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamPrefixListResolverVersionEntriesRequest,
@@ -78498,22 +78494,22 @@ export const getIpamPrefixListResolverVersions: {
     input: GetIpamPrefixListResolverVersionsRequest,
   ): Effect.Effect<
     GetIpamPrefixListResolverVersionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamPrefixListResolverVersionsRequest,
   ) => Stream.Stream<
     GetIpamPrefixListResolverVersionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamPrefixListResolverVersionsRequest,
   ) => Stream.Stream<
     IpamPrefixListResolverVersion,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamPrefixListResolverVersionsRequest,
@@ -78534,22 +78530,22 @@ export const getIpamResourceCidrs: {
     input: GetIpamResourceCidrsRequest,
   ): Effect.Effect<
     GetIpamResourceCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamResourceCidrsRequest,
   ) => Stream.Stream<
     GetIpamResourceCidrsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamResourceCidrsRequest,
   ) => Stream.Stream<
     IpamResourceCidr,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamResourceCidrsRequest,
@@ -78570,22 +78566,22 @@ export const getManagedPrefixListAssociations: {
     input: GetManagedPrefixListAssociationsRequest,
   ): Effect.Effect<
     GetManagedPrefixListAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetManagedPrefixListAssociationsRequest,
   ) => Stream.Stream<
     GetManagedPrefixListAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetManagedPrefixListAssociationsRequest,
   ) => Stream.Stream<
     PrefixListAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetManagedPrefixListAssociationsRequest,
@@ -78606,22 +78602,22 @@ export const getManagedPrefixListEntries: {
     input: GetManagedPrefixListEntriesRequest,
   ): Effect.Effect<
     GetManagedPrefixListEntriesResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetManagedPrefixListEntriesRequest,
   ) => Stream.Stream<
     GetManagedPrefixListEntriesResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetManagedPrefixListEntriesRequest,
   ) => Stream.Stream<
     PrefixListEntry,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetManagedPrefixListEntriesRequest,
@@ -78642,22 +78638,22 @@ export const getNetworkInsightsAccessScopeAnalysisFindings: {
     input: GetNetworkInsightsAccessScopeAnalysisFindingsRequest,
   ): Effect.Effect<
     GetNetworkInsightsAccessScopeAnalysisFindingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetNetworkInsightsAccessScopeAnalysisFindingsRequest,
   ) => Stream.Stream<
     GetNetworkInsightsAccessScopeAnalysisFindingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetNetworkInsightsAccessScopeAnalysisFindingsRequest,
   ) => Stream.Stream<
     AccessScopeAnalysisFinding,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetNetworkInsightsAccessScopeAnalysisFindingsRequest,
@@ -78678,22 +78674,22 @@ export const getSecurityGroupsForVpc: {
     input: GetSecurityGroupsForVpcRequest,
   ): Effect.Effect<
     GetSecurityGroupsForVpcResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetSecurityGroupsForVpcRequest,
   ) => Stream.Stream<
     GetSecurityGroupsForVpcResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetSecurityGroupsForVpcRequest,
   ) => Stream.Stream<
     SecurityGroupForVpc,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSecurityGroupsForVpcRequest,
@@ -78714,22 +78710,22 @@ export const getTransitGatewayAttachmentPropagations: {
     input: GetTransitGatewayAttachmentPropagationsRequest,
   ): Effect.Effect<
     GetTransitGatewayAttachmentPropagationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetTransitGatewayAttachmentPropagationsRequest,
   ) => Stream.Stream<
     GetTransitGatewayAttachmentPropagationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetTransitGatewayAttachmentPropagationsRequest,
   ) => Stream.Stream<
     TransitGatewayAttachmentPropagation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTransitGatewayAttachmentPropagationsRequest,
@@ -78750,22 +78746,22 @@ export const getTransitGatewayMulticastDomainAssociations: {
     input: GetTransitGatewayMulticastDomainAssociationsRequest,
   ): Effect.Effect<
     GetTransitGatewayMulticastDomainAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetTransitGatewayMulticastDomainAssociationsRequest,
   ) => Stream.Stream<
     GetTransitGatewayMulticastDomainAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetTransitGatewayMulticastDomainAssociationsRequest,
   ) => Stream.Stream<
     TransitGatewayMulticastDomainAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTransitGatewayMulticastDomainAssociationsRequest,
@@ -78786,22 +78782,22 @@ export const getTransitGatewayRouteTableAssociations: {
     input: GetTransitGatewayRouteTableAssociationsRequest,
   ): Effect.Effect<
     GetTransitGatewayRouteTableAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetTransitGatewayRouteTableAssociationsRequest,
   ) => Stream.Stream<
     GetTransitGatewayRouteTableAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetTransitGatewayRouteTableAssociationsRequest,
   ) => Stream.Stream<
     TransitGatewayRouteTableAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTransitGatewayRouteTableAssociationsRequest,
@@ -78822,22 +78818,22 @@ export const getTransitGatewayRouteTablePropagations: {
     input: GetTransitGatewayRouteTablePropagationsRequest,
   ): Effect.Effect<
     GetTransitGatewayRouteTablePropagationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetTransitGatewayRouteTablePropagationsRequest,
   ) => Stream.Stream<
     GetTransitGatewayRouteTablePropagationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetTransitGatewayRouteTablePropagationsRequest,
   ) => Stream.Stream<
     TransitGatewayRouteTablePropagation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTransitGatewayRouteTablePropagationsRequest,
@@ -78857,8 +78853,8 @@ export const getVerifiedAccessEndpointTargets: (
   input: GetVerifiedAccessEndpointTargetsRequest,
 ) => Effect.Effect<
   GetVerifiedAccessEndpointTargetsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVerifiedAccessEndpointTargetsRequest,
   output: GetVerifiedAccessEndpointTargetsResult,
@@ -78873,8 +78869,8 @@ export const getVpcResourcesBlockingEncryptionEnforcement: (
   input: GetVpcResourcesBlockingEncryptionEnforcementRequest,
 ) => Effect.Effect<
   GetVpcResourcesBlockingEncryptionEnforcementResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVpcResourcesBlockingEncryptionEnforcementRequest,
   output: GetVpcResourcesBlockingEncryptionEnforcementResult,
@@ -78891,22 +78887,22 @@ export const getVpnConnectionDeviceTypes: {
     input: GetVpnConnectionDeviceTypesRequest,
   ): Effect.Effect<
     GetVpnConnectionDeviceTypesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetVpnConnectionDeviceTypesRequest,
   ) => Stream.Stream<
     GetVpnConnectionDeviceTypesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetVpnConnectionDeviceTypesRequest,
   ) => Stream.Stream<
     VpnConnectionDeviceType,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetVpnConnectionDeviceTypesRequest,
@@ -78926,8 +78922,8 @@ export const getVpnTunnelReplacementStatus: (
   input: GetVpnTunnelReplacementStatusRequest,
 ) => Effect.Effect<
   GetVpnTunnelReplacementStatusResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVpnTunnelReplacementStatusRequest,
   output: GetVpnTunnelReplacementStatusResult,
@@ -78943,8 +78939,8 @@ export const importSnapshot: (
   input: ImportSnapshotRequest,
 ) => Effect.Effect<
   ImportSnapshotResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportSnapshotRequest,
   output: ImportSnapshotResult,
@@ -78965,8 +78961,8 @@ export const importVolume: (
   input: ImportVolumeRequest,
 ) => Effect.Effect<
   ImportVolumeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportVolumeRequest,
   output: ImportVolumeResult,
@@ -78982,22 +78978,22 @@ export const listImagesInRecycleBin: {
     input: ListImagesInRecycleBinRequest,
   ): Effect.Effect<
     ListImagesInRecycleBinResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListImagesInRecycleBinRequest,
   ) => Stream.Stream<
     ListImagesInRecycleBinResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListImagesInRecycleBinRequest,
   ) => Stream.Stream<
     ImageRecycleBinInfo,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagesInRecycleBinRequest,
@@ -79018,22 +79014,22 @@ export const listSnapshotsInRecycleBin: {
     input: ListSnapshotsInRecycleBinRequest,
   ): Effect.Effect<
     ListSnapshotsInRecycleBinResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListSnapshotsInRecycleBinRequest,
   ) => Stream.Stream<
     ListSnapshotsInRecycleBinResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListSnapshotsInRecycleBinRequest,
   ) => Stream.Stream<
     SnapshotRecycleBinInfo,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSnapshotsInRecycleBinRequest,
@@ -79053,8 +79049,8 @@ export const listVolumesInRecycleBin: (
   input: ListVolumesInRecycleBinRequest,
 ) => Effect.Effect<
   ListVolumesInRecycleBinResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVolumesInRecycleBinRequest,
   output: ListVolumesInRecycleBinResult,
@@ -79067,8 +79063,8 @@ export const modifyClientVpnEndpoint: (
   input: ModifyClientVpnEndpointRequest,
 ) => Effect.Effect<
   ModifyClientVpnEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClientVpnEndpointRequest,
   output: ModifyClientVpnEndpointResult,
@@ -79091,8 +79087,8 @@ export const modifyImageAttribute: (
   input: ModifyImageAttributeRequest,
 ) => Effect.Effect<
   ModifyImageAttributeResponse,
-  InvalidAMIIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidAMIIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyImageAttributeRequest,
   output: ModifyImageAttributeResponse,
@@ -79116,8 +79112,8 @@ export const modifyInstanceAttribute: (
   input: ModifyInstanceAttributeRequest,
 ) => Effect.Effect<
   ModifyInstanceAttributeResponse,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceAttributeRequest,
   output: ModifyInstanceAttributeResponse,
@@ -79130,8 +79126,8 @@ export const modifyInstanceEventStartTime: (
   input: ModifyInstanceEventStartTimeRequest,
 ) => Effect.Effect<
   ModifyInstanceEventStartTimeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceEventStartTimeRequest,
   output: ModifyInstanceEventStartTimeResult,
@@ -79150,8 +79146,8 @@ export const modifyInstanceMetadataOptions: (
   input: ModifyInstanceMetadataOptionsRequest,
 ) => Effect.Effect<
   ModifyInstanceMetadataOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceMetadataOptionsRequest,
   output: ModifyInstanceMetadataOptionsResult,
@@ -79164,8 +79160,8 @@ export const modifyIpam: (
   input: ModifyIpamRequest,
 ) => Effect.Effect<
   ModifyIpamResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpamRequest,
   output: ModifyIpamResult,
@@ -79182,8 +79178,8 @@ export const modifyIpamPolicyAllocationRules: (
   input: ModifyIpamPolicyAllocationRulesRequest,
 ) => Effect.Effect<
   ModifyIpamPolicyAllocationRulesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpamPolicyAllocationRulesRequest,
   output: ModifyIpamPolicyAllocationRulesResult,
@@ -79196,8 +79192,8 @@ export const modifyIpamResourceDiscovery: (
   input: ModifyIpamResourceDiscoveryRequest,
 ) => Effect.Effect<
   ModifyIpamResourceDiscoveryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpamResourceDiscoveryRequest,
   output: ModifyIpamResourceDiscoveryResult,
@@ -79216,8 +79212,8 @@ export const modifyManagedPrefixList: (
   input: ModifyManagedPrefixListRequest,
 ) => Effect.Effect<
   ModifyManagedPrefixListResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyManagedPrefixListRequest,
   output: ModifyManagedPrefixListResult,
@@ -79235,8 +79231,8 @@ export const modifyReservedInstances: (
   input: ModifyReservedInstancesRequest,
 ) => Effect.Effect<
   ModifyReservedInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyReservedInstancesRequest,
   output: ModifyReservedInstancesResult,
@@ -79258,8 +79254,8 @@ export const modifySnapshotAttribute: (
   input: ModifySnapshotAttributeRequest,
 ) => Effect.Effect<
   ModifySnapshotAttributeResponse,
-  InvalidSnapshotNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSnapshotNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySnapshotAttributeRequest,
   output: ModifySnapshotAttributeResponse,
@@ -79272,8 +79268,8 @@ export const modifyTransitGateway: (
   input: ModifyTransitGatewayRequest,
 ) => Effect.Effect<
   ModifyTransitGatewayResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTransitGatewayRequest,
   output: ModifyTransitGatewayResult,
@@ -79286,8 +79282,8 @@ export const modifyTransitGatewayVpcAttachment: (
   input: ModifyTransitGatewayVpcAttachmentRequest,
 ) => Effect.Effect<
   ModifyTransitGatewayVpcAttachmentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTransitGatewayVpcAttachmentRequest,
   output: ModifyTransitGatewayVpcAttachmentResult,
@@ -79300,8 +79296,8 @@ export const modifyVerifiedAccessEndpointPolicy: (
   input: ModifyVerifiedAccessEndpointPolicyRequest,
 ) => Effect.Effect<
   ModifyVerifiedAccessEndpointPolicyResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVerifiedAccessEndpointPolicyRequest,
   output: ModifyVerifiedAccessEndpointPolicyResult,
@@ -79314,8 +79310,8 @@ export const modifyVerifiedAccessTrustProvider: (
   input: ModifyVerifiedAccessTrustProviderRequest,
 ) => Effect.Effect<
   ModifyVerifiedAccessTrustProviderResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVerifiedAccessTrustProviderRequest,
   output: ModifyVerifiedAccessTrustProviderResult,
@@ -79334,8 +79330,8 @@ export const modifyVpcEndpointServicePermissions: (
   input: ModifyVpcEndpointServicePermissionsRequest,
 ) => Effect.Effect<
   ModifyVpcEndpointServicePermissionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcEndpointServicePermissionsRequest,
   output: ModifyVpcEndpointServicePermissionsResult,
@@ -79359,8 +79355,8 @@ export const provisionByoipCidr: (
   input: ProvisionByoipCidrRequest,
 ) => Effect.Effect<
   ProvisionByoipCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProvisionByoipCidrRequest,
   output: ProvisionByoipCidrResult,
@@ -79373,8 +79369,8 @@ export const provisionIpamByoasn: (
   input: ProvisionIpamByoasnRequest,
 ) => Effect.Effect<
   ProvisionIpamByoasnResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProvisionIpamByoasnRequest,
   output: ProvisionIpamByoasnResult,
@@ -79389,8 +79385,8 @@ export const provisionIpamPoolCidr: (
   input: ProvisionIpamPoolCidrRequest,
 ) => Effect.Effect<
   ProvisionIpamPoolCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProvisionIpamPoolCidrRequest,
   output: ProvisionIpamPoolCidrResult,
@@ -79405,8 +79401,8 @@ export const provisionPublicIpv4PoolCidr: (
   input: ProvisionPublicIpv4PoolCidrRequest,
 ) => Effect.Effect<
   ProvisionPublicIpv4PoolCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProvisionPublicIpv4PoolCidrRequest,
   output: ProvisionPublicIpv4PoolCidrResult,
@@ -79431,8 +79427,8 @@ export const purchaseReservedInstancesOffering: (
   input: PurchaseReservedInstancesOfferingRequest,
 ) => Effect.Effect<
   PurchaseReservedInstancesOfferingResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseReservedInstancesOfferingRequest,
   output: PurchaseReservedInstancesOfferingResult,
@@ -79454,8 +79450,8 @@ export const purchaseScheduledInstances: (
   input: PurchaseScheduledInstancesRequest,
 ) => Effect.Effect<
   PurchaseScheduledInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseScheduledInstancesRequest,
   output: PurchaseScheduledInstancesResult,
@@ -79471,8 +79467,8 @@ export const registerInstanceEventNotificationAttributes: (
   input: RegisterInstanceEventNotificationAttributesRequest,
 ) => Effect.Effect<
   RegisterInstanceEventNotificationAttributesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterInstanceEventNotificationAttributesRequest,
   output: RegisterInstanceEventNotificationAttributesResult,
@@ -79491,8 +79487,8 @@ export const registerTransitGatewayMulticastGroupMembers: (
   input: RegisterTransitGatewayMulticastGroupMembersRequest,
 ) => Effect.Effect<
   RegisterTransitGatewayMulticastGroupMembersResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterTransitGatewayMulticastGroupMembersRequest,
   output: RegisterTransitGatewayMulticastGroupMembersResult,
@@ -79512,8 +79508,8 @@ export const registerTransitGatewayMulticastGroupSources: (
   input: RegisterTransitGatewayMulticastGroupSourcesRequest,
 ) => Effect.Effect<
   RegisterTransitGatewayMulticastGroupSourcesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterTransitGatewayMulticastGroupSourcesRequest,
   output: RegisterTransitGatewayMulticastGroupSourcesResult,
@@ -79542,8 +79538,8 @@ export const revokeSecurityGroupEgress: (
   input: RevokeSecurityGroupEgressRequest,
 ) => Effect.Effect<
   RevokeSecurityGroupEgressResult,
-  InvalidGroupNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidGroupNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeSecurityGroupEgressRequest,
   output: RevokeSecurityGroupEgressResult,
@@ -79557,22 +79553,22 @@ export const searchTransitGatewayMulticastGroups: {
     input: SearchTransitGatewayMulticastGroupsRequest,
   ): Effect.Effect<
     SearchTransitGatewayMulticastGroupsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: SearchTransitGatewayMulticastGroupsRequest,
   ) => Stream.Stream<
     SearchTransitGatewayMulticastGroupsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: SearchTransitGatewayMulticastGroupsRequest,
   ) => Stream.Stream<
     TransitGatewayMulticastGroup,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchTransitGatewayMulticastGroupsRequest,
@@ -79615,8 +79611,8 @@ export const startInstances: (
   input: StartInstancesRequest,
 ) => Effect.Effect<
   StartInstancesResult,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartInstancesRequest,
   output: StartInstancesResult,
@@ -79629,8 +79625,8 @@ export const terminateClientVpnConnections: (
   input: TerminateClientVpnConnectionsRequest,
 ) => Effect.Effect<
   TerminateClientVpnConnectionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateClientVpnConnectionsRequest,
   output: TerminateClientVpnConnectionsResult,
@@ -79646,8 +79642,8 @@ export const updateSecurityGroupRuleDescriptionsEgress: (
   input: UpdateSecurityGroupRuleDescriptionsEgressRequest,
 ) => Effect.Effect<
   UpdateSecurityGroupRuleDescriptionsEgressResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSecurityGroupRuleDescriptionsEgressRequest,
   output: UpdateSecurityGroupRuleDescriptionsEgressResult,
@@ -79660,8 +79656,8 @@ export const acceptTransitGatewayMulticastDomainAssociations: (
   input: AcceptTransitGatewayMulticastDomainAssociationsRequest,
 ) => Effect.Effect<
   AcceptTransitGatewayMulticastDomainAssociationsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptTransitGatewayMulticastDomainAssociationsRequest,
   output: AcceptTransitGatewayMulticastDomainAssociationsResult,
@@ -79675,8 +79671,8 @@ export const acceptTransitGatewayPeeringAttachment: (
   input: AcceptTransitGatewayPeeringAttachmentRequest,
 ) => Effect.Effect<
   AcceptTransitGatewayPeeringAttachmentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptTransitGatewayPeeringAttachmentRequest,
   output: AcceptTransitGatewayPeeringAttachmentResult,
@@ -79693,8 +79689,8 @@ export const acceptTransitGatewayVpcAttachment: (
   input: AcceptTransitGatewayVpcAttachmentRequest,
 ) => Effect.Effect<
   AcceptTransitGatewayVpcAttachmentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptTransitGatewayVpcAttachmentRequest,
   output: AcceptTransitGatewayVpcAttachmentResult,
@@ -79707,8 +79703,8 @@ export const acceptVpcEndpointConnections: (
   input: AcceptVpcEndpointConnectionsRequest,
 ) => Effect.Effect<
   AcceptVpcEndpointConnectionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptVpcEndpointConnectionsRequest,
   output: AcceptVpcEndpointConnectionsResult,
@@ -79722,8 +79718,8 @@ export const associateSubnetCidrBlock: (
   input: AssociateSubnetCidrBlockRequest,
 ) => Effect.Effect<
   AssociateSubnetCidrBlockResult,
-  InvalidSubnetIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidSubnetIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSubnetCidrBlockRequest,
   output: AssociateSubnetCidrBlockResult,
@@ -79745,8 +79741,8 @@ export const associateVpcCidrBlock: (
   input: AssociateVpcCidrBlockRequest,
 ) => Effect.Effect<
   AssociateVpcCidrBlockResult,
-  InvalidVpcIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateVpcCidrBlockRequest,
   output: AssociateVpcCidrBlockResult,
@@ -79759,8 +79755,8 @@ export const attachNetworkInterface: (
   input: AttachNetworkInterfaceRequest,
 ) => Effect.Effect<
   AttachNetworkInterfaceResult,
-  InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachNetworkInterfaceRequest,
   output: AttachNetworkInterfaceResult,
@@ -79773,8 +79769,8 @@ export const attachVerifiedAccessTrustProvider: (
   input: AttachVerifiedAccessTrustProviderRequest,
 ) => Effect.Effect<
   AttachVerifiedAccessTrustProviderResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachVerifiedAccessTrustProviderRequest,
   output: AttachVerifiedAccessTrustProviderResult,
@@ -79804,8 +79800,8 @@ export const authorizeSecurityGroupEgress: (
   input: AuthorizeSecurityGroupEgressRequest,
 ) => Effect.Effect<
   AuthorizeSecurityGroupEgressResult,
-  InvalidGroupNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidGroupNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeSecurityGroupEgressRequest,
   output: AuthorizeSecurityGroupEgressResult,
@@ -79835,8 +79831,8 @@ export const authorizeSecurityGroupIngress: (
   input: AuthorizeSecurityGroupIngressRequest,
 ) => Effect.Effect<
   AuthorizeSecurityGroupIngressResult,
-  InvalidGroupNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidGroupNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeSecurityGroupIngressRequest,
   output: AuthorizeSecurityGroupIngressResult,
@@ -79855,8 +79851,8 @@ export const bundleInstance: (
   input: BundleInstanceRequest,
 ) => Effect.Effect<
   BundleInstanceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BundleInstanceRequest,
   output: BundleInstanceResult,
@@ -79869,8 +79865,8 @@ export const cancelBundleTask: (
   input: CancelBundleTaskRequest,
 ) => Effect.Effect<
   CancelBundleTaskResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelBundleTaskRequest,
   output: CancelBundleTaskResult,
@@ -79893,8 +79889,8 @@ export const cancelCapacityReservationFleets: (
   input: CancelCapacityReservationFleetsRequest,
 ) => Effect.Effect<
   CancelCapacityReservationFleetsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelCapacityReservationFleetsRequest,
   output: CancelCapacityReservationFleetsResult,
@@ -79911,8 +79907,8 @@ export const cancelReservedInstancesListing: (
   input: CancelReservedInstancesListingRequest,
 ) => Effect.Effect<
   CancelReservedInstancesListingResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelReservedInstancesListingRequest,
   output: CancelReservedInstancesListingResult,
@@ -79949,8 +79945,8 @@ export const cancelSpotFleetRequests: (
   input: CancelSpotFleetRequestsRequest,
 ) => Effect.Effect<
   CancelSpotFleetRequestsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelSpotFleetRequestsRequest,
   output: CancelSpotFleetRequestsResponse,
@@ -79986,8 +79982,8 @@ export const createCapacityReservation: (
   input: CreateCapacityReservationRequest,
 ) => Effect.Effect<
   CreateCapacityReservationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCapacityReservationRequest,
   output: CreateCapacityReservationResult,
@@ -80002,8 +79998,8 @@ export const createClientVpnEndpoint: (
   input: CreateClientVpnEndpointRequest,
 ) => Effect.Effect<
   CreateClientVpnEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClientVpnEndpointRequest,
   output: CreateClientVpnEndpointResult,
@@ -80019,8 +80015,8 @@ export const createDefaultSubnet: (
   input: CreateDefaultSubnetRequest,
 ) => Effect.Effect<
   CreateDefaultSubnetResult,
-  DefaultSubnetAlreadyExistsInAvailabilityZone | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  DefaultSubnetAlreadyExistsInAvailabilityZone | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDefaultSubnetRequest,
   output: CreateDefaultSubnetResult,
@@ -80034,8 +80030,8 @@ export const createDelegateMacVolumeOwnershipTask: (
   input: CreateDelegateMacVolumeOwnershipTaskRequest,
 ) => Effect.Effect<
   CreateDelegateMacVolumeOwnershipTaskResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDelegateMacVolumeOwnershipTaskRequest,
   output: CreateDelegateMacVolumeOwnershipTaskResult,
@@ -80051,8 +80047,8 @@ export const createEgressOnlyInternetGateway: (
   input: CreateEgressOnlyInternetGatewayRequest,
 ) => Effect.Effect<
   CreateEgressOnlyInternetGatewayResult,
-  InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEgressOnlyInternetGatewayRequest,
   output: CreateEgressOnlyInternetGatewayResult,
@@ -80083,8 +80079,8 @@ export const createImage: (
   input: CreateImageRequest,
 ) => Effect.Effect<
   CreateImageResult,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImageRequest,
   output: CreateImageResult,
@@ -80102,8 +80098,8 @@ export const createImageUsageReport: (
   input: CreateImageUsageReportRequest,
 ) => Effect.Effect<
   CreateImageUsageReportResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImageUsageReportRequest,
   output: CreateImageUsageReportResult,
@@ -80120,8 +80116,8 @@ export const createIpamPrefixListResolver: (
   input: CreateIpamPrefixListResolverRequest,
 ) => Effect.Effect<
   CreateIpamPrefixListResolverResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamPrefixListResolverRequest,
   output: CreateIpamPrefixListResolverResult,
@@ -80134,8 +80130,8 @@ export const createIpamResourceDiscovery: (
   input: CreateIpamResourceDiscoveryRequest,
 ) => Effect.Effect<
   CreateIpamResourceDiscoveryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamResourceDiscoveryRequest,
   output: CreateIpamResourceDiscoveryResult,
@@ -80161,8 +80157,8 @@ export const createLaunchTemplateVersion: (
   input: CreateLaunchTemplateVersionRequest,
 ) => Effect.Effect<
   CreateLaunchTemplateVersionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLaunchTemplateVersionRequest,
   output: CreateLaunchTemplateVersionResult,
@@ -80175,8 +80171,8 @@ export const createLocalGatewayRouteTable: (
   input: CreateLocalGatewayRouteTableRequest,
 ) => Effect.Effect<
   CreateLocalGatewayRouteTableResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocalGatewayRouteTableRequest,
   output: CreateLocalGatewayRouteTableResult,
@@ -80192,8 +80188,8 @@ export const createNetworkAcl: (
   input: CreateNetworkAclRequest,
 ) => Effect.Effect<
   CreateNetworkAclResult,
-  InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkAclRequest,
   output: CreateNetworkAclResult,
@@ -80210,8 +80206,8 @@ export const createNetworkInsightsPath: (
   input: CreateNetworkInsightsPathRequest,
 ) => Effect.Effect<
   CreateNetworkInsightsPathResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkInsightsPathRequest,
   output: CreateNetworkInsightsPathResult,
@@ -80228,8 +80224,8 @@ export const createNetworkInterfacePermission: (
   input: CreateNetworkInterfacePermissionRequest,
 ) => Effect.Effect<
   CreateNetworkInterfacePermissionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkInterfacePermissionRequest,
   output: CreateNetworkInterfacePermissionResult,
@@ -80245,8 +80241,8 @@ export const createRouteTable: (
   input: CreateRouteTableRequest,
 ) => Effect.Effect<
   CreateRouteTableResult,
-  InvalidVpcIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteTableRequest,
   output: CreateRouteTableResult,
@@ -80274,8 +80270,8 @@ export const createSnapshots: (
   input: CreateSnapshotsRequest,
 ) => Effect.Effect<
   CreateSnapshotsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotsRequest,
   output: CreateSnapshotsResult,
@@ -80291,8 +80287,8 @@ export const createSpotDatafeedSubscription: (
   input: CreateSpotDatafeedSubscriptionRequest,
 ) => Effect.Effect<
   CreateSpotDatafeedSubscriptionResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSpotDatafeedSubscriptionRequest,
   output: CreateSpotDatafeedSubscriptionResult,
@@ -80305,8 +80301,8 @@ export const createTransitGatewayMeteringPolicyEntry: (
   input: CreateTransitGatewayMeteringPolicyEntryRequest,
 ) => Effect.Effect<
   CreateTransitGatewayMeteringPolicyEntryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayMeteringPolicyEntryRequest,
   output: CreateTransitGatewayMeteringPolicyEntryResult,
@@ -80319,8 +80315,8 @@ export const createTransitGatewayPrefixListReference: (
   input: CreateTransitGatewayPrefixListReferenceRequest,
 ) => Effect.Effect<
   CreateTransitGatewayPrefixListReferenceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayPrefixListReferenceRequest,
   output: CreateTransitGatewayPrefixListReferenceResult,
@@ -80333,8 +80329,8 @@ export const createTransitGatewayRoute: (
   input: CreateTransitGatewayRouteRequest,
 ) => Effect.Effect<
   CreateTransitGatewayRouteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayRouteRequest,
   output: CreateTransitGatewayRouteResult,
@@ -80347,8 +80343,8 @@ export const createVerifiedAccessEndpoint: (
   input: CreateVerifiedAccessEndpointRequest,
 ) => Effect.Effect<
   CreateVerifiedAccessEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVerifiedAccessEndpointRequest,
   output: CreateVerifiedAccessEndpointResult,
@@ -80376,8 +80372,8 @@ export const createVpcEndpointServiceConfiguration: (
   input: CreateVpcEndpointServiceConfigurationRequest,
 ) => Effect.Effect<
   CreateVpcEndpointServiceConfigurationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointServiceConfigurationRequest,
   output: CreateVpcEndpointServiceConfigurationResult,
@@ -80409,8 +80405,8 @@ export const createVpnConnection: (
   input: CreateVpnConnectionRequest,
 ) => Effect.Effect<
   CreateVpnConnectionResult,
-  InvalidCustomerGatewayIDNotFound | ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidCustomerGatewayIDNotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpnConnectionRequest,
   output: CreateVpnConnectionResult,
@@ -80465,8 +80461,8 @@ export const deleteFleets: (
   input: DeleteFleetsRequest,
 ) => Effect.Effect<
   DeleteFleetsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFleetsRequest,
   output: DeleteFleetsResult,
@@ -80485,8 +80481,8 @@ export const deleteIpamPool: (
   input: DeleteIpamPoolRequest,
 ) => Effect.Effect<
   DeleteIpamPoolResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamPoolRequest,
   output: DeleteIpamPoolResult,
@@ -80501,8 +80497,8 @@ export const deleteIpamScope: (
   input: DeleteIpamScopeRequest,
 ) => Effect.Effect<
   DeleteIpamScopeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamScopeRequest,
   output: DeleteIpamScopeResult,
@@ -80526,8 +80522,8 @@ export const deleteLaunchTemplateVersions: (
   input: DeleteLaunchTemplateVersionsRequest,
 ) => Effect.Effect<
   DeleteLaunchTemplateVersionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLaunchTemplateVersionsRequest,
   output: DeleteLaunchTemplateVersionsResult,
@@ -80540,8 +80536,8 @@ export const deleteQueuedReservedInstances: (
   input: DeleteQueuedReservedInstancesRequest,
 ) => Effect.Effect<
   DeleteQueuedReservedInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteQueuedReservedInstancesRequest,
   output: DeleteQueuedReservedInstancesResult,
@@ -80562,8 +80558,8 @@ export const deleteRouteServerPeer: (
   input: DeleteRouteServerPeerRequest,
 ) => Effect.Effect<
   DeleteRouteServerPeerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteServerPeerRequest,
   output: DeleteRouteServerPeerResult,
@@ -80577,8 +80573,8 @@ export const deleteTransitGatewayConnect: (
   input: DeleteTransitGatewayConnectRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayConnectResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayConnectRequest,
   output: DeleteTransitGatewayConnectResult,
@@ -80591,8 +80587,8 @@ export const deleteTransitGatewayMulticastDomain: (
   input: DeleteTransitGatewayMulticastDomainRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayMulticastDomainResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayMulticastDomainRequest,
   output: DeleteTransitGatewayMulticastDomainResult,
@@ -80605,8 +80601,8 @@ export const deprovisionIpamPoolCidr: (
   input: DeprovisionIpamPoolCidrRequest,
 ) => Effect.Effect<
   DeprovisionIpamPoolCidrResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprovisionIpamPoolCidrRequest,
   output: DeprovisionIpamPoolCidrResult,
@@ -80639,8 +80635,8 @@ export const describeAccountAttributes: (
   input: DescribeAccountAttributesRequest,
 ) => Effect.Effect<
   DescribeAccountAttributesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountAttributesRequest,
   output: DescribeAccountAttributesResult,
@@ -80653,8 +80649,8 @@ export const describeAddresses: (
   input: DescribeAddressesRequest,
 ) => Effect.Effect<
   DescribeAddressesResult,
-  InvalidAllocationIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidAllocationIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAddressesRequest,
   output: DescribeAddressesResult,
@@ -80668,22 +80664,22 @@ export const describeAddressesAttribute: {
     input: DescribeAddressesAttributeRequest,
   ): Effect.Effect<
     DescribeAddressesAttributeResult,
-    InvalidAllocationIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidAllocationIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAddressesAttributeRequest,
   ) => Stream.Stream<
     DescribeAddressesAttributeResult,
-    InvalidAllocationIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidAllocationIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAddressesAttributeRequest,
   ) => Stream.Stream<
     AddressAttribute,
-    InvalidAllocationIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidAllocationIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAddressesAttributeRequest,
@@ -80712,8 +80708,8 @@ export const describeAvailabilityZones: (
   input: DescribeAvailabilityZonesRequest,
 ) => Effect.Effect<
   DescribeAvailabilityZonesResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAvailabilityZonesRequest,
   output: DescribeAvailabilityZonesResult,
@@ -80727,22 +80723,22 @@ export const describeCapacityBlockStatus: {
     input: DescribeCapacityBlockStatusRequest,
   ): Effect.Effect<
     DescribeCapacityBlockStatusResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityBlockStatusRequest,
   ) => Stream.Stream<
     DescribeCapacityBlockStatusResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityBlockStatusRequest,
   ) => Stream.Stream<
     CapacityBlockStatus,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityBlockStatusRequest,
@@ -80765,22 +80761,22 @@ export const describeCapacityReservationBillingRequests: {
     input: DescribeCapacityReservationBillingRequestsRequest,
   ): Effect.Effect<
     DescribeCapacityReservationBillingRequestsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityReservationBillingRequestsRequest,
   ) => Stream.Stream<
     DescribeCapacityReservationBillingRequestsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityReservationBillingRequestsRequest,
   ) => Stream.Stream<
     CapacityReservationBillingRequest,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityReservationBillingRequestsRequest,
@@ -80801,22 +80797,22 @@ export const describeCapacityReservationFleets: {
     input: DescribeCapacityReservationFleetsRequest,
   ): Effect.Effect<
     DescribeCapacityReservationFleetsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCapacityReservationFleetsRequest,
   ) => Stream.Stream<
     DescribeCapacityReservationFleetsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCapacityReservationFleetsRequest,
   ) => Stream.Stream<
     CapacityReservationFleet,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCapacityReservationFleetsRequest,
@@ -80838,22 +80834,22 @@ export const describeClientVpnConnections: {
     input: DescribeClientVpnConnectionsRequest,
   ): Effect.Effect<
     DescribeClientVpnConnectionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClientVpnConnectionsRequest,
   ) => Stream.Stream<
     DescribeClientVpnConnectionsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClientVpnConnectionsRequest,
   ) => Stream.Stream<
     ClientVpnConnection,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClientVpnConnectionsRequest,
@@ -80879,22 +80875,22 @@ export const describeDhcpOptions: {
     input: DescribeDhcpOptionsRequest,
   ): Effect.Effect<
     DescribeDhcpOptionsResult,
-    InvalidDhcpOptionIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidDhcpOptionIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDhcpOptionsRequest,
   ) => Stream.Stream<
     DescribeDhcpOptionsResult,
-    InvalidDhcpOptionIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidDhcpOptionIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDhcpOptionsRequest,
   ) => Stream.Stream<
     DhcpOptions,
-    InvalidDhcpOptionIDNotFound | ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidDhcpOptionIDNotFound | ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDhcpOptionsRequest,
@@ -80916,8 +80912,8 @@ export const describeElasticGpus: (
   input: DescribeElasticGpusRequest,
 ) => Effect.Effect<
   DescribeElasticGpusResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeElasticGpusRequest,
   output: DescribeElasticGpusResult,
@@ -80931,22 +80927,22 @@ export const describeExportImageTasks: {
     input: DescribeExportImageTasksRequest,
   ): Effect.Effect<
     DescribeExportImageTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeExportImageTasksRequest,
   ) => Stream.Stream<
     DescribeExportImageTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeExportImageTasksRequest,
   ) => Stream.Stream<
     ExportImageTask,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeExportImageTasksRequest,
@@ -80966,8 +80962,8 @@ export const describeExportTasks: (
   input: DescribeExportTasksRequest,
 ) => Effect.Effect<
   DescribeExportTasksResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeExportTasksRequest,
   output: DescribeExportTasksResult,
@@ -80987,8 +80983,8 @@ export const describeFleetHistory: (
   input: DescribeFleetHistoryRequest,
 ) => Effect.Effect<
   DescribeFleetHistoryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFleetHistoryRequest,
   output: DescribeFleetHistoryResult,
@@ -81005,22 +81001,22 @@ export const describeFlowLogs: {
     input: DescribeFlowLogsRequest,
   ): Effect.Effect<
     DescribeFlowLogsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFlowLogsRequest,
   ) => Stream.Stream<
     DescribeFlowLogsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFlowLogsRequest,
   ) => Stream.Stream<
     FlowLog,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFlowLogsRequest,
@@ -81040,8 +81036,8 @@ export const describeFpgaImageAttribute: (
   input: DescribeFpgaImageAttributeRequest,
 ) => Effect.Effect<
   DescribeFpgaImageAttributeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFpgaImageAttributeRequest,
   output: DescribeFpgaImageAttributeResult,
@@ -81057,22 +81053,22 @@ export const describeFpgaImages: {
     input: DescribeFpgaImagesRequest,
   ): Effect.Effect<
     DescribeFpgaImagesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFpgaImagesRequest,
   ) => Stream.Stream<
     DescribeFpgaImagesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFpgaImagesRequest,
   ) => Stream.Stream<
     FpgaImage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFpgaImagesRequest,
@@ -81093,22 +81089,22 @@ export const describeIamInstanceProfileAssociations: {
     input: DescribeIamInstanceProfileAssociationsRequest,
   ): Effect.Effect<
     DescribeIamInstanceProfileAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIamInstanceProfileAssociationsRequest,
   ) => Stream.Stream<
     DescribeIamInstanceProfileAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIamInstanceProfileAssociationsRequest,
   ) => Stream.Stream<
     IamInstanceProfileAssociation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIamInstanceProfileAssociationsRequest,
@@ -81129,22 +81125,22 @@ export const describeImportSnapshotTasks: {
     input: DescribeImportSnapshotTasksRequest,
   ): Effect.Effect<
     DescribeImportSnapshotTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImportSnapshotTasksRequest,
   ) => Stream.Stream<
     DescribeImportSnapshotTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImportSnapshotTasksRequest,
   ) => Stream.Stream<
     ImportSnapshotTask,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImportSnapshotTasksRequest,
@@ -81166,8 +81162,8 @@ export const describeInstanceAttribute: (
   input: DescribeInstanceAttributeRequest,
 ) => Effect.Effect<
   InstanceAttribute,
-  InvalidInstanceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidInstanceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInstanceAttributeRequest,
   output: InstanceAttribute,
@@ -81191,22 +81187,22 @@ export const describeInstanceEventWindows: {
     input: DescribeInstanceEventWindowsRequest,
   ): Effect.Effect<
     DescribeInstanceEventWindowsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceEventWindowsRequest,
   ) => Stream.Stream<
     DescribeInstanceEventWindowsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceEventWindowsRequest,
   ) => Stream.Stream<
     InstanceEventWindow,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceEventWindowsRequest,
@@ -81249,22 +81245,22 @@ export const describeInstanceImageMetadata: {
     input: DescribeInstanceImageMetadataRequest,
   ): Effect.Effect<
     DescribeInstanceImageMetadataResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceImageMetadataRequest,
   ) => Stream.Stream<
     DescribeInstanceImageMetadataResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceImageMetadataRequest,
   ) => Stream.Stream<
     InstanceImageMetadata,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceImageMetadataRequest,
@@ -81285,22 +81281,22 @@ export const describeIpv6Pools: {
     input: DescribeIpv6PoolsRequest,
   ): Effect.Effect<
     DescribeIpv6PoolsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIpv6PoolsRequest,
   ) => Stream.Stream<
     DescribeIpv6PoolsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIpv6PoolsRequest,
   ) => Stream.Stream<
     Ipv6Pool,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIpv6PoolsRequest,
@@ -81323,22 +81319,22 @@ export const describeNatGateways: {
     input: DescribeNatGatewaysRequest,
   ): Effect.Effect<
     DescribeNatGatewaysResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNatGatewaysRequest,
   ) => Stream.Stream<
     DescribeNatGatewaysResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNatGatewaysRequest,
   ) => Stream.Stream<
     NatGateway,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNatGatewaysRequest,
@@ -81368,22 +81364,22 @@ export const describeNetworkInterfaces: {
     input: DescribeNetworkInterfacesRequest,
   ): Effect.Effect<
     DescribeNetworkInterfacesResult,
-    InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidNetworkInterfaceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkInterfacesRequest,
   ) => Stream.Stream<
     DescribeNetworkInterfacesResult,
-    InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidNetworkInterfaceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkInterfacesRequest,
   ) => Stream.Stream<
     NetworkInterface,
-    InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidNetworkInterfaceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkInterfacesRequest,
@@ -81409,8 +81405,8 @@ export const describeReservedInstances: (
   input: DescribeReservedInstancesRequest,
 ) => Effect.Effect<
   DescribeReservedInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReservedInstancesRequest,
   output: DescribeReservedInstancesResult,
@@ -81433,22 +81429,22 @@ export const describeReservedInstancesModifications: {
     input: DescribeReservedInstancesModificationsRequest,
   ): Effect.Effect<
     DescribeReservedInstancesModificationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedInstancesModificationsRequest,
   ) => Stream.Stream<
     DescribeReservedInstancesModificationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedInstancesModificationsRequest,
   ) => Stream.Stream<
     ReservedInstancesModification,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedInstancesModificationsRequest,
@@ -81481,22 +81477,22 @@ export const describeReservedInstancesOfferings: {
     input: DescribeReservedInstancesOfferingsRequest,
   ): Effect.Effect<
     DescribeReservedInstancesOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedInstancesOfferingsRequest,
   ) => Stream.Stream<
     DescribeReservedInstancesOfferingsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedInstancesOfferingsRequest,
   ) => Stream.Stream<
     ReservedInstancesOffering,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedInstancesOfferingsRequest,
@@ -81517,22 +81513,22 @@ export const describeScheduledInstances: {
     input: DescribeScheduledInstancesRequest,
   ): Effect.Effect<
     DescribeScheduledInstancesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScheduledInstancesRequest,
   ) => Stream.Stream<
     DescribeScheduledInstancesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScheduledInstancesRequest,
   ) => Stream.Stream<
     ScheduledInstance,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduledInstancesRequest,
@@ -81571,22 +81567,22 @@ export const describeSpotInstanceRequests: {
     input: DescribeSpotInstanceRequestsRequest,
   ): Effect.Effect<
     DescribeSpotInstanceRequestsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSpotInstanceRequestsRequest,
   ) => Stream.Stream<
     DescribeSpotInstanceRequestsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSpotInstanceRequestsRequest,
   ) => Stream.Stream<
     SpotInstanceRequest,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSpotInstanceRequestsRequest,
@@ -81614,22 +81610,22 @@ export const describeStaleSecurityGroups: {
     input: DescribeStaleSecurityGroupsRequest,
   ): Effect.Effect<
     DescribeStaleSecurityGroupsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeStaleSecurityGroupsRequest,
   ) => Stream.Stream<
     DescribeStaleSecurityGroupsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeStaleSecurityGroupsRequest,
   ) => Stream.Stream<
     StaleSecurityGroup,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeStaleSecurityGroupsRequest,
@@ -81649,8 +81645,8 @@ export const describeTrafficMirrorFilterRules: (
   input: DescribeTrafficMirrorFilterRulesRequest,
 ) => Effect.Effect<
   DescribeTrafficMirrorFilterRulesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrafficMirrorFilterRulesRequest,
   output: DescribeTrafficMirrorFilterRulesResult,
@@ -81665,22 +81661,22 @@ export const describeTransitGatewayAttachments: {
     input: DescribeTransitGatewayAttachmentsRequest,
   ): Effect.Effect<
     DescribeTransitGatewayAttachmentsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTransitGatewayAttachmentsRequest,
   ) => Stream.Stream<
     DescribeTransitGatewayAttachmentsResult,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTransitGatewayAttachmentsRequest,
   ) => Stream.Stream<
     TransitGatewayAttachment,
-    ParseError | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    ParseError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTransitGatewayAttachmentsRequest,
@@ -81701,8 +81697,8 @@ export const describeVpcEndpointAssociations: (
   input: DescribeVpcEndpointAssociationsRequest,
 ) => Effect.Effect<
   DescribeVpcEndpointAssociationsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcEndpointAssociationsRequest,
   output: DescribeVpcEndpointAssociationsResult,
@@ -81718,22 +81714,22 @@ export const describeVpcEndpoints: {
     input: DescribeVpcEndpointsRequest,
   ): Effect.Effect<
     DescribeVpcEndpointsResult,
-    InvalidVpcEndpointIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcEndpointIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcEndpointsRequest,
   ) => Stream.Stream<
     DescribeVpcEndpointsResult,
-    InvalidVpcEndpointIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcEndpointIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcEndpointsRequest,
   ) => Stream.Stream<
     VpcEndpoint,
-    InvalidVpcEndpointIdNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidVpcEndpointIdNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcEndpointsRequest,
@@ -81761,8 +81757,8 @@ export const describeVpcEndpointServices: (
   input: DescribeVpcEndpointServicesRequest,
 ) => Effect.Effect<
   DescribeVpcEndpointServicesResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcEndpointServicesRequest,
   output: DescribeVpcEndpointServicesResult,
@@ -81775,8 +81771,8 @@ export const exportVerifiedAccessInstanceClientConfiguration: (
   input: ExportVerifiedAccessInstanceClientConfigurationRequest,
 ) => Effect.Effect<
   ExportVerifiedAccessInstanceClientConfigurationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportVerifiedAccessInstanceClientConfigurationRequest,
   output: ExportVerifiedAccessInstanceClientConfigurationResult,
@@ -81798,8 +81794,8 @@ export const getAllowedImagesSettings: (
   input: GetAllowedImagesSettingsRequest,
 ) => Effect.Effect<
   GetAllowedImagesSettingsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAllowedImagesSettingsRequest,
   output: GetAllowedImagesSettingsResult,
@@ -81822,8 +81818,8 @@ export const getDeclarativePoliciesReportSummary: (
   input: GetDeclarativePoliciesReportSummaryRequest,
 ) => Effect.Effect<
   GetDeclarativePoliciesReportSummaryResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeclarativePoliciesReportSummaryRequest,
   output: GetDeclarativePoliciesReportSummaryResult,
@@ -81850,8 +81846,8 @@ export const getFlowLogsIntegrationTemplate: (
   input: GetFlowLogsIntegrationTemplateRequest,
 ) => Effect.Effect<
   GetFlowLogsIntegrationTemplateResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFlowLogsIntegrationTemplateRequest,
   output: GetFlowLogsIntegrationTemplateResult,
@@ -81865,22 +81861,22 @@ export const getIpamDiscoveredAccounts: {
     input: GetIpamDiscoveredAccountsRequest,
   ): Effect.Effect<
     GetIpamDiscoveredAccountsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamDiscoveredAccountsRequest,
   ) => Stream.Stream<
     GetIpamDiscoveredAccountsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamDiscoveredAccountsRequest,
   ) => Stream.Stream<
     IpamDiscoveredAccount,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamDiscoveredAccountsRequest,
@@ -81904,8 +81900,8 @@ export const getIpamPolicyAllocationRules: (
   input: GetIpamPolicyAllocationRulesRequest,
 ) => Effect.Effect<
   GetIpamPolicyAllocationRulesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIpamPolicyAllocationRulesRequest,
   output: GetIpamPolicyAllocationRulesResult,
@@ -81919,22 +81915,22 @@ export const getIpamPrefixListResolverRules: {
     input: GetIpamPrefixListResolverRulesRequest,
   ): Effect.Effect<
     GetIpamPrefixListResolverRulesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetIpamPrefixListResolverRulesRequest,
   ) => Stream.Stream<
     GetIpamPrefixListResolverRulesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetIpamPrefixListResolverRulesRequest,
   ) => Stream.Stream<
     IpamPrefixListResolverRule,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIpamPrefixListResolverRulesRequest,
@@ -81956,8 +81952,8 @@ export const getReservedInstancesExchangeQuote: (
   input: GetReservedInstancesExchangeQuoteRequest,
 ) => Effect.Effect<
   GetReservedInstancesExchangeQuoteResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReservedInstancesExchangeQuoteRequest,
   output: GetReservedInstancesExchangeQuoteResult,
@@ -81983,8 +81979,8 @@ export const getRouteServerRoutingDatabase: (
   input: GetRouteServerRoutingDatabaseRequest,
 ) => Effect.Effect<
   GetRouteServerRoutingDatabaseResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouteServerRoutingDatabaseRequest,
   output: GetRouteServerRoutingDatabaseResult,
@@ -82007,22 +82003,22 @@ export const getSpotPlacementScores: {
     input: GetSpotPlacementScoresRequest,
   ): Effect.Effect<
     GetSpotPlacementScoresResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetSpotPlacementScoresRequest,
   ) => Stream.Stream<
     GetSpotPlacementScoresResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetSpotPlacementScoresRequest,
   ) => Stream.Stream<
     SpotPlacementScore,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSpotPlacementScoresRequest,
@@ -82056,8 +82052,8 @@ export const importImage: (
   input: ImportImageRequest,
 ) => Effect.Effect<
   ImportImageResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportImageRequest,
   output: ImportImageResult,
@@ -82083,8 +82079,8 @@ export const importInstance: (
   input: ImportInstanceRequest,
 ) => Effect.Effect<
   ImportInstanceResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportInstanceRequest,
   output: ImportInstanceResult,
@@ -82097,8 +82093,8 @@ export const modifyFpgaImageAttribute: (
   input: ModifyFpgaImageAttributeRequest,
 ) => Effect.Effect<
   ModifyFpgaImageAttributeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyFpgaImageAttributeRequest,
   output: ModifyFpgaImageAttributeResult,
@@ -82114,8 +82110,8 @@ export const modifyInstanceCapacityReservationAttributes: (
   input: ModifyInstanceCapacityReservationAttributesRequest,
 ) => Effect.Effect<
   ModifyInstanceCapacityReservationAttributesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceCapacityReservationAttributesRequest,
   output: ModifyInstanceCapacityReservationAttributesResult,
@@ -82128,8 +82124,8 @@ export const modifySecurityGroupRules: (
   input: ModifySecurityGroupRulesRequest,
 ) => Effect.Effect<
   ModifySecurityGroupRulesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySecurityGroupRulesRequest,
   output: ModifySecurityGroupRulesResult,
@@ -82142,8 +82138,8 @@ export const modifyVerifiedAccessEndpoint: (
   input: ModifyVerifiedAccessEndpointRequest,
 ) => Effect.Effect<
   ModifyVerifiedAccessEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVerifiedAccessEndpointRequest,
   output: ModifyVerifiedAccessEndpointResult,
@@ -82156,8 +82152,8 @@ export const modifyVerifiedAccessInstanceLoggingConfiguration: (
   input: ModifyVerifiedAccessInstanceLoggingConfigurationRequest,
 ) => Effect.Effect<
   ModifyVerifiedAccessInstanceLoggingConfigurationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVerifiedAccessInstanceLoggingConfigurationRequest,
   output: ModifyVerifiedAccessInstanceLoggingConfigurationResult,
@@ -82181,8 +82177,8 @@ export const modifyVpcPeeringConnectionOptions: (
   input: ModifyVpcPeeringConnectionOptionsRequest,
 ) => Effect.Effect<
   ModifyVpcPeeringConnectionOptionsResult,
-  InvalidVpcPeeringConnectionIdNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcPeeringConnectionIdNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpcPeeringConnectionOptionsRequest,
   output: ModifyVpcPeeringConnectionOptionsResult,
@@ -82199,8 +82195,8 @@ export const monitorInstances: (
   input: MonitorInstancesRequest,
 ) => Effect.Effect<
   MonitorInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MonitorInstancesRequest,
   output: MonitorInstancesResult,
@@ -82221,8 +82217,8 @@ export const replaceImageCriteriaInAllowedImagesSettings: (
   input: ReplaceImageCriteriaInAllowedImagesSettingsRequest,
 ) => Effect.Effect<
   ReplaceImageCriteriaInAllowedImagesSettingsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceImageCriteriaInAllowedImagesSettingsRequest,
   output: ReplaceImageCriteriaInAllowedImagesSettingsResult,
@@ -82244,8 +82240,8 @@ export const requestSpotInstances: (
   input: RequestSpotInstancesRequest,
 ) => Effect.Effect<
   RequestSpotInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RequestSpotInstancesRequest,
   output: RequestSpotInstancesResult,
@@ -82307,8 +82303,8 @@ export const runInstances: (
   input: RunInstancesRequest,
 ) => Effect.Effect<
   Reservation,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RunInstancesRequest,
   output: Reservation,
@@ -82327,8 +82323,8 @@ export const acceptVpcPeeringConnection: (
   input: AcceptVpcPeeringConnectionRequest,
 ) => Effect.Effect<
   AcceptVpcPeeringConnectionResult,
-  InvalidVpcPeeringConnectionIdNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpcPeeringConnectionIdNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptVpcPeeringConnectionRequest,
   output: AcceptVpcPeeringConnectionResult,
@@ -82346,8 +82342,8 @@ export const createInstanceConnectEndpoint: (
   input: CreateInstanceConnectEndpointRequest,
 ) => Effect.Effect<
   CreateInstanceConnectEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstanceConnectEndpointRequest,
   output: CreateInstanceConnectEndpointResult,
@@ -82371,8 +82367,8 @@ export const createLaunchTemplate: (
   input: CreateLaunchTemplateRequest,
 ) => Effect.Effect<
   CreateLaunchTemplateResult,
-  MissingParameter | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  MissingParameter | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLaunchTemplateRequest,
   output: CreateLaunchTemplateResult,
@@ -82389,8 +82385,8 @@ export const createNetworkInsightsAccessScope: (
   input: CreateNetworkInsightsAccessScopeRequest,
 ) => Effect.Effect<
   CreateNetworkInsightsAccessScopeResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkInsightsAccessScopeRequest,
   output: CreateNetworkInsightsAccessScopeResult,
@@ -82405,8 +82401,8 @@ export const createVpcEncryptionControl: (
   input: CreateVpcEncryptionControlRequest,
 ) => Effect.Effect<
   CreateVpcEncryptionControlResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEncryptionControlRequest,
   output: CreateVpcEncryptionControlResult,
@@ -82419,8 +82415,8 @@ export const deleteTransitGateway: (
   input: DeleteTransitGatewayRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayResult,
-  ParseError | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayRequest,
   output: DeleteTransitGatewayResult,
@@ -82433,8 +82429,8 @@ export const deleteTransitGatewayConnectPeer: (
   input: DeleteTransitGatewayConnectPeerRequest,
 ) => Effect.Effect<
   DeleteTransitGatewayConnectPeerResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayConnectPeerRequest,
   output: DeleteTransitGatewayConnectPeerResult,
@@ -82447,8 +82443,8 @@ export const deleteVerifiedAccessEndpoint: (
   input: DeleteVerifiedAccessEndpointRequest,
 ) => Effect.Effect<
   DeleteVerifiedAccessEndpointResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedAccessEndpointRequest,
   output: DeleteVerifiedAccessEndpointResult,
@@ -82462,22 +82458,22 @@ export const describeClientVpnEndpoints: {
     input: DescribeClientVpnEndpointsRequest,
   ): Effect.Effect<
     DescribeClientVpnEndpointsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClientVpnEndpointsRequest,
   ) => Stream.Stream<
     DescribeClientVpnEndpointsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClientVpnEndpointsRequest,
   ) => Stream.Stream<
     ClientVpnEndpoint,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClientVpnEndpointsRequest,
@@ -82500,8 +82496,8 @@ export const describeConversionTasks: (
   input: DescribeConversionTasksRequest,
 ) => Effect.Effect<
   DescribeConversionTasksResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConversionTasksRequest,
   output: DescribeConversionTasksResult,
@@ -82519,22 +82515,22 @@ export const describeHosts: {
     input: DescribeHostsRequest,
   ): Effect.Effect<
     DescribeHostsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeHostsRequest,
   ) => Stream.Stream<
     DescribeHostsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeHostsRequest,
   ) => Stream.Stream<
     Host,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeHostsRequest,
@@ -82558,22 +82554,22 @@ export const describeImageReferences: {
     input: DescribeImageReferencesRequest,
   ): Effect.Effect<
     DescribeImageReferencesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImageReferencesRequest,
   ) => Stream.Stream<
     DescribeImageReferencesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImageReferencesRequest,
   ) => Stream.Stream<
     ImageReference,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImageReferencesRequest,
@@ -82598,22 +82594,22 @@ export const describeImageUsageReports: {
     input: DescribeImageUsageReportsRequest,
   ): Effect.Effect<
     DescribeImageUsageReportsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImageUsageReportsRequest,
   ) => Stream.Stream<
     DescribeImageUsageReportsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImageUsageReportsRequest,
   ) => Stream.Stream<
     ImageUsageReport,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImageUsageReportsRequest,
@@ -82634,22 +82630,22 @@ export const describeImportImageTasks: {
     input: DescribeImportImageTasksRequest,
   ): Effect.Effect<
     DescribeImportImageTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeImportImageTasksRequest,
   ) => Stream.Stream<
     DescribeImportImageTasksResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeImportImageTasksRequest,
   ) => Stream.Stream<
     ImportImageTask,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeImportImageTasksRequest,
@@ -82702,22 +82698,22 @@ export const describeInstanceStatus: {
     input: DescribeInstanceStatusRequest,
   ): Effect.Effect<
     DescribeInstanceStatusResult,
-    InvalidInstanceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInstanceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceStatusRequest,
   ) => Stream.Stream<
     DescribeInstanceStatusResult,
-    InvalidInstanceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInstanceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceStatusRequest,
   ) => Stream.Stream<
     InstanceStatus,
-    InvalidInstanceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInstanceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceStatusRequest,
@@ -82738,22 +82734,22 @@ export const describeNetworkInsightsPaths: {
     input: DescribeNetworkInsightsPathsRequest,
   ): Effect.Effect<
     DescribeNetworkInsightsPathsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkInsightsPathsRequest,
   ) => Stream.Stream<
     DescribeNetworkInsightsPathsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkInsightsPathsRequest,
   ) => Stream.Stream<
     NetworkInsightsPath,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkInsightsPathsRequest,
@@ -82774,8 +82770,8 @@ export const describeNetworkInterfaceAttribute: (
   input: DescribeNetworkInterfaceAttributeRequest,
 ) => Effect.Effect<
   DescribeNetworkInterfaceAttributeResult,
-  InvalidNetworkInterfaceIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNetworkInterfaceAttributeRequest,
   output: DescribeNetworkInterfaceAttributeResult,
@@ -82794,22 +82790,22 @@ export const describeScheduledInstanceAvailability: {
     input: DescribeScheduledInstanceAvailabilityRequest,
   ): Effect.Effect<
     DescribeScheduledInstanceAvailabilityResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScheduledInstanceAvailabilityRequest,
   ) => Stream.Stream<
     DescribeScheduledInstanceAvailabilityResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScheduledInstanceAvailabilityRequest,
   ) => Stream.Stream<
     ScheduledInstanceAvailability,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduledInstanceAvailabilityRequest,
@@ -82869,22 +82865,22 @@ export const describeVolumeStatus: {
     input: DescribeVolumeStatusRequest,
   ): Effect.Effect<
     DescribeVolumeStatusResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVolumeStatusRequest,
   ) => Stream.Stream<
     DescribeVolumeStatusResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVolumeStatusRequest,
   ) => Stream.Stream<
     VolumeStatusItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVolumeStatusRequest,
@@ -82904,8 +82900,8 @@ export const disableFastSnapshotRestores: (
   input: DisableFastSnapshotRestoresRequest,
 ) => Effect.Effect<
   DisableFastSnapshotRestoresResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableFastSnapshotRestoresRequest,
   output: DisableFastSnapshotRestoresResult,
@@ -82923,8 +82919,8 @@ export const enableFastSnapshotRestores: (
   input: EnableFastSnapshotRestoresRequest,
 ) => Effect.Effect<
   EnableFastSnapshotRestoresResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableFastSnapshotRestoresRequest,
   output: EnableFastSnapshotRestoresResult,
@@ -82938,22 +82934,22 @@ export const getAwsNetworkPerformanceData: {
     input: GetAwsNetworkPerformanceDataRequest,
   ): Effect.Effect<
     GetAwsNetworkPerformanceDataResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetAwsNetworkPerformanceDataRequest,
   ) => Stream.Stream<
     GetAwsNetworkPerformanceDataResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetAwsNetworkPerformanceDataRequest,
   ) => Stream.Stream<
     DataResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAwsNetworkPerformanceDataRequest,
@@ -82973,8 +82969,8 @@ export const getIpamDiscoveredPublicAddresses: (
   input: GetIpamDiscoveredPublicAddressesRequest,
 ) => Effect.Effect<
   GetIpamDiscoveredPublicAddressesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIpamDiscoveredPublicAddressesRequest,
   output: GetIpamDiscoveredPublicAddressesResult,
@@ -82987,8 +82983,8 @@ export const getTransitGatewayPolicyTableEntries: (
   input: GetTransitGatewayPolicyTableEntriesRequest,
 ) => Effect.Effect<
   GetTransitGatewayPolicyTableEntriesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTransitGatewayPolicyTableEntriesRequest,
   output: GetTransitGatewayPolicyTableEntriesResult,
@@ -83006,8 +83002,8 @@ export const modifyInstanceCreditSpecification: (
   input: ModifyInstanceCreditSpecificationRequest,
 ) => Effect.Effect<
   ModifyInstanceCreditSpecificationResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceCreditSpecificationRequest,
   output: ModifyInstanceCreditSpecificationResult,
@@ -83023,8 +83019,8 @@ export const modifyVpnTunnelOptions: (
   input: ModifyVpnTunnelOptionsRequest,
 ) => Effect.Effect<
   ModifyVpnTunnelOptionsResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyVpnTunnelOptionsRequest,
   output: ModifyVpnTunnelOptionsResult,
@@ -83044,8 +83040,8 @@ export const runScheduledInstances: (
   input: RunScheduledInstancesRequest,
 ) => Effect.Effect<
   RunScheduledInstancesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RunScheduledInstancesRequest,
   output: RunScheduledInstancesResult,
@@ -83060,22 +83056,22 @@ export const describeInstanceTypes: {
     input: DescribeInstanceTypesRequest,
   ): Effect.Effect<
     DescribeInstanceTypesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceTypesRequest,
   ) => Stream.Stream<
     DescribeInstanceTypesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceTypesRequest,
   ) => Stream.Stream<
     InstanceTypeInfo,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceTypesRequest,
@@ -83096,22 +83092,22 @@ export const describeNetworkInsightsAnalyses: {
     input: DescribeNetworkInsightsAnalysesRequest,
   ): Effect.Effect<
     DescribeNetworkInsightsAnalysesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkInsightsAnalysesRequest,
   ) => Stream.Stream<
     DescribeNetworkInsightsAnalysesResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkInsightsAnalysesRequest,
   ) => Stream.Stream<
     NetworkInsightsAnalysis,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkInsightsAnalysesRequest,
@@ -83132,22 +83128,22 @@ export const describeVerifiedAccessInstanceLoggingConfigurations: {
     input: DescribeVerifiedAccessInstanceLoggingConfigurationsRequest,
   ): Effect.Effect<
     DescribeVerifiedAccessInstanceLoggingConfigurationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVerifiedAccessInstanceLoggingConfigurationsRequest,
   ) => Stream.Stream<
     DescribeVerifiedAccessInstanceLoggingConfigurationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVerifiedAccessInstanceLoggingConfigurationsRequest,
   ) => Stream.Stream<
     VerifiedAccessInstanceLoggingConfiguration,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVerifiedAccessInstanceLoggingConfigurationsRequest,
@@ -83169,22 +83165,22 @@ export const getCapacityManagerMetricData: {
     input: GetCapacityManagerMetricDataRequest,
   ): Effect.Effect<
     GetCapacityManagerMetricDataResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetCapacityManagerMetricDataRequest,
   ) => Stream.Stream<
     GetCapacityManagerMetricDataResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetCapacityManagerMetricDataRequest,
   ) => Stream.Stream<
     MetricDataResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCapacityManagerMetricDataRequest,
@@ -83212,8 +83208,8 @@ export const getLaunchTemplateData: (
   input: GetLaunchTemplateDataRequest,
 ) => Effect.Effect<
   GetLaunchTemplateDataResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLaunchTemplateDataRequest,
   output: GetLaunchTemplateDataResult,
@@ -83226,8 +83222,8 @@ export const getNetworkInsightsAccessScopeContent: (
   input: GetNetworkInsightsAccessScopeContentRequest,
 ) => Effect.Effect<
   GetNetworkInsightsAccessScopeContentResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNetworkInsightsAccessScopeContentRequest,
   output: GetNetworkInsightsAccessScopeContentResult,
@@ -83271,8 +83267,8 @@ export const requestSpotFleet: (
   input: RequestSpotFleetRequest,
 ) => Effect.Effect<
   RequestSpotFleetResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RequestSpotFleetRequest,
   output: RequestSpotFleetResponse,
@@ -83291,8 +83287,8 @@ export const createFleet: (
   input: CreateFleetRequest,
 ) => Effect.Effect<
   CreateFleetResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFleetRequest,
   output: CreateFleetResult,
@@ -83312,22 +83308,22 @@ export const describeFleets: {
     input: DescribeFleetsRequest,
   ): Effect.Effect<
     DescribeFleetsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetsRequest,
   ) => Stream.Stream<
     DescribeFleetsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetsRequest,
   ) => Stream.Stream<
     FleetData,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetsRequest,
@@ -83350,8 +83346,8 @@ export const describeVpnConnections: (
   input: DescribeVpnConnectionsRequest,
 ) => Effect.Effect<
   DescribeVpnConnectionsResult,
-  InvalidVpnConnectionIDNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  InvalidVpnConnectionIDNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpnConnectionsRequest,
   output: DescribeVpnConnectionsResult,
@@ -83376,22 +83372,22 @@ export const getInstanceTypesFromInstanceRequirements: {
     input: GetInstanceTypesFromInstanceRequirementsRequest,
   ): Effect.Effect<
     GetInstanceTypesFromInstanceRequirementsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetInstanceTypesFromInstanceRequirementsRequest,
   ) => Stream.Stream<
     GetInstanceTypesFromInstanceRequirementsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetInstanceTypesFromInstanceRequirementsRequest,
   ) => Stream.Stream<
     InstanceTypeInfoFromInstanceRequirements,
-    Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetInstanceTypesFromInstanceRequirementsRequest,
@@ -83448,22 +83444,22 @@ export const describeInstances: {
     input: DescribeInstancesRequest,
   ): Effect.Effect<
     DescribeInstancesResult,
-    InvalidInstanceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInstanceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstancesRequest,
   ) => Stream.Stream<
     DescribeInstancesResult,
-    InvalidInstanceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInstanceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstancesRequest,
   ) => Stream.Stream<
     Reservation,
-    InvalidInstanceIDNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    InvalidInstanceIDNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancesRequest,
@@ -83512,8 +83508,8 @@ export const modifySpotFleetRequest: (
   input: ModifySpotFleetRequestRequest,
 ) => Effect.Effect<
   ModifySpotFleetRequestResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySpotFleetRequestRequest,
   output: ModifySpotFleetRequestResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Network Firewall",
@@ -4280,8 +4278,8 @@ export const listFirewallPolicies: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFirewallPoliciesRequest,
@@ -4290,8 +4288,8 @@ export const listFirewallPolicies: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFirewallPoliciesRequest,
@@ -4300,8 +4298,8 @@ export const listFirewallPolicies: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallPoliciesRequest,
@@ -4333,8 +4331,8 @@ export const startFlowCapture: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFlowCaptureRequest,
   output: StartFlowCaptureResponse,
@@ -4356,8 +4354,8 @@ export const updateProxyRuleGroupPriorities: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProxyRuleGroupPrioritiesRequest,
   output: UpdateProxyRuleGroupPrioritiesResponse,
@@ -4393,8 +4391,8 @@ export const putResourcePolicy: (
   | InvalidResourcePolicyException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -4417,8 +4415,8 @@ export const describeFlowOperation: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFlowOperationRequest,
   output: DescribeFlowOperationResponse,
@@ -4441,8 +4439,8 @@ export const listAnalysisReports: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAnalysisReportsRequest,
@@ -4452,8 +4450,8 @@ export const listAnalysisReports: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAnalysisReportsRequest,
@@ -4463,8 +4461,8 @@ export const listAnalysisReports: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAnalysisReportsRequest,
@@ -4499,8 +4497,8 @@ export const listFlowOperationResults: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFlowOperationResultsRequest,
@@ -4510,8 +4508,8 @@ export const listFlowOperationResults: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFlowOperationResultsRequest,
@@ -4521,8 +4519,8 @@ export const listFlowOperationResults: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowOperationResultsRequest,
@@ -4558,8 +4556,8 @@ export const listFlowOperations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFlowOperationsRequest,
@@ -4569,8 +4567,8 @@ export const listFlowOperations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFlowOperationsRequest,
@@ -4580,8 +4578,8 @@ export const listFlowOperations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowOperationsRequest,
@@ -4613,8 +4611,8 @@ export const listProxyConfigurations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProxyConfigurationsRequest,
@@ -4624,8 +4622,8 @@ export const listProxyConfigurations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProxyConfigurationsRequest,
@@ -4635,8 +4633,8 @@ export const listProxyConfigurations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProxyConfigurationsRequest,
@@ -4668,8 +4666,8 @@ export const listProxyRuleGroups: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProxyRuleGroupsRequest,
@@ -4679,8 +4677,8 @@ export const listProxyRuleGroups: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProxyRuleGroupsRequest,
@@ -4690,8 +4688,8 @@ export const listProxyRuleGroups: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProxyRuleGroupsRequest,
@@ -4720,8 +4718,8 @@ export const updateProxyRule: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProxyRuleRequest,
   output: UpdateProxyRuleResponse,
@@ -4743,8 +4741,8 @@ export const updateProxyRulePriorities: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProxyRulePrioritiesRequest,
   output: UpdateProxyRulePrioritiesResponse,
@@ -4766,8 +4764,8 @@ export const describeFirewall: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFirewallRequest,
   output: DescribeFirewallResponse,
@@ -4789,8 +4787,8 @@ export const describeFirewallPolicy: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFirewallPolicyRequest,
   output: DescribeFirewallPolicyResponse,
@@ -4812,8 +4810,8 @@ export const describeLoggingConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLoggingConfigurationRequest,
   output: DescribeLoggingConfigurationResponse,
@@ -4835,8 +4833,8 @@ export const describeProxyRule: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProxyRuleRequest,
   output: DescribeProxyRuleResponse,
@@ -4858,8 +4856,8 @@ export const describeProxyRuleGroup: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProxyRuleGroupRequest,
   output: DescribeProxyRuleGroupResponse,
@@ -4881,8 +4879,8 @@ export const describeResourcePolicy: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResourcePolicyRequest,
   output: DescribeResourcePolicyResponse,
@@ -4904,8 +4902,8 @@ export const describeRuleGroup: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRuleGroupRequest,
   output: DescribeRuleGroupResponse,
@@ -4929,8 +4927,8 @@ export const describeRuleGroupMetadata: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRuleGroupMetadataRequest,
   output: DescribeRuleGroupMetadataResponse,
@@ -4952,8 +4950,8 @@ export const describeTLSInspectionConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTLSInspectionConfigurationRequest,
   output: DescribeTLSInspectionConfigurationResponse,
@@ -4975,8 +4973,8 @@ export const describeVpcEndpointAssociation: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcEndpointAssociationRequest,
   output: DescribeVpcEndpointAssociationResponse,
@@ -5000,8 +4998,8 @@ export const detachRuleGroupsFromProxyConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachRuleGroupsFromProxyConfigurationRequest,
   output: DetachRuleGroupsFromProxyConfigurationResponse,
@@ -5031,8 +5029,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -5042,8 +5040,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -5053,8 +5051,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -5089,8 +5087,8 @@ export const rejectNetworkFirewallTransitGatewayAttachment: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectNetworkFirewallTransitGatewayAttachmentRequest,
   output: RejectNetworkFirewallTransitGatewayAttachmentResponse,
@@ -5114,8 +5112,8 @@ export const startAnalysisReport: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAnalysisReportRequest,
   output: StartAnalysisReportResponse,
@@ -5143,8 +5141,8 @@ export const startFlowFlush: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFlowFlushRequest,
   output: StartFlowFlushResponse,
@@ -5166,8 +5164,8 @@ export const updateProxyConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProxyConfigurationRequest,
   output: UpdateProxyConfigurationResponse,
@@ -5195,8 +5193,8 @@ export const tagResource: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5225,8 +5223,8 @@ export const untagResource: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5254,8 +5252,8 @@ export const acceptNetworkFirewallTransitGatewayAttachment: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptNetworkFirewallTransitGatewayAttachmentRequest,
   output: AcceptNetworkFirewallTransitGatewayAttachmentResponse,
@@ -5281,8 +5279,8 @@ export const deleteNetworkFirewallTransitGatewayAttachment: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkFirewallTransitGatewayAttachmentRequest,
   output: DeleteNetworkFirewallTransitGatewayAttachmentResponse,
@@ -5304,8 +5302,8 @@ export const deleteProxyConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProxyConfigurationRequest,
   output: DeleteProxyConfigurationResponse,
@@ -5327,8 +5325,8 @@ export const deleteProxyRuleGroup: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProxyRuleGroupRequest,
   output: DeleteProxyRuleGroupResponse,
@@ -5352,8 +5350,8 @@ export const attachRuleGroupsToProxyConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachRuleGroupsToProxyConfigurationRequest,
   output: AttachRuleGroupsToProxyConfigurationResponse,
@@ -5375,8 +5373,8 @@ export const deleteProxyRules: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProxyRulesRequest,
   output: DeleteProxyRulesResponse,
@@ -5399,8 +5397,8 @@ export const deleteResourcePolicy: (
   | InvalidResourcePolicyException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -5424,8 +5422,8 @@ export const deleteTLSInspectionConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTLSInspectionConfigurationRequest,
   output: DeleteTLSInspectionConfigurationResponse,
@@ -5452,8 +5450,8 @@ export const listFirewalls: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFirewallsRequest,
@@ -5462,8 +5460,8 @@ export const listFirewalls: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFirewallsRequest,
@@ -5472,8 +5470,8 @@ export const listFirewalls: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFirewallsRequest,
@@ -5499,8 +5497,8 @@ export const listProxies: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProxiesRequest,
@@ -5509,8 +5507,8 @@ export const listProxies: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProxiesRequest,
@@ -5519,8 +5517,8 @@ export const listProxies: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProxiesRequest,
@@ -5546,8 +5544,8 @@ export const listRuleGroups: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRuleGroupsRequest,
@@ -5556,8 +5554,8 @@ export const listRuleGroups: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRuleGroupsRequest,
@@ -5566,8 +5564,8 @@ export const listRuleGroups: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRuleGroupsRequest,
@@ -5591,8 +5589,8 @@ export const listTLSInspectionConfigurations: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTLSInspectionConfigurationsRequest,
@@ -5601,8 +5599,8 @@ export const listTLSInspectionConfigurations: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTLSInspectionConfigurationsRequest,
@@ -5611,8 +5609,8 @@ export const listTLSInspectionConfigurations: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTLSInspectionConfigurationsRequest,
@@ -5640,8 +5638,8 @@ export const listVpcEndpointAssociations: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVpcEndpointAssociationsRequest,
@@ -5650,8 +5648,8 @@ export const listVpcEndpointAssociations: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVpcEndpointAssociationsRequest,
@@ -5660,8 +5658,8 @@ export const listVpcEndpointAssociations: {
     | InternalServerError
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVpcEndpointAssociationsRequest,
@@ -5688,8 +5686,8 @@ export const createProxyRules: (
   | InternalServerError
   | InvalidRequestException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProxyRulesRequest,
   output: CreateProxyRulesResponse,
@@ -5714,8 +5712,8 @@ export const deleteVpcEndpointAssociation: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointAssociationRequest,
   output: DeleteVpcEndpointAssociationResponse,
@@ -5739,8 +5737,8 @@ export const describeFirewallMetadata: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFirewallMetadataRequest,
   output: DescribeFirewallMetadataResponse,
@@ -5762,8 +5760,8 @@ export const describeProxy: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProxyRequest,
   output: DescribeProxyResponse,
@@ -5785,8 +5783,8 @@ export const describeProxyConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProxyConfigurationRequest,
   output: DescribeProxyConfigurationResponse,
@@ -5812,8 +5810,8 @@ export const describeRuleGroupSummary: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRuleGroupSummaryRequest,
   output: DescribeRuleGroupSummaryResponse,
@@ -5838,8 +5836,8 @@ export const getAnalysisReportResults: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetAnalysisReportResultsRequest,
@@ -5849,8 +5847,8 @@ export const getAnalysisReportResults: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetAnalysisReportResultsRequest,
@@ -5860,8 +5858,8 @@ export const getAnalysisReportResults: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAnalysisReportResultsRequest,
@@ -5891,8 +5889,8 @@ export const updateFirewallAnalysisSettings: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallAnalysisSettingsRequest,
   output: UpdateFirewallAnalysisSettingsResponse,
@@ -5917,8 +5915,8 @@ export const updateFirewallDescription: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallDescriptionRequest,
   output: UpdateFirewallDescriptionResponse,
@@ -5942,8 +5940,8 @@ export const updateFirewallPolicy: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallPolicyRequest,
   output: UpdateFirewallPolicyResponse,
@@ -5973,8 +5971,8 @@ export const updateRuleGroup: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRuleGroupRequest,
   output: UpdateRuleGroupResponse,
@@ -6004,8 +6002,8 @@ export const updateTLSInspectionConfiguration: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTLSInspectionConfigurationRequest,
   output: UpdateTLSInspectionConfigurationResponse,
@@ -6034,8 +6032,8 @@ export const disassociateAvailabilityZones: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateAvailabilityZonesRequest,
   output: DisassociateAvailabilityZonesResponse,
@@ -6063,8 +6061,8 @@ export const disassociateSubnets: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateSubnetsRequest,
   output: DisassociateSubnetsResponse,
@@ -6095,8 +6093,8 @@ export const associateFirewallPolicy: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateFirewallPolicyRequest,
   output: AssociateFirewallPolicyResponse,
@@ -6125,8 +6123,8 @@ export const associateAvailabilityZones: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateAvailabilityZonesRequest,
   output: AssociateAvailabilityZonesResponse,
@@ -6160,8 +6158,8 @@ export const associateSubnets: (
   | InvalidTokenException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSubnetsRequest,
   output: AssociateSubnetsResponse,
@@ -6193,8 +6191,8 @@ export const createProxyConfiguration: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProxyConfigurationRequest,
   output: CreateProxyConfigurationResponse,
@@ -6225,8 +6223,8 @@ export const createProxyRuleGroup: (
   | InvalidRequestException
   | LimitExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProxyRuleGroupRequest,
   output: CreateProxyRuleGroupResponse,
@@ -6263,8 +6261,8 @@ export const createFirewall: (
   | InvalidRequestException
   | LimitExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFirewallRequest,
   output: CreateFirewallResponse,
@@ -6292,8 +6290,8 @@ export const updateAvailabilityZoneChangeProtection: (
   | ResourceNotFoundException
   | ResourceOwnerCheckException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAvailabilityZoneChangeProtectionRequest,
   output: UpdateAvailabilityZoneChangeProtectionResponse,
@@ -6325,8 +6323,8 @@ export const createProxy: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProxyRequest,
   output: CreateProxyResponse,
@@ -6355,8 +6353,8 @@ export const updateFirewallDeleteProtection: (
   | ResourceNotFoundException
   | ResourceOwnerCheckException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallDeleteProtectionRequest,
   output: UpdateFirewallDeleteProtectionResponse,
@@ -6382,8 +6380,8 @@ export const updateFirewallEncryptionConfiguration: (
   | ResourceNotFoundException
   | ResourceOwnerCheckException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallEncryptionConfigurationRequest,
   output: UpdateFirewallEncryptionConfigurationResponse,
@@ -6411,8 +6409,8 @@ export const updateFirewallPolicyChangeProtection: (
   | ResourceNotFoundException
   | ResourceOwnerCheckException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFirewallPolicyChangeProtectionRequest,
   output: UpdateFirewallPolicyChangeProtectionResponse,
@@ -6438,8 +6436,8 @@ export const updateSubnetChangeProtection: (
   | ResourceNotFoundException
   | ResourceOwnerCheckException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSubnetChangeProtectionRequest,
   output: UpdateSubnetChangeProtectionResponse,
@@ -6464,8 +6462,8 @@ export const updateProxy: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProxyRequest,
   output: UpdateProxyResponse,
@@ -6491,8 +6489,8 @@ export const deleteProxy: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProxyRequest,
   output: DeleteProxyResponse,
@@ -6517,8 +6515,8 @@ export const deleteFirewallPolicy: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFirewallPolicyRequest,
   output: DeleteFirewallPolicyResponse,
@@ -6544,8 +6542,8 @@ export const deleteRuleGroup: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRuleGroupRequest,
   output: DeleteRuleGroupResponse,
@@ -6579,8 +6577,8 @@ export const createTLSInspectionConfiguration: (
   | InvalidRequestException
   | LimitExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTLSInspectionConfigurationRequest,
   output: CreateTLSInspectionConfigurationResponse,
@@ -6606,8 +6604,8 @@ export const createVpcEndpointAssociation: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointAssociationRequest,
   output: CreateVpcEndpointAssociationResponse,
@@ -6657,8 +6655,8 @@ export const updateLoggingConfiguration: (
   | LogDestinationPermissionException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLoggingConfigurationRequest,
   output: UpdateLoggingConfigurationResponse,
@@ -6687,8 +6685,8 @@ export const createFirewallPolicy: (
   | InvalidRequestException
   | LimitExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFirewallPolicyRequest,
   output: CreateFirewallPolicyResponse,
@@ -6725,8 +6723,8 @@ export const deleteFirewall: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFirewallRequest,
   output: DeleteFirewallResponse,
@@ -6755,8 +6753,8 @@ export const createRuleGroup: (
   | InvalidRequestException
   | LimitExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRuleGroupRequest,
   output: CreateRuleGroupResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "OpenSearchServerless",
@@ -2056,21 +2054,19 @@ export const ListVpcEndpointsResponse = S.suspend(() =>
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -2080,11 +2076,11 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     serviceCode: S.String,
     quotaCode: S.optional(S.String),
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class OcuLimitExceededException extends S.TaggedError<OcuLimitExceededException>()(
   "OcuLimitExceededException",
   { message: S.String },
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -2094,8 +2090,8 @@ export const getPoliciesStats: (
   input: GetPoliciesStatsRequest,
 ) => Effect.Effect<
   GetPoliciesStatsResponse,
-  InternalServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPoliciesStatsRequest,
   output: GetPoliciesStatsResponse,
@@ -2108,8 +2104,8 @@ export const getAccountSettings: (
   input: GetAccountSettingsRequest,
 ) => Effect.Effect<
   GetAccountSettingsResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsResponse,
@@ -2125,8 +2121,8 @@ export const getSecurityPolicy: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSecurityPolicyRequest,
   output: GetSecurityPolicyResponse,
@@ -2147,8 +2143,8 @@ export const deleteAccessPolicy: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessPolicyRequest,
   output: DeleteAccessPolicyResponse,
@@ -2170,8 +2166,8 @@ export const createIndex: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIndexRequest,
   output: CreateIndexResponse,
@@ -2193,8 +2189,8 @@ export const deleteLifecyclePolicy: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLifecyclePolicyRequest,
   output: DeleteLifecyclePolicyResponse,
@@ -2216,8 +2212,8 @@ export const deleteSecurityConfig: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSecurityConfigRequest,
   output: DeleteSecurityConfigResponse,
@@ -2239,8 +2235,8 @@ export const deleteSecurityPolicy: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSecurityPolicyRequest,
   output: DeleteSecurityPolicyResponse,
@@ -2261,8 +2257,8 @@ export const deleteIndex: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIndexRequest,
   output: DeleteIndexResponse,
@@ -2282,8 +2278,8 @@ export const listTagsForResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2304,8 +2300,8 @@ export const untagResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2326,8 +2322,8 @@ export const getAccessPolicy: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessPolicyRequest,
   output: GetAccessPolicyResponse,
@@ -2348,8 +2344,8 @@ export const updateAccessPolicy: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccessPolicyRequest,
   output: UpdateAccessPolicyResponse,
@@ -2370,8 +2366,8 @@ export const getIndex: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIndexRequest,
   output: GetIndexResponse,
@@ -2392,8 +2388,8 @@ export const deleteCollection: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCollectionRequest,
   output: DeleteCollectionResponse,
@@ -2411,8 +2407,8 @@ export const batchGetVpcEndpoint: (
   input: BatchGetVpcEndpointRequest,
 ) => Effect.Effect<
   BatchGetVpcEndpointResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetVpcEndpointRequest,
   output: BatchGetVpcEndpointResponse,
@@ -2428,8 +2424,8 @@ export const updateVpcEndpoint: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVpcEndpointRequest,
   output: UpdateVpcEndpointResponse,
@@ -2443,22 +2439,22 @@ export const listAccessPolicies: {
     input: ListAccessPoliciesRequest,
   ): Effect.Effect<
     ListAccessPoliciesResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessPoliciesRequest,
   ) => Stream.Stream<
     ListAccessPoliciesResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessPoliciesRequest,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessPoliciesRequest,
@@ -2476,8 +2472,8 @@ export const updateCollection: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCollectionRequest,
   output: UpdateCollectionResponse,
@@ -2493,8 +2489,8 @@ export const updateIndex: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIndexRequest,
   output: UpdateIndexResponse,
@@ -2512,22 +2508,22 @@ export const listLifecyclePolicies: {
     input: ListLifecyclePoliciesRequest,
   ): Effect.Effect<
     ListLifecyclePoliciesResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLifecyclePoliciesRequest,
   ) => Stream.Stream<
     ListLifecyclePoliciesResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLifecyclePoliciesRequest,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLifecyclePoliciesRequest,
@@ -2546,8 +2542,8 @@ export const updateSecurityConfig: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSecurityConfigRequest,
   output: UpdateSecurityConfigResponse,
@@ -2566,22 +2562,22 @@ export const listSecurityConfigs: {
     input: ListSecurityConfigsRequest,
   ): Effect.Effect<
     ListSecurityConfigsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSecurityConfigsRequest,
   ) => Stream.Stream<
     ListSecurityConfigsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSecurityConfigsRequest,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityConfigsRequest,
@@ -2597,22 +2593,22 @@ export const listSecurityPolicies: {
     input: ListSecurityPoliciesRequest,
   ): Effect.Effect<
     ListSecurityPoliciesResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSecurityPoliciesRequest,
   ) => Stream.Stream<
     ListSecurityPoliciesResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSecurityPoliciesRequest,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityPoliciesRequest,
@@ -2631,8 +2627,8 @@ export const deleteVpcEndpoint: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointRequest,
   output: DeleteVpcEndpointResponse,
@@ -2650,8 +2646,8 @@ export const batchGetCollection: (
   input: BatchGetCollectionRequest,
 ) => Effect.Effect<
   BatchGetCollectionResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetCollectionRequest,
   output: BatchGetCollectionResponse,
@@ -2664,8 +2660,8 @@ export const batchGetEffectiveLifecyclePolicy: (
   input: BatchGetEffectiveLifecyclePolicyRequest,
 ) => Effect.Effect<
   BatchGetEffectiveLifecyclePolicyResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetEffectiveLifecyclePolicyRequest,
   output: BatchGetEffectiveLifecyclePolicyResponse,
@@ -2678,8 +2674,8 @@ export const batchGetLifecyclePolicy: (
   input: BatchGetLifecyclePolicyRequest,
 ) => Effect.Effect<
   BatchGetLifecyclePolicyResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetLifecyclePolicyRequest,
   output: BatchGetLifecyclePolicyResponse,
@@ -2696,8 +2692,8 @@ export const createLifecyclePolicy: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLifecyclePolicyRequest,
   output: CreateLifecyclePolicyResponse,
@@ -2718,22 +2714,22 @@ export const listCollections: {
     input: ListCollectionsRequest,
   ): Effect.Effect<
     ListCollectionsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCollectionsRequest,
   ) => Stream.Stream<
     ListCollectionsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCollectionsRequest,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCollectionsRequest,
@@ -2751,8 +2747,8 @@ export const getSecurityConfig: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSecurityConfigRequest,
   output: GetSecurityConfigResponse,
@@ -2770,22 +2766,22 @@ export const listVpcEndpoints: {
     input: ListVpcEndpointsRequest,
   ): Effect.Effect<
     ListVpcEndpointsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVpcEndpointsRequest,
   ) => Stream.Stream<
     ListVpcEndpointsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVpcEndpointsRequest,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVpcEndpointsRequest,
@@ -2804,8 +2800,8 @@ export const createSecurityPolicy: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSecurityPolicyRequest,
   output: CreateSecurityPolicyResponse,
@@ -2826,8 +2822,8 @@ export const updateAccountSettings: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountSettingsRequest,
   output: UpdateAccountSettingsResponse,
@@ -2848,8 +2844,8 @@ export const createAccessPolicy: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessPolicyRequest,
   output: CreateAccessPolicyResponse,
@@ -2871,8 +2867,8 @@ export const createSecurityConfig: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSecurityConfigRequest,
   output: CreateSecurityConfigResponse,
@@ -2894,8 +2890,8 @@ export const createVpcEndpoint: (
   | InternalServerException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointRequest,
   output: CreateVpcEndpointResponse,
@@ -2918,8 +2914,8 @@ export const updateLifecyclePolicy: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLifecyclePolicyRequest,
   output: UpdateLifecyclePolicyResponse,
@@ -2943,8 +2939,8 @@ export const updateSecurityPolicy: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSecurityPolicyRequest,
   output: UpdateSecurityPolicyResponse,
@@ -2968,8 +2964,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2993,8 +2989,8 @@ export const createCollection: (
   | OcuLimitExceededException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCollectionRequest,
   output: CreateCollectionResponse,

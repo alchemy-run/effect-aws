@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "FSx",
@@ -4084,7 +4082,7 @@ export class InvalidDestinationKmsKey extends S.TaggedError<InvalidDestinationKm
 export class AccessPointAlreadyOwnedByYou extends S.TaggedError<AccessPointAlreadyOwnedByYou>()(
   "AccessPointAlreadyOwnedByYou",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidExportPath extends S.TaggedError<InvalidExportPath>()(
   "InvalidExportPath",
   { Message: S.optional(S.String) },
@@ -4108,7 +4106,7 @@ export class InvalidRegion extends S.TaggedError<InvalidRegion>()(
 export class InvalidAccessPoint extends S.TaggedError<InvalidAccessPoint>()(
   "InvalidAccessPoint",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidImportPath extends S.TaggedError<InvalidImportPath>()(
   "InvalidImportPath",
   { Message: S.optional(S.String) },
@@ -4120,7 +4118,7 @@ export class InvalidSourceKmsKey extends S.TaggedError<InvalidSourceKmsKey>()(
 export class InvalidRequest extends S.TaggedError<InvalidRequest>()(
   "InvalidRequest",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SourceBackupUnavailable extends S.TaggedError<SourceBackupUnavailable>()(
   "SourceBackupUnavailable",
   { Message: S.optional(S.String), BackupId: S.optional(S.String) },
@@ -4128,7 +4126,7 @@ export class SourceBackupUnavailable extends S.TaggedError<SourceBackupUnavailab
 export class TooManyAccessPoints extends S.TaggedError<TooManyAccessPoints>()(
   "TooManyAccessPoints",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -4139,8 +4137,8 @@ export const describeSharedVpcConfiguration: (
   input: DescribeSharedVpcConfigurationRequest,
 ) => Effect.Effect<
   DescribeSharedVpcConfigurationResponse,
-  BadRequest | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | InternalServerError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSharedVpcConfigurationRequest,
   output: DescribeSharedVpcConfigurationResponse,
@@ -4162,8 +4160,8 @@ export const disassociateFileSystemAliases: (
   input: DisassociateFileSystemAliasesRequest,
 ) => Effect.Effect<
   DisassociateFileSystemAliasesResponse,
-  BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateFileSystemAliasesRequest,
   output: DisassociateFileSystemAliasesResponse,
@@ -4184,11 +4182,8 @@ export const updateSharedVpcConfiguration: (
   input: UpdateSharedVpcConfigurationRequest,
 ) => Effect.Effect<
   UpdateSharedVpcConfigurationResponse,
-  | BadRequest
-  | IncompatibleParameterError
-  | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | IncompatibleParameterError | InternalServerError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSharedVpcConfigurationRequest,
   output: UpdateSharedVpcConfigurationResponse,
@@ -4202,8 +4197,8 @@ export const startMisconfiguredStateRecovery: (
   input: StartMisconfiguredStateRecoveryRequest,
 ) => Effect.Effect<
   StartMisconfiguredStateRecoveryResponse,
-  BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMisconfiguredStateRecoveryRequest,
   output: StartMisconfiguredStateRecoveryResponse,
@@ -4219,22 +4214,22 @@ export const describeFileSystemAliases: {
     input: DescribeFileSystemAliasesRequest,
   ): Effect.Effect<
     DescribeFileSystemAliasesResponse,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFileSystemAliasesRequest,
   ) => Stream.Stream<
     DescribeFileSystemAliasesResponse,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFileSystemAliasesRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFileSystemAliasesRequest,
@@ -4280,22 +4275,22 @@ export const describeFileSystems: {
     input: DescribeFileSystemsRequest,
   ): Effect.Effect<
     DescribeFileSystemsResponse,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFileSystemsRequest,
   ) => Stream.Stream<
     DescribeFileSystemsResponse,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFileSystemsRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFileSystemsRequest,
@@ -4325,8 +4320,8 @@ export const associateFileSystemAliases: (
   input: AssociateFileSystemAliasesRequest,
 ) => Effect.Effect<
   AssociateFileSystemAliasesResponse,
-  BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateFileSystemAliasesRequest,
   output: AssociateFileSystemAliasesResponse,
@@ -4366,22 +4361,22 @@ export const describeFileCaches: {
     input: DescribeFileCachesRequest,
   ): Effect.Effect<
     DescribeFileCachesResponse,
-    BadRequest | FileCacheNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileCacheNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFileCachesRequest,
   ) => Stream.Stream<
     DescribeFileCachesResponse,
-    BadRequest | FileCacheNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileCacheNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFileCachesRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequest | FileCacheNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileCacheNotFound | InternalServerError | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFileCachesRequest,
@@ -4426,22 +4421,22 @@ export const describeSnapshots: {
     input: DescribeSnapshotsRequest,
   ): Effect.Effect<
     DescribeSnapshotsResponse,
-    BadRequest | InternalServerError | SnapshotNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | InternalServerError | SnapshotNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSnapshotsRequest,
   ) => Stream.Stream<
     DescribeSnapshotsResponse,
-    BadRequest | InternalServerError | SnapshotNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | InternalServerError | SnapshotNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSnapshotsRequest,
   ) => Stream.Stream<
     Snapshot,
-    BadRequest | InternalServerError | SnapshotNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | InternalServerError | SnapshotNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsRequest,
@@ -4465,8 +4460,8 @@ export const describeStorageVirtualMachines: {
     | BadRequest
     | InternalServerError
     | StorageVirtualMachineNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeStorageVirtualMachinesRequest,
@@ -4475,8 +4470,8 @@ export const describeStorageVirtualMachines: {
     | BadRequest
     | InternalServerError
     | StorageVirtualMachineNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeStorageVirtualMachinesRequest,
@@ -4485,8 +4480,8 @@ export const describeStorageVirtualMachines: {
     | BadRequest
     | InternalServerError
     | StorageVirtualMachineNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeStorageVirtualMachinesRequest,
@@ -4508,22 +4503,22 @@ export const describeVolumes: {
     input: DescribeVolumesRequest,
   ): Effect.Effect<
     DescribeVolumesResponse,
-    BadRequest | InternalServerError | VolumeNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | InternalServerError | VolumeNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVolumesRequest,
   ) => Stream.Stream<
     DescribeVolumesResponse,
-    BadRequest | InternalServerError | VolumeNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | InternalServerError | VolumeNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVolumesRequest,
   ) => Stream.Stream<
     Volume,
-    BadRequest | InternalServerError | VolumeNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | InternalServerError | VolumeNotFound | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVolumesRequest,
@@ -4551,8 +4546,8 @@ export const updateDataRepositoryAssociation: (
   | IncompatibleParameterError
   | InternalServerError
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataRepositoryAssociationRequest,
   output: UpdateDataRepositoryAssociationResponse,
@@ -4601,8 +4596,8 @@ export const describeBackups: {
     | FileSystemNotFound
     | InternalServerError
     | VolumeNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBackupsRequest,
@@ -4613,8 +4608,8 @@ export const describeBackups: {
     | FileSystemNotFound
     | InternalServerError
     | VolumeNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBackupsRequest,
@@ -4625,8 +4620,8 @@ export const describeBackups: {
     | FileSystemNotFound
     | InternalServerError
     | VolumeNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBackupsRequest,
@@ -4651,8 +4646,8 @@ export const updateSnapshot: (
   input: UpdateSnapshotRequest,
 ) => Effect.Effect<
   UpdateSnapshotResponse,
-  BadRequest | InternalServerError | SnapshotNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | InternalServerError | SnapshotNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSnapshotRequest,
   output: UpdateSnapshotResponse,
@@ -4670,8 +4665,8 @@ export const deleteSnapshot: (
   input: DeleteSnapshotRequest,
 ) => Effect.Effect<
   DeleteSnapshotResponse,
-  BadRequest | InternalServerError | SnapshotNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | InternalServerError | SnapshotNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSnapshotRequest,
   output: DeleteSnapshotResponse,
@@ -4689,8 +4684,8 @@ export const deleteStorageVirtualMachine: (
   | IncompatibleParameterError
   | InternalServerError
   | StorageVirtualMachineNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStorageVirtualMachineRequest,
   output: DeleteStorageVirtualMachineResponse,
@@ -4709,8 +4704,8 @@ export const restoreVolumeFromSnapshot: (
   input: RestoreVolumeFromSnapshotRequest,
 ) => Effect.Effect<
   RestoreVolumeFromSnapshotResponse,
-  BadRequest | InternalServerError | VolumeNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | InternalServerError | VolumeNotFound | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreVolumeFromSnapshotRequest,
   output: RestoreVolumeFromSnapshotResponse,
@@ -4739,8 +4734,8 @@ export const deleteFileCache: (
   | IncompatibleParameterError
   | InternalServerError
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFileCacheRequest,
   output: DeleteFileCacheResponse,
@@ -4765,8 +4760,8 @@ export const releaseFileSystemNfsV3Locks: (
   | IncompatibleParameterError
   | InternalServerError
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReleaseFileSystemNfsV3LocksRequest,
   output: ReleaseFileSystemNfsV3LocksResponse,
@@ -4796,8 +4791,8 @@ export const deleteDataRepositoryAssociation: (
   | IncompatibleParameterError
   | InternalServerError
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataRepositoryAssociationRequest,
   output: DeleteDataRepositoryAssociationResponse,
@@ -4821,8 +4816,8 @@ export const copySnapshotAndUpdateVolume: (
   | IncompatibleParameterError
   | InternalServerError
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopySnapshotAndUpdateVolumeRequest,
   output: CopySnapshotAndUpdateVolumeResponse,
@@ -4870,8 +4865,8 @@ export const createSnapshot: (
   | InternalServerError
   | ServiceLimitExceeded
   | VolumeNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotRequest,
   output: CreateSnapshotResponse,
@@ -4939,8 +4934,8 @@ export const deleteFileSystem: (
   | IncompatibleParameterError
   | InternalServerError
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFileSystemRequest,
   output: DeleteFileSystemResponse,
@@ -4965,8 +4960,8 @@ export const deleteVolume: (
   | InternalServerError
   | ServiceLimitExceeded
   | VolumeNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVolumeRequest,
   output: DeleteVolumeResponse,
@@ -4999,8 +4994,8 @@ export const deleteBackup: (
   | BadRequest
   | IncompatibleParameterError
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupRequest,
   output: DeleteBackupResponse,
@@ -5047,8 +5042,8 @@ export const describeDataRepositoryAssociations: {
     | FileSystemNotFound
     | InternalServerError
     | InvalidDataRepositoryType
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDataRepositoryAssociationsRequest,
@@ -5059,8 +5054,8 @@ export const describeDataRepositoryAssociations: {
     | FileSystemNotFound
     | InternalServerError
     | InvalidDataRepositoryType
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDataRepositoryAssociationsRequest,
@@ -5071,8 +5066,8 @@ export const describeDataRepositoryAssociations: {
     | FileSystemNotFound
     | InternalServerError
     | InvalidDataRepositoryType
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataRepositoryAssociationsRequest,
@@ -5112,8 +5107,8 @@ export const describeDataRepositoryTasks: {
     | DataRepositoryTaskNotFound
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDataRepositoryTasksRequest,
@@ -5123,8 +5118,8 @@ export const describeDataRepositoryTasks: {
     | DataRepositoryTaskNotFound
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDataRepositoryTasksRequest,
@@ -5134,8 +5129,8 @@ export const describeDataRepositoryTasks: {
     | DataRepositoryTaskNotFound
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataRepositoryTasksRequest,
@@ -5170,8 +5165,8 @@ export const detachAndDeleteS3AccessPoint: (
   | InternalServerError
   | S3AccessPointAttachmentNotFound
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachAndDeleteS3AccessPointRequest,
   output: DetachAndDeleteS3AccessPointResponse,
@@ -5195,8 +5190,8 @@ export const updateVolume: (
   | InternalServerError
   | MissingVolumeConfiguration
   | VolumeNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVolumeRequest,
   output: UpdateVolumeResponse,
@@ -5269,8 +5264,8 @@ export const createBackup: (
   | ServiceLimitExceeded
   | UnsupportedOperation
   | VolumeNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackupRequest,
   output: CreateBackupResponse,
@@ -5308,8 +5303,8 @@ export const cancelDataRepositoryTask: (
   | DataRepositoryTaskNotFound
   | InternalServerError
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelDataRepositoryTaskRequest,
   output: CancelDataRepositoryTaskResponse,
@@ -5333,8 +5328,8 @@ export const updateStorageVirtualMachine: (
   | InternalServerError
   | StorageVirtualMachineNotFound
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStorageVirtualMachineRequest,
   output: UpdateStorageVirtualMachineResponse,
@@ -5375,8 +5370,8 @@ export const createDataRepositoryAssociation: (
   | InternalServerError
   | ServiceLimitExceeded
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataRepositoryAssociationRequest,
   output: CreateDataRepositoryAssociationResponse,
@@ -5404,8 +5399,8 @@ export const updateFileCache: (
   | MissingFileCacheConfiguration
   | ServiceLimitExceeded
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFileCacheRequest,
   output: UpdateFileCacheResponse,
@@ -5450,8 +5445,8 @@ export const createDataRepositoryTask: (
   | InternalServerError
   | ServiceLimitExceeded
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataRepositoryTaskRequest,
   output: CreateDataRepositoryTaskResponse,
@@ -5481,8 +5476,8 @@ export const describeS3AccessPointAttachments: {
     | InternalServerError
     | S3AccessPointAttachmentNotFound
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeS3AccessPointAttachmentsRequest,
@@ -5492,8 +5487,8 @@ export const describeS3AccessPointAttachments: {
     | InternalServerError
     | S3AccessPointAttachmentNotFound
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeS3AccessPointAttachmentsRequest,
@@ -5503,8 +5498,8 @@ export const describeS3AccessPointAttachments: {
     | InternalServerError
     | S3AccessPointAttachmentNotFound
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeS3AccessPointAttachmentsRequest,
@@ -5538,8 +5533,8 @@ export const createVolumeFromBackup: (
   | MissingVolumeConfiguration
   | ServiceLimitExceeded
   | StorageVirtualMachineNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVolumeFromBackupRequest,
   output: CreateVolumeFromBackupResponse,
@@ -5568,8 +5563,8 @@ export const createStorageVirtualMachine: (
   | InternalServerError
   | ServiceLimitExceeded
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStorageVirtualMachineRequest,
   output: CreateStorageVirtualMachineResponse,
@@ -5598,8 +5593,8 @@ export const createVolume: (
   | ServiceLimitExceeded
   | StorageVirtualMachineNotFound
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVolumeRequest,
   output: CreateVolumeResponse,
@@ -5734,8 +5729,8 @@ export const updateFileSystem: (
   | MissingFileSystemConfiguration
   | ServiceLimitExceeded
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFileSystemRequest,
   output: UpdateFileSystemResponse,
@@ -5785,8 +5780,8 @@ export const listTagsForResource: {
     | NotServiceResourceError
     | ResourceDoesNotSupportTagging
     | ResourceNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -5797,8 +5792,8 @@ export const listTagsForResource: {
     | NotServiceResourceError
     | ResourceDoesNotSupportTagging
     | ResourceNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -5809,8 +5804,8 @@ export const listTagsForResource: {
     | NotServiceResourceError
     | ResourceDoesNotSupportTagging
     | ResourceNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -5861,8 +5856,8 @@ export const createFileCache: (
   | InvalidPerUnitStorageThroughput
   | MissingFileCacheConfiguration
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFileCacheRequest,
   output: CreateFileCacheResponse,
@@ -5888,8 +5883,8 @@ export const tagResource: (
   | NotServiceResourceError
   | ResourceDoesNotSupportTagging
   | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5913,8 +5908,8 @@ export const untagResource: (
   | NotServiceResourceError
   | ResourceDoesNotSupportTagging
   | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5972,8 +5967,8 @@ export const createFileSystemFromBackup: (
   | InvalidPerUnitStorageThroughput
   | MissingFileSystemConfiguration
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFileSystemFromBackupRequest,
   output: CreateFileSystemFromBackupResponse,
@@ -6042,8 +6037,8 @@ export const createFileSystem: (
   | InvalidPerUnitStorageThroughput
   | MissingFileSystemConfiguration
   | ServiceLimitExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFileSystemRequest,
   output: CreateFileSystemResponse,
@@ -6102,8 +6097,8 @@ export const copyBackup: (
   | ServiceLimitExceeded
   | SourceBackupUnavailable
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyBackupRequest,
   output: CopyBackupResponse,
@@ -6158,8 +6153,8 @@ export const createAndAttachS3AccessPoint: (
   | TooManyAccessPoints
   | UnsupportedOperation
   | VolumeNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAndAttachS3AccessPointRequest,
   output: CreateAndAttachS3AccessPointResponse,

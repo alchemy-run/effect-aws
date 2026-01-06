@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "RolesAnywhere",
@@ -1073,19 +1071,19 @@ export const SubjectDetailResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1097,8 +1095,8 @@ export const getCrl: (
   input: ScalarCrlRequest,
 ) => Effect.Effect<
   CrlDetailResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarCrlRequest,
   output: CrlDetailResponse,
@@ -1113,8 +1111,8 @@ export const deleteCrl: (
   input: ScalarCrlRequest,
 ) => Effect.Effect<
   CrlDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarCrlRequest,
   output: CrlDetailResponse,
@@ -1129,8 +1127,8 @@ export const createProfile: (
   input: CreateProfileRequest,
 ) => Effect.Effect<
   ProfileDetailResponse,
-  AccessDeniedException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProfileRequest,
   output: ProfileDetailResponse,
@@ -1146,8 +1144,8 @@ export const deleteAttributeMapping: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAttributeMappingRequest,
   output: DeleteAttributeMappingResponse,
@@ -1167,22 +1165,22 @@ export const listSubjects: {
     input: ListRequest,
   ): Effect.Effect<
     ListSubjectsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRequest,
   ) => Stream.Stream<
     ListSubjectsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRequest,
   ) => Stream.Stream<
     SubjectSummary,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRequest,
@@ -1203,8 +1201,8 @@ export const disableCrl: (
   input: ScalarCrlRequest,
 ) => Effect.Effect<
   CrlDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarCrlRequest,
   output: CrlDetailResponse,
@@ -1219,8 +1217,8 @@ export const getProfile: (
   input: ScalarProfileRequest,
 ) => Effect.Effect<
   ProfileDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarProfileRequest,
   output: ProfileDetailResponse,
@@ -1238,8 +1236,8 @@ export const updateProfile: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProfileRequest,
   output: ProfileDetailResponse,
@@ -1261,8 +1259,8 @@ export const getTrustAnchor: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1284,8 +1282,8 @@ export const updateTrustAnchor: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1304,8 +1302,8 @@ export const enableCrl: (
   input: ScalarCrlRequest,
 ) => Effect.Effect<
   CrlDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarCrlRequest,
   output: CrlDetailResponse,
@@ -1320,8 +1318,8 @@ export const disableProfile: (
   input: ScalarProfileRequest,
 ) => Effect.Effect<
   ProfileDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarProfileRequest,
   output: ProfileDetailResponse,
@@ -1336,8 +1334,8 @@ export const enableProfile: (
   input: ScalarProfileRequest,
 ) => Effect.Effect<
   ProfileDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarProfileRequest,
   output: ProfileDetailResponse,
@@ -1352,8 +1350,8 @@ export const disableTrustAnchor: (
   input: ScalarTrustAnchorRequest,
 ) => Effect.Effect<
   TrustAnchorDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1368,8 +1366,8 @@ export const enableTrustAnchor: (
   input: ScalarTrustAnchorRequest,
 ) => Effect.Effect<
   TrustAnchorDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1387,8 +1385,8 @@ export const untagResource: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1410,8 +1408,8 @@ export const updateCrl: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCrlRequest,
   output: CrlDetailResponse,
@@ -1433,8 +1431,8 @@ export const listTagsForResource: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1454,22 +1452,22 @@ export const listProfiles: {
     input: ListRequest,
   ): Effect.Effect<
     ListProfilesResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRequest,
   ) => Stream.Stream<
     ListProfilesResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRequest,
   ) => Stream.Stream<
     ProfileDetail,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRequest,
@@ -1491,22 +1489,22 @@ export const listTrustAnchors: {
     input: ListRequest,
   ): Effect.Effect<
     ListTrustAnchorsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRequest,
   ) => Stream.Stream<
     ListTrustAnchorsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRequest,
   ) => Stream.Stream<
     TrustAnchorDetail,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRequest,
@@ -1527,8 +1525,8 @@ export const importCrl: (
   input: ImportCrlRequest,
 ) => Effect.Effect<
   CrlDetailResponse,
-  AccessDeniedException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportCrlRequest,
   output: CrlDetailResponse,
@@ -1544,22 +1542,22 @@ export const listCrls: {
     input: ListRequest,
   ): Effect.Effect<
     ListCrlsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRequest,
   ) => Stream.Stream<
     ListCrlsResponse,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRequest,
   ) => Stream.Stream<
     CrlDetail,
-    AccessDeniedException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRequest,
@@ -1585,8 +1583,8 @@ export const putNotificationSettings: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutNotificationSettingsRequest,
   output: PutNotificationSettingsResponse,
@@ -1608,8 +1606,8 @@ export const resetNotificationSettings: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetNotificationSettingsRequest,
   output: ResetNotificationSettingsResponse,
@@ -1628,8 +1626,8 @@ export const deleteProfile: (
   input: ScalarProfileRequest,
 ) => Effect.Effect<
   ProfileDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarProfileRequest,
   output: ProfileDetailResponse,
@@ -1645,8 +1643,8 @@ export const putAttributeMapping: (
   | AccessDeniedException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAttributeMappingRequest,
   output: PutAttributeMappingResponse,
@@ -1665,8 +1663,8 @@ export const createTrustAnchor: (
   input: CreateTrustAnchorRequest,
 ) => Effect.Effect<
   TrustAnchorDetailResponse,
-  AccessDeniedException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1681,8 +1679,8 @@ export const deleteTrustAnchor: (
   input: ScalarTrustAnchorRequest,
 ) => Effect.Effect<
   TrustAnchorDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarTrustAnchorRequest,
   output: TrustAnchorDetailResponse,
@@ -1701,8 +1699,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | TooManyTagsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1722,8 +1720,8 @@ export const getSubject: (
   input: ScalarSubjectRequest,
 ) => Effect.Effect<
   SubjectDetailResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalarSubjectRequest,
   output: SubjectDetailResponse,

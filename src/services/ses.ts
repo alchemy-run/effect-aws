@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ses.amazonaws.com/doc/2010-12-01/");
 const svc = T.AwsApiService({
@@ -2936,7 +2934,7 @@ export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException
   "AlreadyExistsException",
   { Name: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomVerificationEmailInvalidContentException extends S.TaggedError<CustomVerificationEmailInvalidContentException>()(
   "CustomVerificationEmailInvalidContentException",
   { message: S.optional(S.String) },
@@ -2944,7 +2942,7 @@ export class CustomVerificationEmailInvalidContentException extends S.TaggedErro
     code: "CustomVerificationEmailInvalidContent",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConfigurationSetDoesNotExistException extends S.TaggedError<ConfigurationSetDoesNotExistException>()(
   "ConfigurationSetDoesNotExistException",
   { ConfigurationSetName: S.optional(S.String), message: S.optional(S.String) },
@@ -2952,42 +2950,42 @@ export class ConfigurationSetDoesNotExistException extends S.TaggedError<Configu
     code: "ConfigurationSetDoesNotExist",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RuleSetDoesNotExistException extends S.TaggedError<RuleSetDoesNotExistException>()(
   "RuleSetDoesNotExistException",
   { Name: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "RuleSetDoesNotExist", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CannotDeleteException extends S.TaggedError<CannotDeleteException>()(
   "CannotDeleteException",
   { Name: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "CannotDelete", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidPolicyException extends S.TaggedError<InvalidPolicyException>()(
   "InvalidPolicyException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidPolicy", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RuleDoesNotExistException extends S.TaggedError<RuleDoesNotExistException>()(
   "RuleDoesNotExistException",
   { Name: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "RuleDoesNotExist", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidLambdaFunctionException extends S.TaggedError<InvalidLambdaFunctionException>()(
   "InvalidLambdaFunctionException",
   { FunctionArn: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidLambdaFunction", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTemplateException extends S.TaggedError<InvalidTemplateException>()(
   "InvalidTemplateException",
   { TemplateName: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidTemplate", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConfigurationSetAlreadyExistsException extends S.TaggedError<ConfigurationSetAlreadyExistsException>()(
   "ConfigurationSetAlreadyExistsException",
   { ConfigurationSetName: S.optional(S.String), message: S.optional(S.String) },
@@ -2995,7 +2993,7 @@ export class ConfigurationSetAlreadyExistsException extends S.TaggedError<Config
     code: "ConfigurationSetAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomVerificationEmailTemplateAlreadyExistsException extends S.TaggedError<CustomVerificationEmailTemplateAlreadyExistsException>()(
   "CustomVerificationEmailTemplateAlreadyExistsException",
   {
@@ -3006,7 +3004,7 @@ export class CustomVerificationEmailTemplateAlreadyExistsException extends S.Tag
     code: "CustomVerificationEmailTemplateAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomVerificationEmailTemplateDoesNotExistException extends S.TaggedError<CustomVerificationEmailTemplateDoesNotExistException>()(
   "CustomVerificationEmailTemplateDoesNotExistException",
   {
@@ -3017,17 +3015,17 @@ export class CustomVerificationEmailTemplateDoesNotExistException extends S.Tagg
     code: "CustomVerificationEmailTemplateDoesNotExist",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TemplateDoesNotExistException extends S.TaggedError<TemplateDoesNotExistException>()(
   "TemplateDoesNotExistException",
   { TemplateName: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "TemplateDoesNotExist", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDeliveryOptionsException extends S.TaggedError<InvalidDeliveryOptionsException>()(
   "InvalidDeliveryOptionsException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDeliveryOptions", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountSendingPausedException extends S.TaggedError<AccountSendingPausedException>()(
   "AccountSendingPausedException",
   { message: S.optional(S.String) },
@@ -3035,17 +3033,17 @@ export class AccountSendingPausedException extends S.TaggedError<AccountSendingP
     code: "AccountSendingPausedException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRenderingParameterException extends S.TaggedError<InvalidRenderingParameterException>()(
   "InvalidRenderingParameterException",
   { TemplateName: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidRenderingParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidS3ConfigurationException extends S.TaggedError<InvalidS3ConfigurationException>()(
   "InvalidS3ConfigurationException",
   { Bucket: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidS3Configuration", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDestinationDoesNotExistException extends S.TaggedError<EventDestinationDoesNotExistException>()(
   "EventDestinationDoesNotExistException",
   {
@@ -3057,7 +3055,7 @@ export class EventDestinationDoesNotExistException extends S.TaggedError<EventDe
     code: "EventDestinationDoesNotExist",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrackingOptionsDoesNotExistException extends S.TaggedError<TrackingOptionsDoesNotExistException>()(
   "TrackingOptionsDoesNotExistException",
   { ConfigurationSetName: S.optional(S.String), message: S.optional(S.String) },
@@ -3065,17 +3063,17 @@ export class TrackingOptionsDoesNotExistException extends S.TaggedError<Tracking
     code: "TrackingOptionsDoesNotExistException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTrackingOptionsException extends S.TaggedError<InvalidTrackingOptionsException>()(
   "InvalidTrackingOptionsException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidTrackingOptions", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidConfigurationSetException extends S.TaggedError<InvalidConfigurationSetException>()(
   "InvalidConfigurationSetException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidConfigurationSet", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class FromEmailAddressNotVerifiedException extends S.TaggedError<FromEmailAddressNotVerifiedException>()(
   "FromEmailAddressNotVerifiedException",
   { FromEmailAddress: S.optional(S.String), message: S.optional(S.String) },
@@ -3083,7 +3081,7 @@ export class FromEmailAddressNotVerifiedException extends S.TaggedError<FromEmai
     code: "FromEmailAddressNotVerified",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConfigurationSetSendingPausedException extends S.TaggedError<ConfigurationSetSendingPausedException>()(
   "ConfigurationSetSendingPausedException",
   { ConfigurationSetName: S.optional(S.String), message: S.optional(S.String) },
@@ -3091,17 +3089,17 @@ export class ConfigurationSetSendingPausedException extends S.TaggedError<Config
     code: "ConfigurationSetSendingPausedException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MissingRenderingAttributeException extends S.TaggedError<MissingRenderingAttributeException>()(
   "MissingRenderingAttributeException",
   { TemplateName: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "MissingRenderingAttribute", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSnsTopicException extends S.TaggedError<InvalidSnsTopicException>()(
   "InvalidSnsTopicException",
   { Topic: S.optional(S.String), message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSnsTopic", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCloudWatchDestinationException extends S.TaggedError<InvalidCloudWatchDestinationException>()(
   "InvalidCloudWatchDestinationException",
   {
@@ -3113,7 +3111,7 @@ export class InvalidCloudWatchDestinationException extends S.TaggedError<Invalid
     code: "InvalidCloudWatchDestination",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrackingOptionsAlreadyExistsException extends S.TaggedError<TrackingOptionsAlreadyExistsException>()(
   "TrackingOptionsAlreadyExistsException",
   { ConfigurationSetName: S.optional(S.String), message: S.optional(S.String) },
@@ -3121,7 +3119,7 @@ export class TrackingOptionsAlreadyExistsException extends S.TaggedError<Trackin
     code: "TrackingOptionsAlreadyExistsException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventDestinationAlreadyExistsException extends S.TaggedError<EventDestinationAlreadyExistsException>()(
   "EventDestinationAlreadyExistsException",
   {
@@ -3133,12 +3131,12 @@ export class EventDestinationAlreadyExistsException extends S.TaggedError<EventD
     code: "EventDestinationAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MessageRejected extends S.TaggedError<MessageRejected>()(
   "MessageRejected",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "MessageRejected", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MailFromDomainNotVerifiedException extends S.TaggedError<MailFromDomainNotVerifiedException>()(
   "MailFromDomainNotVerifiedException",
   { message: S.optional(S.String) },
@@ -3146,7 +3144,7 @@ export class MailFromDomainNotVerifiedException extends S.TaggedError<MailFromDo
     code: "MailFromDomainNotVerifiedException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidFirehoseDestinationException extends S.TaggedError<InvalidFirehoseDestinationException>()(
   "InvalidFirehoseDestinationException",
   {
@@ -3158,7 +3156,7 @@ export class InvalidFirehoseDestinationException extends S.TaggedError<InvalidFi
     code: "InvalidFirehoseDestination",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ProductionAccessNotGrantedException extends S.TaggedError<ProductionAccessNotGrantedException>()(
   "ProductionAccessNotGrantedException",
   { message: S.optional(S.String) },
@@ -3166,7 +3164,7 @@ export class ProductionAccessNotGrantedException extends S.TaggedError<Productio
     code: "ProductionAccessNotGranted",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSNSDestinationException extends S.TaggedError<InvalidSNSDestinationException>()(
   "InvalidSNSDestinationException",
   {
@@ -3175,7 +3173,7 @@ export class InvalidSNSDestinationException extends S.TaggedError<InvalidSNSDest
     message: S.optional(S.String),
   },
   T.AwsQueryError({ code: "InvalidSNSDestination", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3191,8 +3189,8 @@ export const deleteCustomVerificationEmailTemplate: (
   input: DeleteCustomVerificationEmailTemplateRequest,
 ) => Effect.Effect<
   DeleteCustomVerificationEmailTemplateResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomVerificationEmailTemplateRequest,
   output: DeleteCustomVerificationEmailTemplateResponse,
@@ -3208,8 +3206,8 @@ export const deleteIdentity: (
   input: DeleteIdentityRequest,
 ) => Effect.Effect<
   DeleteIdentityResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentityRequest,
   output: DeleteIdentityResponse,
@@ -3234,8 +3232,8 @@ export const deleteIdentityPolicy: (
   input: DeleteIdentityPolicyRequest,
 ) => Effect.Effect<
   DeleteIdentityPolicyResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentityPolicyRequest,
   output: DeleteIdentityPolicyResponse,
@@ -3253,8 +3251,8 @@ export const deleteReceiptFilter: (
   input: DeleteReceiptFilterRequest,
 ) => Effect.Effect<
   DeleteReceiptFilterResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReceiptFilterRequest,
   output: DeleteReceiptFilterResponse,
@@ -3269,8 +3267,8 @@ export const deleteTemplate: (
   input: DeleteTemplateRequest,
 ) => Effect.Effect<
   DeleteTemplateResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTemplateRequest,
   output: DeleteTemplateResponse,
@@ -3284,8 +3282,8 @@ export const deleteVerifiedEmailAddress: (
   input: DeleteVerifiedEmailAddressRequest,
 ) => Effect.Effect<
   DeleteVerifiedEmailAddressResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedEmailAddressRequest,
   output: DeleteVerifiedEmailAddressResponse,
@@ -3300,8 +3298,8 @@ export const getAccountSendingEnabled: (
   input: GetAccountSendingEnabledRequest,
 ) => Effect.Effect<
   GetAccountSendingEnabledResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountSendingEnabledRequest,
   output: GetAccountSendingEnabledResponse,
@@ -3316,8 +3314,8 @@ export const getSendQuota: (
   input: GetSendQuotaRequest,
 ) => Effect.Effect<
   GetSendQuotaResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSendQuotaRequest,
   output: GetSendQuotaResponse,
@@ -3336,8 +3334,8 @@ export const listReceiptFilters: (
   input: ListReceiptFiltersRequest,
 ) => Effect.Effect<
   ListReceiptFiltersResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListReceiptFiltersRequest,
   output: ListReceiptFiltersResponse,
@@ -3351,8 +3349,8 @@ export const listVerifiedEmailAddresses: (
   input: ListVerifiedEmailAddressesRequest,
 ) => Effect.Effect<
   ListVerifiedEmailAddressesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVerifiedEmailAddressesRequest,
   output: ListVerifiedEmailAddressesResponse,
@@ -3380,8 +3378,8 @@ export const setIdentityDkimEnabled: (
   input: SetIdentityDkimEnabledRequest,
 ) => Effect.Effect<
   SetIdentityDkimEnabledResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIdentityDkimEnabledRequest,
   output: SetIdentityDkimEnabledResponse,
@@ -3405,8 +3403,8 @@ export const setIdentityFeedbackForwardingEnabled: (
   input: SetIdentityFeedbackForwardingEnabledRequest,
 ) => Effect.Effect<
   SetIdentityFeedbackForwardingEnabledResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIdentityFeedbackForwardingEnabledRequest,
   output: SetIdentityFeedbackForwardingEnabledResponse,
@@ -3426,8 +3424,8 @@ export const setIdentityHeadersInNotificationsEnabled: (
   input: SetIdentityHeadersInNotificationsEnabledRequest,
 ) => Effect.Effect<
   SetIdentityHeadersInNotificationsEnabledResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIdentityHeadersInNotificationsEnabledRequest,
   output: SetIdentityHeadersInNotificationsEnabledResponse,
@@ -3448,8 +3446,8 @@ export const setIdentityMailFromDomain: (
   input: SetIdentityMailFromDomainRequest,
 ) => Effect.Effect<
   SetIdentityMailFromDomainResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIdentityMailFromDomainRequest,
   output: SetIdentityMailFromDomainResponse,
@@ -3472,8 +3470,8 @@ export const setIdentityNotificationTopic: (
   input: SetIdentityNotificationTopicRequest,
 ) => Effect.Effect<
   SetIdentityNotificationTopicResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIdentityNotificationTopicRequest,
   output: SetIdentityNotificationTopicResponse,
@@ -3492,8 +3490,8 @@ export const updateAccountSendingEnabled: (
   input: UpdateAccountSendingEnabledRequest,
 ) => Effect.Effect<
   UpdateAccountSendingEnabledResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountSendingEnabledRequest,
   output: UpdateAccountSendingEnabledResponse,
@@ -3507,8 +3505,8 @@ export const verifyEmailAddress: (
   input: VerifyEmailAddressRequest,
 ) => Effect.Effect<
   VerifyEmailAddressResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifyEmailAddressRequest,
   output: VerifyEmailAddressResponse,
@@ -3525,8 +3523,8 @@ export const verifyEmailIdentity: (
   input: VerifyEmailIdentityRequest,
 ) => Effect.Effect<
   VerifyEmailIdentityResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifyEmailIdentityRequest,
   output: VerifyEmailIdentityResponse,
@@ -3543,8 +3541,8 @@ export const deleteConfigurationSet: (
   input: DeleteConfigurationSetRequest,
 ) => Effect.Effect<
   DeleteConfigurationSetResponse,
-  ConfigurationSetDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConfigurationSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationSetRequest,
   output: DeleteConfigurationSetResponse,
@@ -3562,8 +3560,8 @@ export const deleteReceiptRule: (
   input: DeleteReceiptRuleRequest,
 ) => Effect.Effect<
   DeleteReceiptRuleResponse,
-  RuleSetDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RuleSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReceiptRuleRequest,
   output: DeleteReceiptRuleResponse,
@@ -3584,8 +3582,8 @@ export const deleteReceiptRuleSet: (
   input: DeleteReceiptRuleSetRequest,
 ) => Effect.Effect<
   DeleteReceiptRuleSetResponse,
-  CannotDeleteException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CannotDeleteException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReceiptRuleSetRequest,
   output: DeleteReceiptRuleSetResponse,
@@ -3603,8 +3601,8 @@ export const describeActiveReceiptRuleSet: (
   input: DescribeActiveReceiptRuleSetRequest,
 ) => Effect.Effect<
   DescribeActiveReceiptRuleSetResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeActiveReceiptRuleSetRequest,
   output: DescribeActiveReceiptRuleSetResponse,
@@ -3622,8 +3620,8 @@ export const describeReceiptRuleSet: (
   input: DescribeReceiptRuleSetRequest,
 ) => Effect.Effect<
   DescribeReceiptRuleSetResponse,
-  RuleSetDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RuleSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReceiptRuleSetRequest,
   output: DescribeReceiptRuleSetResponse,
@@ -3640,8 +3638,8 @@ export const getSendStatistics: (
   input: GetSendStatisticsRequest,
 ) => Effect.Effect<
   GetSendStatisticsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSendStatisticsRequest,
   output: GetSendStatisticsResponse,
@@ -3664,8 +3662,8 @@ export const listConfigurationSets: (
   input: ListConfigurationSetsRequest,
 ) => Effect.Effect<
   ListConfigurationSetsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListConfigurationSetsRequest,
   output: ListConfigurationSetsResponse,
@@ -3691,22 +3689,22 @@ export const listIdentities: {
     input: ListIdentitiesRequest,
   ): Effect.Effect<
     ListIdentitiesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIdentitiesRequest,
   ) => Stream.Stream<
     ListIdentitiesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIdentitiesRequest,
   ) => Stream.Stream<
     Identity,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIdentitiesRequest,
@@ -3738,8 +3736,8 @@ export const listIdentityPolicies: (
   input: ListIdentityPoliciesRequest,
 ) => Effect.Effect<
   ListIdentityPoliciesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListIdentityPoliciesRequest,
   output: ListIdentityPoliciesResponse,
@@ -3760,8 +3758,8 @@ export const listReceiptRuleSets: (
   input: ListReceiptRuleSetsRequest,
 ) => Effect.Effect<
   ListReceiptRuleSetsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListReceiptRuleSetsRequest,
   output: ListReceiptRuleSetsResponse,
@@ -3785,8 +3783,8 @@ export const putIdentityPolicy: (
   input: PutIdentityPolicyRequest,
 ) => Effect.Effect<
   PutIdentityPolicyResponse,
-  InvalidPolicyException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidPolicyException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutIdentityPolicyRequest,
   output: PutIdentityPolicyResponse,
@@ -3807,10 +3805,8 @@ export const reorderReceiptRuleSet: (
   input: ReorderReceiptRuleSetRequest,
 ) => Effect.Effect<
   ReorderReceiptRuleSetResponse,
-  | RuleDoesNotExistException
-  | RuleSetDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RuleDoesNotExistException | RuleSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReorderReceiptRuleSetRequest,
   output: ReorderReceiptRuleSetResponse,
@@ -3855,8 +3851,8 @@ export const verifyDomainDkim: (
   input: VerifyDomainDkimRequest,
 ) => Effect.Effect<
   VerifyDomainDkimResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifyDomainDkimRequest,
   output: VerifyDomainDkimResponse,
@@ -3874,8 +3870,8 @@ export const verifyDomainIdentity: (
   input: VerifyDomainIdentityRequest,
 ) => Effect.Effect<
   VerifyDomainIdentityResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifyDomainIdentityRequest,
   output: VerifyDomainIdentityResponse,
@@ -3893,8 +3889,8 @@ export const updateConfigurationSetReputationMetricsEnabled: (
   input: UpdateConfigurationSetReputationMetricsEnabledRequest,
 ) => Effect.Effect<
   UpdateConfigurationSetReputationMetricsEnabledResponse,
-  ConfigurationSetDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConfigurationSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationSetReputationMetricsEnabledRequest,
   output: UpdateConfigurationSetReputationMetricsEnabledResponse,
@@ -3913,8 +3909,8 @@ export const updateConfigurationSetSendingEnabled: (
   input: UpdateConfigurationSetSendingEnabledRequest,
 ) => Effect.Effect<
   UpdateConfigurationSetSendingEnabledResponse,
-  ConfigurationSetDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConfigurationSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationSetSendingEnabledRequest,
   output: UpdateConfigurationSetSendingEnabledResponse,
@@ -3935,8 +3931,8 @@ export const setActiveReceiptRuleSet: (
   input: SetActiveReceiptRuleSetRequest,
 ) => Effect.Effect<
   SetActiveReceiptRuleSetResponse,
-  RuleSetDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RuleSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetActiveReceiptRuleSetRequest,
   output: SetActiveReceiptRuleSetResponse,
@@ -3954,10 +3950,8 @@ export const setReceiptRulePosition: (
   input: SetReceiptRulePositionRequest,
 ) => Effect.Effect<
   SetReceiptRulePositionResponse,
-  | RuleDoesNotExistException
-  | RuleSetDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RuleDoesNotExistException | RuleSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetReceiptRulePositionRequest,
   output: SetReceiptRulePositionResponse,
@@ -3975,10 +3969,8 @@ export const describeReceiptRule: (
   input: DescribeReceiptRuleRequest,
 ) => Effect.Effect<
   DescribeReceiptRuleResponse,
-  | RuleDoesNotExistException
-  | RuleSetDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RuleDoesNotExistException | RuleSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReceiptRuleRequest,
   output: DescribeReceiptRuleResponse,
@@ -4000,8 +3992,8 @@ export const cloneReceiptRuleSet: (
   | AlreadyExistsException
   | LimitExceededException
   | RuleSetDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CloneReceiptRuleSetRequest,
   output: CloneReceiptRuleSetResponse,
@@ -4023,8 +4015,8 @@ export const createReceiptFilter: (
   input: CreateReceiptFilterRequest,
 ) => Effect.Effect<
   CreateReceiptFilterResponse,
-  AlreadyExistsException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AlreadyExistsException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReceiptFilterRequest,
   output: CreateReceiptFilterResponse,
@@ -4041,8 +4033,8 @@ export const describeConfigurationSet: (
   input: DescribeConfigurationSetRequest,
 ) => Effect.Effect<
   DescribeConfigurationSetResponse,
-  ConfigurationSetDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConfigurationSetDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationSetRequest,
   output: DescribeConfigurationSetResponse,
@@ -4062,8 +4054,8 @@ export const getCustomVerificationEmailTemplate: (
   input: GetCustomVerificationEmailTemplateRequest,
 ) => Effect.Effect<
   GetCustomVerificationEmailTemplateResponse,
-  CustomVerificationEmailTemplateDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CustomVerificationEmailTemplateDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCustomVerificationEmailTemplateRequest,
   output: GetCustomVerificationEmailTemplateResponse,
@@ -4088,8 +4080,8 @@ export const getIdentityPolicies: (
   input: GetIdentityPoliciesRequest,
 ) => Effect.Effect<
   GetIdentityPoliciesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityPoliciesRequest,
   output: GetIdentityPoliciesResponse,
@@ -4105,8 +4097,8 @@ export const getTemplate: (
   input: GetTemplateRequest,
 ) => Effect.Effect<
   GetTemplateResponse,
-  TemplateDoesNotExistException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TemplateDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTemplateRequest,
   output: GetTemplateResponse,
@@ -4127,22 +4119,22 @@ export const listCustomVerificationEmailTemplates: {
     input: ListCustomVerificationEmailTemplatesRequest,
   ): Effect.Effect<
     ListCustomVerificationEmailTemplatesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCustomVerificationEmailTemplatesRequest,
   ) => Stream.Stream<
     ListCustomVerificationEmailTemplatesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCustomVerificationEmailTemplatesRequest,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCustomVerificationEmailTemplatesRequest,
@@ -4164,8 +4156,8 @@ export const listTemplates: (
   input: ListTemplatesRequest,
 ) => Effect.Effect<
   ListTemplatesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTemplatesRequest,
   output: ListTemplatesResponse,
@@ -4180,8 +4172,8 @@ export const putConfigurationSetDeliveryOptions: (
   PutConfigurationSetDeliveryOptionsResponse,
   | ConfigurationSetDoesNotExistException
   | InvalidDeliveryOptionsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConfigurationSetDeliveryOptionsRequest,
   output: PutConfigurationSetDeliveryOptionsResponse,
@@ -4201,8 +4193,8 @@ export const createReceiptRuleSet: (
   input: CreateReceiptRuleSetRequest,
 ) => Effect.Effect<
   CreateReceiptRuleSetResponse,
-  AlreadyExistsException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AlreadyExistsException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReceiptRuleSetRequest,
   output: CreateReceiptRuleSetResponse,
@@ -4222,8 +4214,8 @@ export const createTemplate: (
   | AlreadyExistsException
   | InvalidTemplateException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTemplateRequest,
   output: CreateTemplateResponse,
@@ -4247,8 +4239,8 @@ export const deleteConfigurationSetEventDestination: (
   DeleteConfigurationSetEventDestinationResponse,
   | ConfigurationSetDoesNotExistException
   | EventDestinationDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationSetEventDestinationRequest,
   output: DeleteConfigurationSetEventDestinationResponse,
@@ -4275,8 +4267,8 @@ export const deleteConfigurationSetTrackingOptions: (
   DeleteConfigurationSetTrackingOptionsResponse,
   | ConfigurationSetDoesNotExistException
   | TrackingOptionsDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationSetTrackingOptionsRequest,
   output: DeleteConfigurationSetTrackingOptionsResponse,
@@ -4300,8 +4292,8 @@ export const updateConfigurationSetTrackingOptions: (
   | ConfigurationSetDoesNotExistException
   | InvalidTrackingOptionsException
   | TrackingOptionsDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationSetTrackingOptionsRequest,
   output: UpdateConfigurationSetTrackingOptionsResponse,
@@ -4322,10 +4314,8 @@ export const updateTemplate: (
   input: UpdateTemplateRequest,
 ) => Effect.Effect<
   UpdateTemplateResponse,
-  | InvalidTemplateException
-  | TemplateDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidTemplateException | TemplateDoesNotExistException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTemplateRequest,
   output: UpdateTemplateResponse,
@@ -4347,8 +4337,8 @@ export const createConfigurationSet: (
   | ConfigurationSetAlreadyExistsException
   | InvalidConfigurationSetException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationSetRequest,
   output: CreateConfigurationSetResponse,
@@ -4375,8 +4365,8 @@ export const createCustomVerificationEmailTemplate: (
   | CustomVerificationEmailTemplateAlreadyExistsException
   | FromEmailAddressNotVerifiedException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomVerificationEmailTemplateRequest,
   output: CreateCustomVerificationEmailTemplateResponse,
@@ -4415,8 +4405,8 @@ export const getIdentityDkimAttributes: (
   input: GetIdentityDkimAttributesRequest,
 ) => Effect.Effect<
   GetIdentityDkimAttributesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityDkimAttributesRequest,
   output: GetIdentityDkimAttributesResponse,
@@ -4433,8 +4423,8 @@ export const getIdentityMailFromDomainAttributes: (
   input: GetIdentityMailFromDomainAttributesRequest,
 ) => Effect.Effect<
   GetIdentityMailFromDomainAttributesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityMailFromDomainAttributesRequest,
   output: GetIdentityMailFromDomainAttributesResponse,
@@ -4454,8 +4444,8 @@ export const getIdentityNotificationAttributes: (
   input: GetIdentityNotificationAttributesRequest,
 ) => Effect.Effect<
   GetIdentityNotificationAttributesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityNotificationAttributesRequest,
   output: GetIdentityNotificationAttributesResponse,
@@ -4486,8 +4476,8 @@ export const getIdentityVerificationAttributes: (
   input: GetIdentityVerificationAttributesRequest,
 ) => Effect.Effect<
   GetIdentityVerificationAttributesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityVerificationAttributesRequest,
   output: GetIdentityVerificationAttributesResponse,
@@ -4506,8 +4496,8 @@ export const testRenderTemplate: (
   | InvalidRenderingParameterException
   | MissingRenderingAttributeException
   | TemplateDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestRenderTemplateRequest,
   output: TestRenderTemplateResponse,
@@ -4535,8 +4525,8 @@ export const updateReceiptRule: (
   | LimitExceededException
   | RuleDoesNotExistException
   | RuleSetDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReceiptRuleRequest,
   output: UpdateReceiptRuleResponse,
@@ -4565,8 +4555,8 @@ export const updateCustomVerificationEmailTemplate: (
   | CustomVerificationEmailInvalidContentException
   | CustomVerificationEmailTemplateDoesNotExistException
   | FromEmailAddressNotVerifiedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCustomVerificationEmailTemplateRequest,
   output: UpdateCustomVerificationEmailTemplateResponse,
@@ -4595,8 +4585,8 @@ export const createReceiptRule: (
   | LimitExceededException
   | RuleDoesNotExistException
   | RuleSetDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReceiptRuleRequest,
   output: CreateReceiptRuleResponse,
@@ -4625,8 +4615,8 @@ export const createConfigurationSetTrackingOptions: (
   | ConfigurationSetDoesNotExistException
   | InvalidTrackingOptionsException
   | TrackingOptionsAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationSetTrackingOptionsRequest,
   output: CreateConfigurationSetTrackingOptionsResponse,
@@ -4653,8 +4643,8 @@ export const sendBounce: (
   input: SendBounceRequest,
 ) => Effect.Effect<
   SendBounceResponse,
-  MessageRejected | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  MessageRejected | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendBounceRequest,
   output: SendBounceResponse,
@@ -4713,8 +4703,8 @@ export const sendTemplatedEmail: (
   | MailFromDomainNotVerifiedException
   | MessageRejected
   | TemplateDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendTemplatedEmailRequest,
   output: SendTemplatedEmailResponse,
@@ -4816,8 +4806,8 @@ export const sendRawEmail: (
   | ConfigurationSetSendingPausedException
   | MailFromDomainNotVerifiedException
   | MessageRejected
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendRawEmailRequest,
   output: SendRawEmailResponse,
@@ -4875,8 +4865,8 @@ export const sendBulkTemplatedEmail: (
   | MailFromDomainNotVerifiedException
   | MessageRejected
   | TemplateDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendBulkTemplatedEmailRequest,
   output: SendBulkTemplatedEmailResponse,
@@ -4933,8 +4923,8 @@ export const sendEmail: (
   | ConfigurationSetSendingPausedException
   | MailFromDomainNotVerifiedException
   | MessageRejected
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendEmailRequest,
   output: SendEmailResponse,
@@ -4968,8 +4958,8 @@ export const sendCustomVerificationEmail: (
   | FromEmailAddressNotVerifiedException
   | MessageRejected
   | ProductionAccessNotGrantedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendCustomVerificationEmailRequest,
   output: SendCustomVerificationEmailResponse,
@@ -5003,8 +4993,8 @@ export const updateConfigurationSetEventDestination: (
   | InvalidCloudWatchDestinationException
   | InvalidFirehoseDestinationException
   | InvalidSNSDestinationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationSetEventDestinationRequest,
   output: UpdateConfigurationSetEventDestinationResponse,
@@ -5039,8 +5029,8 @@ export const createConfigurationSetEventDestination: (
   | InvalidFirehoseDestinationException
   | InvalidSNSDestinationException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationSetEventDestinationRequest,
   output: CreateConfigurationSetEventDestinationResponse,

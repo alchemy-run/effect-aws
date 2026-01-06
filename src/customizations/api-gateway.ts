@@ -7,7 +7,7 @@
  * the string literal value of "application/json" for all requests.
  */
 
-import type { Request } from "../request.ts";
+import type { Request } from "../client/request.ts";
 
 /**
  * Apply API Gateway specific customizations to a request.

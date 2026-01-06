@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials as Creds,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials as Creds } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "EMR containers",
@@ -1727,27 +1725,23 @@ export const CreateSecurityConfigurationResponse = S.suspend(() =>
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class EKSRequestThrottledException extends S.TaggedError<EKSRequestThrottledException>()(
   "EKSRequestThrottledException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RequestThrottledException extends S.TaggedError<RequestThrottledException>()(
   "RequestThrottledException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1758,8 +1752,8 @@ export const cancelJobRun: (
   input: CancelJobRunRequest,
 ) => Effect.Effect<
   CancelJobRunResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelJobRunRequest,
   output: CancelJobRunResponse,
@@ -1775,8 +1769,8 @@ export const untagResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1796,8 +1790,8 @@ export const listTagsForResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1821,8 +1815,8 @@ export const createVirtualCluster: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVirtualClusterRequest,
   output: CreateVirtualClusterResponse,
@@ -1846,8 +1840,8 @@ export const describeJobTemplate: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeJobTemplateRequest,
   output: DescribeJobTemplateResponse,
@@ -1871,8 +1865,8 @@ export const describeSecurityConfiguration: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSecurityConfigurationRequest,
   output: DescribeSecurityConfigurationResponse,
@@ -1897,8 +1891,8 @@ export const describeVirtualCluster: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVirtualClusterRequest,
   output: DescribeVirtualClusterResponse,
@@ -1918,8 +1912,8 @@ export const deleteJobTemplate: (
   input: DeleteJobTemplateRequest,
 ) => Effect.Effect<
   DeleteJobTemplateResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteJobTemplateRequest,
   output: DeleteJobTemplateResponse,
@@ -1933,8 +1927,8 @@ export const deleteManagedEndpoint: (
   input: DeleteManagedEndpointRequest,
 ) => Effect.Effect<
   DeleteManagedEndpointResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteManagedEndpointRequest,
   output: DeleteManagedEndpointResponse,
@@ -1950,8 +1944,8 @@ export const deleteVirtualCluster: (
   input: DeleteVirtualClusterRequest,
 ) => Effect.Effect<
   DeleteVirtualClusterResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVirtualClusterRequest,
   output: DeleteVirtualClusterResponse,
@@ -1966,22 +1960,22 @@ export const listJobRuns: {
     input: ListJobRunsRequest,
   ): Effect.Effect<
     ListJobRunsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobRunsRequest,
   ) => Stream.Stream<
     ListJobRunsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobRunsRequest,
   ) => Stream.Stream<
     JobRun,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobRunsRequest,
@@ -2005,22 +1999,22 @@ export const listJobTemplates: {
     input: ListJobTemplatesRequest,
   ): Effect.Effect<
     ListJobTemplatesResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobTemplatesRequest,
   ) => Stream.Stream<
     ListJobTemplatesResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobTemplatesRequest,
   ) => Stream.Stream<
     JobTemplate,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobTemplatesRequest,
@@ -2042,22 +2036,22 @@ export const listManagedEndpoints: {
     input: ListManagedEndpointsRequest,
   ): Effect.Effect<
     ListManagedEndpointsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListManagedEndpointsRequest,
   ) => Stream.Stream<
     ListManagedEndpointsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListManagedEndpointsRequest,
   ) => Stream.Stream<
     Endpoint,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListManagedEndpointsRequest,
@@ -2082,22 +2076,22 @@ export const listSecurityConfigurations: {
     input: ListSecurityConfigurationsRequest,
   ): Effect.Effect<
     ListSecurityConfigurationsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSecurityConfigurationsRequest,
   ) => Stream.Stream<
     ListSecurityConfigurationsResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSecurityConfigurationsRequest,
   ) => Stream.Stream<
     SecurityConfiguration,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityConfigurationsRequest,
@@ -2123,22 +2117,22 @@ export const listVirtualClusters: {
     input: ListVirtualClustersRequest,
   ): Effect.Effect<
     ListVirtualClustersResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVirtualClustersRequest,
   ) => Stream.Stream<
     ListVirtualClustersResponse,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVirtualClustersRequest,
   ) => Stream.Stream<
     VirtualCluster,
-    InternalServerException | ValidationException | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | ValidationException | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVirtualClustersRequest,
@@ -2169,8 +2163,8 @@ export const tagResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2191,8 +2185,8 @@ export const describeJobRun: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeJobRunRequest,
   output: DescribeJobRunResponse,
@@ -2213,8 +2207,8 @@ export const describeManagedEndpoint: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeManagedEndpointRequest,
   output: DescribeManagedEndpointResponse,
@@ -2235,8 +2229,8 @@ export const getManagedEndpointSessionCredentials: (
   | RequestThrottledException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetManagedEndpointSessionCredentialsRequest,
   output: GetManagedEndpointSessionCredentialsResponse,
@@ -2258,8 +2252,8 @@ export const startJobRun: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartJobRunRequest,
   output: StartJobRunResponse,
@@ -2280,8 +2274,8 @@ export const createManagedEndpoint: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateManagedEndpointRequest,
   output: CreateManagedEndpointResponse,
@@ -2304,8 +2298,8 @@ export const createJobTemplate: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateJobTemplateRequest,
   output: CreateJobTemplateResponse,
@@ -2325,8 +2319,8 @@ export const createSecurityConfiguration: (
   input: CreateSecurityConfigurationRequest,
 ) => Effect.Effect<
   CreateSecurityConfigurationResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSecurityConfigurationRequest,
   output: CreateSecurityConfigurationResponse,

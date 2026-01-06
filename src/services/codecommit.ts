@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://codecommit.amazonaws.com/doc/2015-04-13");
 const svc = T.AwsApiService({
@@ -4859,8 +4857,8 @@ export const deleteApprovalRuleTemplate: (
   | ApprovalRuleTemplateInUseException
   | ApprovalRuleTemplateNameRequiredException
   | InvalidApprovalRuleTemplateNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApprovalRuleTemplateInput,
   output: DeleteApprovalRuleTemplateOutput,
@@ -4881,8 +4879,8 @@ export const listApprovalRuleTemplates: {
     ListApprovalRuleTemplatesOutput,
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApprovalRuleTemplatesInput,
@@ -4890,8 +4888,8 @@ export const listApprovalRuleTemplates: {
     ListApprovalRuleTemplatesOutput,
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApprovalRuleTemplatesInput,
@@ -4899,8 +4897,8 @@ export const listApprovalRuleTemplates: {
     unknown,
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApprovalRuleTemplatesInput,
@@ -4923,8 +4921,8 @@ export const updateApprovalRuleTemplateDescription: (
   | ApprovalRuleTemplateNameRequiredException
   | InvalidApprovalRuleTemplateDescriptionException
   | InvalidApprovalRuleTemplateNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApprovalRuleTemplateDescriptionInput,
   output: UpdateApprovalRuleTemplateDescriptionOutput,
@@ -4946,8 +4944,8 @@ export const updateApprovalRuleTemplateName: (
   | ApprovalRuleTemplateNameAlreadyExistsException
   | ApprovalRuleTemplateNameRequiredException
   | InvalidApprovalRuleTemplateNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApprovalRuleTemplateNameInput,
   output: UpdateApprovalRuleTemplateNameOutput,
@@ -4968,8 +4966,8 @@ export const getApprovalRuleTemplate: (
   | ApprovalRuleTemplateDoesNotExistException
   | ApprovalRuleTemplateNameRequiredException
   | InvalidApprovalRuleTemplateNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApprovalRuleTemplateInput,
   output: GetApprovalRuleTemplateOutput,
@@ -4991,8 +4989,8 @@ export const listTagsForResource: (
   | InvalidResourceArnException
   | RepositoryDoesNotExistException
   | ResourceArnRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -5014,8 +5012,8 @@ export const listRepositories: {
     | InvalidContinuationTokenException
     | InvalidOrderException
     | InvalidSortByException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRepositoriesInput,
@@ -5024,8 +5022,8 @@ export const listRepositories: {
     | InvalidContinuationTokenException
     | InvalidOrderException
     | InvalidSortByException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRepositoriesInput,
@@ -5034,8 +5032,8 @@ export const listRepositories: {
     | InvalidContinuationTokenException
     | InvalidOrderException
     | InvalidSortByException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoriesInput,
@@ -5066,8 +5064,8 @@ export const updateApprovalRuleTemplateContent: (
   | InvalidApprovalRuleTemplateContentException
   | InvalidApprovalRuleTemplateNameException
   | InvalidRuleContentSha256Exception
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApprovalRuleTemplateContentInput,
   output: UpdateApprovalRuleTemplateContentOutput,
@@ -5094,8 +5092,8 @@ export const updateComment: (
   | CommentIdRequiredException
   | CommentNotCreatedByCallerException
   | InvalidCommentIdException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCommentInput,
   output: UpdateCommentOutput,
@@ -5120,8 +5118,8 @@ export const deleteCommentContent: (
   | CommentDoesNotExistException
   | CommentIdRequiredException
   | InvalidCommentIdException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCommentContentInput,
   output: DeleteCommentContentOutput,
@@ -5147,8 +5145,8 @@ export const updateRepositoryName: (
   | RepositoryDoesNotExistException
   | RepositoryNameExistsException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRepositoryNameInput,
   output: UpdateRepositoryNameResponse,
@@ -5177,8 +5175,8 @@ export const createApprovalRuleTemplate: (
   | InvalidApprovalRuleTemplateDescriptionException
   | InvalidApprovalRuleTemplateNameException
   | NumberOfRuleTemplatesExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApprovalRuleTemplateInput,
   output: CreateApprovalRuleTemplateOutput,
@@ -5210,8 +5208,8 @@ export const listRepositoriesForApprovalRuleTemplate: {
     | InvalidApprovalRuleTemplateNameException
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRepositoriesForApprovalRuleTemplateInput,
@@ -5227,8 +5225,8 @@ export const listRepositoriesForApprovalRuleTemplate: {
     | InvalidApprovalRuleTemplateNameException
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRepositoriesForApprovalRuleTemplateInput,
@@ -5244,8 +5242,8 @@ export const listRepositoriesForApprovalRuleTemplate: {
     | InvalidApprovalRuleTemplateNameException
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoriesForApprovalRuleTemplateInput,
@@ -5289,8 +5287,8 @@ export const disassociateApprovalRuleTemplateFromRepository: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateApprovalRuleTemplateFromRepositoryInput,
   output: DisassociateApprovalRuleTemplateFromRepositoryResponse,
@@ -5326,8 +5324,8 @@ export const deleteRepository: (
   | EncryptionKeyUnavailableException
   | InvalidRepositoryNameException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRepositoryInput,
   output: DeleteRepositoryOutput,
@@ -5362,8 +5360,8 @@ export const getRepository: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRepositoryInput,
   output: GetRepositoryOutput,
@@ -5393,8 +5391,8 @@ export const getRepositoryTriggers: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRepositoryTriggersInput,
   output: GetRepositoryTriggersOutput,
@@ -5427,8 +5425,8 @@ export const listAssociatedApprovalRuleTemplatesForRepository: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
@@ -5444,8 +5442,8 @@ export const listAssociatedApprovalRuleTemplatesForRepository: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
@@ -5461,8 +5459,8 @@ export const listAssociatedApprovalRuleTemplatesForRepository: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
@@ -5502,8 +5500,8 @@ export const listBranches: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBranchesInput,
@@ -5518,8 +5516,8 @@ export const listBranches: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBranchesInput,
@@ -5534,8 +5532,8 @@ export const listBranches: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBranchesInput,
@@ -5576,8 +5574,8 @@ export const getComment: (
   | EncryptionKeyNotFoundException
   | EncryptionKeyUnavailableException
   | InvalidCommentIdException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCommentInput,
   output: GetCommentOutput,
@@ -5610,8 +5608,8 @@ export const batchGetCommits: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetCommitsInput,
   output: BatchGetCommitsOutput,
@@ -5643,8 +5641,8 @@ export const getCommentReactions: {
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
     | InvalidReactionUserArnException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetCommentReactionsInput,
@@ -5657,8 +5655,8 @@ export const getCommentReactions: {
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
     | InvalidReactionUserArnException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetCommentReactionsInput,
@@ -5671,8 +5669,8 @@ export const getCommentReactions: {
     | InvalidContinuationTokenException
     | InvalidMaxResultsException
     | InvalidReactionUserArnException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCommentReactionsInput,
@@ -5707,8 +5705,8 @@ export const postCommentReply: (
   | IdempotencyParameterMismatchException
   | InvalidClientRequestTokenException
   | InvalidCommentIdException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PostCommentReplyInput,
   output: PostCommentReplyOutput,
@@ -5735,8 +5733,8 @@ export const updatePullRequestDescription: (
   | PullRequestAlreadyClosedException
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePullRequestDescriptionInput,
   output: UpdatePullRequestDescriptionOutput,
@@ -5763,8 +5761,8 @@ export const getPullRequest: (
   | InvalidPullRequestIdException
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPullRequestInput,
   output: GetPullRequestOutput,
@@ -5797,8 +5795,8 @@ export const updateRepositoryEncryptionKey: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRepositoryEncryptionKeyInput,
   output: UpdateRepositoryEncryptionKeyOutput,
@@ -5840,8 +5838,8 @@ export const getCommentsForComparedCommit: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetCommentsForComparedCommitInput,
@@ -5860,8 +5858,8 @@ export const getCommentsForComparedCommit: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetCommentsForComparedCommitInput,
@@ -5880,8 +5878,8 @@ export const getCommentsForComparedCommit: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCommentsForComparedCommitInput,
@@ -5929,8 +5927,8 @@ export const updateRepositoryDescription: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRepositoryDescriptionInput,
   output: UpdateRepositoryDescriptionResponse,
@@ -5971,8 +5969,8 @@ export const associateApprovalRuleTemplateWithRepository: (
   | MaximumRuleTemplatesAssociatedWithRepositoryException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateApprovalRuleTemplateWithRepositoryInput,
   output: AssociateApprovalRuleTemplateWithRepositoryResponse,
@@ -6013,8 +6011,8 @@ export const listPullRequests: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPullRequestsInput,
@@ -6033,8 +6031,8 @@ export const listPullRequests: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPullRequestsInput,
@@ -6053,8 +6051,8 @@ export const listPullRequests: {
     | InvalidRepositoryNameException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPullRequestsInput,
@@ -6101,8 +6099,8 @@ export const deletePullRequestApprovalRule: (
   | PullRequestAlreadyClosedException
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePullRequestApprovalRuleInput,
   output: DeletePullRequestApprovalRuleOutput,
@@ -6138,8 +6136,8 @@ export const untagResource: (
   | TagKeysListRequiredException
   | TagPolicyException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -6175,8 +6173,8 @@ export const updateDefaultBranch: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDefaultBranchInput,
   output: UpdateDefaultBranchResponse,
@@ -6212,8 +6210,8 @@ export const getBranch: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBranchInput,
   output: GetBranchOutput,
@@ -6249,8 +6247,8 @@ export const deleteBranch: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBranchInput,
   output: DeleteBranchOutput,
@@ -6286,8 +6284,8 @@ export const getCommit: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCommitInput,
   output: GetCommitOutput,
@@ -6328,8 +6326,8 @@ export const createBranch: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBranchInput,
   output: CreateBranchResponse,
@@ -6374,8 +6372,8 @@ export const updatePullRequestApprovalRuleContent: (
   | PullRequestAlreadyClosedException
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePullRequestApprovalRuleContentInput,
   output: UpdatePullRequestApprovalRuleContentOutput,
@@ -6416,8 +6414,8 @@ export const tagResource: (
   | TagPolicyException
   | TagsMapRequiredException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -6446,8 +6444,8 @@ export const updatePullRequestTitle: (
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
   | TitleRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePullRequestTitleInput,
   output: UpdatePullRequestTitleOutput,
@@ -6475,8 +6473,8 @@ export const putCommentReaction: (
   | InvalidReactionValueException
   | ReactionLimitExceededException
   | ReactionValueRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutCommentReactionInput,
   output: PutCommentReactionResponse,
@@ -6508,8 +6506,8 @@ export const getPullRequestOverrideState: (
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
   | RevisionIdRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPullRequestOverrideStateInput,
   output: GetPullRequestOverrideStateOutput,
@@ -6543,8 +6541,8 @@ export const batchAssociateApprovalRuleTemplateWithRepositories: (
   | InvalidApprovalRuleTemplateNameException
   | MaximumRepositoryNamesExceededException
   | RepositoryNamesRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchAssociateApprovalRuleTemplateWithRepositoriesInput,
   output: BatchAssociateApprovalRuleTemplateWithRepositoriesOutput,
@@ -6580,8 +6578,8 @@ export const getBlob: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBlobInput,
   output: GetBlobOutput,
@@ -6621,8 +6619,8 @@ export const describePullRequestEvents: {
     | InvalidPullRequestIdException
     | PullRequestDoesNotExistException
     | PullRequestIdRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePullRequestEventsInput,
@@ -6641,8 +6639,8 @@ export const describePullRequestEvents: {
     | InvalidPullRequestIdException
     | PullRequestDoesNotExistException
     | PullRequestIdRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribePullRequestEventsInput,
@@ -6661,8 +6659,8 @@ export const describePullRequestEvents: {
     | InvalidPullRequestIdException
     | PullRequestDoesNotExistException
     | PullRequestIdRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePullRequestEventsInput,
@@ -6710,8 +6708,8 @@ export const createPullRequestApprovalRule: (
   | PullRequestAlreadyClosedException
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePullRequestApprovalRuleInput,
   output: CreatePullRequestApprovalRuleOutput,
@@ -6761,8 +6759,8 @@ export const getCommentsForPullRequest: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | RepositoryNotAssociatedWithPullRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetCommentsForPullRequestInput,
@@ -6785,8 +6783,8 @@ export const getCommentsForPullRequest: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | RepositoryNotAssociatedWithPullRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetCommentsForPullRequestInput,
@@ -6809,8 +6807,8 @@ export const getCommentsForPullRequest: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | RepositoryNotAssociatedWithPullRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCommentsForPullRequestInput,
@@ -6862,8 +6860,8 @@ export const listFileCommitHistory: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFileCommitHistoryRequest,
@@ -6883,8 +6881,8 @@ export const listFileCommitHistory: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFileCommitHistoryRequest,
@@ -6904,8 +6902,8 @@ export const listFileCommitHistory: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFileCommitHistoryRequest,
@@ -6950,8 +6948,8 @@ export const getPullRequestApprovalStates: (
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
   | RevisionIdRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPullRequestApprovalStatesInput,
   output: GetPullRequestApprovalStatesOutput,
@@ -6985,8 +6983,8 @@ export const batchDisassociateApprovalRuleTemplateFromRepositories: (
   | InvalidApprovalRuleTemplateNameException
   | MaximumRepositoryNamesExceededException
   | RepositoryNamesRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDisassociateApprovalRuleTemplateFromRepositoriesInput,
   output: BatchDisassociateApprovalRuleTemplateFromRepositoriesOutput,
@@ -7024,8 +7022,8 @@ export const batchGetRepositories: (
   | InvalidRepositoryNameException
   | MaximumRepositoryNamesExceededException
   | RepositoryNamesRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetRepositoriesInput,
   output: BatchGetRepositoriesOutput,
@@ -7066,8 +7064,8 @@ export const mergeBranchesByFastForward: (
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
   | TipsDivergenceExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MergeBranchesByFastForwardInput,
   output: MergeBranchesByFastForwardOutput,
@@ -7113,8 +7111,8 @@ export const getMergeCommit: (
   | InvalidRepositoryNameException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMergeCommitInput,
   output: GetMergeCommitOutput,
@@ -7152,8 +7150,8 @@ export const updatePullRequestStatus: (
   | PullRequestDoesNotExistException
   | PullRequestIdRequiredException
   | PullRequestStatusRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePullRequestStatusInput,
   output: UpdatePullRequestStatusOutput,
@@ -7191,8 +7189,8 @@ export const getFolder: (
   | PathRequiredException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFolderInput,
   output: GetFolderOutput,
@@ -7236,8 +7234,8 @@ export const createRepository: (
   | RepositoryNameRequiredException
   | TagPolicyException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRepositoryInput,
   output: CreateRepositoryOutput,
@@ -7279,8 +7277,8 @@ export const evaluatePullRequestApprovalRules: (
   | PullRequestIdRequiredException
   | RevisionIdRequiredException
   | RevisionNotCurrentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EvaluatePullRequestApprovalRulesInput,
   output: EvaluatePullRequestApprovalRulesOutput,
@@ -7324,8 +7322,8 @@ export const getDifferences: {
     | PathDoesNotExistException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetDifferencesInput,
@@ -7347,8 +7345,8 @@ export const getDifferences: {
     | PathDoesNotExistException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetDifferencesInput,
@@ -7370,8 +7368,8 @@ export const getDifferences: {
     | PathDoesNotExistException
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetDifferencesInput,
@@ -7421,8 +7419,8 @@ export const getFile: (
   | PathRequiredException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFileInput,
   output: GetFileOutput,
@@ -7465,8 +7463,8 @@ export const overridePullRequestApprovalRules: (
   | PullRequestIdRequiredException
   | RevisionIdRequiredException
   | RevisionNotCurrentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: OverridePullRequestApprovalRulesInput,
   output: OverridePullRequestApprovalRulesResponse,
@@ -7511,8 +7509,8 @@ export const updatePullRequestApprovalState: (
   | PullRequestIdRequiredException
   | RevisionIdRequiredException
   | RevisionNotCurrentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePullRequestApprovalStateInput,
   output: UpdatePullRequestApprovalStateResponse,
@@ -7565,8 +7563,8 @@ export const postCommentForComparedCommit: (
   | PathRequiredException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PostCommentForComparedCommitInput,
   output: PostCommentForComparedCommitOutput,
@@ -7630,8 +7628,8 @@ export const postCommentForPullRequest: (
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
   | RepositoryNotAssociatedWithPullRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PostCommentForPullRequestInput,
   output: PostCommentForPullRequestOutput,
@@ -7692,8 +7690,8 @@ export const mergePullRequestByFastForward: (
   | RepositoryNameRequiredException
   | RepositoryNotAssociatedWithPullRequestException
   | TipOfSourceReferenceIsDifferentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MergePullRequestByFastForwardInput,
   output: MergePullRequestByFastForwardOutput,
@@ -7744,8 +7742,8 @@ export const getMergeOptions: (
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
   | TipsDivergenceExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMergeOptionsInput,
   output: GetMergeOptionsOutput,
@@ -7796,8 +7794,8 @@ export const batchDescribeMergeConflicts: (
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
   | TipsDivergenceExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDescribeMergeConflictsInput,
   output: BatchDescribeMergeConflictsOutput,
@@ -7855,8 +7853,8 @@ export const getMergeConflicts: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetMergeConflictsInput,
@@ -7884,8 +7882,8 @@ export const getMergeConflicts: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetMergeConflictsInput,
@@ -7913,8 +7911,8 @@ export const getMergeConflicts: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetMergeConflictsInput,
@@ -7982,8 +7980,8 @@ export const describeMergeConflicts: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMergeConflictsInput,
@@ -8012,8 +8010,8 @@ export const describeMergeConflicts: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMergeConflictsInput,
@@ -8042,8 +8040,8 @@ export const describeMergeConflicts: {
     | RepositoryDoesNotExistException
     | RepositoryNameRequiredException
     | TipsDivergenceExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMergeConflictsInput,
@@ -8110,8 +8108,8 @@ export const deleteFile: (
   | PathRequiredException
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFileInput,
   output: DeleteFileOutput,
@@ -8177,8 +8175,8 @@ export const putFile: (
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
   | SameFileContentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutFileInput,
   output: PutFileOutput,
@@ -8261,8 +8259,8 @@ export const mergePullRequestByThreeWay: (
   | RepositoryNotAssociatedWithPullRequestException
   | TipOfSourceReferenceIsDifferentException
   | TipsDivergenceExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MergePullRequestByThreeWayInput,
   output: MergePullRequestByThreeWayOutput,
@@ -8339,8 +8337,8 @@ export const createPullRequest: (
   | TargetRequiredException
   | TargetsRequiredException
   | TitleRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePullRequestInput,
   output: CreatePullRequestOutput,
@@ -8421,8 +8419,8 @@ export const createUnreferencedMergeCommit: (
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
   | TipsDivergenceExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUnreferencedMergeCommitInput,
   output: CreateUnreferencedMergeCommitOutput,
@@ -8511,8 +8509,8 @@ export const mergeBranchesByThreeWay: (
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
   | TipsDivergenceExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MergeBranchesByThreeWayInput,
   output: MergeBranchesByThreeWayOutput,
@@ -8604,8 +8602,8 @@ export const mergePullRequestBySquash: (
   | RepositoryNotAssociatedWithPullRequestException
   | TipOfSourceReferenceIsDifferentException
   | TipsDivergenceExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MergePullRequestBySquashInput,
   output: MergePullRequestBySquashOutput,
@@ -8696,8 +8694,8 @@ export const mergeBranchesBySquash: (
   | RepositoryDoesNotExistException
   | RepositoryNameRequiredException
   | TipsDivergenceExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MergeBranchesBySquashInput,
   output: MergeBranchesBySquashOutput,
@@ -8788,8 +8786,8 @@ export const createCommit: (
   | RestrictedSourceFileException
   | SamePathRequestException
   | SourceFileOrContentRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCommitInput,
   output: CreateCommitOutput,
@@ -8862,8 +8860,8 @@ export const putRepositoryTriggers: (
   | RepositoryTriggerEventsListRequiredException
   | RepositoryTriggerNameRequiredException
   | RepositoryTriggersListRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRepositoryTriggersInput,
   output: PutRepositoryTriggersOutput,
@@ -8921,8 +8919,8 @@ export const testRepositoryTriggers: (
   | RepositoryTriggerEventsListRequiredException
   | RepositoryTriggerNameRequiredException
   | RepositoryTriggersListRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestRepositoryTriggersInput,
   output: TestRepositoryTriggersOutput,

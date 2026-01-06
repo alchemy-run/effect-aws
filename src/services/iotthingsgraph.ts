@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "IoTThingsGraph",
@@ -1398,31 +1396,27 @@ export const GetSystemInstanceResponse = S.suspend(() =>
 export class InternalFailureException extends S.TaggedError<InternalFailureException>()(
   "InternalFailureException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { message: S.optional(S.String) },
@@ -1437,8 +1431,8 @@ export const deleteNamespace: (
   input: DeleteNamespaceRequest,
 ) => Effect.Effect<
   DeleteNamespaceResponse,
-  InternalFailureException | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalFailureException | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNamespaceRequest,
   output: DeleteNamespaceResponse,
@@ -1466,8 +1460,8 @@ export const uploadEntityDefinitions: (
   | InternalFailureException
   | InvalidRequestException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadEntityDefinitionsRequest,
   output: UploadEntityDefinitionsResponse,
@@ -1487,8 +1481,8 @@ export const getNamespaceDeletionStatus: (
   | InternalFailureException
   | InvalidRequestException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNamespaceDeletionStatusRequest,
   output: GetNamespaceDeletionStatusResponse,
@@ -1509,8 +1503,8 @@ export const searchEntities: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchEntitiesRequest,
@@ -1519,8 +1513,8 @@ export const searchEntities: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchEntitiesRequest,
@@ -1529,8 +1523,8 @@ export const searchEntities: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchEntitiesRequest,
@@ -1558,8 +1552,8 @@ export const searchFlowTemplates: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchFlowTemplatesRequest,
@@ -1568,8 +1562,8 @@ export const searchFlowTemplates: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchFlowTemplatesRequest,
@@ -1578,8 +1572,8 @@ export const searchFlowTemplates: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchFlowTemplatesRequest,
@@ -1607,8 +1601,8 @@ export const searchSystemInstances: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchSystemInstancesRequest,
@@ -1617,8 +1611,8 @@ export const searchSystemInstances: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchSystemInstancesRequest,
@@ -1627,8 +1621,8 @@ export const searchSystemInstances: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchSystemInstancesRequest,
@@ -1656,8 +1650,8 @@ export const searchSystemTemplates: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchSystemTemplatesRequest,
@@ -1666,8 +1660,8 @@ export const searchSystemTemplates: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchSystemTemplatesRequest,
@@ -1676,8 +1670,8 @@ export const searchSystemTemplates: {
     | InternalFailureException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchSystemTemplatesRequest,
@@ -1707,8 +1701,8 @@ export const associateEntityToThing: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateEntityToThingRequest,
   output: AssociateEntityToThingResponse,
@@ -1731,8 +1725,8 @@ export const createSystemTemplate: (
   | InvalidRequestException
   | ResourceAlreadyExistsException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSystemTemplateRequest,
   output: CreateSystemTemplateResponse,
@@ -1767,8 +1761,8 @@ export const deploySystemInstance: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeploySystemInstanceRequest,
   output: DeploySystemInstanceResponse,
@@ -1791,8 +1785,8 @@ export const getSystemInstance: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSystemInstanceRequest,
   output: GetSystemInstanceResponse,
@@ -1835,8 +1829,8 @@ export const getEntities: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEntitiesRequest,
   output: GetEntitiesResponse,
@@ -1858,8 +1852,8 @@ export const getFlowTemplate: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFlowTemplateRequest,
   output: GetFlowTemplateResponse,
@@ -1883,8 +1877,8 @@ export const getFlowTemplateRevisions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetFlowTemplateRevisionsRequest,
@@ -1894,8 +1888,8 @@ export const getFlowTemplateRevisions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetFlowTemplateRevisionsRequest,
@@ -1905,8 +1899,8 @@ export const getFlowTemplateRevisions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetFlowTemplateRevisionsRequest,
@@ -1935,8 +1929,8 @@ export const getSystemTemplate: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSystemTemplateRequest,
   output: GetSystemTemplateResponse,
@@ -1959,8 +1953,8 @@ export const listFlowExecutionMessages: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFlowExecutionMessagesRequest,
@@ -1970,8 +1964,8 @@ export const listFlowExecutionMessages: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFlowExecutionMessagesRequest,
@@ -1981,8 +1975,8 @@ export const listFlowExecutionMessages: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowExecutionMessagesRequest,
@@ -2012,8 +2006,8 @@ export const searchFlowExecutions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchFlowExecutionsRequest,
@@ -2023,8 +2017,8 @@ export const searchFlowExecutions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchFlowExecutionsRequest,
@@ -2034,8 +2028,8 @@ export const searchFlowExecutions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchFlowExecutionsRequest,
@@ -2070,8 +2064,8 @@ export const searchThings: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchThingsRequest,
@@ -2081,8 +2075,8 @@ export const searchThings: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchThingsRequest,
@@ -2092,8 +2086,8 @@ export const searchThings: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchThingsRequest,
@@ -2122,8 +2116,8 @@ export const describeNamespace: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNamespaceRequest,
   output: DescribeNamespaceResponse,
@@ -2147,8 +2141,8 @@ export const getSystemTemplateRevisions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetSystemTemplateRevisionsRequest,
@@ -2158,8 +2152,8 @@ export const getSystemTemplateRevisions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetSystemTemplateRevisionsRequest,
@@ -2169,8 +2163,8 @@ export const getSystemTemplateRevisions: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSystemTemplateRevisionsRequest,
@@ -2199,8 +2193,8 @@ export const getUploadStatus: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUploadStatusRequest,
   output: GetUploadStatusResponse,
@@ -2223,8 +2217,8 @@ export const updateFlowTemplate: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFlowTemplateRequest,
   output: UpdateFlowTemplateResponse,
@@ -2246,8 +2240,8 @@ export const updateSystemTemplate: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSystemTemplateRequest,
   output: UpdateSystemTemplateResponse,
@@ -2269,8 +2263,8 @@ export const deprecateFlowTemplate: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprecateFlowTemplateRequest,
   output: DeprecateFlowTemplateResponse,
@@ -2292,8 +2286,8 @@ export const deprecateSystemTemplate: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprecateSystemTemplateRequest,
   output: DeprecateSystemTemplateResponse,
@@ -2316,8 +2310,8 @@ export const dissociateEntityFromThing: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DissociateEntityFromThingRequest,
   output: DissociateEntityFromThingResponse,
@@ -2352,8 +2346,8 @@ export const createSystemInstance: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSystemInstanceRequest,
   output: CreateSystemInstanceResponse,
@@ -2377,8 +2371,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceAlreadyExistsException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -2388,8 +2382,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceAlreadyExistsException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -2399,8 +2393,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceAlreadyExistsException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -2429,8 +2423,8 @@ export const tagResource: (
   | InvalidRequestException
   | ResourceAlreadyExistsException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2452,8 +2446,8 @@ export const untagResource: (
   | InvalidRequestException
   | ResourceAlreadyExistsException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2478,8 +2472,8 @@ export const createFlowTemplate: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFlowTemplateRequest,
   output: CreateFlowTemplateResponse,
@@ -2503,8 +2497,8 @@ export const undeploySystemInstance: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UndeploySystemInstanceRequest,
   output: UndeploySystemInstanceResponse,
@@ -2528,8 +2522,8 @@ export const deleteFlowTemplate: (
   | InvalidRequestException
   | ResourceInUseException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFlowTemplateRequest,
   output: DeleteFlowTemplateResponse,
@@ -2554,8 +2548,8 @@ export const deleteSystemInstance: (
   | InvalidRequestException
   | ResourceInUseException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSystemInstanceRequest,
   output: DeleteSystemInstanceResponse,
@@ -2578,8 +2572,8 @@ export const deleteSystemTemplate: (
   | InvalidRequestException
   | ResourceInUseException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSystemTemplateRequest,
   output: DeleteSystemTemplateResponse,

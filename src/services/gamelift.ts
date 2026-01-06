@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://gamelift.amazonaws.com/doc/");
 const svc = T.AwsApiService({
@@ -6203,8 +6201,8 @@ export const describeGameSessionPlacement: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGameSessionPlacementInput,
   output: DescribeGameSessionPlacementOutput,
@@ -6239,8 +6237,8 @@ export const describeVpcPeeringConnections: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcPeeringConnectionsInput,
   output: DescribeVpcPeeringConnectionsOutput,
@@ -6293,8 +6291,8 @@ export const getInstanceAccess: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceAccessInput,
   output: GetInstanceAccessOutput,
@@ -6330,8 +6328,8 @@ export const describeMatchmakingConfigurations: {
     | InternalServiceException
     | InvalidRequestException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMatchmakingConfigurationsInput,
@@ -6340,8 +6338,8 @@ export const describeMatchmakingConfigurations: {
     | InternalServiceException
     | InvalidRequestException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMatchmakingConfigurationsInput,
@@ -6350,8 +6348,8 @@ export const describeMatchmakingConfigurations: {
     | InternalServiceException
     | InvalidRequestException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMatchmakingConfigurationsInput,
@@ -6408,8 +6406,8 @@ export const deleteGameServerGroup: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGameServerGroupInput,
   output: DeleteGameServerGroupOutput,
@@ -6441,8 +6439,8 @@ export const describeAlias: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAliasInput,
   output: DescribeAliasOutput,
@@ -6474,8 +6472,8 @@ export const describeBuild: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBuildInput,
   output: DescribeBuildOutput,
@@ -6522,8 +6520,8 @@ export const describeFleetAttributes: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetAttributesInput,
@@ -6533,8 +6531,8 @@ export const describeFleetAttributes: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetAttributesInput,
@@ -6544,8 +6542,8 @@ export const describeFleetAttributes: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetAttributesInput,
@@ -6591,8 +6589,8 @@ export const describeFleetEvents: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetEventsInput,
@@ -6603,8 +6601,8 @@ export const describeFleetEvents: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetEventsInput,
@@ -6615,8 +6613,8 @@ export const describeFleetEvents: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetEventsInput,
@@ -6674,8 +6672,8 @@ export const describeFleetLocationAttributes: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetLocationAttributesInput,
@@ -6686,8 +6684,8 @@ export const describeFleetLocationAttributes: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetLocationAttributesInput,
@@ -6698,8 +6696,8 @@ export const describeFleetLocationAttributes: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetLocationAttributesInput,
@@ -6749,8 +6747,8 @@ export const describeFleetLocationUtilization: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFleetLocationUtilizationInput,
   output: DescribeFleetLocationUtilizationOutput,
@@ -6785,8 +6783,8 @@ export const describeGameServer: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGameServerInput,
   output: DescribeGameServerOutput,
@@ -6830,8 +6828,8 @@ export const describeGameServerInstances: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeGameServerInstancesInput,
@@ -6841,8 +6839,8 @@ export const describeGameServerInstances: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeGameServerInstancesInput,
@@ -6852,8 +6850,8 @@ export const describeGameServerInstances: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeGameServerInstancesInput,
@@ -6892,8 +6890,8 @@ export const describeGameSessionQueues: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeGameSessionQueuesInput,
@@ -6903,8 +6901,8 @@ export const describeGameSessionQueues: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeGameSessionQueuesInput,
@@ -6914,8 +6912,8 @@ export const describeGameSessionQueues: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeGameSessionQueuesInput,
@@ -6981,8 +6979,8 @@ export const describeInstances: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstancesInput,
@@ -6993,8 +6991,8 @@ export const describeInstances: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstancesInput,
@@ -7005,8 +7003,8 @@ export const describeInstances: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstancesInput,
@@ -7048,8 +7046,8 @@ export const describeScalingPolicies: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScalingPoliciesInput,
@@ -7060,8 +7058,8 @@ export const describeScalingPolicies: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScalingPoliciesInput,
@@ -7072,8 +7070,8 @@ export const describeScalingPolicies: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalingPoliciesInput,
@@ -7129,8 +7127,8 @@ export const getComputeAccess: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComputeAccessInput,
   output: GetComputeAccessOutput,
@@ -7223,8 +7221,8 @@ export const putScalingPolicy: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutScalingPolicyInput,
   output: PutScalingPolicyOutput,
@@ -7325,8 +7323,8 @@ export const startGameSessionPlacement: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartGameSessionPlacementInput,
   output: StartGameSessionPlacementOutput,
@@ -7379,8 +7377,8 @@ export const createVpcPeeringAuthorization: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcPeeringAuthorizationInput,
   output: CreateVpcPeeringAuthorizationOutput,
@@ -7418,8 +7416,8 @@ export const deleteFleetLocations: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFleetLocationsInput,
   output: DeleteFleetLocationsOutput,
@@ -7466,8 +7464,8 @@ export const describeFleetLocationCapacity: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFleetLocationCapacityInput,
   output: DescribeFleetLocationCapacityOutput,
@@ -7514,8 +7512,8 @@ export const describeFleetPortSettings: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFleetPortSettingsInput,
   output: DescribeFleetPortSettingsOutput,
@@ -7570,8 +7568,8 @@ export const describeFleetUtilization: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetUtilizationInput,
@@ -7581,8 +7579,8 @@ export const describeFleetUtilization: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetUtilizationInput,
@@ -7592,8 +7590,8 @@ export const describeFleetUtilization: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetUtilizationInput,
@@ -7636,8 +7634,8 @@ export const describeGameServerGroup: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGameServerGroupInput,
   output: DescribeGameServerGroupOutput,
@@ -7670,8 +7668,8 @@ export const describeMatchmakingRuleSets: {
     | InvalidRequestException
     | NotFoundException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMatchmakingRuleSetsInput,
@@ -7681,8 +7679,8 @@ export const describeMatchmakingRuleSets: {
     | InvalidRequestException
     | NotFoundException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMatchmakingRuleSetsInput,
@@ -7692,8 +7690,8 @@ export const describeMatchmakingRuleSets: {
     | InvalidRequestException
     | NotFoundException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMatchmakingRuleSetsInput,
@@ -7748,8 +7746,8 @@ export const describePlayerSessions: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePlayerSessionsInput,
@@ -7759,8 +7757,8 @@ export const describePlayerSessions: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribePlayerSessionsInput,
@@ -7770,8 +7768,8 @@ export const describePlayerSessions: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePlayerSessionsInput,
@@ -7820,8 +7818,8 @@ export const describeRuntimeConfiguration: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRuntimeConfigurationInput,
   output: DescribeRuntimeConfigurationOutput,
@@ -7856,8 +7854,8 @@ export const describeScript: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeScriptInput,
   output: DescribeScriptOutput,
@@ -7909,8 +7907,8 @@ export const getComputeAuthToken: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComputeAuthTokenInput,
   output: GetComputeAuthTokenOutput,
@@ -7943,8 +7941,8 @@ export const getGameSessionLogUrl: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGameSessionLogUrlInput,
   output: GetGameSessionLogUrlOutput,
@@ -7989,8 +7987,8 @@ export const listContainerGroupDefinitionVersions: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContainerGroupDefinitionVersionsInput,
@@ -8001,8 +7999,8 @@ export const listContainerGroupDefinitionVersions: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContainerGroupDefinitionVersionsInput,
@@ -8013,8 +8011,8 @@ export const listContainerGroupDefinitionVersions: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContainerGroupDefinitionVersionsInput,
@@ -8063,8 +8061,8 @@ export const listFleetDeployments: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFleetDeploymentsInput,
@@ -8075,8 +8073,8 @@ export const listFleetDeployments: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFleetDeploymentsInput,
@@ -8087,8 +8085,8 @@ export const listFleetDeployments: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFleetDeploymentsInput,
@@ -8143,8 +8141,8 @@ export const listFleets: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFleetsInput,
@@ -8154,8 +8152,8 @@ export const listFleets: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFleetsInput,
@@ -8165,8 +8163,8 @@ export const listFleets: {
     | InvalidRequestException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFleetsInput,
@@ -8209,8 +8207,8 @@ export const requestUploadCredentials: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RequestUploadCredentialsInput,
   output: RequestUploadCredentialsOutput,
@@ -8249,8 +8247,8 @@ export const resumeGameServerGroup: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResumeGameServerGroupInput,
   output: ResumeGameServerGroupOutput,
@@ -8294,8 +8292,8 @@ export const startFleetActions: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFleetActionsInput,
   output: StartFleetActionsOutput,
@@ -8345,8 +8343,8 @@ export const startMatchmaking: (
   | InvalidRequestException
   | NotFoundException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMatchmakingInput,
   output: StartMatchmakingOutput,
@@ -8395,8 +8393,8 @@ export const stopFleetActions: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopFleetActionsInput,
   output: StopFleetActionsOutput,
@@ -8431,8 +8429,8 @@ export const stopGameSessionPlacement: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopGameSessionPlacementInput,
   output: StopGameSessionPlacementOutput,
@@ -8477,8 +8475,8 @@ export const suspendGameServerGroup: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SuspendGameServerGroupInput,
   output: SuspendGameServerGroupOutput,
@@ -8510,8 +8508,8 @@ export const updateAlias: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAliasInput,
   output: UpdateAliasOutput,
@@ -8544,8 +8542,8 @@ export const updateBuild: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBuildInput,
   output: UpdateBuildOutput,
@@ -8597,8 +8595,8 @@ export const updateGameServer: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGameServerInput,
   output: UpdateGameServerOutput,
@@ -8635,8 +8633,8 @@ export const updateGameServerGroup: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGameServerGroupInput,
   output: UpdateGameServerGroupOutput,
@@ -8667,8 +8665,8 @@ export const updateGameSessionQueue: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGameSessionQueueInput,
   output: UpdateGameSessionQueueOutput,
@@ -8699,8 +8697,8 @@ export const updateMatchmakingConfiguration: (
   | InvalidRequestException
   | NotFoundException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMatchmakingConfigurationInput,
   output: UpdateMatchmakingConfigurationOutput,
@@ -8744,8 +8742,8 @@ export const updateScript: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateScriptInput,
   output: UpdateScriptOutput,
@@ -8792,8 +8790,8 @@ export const createVpcPeeringConnection: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcPeeringConnectionInput,
   output: CreateVpcPeeringConnectionOutput,
@@ -8820,8 +8818,8 @@ export const deleteLocation: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLocationInput,
   output: DeleteLocationOutput,
@@ -8851,8 +8849,8 @@ export const deleteScalingPolicy: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteScalingPolicyInput,
   output: DeleteScalingPolicyResponse,
@@ -8882,8 +8880,8 @@ export const deleteVpcPeeringAuthorization: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcPeeringAuthorizationInput,
   output: DeleteVpcPeeringAuthorizationOutput,
@@ -8916,8 +8914,8 @@ export const deleteVpcPeeringConnection: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcPeeringConnectionInput,
   output: DeleteVpcPeeringConnectionOutput,
@@ -8947,8 +8945,8 @@ export const deregisterCompute: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterComputeInput,
   output: DeregisterComputeOutput,
@@ -8983,8 +8981,8 @@ export const deregisterGameServer: (
   | InvalidRequestException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterGameServerInput,
   output: DeregisterGameServerResponse,
@@ -9023,8 +9021,8 @@ export const stopMatchmaking: (
   | InvalidRequestException
   | NotFoundException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopMatchmakingInput,
   output: StopMatchmakingOutput,
@@ -9069,8 +9067,8 @@ export const updateRuntimeConfiguration: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRuntimeConfigurationInput,
   output: UpdateRuntimeConfigurationOutput,
@@ -9133,8 +9131,8 @@ export const updateContainerGroupDefinition: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateContainerGroupDefinitionInput,
   output: UpdateContainerGroupDefinitionOutput,
@@ -9180,8 +9178,8 @@ export const registerGameServer: (
   | InvalidRequestException
   | LimitExceededException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterGameServerInput,
   output: RegisterGameServerOutput,
@@ -9225,8 +9223,8 @@ export const updateFleetAttributes: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFleetAttributesInput,
   output: UpdateFleetAttributesOutput,
@@ -9294,8 +9292,8 @@ export const updateFleetCapacity: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFleetCapacityInput,
   output: UpdateFleetCapacityOutput,
@@ -9343,8 +9341,8 @@ export const updateFleetPortSettings: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFleetPortSettingsInput,
   output: UpdateFleetPortSettingsOutput,
@@ -9407,8 +9405,8 @@ export const createGameServerGroup: (
   | InvalidRequestException
   | LimitExceededException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGameServerGroupInput,
   output: CreateGameServerGroupOutput,
@@ -9438,8 +9436,8 @@ export const describeVpcPeeringAuthorizations: (
   | InternalServiceException
   | InvalidRequestException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcPeeringAuthorizationsInput,
   output: DescribeVpcPeeringAuthorizationsOutput,
@@ -9470,8 +9468,8 @@ export const listAliases: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAliasesInput,
@@ -9480,8 +9478,8 @@ export const listAliases: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAliasesInput,
@@ -9490,8 +9488,8 @@ export const listAliases: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAliasesInput,
@@ -9532,8 +9530,8 @@ export const listBuilds: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBuildsInput,
@@ -9542,8 +9540,8 @@ export const listBuilds: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBuildsInput,
@@ -9552,8 +9550,8 @@ export const listBuilds: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBuildsInput,
@@ -9607,8 +9605,8 @@ export const listCompute: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListComputeInput,
@@ -9618,8 +9616,8 @@ export const listCompute: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListComputeInput,
@@ -9629,8 +9627,8 @@ export const listCompute: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComputeInput,
@@ -9683,8 +9681,8 @@ export const listContainerFleets: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContainerFleetsInput,
@@ -9694,8 +9692,8 @@ export const listContainerFleets: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContainerFleetsInput,
@@ -9705,8 +9703,8 @@ export const listContainerFleets: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContainerFleetsInput,
@@ -9756,8 +9754,8 @@ export const listContainerGroupDefinitions: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContainerGroupDefinitionsInput,
@@ -9767,8 +9765,8 @@ export const listContainerGroupDefinitions: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContainerGroupDefinitionsInput,
@@ -9778,8 +9776,8 @@ export const listContainerGroupDefinitions: {
     | InvalidRequestException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContainerGroupDefinitionsInput,
@@ -9810,8 +9808,8 @@ export const listGameServerGroups: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGameServerGroupsInput,
@@ -9820,8 +9818,8 @@ export const listGameServerGroups: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGameServerGroupsInput,
@@ -9830,8 +9828,8 @@ export const listGameServerGroups: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGameServerGroupsInput,
@@ -9869,8 +9867,8 @@ export const listGameServers: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGameServersInput,
@@ -9879,8 +9877,8 @@ export const listGameServers: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGameServersInput,
@@ -9889,8 +9887,8 @@ export const listGameServers: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGameServersInput,
@@ -9932,8 +9930,8 @@ export const listLocations: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLocationsInput,
@@ -9942,8 +9940,8 @@ export const listLocations: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLocationsInput,
@@ -9952,8 +9950,8 @@ export const listLocations: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLocationsInput,
@@ -9992,8 +9990,8 @@ export const listScripts: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListScriptsInput,
@@ -10002,8 +10000,8 @@ export const listScripts: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListScriptsInput,
@@ -10012,8 +10010,8 @@ export const listScripts: {
     | InternalServiceException
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListScriptsInput,
@@ -10072,8 +10070,8 @@ export const describeCompute: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeComputeInput,
   output: DescribeComputeOutput,
@@ -10114,8 +10112,8 @@ export const describeContainerFleet: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeContainerFleetInput,
   output: DescribeContainerFleetOutput,
@@ -10159,8 +10157,8 @@ export const describeContainerGroupDefinition: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeContainerGroupDefinitionInput,
   output: DescribeContainerGroupDefinitionOutput,
@@ -10221,8 +10219,8 @@ export const createBuild: (
   | InvalidRequestException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBuildInput,
   output: CreateBuildOutput,
@@ -10253,8 +10251,8 @@ export const validateMatchmakingRuleSet: (
   | InternalServiceException
   | InvalidRequestException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidateMatchmakingRuleSetInput,
   output: ValidateMatchmakingRuleSetOutput,
@@ -10306,8 +10304,8 @@ export const acceptMatch: (
   | InvalidRequestException
   | NotFoundException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptMatchInput,
   output: AcceptMatchOutput,
@@ -10377,8 +10375,8 @@ export const describeEC2InstanceLimits: (
   | InvalidRequestException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEC2InstanceLimitsInput,
   output: DescribeEC2InstanceLimitsOutput,
@@ -10435,8 +10433,8 @@ export const describeFleetCapacity: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetCapacityInput,
@@ -10447,8 +10445,8 @@ export const describeFleetCapacity: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetCapacityInput,
@@ -10459,8 +10457,8 @@ export const describeFleetCapacity: {
     | NotFoundException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetCapacityInput,
@@ -10505,8 +10503,8 @@ export const describeFleetDeployment: (
   | NotFoundException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFleetDeploymentInput,
   output: DescribeFleetDeploymentOutput,
@@ -10563,8 +10561,8 @@ export const createScript: (
   | InvalidRequestException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateScriptInput,
   output: CreateScriptOutput,
@@ -10663,8 +10661,8 @@ export const createGameSessionQueue: (
   | NotFoundException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGameSessionQueueInput,
   output: CreateGameSessionQueueOutput,
@@ -10706,8 +10704,8 @@ export const listTagsForResource: (
   | NotFoundException
   | TaggingFailedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -10739,8 +10737,8 @@ export const deleteAlias: (
   | NotFoundException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAliasInput,
   output: DeleteAliasResponse,
@@ -10777,8 +10775,8 @@ export const deleteBuild: (
   | NotFoundException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBuildInput,
   output: DeleteBuildResponse,
@@ -10815,8 +10813,8 @@ export const deleteContainerFleet: (
   | TaggingFailedException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContainerFleetInput,
   output: DeleteContainerFleetOutput,
@@ -10872,8 +10870,8 @@ export const deleteContainerGroupDefinition: (
   | TaggingFailedException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContainerGroupDefinitionInput,
   output: DeleteContainerGroupDefinitionOutput,
@@ -10901,8 +10899,8 @@ export const deleteGameSessionQueue: (
   | NotFoundException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGameSessionQueueInput,
   output: DeleteGameSessionQueueOutput,
@@ -10930,8 +10928,8 @@ export const deleteMatchmakingConfiguration: (
   | NotFoundException
   | TaggingFailedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMatchmakingConfigurationInput,
   output: DeleteMatchmakingConfigurationOutput,
@@ -10964,8 +10962,8 @@ export const deleteMatchmakingRuleSet: (
   | NotFoundException
   | TaggingFailedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMatchmakingRuleSetInput,
   output: DeleteMatchmakingRuleSetOutput,
@@ -11006,8 +11004,8 @@ export const deleteScript: (
   | NotFoundException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteScriptInput,
   output: DeleteScriptResponse,
@@ -11051,8 +11049,8 @@ export const tagResource: (
   | NotFoundException
   | TaggingFailedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -11095,8 +11093,8 @@ export const untagResource: (
   | NotFoundException
   | TaggingFailedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -11138,8 +11136,8 @@ export const deleteFleet: (
   | NotFoundException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFleetInput,
   output: DeleteFleetResponse,
@@ -11191,8 +11189,8 @@ export const createMatchmakingConfiguration: (
   | NotFoundException
   | TaggingFailedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMatchmakingConfigurationInput,
   output: CreateMatchmakingConfigurationOutput,
@@ -11239,8 +11237,8 @@ export const createMatchmakingRuleSet: (
   | LimitExceededException
   | TaggingFailedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMatchmakingRuleSetInput,
   output: CreateMatchmakingRuleSetOutput,
@@ -11286,8 +11284,8 @@ export const createAlias: (
   | LimitExceededException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAliasInput,
   output: CreateAliasOutput,
@@ -11388,8 +11386,8 @@ export const createContainerFleet: (
   | TaggingFailedException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContainerFleetInput,
   output: CreateContainerFleetOutput,
@@ -11509,8 +11507,8 @@ export const createContainerGroupDefinition: (
   | TaggingFailedException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContainerGroupDefinitionInput,
   output: CreateContainerGroupDefinitionOutput,
@@ -11539,8 +11537,8 @@ export const createLocation: (
   | LimitExceededException
   | TaggingFailedException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationInput,
   output: CreateLocationOutput,
@@ -11587,8 +11585,8 @@ export const createPlayerSession: (
   | NotFoundException
   | TerminalRoutingStrategyException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePlayerSessionInput,
   output: CreatePlayerSessionOutput,
@@ -11632,8 +11630,8 @@ export const describeMatchmaking: (
   | InternalServiceException
   | InvalidRequestException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMatchmakingInput,
   output: DescribeMatchmakingOutput,
@@ -11700,8 +11698,8 @@ export const terminateGameSession: (
   | NotFoundException
   | NotReadyException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateGameSessionInput,
   output: TerminateGameSessionOutput,
@@ -11764,8 +11762,8 @@ export const claimGameServer: (
   | NotFoundException
   | OutOfCapacityException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ClaimGameServerInput,
   output: ClaimGameServerOutput,
@@ -11823,8 +11821,8 @@ export const describeGameSessionDetails: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeGameSessionDetailsInput,
@@ -11836,8 +11834,8 @@ export const describeGameSessionDetails: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeGameSessionDetailsInput,
@@ -11849,8 +11847,8 @@ export const describeGameSessionDetails: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeGameSessionDetailsInput,
@@ -11922,8 +11920,8 @@ export const describeGameSessions: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeGameSessionsInput,
@@ -11935,8 +11933,8 @@ export const describeGameSessions: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeGameSessionsInput,
@@ -11948,8 +11946,8 @@ export const describeGameSessions: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeGameSessionsInput,
@@ -11992,8 +11990,8 @@ export const resolveAlias: (
   | NotFoundException
   | TerminalRoutingStrategyException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResolveAliasInput,
   output: ResolveAliasOutput,
@@ -12085,8 +12083,8 @@ export const searchGameSessions: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchGameSessionsInput,
@@ -12098,8 +12096,8 @@ export const searchGameSessions: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchGameSessionsInput,
@@ -12111,8 +12109,8 @@ export const searchGameSessions: {
     | TerminalRoutingStrategyException
     | UnauthorizedException
     | UnsupportedRegionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchGameSessionsInput,
@@ -12166,8 +12164,8 @@ export const createPlayerSessions: (
   | NotFoundException
   | TerminalRoutingStrategyException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePlayerSessionsInput,
   output: CreatePlayerSessionsOutput,
@@ -12239,8 +12237,8 @@ export const createGameSession: (
   | TerminalRoutingStrategyException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGameSessionInput,
   output: CreateGameSessionOutput,
@@ -12281,8 +12279,8 @@ export const updateGameSession: (
   | NotFoundException
   | NotReadyException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGameSessionInput,
   output: UpdateGameSessionOutput,
@@ -12338,8 +12336,8 @@ export const registerCompute: (
   | LimitExceededException
   | NotReadyException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterComputeInput,
   output: RegisterComputeOutput,
@@ -12415,8 +12413,8 @@ export const updateContainerFleet: (
   | NotReadyException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateContainerFleetInput,
   output: UpdateContainerFleetOutput,
@@ -12471,8 +12469,8 @@ export const createFleetLocations: (
   | NotReadyException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFleetLocationsInput,
   output: CreateFleetLocationsOutput,
@@ -12577,8 +12575,8 @@ export const createFleet: (
   | TaggingFailedException
   | UnauthorizedException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFleetInput,
   output: CreateFleetOutput,
@@ -12642,8 +12640,8 @@ export const startMatchBackfill: (
   | InvalidRequestException
   | NotFoundException
   | UnsupportedRegionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMatchBackfillInput,
   output: StartMatchBackfillOutput,

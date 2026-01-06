@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ComprehendMedical",
@@ -1362,41 +1360,35 @@ export const InferSNOMEDCTResponse = S.suspend(() =>
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidEncodingException extends S.TaggedError<InvalidEncodingException>()(
   "InvalidEncodingException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class TextSizeLimitExceededException extends S.TaggedError<TextSizeLimitExceededException>()(
   "TextSizeLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1411,8 +1403,8 @@ export const startEntitiesDetectionV2Job: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartEntitiesDetectionV2JobRequest,
   output: StartEntitiesDetectionV2JobResponse,
@@ -1435,8 +1427,8 @@ export const describePHIDetectionJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePHIDetectionJobRequest,
   output: DescribePHIDetectionJobResponse,
@@ -1459,8 +1451,8 @@ export const describeRxNormInferenceJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRxNormInferenceJobRequest,
   output: DescribeRxNormInferenceJobResponse,
@@ -1482,8 +1474,8 @@ export const describeSNOMEDCTInferenceJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSNOMEDCTInferenceJobRequest,
   output: DescribeSNOMEDCTInferenceJobResponse,
@@ -1507,8 +1499,8 @@ export const startICD10CMInferenceJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartICD10CMInferenceJobRequest,
   output: StartICD10CMInferenceJobResponse,
@@ -1531,8 +1523,8 @@ export const startPHIDetectionJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartPHIDetectionJobRequest,
   output: StartPHIDetectionJobResponse,
@@ -1556,8 +1548,8 @@ export const startRxNormInferenceJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRxNormInferenceJobRequest,
   output: StartRxNormInferenceJobResponse,
@@ -1579,8 +1571,8 @@ export const startSNOMEDCTInferenceJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSNOMEDCTInferenceJobRequest,
   output: StartSNOMEDCTInferenceJobResponse,
@@ -1601,8 +1593,8 @@ export const stopEntitiesDetectionV2Job: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopEntitiesDetectionV2JobRequest,
   output: StopEntitiesDetectionV2JobResponse,
@@ -1622,8 +1614,8 @@ export const stopICD10CMInferenceJob: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopICD10CMInferenceJobRequest,
   output: StopICD10CMInferenceJobResponse,
@@ -1643,8 +1635,8 @@ export const stopPHIDetectionJob: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopPHIDetectionJobRequest,
   output: StopPHIDetectionJobResponse,
@@ -1664,8 +1656,8 @@ export const stopRxNormInferenceJob: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopRxNormInferenceJobRequest,
   output: StopRxNormInferenceJobResponse,
@@ -1686,8 +1678,8 @@ export const stopSNOMEDCTInferenceJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopSNOMEDCTInferenceJobRequest,
   output: StopSNOMEDCTInferenceJobResponse,
@@ -1710,8 +1702,8 @@ export const describeEntitiesDetectionV2Job: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntitiesDetectionV2JobRequest,
   output: DescribeEntitiesDetectionV2JobResponse,
@@ -1734,8 +1726,8 @@ export const describeICD10CMInferenceJob: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeICD10CMInferenceJobRequest,
   output: DescribeICD10CMInferenceJobResponse,
@@ -1770,8 +1762,8 @@ export const detectEntitiesV2: (
   | ServiceUnavailableException
   | TextSizeLimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectEntitiesV2Request,
   output: DetectEntitiesV2Response,
@@ -1795,8 +1787,8 @@ export const listEntitiesDetectionV2Jobs: (
   | InvalidRequestException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListEntitiesDetectionV2JobsRequest,
   output: ListEntitiesDetectionV2JobsResponse,
@@ -1822,8 +1814,8 @@ export const detectPHI: (
   | ServiceUnavailableException
   | TextSizeLimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectPHIRequest,
   output: DetectPHIResponse,
@@ -1853,8 +1845,8 @@ export const detectEntities: (
   | ServiceUnavailableException
   | TextSizeLimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectEntitiesRequest,
   output: DetectEntitiesResponse,
@@ -1883,8 +1875,8 @@ export const inferICD10CM: (
   | ServiceUnavailableException
   | TextSizeLimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InferICD10CMRequest,
   output: InferICD10CMResponse,
@@ -1912,8 +1904,8 @@ export const inferRxNorm: (
   | ServiceUnavailableException
   | TextSizeLimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InferRxNormRequest,
   output: InferRxNormResponse,
@@ -1939,8 +1931,8 @@ export const inferSNOMEDCT: (
   | ServiceUnavailableException
   | TextSizeLimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InferSNOMEDCTRequest,
   output: InferSNOMEDCTResponse,
@@ -1964,8 +1956,8 @@ export const listICD10CMInferenceJobs: (
   | InvalidRequestException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListICD10CMInferenceJobsRequest,
   output: ListICD10CMInferenceJobsResponse,
@@ -1988,8 +1980,8 @@ export const listPHIDetectionJobs: (
   | InvalidRequestException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListPHIDetectionJobsRequest,
   output: ListPHIDetectionJobsResponse,
@@ -2011,8 +2003,8 @@ export const listRxNormInferenceJobs: (
   | InvalidRequestException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRxNormInferenceJobsRequest,
   output: ListRxNormInferenceJobsResponse,
@@ -2034,8 +2026,8 @@ export const listSNOMEDCTInferenceJobs: (
   | InvalidRequestException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListSNOMEDCTInferenceJobsRequest,
   output: ListSNOMEDCTInferenceJobsResponse,

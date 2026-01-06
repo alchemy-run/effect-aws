@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://requester.mturk.com/2017-01-17/");
 const svc = T.AwsApiService({
@@ -1959,14 +1957,12 @@ export class RequestError extends S.TaggedError<RequestError>()(
   "RequestError",
   { Message: S.optional(S.String), TurkErrorCode: S.optional(S.String) },
   T.AwsQueryError({ code: "RequestError", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceFault extends S.TaggedError<ServiceFault>()(
   "ServiceFault",
   { Message: S.optional(S.String), TurkErrorCode: S.optional(S.String) },
   T.AwsQueryError({ code: "ServiceFault", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 
 //# Operations
 /**
@@ -1981,8 +1977,8 @@ export const acceptQualificationRequest: (
   input: AcceptQualificationRequestRequest,
 ) => Effect.Effect<
   AcceptQualificationRequestResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptQualificationRequestRequest,
   output: AcceptQualificationRequestResponse,
@@ -2006,8 +2002,8 @@ export const createHITWithHITType: (
   input: CreateHITWithHITTypeRequest,
 ) => Effect.Effect<
   CreateHITWithHITTypeResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHITWithHITTypeRequest,
   output: CreateHITWithHITTypeResponse,
@@ -2024,8 +2020,8 @@ export const createQualificationType: (
   input: CreateQualificationTypeRequest,
 ) => Effect.Effect<
   CreateQualificationTypeResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateQualificationTypeRequest,
   output: CreateQualificationTypeResponse,
@@ -2038,8 +2034,8 @@ export const getAssignment: (
   input: GetAssignmentRequest,
 ) => Effect.Effect<
   GetAssignmentResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAssignmentRequest,
   output: GetAssignmentResponse,
@@ -2063,8 +2059,8 @@ export const getQualificationScore: (
   input: GetQualificationScoreRequest,
 ) => Effect.Effect<
   GetQualificationScoreResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQualificationScoreRequest,
   output: GetQualificationScoreResponse,
@@ -2081,22 +2077,22 @@ export const listBonusPayments: {
     input: ListBonusPaymentsRequest,
   ): Effect.Effect<
     ListBonusPaymentsResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBonusPaymentsRequest,
   ) => Stream.Stream<
     ListBonusPaymentsResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBonusPaymentsRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBonusPaymentsRequest,
@@ -2121,22 +2117,22 @@ export const listQualificationRequests: {
     input: ListQualificationRequestsRequest,
   ): Effect.Effect<
     ListQualificationRequestsResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListQualificationRequestsRequest,
   ) => Stream.Stream<
     ListQualificationRequestsResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListQualificationRequestsRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQualificationRequestsRequest,
@@ -2156,22 +2152,22 @@ export const listWorkerBlocks: {
     input: ListWorkerBlocksRequest,
   ): Effect.Effect<
     ListWorkerBlocksResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkerBlocksRequest,
   ) => Stream.Stream<
     ListWorkerBlocksResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkerBlocksRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkerBlocksRequest,
@@ -2197,8 +2193,8 @@ export const notifyWorkers: (
   input: NotifyWorkersRequest,
 ) => Effect.Effect<
   NotifyWorkersResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: NotifyWorkersRequest,
   output: NotifyWorkersResponse,
@@ -2214,8 +2210,8 @@ export const createHITType: (
   input: CreateHITTypeRequest,
 ) => Effect.Effect<
   CreateHITTypeResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHITTypeRequest,
   output: CreateHITTypeResponse,
@@ -2242,8 +2238,8 @@ export const getFileUploadURL: (
   input: GetFileUploadURLRequest,
 ) => Effect.Effect<
   GetFileUploadURLResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFileUploadURLRequest,
   output: GetFileUploadURLResponse,
@@ -2256,8 +2252,8 @@ export const getHIT: (
   input: GetHITRequest,
 ) => Effect.Effect<
   GetHITResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHITRequest,
   output: GetHITResponse,
@@ -2270,8 +2266,8 @@ export const getQualificationType: (
   input: GetQualificationTypeRequest,
 ) => Effect.Effect<
   GetQualificationTypeResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQualificationTypeRequest,
   output: GetQualificationTypeResponse,
@@ -2309,22 +2305,22 @@ export const listAssignmentsForHIT: {
     input: ListAssignmentsForHITRequest,
   ): Effect.Effect<
     ListAssignmentsForHITResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssignmentsForHITRequest,
   ) => Stream.Stream<
     ListAssignmentsForHITResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssignmentsForHITRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssignmentsForHITRequest,
@@ -2348,22 +2344,22 @@ export const listHITs: {
     input: ListHITsRequest,
   ): Effect.Effect<
     ListHITsResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHITsRequest,
   ) => Stream.Stream<
     ListHITsResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHITsRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHITsRequest,
@@ -2386,22 +2382,22 @@ export const listHITsForQualificationType: {
     input: ListHITsForQualificationTypeRequest,
   ): Effect.Effect<
     ListHITsForQualificationTypeResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHITsForQualificationTypeRequest,
   ) => Stream.Stream<
     ListHITsForQualificationTypeResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHITsForQualificationTypeRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHITsForQualificationTypeRequest,
@@ -2424,22 +2420,22 @@ export const listQualificationTypes: {
     input: ListQualificationTypesRequest,
   ): Effect.Effect<
     ListQualificationTypesResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListQualificationTypesRequest,
   ) => Stream.Stream<
     ListQualificationTypesResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListQualificationTypesRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQualificationTypesRequest,
@@ -2460,22 +2456,22 @@ export const listReviewableHITs: {
     input: ListReviewableHITsRequest,
   ): Effect.Effect<
     ListReviewableHITsResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReviewableHITsRequest,
   ) => Stream.Stream<
     ListReviewableHITsResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReviewableHITsRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReviewableHITsRequest,
@@ -2496,22 +2492,22 @@ export const listWorkersWithQualificationType: {
     input: ListWorkersWithQualificationTypeRequest,
   ): Effect.Effect<
     ListWorkersWithQualificationTypeResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkersWithQualificationTypeRequest,
   ) => Stream.Stream<
     ListWorkersWithQualificationTypeResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkersWithQualificationTypeRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkersWithQualificationTypeRequest,
@@ -2534,8 +2530,8 @@ export const sendTestEventNotification: (
   input: SendTestEventNotificationRequest,
 ) => Effect.Effect<
   SendTestEventNotificationResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendTestEventNotificationRequest,
   output: SendTestEventNotificationResponse,
@@ -2584,8 +2580,8 @@ export const updateQualificationType: (
   input: UpdateQualificationTypeRequest,
 ) => Effect.Effect<
   UpdateQualificationTypeResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateQualificationTypeRequest,
   output: UpdateQualificationTypeResponse,
@@ -2614,8 +2610,8 @@ export const approveAssignment: (
   input: ApproveAssignmentRequest,
 ) => Effect.Effect<
   ApproveAssignmentResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ApproveAssignmentRequest,
   output: ApproveAssignmentResponse,
@@ -2640,8 +2636,8 @@ export const associateQualificationWithWorker: (
   input: AssociateQualificationWithWorkerRequest,
 ) => Effect.Effect<
   AssociateQualificationWithWorkerResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateQualificationWithWorkerRequest,
   output: AssociateQualificationWithWorkerResponse,
@@ -2667,8 +2663,8 @@ export const createAdditionalAssignmentsForHIT: (
   input: CreateAdditionalAssignmentsForHITRequest,
 ) => Effect.Effect<
   CreateAdditionalAssignmentsForHITResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAdditionalAssignmentsForHITRequest,
   output: CreateAdditionalAssignmentsForHITResponse,
@@ -2681,8 +2677,8 @@ export const createWorkerBlock: (
   input: CreateWorkerBlockRequest,
 ) => Effect.Effect<
   CreateWorkerBlockResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkerBlockRequest,
   output: CreateWorkerBlockResponse,
@@ -2711,8 +2707,8 @@ export const deleteHIT: (
   input: DeleteHITRequest,
 ) => Effect.Effect<
   DeleteHITResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHITRequest,
   output: DeleteHITResponse,
@@ -2741,8 +2737,8 @@ export const deleteQualificationType: (
   input: DeleteQualificationTypeRequest,
 ) => Effect.Effect<
   DeleteQualificationTypeResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteQualificationTypeRequest,
   output: DeleteQualificationTypeResponse,
@@ -2755,8 +2751,8 @@ export const deleteWorkerBlock: (
   input: DeleteWorkerBlockRequest,
 ) => Effect.Effect<
   DeleteWorkerBlockResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkerBlockRequest,
   output: DeleteWorkerBlockResponse,
@@ -2773,8 +2769,8 @@ export const disassociateQualificationFromWorker: (
   input: DisassociateQualificationFromWorkerRequest,
 ) => Effect.Effect<
   DisassociateQualificationFromWorkerResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateQualificationFromWorkerRequest,
   output: DisassociateQualificationFromWorkerResponse,
@@ -2789,8 +2785,8 @@ export const getAccountBalance: (
   input: GetAccountBalanceRequest,
 ) => Effect.Effect<
   GetAccountBalanceResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountBalanceRequest,
   output: GetAccountBalanceResponse,
@@ -2811,8 +2807,8 @@ export const rejectAssignment: (
   input: RejectAssignmentRequest,
 ) => Effect.Effect<
   RejectAssignmentResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectAssignmentRequest,
   output: RejectAssignmentResponse,
@@ -2830,8 +2826,8 @@ export const rejectQualificationRequest: (
   input: RejectQualificationRequestRequest,
 ) => Effect.Effect<
   RejectQualificationRequestResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectQualificationRequestRequest,
   output: RejectQualificationRequestResponse,
@@ -2855,8 +2851,8 @@ export const sendBonus: (
   input: SendBonusRequest,
 ) => Effect.Effect<
   SendBonusResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendBonusRequest,
   output: SendBonusResponse,
@@ -2870,8 +2866,8 @@ export const updateExpirationForHIT: (
   input: UpdateExpirationForHITRequest,
 ) => Effect.Effect<
   UpdateExpirationForHITResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateExpirationForHITRequest,
   output: UpdateExpirationForHITResponse,
@@ -2886,8 +2882,8 @@ export const updateHITReviewStatus: (
   input: UpdateHITReviewStatusRequest,
 ) => Effect.Effect<
   UpdateHITReviewStatusResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHITReviewStatusRequest,
   output: UpdateHITReviewStatusResponse,
@@ -2905,8 +2901,8 @@ export const updateHITTypeOfHIT: (
   input: UpdateHITTypeOfHITRequest,
 ) => Effect.Effect<
   UpdateHITTypeOfHITResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHITTypeOfHITRequest,
   output: UpdateHITTypeOfHITResponse,
@@ -2928,8 +2924,8 @@ export const updateNotificationSettings: (
   input: UpdateNotificationSettingsRequest,
 ) => Effect.Effect<
   UpdateNotificationSettingsResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNotificationSettingsRequest,
   output: UpdateNotificationSettingsResponse,
@@ -2947,22 +2943,22 @@ export const listReviewPolicyResultsForHIT: {
     input: ListReviewPolicyResultsForHITRequest,
   ): Effect.Effect<
     ListReviewPolicyResultsForHITResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReviewPolicyResultsForHITRequest,
   ) => Stream.Stream<
     ListReviewPolicyResultsForHITResponse,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReviewPolicyResultsForHITRequest,
   ) => Stream.Stream<
     unknown,
-    RequestError | ServiceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RequestError | ServiceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReviewPolicyResultsForHITRequest,
@@ -2994,8 +2990,8 @@ export const createHIT: (
   input: CreateHITRequest,
 ) => Effect.Effect<
   CreateHITResponse,
-  RequestError | ServiceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestError | ServiceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHITRequest,
   output: CreateHITResponse,

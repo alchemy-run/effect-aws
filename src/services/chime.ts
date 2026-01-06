@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime",
@@ -2706,53 +2704,47 @@ export const PutRetentionSettingsResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceFailureException extends S.TaggedError<ServiceFailureException>()(
   "ServiceFailureException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottledClientException extends S.TaggedError<ThrottledClientException>()(
   "ThrottledClientException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnauthorizedClientException extends S.TaggedError<UnauthorizedClientException>()(
   "UnauthorizedClientException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class UnprocessableEntityException extends S.TaggedError<UnprocessableEntityException>()(
   "UnprocessableEntityException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2768,8 +2760,8 @@ export const deleteEventsConfiguration: (
   | ServiceFailureException
   | ServiceUnavailableException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventsConfigurationRequest,
   output: DeleteEventsConfigurationResponse,
@@ -2807,8 +2799,8 @@ export const putRetentionSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRetentionSettingsRequest,
   output: PutRetentionSettingsResponse,
@@ -2839,8 +2831,8 @@ export const inviteUsers: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InviteUsersRequest,
   output: InviteUsersResponse,
@@ -2873,8 +2865,8 @@ export const updateAccountSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountSettingsRequest,
   output: UpdateAccountSettingsResponse,
@@ -2903,8 +2895,8 @@ export const updateUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,
@@ -2932,8 +2924,8 @@ export const updateUserSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserSettingsRequest,
   output: UpdateUserSettingsResponse,
@@ -2962,8 +2954,8 @@ export const getAccount: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountRequest,
   output: GetAccountResponse,
@@ -2993,8 +2985,8 @@ export const getAccountSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsResponse,
@@ -3022,8 +3014,8 @@ export const getBot: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBotRequest,
   output: GetBotResponse,
@@ -3052,8 +3044,8 @@ export const getPhoneNumberOrder: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPhoneNumberOrderRequest,
   output: GetPhoneNumberOrderResponse,
@@ -3082,8 +3074,8 @@ export const getRetentionSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRetentionSettingsRequest,
   output: GetRetentionSettingsResponse,
@@ -3111,8 +3103,8 @@ export const getRoom: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRoomRequest,
   output: GetRoomResponse,
@@ -3143,8 +3135,8 @@ export const getUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserRequest,
   output: GetUserResponse,
@@ -3172,8 +3164,8 @@ export const getUserSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserSettingsRequest,
   output: GetUserSettingsResponse,
@@ -3204,8 +3196,8 @@ export const listAccounts: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccountsRequest,
@@ -3218,8 +3210,8 @@ export const listAccounts: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccountsRequest,
@@ -3232,8 +3224,8 @@ export const listAccounts: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsRequest,
@@ -3268,8 +3260,8 @@ export const listBots: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBotsRequest,
@@ -3282,8 +3274,8 @@ export const listBots: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBotsRequest,
@@ -3296,8 +3288,8 @@ export const listBots: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBotsRequest,
@@ -3332,8 +3324,8 @@ export const listPhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPhoneNumbersRequest,
@@ -3346,8 +3338,8 @@ export const listPhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPhoneNumbersRequest,
@@ -3360,8 +3352,8 @@ export const listPhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPhoneNumbersRequest,
@@ -3397,8 +3389,8 @@ export const listRoomMemberships: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRoomMembershipsRequest,
@@ -3411,8 +3403,8 @@ export const listRoomMemberships: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRoomMembershipsRequest,
@@ -3425,8 +3417,8 @@ export const listRoomMemberships: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoomMembershipsRequest,
@@ -3461,8 +3453,8 @@ export const listRooms: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRoomsRequest,
@@ -3475,8 +3467,8 @@ export const listRooms: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRoomsRequest,
@@ -3489,8 +3481,8 @@ export const listRooms: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoomsRequest,
@@ -3526,8 +3518,8 @@ export const listUsers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUsersRequest,
@@ -3540,8 +3532,8 @@ export const listUsers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUsersRequest,
@@ -3554,8 +3546,8 @@ export const listUsers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
@@ -3589,8 +3581,8 @@ export const regenerateSecurityToken: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegenerateSecurityTokenRequest,
   output: RegenerateSecurityTokenResponse,
@@ -3619,8 +3611,8 @@ export const resetPersonalPIN: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetPersonalPINRequest,
   output: ResetPersonalPINResponse,
@@ -3650,8 +3642,8 @@ export const restorePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestorePhoneNumberRequest,
   output: RestorePhoneNumberResponse,
@@ -3680,8 +3672,8 @@ export const updateAccount: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountRequest,
   output: UpdateAccountResponse,
@@ -3709,8 +3701,8 @@ export const updateBot: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBotRequest,
   output: UpdateBotResponse,
@@ -3738,8 +3730,8 @@ export const updateRoom: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRoomRequest,
   output: UpdateRoomResponse,
@@ -3770,8 +3762,8 @@ export const updateRoomMembership: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRoomMembershipRequest,
   output: UpdateRoomMembershipResponse,
@@ -3805,8 +3797,8 @@ export const deletePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePhoneNumberRequest,
   output: DeletePhoneNumberResponse,
@@ -3834,8 +3826,8 @@ export const deleteRoom: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRoomRequest,
   output: DeleteRoomResponse,
@@ -3863,8 +3855,8 @@ export const deleteRoomMembership: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRoomMembershipRequest,
   output: DeleteRoomMembershipResponse,
@@ -3892,8 +3884,8 @@ export const disassociatePhoneNumberFromUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociatePhoneNumberFromUserRequest,
   output: DisassociatePhoneNumberFromUserResponse,
@@ -3921,8 +3913,8 @@ export const disassociateSigninDelegateGroupsFromAccount: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateSigninDelegateGroupsFromAccountRequest,
   output: DisassociateSigninDelegateGroupsFromAccountResponse,
@@ -3950,8 +3942,8 @@ export const logoutUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: LogoutUserRequest,
   output: LogoutUserResponse,
@@ -3979,8 +3971,8 @@ export const redactConversationMessage: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RedactConversationMessageRequest,
   output: RedactConversationMessageResponse,
@@ -4008,8 +4000,8 @@ export const redactRoomMessage: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RedactRoomMessageRequest,
   output: RedactRoomMessageResponse,
@@ -4038,8 +4030,8 @@ export const associatePhoneNumberWithUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociatePhoneNumberWithUserRequest,
   output: AssociatePhoneNumberWithUserResponse,
@@ -4068,8 +4060,8 @@ export const associateSigninDelegateGroupsWithAccount: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSigninDelegateGroupsWithAccountRequest,
   output: AssociateSigninDelegateGroupsWithAccountResponse,
@@ -4106,8 +4098,8 @@ export const batchUnsuspendUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUnsuspendUserRequest,
   output: BatchUnsuspendUserResponse,
@@ -4139,8 +4131,8 @@ export const batchDeletePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeletePhoneNumberRequest,
   output: BatchDeletePhoneNumberResponse,
@@ -4182,8 +4174,8 @@ export const batchSuspendUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchSuspendUserRequest,
   output: BatchSuspendUserResponse,
@@ -4215,8 +4207,8 @@ export const batchUpdatePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdatePhoneNumberRequest,
   output: BatchUpdatePhoneNumberResponse,
@@ -4244,8 +4236,8 @@ export const batchUpdateUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateUserRequest,
   output: BatchUpdateUserResponse,
@@ -4276,8 +4268,8 @@ export const createAccount: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccountRequest,
   output: CreateAccountResponse,
@@ -4306,8 +4298,8 @@ export const createBot: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBotRequest,
   output: CreateBotResponse,
@@ -4337,8 +4329,8 @@ export const createRoom: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRoomRequest,
   output: CreateRoomResponse,
@@ -4372,8 +4364,8 @@ export const updatePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePhoneNumberRequest,
   output: UpdatePhoneNumberResponse,
@@ -4403,8 +4395,8 @@ export const createUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -4434,8 +4426,8 @@ export const batchCreateRoomMembership: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateRoomMembershipRequest,
   output: BatchCreateRoomMembershipResponse,
@@ -4465,8 +4457,8 @@ export const createRoomMembership: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRoomMembershipRequest,
   output: CreateRoomMembershipResponse,
@@ -4496,8 +4488,8 @@ export const getGlobalSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGlobalSettingsRequest,
   output: GetGlobalSettingsResponse,
@@ -4524,8 +4516,8 @@ export const listPhoneNumberOrders: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPhoneNumberOrdersRequest,
@@ -4537,8 +4529,8 @@ export const listPhoneNumberOrders: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPhoneNumberOrdersRequest,
@@ -4550,8 +4542,8 @@ export const listPhoneNumberOrders: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPhoneNumberOrdersRequest,
@@ -4589,8 +4581,8 @@ export const searchAvailablePhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchAvailablePhoneNumbersRequest,
@@ -4603,8 +4595,8 @@ export const searchAvailablePhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchAvailablePhoneNumbersRequest,
@@ -4617,8 +4609,8 @@ export const searchAvailablePhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchAvailablePhoneNumbersRequest,
@@ -4651,8 +4643,8 @@ export const getPhoneNumberSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPhoneNumberSettingsRequest,
   output: GetPhoneNumberSettingsResponse,
@@ -4678,8 +4670,8 @@ export const updateGlobalSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGlobalSettingsRequest,
   output: UpdateGlobalSettingsResponse,
@@ -4707,8 +4699,8 @@ export const updatePhoneNumberSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePhoneNumberSettingsRequest,
   output: UpdatePhoneNumberSettingsResponse,
@@ -4735,8 +4727,8 @@ export const getPhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPhoneNumberRequest,
   output: GetPhoneNumberResponse,
@@ -4771,8 +4763,8 @@ export const createMeetingDialOut: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMeetingDialOutRequest,
   output: CreateMeetingDialOutResponse,
@@ -4803,8 +4795,8 @@ export const createPhoneNumberOrder: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePhoneNumberOrderRequest,
   output: CreatePhoneNumberOrderResponse,
@@ -4833,8 +4825,8 @@ export const getEventsConfiguration: (
   | ServiceFailureException
   | ServiceUnavailableException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventsConfigurationRequest,
   output: GetEventsConfigurationResponse,
@@ -4864,8 +4856,8 @@ export const putEventsConfiguration: (
   | ServiceFailureException
   | ServiceUnavailableException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEventsConfigurationRequest,
   output: PutEventsConfigurationResponse,
@@ -4893,8 +4885,8 @@ export const listSupportedPhoneNumberCountries: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListSupportedPhoneNumberCountriesRequest,
   output: ListSupportedPhoneNumberCountriesResponse,
@@ -4936,8 +4928,8 @@ export const deleteAccount: (
   | ThrottledClientException
   | UnauthorizedClientException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccountRequest,
   output: DeleteAccountResponse,

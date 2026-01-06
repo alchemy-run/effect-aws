@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials as Creds,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials as Creds } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("https://sts.amazonaws.com/doc/2011-06-15/");
 const svc = T.AwsApiService({
@@ -1197,7 +1195,7 @@ export class ExpiredTokenException extends S.TaggedError<ExpiredTokenException>(
   "ExpiredTokenException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ExpiredTokenException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidAuthorizationMessageException extends S.TaggedError<InvalidAuthorizationMessageException>()(
   "InvalidAuthorizationMessageException",
   { message: S.optional(S.String) },
@@ -1205,7 +1203,7 @@ export class InvalidAuthorizationMessageException extends S.TaggedError<InvalidA
     code: "InvalidAuthorizationMessageException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ExpiredTradeInTokenException extends S.TaggedError<ExpiredTradeInTokenException>()(
   "ExpiredTradeInTokenException",
   { message: S.optional(S.String) },
@@ -1213,12 +1211,12 @@ export class ExpiredTradeInTokenException extends S.TaggedError<ExpiredTradeInTo
     code: "ExpiredTradeInTokenException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RegionDisabledException extends S.TaggedError<RegionDisabledException>()(
   "RegionDisabledException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "RegionDisabledException", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class JWTPayloadSizeExceededException extends S.TaggedError<JWTPayloadSizeExceededException>()(
   "JWTPayloadSizeExceededException",
   { message: S.optional(S.String) },
@@ -1226,22 +1224,22 @@ export class JWTPayloadSizeExceededException extends S.TaggedError<JWTPayloadSiz
     code: "JWTPayloadSizeExceededException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IDPCommunicationErrorException extends S.TaggedError<IDPCommunicationErrorException>()(
   "IDPCommunicationErrorException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "IDPCommunicationError", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PackedPolicyTooLargeException extends S.TaggedError<PackedPolicyTooLargeException>()(
   "PackedPolicyTooLargeException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "PackedPolicyTooLarge", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MalformedPolicyDocumentException extends S.TaggedError<MalformedPolicyDocumentException>()(
   "MalformedPolicyDocumentException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "MalformedPolicyDocument", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OutboundWebIdentityFederationDisabledException extends S.TaggedError<OutboundWebIdentityFederationDisabledException>()(
   "OutboundWebIdentityFederationDisabledException",
   { message: S.optional(S.String) },
@@ -1249,12 +1247,12 @@ export class OutboundWebIdentityFederationDisabledException extends S.TaggedErro
     code: "OutboundWebIdentityFederationDisabledException",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class IDPRejectedClaimException extends S.TaggedError<IDPRejectedClaimException>()(
   "IDPRejectedClaimException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "IDPRejectedClaim", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class SessionDurationEscalationException extends S.TaggedError<SessionDurationEscalationException>()(
   "SessionDurationEscalationException",
   { message: S.optional(S.String) },
@@ -1262,12 +1260,12 @@ export class SessionDurationEscalationException extends S.TaggedError<SessionDur
     code: "SessionDurationEscalationException",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidIdentityTokenException extends S.TaggedError<InvalidIdentityTokenException>()(
   "InvalidIdentityTokenException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidIdentityToken", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1285,8 +1283,8 @@ export const getCallerIdentity: (
   input: GetCallerIdentityRequest,
 ) => Effect.Effect<
   GetCallerIdentityResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCallerIdentityRequest,
   output: GetCallerIdentityResponse,
@@ -1318,8 +1316,8 @@ export const getAccessKeyInfo: (
   input: GetAccessKeyInfoRequest,
 ) => Effect.Effect<
   GetAccessKeyInfoResponse,
-  Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessKeyInfoRequest,
   output: GetAccessKeyInfoResponse,
@@ -1362,8 +1360,8 @@ export const decodeAuthorizationMessage: (
   input: DecodeAuthorizationMessageRequest,
 ) => Effect.Effect<
   DecodeAuthorizationMessageResponse,
-  InvalidAuthorizationMessageException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidAuthorizationMessageException | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DecodeAuthorizationMessageRequest,
   output: DecodeAuthorizationMessageResponse,
@@ -1430,8 +1428,8 @@ export const getSessionToken: (
   input: GetSessionTokenRequest,
 ) => Effect.Effect<
   GetSessionTokenResponse,
-  RegionDisabledException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  RegionDisabledException | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSessionTokenRequest,
   output: GetSessionTokenResponse,
@@ -1464,8 +1462,8 @@ export const assumeRoot: (
   input: AssumeRootRequest,
 ) => Effect.Effect<
   AssumeRootResponse,
-  ExpiredTokenException | RegionDisabledException | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  ExpiredTokenException | RegionDisabledException | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssumeRootRequest,
   output: AssumeRootResponse,
@@ -1484,8 +1482,8 @@ export const getDelegatedAccessToken: (
   | ExpiredTradeInTokenException
   | PackedPolicyTooLargeException
   | RegionDisabledException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDelegatedAccessTokenRequest,
   output: GetDelegatedAccessTokenResponse,
@@ -1595,8 +1593,8 @@ export const getFederationToken: (
   | MalformedPolicyDocumentException
   | PackedPolicyTooLargeException
   | RegionDisabledException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFederationTokenRequest,
   output: GetFederationTokenResponse,
@@ -1709,8 +1707,8 @@ export const assumeRole: (
   | MalformedPolicyDocumentException
   | PackedPolicyTooLargeException
   | RegionDisabledException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssumeRoleRequest,
   output: AssumeRoleResponse,
@@ -1733,8 +1731,8 @@ export const getWebIdentityToken: (
   | JWTPayloadSizeExceededException
   | OutboundWebIdentityFederationDisabledException
   | SessionDurationEscalationException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWebIdentityTokenRequest,
   output: GetWebIdentityTokenResponse,
@@ -1880,8 +1878,8 @@ export const assumeRoleWithSAML: (
   | MalformedPolicyDocumentException
   | PackedPolicyTooLargeException
   | RegionDisabledException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssumeRoleWithSAMLRequest,
   output: AssumeRoleWithSAMLResponse,
@@ -2025,8 +2023,8 @@ export const assumeRoleWithWebIdentity: (
   | MalformedPolicyDocumentException
   | PackedPolicyTooLargeException
   | RegionDisabledException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssumeRoleWithWebIdentityRequest,
   output: AssumeRoleWithWebIdentityResponse,

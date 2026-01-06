@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Greengrass",
@@ -4395,13 +4393,11 @@ export const CreateResourceDefinitionVersionResponse = S.suspend(() =>
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { ErrorDetails: S.optional(ErrorDetails), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { ErrorDetails: S.optional(ErrorDetails), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -4411,8 +4407,8 @@ export const disassociateServiceRoleFromAccount: (
   input: DisassociateServiceRoleFromAccountRequest,
 ) => Effect.Effect<
   DisassociateServiceRoleFromAccountResponse,
-  InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateServiceRoleFromAccountRequest,
   output: DisassociateServiceRoleFromAccountResponse,
@@ -4425,8 +4421,8 @@ export const listCoreDefinitions: (
   input: ListCoreDefinitionsRequest,
 ) => Effect.Effect<
   ListCoreDefinitionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListCoreDefinitionsRequest,
   output: ListCoreDefinitionsResponse,
@@ -4439,8 +4435,8 @@ export const listDeviceDefinitions: (
   input: ListDeviceDefinitionsRequest,
 ) => Effect.Effect<
   ListDeviceDefinitionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDeviceDefinitionsRequest,
   output: ListDeviceDefinitionsResponse,
@@ -4453,8 +4449,8 @@ export const listFunctionDefinitions: (
   input: ListFunctionDefinitionsRequest,
 ) => Effect.Effect<
   ListFunctionDefinitionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListFunctionDefinitionsRequest,
   output: ListFunctionDefinitionsResponse,
@@ -4467,8 +4463,8 @@ export const listLoggerDefinitions: (
   input: ListLoggerDefinitionsRequest,
 ) => Effect.Effect<
   ListLoggerDefinitionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLoggerDefinitionsRequest,
   output: ListLoggerDefinitionsResponse,
@@ -4481,8 +4477,8 @@ export const listResourceDefinitions: (
   input: ListResourceDefinitionsRequest,
 ) => Effect.Effect<
   ListResourceDefinitionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListResourceDefinitionsRequest,
   output: ListResourceDefinitionsResponse,
@@ -4495,8 +4491,8 @@ export const listSubscriptionDefinitions: (
   input: ListSubscriptionDefinitionsRequest,
 ) => Effect.Effect<
   ListSubscriptionDefinitionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListSubscriptionDefinitionsRequest,
   output: ListSubscriptionDefinitionsResponse,
@@ -4509,8 +4505,8 @@ export const getServiceRoleForAccount: (
   input: GetServiceRoleForAccountRequest,
 ) => Effect.Effect<
   GetServiceRoleForAccountResponse,
-  InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceRoleForAccountRequest,
   output: GetServiceRoleForAccountResponse,
@@ -4523,8 +4519,8 @@ export const deleteConnectorDefinition: (
   input: DeleteConnectorDefinitionRequest,
 ) => Effect.Effect<
   DeleteConnectorDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectorDefinitionRequest,
   output: DeleteConnectorDefinitionResponse,
@@ -4537,8 +4533,8 @@ export const getBulkDeploymentStatus: (
   input: GetBulkDeploymentStatusRequest,
 ) => Effect.Effect<
   GetBulkDeploymentStatusResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBulkDeploymentStatusRequest,
   output: GetBulkDeploymentStatusResponse,
@@ -4551,8 +4547,8 @@ export const listBulkDeploymentDetailedReports: (
   input: ListBulkDeploymentDetailedReportsRequest,
 ) => Effect.Effect<
   ListBulkDeploymentDetailedReportsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBulkDeploymentDetailedReportsRequest,
   output: ListBulkDeploymentDetailedReportsResponse,
@@ -4565,8 +4561,8 @@ export const listBulkDeployments: (
   input: ListBulkDeploymentsRequest,
 ) => Effect.Effect<
   ListBulkDeploymentsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBulkDeploymentsRequest,
   output: ListBulkDeploymentsResponse,
@@ -4579,8 +4575,8 @@ export const listConnectorDefinitions: (
   input: ListConnectorDefinitionsRequest,
 ) => Effect.Effect<
   ListConnectorDefinitionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListConnectorDefinitionsRequest,
   output: ListConnectorDefinitionsResponse,
@@ -4593,8 +4589,8 @@ export const listConnectorDefinitionVersions: (
   input: ListConnectorDefinitionVersionsRequest,
 ) => Effect.Effect<
   ListConnectorDefinitionVersionsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListConnectorDefinitionVersionsRequest,
   output: ListConnectorDefinitionVersionsResponse,
@@ -4607,8 +4603,8 @@ export const listDeployments: (
   input: ListDeploymentsRequest,
 ) => Effect.Effect<
   ListDeploymentsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDeploymentsRequest,
   output: ListDeploymentsResponse,
@@ -4621,8 +4617,8 @@ export const listGroupCertificateAuthorities: (
   input: ListGroupCertificateAuthoritiesRequest,
 ) => Effect.Effect<
   ListGroupCertificateAuthoritiesResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListGroupCertificateAuthoritiesRequest,
   output: ListGroupCertificateAuthoritiesResponse,
@@ -4635,8 +4631,8 @@ export const listGroups: (
   input: ListGroupsRequest,
 ) => Effect.Effect<
   ListGroupsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
@@ -4649,8 +4645,8 @@ export const updateConnectivityInfo: (
   input: UpdateConnectivityInfoRequest,
 ) => Effect.Effect<
   UpdateConnectivityInfoResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectivityInfoRequest,
   output: UpdateConnectivityInfoResponse,
@@ -4663,8 +4659,8 @@ export const deleteCoreDefinition: (
   input: DeleteCoreDefinitionRequest,
 ) => Effect.Effect<
   DeleteCoreDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCoreDefinitionRequest,
   output: DeleteCoreDefinitionResponse,
@@ -4677,8 +4673,8 @@ export const deleteDeviceDefinition: (
   input: DeleteDeviceDefinitionRequest,
 ) => Effect.Effect<
   DeleteDeviceDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeviceDefinitionRequest,
   output: DeleteDeviceDefinitionResponse,
@@ -4691,8 +4687,8 @@ export const deleteFunctionDefinition: (
   input: DeleteFunctionDefinitionRequest,
 ) => Effect.Effect<
   DeleteFunctionDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFunctionDefinitionRequest,
   output: DeleteFunctionDefinitionResponse,
@@ -4705,8 +4701,8 @@ export const deleteGroup: (
   input: DeleteGroupRequest,
 ) => Effect.Effect<
   DeleteGroupResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResponse,
@@ -4719,8 +4715,8 @@ export const deleteLoggerDefinition: (
   input: DeleteLoggerDefinitionRequest,
 ) => Effect.Effect<
   DeleteLoggerDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLoggerDefinitionRequest,
   output: DeleteLoggerDefinitionResponse,
@@ -4733,8 +4729,8 @@ export const deleteResourceDefinition: (
   input: DeleteResourceDefinitionRequest,
 ) => Effect.Effect<
   DeleteResourceDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceDefinitionRequest,
   output: DeleteResourceDefinitionResponse,
@@ -4747,8 +4743,8 @@ export const deleteSubscriptionDefinition: (
   input: DeleteSubscriptionDefinitionRequest,
 ) => Effect.Effect<
   DeleteSubscriptionDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSubscriptionDefinitionRequest,
   output: DeleteSubscriptionDefinitionResponse,
@@ -4761,8 +4757,8 @@ export const stopBulkDeployment: (
   input: StopBulkDeploymentRequest,
 ) => Effect.Effect<
   StopBulkDeploymentResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopBulkDeploymentRequest,
   output: StopBulkDeploymentResponse,
@@ -4775,8 +4771,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4789,8 +4785,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4803,8 +4799,8 @@ export const updateConnectorDefinition: (
   input: UpdateConnectorDefinitionRequest,
 ) => Effect.Effect<
   UpdateConnectorDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectorDefinitionRequest,
   output: UpdateConnectorDefinitionResponse,
@@ -4817,8 +4813,8 @@ export const updateCoreDefinition: (
   input: UpdateCoreDefinitionRequest,
 ) => Effect.Effect<
   UpdateCoreDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCoreDefinitionRequest,
   output: UpdateCoreDefinitionResponse,
@@ -4831,8 +4827,8 @@ export const updateDeviceDefinition: (
   input: UpdateDeviceDefinitionRequest,
 ) => Effect.Effect<
   UpdateDeviceDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeviceDefinitionRequest,
   output: UpdateDeviceDefinitionResponse,
@@ -4845,8 +4841,8 @@ export const updateFunctionDefinition: (
   input: UpdateFunctionDefinitionRequest,
 ) => Effect.Effect<
   UpdateFunctionDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFunctionDefinitionRequest,
   output: UpdateFunctionDefinitionResponse,
@@ -4859,8 +4855,8 @@ export const updateGroup: (
   input: UpdateGroupRequest,
 ) => Effect.Effect<
   UpdateGroupResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupRequest,
   output: UpdateGroupResponse,
@@ -4873,8 +4869,8 @@ export const updateLoggerDefinition: (
   input: UpdateLoggerDefinitionRequest,
 ) => Effect.Effect<
   UpdateLoggerDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLoggerDefinitionRequest,
   output: UpdateLoggerDefinitionResponse,
@@ -4887,8 +4883,8 @@ export const updateResourceDefinition: (
   input: UpdateResourceDefinitionRequest,
 ) => Effect.Effect<
   UpdateResourceDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResourceDefinitionRequest,
   output: UpdateResourceDefinitionResponse,
@@ -4901,8 +4897,8 @@ export const updateSubscriptionDefinition: (
   input: UpdateSubscriptionDefinitionRequest,
 ) => Effect.Effect<
   UpdateSubscriptionDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSubscriptionDefinitionRequest,
   output: UpdateSubscriptionDefinitionResponse,
@@ -4915,8 +4911,8 @@ export const associateRoleToGroup: (
   input: AssociateRoleToGroupRequest,
 ) => Effect.Effect<
   AssociateRoleToGroupResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateRoleToGroupRequest,
   output: AssociateRoleToGroupResponse,
@@ -4929,8 +4925,8 @@ export const associateServiceRoleToAccount: (
   input: AssociateServiceRoleToAccountRequest,
 ) => Effect.Effect<
   AssociateServiceRoleToAccountResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateServiceRoleToAccountRequest,
   output: AssociateServiceRoleToAccountResponse,
@@ -4943,8 +4939,8 @@ export const createDeployment: (
   input: CreateDeploymentRequest,
 ) => Effect.Effect<
   CreateDeploymentResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeploymentRequest,
   output: CreateDeploymentResponse,
@@ -4957,8 +4953,8 @@ export const createGroupCertificateAuthority: (
   input: CreateGroupCertificateAuthorityRequest,
 ) => Effect.Effect<
   CreateGroupCertificateAuthorityResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupCertificateAuthorityRequest,
   output: CreateGroupCertificateAuthorityResponse,
@@ -4971,8 +4967,8 @@ export const createGroupVersion: (
   input: CreateGroupVersionRequest,
 ) => Effect.Effect<
   CreateGroupVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupVersionRequest,
   output: CreateGroupVersionResponse,
@@ -4985,8 +4981,8 @@ export const createSoftwareUpdateJob: (
   input: CreateSoftwareUpdateJobRequest,
 ) => Effect.Effect<
   CreateSoftwareUpdateJobResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSoftwareUpdateJobRequest,
   output: CreateSoftwareUpdateJobResponse,
@@ -4999,8 +4995,8 @@ export const disassociateRoleFromGroup: (
   input: DisassociateRoleFromGroupRequest,
 ) => Effect.Effect<
   DisassociateRoleFromGroupResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateRoleFromGroupRequest,
   output: DisassociateRoleFromGroupResponse,
@@ -5013,8 +5009,8 @@ export const getAssociatedRole: (
   input: GetAssociatedRoleRequest,
 ) => Effect.Effect<
   GetAssociatedRoleResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAssociatedRoleRequest,
   output: GetAssociatedRoleResponse,
@@ -5027,8 +5023,8 @@ export const getConnectivityInfo: (
   input: GetConnectivityInfoRequest,
 ) => Effect.Effect<
   GetConnectivityInfoResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectivityInfoRequest,
   output: GetConnectivityInfoResponse,
@@ -5041,8 +5037,8 @@ export const getConnectorDefinition: (
   input: GetConnectorDefinitionRequest,
 ) => Effect.Effect<
   GetConnectorDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectorDefinitionRequest,
   output: GetConnectorDefinitionResponse,
@@ -5055,8 +5051,8 @@ export const getConnectorDefinitionVersion: (
   input: GetConnectorDefinitionVersionRequest,
 ) => Effect.Effect<
   GetConnectorDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectorDefinitionVersionRequest,
   output: GetConnectorDefinitionVersionResponse,
@@ -5069,8 +5065,8 @@ export const getCoreDefinition: (
   input: GetCoreDefinitionRequest,
 ) => Effect.Effect<
   GetCoreDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCoreDefinitionRequest,
   output: GetCoreDefinitionResponse,
@@ -5083,8 +5079,8 @@ export const getCoreDefinitionVersion: (
   input: GetCoreDefinitionVersionRequest,
 ) => Effect.Effect<
   GetCoreDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCoreDefinitionVersionRequest,
   output: GetCoreDefinitionVersionResponse,
@@ -5097,8 +5093,8 @@ export const getDeploymentStatus: (
   input: GetDeploymentStatusRequest,
 ) => Effect.Effect<
   GetDeploymentStatusResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentStatusRequest,
   output: GetDeploymentStatusResponse,
@@ -5111,8 +5107,8 @@ export const getDeviceDefinition: (
   input: GetDeviceDefinitionRequest,
 ) => Effect.Effect<
   GetDeviceDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeviceDefinitionRequest,
   output: GetDeviceDefinitionResponse,
@@ -5125,8 +5121,8 @@ export const getDeviceDefinitionVersion: (
   input: GetDeviceDefinitionVersionRequest,
 ) => Effect.Effect<
   GetDeviceDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeviceDefinitionVersionRequest,
   output: GetDeviceDefinitionVersionResponse,
@@ -5139,8 +5135,8 @@ export const getFunctionDefinition: (
   input: GetFunctionDefinitionRequest,
 ) => Effect.Effect<
   GetFunctionDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionDefinitionRequest,
   output: GetFunctionDefinitionResponse,
@@ -5153,8 +5149,8 @@ export const getFunctionDefinitionVersion: (
   input: GetFunctionDefinitionVersionRequest,
 ) => Effect.Effect<
   GetFunctionDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionDefinitionVersionRequest,
   output: GetFunctionDefinitionVersionResponse,
@@ -5167,8 +5163,8 @@ export const getGroup: (
   input: GetGroupRequest,
 ) => Effect.Effect<
   GetGroupResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupRequest,
   output: GetGroupResponse,
@@ -5181,8 +5177,8 @@ export const getGroupCertificateAuthority: (
   input: GetGroupCertificateAuthorityRequest,
 ) => Effect.Effect<
   GetGroupCertificateAuthorityResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupCertificateAuthorityRequest,
   output: GetGroupCertificateAuthorityResponse,
@@ -5195,8 +5191,8 @@ export const getGroupCertificateConfiguration: (
   input: GetGroupCertificateConfigurationRequest,
 ) => Effect.Effect<
   GetGroupCertificateConfigurationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupCertificateConfigurationRequest,
   output: GetGroupCertificateConfigurationResponse,
@@ -5209,8 +5205,8 @@ export const getGroupVersion: (
   input: GetGroupVersionRequest,
 ) => Effect.Effect<
   GetGroupVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupVersionRequest,
   output: GetGroupVersionResponse,
@@ -5223,8 +5219,8 @@ export const getLoggerDefinition: (
   input: GetLoggerDefinitionRequest,
 ) => Effect.Effect<
   GetLoggerDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoggerDefinitionRequest,
   output: GetLoggerDefinitionResponse,
@@ -5237,8 +5233,8 @@ export const getLoggerDefinitionVersion: (
   input: GetLoggerDefinitionVersionRequest,
 ) => Effect.Effect<
   GetLoggerDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoggerDefinitionVersionRequest,
   output: GetLoggerDefinitionVersionResponse,
@@ -5251,8 +5247,8 @@ export const getResourceDefinition: (
   input: GetResourceDefinitionRequest,
 ) => Effect.Effect<
   GetResourceDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceDefinitionRequest,
   output: GetResourceDefinitionResponse,
@@ -5265,8 +5261,8 @@ export const getResourceDefinitionVersion: (
   input: GetResourceDefinitionVersionRequest,
 ) => Effect.Effect<
   GetResourceDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceDefinitionVersionRequest,
   output: GetResourceDefinitionVersionResponse,
@@ -5279,8 +5275,8 @@ export const getSubscriptionDefinition: (
   input: GetSubscriptionDefinitionRequest,
 ) => Effect.Effect<
   GetSubscriptionDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSubscriptionDefinitionRequest,
   output: GetSubscriptionDefinitionResponse,
@@ -5293,8 +5289,8 @@ export const getSubscriptionDefinitionVersion: (
   input: GetSubscriptionDefinitionVersionRequest,
 ) => Effect.Effect<
   GetSubscriptionDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSubscriptionDefinitionVersionRequest,
   output: GetSubscriptionDefinitionVersionResponse,
@@ -5307,8 +5303,8 @@ export const listCoreDefinitionVersions: (
   input: ListCoreDefinitionVersionsRequest,
 ) => Effect.Effect<
   ListCoreDefinitionVersionsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListCoreDefinitionVersionsRequest,
   output: ListCoreDefinitionVersionsResponse,
@@ -5321,8 +5317,8 @@ export const listDeviceDefinitionVersions: (
   input: ListDeviceDefinitionVersionsRequest,
 ) => Effect.Effect<
   ListDeviceDefinitionVersionsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDeviceDefinitionVersionsRequest,
   output: ListDeviceDefinitionVersionsResponse,
@@ -5335,8 +5331,8 @@ export const listFunctionDefinitionVersions: (
   input: ListFunctionDefinitionVersionsRequest,
 ) => Effect.Effect<
   ListFunctionDefinitionVersionsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListFunctionDefinitionVersionsRequest,
   output: ListFunctionDefinitionVersionsResponse,
@@ -5349,8 +5345,8 @@ export const listGroupVersions: (
   input: ListGroupVersionsRequest,
 ) => Effect.Effect<
   ListGroupVersionsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListGroupVersionsRequest,
   output: ListGroupVersionsResponse,
@@ -5363,8 +5359,8 @@ export const listLoggerDefinitionVersions: (
   input: ListLoggerDefinitionVersionsRequest,
 ) => Effect.Effect<
   ListLoggerDefinitionVersionsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLoggerDefinitionVersionsRequest,
   output: ListLoggerDefinitionVersionsResponse,
@@ -5377,8 +5373,8 @@ export const listResourceDefinitionVersions: (
   input: ListResourceDefinitionVersionsRequest,
 ) => Effect.Effect<
   ListResourceDefinitionVersionsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListResourceDefinitionVersionsRequest,
   output: ListResourceDefinitionVersionsResponse,
@@ -5391,8 +5387,8 @@ export const listSubscriptionDefinitionVersions: (
   input: ListSubscriptionDefinitionVersionsRequest,
 ) => Effect.Effect<
   ListSubscriptionDefinitionVersionsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListSubscriptionDefinitionVersionsRequest,
   output: ListSubscriptionDefinitionVersionsResponse,
@@ -5405,8 +5401,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5419,8 +5415,8 @@ export const resetDeployments: (
   input: ResetDeploymentsRequest,
 ) => Effect.Effect<
   ResetDeploymentsResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetDeploymentsRequest,
   output: ResetDeploymentsResponse,
@@ -5433,8 +5429,8 @@ export const startBulkDeployment: (
   input: StartBulkDeploymentRequest,
 ) => Effect.Effect<
   StartBulkDeploymentResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartBulkDeploymentRequest,
   output: StartBulkDeploymentResponse,
@@ -5447,8 +5443,8 @@ export const updateGroupCertificateConfiguration: (
   input: UpdateGroupCertificateConfigurationRequest,
 ) => Effect.Effect<
   UpdateGroupCertificateConfigurationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupCertificateConfigurationRequest,
   output: UpdateGroupCertificateConfigurationResponse,
@@ -5461,8 +5457,8 @@ export const updateThingRuntimeConfiguration: (
   input: UpdateThingRuntimeConfigurationRequest,
 ) => Effect.Effect<
   UpdateThingRuntimeConfigurationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateThingRuntimeConfigurationRequest,
   output: UpdateThingRuntimeConfigurationResponse,
@@ -5475,8 +5471,8 @@ export const createConnectorDefinition: (
   input: CreateConnectorDefinitionRequest,
 ) => Effect.Effect<
   CreateConnectorDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectorDefinitionRequest,
   output: CreateConnectorDefinitionResponse,
@@ -5489,8 +5485,8 @@ export const createCoreDefinition: (
   input: CreateCoreDefinitionRequest,
 ) => Effect.Effect<
   CreateCoreDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCoreDefinitionRequest,
   output: CreateCoreDefinitionResponse,
@@ -5503,8 +5499,8 @@ export const createCoreDefinitionVersion: (
   input: CreateCoreDefinitionVersionRequest,
 ) => Effect.Effect<
   CreateCoreDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCoreDefinitionVersionRequest,
   output: CreateCoreDefinitionVersionResponse,
@@ -5517,8 +5513,8 @@ export const createDeviceDefinition: (
   input: CreateDeviceDefinitionRequest,
 ) => Effect.Effect<
   CreateDeviceDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeviceDefinitionRequest,
   output: CreateDeviceDefinitionResponse,
@@ -5531,8 +5527,8 @@ export const createDeviceDefinitionVersion: (
   input: CreateDeviceDefinitionVersionRequest,
 ) => Effect.Effect<
   CreateDeviceDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeviceDefinitionVersionRequest,
   output: CreateDeviceDefinitionVersionResponse,
@@ -5545,8 +5541,8 @@ export const createFunctionDefinition: (
   input: CreateFunctionDefinitionRequest,
 ) => Effect.Effect<
   CreateFunctionDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFunctionDefinitionRequest,
   output: CreateFunctionDefinitionResponse,
@@ -5559,8 +5555,8 @@ export const createGroup: (
   input: CreateGroupRequest,
 ) => Effect.Effect<
   CreateGroupResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResponse,
@@ -5573,8 +5569,8 @@ export const createLoggerDefinition: (
   input: CreateLoggerDefinitionRequest,
 ) => Effect.Effect<
   CreateLoggerDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLoggerDefinitionRequest,
   output: CreateLoggerDefinitionResponse,
@@ -5587,8 +5583,8 @@ export const createLoggerDefinitionVersion: (
   input: CreateLoggerDefinitionVersionRequest,
 ) => Effect.Effect<
   CreateLoggerDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLoggerDefinitionVersionRequest,
   output: CreateLoggerDefinitionVersionResponse,
@@ -5601,8 +5597,8 @@ export const createResourceDefinition: (
   input: CreateResourceDefinitionRequest,
 ) => Effect.Effect<
   CreateResourceDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceDefinitionRequest,
   output: CreateResourceDefinitionResponse,
@@ -5615,8 +5611,8 @@ export const createSubscriptionDefinition: (
   input: CreateSubscriptionDefinitionRequest,
 ) => Effect.Effect<
   CreateSubscriptionDefinitionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSubscriptionDefinitionRequest,
   output: CreateSubscriptionDefinitionResponse,
@@ -5629,8 +5625,8 @@ export const createSubscriptionDefinitionVersion: (
   input: CreateSubscriptionDefinitionVersionRequest,
 ) => Effect.Effect<
   CreateSubscriptionDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSubscriptionDefinitionVersionRequest,
   output: CreateSubscriptionDefinitionVersionResponse,
@@ -5643,8 +5639,8 @@ export const createConnectorDefinitionVersion: (
   input: CreateConnectorDefinitionVersionRequest,
 ) => Effect.Effect<
   CreateConnectorDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectorDefinitionVersionRequest,
   output: CreateConnectorDefinitionVersionResponse,
@@ -5657,8 +5653,8 @@ export const getThingRuntimeConfiguration: (
   input: GetThingRuntimeConfigurationRequest,
 ) => Effect.Effect<
   GetThingRuntimeConfigurationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetThingRuntimeConfigurationRequest,
   output: GetThingRuntimeConfigurationResponse,
@@ -5671,8 +5667,8 @@ export const createFunctionDefinitionVersion: (
   input: CreateFunctionDefinitionVersionRequest,
 ) => Effect.Effect<
   CreateFunctionDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFunctionDefinitionVersionRequest,
   output: CreateFunctionDefinitionVersionResponse,
@@ -5685,8 +5681,8 @@ export const createResourceDefinitionVersion: (
   input: CreateResourceDefinitionVersionRequest,
 ) => Effect.Effect<
   CreateResourceDefinitionVersionResponse,
-  BadRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceDefinitionVersionRequest,
   output: CreateResourceDefinitionVersionResponse,

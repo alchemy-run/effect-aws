@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MediaLive",
@@ -13294,43 +13292,35 @@ export const BatchUpdateScheduleResponse = S.suspend(() =>
 export class BadGatewayException extends S.TaggedError<BadGatewayException>()(
   "BadGatewayException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class GatewayTimeoutException extends S.TaggedError<GatewayTimeoutException>()(
   "GatewayTimeoutException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withTimeoutError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnprocessableEntityException extends S.TaggedError<UnprocessableEntityException>()(
   "UnprocessableEntityException",
   {
@@ -13339,7 +13329,7 @@ export class UnprocessableEntityException extends S.TaggedError<UnprocessableEnt
       T.JsonName("validationErrors"),
     ),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -13353,8 +13343,8 @@ export const createTags: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTagsRequest,
   output: CreateTagsResponse,
@@ -13379,8 +13369,8 @@ export const listMultiplexes: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMultiplexesRequest,
@@ -13392,8 +13382,8 @@ export const listMultiplexes: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMultiplexesRequest,
@@ -13405,8 +13395,8 @@ export const listMultiplexes: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMultiplexesRequest,
@@ -13441,8 +13431,8 @@ export const deleteChannelPlacementGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelPlacementGroupRequest,
   output: DeleteChannelPlacementGroupResponse,
@@ -13472,8 +13462,8 @@ export const deleteCluster: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -13503,8 +13493,8 @@ export const deleteMultiplex: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMultiplexRequest,
   output: DeleteMultiplexResponse,
@@ -13533,8 +13523,8 @@ export const describeInputDevice: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInputDeviceRequest,
   output: DescribeInputDeviceResponse,
@@ -13563,8 +13553,8 @@ export const describeThumbnails: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeThumbnailsRequest,
   output: DescribeThumbnailsResponse,
@@ -13593,8 +13583,8 @@ export const updateInput: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInputRequest,
   output: UpdateInputResponse,
@@ -13621,8 +13611,8 @@ export const listCloudWatchAlarmTemplateGroups: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCloudWatchAlarmTemplateGroupsRequest,
@@ -13633,8 +13623,8 @@ export const listCloudWatchAlarmTemplateGroups: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCloudWatchAlarmTemplateGroupsRequest,
@@ -13645,8 +13635,8 @@ export const listCloudWatchAlarmTemplateGroups: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCloudWatchAlarmTemplateGroupsRequest,
@@ -13678,8 +13668,8 @@ export const listCloudWatchAlarmTemplates: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCloudWatchAlarmTemplatesRequest,
@@ -13690,8 +13680,8 @@ export const listCloudWatchAlarmTemplates: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCloudWatchAlarmTemplatesRequest,
@@ -13702,8 +13692,8 @@ export const listCloudWatchAlarmTemplates: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCloudWatchAlarmTemplatesRequest,
@@ -13735,8 +13725,8 @@ export const listEventBridgeRuleTemplateGroups: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventBridgeRuleTemplateGroupsRequest,
@@ -13747,8 +13737,8 @@ export const listEventBridgeRuleTemplateGroups: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventBridgeRuleTemplateGroupsRequest,
@@ -13759,8 +13749,8 @@ export const listEventBridgeRuleTemplateGroups: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventBridgeRuleTemplateGroupsRequest,
@@ -13792,8 +13782,8 @@ export const listEventBridgeRuleTemplates: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventBridgeRuleTemplatesRequest,
@@ -13804,8 +13794,8 @@ export const listEventBridgeRuleTemplates: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventBridgeRuleTemplatesRequest,
@@ -13816,8 +13806,8 @@ export const listEventBridgeRuleTemplates: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventBridgeRuleTemplatesRequest,
@@ -13849,8 +13839,8 @@ export const listSignalMaps: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSignalMapsRequest,
@@ -13861,8 +13851,8 @@ export const listSignalMaps: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSignalMapsRequest,
@@ -13873,8 +13863,8 @@ export const listSignalMaps: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSignalMapsRequest,
@@ -13905,8 +13895,8 @@ export const getCloudWatchAlarmTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCloudWatchAlarmTemplateRequest,
   output: GetCloudWatchAlarmTemplateResponse,
@@ -13930,8 +13920,8 @@ export const getCloudWatchAlarmTemplateGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCloudWatchAlarmTemplateGroupRequest,
   output: GetCloudWatchAlarmTemplateGroupResponse,
@@ -13955,8 +13945,8 @@ export const getEventBridgeRuleTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventBridgeRuleTemplateRequest,
   output: GetEventBridgeRuleTemplateResponse,
@@ -13980,8 +13970,8 @@ export const getEventBridgeRuleTemplateGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventBridgeRuleTemplateGroupRequest,
   output: GetEventBridgeRuleTemplateGroupResponse,
@@ -14005,8 +13995,8 @@ export const getSignalMap: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSignalMapRequest,
   output: GetSignalMapResponse,
@@ -14029,8 +14019,8 @@ export const listTagsForResource: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -14052,8 +14042,8 @@ export const deleteTags: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsRequest,
   output: DeleteTagsResponse,
@@ -14077,8 +14067,8 @@ export const startDeleteMonitorDeployment: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDeleteMonitorDeploymentRequest,
   output: StartDeleteMonitorDeploymentResponse,
@@ -14104,8 +14094,8 @@ export const startMonitorDeployment: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMonitorDeploymentRequest,
   output: StartMonitorDeploymentResponse,
@@ -14131,8 +14121,8 @@ export const startUpdateSignalMap: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartUpdateSignalMapRequest,
   output: StartUpdateSignalMapResponse,
@@ -14158,8 +14148,8 @@ export const updateCloudWatchAlarmTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCloudWatchAlarmTemplateRequest,
   output: UpdateCloudWatchAlarmTemplateResponse,
@@ -14185,8 +14175,8 @@ export const updateCloudWatchAlarmTemplateGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCloudWatchAlarmTemplateGroupRequest,
   output: UpdateCloudWatchAlarmTemplateGroupResponse,
@@ -14212,8 +14202,8 @@ export const updateEventBridgeRuleTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEventBridgeRuleTemplateRequest,
   output: UpdateEventBridgeRuleTemplateResponse,
@@ -14239,8 +14229,8 @@ export const updateEventBridgeRuleTemplateGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEventBridgeRuleTemplateGroupRequest,
   output: UpdateEventBridgeRuleTemplateGroupResponse,
@@ -14266,8 +14256,8 @@ export const deleteCloudWatchAlarmTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCloudWatchAlarmTemplateRequest,
   output: DeleteCloudWatchAlarmTemplateResponse,
@@ -14293,8 +14283,8 @@ export const deleteCloudWatchAlarmTemplateGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCloudWatchAlarmTemplateGroupRequest,
   output: DeleteCloudWatchAlarmTemplateGroupResponse,
@@ -14320,8 +14310,8 @@ export const deleteEventBridgeRuleTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventBridgeRuleTemplateRequest,
   output: DeleteEventBridgeRuleTemplateResponse,
@@ -14347,8 +14337,8 @@ export const deleteEventBridgeRuleTemplateGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventBridgeRuleTemplateGroupRequest,
   output: DeleteEventBridgeRuleTemplateGroupResponse,
@@ -14374,8 +14364,8 @@ export const deleteSignalMap: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSignalMapRequest,
   output: DeleteSignalMapResponse,
@@ -14401,8 +14391,8 @@ export const createCloudWatchAlarmTemplateGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCloudWatchAlarmTemplateGroupRequest,
   output: CreateCloudWatchAlarmTemplateGroupResponse,
@@ -14428,8 +14418,8 @@ export const createEventBridgeRuleTemplateGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventBridgeRuleTemplateGroupRequest,
   output: CreateEventBridgeRuleTemplateGroupResponse,
@@ -14455,8 +14445,8 @@ export const createCloudWatchAlarmTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCloudWatchAlarmTemplateRequest,
   output: CreateCloudWatchAlarmTemplateResponse,
@@ -14482,8 +14472,8 @@ export const createEventBridgeRuleTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventBridgeRuleTemplateRequest,
   output: CreateEventBridgeRuleTemplateResponse,
@@ -14511,8 +14501,8 @@ export const deleteMultiplexProgram: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMultiplexProgramRequest,
   output: DeleteMultiplexProgramResponse,
@@ -14542,8 +14532,8 @@ export const deleteNetwork: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkRequest,
   output: DeleteNetworkResponse,
@@ -14573,8 +14563,8 @@ export const deleteNode: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNodeRequest,
   output: DeleteNodeResponse,
@@ -14604,8 +14594,8 @@ export const deleteReservation: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReservationRequest,
   output: DeleteReservationResponse,
@@ -14634,8 +14624,8 @@ export const describeInputSecurityGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInputSecurityGroupRequest,
   output: DescribeInputSecurityGroupResponse,
@@ -14664,8 +14654,8 @@ export const listAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAlertsRequest,
@@ -14678,8 +14668,8 @@ export const listAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAlertsRequest,
@@ -14692,8 +14682,8 @@ export const listAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAlertsRequest,
@@ -14729,8 +14719,8 @@ export const listClusterAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClusterAlertsRequest,
@@ -14743,8 +14733,8 @@ export const listClusterAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClusterAlertsRequest,
@@ -14757,8 +14747,8 @@ export const listClusterAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClusterAlertsRequest,
@@ -14794,8 +14784,8 @@ export const listMultiplexAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMultiplexAlertsRequest,
@@ -14808,8 +14798,8 @@ export const listMultiplexAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMultiplexAlertsRequest,
@@ -14822,8 +14812,8 @@ export const listMultiplexAlerts: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMultiplexAlertsRequest,
@@ -14859,8 +14849,8 @@ export const listMultiplexPrograms: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMultiplexProgramsRequest,
@@ -14873,8 +14863,8 @@ export const listMultiplexPrograms: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMultiplexProgramsRequest,
@@ -14887,8 +14877,8 @@ export const listMultiplexPrograms: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMultiplexProgramsRequest,
@@ -14924,8 +14914,8 @@ export const purchaseOffering: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseOfferingRequest,
   output: PurchaseOfferingResponse,
@@ -14954,8 +14944,8 @@ export const describeChannel: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelRequest,
   output: DescribeChannelResponse,
@@ -14983,8 +14973,8 @@ export const describeChannelPlacementGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelPlacementGroupRequest,
   output: DescribeChannelPlacementGroupResponse,
@@ -15012,8 +15002,8 @@ export const describeCluster: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterRequest,
   output: DescribeClusterResponse,
@@ -15041,8 +15031,8 @@ export const describeInputDeviceThumbnail: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInputDeviceThumbnailRequest,
   output: DescribeInputDeviceThumbnailResponse,
@@ -15070,8 +15060,8 @@ export const describeMultiplex: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMultiplexRequest,
   output: DescribeMultiplexResponse,
@@ -15099,8 +15089,8 @@ export const describeMultiplexProgram: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMultiplexProgramRequest,
   output: DescribeMultiplexProgramResponse,
@@ -15128,8 +15118,8 @@ export const describeNetwork: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNetworkRequest,
   output: DescribeNetworkResponse,
@@ -15157,8 +15147,8 @@ export const describeNode: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNodeRequest,
   output: DescribeNodeResponse,
@@ -15186,8 +15176,8 @@ export const describeOffering: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeOfferingRequest,
   output: DescribeOfferingResponse,
@@ -15215,8 +15205,8 @@ export const describeReservation: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReservationRequest,
   output: DescribeReservationResponse,
@@ -15245,8 +15235,8 @@ export const describeSchedule: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScheduleRequest,
@@ -15259,8 +15249,8 @@ export const describeSchedule: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScheduleRequest,
@@ -15273,8 +15263,8 @@ export const describeSchedule: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduleRequest,
@@ -15309,8 +15299,8 @@ export const describeSdiSource: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSdiSourceRequest,
   output: DescribeSdiSourceResponse,
@@ -15338,8 +15328,8 @@ export const deleteInputSecurityGroup: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInputSecurityGroupRequest,
   output: DeleteInputSecurityGroupResponse,
@@ -15367,8 +15357,8 @@ export const deleteSchedule: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteScheduleRequest,
   output: DeleteScheduleResponse,
@@ -15397,8 +15387,8 @@ export const deleteSdiSource: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSdiSourceRequest,
   output: DeleteSdiSourceResponse,
@@ -15428,8 +15418,8 @@ export const listVersions: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVersionsRequest,
   output: ListVersionsResponse,
@@ -15459,8 +15449,8 @@ export const restartChannelPipelines: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestartChannelPipelinesRequest,
   output: RestartChannelPipelinesResponse,
@@ -15490,8 +15480,8 @@ export const startChannel: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartChannelRequest,
   output: StartChannelResponse,
@@ -15521,8 +15511,8 @@ export const startMultiplex: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMultiplexRequest,
   output: StartMultiplexResponse,
@@ -15552,8 +15542,8 @@ export const stopChannel: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopChannelRequest,
   output: StopChannelResponse,
@@ -15583,8 +15573,8 @@ export const stopMultiplex: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopMultiplexRequest,
   output: StopMultiplexResponse,
@@ -15613,8 +15603,8 @@ export const updateInputSecurityGroup: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInputSecurityGroupRequest,
   output: UpdateInputSecurityGroupResponse,
@@ -15643,8 +15633,8 @@ export const updateReservation: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReservationRequest,
   output: UpdateReservationResponse,
@@ -15674,8 +15664,8 @@ export const deleteInput: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInputRequest,
   output: DeleteInputResponse,
@@ -15705,8 +15695,8 @@ export const batchStart: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchStartRequest,
   output: BatchStartResponse,
@@ -15736,8 +15726,8 @@ export const batchStop: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchStopRequest,
   output: BatchStopResponse,
@@ -15767,8 +15757,8 @@ export const batchDelete: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteRequest,
   output: BatchDeleteResponse,
@@ -15798,8 +15788,8 @@ export const deleteChannel: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelRequest,
   output: DeleteChannelResponse,
@@ -15827,8 +15817,8 @@ export const createSignalMap: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSignalMapRequest,
   output: CreateSignalMapResponse,
@@ -15855,8 +15845,8 @@ export const updateCluster: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResponse,
@@ -15884,8 +15874,8 @@ export const listChannelPlacementGroups: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelPlacementGroupsRequest,
@@ -15897,8 +15887,8 @@ export const listChannelPlacementGroups: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelPlacementGroupsRequest,
@@ -15910,8 +15900,8 @@ export const listChannelPlacementGroups: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelPlacementGroupsRequest,
@@ -15945,8 +15935,8 @@ export const listChannels: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelsRequest,
@@ -15958,8 +15948,8 @@ export const listChannels: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelsRequest,
@@ -15971,8 +15961,8 @@ export const listChannels: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
@@ -16006,8 +15996,8 @@ export const listClusters: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClustersRequest,
@@ -16019,8 +16009,8 @@ export const listClusters: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClustersRequest,
@@ -16032,8 +16022,8 @@ export const listClusters: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
@@ -16067,8 +16057,8 @@ export const listInputDevices: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInputDevicesRequest,
@@ -16080,8 +16070,8 @@ export const listInputDevices: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInputDevicesRequest,
@@ -16093,8 +16083,8 @@ export const listInputDevices: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInputDevicesRequest,
@@ -16128,8 +16118,8 @@ export const listInputSecurityGroups: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInputSecurityGroupsRequest,
@@ -16141,8 +16131,8 @@ export const listInputSecurityGroups: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInputSecurityGroupsRequest,
@@ -16154,8 +16144,8 @@ export const listInputSecurityGroups: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInputSecurityGroupsRequest,
@@ -16189,8 +16179,8 @@ export const listNetworks: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNetworksRequest,
@@ -16202,8 +16192,8 @@ export const listNetworks: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNetworksRequest,
@@ -16215,8 +16205,8 @@ export const listNetworks: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNetworksRequest,
@@ -16250,8 +16240,8 @@ export const listNodes: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNodesRequest,
@@ -16263,8 +16253,8 @@ export const listNodes: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNodesRequest,
@@ -16276,8 +16266,8 @@ export const listNodes: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
@@ -16311,8 +16301,8 @@ export const listOfferings: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOfferingsRequest,
@@ -16324,8 +16314,8 @@ export const listOfferings: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOfferingsRequest,
@@ -16337,8 +16327,8 @@ export const listOfferings: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOfferingsRequest,
@@ -16372,8 +16362,8 @@ export const listReservations: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReservationsRequest,
@@ -16385,8 +16375,8 @@ export const listReservations: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReservationsRequest,
@@ -16398,8 +16388,8 @@ export const listReservations: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReservationsRequest,
@@ -16433,8 +16423,8 @@ export const listSdiSources: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSdiSourcesRequest,
@@ -16446,8 +16436,8 @@ export const listSdiSources: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSdiSourcesRequest,
@@ -16459,8 +16449,8 @@ export const listSdiSources: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSdiSourcesRequest,
@@ -16494,8 +16484,8 @@ export const updateNetwork: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNetworkRequest,
   output: UpdateNetworkResponse,
@@ -16523,8 +16513,8 @@ export const updateNode: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNodeRequest,
   output: UpdateNodeResponse,
@@ -16551,8 +16541,8 @@ export const describeAccountConfiguration: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountConfigurationRequest,
   output: DescribeAccountConfigurationResponse,
@@ -16579,8 +16569,8 @@ export const listInputs: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInputsRequest,
@@ -16592,8 +16582,8 @@ export const listInputs: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInputsRequest,
@@ -16605,8 +16595,8 @@ export const listInputs: {
     | GatewayTimeoutException
     | InternalServerErrorException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInputsRequest,
@@ -16639,8 +16629,8 @@ export const createInputSecurityGroup: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInputSecurityGroupRequest,
   output: CreateInputSecurityGroupResponse,
@@ -16666,8 +16656,8 @@ export const createPartnerInput: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePartnerInputRequest,
   output: CreatePartnerInputResponse,
@@ -16694,8 +16684,8 @@ export const updateSdiSource: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSdiSourceRequest,
   output: UpdateSdiSourceResponse,
@@ -16723,8 +16713,8 @@ export const createNetwork: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkRequest,
   output: CreateNetworkResponse,
@@ -16752,8 +16742,8 @@ export const createNodeRegistrationScript: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNodeRegistrationScriptRequest,
   output: CreateNodeRegistrationScriptResponse,
@@ -16781,8 +16771,8 @@ export const createSdiSource: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSdiSourceRequest,
   output: CreateSdiSourceResponse,
@@ -16810,8 +16800,8 @@ export const createCluster: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -16839,8 +16829,8 @@ export const describeInput: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInputRequest,
   output: DescribeInputResponse,
@@ -16867,8 +16857,8 @@ export const createInput: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInputRequest,
   output: CreateInputResponse,
@@ -16895,8 +16885,8 @@ export const updateChannel: (
   | GatewayTimeoutException
   | InternalServerErrorException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelRequest,
   output: UpdateChannelResponse,
@@ -16925,8 +16915,8 @@ export const updateInputDevice: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInputDeviceRequest,
   output: UpdateInputDeviceResponse,
@@ -16956,8 +16946,8 @@ export const updateMultiplex: (
   | InternalServerErrorException
   | NotFoundException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMultiplexRequest,
   output: UpdateMultiplexResponse,
@@ -16988,8 +16978,8 @@ export const updateChannelClass: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelClassRequest,
   output: UpdateChannelClassResponse,
@@ -17020,8 +17010,8 @@ export const updateMultiplexProgram: (
   | InternalServerErrorException
   | NotFoundException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMultiplexProgramRequest,
   output: UpdateMultiplexProgramResponse,
@@ -17051,8 +17041,8 @@ export const claimDevice: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ClaimDeviceRequest,
   output: ClaimDeviceResponse,
@@ -17082,8 +17072,8 @@ export const rebootInputDevice: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootInputDeviceRequest,
   output: RebootInputDeviceResponse,
@@ -17113,8 +17103,8 @@ export const startInputDevice: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartInputDeviceRequest,
   output: StartInputDeviceResponse,
@@ -17144,8 +17134,8 @@ export const startInputDeviceMaintenanceWindow: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartInputDeviceMaintenanceWindowRequest,
   output: StartInputDeviceMaintenanceWindowResponse,
@@ -17175,8 +17165,8 @@ export const stopInputDevice: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopInputDeviceRequest,
   output: StopInputDeviceResponse,
@@ -17207,8 +17197,8 @@ export const cancelInputDeviceTransfer: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelInputDeviceTransferRequest,
   output: CancelInputDeviceTransferResponse,
@@ -17240,8 +17230,8 @@ export const rejectInputDeviceTransfer: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectInputDeviceTransferRequest,
   output: RejectInputDeviceTransferResponse,
@@ -17273,8 +17263,8 @@ export const transferInputDevice: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TransferInputDeviceRequest,
   output: TransferInputDeviceResponse,
@@ -17306,8 +17296,8 @@ export const acceptInputDeviceTransfer: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptInputDeviceTransferRequest,
   output: AcceptInputDeviceTransferResponse,
@@ -17338,8 +17328,8 @@ export const listInputDeviceTransfers: {
     | InternalServerErrorException
     | TooManyRequestsException
     | UnprocessableEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInputDeviceTransfersRequest,
@@ -17352,8 +17342,8 @@ export const listInputDeviceTransfers: {
     | InternalServerErrorException
     | TooManyRequestsException
     | UnprocessableEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInputDeviceTransfersRequest,
@@ -17366,8 +17356,8 @@ export const listInputDeviceTransfers: {
     | InternalServerErrorException
     | TooManyRequestsException
     | UnprocessableEntityException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInputDeviceTransfersRequest,
@@ -17402,8 +17392,8 @@ export const updateAccountConfiguration: (
   | InternalServerErrorException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountConfigurationRequest,
   output: UpdateAccountConfigurationResponse,
@@ -17431,8 +17421,8 @@ export const createChannelPlacementGroup: (
   | InternalServerErrorException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelPlacementGroupRequest,
   output: CreateChannelPlacementGroupResponse,
@@ -17460,8 +17450,8 @@ export const createNode: (
   | InternalServerErrorException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNodeRequest,
   output: CreateNodeResponse,
@@ -17490,8 +17480,8 @@ export const updateChannelPlacementGroup: (
   | InternalServerErrorException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelPlacementGroupRequest,
   output: UpdateChannelPlacementGroupResponse,
@@ -17521,8 +17511,8 @@ export const updateNodeState: (
   | InternalServerErrorException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNodeStateRequest,
   output: UpdateNodeStateResponse,
@@ -17552,8 +17542,8 @@ export const createMultiplex: (
   | InternalServerErrorException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMultiplexRequest,
   output: CreateMultiplexResponse,
@@ -17583,8 +17573,8 @@ export const createMultiplexProgram: (
   | InternalServerErrorException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMultiplexProgramRequest,
   output: CreateMultiplexProgramResponse,
@@ -17614,8 +17604,8 @@ export const createChannel: (
   | InternalServerErrorException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelRequest,
   output: CreateChannelResponse,
@@ -17645,8 +17635,8 @@ export const batchUpdateSchedule: (
   | NotFoundException
   | TooManyRequestsException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateScheduleRequest,
   output: BatchUpdateScheduleResponse,

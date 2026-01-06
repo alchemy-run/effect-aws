@@ -5,7 +5,7 @@
  */
 
 import { Effect } from "effect";
-import { EndpointError, NoMatchingRuleError } from "../aws/errors.ts";
+import { EndpointError, NoMatchingRuleError } from "../errors.ts";
 import {
   isVirtualHostableS3Bucket,
   parseArn,

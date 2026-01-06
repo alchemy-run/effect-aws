@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "RAM",
@@ -1886,17 +1884,17 @@ export class OperationNotPermittedException extends S.TaggedError<OperationNotPe
   "OperationNotPermittedException",
   { message: S.String },
   T.AwsQueryError({ code: "OperationNotPermitted", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.String },
   T.AwsQueryError({ code: "InvalidParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClientTokenException extends S.TaggedError<InvalidClientTokenException>()(
   "InvalidClientTokenException",
   { message: S.String },
   T.AwsQueryError({ code: "InvalidClientToken", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IdempotentParameterMismatchException extends S.TaggedError<IdempotentParameterMismatchException>()(
   "IdempotentParameterMismatchException",
   { message: S.String },
@@ -1904,29 +1902,27 @@ export class IdempotentParameterMismatchException extends S.TaggedError<Idempote
     code: "IdempotentParameterMismatch",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerInternalException extends S.TaggedError<ServerInternalException>()(
   "ServerInternalException",
   { message: S.String },
   T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { message: S.String },
   T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidMaxResultsException extends S.TaggedError<InvalidMaxResultsException>()(
   "InvalidMaxResultsException",
   { message: S.String },
   T.AwsQueryError({ code: "InvalidMaxResults", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MalformedArnException extends S.TaggedError<MalformedArnException>()(
   "MalformedArnException",
   { message: S.String },
   T.AwsQueryError({ code: "InvalidArn.Malformed", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidStateTransitionException extends S.TaggedError<InvalidStateTransitionException>()(
   "InvalidStateTransitionException",
   { message: S.String },
@@ -1934,14 +1930,12 @@ export class InvalidStateTransitionException extends S.TaggedError<InvalidStateT
     code: "InvalidStateTransitionException.Unknown",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.String },
   T.AwsQueryError({ code: "Unavailable", httpResponseCode: 503 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceArnNotFoundException extends S.TaggedError<ResourceArnNotFoundException>()(
   "ResourceArnNotFoundException",
   { message: S.String },
@@ -1949,7 +1943,7 @@ export class ResourceArnNotFoundException extends S.TaggedError<ResourceArnNotFo
     code: "InvalidResourceArn.NotFound",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceShareInvitationAlreadyAcceptedException extends S.TaggedError<ResourceShareInvitationAlreadyAcceptedException>()(
   "ResourceShareInvitationAlreadyAcceptedException",
   { message: S.String },
@@ -1957,17 +1951,17 @@ export class ResourceShareInvitationAlreadyAcceptedException extends S.TaggedErr
     code: "InvalidResourceShareInvitationArn.AlreadyAccepted",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MissingRequiredParameterException extends S.TaggedError<MissingRequiredParameterException>()(
   "MissingRequiredParameterException",
   { message: S.String },
   T.AwsQueryError({ code: "MissingRequiredParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidPolicyException extends S.TaggedError<InvalidPolicyException>()(
   "InvalidPolicyException",
   { message: S.String },
   T.AwsQueryError({ code: "InvalidPolicy", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidResourceTypeException extends S.TaggedError<InvalidResourceTypeException>()(
   "InvalidResourceTypeException",
   { message: S.String },
@@ -1975,7 +1969,7 @@ export class InvalidResourceTypeException extends S.TaggedError<InvalidResourceT
     code: "InvalidResourceType.Unknown",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceShareInvitationArnNotFoundException extends S.TaggedError<ResourceShareInvitationArnNotFoundException>()(
   "ResourceShareInvitationArnNotFoundException",
   { message: S.String },
@@ -1983,7 +1977,7 @@ export class ResourceShareInvitationArnNotFoundException extends S.TaggedError<R
     code: "InvalidResourceShareInvitationArn.NotFound",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceShareLimitExceededException extends S.TaggedError<ResourceShareLimitExceededException>()(
   "ResourceShareLimitExceededException",
   { message: S.String },
@@ -1991,12 +1985,12 @@ export class ResourceShareLimitExceededException extends S.TaggedError<ResourceS
     code: "ResourceShareLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagLimitExceededException extends S.TaggedError<TagLimitExceededException>()(
   "TagLimitExceededException",
   { message: S.String },
   T.AwsQueryError({ code: "TagLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceShareInvitationAlreadyRejectedException extends S.TaggedError<ResourceShareInvitationAlreadyRejectedException>()(
   "ResourceShareInvitationAlreadyRejectedException",
   { message: S.String },
@@ -2004,7 +1998,7 @@ export class ResourceShareInvitationAlreadyRejectedException extends S.TaggedErr
     code: "InvalidResourceShareInvitationArn.AlreadyRejected",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnknownResourceException extends S.TaggedError<UnknownResourceException>()(
   "UnknownResourceException",
   { message: S.String },
@@ -2012,7 +2006,7 @@ export class UnknownResourceException extends S.TaggedError<UnknownResourceExcep
     code: "InvalidResourceShareArn.NotFound",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MalformedPolicyTemplateException extends S.TaggedError<MalformedPolicyTemplateException>()(
   "MalformedPolicyTemplateException",
   { message: S.String },
@@ -2020,19 +2014,17 @@ export class MalformedPolicyTemplateException extends S.TaggedError<MalformedPol
     code: "MalformedPolicyTemplateException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.String },
   T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class TagPolicyViolationException extends S.TaggedError<TagPolicyViolationException>()(
   "TagPolicyViolationException",
   { message: S.String },
   T.AwsQueryError({ code: "TagPolicyViolation", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceShareInvitationExpiredException extends S.TaggedError<ResourceShareInvitationExpiredException>()(
   "ResourceShareInvitationExpiredException",
   { message: S.String },
@@ -2040,7 +2032,7 @@ export class ResourceShareInvitationExpiredException extends S.TaggedError<Resou
     code: "InvalidResourceShareInvitationArn.Expired",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PermissionAlreadyExistsException extends S.TaggedError<PermissionAlreadyExistsException>()(
   "PermissionAlreadyExistsException",
   { message: S.String },
@@ -2048,7 +2040,7 @@ export class PermissionAlreadyExistsException extends S.TaggedError<PermissionAl
     code: "PermissionAlreadyExistsException",
     httpResponseCode: 409,
   }),
-) {}
+).pipe(C.withConflictError) {}
 export class UnmatchedPolicyPermissionException extends S.TaggedError<UnmatchedPolicyPermissionException>()(
   "UnmatchedPolicyPermissionException",
   { message: S.String },
@@ -2056,7 +2048,7 @@ export class UnmatchedPolicyPermissionException extends S.TaggedError<UnmatchedP
     code: "UnmatchedPolicyPermissionException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PermissionVersionsLimitExceededException extends S.TaggedError<PermissionVersionsLimitExceededException>()(
   "PermissionVersionsLimitExceededException",
   { message: S.String },
@@ -2064,7 +2056,7 @@ export class PermissionVersionsLimitExceededException extends S.TaggedError<Perm
     code: "PermissionVersionsLimitExceededException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PermissionLimitExceededException extends S.TaggedError<PermissionLimitExceededException>()(
   "PermissionLimitExceededException",
   { message: S.String },
@@ -2072,7 +2064,7 @@ export class PermissionLimitExceededException extends S.TaggedError<PermissionLi
     code: "PermissionLimitExceededException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2095,8 +2087,8 @@ export const enableSharingWithAwsOrganization: (
   | OperationNotPermittedException
   | ServerInternalException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableSharingWithAwsOrganizationRequest,
   output: EnableSharingWithAwsOrganizationResponse,
@@ -2120,8 +2112,8 @@ export const listPermissions: {
     | OperationNotPermittedException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPermissionsRequest,
@@ -2132,8 +2124,8 @@ export const listPermissions: {
     | OperationNotPermittedException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPermissionsRequest,
@@ -2144,8 +2136,8 @@ export const listPermissions: {
     | OperationNotPermittedException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionsRequest,
@@ -2176,8 +2168,8 @@ export const listReplacePermissionAssociationsWork: {
     | InvalidParameterException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReplacePermissionAssociationsWorkRequest,
@@ -2187,8 +2179,8 @@ export const listReplacePermissionAssociationsWork: {
     | InvalidParameterException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReplacePermissionAssociationsWorkRequest,
@@ -2198,8 +2190,8 @@ export const listReplacePermissionAssociationsWork: {
     | InvalidParameterException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReplacePermissionAssociationsWorkRequest,
@@ -2228,8 +2220,8 @@ export const listResourceTypes: {
     | InvalidParameterException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceTypesRequest,
@@ -2239,8 +2231,8 @@ export const listResourceTypes: {
     | InvalidParameterException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceTypesRequest,
@@ -2250,8 +2242,8 @@ export const listResourceTypes: {
     | InvalidParameterException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceTypesRequest,
@@ -2283,8 +2275,8 @@ export const listPermissionAssociations: {
     | MalformedArnException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPermissionAssociationsRequest,
@@ -2295,8 +2287,8 @@ export const listPermissionAssociations: {
     | MalformedArnException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPermissionAssociationsRequest,
@@ -2307,8 +2299,8 @@ export const listPermissionAssociations: {
     | MalformedArnException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionAssociationsRequest,
@@ -2341,8 +2333,8 @@ export const getResourcePolicies: {
     | ResourceArnNotFoundException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourcePoliciesRequest,
@@ -2354,8 +2346,8 @@ export const getResourcePolicies: {
     | ResourceArnNotFoundException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetResourcePoliciesRequest,
@@ -2367,8 +2359,8 @@ export const getResourcePolicies: {
     | ResourceArnNotFoundException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourcePoliciesRequest,
@@ -2403,8 +2395,8 @@ export const updateResourceShare: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResourceShareRequest,
   output: UpdateResourceShareResponse,
@@ -2439,8 +2431,8 @@ export const deletePermissionVersion: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePermissionVersionRequest,
   output: DeletePermissionVersionResponse,
@@ -2485,8 +2477,8 @@ export const replacePermissionAssociations: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplacePermissionAssociationsRequest,
   output: ReplacePermissionAssociationsResponse,
@@ -2517,8 +2509,8 @@ export const setDefaultPermissionVersion: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetDefaultPermissionVersionRequest,
   output: SetDefaultPermissionVersionResponse,
@@ -2548,8 +2540,8 @@ export const getResourceShareAssociations: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourceShareAssociationsRequest,
@@ -2562,8 +2554,8 @@ export const getResourceShareAssociations: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetResourceShareAssociationsRequest,
@@ -2576,8 +2568,8 @@ export const getResourceShareAssociations: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourceShareAssociationsRequest,
@@ -2612,8 +2604,8 @@ export const listPermissionVersions: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPermissionVersionsRequest,
@@ -2626,8 +2618,8 @@ export const listPermissionVersions: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPermissionVersionsRequest,
@@ -2640,8 +2632,8 @@ export const listPermissionVersions: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionVersionsRequest,
@@ -2676,8 +2668,8 @@ export const listResourceSharePermissions: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceSharePermissionsRequest,
@@ -2690,8 +2682,8 @@ export const listResourceSharePermissions: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceSharePermissionsRequest,
@@ -2704,8 +2696,8 @@ export const listResourceSharePermissions: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceSharePermissionsRequest,
@@ -2737,8 +2729,8 @@ export const untagResource: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2763,8 +2755,8 @@ export const getPermission: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPermissionRequest,
   output: GetPermissionResponse,
@@ -2794,8 +2786,8 @@ export const associateResourceSharePermission: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateResourceSharePermissionRequest,
   output: AssociateResourceSharePermissionResponse,
@@ -2825,8 +2817,8 @@ export const deletePermission: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePermissionRequest,
   output: DeletePermissionResponse,
@@ -2854,8 +2846,8 @@ export const getResourceShares: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourceSharesRequest,
@@ -2867,8 +2859,8 @@ export const getResourceShares: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetResourceSharesRequest,
@@ -2880,8 +2872,8 @@ export const getResourceShares: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourceSharesRequest,
@@ -2915,8 +2907,8 @@ export const listPrincipals: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPrincipalsRequest,
@@ -2928,8 +2920,8 @@ export const listPrincipals: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPrincipalsRequest,
@@ -2941,8 +2933,8 @@ export const listPrincipals: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPrincipalsRequest,
@@ -2978,8 +2970,8 @@ export const disassociateResourceSharePermission: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateResourceSharePermissionRequest,
   output: DisassociateResourceSharePermissionResponse,
@@ -3013,8 +3005,8 @@ export const deleteResourceShare: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceShareRequest,
   output: DeleteResourceShareResponse,
@@ -3046,8 +3038,8 @@ export const listResources: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourcesRequest,
@@ -3060,8 +3052,8 @@ export const listResources: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourcesRequest,
@@ -3074,8 +3066,8 @@ export const listResources: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesRequest,
@@ -3111,8 +3103,8 @@ export const getResourceShareInvitations: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourceShareInvitationsRequest,
@@ -3126,8 +3118,8 @@ export const getResourceShareInvitations: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetResourceShareInvitationsRequest,
@@ -3141,8 +3133,8 @@ export const getResourceShareInvitations: {
     | ServerInternalException
     | ServiceUnavailableException
     | UnknownResourceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourceShareInvitationsRequest,
@@ -3203,8 +3195,8 @@ export const promotePermissionCreatedFromPolicy: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PromotePermissionCreatedFromPolicyRequest,
   output: PromotePermissionCreatedFromPolicyResponse,
@@ -3236,8 +3228,8 @@ export const disassociateResourceShare: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateResourceShareRequest,
   output: DisassociateResourceShareResponse,
@@ -3274,8 +3266,8 @@ export const associateResourceShare: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateResourceShareRequest,
   output: AssociateResourceShareResponse,
@@ -3311,8 +3303,8 @@ export const tagResource: (
   | TagLimitExceededException
   | TagPolicyViolationException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3344,8 +3336,8 @@ export const rejectResourceShareInvitation: (
   | ResourceShareInvitationExpiredException
   | ServerInternalException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectResourceShareInvitationRequest,
   output: RejectResourceShareInvitationResponse,
@@ -3387,8 +3379,8 @@ export const createResourceShare: (
   | TagLimitExceededException
   | TagPolicyViolationException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceShareRequest,
   output: CreateResourceShareResponse,
@@ -3426,8 +3418,8 @@ export const acceptResourceShareInvitation: (
   | ResourceShareInvitationExpiredException
   | ServerInternalException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptResourceShareInvitationRequest,
   output: AcceptResourceShareInvitationResponse,
@@ -3463,8 +3455,8 @@ export const listPendingInvitationResources: {
     | ResourceShareInvitationExpiredException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPendingInvitationResourcesRequest,
@@ -3479,8 +3471,8 @@ export const listPendingInvitationResources: {
     | ResourceShareInvitationExpiredException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPendingInvitationResourcesRequest,
@@ -3495,8 +3487,8 @@ export const listPendingInvitationResources: {
     | ResourceShareInvitationExpiredException
     | ServerInternalException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPendingInvitationResourcesRequest,
@@ -3548,8 +3540,8 @@ export const promoteResourceShareCreatedFromPolicy: (
   | ServiceUnavailableException
   | UnknownResourceException
   | UnmatchedPolicyPermissionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PromoteResourceShareCreatedFromPolicyRequest,
   output: PromoteResourceShareCreatedFromPolicyResponse,
@@ -3589,8 +3581,8 @@ export const createPermissionVersion: (
   | ServerInternalException
   | ServiceUnavailableException
   | UnknownResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePermissionVersionRequest,
   output: CreatePermissionVersionResponse,
@@ -3625,8 +3617,8 @@ export const createPermission: (
   | PermissionLimitExceededException
   | ServerInternalException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePermissionRequest,
   output: CreatePermissionResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://elasticloadbalancing.amazonaws.com/doc/2015-12-01/",
@@ -2967,17 +2965,17 @@ export class ListenerNotFoundException extends S.TaggedError<ListenerNotFoundExc
   "ListenerNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ListenerNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LoadBalancerNotFoundException extends S.TaggedError<LoadBalancerNotFoundException>()(
   "LoadBalancerNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "LoadBalancerNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OperationNotPermittedException extends S.TaggedError<OperationNotPermittedException>()(
   "OperationNotPermittedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "OperationNotPermitted", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DeleteAssociationSameAccountException extends S.TaggedError<DeleteAssociationSameAccountException>()(
   "DeleteAssociationSameAccountException",
   { Message: S.optional(S.String) },
@@ -2985,67 +2983,67 @@ export class DeleteAssociationSameAccountException extends S.TaggedError<DeleteA
     code: "DeleteAssociationSameAccount",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrustStoreInUseException extends S.TaggedError<TrustStoreInUseException>()(
   "TrustStoreInUseException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TrustStoreInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTargetException extends S.TaggedError<InvalidTargetException>()(
   "InvalidTargetException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidTarget", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RevocationIdNotFoundException extends S.TaggedError<RevocationIdNotFoundException>()(
   "RevocationIdNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "RevocationIdNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateTagKeysException extends S.TaggedError<DuplicateTagKeysException>()(
   "DuplicateTagKeysException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "DuplicateTagKeys", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RuleNotFoundException extends S.TaggedError<RuleNotFoundException>()(
   "RuleNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "RuleNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrustStoreAssociationNotFoundException extends S.TaggedError<TrustStoreAssociationNotFoundException>()(
   "TrustStoreAssociationNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AssociationNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TrustStoreNotFoundException extends S.TaggedError<TrustStoreNotFoundException>()(
   "TrustStoreNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TrustStoreNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TargetGroupNotFoundException extends S.TaggedError<TargetGroupNotFoundException>()(
   "TargetGroupNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TargetGroupNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ALPNPolicyNotSupportedException extends S.TaggedError<ALPNPolicyNotSupportedException>()(
   "ALPNPolicyNotSupportedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ALPNPolicyNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IncompatibleProtocolsException extends S.TaggedError<IncompatibleProtocolsException>()(
   "IncompatibleProtocolsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "IncompatibleProtocols", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidConfigurationRequestException extends S.TaggedError<InvalidConfigurationRequestException>()(
   "InvalidConfigurationRequestException",
   { Message: S.optional(S.String) },
@@ -3053,7 +3051,7 @@ export class InvalidConfigurationRequestException extends S.TaggedError<InvalidC
     code: "InvalidConfigurationRequest",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CaCertificatesBundleNotFoundException extends S.TaggedError<CaCertificatesBundleNotFoundException>()(
   "CaCertificatesBundleNotFoundException",
   { Message: S.optional(S.String) },
@@ -3061,27 +3059,27 @@ export class CaCertificatesBundleNotFoundException extends S.TaggedError<CaCerti
     code: "CaCertificatesBundleNotFound",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CertificateNotFoundException extends S.TaggedError<CertificateNotFoundException>()(
   "CertificateNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "CertificateNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AllocationIdNotFoundException extends S.TaggedError<AllocationIdNotFoundException>()(
   "AllocationIdNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AllocationIdNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateTargetGroupNameException extends S.TaggedError<DuplicateTargetGroupNameException>()(
   "DuplicateTargetGroupNameException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "DuplicateTargetGroupName", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedProtocolException extends S.TaggedError<UnsupportedProtocolException>()(
   "UnsupportedProtocolException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "UnsupportedProtocol", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CapacityDecreaseRequestsLimitExceededException extends S.TaggedError<CapacityDecreaseRequestsLimitExceededException>()(
   "CapacityDecreaseRequestsLimitExceededException",
   { Message: S.optional(S.String) },
@@ -3089,12 +3087,12 @@ export class CapacityDecreaseRequestsLimitExceededException extends S.TaggedErro
     code: "CapacityDecreaseRequestLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidLoadBalancerActionException extends S.TaggedError<InvalidLoadBalancerActionException>()(
   "InvalidLoadBalancerActionException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidLoadBalancerAction", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCaCertificatesBundleException extends S.TaggedError<InvalidCaCertificatesBundleException>()(
   "InvalidCaCertificatesBundleException",
   { Message: S.optional(S.String) },
@@ -3102,17 +3100,17 @@ export class InvalidCaCertificatesBundleException extends S.TaggedError<InvalidC
     code: "InvalidCaCertificatesBundle",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PriorityInUseException extends S.TaggedError<PriorityInUseException>()(
   "PriorityInUseException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "PriorityInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyTags", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRegistrationsForTargetIdException extends S.TaggedError<TooManyRegistrationsForTargetIdException>()(
   "TooManyRegistrationsForTargetIdException",
   { Message: S.optional(S.String) },
@@ -3120,32 +3118,32 @@ export class TooManyRegistrationsForTargetIdException extends S.TaggedError<TooM
     code: "TooManyRegistrationsForTargetId",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSubnetException extends S.TaggedError<InvalidSubnetException>()(
   "InvalidSubnetException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSecurityGroupException extends S.TaggedError<InvalidSecurityGroupException>()(
   "InvalidSecurityGroupException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSecurityGroup", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateTrustStoreNameException extends S.TaggedError<DuplicateTrustStoreNameException>()(
   "DuplicateTrustStoreNameException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "DuplicateTrustStoreName", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyCertificatesException extends S.TaggedError<TooManyCertificatesException>()(
   "TooManyCertificatesException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyCertificates", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRevocationContentException extends S.TaggedError<InvalidRevocationContentException>()(
   "InvalidRevocationContentException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidRevocationContent", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AvailabilityZoneNotSupportedException extends S.TaggedError<AvailabilityZoneNotSupportedException>()(
   "AvailabilityZoneNotSupportedException",
   { Message: S.optional(S.String) },
@@ -3153,19 +3151,17 @@ export class AvailabilityZoneNotSupportedException extends S.TaggedError<Availab
     code: "AvailabilityZoneNotSupported",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SSLPolicyNotFoundException extends S.TaggedError<SSLPolicyNotFoundException>()(
   "SSLPolicyNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "SSLPolicyNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class HealthUnavailableException extends S.TaggedError<HealthUnavailableException>()(
   "HealthUnavailableException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "HealthUnavailable", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class CapacityReservationPendingException extends S.TaggedError<CapacityReservationPendingException>()(
   "CapacityReservationPendingException",
   { Message: S.optional(S.String) },
@@ -3173,7 +3169,7 @@ export class CapacityReservationPendingException extends S.TaggedError<CapacityR
     code: "CapacityReservationPending",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TargetGroupAssociationLimitException extends S.TaggedError<TargetGroupAssociationLimitException>()(
   "TargetGroupAssociationLimitException",
   { Message: S.optional(S.String) },
@@ -3181,37 +3177,37 @@ export class TargetGroupAssociationLimitException extends S.TaggedError<TargetGr
     code: "TargetGroupAssociationLimit",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateListenerException extends S.TaggedError<DuplicateListenerException>()(
   "DuplicateListenerException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "DuplicateListener", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTargetsException extends S.TaggedError<TooManyTargetsException>()(
   "TooManyTargetsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyTargets", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTrustStoresException extends S.TaggedError<TooManyTrustStoresException>()(
   "TooManyTrustStoresException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyTrustStores", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTargetGroupsException extends S.TaggedError<TooManyTargetGroupsException>()(
   "TooManyTargetGroupsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyTargetGroups", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RevocationContentNotFoundException extends S.TaggedError<RevocationContentNotFoundException>()(
   "RevocationContentNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "RevocationContentNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateLoadBalancerNameException extends S.TaggedError<DuplicateLoadBalancerNameException>()(
   "DuplicateLoadBalancerNameException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "DuplicateLoadBalancerName", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CapacityUnitsLimitExceededException extends S.TaggedError<CapacityUnitsLimitExceededException>()(
   "CapacityUnitsLimitExceededException",
   { Message: S.optional(S.String) },
@@ -3219,17 +3215,17 @@ export class CapacityUnitsLimitExceededException extends S.TaggedError<CapacityU
     code: "CapacityUnitsLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyActionsException extends S.TaggedError<TooManyActionsException>()(
   "TooManyActionsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyActions", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetNotFoundException extends S.TaggedError<SubnetNotFoundException>()(
   "SubnetNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTrustStoreRevocationEntriesException extends S.TaggedError<TooManyTrustStoreRevocationEntriesException>()(
   "TooManyTrustStoreRevocationEntriesException",
   { Message: S.optional(S.String) },
@@ -3237,19 +3233,17 @@ export class TooManyTrustStoreRevocationEntriesException extends S.TaggedError<T
     code: "TooManyTrustStoreRevocationEntries",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSchemeException extends S.TaggedError<InvalidSchemeException>()(
   "InvalidSchemeException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidScheme", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientCapacityException extends S.TaggedError<InsufficientCapacityException>()(
   "InsufficientCapacityException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InsufficientCapacity", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class TooManyUniqueTargetGroupsPerLoadBalancerException extends S.TaggedError<TooManyUniqueTargetGroupsPerLoadBalancerException>()(
   "TooManyUniqueTargetGroupsPerLoadBalancerException",
   { Message: S.optional(S.String) },
@@ -3257,34 +3251,32 @@ export class TooManyUniqueTargetGroupsPerLoadBalancerException extends S.TaggedE
     code: "TooManyUniqueTargetGroupsPerLoadBalancer",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyListenersException extends S.TaggedError<TooManyListenersException>()(
   "TooManyListenersException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyListeners", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRulesException extends S.TaggedError<TooManyRulesException>()(
   "TooManyRulesException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyRules", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyLoadBalancersException extends S.TaggedError<TooManyLoadBalancersException>()(
   "TooManyLoadBalancersException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyLoadBalancers", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PriorRequestNotCompleteException extends S.TaggedError<PriorRequestNotCompleteException>()(
   "PriorRequestNotCompleteException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "PriorRequestNotComplete", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class TrustStoreNotReadyException extends S.TaggedError<TrustStoreNotReadyException>()(
   "TrustStoreNotReadyException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TrustStoreNotReady", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3299,8 +3291,8 @@ export const deleteTargetGroup: (
   input: DeleteTargetGroupInput,
 ) => Effect.Effect<
   DeleteTargetGroupOutput,
-  ResourceInUseException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUseException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTargetGroupInput,
   output: DeleteTargetGroupOutput,
@@ -3313,8 +3305,8 @@ export const describeListenerAttributes: (
   input: DescribeListenerAttributesInput,
 ) => Effect.Effect<
   DescribeListenerAttributesOutput,
-  ListenerNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ListenerNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeListenerAttributesInput,
   output: DescribeListenerAttributesOutput,
@@ -3337,22 +3329,22 @@ export const describeListenerCertificates: {
     input: DescribeListenerCertificatesInput,
   ): Effect.Effect<
     DescribeListenerCertificatesOutput,
-    ListenerNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ListenerNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeListenerCertificatesInput,
   ) => Stream.Stream<
     DescribeListenerCertificatesOutput,
-    ListenerNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ListenerNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeListenerCertificatesInput,
   ) => Stream.Stream<
     Certificate,
-    ListenerNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ListenerNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeListenerCertificatesInput,
@@ -3383,8 +3375,8 @@ export const describeLoadBalancerAttributes: (
   input: DescribeLoadBalancerAttributesInput,
 ) => Effect.Effect<
   DescribeLoadBalancerAttributesOutput,
-  LoadBalancerNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LoadBalancerNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLoadBalancerAttributesInput,
   output: DescribeLoadBalancerAttributesOutput,
@@ -3397,8 +3389,8 @@ export const modifyIpPools: (
   input: ModifyIpPoolsInput,
 ) => Effect.Effect<
   ModifyIpPoolsOutput,
-  LoadBalancerNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LoadBalancerNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIpPoolsInput,
   output: ModifyIpPoolsOutput,
@@ -3412,10 +3404,8 @@ export const removeListenerCertificates: (
   input: RemoveListenerCertificatesInput,
 ) => Effect.Effect<
   RemoveListenerCertificatesOutput,
-  | ListenerNotFoundException
-  | OperationNotPermittedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ListenerNotFoundException | OperationNotPermittedException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveListenerCertificatesInput,
   output: RemoveListenerCertificatesOutput,
@@ -3439,8 +3429,8 @@ export const deleteLoadBalancer: (
   | LoadBalancerNotFoundException
   | OperationNotPermittedException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLoadBalancerInput,
   output: DeleteLoadBalancerOutput,
@@ -3460,8 +3450,8 @@ export const deleteListener: (
   input: DeleteListenerInput,
 ) => Effect.Effect<
   DeleteListenerOutput,
-  ListenerNotFoundException | ResourceInUseException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ListenerNotFoundException | ResourceInUseException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteListenerInput,
   output: DeleteListenerOutput,
@@ -3476,8 +3466,8 @@ export const deleteRule: (
   input: DeleteRuleInput,
 ) => Effect.Effect<
   DeleteRuleOutput,
-  OperationNotPermittedException | RuleNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedException | RuleNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRuleInput,
   output: DeleteRuleOutput,
@@ -3490,8 +3480,8 @@ export const deleteTrustStore: (
   input: DeleteTrustStoreInput,
 ) => Effect.Effect<
   DeleteTrustStoreOutput,
-  TrustStoreInUseException | TrustStoreNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TrustStoreInUseException | TrustStoreNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrustStoreInput,
   output: DeleteTrustStoreOutput,
@@ -3517,22 +3507,22 @@ export const describeAccountLimits: {
     input: DescribeAccountLimitsInput,
   ): Effect.Effect<
     DescribeAccountLimitsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAccountLimitsInput,
   ) => Stream.Stream<
     DescribeAccountLimitsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAccountLimitsInput,
   ) => Stream.Stream<
     Limit,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAccountLimitsInput,
@@ -3562,8 +3552,8 @@ export const describeTargetGroupAttributes: (
   input: DescribeTargetGroupAttributesInput,
 ) => Effect.Effect<
   DescribeTargetGroupAttributesOutput,
-  TargetGroupNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TargetGroupNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTargetGroupAttributesInput,
   output: DescribeTargetGroupAttributesOutput,
@@ -3580,28 +3570,22 @@ export const describeTargetGroups: {
     input: DescribeTargetGroupsInput,
   ): Effect.Effect<
     DescribeTargetGroupsOutput,
-    | LoadBalancerNotFoundException
-    | TargetGroupNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LoadBalancerNotFoundException | TargetGroupNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTargetGroupsInput,
   ) => Stream.Stream<
     DescribeTargetGroupsOutput,
-    | LoadBalancerNotFoundException
-    | TargetGroupNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LoadBalancerNotFoundException | TargetGroupNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTargetGroupsInput,
   ) => Stream.Stream<
     TargetGroup,
-    | LoadBalancerNotFoundException
-    | TargetGroupNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LoadBalancerNotFoundException | TargetGroupNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTargetGroupsInput,
@@ -3621,22 +3605,22 @@ export const describeTrustStoreAssociations: {
     input: DescribeTrustStoreAssociationsInput,
   ): Effect.Effect<
     DescribeTrustStoreAssociationsOutput,
-    TrustStoreNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrustStoreAssociationsInput,
   ) => Stream.Stream<
     DescribeTrustStoreAssociationsOutput,
-    TrustStoreNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrustStoreAssociationsInput,
   ) => Stream.Stream<
     TrustStoreAssociation,
-    TrustStoreNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrustStoreAssociationsInput,
@@ -3658,28 +3642,22 @@ export const describeTrustStoreRevocations: {
     input: DescribeTrustStoreRevocationsInput,
   ): Effect.Effect<
     DescribeTrustStoreRevocationsOutput,
-    | RevocationIdNotFoundException
-    | TrustStoreNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RevocationIdNotFoundException | TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrustStoreRevocationsInput,
   ) => Stream.Stream<
     DescribeTrustStoreRevocationsOutput,
-    | RevocationIdNotFoundException
-    | TrustStoreNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RevocationIdNotFoundException | TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrustStoreRevocationsInput,
   ) => Stream.Stream<
     DescribeTrustStoreRevocation,
-    | RevocationIdNotFoundException
-    | TrustStoreNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    RevocationIdNotFoundException | TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrustStoreRevocationsInput,
@@ -3699,8 +3677,8 @@ export const getResourcePolicy: (
   input: GetResourcePolicyInput,
 ) => Effect.Effect<
   GetResourcePolicyOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyInput,
   output: GetResourcePolicyOutput,
@@ -3716,8 +3694,8 @@ export const modifyTargetGroup: (
   ModifyTargetGroupOutput,
   | InvalidConfigurationRequestException
   | TargetGroupNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTargetGroupInput,
   output: ModifyTargetGroupOutput,
@@ -3732,8 +3710,8 @@ export const modifyTargetGroupAttributes: (
   ModifyTargetGroupAttributesOutput,
   | InvalidConfigurationRequestException
   | TargetGroupNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTargetGroupAttributesInput,
   output: ModifyTargetGroupAttributesOutput,
@@ -3747,22 +3725,22 @@ export const describeTrustStores: {
     input: DescribeTrustStoresInput,
   ): Effect.Effect<
     DescribeTrustStoresOutput,
-    TrustStoreNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrustStoresInput,
   ) => Stream.Stream<
     DescribeTrustStoresOutput,
-    TrustStoreNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrustStoresInput,
   ) => Stream.Stream<
     TrustStore,
-    TrustStoreNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    TrustStoreNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrustStoresInput,
@@ -3785,8 +3763,8 @@ export const getTrustStoreCaCertificatesBundle: (
   input: GetTrustStoreCaCertificatesBundleInput,
 ) => Effect.Effect<
   GetTrustStoreCaCertificatesBundleOutput,
-  TrustStoreNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TrustStoreNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTrustStoreCaCertificatesBundleInput,
   output: GetTrustStoreCaCertificatesBundleOutput,
@@ -3799,10 +3777,8 @@ export const removeTrustStoreRevocations: (
   input: RemoveTrustStoreRevocationsInput,
 ) => Effect.Effect<
   RemoveTrustStoreRevocationsOutput,
-  | RevocationIdNotFoundException
-  | TrustStoreNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RevocationIdNotFoundException | TrustStoreNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTrustStoreRevocationsInput,
   output: RemoveTrustStoreRevocationsOutput,
@@ -3818,10 +3794,8 @@ export const getTrustStoreRevocationContent: (
   input: GetTrustStoreRevocationContentInput,
 ) => Effect.Effect<
   GetTrustStoreRevocationContentOutput,
-  | RevocationIdNotFoundException
-  | TrustStoreNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RevocationIdNotFoundException | TrustStoreNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTrustStoreRevocationContentInput,
   output: GetTrustStoreRevocationContentOutput,
@@ -3837,8 +3811,8 @@ export const deleteSharedTrustStoreAssociation: (
   | DeleteAssociationSameAccountException
   | TrustStoreAssociationNotFoundException
   | TrustStoreNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSharedTrustStoreAssociationInput,
   output: DeleteSharedTrustStoreAssociationOutput,
@@ -3873,8 +3847,8 @@ export const deregisterTargets: (
   input: DeregisterTargetsInput,
 ) => Effect.Effect<
   DeregisterTargetsOutput,
-  InvalidTargetException | TargetGroupNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidTargetException | TargetGroupNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterTargetsInput,
   output: DeregisterTargetsOutput,
@@ -3894,8 +3868,8 @@ export const describeTags: (
   | RuleNotFoundException
   | TargetGroupNotFoundException
   | TrustStoreNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTagsInput,
   output: DescribeTagsOutput,
@@ -3916,8 +3890,8 @@ export const modifyListenerAttributes: (
   ModifyListenerAttributesOutput,
   | InvalidConfigurationRequestException
   | ListenerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyListenerAttributesInput,
   output: ModifyListenerAttributesOutput,
@@ -3936,8 +3910,8 @@ export const modifyLoadBalancerAttributes: (
   ModifyLoadBalancerAttributesOutput,
   | InvalidConfigurationRequestException
   | LoadBalancerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyLoadBalancerAttributesInput,
   output: ModifyLoadBalancerAttributesOutput,
@@ -3950,8 +3924,8 @@ export const describeCapacityReservation: (
   input: DescribeCapacityReservationInput,
 ) => Effect.Effect<
   DescribeCapacityReservationOutput,
-  LoadBalancerNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LoadBalancerNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCapacityReservationInput,
   output: DescribeCapacityReservationOutput,
@@ -3970,8 +3944,8 @@ export const describeListeners: {
     | ListenerNotFoundException
     | LoadBalancerNotFoundException
     | UnsupportedProtocolException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeListenersInput,
@@ -3980,8 +3954,8 @@ export const describeListeners: {
     | ListenerNotFoundException
     | LoadBalancerNotFoundException
     | UnsupportedProtocolException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeListenersInput,
@@ -3990,8 +3964,8 @@ export const describeListeners: {
     | ListenerNotFoundException
     | LoadBalancerNotFoundException
     | UnsupportedProtocolException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeListenersInput,
@@ -4015,22 +3989,22 @@ export const describeLoadBalancers: {
     input: DescribeLoadBalancersInput,
   ): Effect.Effect<
     DescribeLoadBalancersOutput,
-    LoadBalancerNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LoadBalancerNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLoadBalancersInput,
   ) => Stream.Stream<
     DescribeLoadBalancersOutput,
-    LoadBalancerNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LoadBalancerNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLoadBalancersInput,
   ) => Stream.Stream<
     LoadBalancer,
-    LoadBalancerNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LoadBalancerNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLoadBalancersInput,
@@ -4052,8 +4026,8 @@ export const modifyTrustStore: (
   | CaCertificatesBundleNotFoundException
   | InvalidCaCertificatesBundleException
   | TrustStoreNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTrustStoreInput,
   output: ModifyTrustStoreOutput,
@@ -4076,8 +4050,8 @@ export const setRulePriorities: (
   | OperationNotPermittedException
   | PriorityInUseException
   | RuleNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetRulePrioritiesInput,
   output: SetRulePrioritiesOutput,
@@ -4102,8 +4076,8 @@ export const removeTags: (
   | TargetGroupNotFoundException
   | TooManyTagsException
   | TrustStoreNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsInput,
   output: RemoveTagsOutput,
@@ -4128,8 +4102,8 @@ export const describeRules: {
     | ListenerNotFoundException
     | RuleNotFoundException
     | UnsupportedProtocolException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRulesInput,
@@ -4138,8 +4112,8 @@ export const describeRules: {
     | ListenerNotFoundException
     | RuleNotFoundException
     | UnsupportedProtocolException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRulesInput,
@@ -4148,8 +4122,8 @@ export const describeRules: {
     | ListenerNotFoundException
     | RuleNotFoundException
     | UnsupportedProtocolException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRulesInput,
@@ -4175,8 +4149,8 @@ export const setIpAddressType: (
   | InvalidConfigurationRequestException
   | InvalidSubnetException
   | LoadBalancerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIpAddressTypeInput,
   output: SetIpAddressTypeOutput,
@@ -4203,8 +4177,8 @@ export const setSecurityGroups: (
   | InvalidConfigurationRequestException
   | InvalidSecurityGroupException
   | LoadBalancerNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetSecurityGroupsInput,
   output: SetSecurityGroupsOutput,
@@ -4233,8 +4207,8 @@ export const addTags: (
   | TargetGroupNotFoundException
   | TooManyTagsException
   | TrustStoreNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsInput,
   output: AddTagsOutput,
@@ -4266,8 +4240,8 @@ export const addListenerCertificates: (
   | CertificateNotFoundException
   | ListenerNotFoundException
   | TooManyCertificatesException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddListenerCertificatesInput,
   output: AddListenerCertificatesOutput,
@@ -4287,8 +4261,8 @@ export const describeSSLPolicies: (
   input: DescribeSSLPoliciesInput,
 ) => Effect.Effect<
   DescribeSSLPoliciesOutput,
-  SSLPolicyNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  SSLPolicyNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSSLPoliciesInput,
   output: DescribeSSLPoliciesOutput,
@@ -4304,8 +4278,8 @@ export const describeTargetHealth: (
   | HealthUnavailableException
   | InvalidTargetException
   | TargetGroupNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTargetHealthInput,
   output: DescribeTargetHealthOutput,
@@ -4345,8 +4319,8 @@ export const registerTargets: (
   | TargetGroupNotFoundException
   | TooManyRegistrationsForTargetIdException
   | TooManyTargetsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterTargetsInput,
   output: RegisterTargetsOutput,
@@ -4372,8 +4346,8 @@ export const createTrustStore: (
   | InvalidCaCertificatesBundleException
   | TooManyTagsException
   | TooManyTrustStoresException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrustStoreInput,
   output: CreateTrustStoreOutput,
@@ -4411,8 +4385,8 @@ export const createTargetGroup: (
   | InvalidConfigurationRequestException
   | TooManyTagsException
   | TooManyTargetGroupsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTargetGroupInput,
   output: CreateTargetGroupOutput,
@@ -4439,8 +4413,8 @@ export const setSubnets: (
   | InvalidSubnetException
   | LoadBalancerNotFoundException
   | SubnetNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetSubnetsInput,
   output: SetSubnetsOutput,
@@ -4465,8 +4439,8 @@ export const addTrustStoreRevocations: (
   | RevocationContentNotFoundException
   | TooManyTrustStoreRevocationEntriesException
   | TrustStoreNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTrustStoreRevocationsInput,
   output: AddTrustStoreRevocationsOutput,
@@ -4500,8 +4474,8 @@ export const modifyRule: (
   | TooManyTargetsException
   | TooManyUniqueTargetGroupsPerLoadBalancerException
   | UnsupportedProtocolException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyRuleInput,
   output: ModifyRuleOutput,
@@ -4548,8 +4522,8 @@ export const createRule: (
   | TooManyTargetsException
   | TooManyUniqueTargetGroupsPerLoadBalancerException
   | UnsupportedProtocolException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRuleInput,
   output: CreateRuleOutput,
@@ -4605,8 +4579,8 @@ export const createLoadBalancer: (
   | SubnetNotFoundException
   | TooManyLoadBalancersException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLoadBalancerInput,
   output: CreateLoadBalancerOutput,
@@ -4644,8 +4618,8 @@ export const modifyCapacityReservation: (
   | LoadBalancerNotFoundException
   | OperationNotPermittedException
   | PriorRequestNotCompleteException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCapacityReservationInput,
   output: ModifyCapacityReservationOutput,
@@ -4695,8 +4669,8 @@ export const modifyListener: (
   | TrustStoreNotFoundException
   | TrustStoreNotReadyException
   | UnsupportedProtocolException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyListenerInput,
   output: ModifyListenerOutput,
@@ -4764,8 +4738,8 @@ export const createListener: (
   | TrustStoreNotFoundException
   | TrustStoreNotReadyException
   | UnsupportedProtocolException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateListenerInput,
   output: CreateListenerOutput,

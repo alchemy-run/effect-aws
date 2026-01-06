@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://polly.amazonaws.com/doc/v1");
 const svc = T.AwsApiService({ sdkId: "Polly", serviceShapeName: "Parrot_v1" });
@@ -710,89 +708,87 @@ export const ListLexiconsOutput = S.suspend(() =>
 export class LexiconNotFoundException extends S.TaggedError<LexiconNotFoundException>()(
   "LexiconNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidLexiconException extends S.TaggedError<InvalidLexiconException>()(
   "InvalidLexiconException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceFailureException extends S.TaggedError<ServiceFailureException>()(
   "ServiceFailureException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LexiconSizeExceededException extends S.TaggedError<LexiconSizeExceededException>()(
   "LexiconSizeExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EngineNotSupportedException extends S.TaggedError<EngineNotSupportedException>()(
   "EngineNotSupportedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTaskIdException extends S.TaggedError<InvalidTaskIdException>()(
   "InvalidTaskIdException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MaxLexemeLengthExceededException extends S.TaggedError<MaxLexemeLengthExceededException>()(
   "MaxLexemeLengthExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidS3BucketException extends S.TaggedError<InvalidS3BucketException>()(
   "InvalidS3BucketException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSampleRateException extends S.TaggedError<InvalidSampleRateException>()(
   "InvalidSampleRateException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SynthesisTaskNotFoundException extends S.TaggedError<SynthesisTaskNotFoundException>()(
   "SynthesisTaskNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MaxLexiconsNumberExceededException extends S.TaggedError<MaxLexiconsNumberExceededException>()(
   "MaxLexiconsNumberExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidS3KeyException extends S.TaggedError<InvalidS3KeyException>()(
   "InvalidS3KeyException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSsmlException extends S.TaggedError<InvalidSsmlException>()(
   "InvalidSsmlException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedPlsAlphabetException extends S.TaggedError<UnsupportedPlsAlphabetException>()(
   "UnsupportedPlsAlphabetException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSnsTopicArnException extends S.TaggedError<InvalidSnsTopicArnException>()(
   "InvalidSnsTopicArnException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LanguageNotSupportedException extends S.TaggedError<LanguageNotSupportedException>()(
   "LanguageNotSupportedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedPlsLanguageException extends S.TaggedError<UnsupportedPlsLanguageException>()(
   "UnsupportedPlsLanguageException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MarksNotSupportedForFormatException extends S.TaggedError<MarksNotSupportedForFormatException>()(
   "MarksNotSupportedForFormatException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SsmlMarksNotSupportedForTextTypeException extends S.TaggedError<SsmlMarksNotSupportedForTextTypeException>()(
   "SsmlMarksNotSupportedForTextTypeException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TextLengthExceededException extends S.TaggedError<TextLengthExceededException>()(
   "TextLengthExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -806,8 +802,8 @@ export const deleteLexicon: (
   input: DeleteLexiconInput,
 ) => Effect.Effect<
   DeleteLexiconOutput,
-  LexiconNotFoundException | ServiceFailureException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LexiconNotFoundException | ServiceFailureException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLexiconInput,
   output: DeleteLexiconOutput,
@@ -821,8 +817,8 @@ export const getLexicon: (
   input: GetLexiconInput,
 ) => Effect.Effect<
   GetLexiconOutput,
-  LexiconNotFoundException | ServiceFailureException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LexiconNotFoundException | ServiceFailureException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLexiconInput,
   output: GetLexiconOutput,
@@ -838,22 +834,22 @@ export const listSpeechSynthesisTasks: {
     input: ListSpeechSynthesisTasksInput,
   ): Effect.Effect<
     ListSpeechSynthesisTasksOutput,
-    InvalidNextTokenException | ServiceFailureException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ServiceFailureException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSpeechSynthesisTasksInput,
   ) => Stream.Stream<
     ListSpeechSynthesisTasksOutput,
-    InvalidNextTokenException | ServiceFailureException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ServiceFailureException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSpeechSynthesisTasksInput,
   ) => Stream.Stream<
     unknown,
-    InvalidNextTokenException | ServiceFailureException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ServiceFailureException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSpeechSynthesisTasksInput,
@@ -891,8 +887,8 @@ export const describeVoices: (
   input: DescribeVoicesInput,
 ) => Effect.Effect<
   DescribeVoicesOutput,
-  InvalidNextTokenException | ServiceFailureException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidNextTokenException | ServiceFailureException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVoicesInput,
   output: DescribeVoicesOutput,
@@ -905,8 +901,8 @@ export const listLexicons: (
   input: ListLexiconsInput,
 ) => Effect.Effect<
   ListLexiconsOutput,
-  InvalidNextTokenException | ServiceFailureException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidNextTokenException | ServiceFailureException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLexiconsInput,
   output: ListLexiconsOutput,
@@ -925,8 +921,8 @@ export const getSpeechSynthesisTask: (
   | InvalidTaskIdException
   | ServiceFailureException
   | SynthesisTaskNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSpeechSynthesisTaskInput,
   output: GetSpeechSynthesisTaskOutput,
@@ -956,8 +952,8 @@ export const putLexicon: (
   | ServiceFailureException
   | UnsupportedPlsAlphabetException
   | UnsupportedPlsLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLexiconInput,
   output: PutLexiconOutput,
@@ -991,8 +987,8 @@ export const synthesizeSpeech: (
   | ServiceFailureException
   | SsmlMarksNotSupportedForTextTypeException
   | TextLengthExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SynthesizeSpeechInput,
   output: SynthesizeSpeechOutput,
@@ -1036,8 +1032,8 @@ export const startSpeechSynthesisTask: (
   | ServiceFailureException
   | SsmlMarksNotSupportedForTextTypeException
   | TextLengthExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSpeechSynthesisTaskInput,
   output: StartSpeechSynthesisTaskOutput,

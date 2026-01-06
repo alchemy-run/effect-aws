@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "EFS",
@@ -1672,43 +1670,39 @@ export const DescribeReplicationConfigurationsResponse = S.suspend(() =>
 export class BadRequest extends S.TaggedError<BadRequest>()("BadRequest", {
   ErrorCode: S.String,
   Message: S.optional(S.String),
-}) {}
+}).pipe(C.withBadRequestError) {}
 export class AccessPointNotFound extends S.TaggedError<AccessPointNotFound>()(
   "AccessPointNotFound",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AvailabilityZonesMismatch extends S.TaggedError<AvailabilityZonesMismatch>()(
   "AvailabilityZonesMismatch",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FileSystemNotFound extends S.TaggedError<FileSystemNotFound>()(
   "FileSystemNotFound",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerError extends S.TaggedError<InternalServerError>()(
   "InternalServerError",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class IncorrectMountTargetState extends S.TaggedError<IncorrectMountTargetState>()(
   "IncorrectMountTargetState",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class FileSystemInUse extends S.TaggedError<FileSystemInUse>()(
   "FileSystemInUse",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class DependencyTimeout extends S.TaggedError<DependencyTimeout>()(
   "DependencyTimeout",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withTimeoutError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class AccessPointAlreadyExists extends S.TaggedError<AccessPointAlreadyExists>()(
   "AccessPointAlreadyExists",
   {
@@ -1716,7 +1710,7 @@ export class AccessPointAlreadyExists extends S.TaggedError<AccessPointAlreadyEx
     Message: S.optional(S.String),
     AccessPointId: S.String,
   },
-) {}
+).pipe(C.withConflictError) {}
 export class FileSystemAlreadyExists extends S.TaggedError<FileSystemAlreadyExists>()(
   "FileSystemAlreadyExists",
   {
@@ -1724,97 +1718,91 @@ export class FileSystemAlreadyExists extends S.TaggedError<FileSystemAlreadyExis
     Message: S.optional(S.String),
     FileSystemId: S.String,
   },
-) {}
+).pipe(C.withConflictError) {}
 export class MountTargetNotFound extends S.TaggedError<MountTargetNotFound>()(
   "MountTargetNotFound",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FileSystemLimitExceeded extends S.TaggedError<FileSystemLimitExceeded>()(
   "FileSystemLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class PolicyNotFound extends S.TaggedError<PolicyNotFound>()(
   "PolicyNotFound",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IncorrectFileSystemLifeCycleState extends S.TaggedError<IncorrectFileSystemLifeCycleState>()(
   "IncorrectFileSystemLifeCycleState",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ReplicationNotFound extends S.TaggedError<ReplicationNotFound>()(
   "ReplicationNotFound",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessPointLimitExceeded extends S.TaggedError<AccessPointLimitExceeded>()(
   "AccessPointLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SecurityGroupLimitExceeded extends S.TaggedError<SecurityGroupLimitExceeded>()(
   "SecurityGroupLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientThroughputCapacity extends S.TaggedError<InsufficientThroughputCapacity>()(
   "InsufficientThroughputCapacity",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidPolicyException extends S.TaggedError<InvalidPolicyException>()(
   "InvalidPolicyException",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IpAddressInUse extends S.TaggedError<IpAddressInUse>()(
   "IpAddressInUse",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class SecurityGroupNotFound extends S.TaggedError<SecurityGroupNotFound>()(
   "SecurityGroupNotFound",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThroughputLimitExceeded extends S.TaggedError<ThroughputLimitExceeded>()(
   "ThroughputLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MountTargetConflict extends S.TaggedError<MountTargetConflict>()(
   "MountTargetConflict",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ReplicationAlreadyExists extends S.TaggedError<ReplicationAlreadyExists>()(
   "ReplicationAlreadyExists",
   { ErrorCode: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class UnsupportedAvailabilityZone extends S.TaggedError<UnsupportedAvailabilityZone>()(
   "UnsupportedAvailabilityZone",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NetworkInterfaceLimitExceeded extends S.TaggedError<NetworkInterfaceLimitExceeded>()(
   "NetworkInterfaceLimitExceeded",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class TooManyRequests extends S.TaggedError<TooManyRequests>()(
   "TooManyRequests",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class NoFreeAddressesInSubnet extends S.TaggedError<NoFreeAddressesInSubnet>()(
   "NoFreeAddressesInSubnet",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class SubnetNotFound extends S.TaggedError<SubnetNotFound>()(
   "SubnetNotFound",
   { ErrorCode: S.String, Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1828,8 +1816,8 @@ export const deleteAccessPoint: (
   input: DeleteAccessPointRequest,
 ) => Effect.Effect<
   DeleteAccessPointResponse,
-  AccessPointNotFound | BadRequest | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessPointNotFound | BadRequest | InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessPointRequest,
   output: DeleteAccessPointResponse,
@@ -1853,8 +1841,8 @@ export const describeAccessPoints: {
     | BadRequest
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAccessPointsRequest,
@@ -1864,8 +1852,8 @@ export const describeAccessPoints: {
     | BadRequest
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAccessPointsRequest,
@@ -1875,8 +1863,8 @@ export const describeAccessPoints: {
     | BadRequest
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAccessPointsRequest,
@@ -1901,8 +1889,8 @@ export const describeAccountPreferences: (
   input: DescribeAccountPreferencesRequest,
 ) => Effect.Effect<
   DescribeAccountPreferencesResponse,
-  InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountPreferencesRequest,
   output: DescribeAccountPreferencesResponse,
@@ -1939,8 +1927,8 @@ export const deleteFileSystem: (
   | FileSystemInUse
   | FileSystemNotFound
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFileSystemRequest,
   output: DeleteFileSystemResponse,
@@ -1982,22 +1970,22 @@ export const describeFileSystems: {
     input: DescribeFileSystemsRequest,
   ): Effect.Effect<
     DescribeFileSystemsResponse,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFileSystemsRequest,
   ) => Stream.Stream<
     DescribeFileSystemsResponse,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFileSystemsRequest,
   ) => Stream.Stream<
     FileSystemDescription,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFileSystemsRequest,
@@ -2024,8 +2012,8 @@ export const describeLifecycleConfiguration: (
   input: DescribeLifecycleConfigurationRequest,
 ) => Effect.Effect<
   LifecycleConfigurationDescription,
-  BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLifecycleConfigurationRequest,
   output: LifecycleConfigurationDescription,
@@ -2048,22 +2036,22 @@ export const describeTags: {
     input: DescribeTagsRequest,
   ): Effect.Effect<
     DescribeTagsResponse,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTagsRequest,
   ) => Stream.Stream<
     DescribeTagsResponse,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTagsRequest,
   ) => Stream.Stream<
     Tag,
-    BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTagsRequest,
@@ -2091,8 +2079,8 @@ export const listTagsForResource: {
     | BadRequest
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -2102,8 +2090,8 @@ export const listTagsForResource: {
     | BadRequest
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -2113,8 +2101,8 @@ export const listTagsForResource: {
     | BadRequest
     | FileSystemNotFound
     | InternalServerError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -2147,8 +2135,8 @@ export const deleteTags: (
   input: DeleteTagsRequest,
 ) => Effect.Effect<
   DeleteTagsResponse,
-  BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsRequest,
   output: DeleteTagsResponse,
@@ -2168,8 +2156,8 @@ export const tagResource: (
   | BadRequest
   | FileSystemNotFound
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2194,8 +2182,8 @@ export const untagResource: (
   | BadRequest
   | FileSystemNotFound
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2221,8 +2209,8 @@ export const putAccountPreferences: (
   input: PutAccountPreferencesRequest,
 ) => Effect.Effect<
   PutAccountPreferencesResponse,
-  BadRequest | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccountPreferencesRequest,
   output: PutAccountPreferencesResponse,
@@ -2244,8 +2232,8 @@ export const createTags: (
   input: CreateTagsRequest,
 ) => Effect.Effect<
   CreateTagsResponse,
-  BadRequest | FileSystemNotFound | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequest | FileSystemNotFound | InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTagsRequest,
   output: CreateTagsResponse,
@@ -2272,8 +2260,8 @@ export const describeMountTargetSecurityGroups: (
   | IncorrectMountTargetState
   | InternalServerError
   | MountTargetNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMountTargetSecurityGroupsRequest,
   output: DescribeMountTargetSecurityGroupsResponse,
@@ -2301,8 +2289,8 @@ export const deleteReplicationConfiguration: (
   | FileSystemNotFound
   | InternalServerError
   | ReplicationNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationConfigurationRequest,
   output: DeleteReplicationConfigurationResponse,
@@ -2346,8 +2334,8 @@ export const deleteMountTarget: (
   | DependencyTimeout
   | InternalServerError
   | MountTargetNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMountTargetRequest,
   output: DeleteMountTargetResponse,
@@ -2378,8 +2366,8 @@ export const describeMountTargets: {
     | FileSystemNotFound
     | InternalServerError
     | MountTargetNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMountTargetsRequest,
@@ -2390,8 +2378,8 @@ export const describeMountTargets: {
     | FileSystemNotFound
     | InternalServerError
     | MountTargetNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMountTargetsRequest,
@@ -2402,8 +2390,8 @@ export const describeMountTargets: {
     | FileSystemNotFound
     | InternalServerError
     | MountTargetNotFound
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMountTargetsRequest,
@@ -2436,8 +2424,8 @@ export const describeFileSystemPolicy: (
   | FileSystemNotFound
   | InternalServerError
   | PolicyNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFileSystemPolicyRequest,
   output: FileSystemPolicyDescription,
@@ -2506,8 +2494,8 @@ export const putLifecycleConfiguration: (
   | FileSystemNotFound
   | IncorrectFileSystemLifeCycleState
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLifecycleConfigurationRequest,
   output: LifecycleConfigurationDescription,
@@ -2533,8 +2521,8 @@ export const deleteFileSystemPolicy: (
   | FileSystemNotFound
   | IncorrectFileSystemLifeCycleState
   | InternalServerError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFileSystemPolicyRequest,
   output: DeleteFileSystemPolicyResponse,
@@ -2557,8 +2545,8 @@ export const describeBackupPolicy: (
   | InternalServerError
   | PolicyNotFound
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBackupPolicyRequest,
   output: BackupPolicyDescription,
@@ -2582,8 +2570,8 @@ export const putBackupPolicy: (
   | IncorrectFileSystemLifeCycleState
   | InternalServerError
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBackupPolicyRequest,
   output: BackupPolicyDescription,
@@ -2610,8 +2598,8 @@ export const describeReplicationConfigurations: {
     | InternalServerError
     | ReplicationNotFound
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationConfigurationsRequest,
@@ -2622,8 +2610,8 @@ export const describeReplicationConfigurations: {
     | InternalServerError
     | ReplicationNotFound
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationConfigurationsRequest,
@@ -2634,8 +2622,8 @@ export const describeReplicationConfigurations: {
     | InternalServerError
     | ReplicationNotFound
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationConfigurationsRequest,
@@ -2677,8 +2665,8 @@ export const putFileSystemPolicy: (
   | IncorrectFileSystemLifeCycleState
   | InternalServerError
   | InvalidPolicyException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutFileSystemPolicyRequest,
   output: FileSystemPolicyDescription,
@@ -2726,8 +2714,8 @@ export const createAccessPoint: (
   | IncorrectFileSystemLifeCycleState
   | InternalServerError
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessPointRequest,
   output: AccessPointDescription,
@@ -2769,8 +2757,8 @@ export const modifyMountTargetSecurityGroups: (
   | MountTargetNotFound
   | SecurityGroupLimitExceeded
   | SecurityGroupNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyMountTargetSecurityGroupsRequest,
   output: ModifyMountTargetSecurityGroupsResponse,
@@ -2857,8 +2845,8 @@ export const createFileSystem: (
   | InternalServerError
   | ThroughputLimitExceeded
   | UnsupportedAvailabilityZone
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFileSystemRequest,
   output: FileSystemDescription,
@@ -2890,8 +2878,8 @@ export const updateFileSystemProtection: (
   | ReplicationAlreadyExists
   | ThroughputLimitExceeded
   | TooManyRequests
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFileSystemProtectionRequest,
   output: FileSystemProtectionDescription,
@@ -2945,8 +2933,8 @@ export const createReplicationConfiguration: (
   | ThroughputLimitExceeded
   | UnsupportedAvailabilityZone
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicationConfigurationRequest,
   output: ReplicationConfigurationDescription,
@@ -2979,8 +2967,8 @@ export const updateFileSystem: (
   | InternalServerError
   | ThroughputLimitExceeded
   | TooManyRequests
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFileSystemRequest,
   output: FileSystemDescription,
@@ -3125,8 +3113,8 @@ export const createMountTarget: (
   | SecurityGroupNotFound
   | SubnetNotFound
   | UnsupportedAvailabilityZone
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMountTargetRequest,
   output: MountTargetDescription,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "AppConfig",
@@ -2161,25 +2159,23 @@ export class BadRequestException extends S.TaggedError<BadRequestException>()(
     Reason: S.optional(S.String),
     Details: S.optional(BadRequestDetails),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class PayloadTooLargeException extends S.TaggedError<PayloadTooLargeException>()(
   "PayloadTooLargeException",
   {
@@ -2188,7 +2184,7 @@ export class PayloadTooLargeException extends S.TaggedError<PayloadTooLargeExcep
     Limit: S.optional(S.Number),
     Size: S.optional(S.Number),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2198,8 +2194,8 @@ export const updateAccountSettings: (
   input: UpdateAccountSettingsRequest,
 ) => Effect.Effect<
   AccountSettings,
-  BadRequestException | InternalServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountSettingsRequest,
   output: AccountSettings,
@@ -2213,8 +2209,8 @@ export const getAccountSettings: (
   input: GetAccountSettingsRequest,
 ) => Effect.Effect<
   AccountSettings,
-  BadRequestException | InternalServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: AccountSettings,
@@ -2228,22 +2224,22 @@ export const listApplications: {
     input: ListApplicationsRequest,
   ): Effect.Effect<
     Applications,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationsRequest,
   ) => Stream.Stream<
     Applications,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationsRequest,
   ) => Stream.Stream<
     Application,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
@@ -2264,22 +2260,22 @@ export const listDeploymentStrategies: {
     input: ListDeploymentStrategiesRequest,
   ): Effect.Effect<
     DeploymentStrategies,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeploymentStrategiesRequest,
   ) => Stream.Stream<
     DeploymentStrategies,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeploymentStrategiesRequest,
   ) => Stream.Stream<
     DeploymentStrategy,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentStrategiesRequest,
@@ -2302,22 +2298,22 @@ export const listExtensionAssociations: {
     input: ListExtensionAssociationsRequest,
   ): Effect.Effect<
     ExtensionAssociations,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExtensionAssociationsRequest,
   ) => Stream.Stream<
     ExtensionAssociations,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExtensionAssociationsRequest,
   ) => Stream.Stream<
     ExtensionAssociationSummary,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExtensionAssociationsRequest,
@@ -2340,22 +2336,22 @@ export const listExtensions: {
     input: ListExtensionsRequest,
   ): Effect.Effect<
     Extensions,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExtensionsRequest,
   ) => Stream.Stream<
     Extensions,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExtensionsRequest,
   ) => Stream.Stream<
     ExtensionSummary,
-    BadRequestException | InternalServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExtensionsRequest,
@@ -2378,8 +2374,8 @@ export const deleteApplication: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -2403,8 +2399,8 @@ export const createApplication: (
   | BadRequestException
   | InternalServerException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: Application,
@@ -2429,8 +2425,8 @@ export const deleteConfigurationProfile: (
   | ConflictException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationProfileRequest,
   output: DeleteConfigurationProfileResponse,
@@ -2451,8 +2447,8 @@ export const getDeployment: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentRequest,
   output: Deployment,
@@ -2472,8 +2468,8 @@ export const deleteDeploymentStrategy: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeploymentStrategyRequest,
   output: DeleteDeploymentStrategyResponse,
@@ -2494,8 +2490,8 @@ export const deleteExtension: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteExtensionRequest,
   output: DeleteExtensionResponse,
@@ -2516,8 +2512,8 @@ export const deleteExtensionAssociation: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteExtensionAssociationRequest,
   output: DeleteExtensionAssociationResponse,
@@ -2538,8 +2534,8 @@ export const deleteHostedConfigurationVersion: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHostedConfigurationVersionRequest,
   output: DeleteHostedConfigurationVersionResponse,
@@ -2563,8 +2559,8 @@ export const getDeploymentStrategy: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentStrategyRequest,
   output: DeploymentStrategy,
@@ -2584,8 +2580,8 @@ export const getHostedConfigurationVersion: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHostedConfigurationVersionRequest,
   output: HostedConfigurationVersion,
@@ -2610,8 +2606,8 @@ export const stopDeployment: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDeploymentRequest,
   output: Deployment,
@@ -2633,8 +2629,8 @@ export const tagResource: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2654,8 +2650,8 @@ export const untagResource: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2675,8 +2671,8 @@ export const updateApplication: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: Application,
@@ -2696,8 +2692,8 @@ export const updateConfigurationProfile: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationProfileRequest,
   output: ConfigurationProfile,
@@ -2717,8 +2713,8 @@ export const updateDeploymentStrategy: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeploymentStrategyRequest,
   output: DeploymentStrategy,
@@ -2738,8 +2734,8 @@ export const updateEnvironment: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEnvironmentRequest,
   output: Environment,
@@ -2761,8 +2757,8 @@ export const updateExtensionAssociation: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateExtensionAssociationRequest,
   output: ExtensionAssociation,
@@ -2782,8 +2778,8 @@ export const validateConfiguration: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidateConfigurationRequest,
   output: ValidateConfigurationResponse,
@@ -2832,8 +2828,8 @@ export const createConfigurationProfile: (
   | InternalServerException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationProfileRequest,
   output: ConfigurationProfile,
@@ -2862,8 +2858,8 @@ export const createEnvironment: (
   | InternalServerException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEnvironmentRequest,
   output: Environment,
@@ -2896,8 +2892,8 @@ export const createExtensionAssociation: (
   | InternalServerException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExtensionAssociationRequest,
   output: ExtensionAssociation,
@@ -2918,8 +2914,8 @@ export const getApplication: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: Application,
@@ -2947,8 +2943,8 @@ export const getConfiguration: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConfigurationRequest,
   output: Configuration,
@@ -2968,8 +2964,8 @@ export const getConfigurationProfile: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConfigurationProfileRequest,
   output: ConfigurationProfile,
@@ -2994,8 +2990,8 @@ export const getEnvironment: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEnvironmentRequest,
   output: Environment,
@@ -3015,8 +3011,8 @@ export const getExtension: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExtensionRequest,
   output: Extension,
@@ -3038,8 +3034,8 @@ export const getExtensionAssociation: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExtensionAssociationRequest,
   output: ExtensionAssociation,
@@ -3060,8 +3056,8 @@ export const listEnvironments: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEnvironmentsRequest,
@@ -3070,8 +3066,8 @@ export const listEnvironments: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEnvironmentsRequest,
@@ -3080,8 +3076,8 @@ export const listEnvironments: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEnvironmentsRequest,
@@ -3108,8 +3104,8 @@ export const listTagsForResource: (
   | BadRequestException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ResourceTags,
@@ -3130,8 +3126,8 @@ export const listConfigurationProfiles: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConfigurationProfilesRequest,
@@ -3140,8 +3136,8 @@ export const listConfigurationProfiles: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConfigurationProfilesRequest,
@@ -3150,8 +3146,8 @@ export const listConfigurationProfiles: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationProfilesRequest,
@@ -3179,8 +3175,8 @@ export const listDeployments: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeploymentsRequest,
@@ -3189,8 +3185,8 @@ export const listDeployments: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeploymentsRequest,
@@ -3199,8 +3195,8 @@ export const listDeployments: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentsRequest,
@@ -3229,8 +3225,8 @@ export const listHostedConfigurationVersions: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHostedConfigurationVersionsRequest,
@@ -3239,8 +3235,8 @@ export const listHostedConfigurationVersions: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHostedConfigurationVersionsRequest,
@@ -3249,8 +3245,8 @@ export const listHostedConfigurationVersions: {
     | BadRequestException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHostedConfigurationVersionsRequest,
@@ -3281,8 +3277,8 @@ export const deleteEnvironment: (
   | ConflictException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEnvironmentRequest,
   output: DeleteEnvironmentResponse,
@@ -3306,8 +3302,8 @@ export const updateExtension: (
   | ConflictException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateExtensionRequest,
   output: Extension,
@@ -3329,8 +3325,8 @@ export const startDeployment: (
   | ConflictException
   | InternalServerException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDeploymentRequest,
   output: Deployment,
@@ -3357,8 +3353,8 @@ export const createHostedConfigurationVersion: (
   | PayloadTooLargeException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHostedConfigurationVersionRequest,
   output: HostedConfigurationVersion,
@@ -3384,8 +3380,8 @@ export const createDeploymentStrategy: (
   | BadRequestException
   | InternalServerException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeploymentStrategyRequest,
   output: DeploymentStrategy,
@@ -3426,8 +3422,8 @@ export const createExtension: (
   | ConflictException
   | InternalServerException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExtensionRequest,
   output: Extension,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ApiGatewayManagementApi",
@@ -357,21 +355,19 @@ export const GetConnectionResponse = S.suspend(() =>
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   {},
-) {}
+).pipe(C.withAuthError) {}
 export class GoneException extends S.TaggedError<GoneException>()(
   "GoneException",
   {},
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   {},
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class PayloadTooLargeException extends S.TaggedError<PayloadTooLargeException>()(
   "PayloadTooLargeException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -381,11 +377,8 @@ export const deleteConnection: (
   input: DeleteConnectionRequest,
 ) => Effect.Effect<
   DeleteConnectionResponse,
-  | ForbiddenException
-  | GoneException
-  | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ForbiddenException | GoneException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectionRequest,
   output: DeleteConnectionResponse,
@@ -402,8 +395,8 @@ export const postToConnection: (
   | GoneException
   | LimitExceededException
   | PayloadTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PostToConnectionRequest,
   output: PostToConnectionResponse,
@@ -421,11 +414,8 @@ export const getConnection: (
   input: GetConnectionRequest,
 ) => Effect.Effect<
   GetConnectionResponse,
-  | ForbiddenException
-  | GoneException
-  | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ForbiddenException | GoneException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectionRequest,
   output: GetConnectionResponse,

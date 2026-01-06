@@ -9,7 +9,7 @@ import {
   isRetryable,
   isThrottlingError,
   isTransientError,
-} from "./error-category.ts";
+} from "./category.ts";
 
 /**
  * Retry policy options that match the Effect.retry contract.

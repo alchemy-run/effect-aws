@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://pi.amazonaws.com/doc/2018-02-27/");
 const svc = T.AwsApiService({
@@ -1130,8 +1128,8 @@ export const deletePerformanceAnalysisReport: (
   | InternalServiceError
   | InvalidArgumentException
   | NotAuthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePerformanceAnalysisReportRequest,
   output: DeletePerformanceAnalysisReportResponse,
@@ -1152,8 +1150,8 @@ export const getResourceMetadata: (
   | InternalServiceError
   | InvalidArgumentException
   | NotAuthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceMetadataRequest,
   output: GetResourceMetadataResponse,
@@ -1176,8 +1174,8 @@ export const getDimensionKeyDetails: (
   | InternalServiceError
   | InvalidArgumentException
   | NotAuthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDimensionKeyDetailsRequest,
   output: GetDimensionKeyDetailsResponse,
@@ -1198,8 +1196,8 @@ export const listAvailableResourceMetrics: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAvailableResourceMetricsRequest,
@@ -1208,8 +1206,8 @@ export const listAvailableResourceMetrics: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAvailableResourceMetricsRequest,
@@ -1218,8 +1216,8 @@ export const listAvailableResourceMetrics: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAvailableResourceMetricsRequest,
@@ -1246,8 +1244,8 @@ export const listPerformanceAnalysisReports: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPerformanceAnalysisReportsRequest,
@@ -1256,8 +1254,8 @@ export const listPerformanceAnalysisReports: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPerformanceAnalysisReportsRequest,
@@ -1266,8 +1264,8 @@ export const listPerformanceAnalysisReports: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPerformanceAnalysisReportsRequest,
@@ -1293,8 +1291,8 @@ export const listTagsForResource: (
   | InternalServiceError
   | InvalidArgumentException
   | NotAuthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1314,8 +1312,8 @@ export const tagResource: (
   | InternalServiceError
   | InvalidArgumentException
   | NotAuthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1335,8 +1333,8 @@ export const untagResource: (
   | InternalServiceError
   | InvalidArgumentException
   | NotAuthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1357,8 +1355,8 @@ export const createPerformanceAnalysisReport: (
   | InternalServiceError
   | InvalidArgumentException
   | NotAuthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePerformanceAnalysisReportRequest,
   output: CreatePerformanceAnalysisReportResponse,
@@ -1382,8 +1380,8 @@ export const describeDimensionKeys: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDimensionKeysRequest,
@@ -1392,8 +1390,8 @@ export const describeDimensionKeys: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDimensionKeysRequest,
@@ -1402,8 +1400,8 @@ export const describeDimensionKeys: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDimensionKeysRequest,
@@ -1435,8 +1433,8 @@ export const getResourceMetrics: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourceMetricsRequest,
@@ -1445,8 +1443,8 @@ export const getResourceMetrics: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetResourceMetricsRequest,
@@ -1455,8 +1453,8 @@ export const getResourceMetrics: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourceMetricsRequest,
@@ -1483,8 +1481,8 @@ export const listAvailableResourceDimensions: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAvailableResourceDimensionsRequest,
@@ -1493,8 +1491,8 @@ export const listAvailableResourceDimensions: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAvailableResourceDimensionsRequest,
@@ -1503,8 +1501,8 @@ export const listAvailableResourceDimensions: {
     | InternalServiceError
     | InvalidArgumentException
     | NotAuthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAvailableResourceDimensionsRequest,
@@ -1533,8 +1531,8 @@ export const getPerformanceAnalysisReport: (
   | InternalServiceError
   | InvalidArgumentException
   | NotAuthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPerformanceAnalysisReportRequest,
   output: GetPerformanceAnalysisReportResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Strm from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://dynamodb.amazonaws.com/doc/2012-08-10/");
 const svc = T.AwsApiService({
@@ -837,8 +835,8 @@ export const listStreams: (
   input: ListStreamsInput,
 ) => Effect.Effect<
   ListStreamsOutput,
-  InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListStreamsInput,
   output: ListStreamsOutput,
@@ -860,8 +858,8 @@ export const getShardIterator: (
   | InternalServerError
   | ResourceNotFoundException
   | TrimmedDataAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetShardIteratorInput,
   output: GetShardIteratorOutput,
@@ -886,8 +884,8 @@ export const describeStream: (
   input: DescribeStreamInput,
 ) => Effect.Effect<
   DescribeStreamOutput,
-  InternalServerError | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerError | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStreamInput,
   output: DescribeStreamOutput,
@@ -914,8 +912,8 @@ export const getRecords: (
   | LimitExceededException
   | ResourceNotFoundException
   | TrimmedDataAccessException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRecordsInput,
   output: GetRecordsOutput,

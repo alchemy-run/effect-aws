@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://wheatley.amazonaws.com/orchestration/2017-10-11/",
@@ -1733,181 +1731,131 @@ export const CreateCustomActionResult = S.suspend(() =>
 export class InternalServiceError extends S.TaggedError<InternalServiceError>()(
   "InternalServiceError",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DeleteChimeWebhookConfigurationException extends S.TaggedError<DeleteChimeWebhookConfigurationException>()(
   "DeleteChimeWebhookConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DeleteTeamsChannelConfigurationException extends S.TaggedError<DeleteTeamsChannelConfigurationException>()(
   "DeleteTeamsChannelConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DeleteTeamsConfiguredTeamException extends S.TaggedError<DeleteTeamsConfiguredTeamException>()(
   "DeleteTeamsConfiguredTeamException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DeleteMicrosoftTeamsUserIdentityException extends S.TaggedError<DeleteMicrosoftTeamsUserIdentityException>()(
   "DeleteMicrosoftTeamsUserIdentityException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DeleteSlackChannelConfigurationException extends S.TaggedError<DeleteSlackChannelConfigurationException>()(
   "DeleteSlackChannelConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DeleteSlackUserIdentityException extends S.TaggedError<DeleteSlackUserIdentityException>()(
   "DeleteSlackUserIdentityException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DeleteSlackWorkspaceAuthorizationFault extends S.TaggedError<DeleteSlackWorkspaceAuthorizationFault>()(
   "DeleteSlackWorkspaceAuthorizationFault",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DescribeSlackChannelConfigurationsException extends S.TaggedError<DescribeSlackChannelConfigurationsException>()(
   "DescribeSlackChannelConfigurationsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class GetAccountPreferencesException extends S.TaggedError<GetAccountPreferencesException>()(
   "GetAccountPreferencesException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class GetTeamsChannelConfigurationException extends S.TaggedError<GetTeamsChannelConfigurationException>()(
   "GetTeamsChannelConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class DescribeChimeWebhookConfigurationsException extends S.TaggedError<DescribeChimeWebhookConfigurationsException>()(
   "DescribeChimeWebhookConfigurationsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DescribeSlackUserIdentitiesException extends S.TaggedError<DescribeSlackUserIdentitiesException>()(
   "DescribeSlackUserIdentitiesException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DescribeSlackWorkspacesException extends S.TaggedError<DescribeSlackWorkspacesException>()(
   "DescribeSlackWorkspacesException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ListMicrosoftTeamsConfiguredTeamsException extends S.TaggedError<ListMicrosoftTeamsConfiguredTeamsException>()(
   "ListMicrosoftTeamsConfiguredTeamsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ListMicrosoftTeamsUserIdentitiesException extends S.TaggedError<ListMicrosoftTeamsUserIdentitiesException>()(
   "ListMicrosoftTeamsUserIdentitiesException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ListTeamsChannelConfigurationsException extends S.TaggedError<ListTeamsChannelConfigurationsException>()(
   "ListTeamsChannelConfigurationsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class UpdateAccountPreferencesException extends S.TaggedError<UpdateAccountPreferencesException>()(
   "UpdateAccountPreferencesException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class UpdateChimeWebhookConfigurationException extends S.TaggedError<UpdateChimeWebhookConfigurationException>()(
   "UpdateChimeWebhookConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class UpdateTeamsChannelConfigurationException extends S.TaggedError<UpdateTeamsChannelConfigurationException>()(
   "UpdateTeamsChannelConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class UpdateSlackChannelConfigurationException extends S.TaggedError<UpdateSlackChannelConfigurationException>()(
   "UpdateSlackChannelConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class CreateChimeWebhookConfigurationException extends S.TaggedError<CreateChimeWebhookConfigurationException>()(
   "CreateChimeWebhookConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class CreateTeamsChannelConfigurationException extends S.TaggedError<CreateTeamsChannelConfigurationException>()(
   "CreateTeamsChannelConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class CreateSlackChannelConfigurationException extends S.TaggedError<CreateSlackChannelConfigurationException>()(
   "CreateSlackChannelConfigurationException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1921,8 +1869,8 @@ export const describeSlackChannelConfigurations: {
     | DescribeSlackChannelConfigurationsException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSlackChannelConfigurationsRequest,
@@ -1931,8 +1879,8 @@ export const describeSlackChannelConfigurations: {
     | DescribeSlackChannelConfigurationsException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSlackChannelConfigurationsRequest,
@@ -1941,8 +1889,8 @@ export const describeSlackChannelConfigurations: {
     | DescribeSlackChannelConfigurationsException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSlackChannelConfigurationsRequest,
@@ -1966,10 +1914,8 @@ export const getAccountPreferences: (
   input: GetAccountPreferencesRequest,
 ) => Effect.Effect<
   GetAccountPreferencesResult,
-  | GetAccountPreferencesException
-  | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  GetAccountPreferencesException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountPreferencesRequest,
   output: GetAccountPreferencesResult,
@@ -1985,8 +1931,8 @@ export const getMicrosoftTeamsChannelConfiguration: (
   | GetTeamsChannelConfigurationException
   | InvalidParameterException
   | InvalidRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTeamsChannelConfigurationRequest,
   output: GetTeamsChannelConfigurationResult,
@@ -2004,22 +1950,22 @@ export const listAssociations: {
     input: ListAssociationsRequest,
   ): Effect.Effect<
     ListAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssociationsRequest,
   ) => Stream.Stream<
     ListAssociationsResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssociationsRequest,
   ) => Stream.Stream<
     AssociationListing,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssociationsRequest,
@@ -2043,8 +1989,8 @@ export const deleteMicrosoftTeamsChannelConfiguration: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTeamsChannelConfigurationRequest,
   output: DeleteTeamsChannelConfigurationResult,
@@ -2062,10 +2008,8 @@ export const deleteMicrosoftTeamsConfiguredTeam: (
   input: DeleteTeamsConfiguredTeamRequest,
 ) => Effect.Effect<
   DeleteTeamsConfiguredTeamResult,
-  | DeleteTeamsConfiguredTeamException
-  | InvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DeleteTeamsConfiguredTeamException | InvalidParameterException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTeamsConfiguredTeamRequest,
   output: DeleteTeamsConfiguredTeamResult,
@@ -2081,8 +2025,8 @@ export const deleteMicrosoftTeamsUserIdentity: (
   | DeleteMicrosoftTeamsUserIdentityException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMicrosoftTeamsUserIdentityRequest,
   output: DeleteMicrosoftTeamsUserIdentityResult,
@@ -2103,8 +2047,8 @@ export const deleteSlackChannelConfiguration: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSlackChannelConfigurationRequest,
   output: DeleteSlackChannelConfigurationResult,
@@ -2125,8 +2069,8 @@ export const deleteSlackUserIdentity: (
   | DeleteSlackUserIdentityException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSlackUserIdentityRequest,
   output: DeleteSlackUserIdentityResult,
@@ -2145,8 +2089,8 @@ export const deleteSlackWorkspaceAuthorization: (
   DeleteSlackWorkspaceAuthorizationResult,
   | DeleteSlackWorkspaceAuthorizationFault
   | InvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSlackWorkspaceAuthorizationRequest,
   output: DeleteSlackWorkspaceAuthorizationResult,
@@ -2163,8 +2107,8 @@ export const deleteChimeWebhookConfiguration: (
   | InvalidParameterException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChimeWebhookConfigurationRequest,
   output: DeleteChimeWebhookConfigurationResult,
@@ -2185,8 +2129,8 @@ export const associateToConfiguration: (
   | InternalServiceError
   | InvalidRequestException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateToConfigurationRequest,
   output: AssociateToConfigurationResult,
@@ -2207,8 +2151,8 @@ export const describeChimeWebhookConfigurations: {
     | DescribeChimeWebhookConfigurationsException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeChimeWebhookConfigurationsRequest,
@@ -2217,8 +2161,8 @@ export const describeChimeWebhookConfigurations: {
     | DescribeChimeWebhookConfigurationsException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeChimeWebhookConfigurationsRequest,
@@ -2227,8 +2171,8 @@ export const describeChimeWebhookConfigurations: {
     | DescribeChimeWebhookConfigurationsException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeChimeWebhookConfigurationsRequest,
@@ -2256,8 +2200,8 @@ export const describeSlackUserIdentities: {
     | DescribeSlackUserIdentitiesException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSlackUserIdentitiesRequest,
@@ -2266,8 +2210,8 @@ export const describeSlackUserIdentities: {
     | DescribeSlackUserIdentitiesException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSlackUserIdentitiesRequest,
@@ -2276,8 +2220,8 @@ export const describeSlackUserIdentities: {
     | DescribeSlackUserIdentitiesException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSlackUserIdentitiesRequest,
@@ -2305,8 +2249,8 @@ export const describeSlackWorkspaces: {
     | DescribeSlackWorkspacesException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSlackWorkspacesRequest,
@@ -2315,8 +2259,8 @@ export const describeSlackWorkspaces: {
     | DescribeSlackWorkspacesException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSlackWorkspacesRequest,
@@ -2325,8 +2269,8 @@ export const describeSlackWorkspaces: {
     | DescribeSlackWorkspacesException
     | InvalidParameterException
     | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSlackWorkspacesRequest,
@@ -2354,8 +2298,8 @@ export const listMicrosoftTeamsConfiguredTeams: {
     | InvalidParameterException
     | InvalidRequestException
     | ListMicrosoftTeamsConfiguredTeamsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMicrosoftTeamsConfiguredTeamsRequest,
@@ -2364,8 +2308,8 @@ export const listMicrosoftTeamsConfiguredTeams: {
     | InvalidParameterException
     | InvalidRequestException
     | ListMicrosoftTeamsConfiguredTeamsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMicrosoftTeamsConfiguredTeamsRequest,
@@ -2374,8 +2318,8 @@ export const listMicrosoftTeamsConfiguredTeams: {
     | InvalidParameterException
     | InvalidRequestException
     | ListMicrosoftTeamsConfiguredTeamsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMicrosoftTeamsConfiguredTeamsRequest,
@@ -2403,8 +2347,8 @@ export const listMicrosoftTeamsUserIdentities: {
     | InvalidParameterException
     | InvalidRequestException
     | ListMicrosoftTeamsUserIdentitiesException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMicrosoftTeamsUserIdentitiesRequest,
@@ -2413,8 +2357,8 @@ export const listMicrosoftTeamsUserIdentities: {
     | InvalidParameterException
     | InvalidRequestException
     | ListMicrosoftTeamsUserIdentitiesException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMicrosoftTeamsUserIdentitiesRequest,
@@ -2423,8 +2367,8 @@ export const listMicrosoftTeamsUserIdentities: {
     | InvalidParameterException
     | InvalidRequestException
     | ListMicrosoftTeamsUserIdentitiesException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMicrosoftTeamsUserIdentitiesRequest,
@@ -2451,8 +2395,8 @@ export const listTagsForResource: (
   | InternalServiceError
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2473,8 +2417,8 @@ export const getCustomAction: (
   | InvalidRequestException
   | ResourceNotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCustomActionRequest,
   output: GetCustomActionResult,
@@ -2496,8 +2440,8 @@ export const updateCustomAction: (
   | InvalidRequestException
   | ResourceNotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCustomActionRequest,
   output: UpdateCustomActionResult,
@@ -2519,8 +2463,8 @@ export const listCustomActions: {
     | InternalServiceError
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCustomActionsRequest,
@@ -2529,8 +2473,8 @@ export const listCustomActions: {
     | InternalServiceError
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCustomActionsRequest,
@@ -2539,8 +2483,8 @@ export const listCustomActions: {
     | InternalServiceError
     | InvalidRequestException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCustomActionsRequest,
@@ -2567,8 +2511,8 @@ export const disassociateFromConfiguration: (
   | InternalServiceError
   | InvalidRequestException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateFromConfigurationRequest,
   output: DisassociateFromConfigurationResult,
@@ -2589,8 +2533,8 @@ export const deleteCustomAction: (
   | InvalidRequestException
   | ResourceNotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomActionRequest,
   output: DeleteCustomActionResult,
@@ -2612,8 +2556,8 @@ export const listMicrosoftTeamsChannelConfigurations: {
     | InvalidParameterException
     | InvalidRequestException
     | ListTeamsChannelConfigurationsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTeamsChannelConfigurationsRequest,
@@ -2622,8 +2566,8 @@ export const listMicrosoftTeamsChannelConfigurations: {
     | InvalidParameterException
     | InvalidRequestException
     | ListTeamsChannelConfigurationsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTeamsChannelConfigurationsRequest,
@@ -2632,8 +2576,8 @@ export const listMicrosoftTeamsChannelConfigurations: {
     | InvalidParameterException
     | InvalidRequestException
     | ListTeamsChannelConfigurationsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTeamsChannelConfigurationsRequest,
@@ -2660,8 +2604,8 @@ export const updateAccountPreferences: (
   | InvalidParameterException
   | InvalidRequestException
   | UpdateAccountPreferencesException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountPreferencesRequest,
   output: UpdateAccountPreferencesResult,
@@ -2682,8 +2626,8 @@ export const updateChimeWebhookConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | UpdateChimeWebhookConfigurationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChimeWebhookConfigurationRequest,
   output: UpdateChimeWebhookConfigurationResult,
@@ -2705,8 +2649,8 @@ export const updateMicrosoftTeamsChannelConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | UpdateTeamsChannelConfigurationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTeamsChannelConfigurationRequest,
   output: UpdateTeamsChannelConfigurationResult,
@@ -2728,8 +2672,8 @@ export const updateSlackChannelConfiguration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | UpdateSlackChannelConfigurationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSlackChannelConfigurationRequest,
   output: UpdateSlackChannelConfigurationResult,
@@ -2750,8 +2694,8 @@ export const untagResource: (
   | InternalServiceError
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2773,8 +2717,8 @@ export const createCustomAction: (
   | InvalidRequestException
   | LimitExceededException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomActionRequest,
   output: CreateCustomActionResult,
@@ -2798,8 +2742,8 @@ export const createMicrosoftTeamsChannelConfiguration: (
   | InvalidParameterException
   | InvalidRequestException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTeamsChannelConfigurationRequest,
   output: CreateTeamsChannelConfigurationResult,
@@ -2823,8 +2767,8 @@ export const createSlackChannelConfiguration: (
   | InvalidParameterException
   | InvalidRequestException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSlackChannelConfigurationRequest,
   output: CreateSlackChannelConfigurationResult,
@@ -2847,8 +2791,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2871,8 +2815,8 @@ export const createChimeWebhookConfiguration: (
   | InvalidParameterException
   | InvalidRequestException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChimeWebhookConfigurationRequest,
   output: CreateChimeWebhookConfigurationResult,

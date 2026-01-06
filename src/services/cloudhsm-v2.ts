@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CloudHSM V2",
@@ -948,8 +946,8 @@ export const deleteHsm: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHsmRequest,
   output: DeleteHsmResponse,
@@ -977,8 +975,8 @@ export const deleteResourcePolicy: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -1004,8 +1002,8 @@ export const getResourcePolicy: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -1034,8 +1032,8 @@ export const initializeCluster: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitializeClusterRequest,
   output: InitializeClusterResponse,
@@ -1061,8 +1059,8 @@ export const modifyBackupAttributes: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyBackupAttributesRequest,
   output: ModifyBackupAttributesResponse,
@@ -1088,8 +1086,8 @@ export const modifyCluster: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterRequest,
   output: ModifyClusterResponse,
@@ -1129,8 +1127,8 @@ export const putResourcePolicy: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -1158,8 +1156,8 @@ export const restoreBackup: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreBackupRequest,
   output: RestoreBackupResponse,
@@ -1186,8 +1184,8 @@ export const createHsm: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHsmRequest,
   output: CreateHsmResponse,
@@ -1215,8 +1213,8 @@ export const deleteBackup: (
   | CloudHsmInvalidRequestException
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackupRequest,
   output: DeleteBackupResponse,
@@ -1249,8 +1247,8 @@ export const describeClusters: {
     | CloudHsmInvalidRequestException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClustersRequest,
@@ -1261,8 +1259,8 @@ export const describeClusters: {
     | CloudHsmInvalidRequestException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClustersRequest,
@@ -1273,8 +1271,8 @@ export const describeClusters: {
     | CloudHsmInvalidRequestException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClustersRequest,
@@ -1314,8 +1312,8 @@ export const listTags: {
     | CloudHsmResourceNotFoundException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsRequest,
@@ -1327,8 +1325,8 @@ export const listTags: {
     | CloudHsmResourceNotFoundException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsRequest,
@@ -1340,8 +1338,8 @@ export const listTags: {
     | CloudHsmResourceNotFoundException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsRequest,
@@ -1376,8 +1374,8 @@ export const createCluster: (
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
   | CloudHsmTagException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -1412,8 +1410,8 @@ export const describeBackups: {
     | CloudHsmResourceNotFoundException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBackupsRequest,
@@ -1425,8 +1423,8 @@ export const describeBackups: {
     | CloudHsmResourceNotFoundException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBackupsRequest,
@@ -1438,8 +1436,8 @@ export const describeBackups: {
     | CloudHsmResourceNotFoundException
     | CloudHsmServiceException
     | CloudHsmTagException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBackupsRequest,
@@ -1473,8 +1471,8 @@ export const copyBackupToRegion: (
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
   | CloudHsmTagException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyBackupToRegionRequest,
   output: CopyBackupToRegionResponse,
@@ -1503,8 +1501,8 @@ export const deleteCluster: (
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
   | CloudHsmTagException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -1533,8 +1531,8 @@ export const tagResource: (
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
   | CloudHsmTagException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1563,8 +1561,8 @@ export const untagResource: (
   | CloudHsmResourceNotFoundException
   | CloudHsmServiceException
   | CloudHsmTagException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

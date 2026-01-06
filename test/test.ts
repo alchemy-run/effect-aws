@@ -12,10 +12,10 @@ import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Logger from "effect/Logger";
 import * as Scope from "effect/Scope";
-import * as Credentials from "../src/aws/credentials.ts";
-import { Endpoint } from "../src/aws/endpoint.ts";
-import { Region } from "../src/aws/region.ts";
-import * as Retry from "../src/retry-policy.ts";
+import * as Credentials from "../src/credentials.ts";
+import { Endpoint } from "../src/endpoint.ts";
+import { Region } from "../src/region.ts";
+import * as Retry from "../src/retry.ts";
 
 type Provided =
   | Scope.Scope

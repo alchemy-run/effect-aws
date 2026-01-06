@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Compute Optimizer Automation",
@@ -1613,57 +1611,51 @@ export const ListAutomationRulePreviewResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class IdempotencyTokenInUseException extends S.TaggedError<IdempotencyTokenInUseException>()(
   "IdempotencyTokenInUseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class IdempotentParameterMismatchException extends S.TaggedError<IdempotentParameterMismatchException>()(
   "IdempotentParameterMismatchException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class OptInRequiredException extends S.TaggedError<OptInRequiredException>()(
   "OptInRequiredException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class NotManagementAccountException extends S.TaggedError<NotManagementAccountException>()(
   "NotManagementAccountException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -1685,8 +1677,8 @@ export const disassociateAccounts: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateAccountsRequest,
   output: DisassociateAccountsResponse,
@@ -1723,8 +1715,8 @@ export const startAutomationEvent: (
   | ServiceQuotaExceededException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAutomationEventRequest,
   output: StartAutomationEventResponse,
@@ -1761,8 +1753,8 @@ export const rollbackAutomationEvent: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RollbackAutomationEventRequest,
   output: RollbackAutomationEventResponse,
@@ -1796,8 +1788,8 @@ export const updateAutomationRule: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAutomationRuleRequest,
   output: UpdateAutomationRuleResponse,
@@ -1831,8 +1823,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1866,8 +1858,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1900,8 +1892,8 @@ export const listAutomationEventSteps: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAutomationEventStepsRequest,
@@ -1915,8 +1907,8 @@ export const listAutomationEventSteps: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAutomationEventStepsRequest,
@@ -1930,8 +1922,8 @@ export const listAutomationEventSteps: {
     | ResourceNotFoundException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationEventStepsRequest,
@@ -1968,8 +1960,8 @@ export const getAutomationRule: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAutomationRuleRequest,
   output: GetAutomationRuleResponse,
@@ -1999,8 +1991,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2030,8 +2022,8 @@ export const getEnrollmentConfiguration: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEnrollmentConfigurationRequest,
   output: GetEnrollmentConfigurationResponse,
@@ -2063,8 +2055,8 @@ export const deleteAutomationRule: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAutomationRuleRequest,
   output: DeleteAutomationRuleResponse,
@@ -2099,8 +2091,8 @@ export const updateEnrollmentConfiguration: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEnrollmentConfigurationRequest,
   output: UpdateEnrollmentConfigurationResponse,
@@ -2133,8 +2125,8 @@ export const listAutomationEvents: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAutomationEventsRequest,
@@ -2147,8 +2139,8 @@ export const listAutomationEvents: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAutomationEventsRequest,
@@ -2161,8 +2153,8 @@ export const listAutomationEvents: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationEventsRequest,
@@ -2198,8 +2190,8 @@ export const listAutomationEventSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAutomationEventSummariesRequest,
@@ -2212,8 +2204,8 @@ export const listAutomationEventSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAutomationEventSummariesRequest,
@@ -2226,8 +2218,8 @@ export const listAutomationEventSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationEventSummariesRequest,
@@ -2263,8 +2255,8 @@ export const listAutomationRulePreviewSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAutomationRulePreviewSummariesRequest,
@@ -2277,8 +2269,8 @@ export const listAutomationRulePreviewSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAutomationRulePreviewSummariesRequest,
@@ -2291,8 +2283,8 @@ export const listAutomationRulePreviewSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationRulePreviewSummariesRequest,
@@ -2328,8 +2320,8 @@ export const listAutomationRules: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAutomationRulesRequest,
@@ -2342,8 +2334,8 @@ export const listAutomationRules: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAutomationRulesRequest,
@@ -2356,8 +2348,8 @@ export const listAutomationRules: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationRulesRequest,
@@ -2395,8 +2387,8 @@ export const listRecommendedActions: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecommendedActionsRequest,
@@ -2409,8 +2401,8 @@ export const listRecommendedActions: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRecommendedActionsRequest,
@@ -2423,8 +2415,8 @@ export const listRecommendedActions: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendedActionsRequest,
@@ -2462,8 +2454,8 @@ export const listRecommendedActionSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecommendedActionSummariesRequest,
@@ -2476,8 +2468,8 @@ export const listRecommendedActionSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRecommendedActionSummariesRequest,
@@ -2490,8 +2482,8 @@ export const listRecommendedActionSummaries: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendedActionSummariesRequest,
@@ -2531,8 +2523,8 @@ export const associateAccounts: (
   | OptInRequiredException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateAccountsRequest,
   output: AssociateAccountsResponse,
@@ -2567,8 +2559,8 @@ export const listAccounts: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccountsRequest,
@@ -2582,8 +2574,8 @@ export const listAccounts: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccountsRequest,
@@ -2597,8 +2589,8 @@ export const listAccounts: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccountsRequest,
@@ -2635,8 +2627,8 @@ export const getAutomationEvent: (
   | ResourceNotFoundException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAutomationEventRequest,
   output: GetAutomationEventResponse,
@@ -2666,8 +2658,8 @@ export const listAutomationRulePreview: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAutomationRulePreviewRequest,
@@ -2680,8 +2672,8 @@ export const listAutomationRulePreview: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAutomationRulePreviewRequest,
@@ -2694,8 +2686,8 @@ export const listAutomationRulePreview: {
     | OptInRequiredException
     | ServiceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAutomationRulePreviewRequest,
@@ -2734,8 +2726,8 @@ export const createAutomationRule: (
   | ServiceQuotaExceededException
   | ServiceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAutomationRuleRequest,
   output: CreateAutomationRuleResponse,

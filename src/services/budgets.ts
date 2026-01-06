@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Budgets",
@@ -1653,49 +1651,47 @@ export const DescribeBudgetActionHistoriesResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class CreationLimitExceededException extends S.TaggedError<CreationLimitExceededException>()(
   "CreationLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalErrorException extends S.TaggedError<InternalErrorException>()(
   "InternalErrorException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ExpiredNextTokenException extends S.TaggedError<ExpiredNextTokenException>()(
   "ExpiredNextTokenException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class BillingViewHealthStatusException extends S.TaggedError<BillingViewHealthStatusException>()(
   "BillingViewHealthStatusException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateRecordException extends S.TaggedError<DuplicateRecordException>()(
   "DuplicateRecordException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class ResourceLockedException extends S.TaggedError<ResourceLockedException>()(
   "ResourceLockedException",
   { Message: S.optional(S.String) },
@@ -1715,8 +1711,8 @@ export const describeBudgetActionsForAccount: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBudgetActionsForAccountRequest,
@@ -1727,8 +1723,8 @@ export const describeBudgetActionsForAccount: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBudgetActionsForAccountRequest,
@@ -1739,8 +1735,8 @@ export const describeBudgetActionsForAccount: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBudgetActionsForAccountRequest,
@@ -1774,8 +1770,8 @@ export const describeBudget: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBudgetRequest,
   output: DescribeBudgetResponse,
@@ -1801,8 +1797,8 @@ export const describeBudgetActionHistories: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBudgetActionHistoriesRequest,
@@ -1814,8 +1810,8 @@ export const describeBudgetActionHistories: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBudgetActionHistoriesRequest,
@@ -1827,8 +1823,8 @@ export const describeBudgetActionHistories: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBudgetActionHistoriesRequest,
@@ -1866,8 +1862,8 @@ export const describeBudgets: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBudgetsRequest,
@@ -1880,8 +1876,8 @@ export const describeBudgets: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBudgetsRequest,
@@ -1894,8 +1890,8 @@ export const describeBudgets: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBudgetsRequest,
@@ -1929,8 +1925,8 @@ export const updateNotification: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNotificationRequest,
   output: UpdateNotificationResponse,
@@ -1957,8 +1953,8 @@ export const createNotification: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNotificationRequest,
   output: CreateNotificationResponse,
@@ -1984,8 +1980,8 @@ export const describeBudgetAction: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBudgetActionRequest,
   output: DescribeBudgetActionResponse,
@@ -2009,8 +2005,8 @@ export const listTagsForResource: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2036,8 +2032,8 @@ export const deleteBudget: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBudgetRequest,
   output: DeleteBudgetResponse,
@@ -2063,8 +2059,8 @@ export const deleteNotification: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNotificationRequest,
   output: DeleteNotificationResponse,
@@ -2090,8 +2086,8 @@ export const deleteSubscriber: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSubscriberRequest,
   output: DeleteSubscriberResponse,
@@ -2115,8 +2111,8 @@ export const untagResource: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2141,8 +2137,8 @@ export const updateSubscriber: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSubscriberRequest,
   output: UpdateSubscriberResponse,
@@ -2169,8 +2165,8 @@ export const createSubscriber: (
   | InvalidParameterException
   | NotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSubscriberRequest,
   output: CreateSubscriberResponse,
@@ -2198,8 +2194,8 @@ export const describeBudgetActionsForBudget: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBudgetActionsForBudgetRequest,
@@ -2211,8 +2207,8 @@ export const describeBudgetActionsForBudget: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBudgetActionsForBudgetRequest,
@@ -2224,8 +2220,8 @@ export const describeBudgetActionsForBudget: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBudgetActionsForBudgetRequest,
@@ -2260,8 +2256,8 @@ export const describeNotificationsForBudget: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNotificationsForBudgetRequest,
@@ -2274,8 +2270,8 @@ export const describeNotificationsForBudget: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNotificationsForBudgetRequest,
@@ -2288,8 +2284,8 @@ export const describeNotificationsForBudget: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNotificationsForBudgetRequest,
@@ -2325,8 +2321,8 @@ export const describeSubscribersForNotification: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSubscribersForNotificationRequest,
@@ -2339,8 +2335,8 @@ export const describeSubscribersForNotification: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSubscribersForNotificationRequest,
@@ -2353,8 +2349,8 @@ export const describeSubscribersForNotification: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSubscribersForNotificationRequest,
@@ -2390,8 +2386,8 @@ export const describeBudgetNotificationsForAccount: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBudgetNotificationsForAccountRequest,
@@ -2404,8 +2400,8 @@ export const describeBudgetNotificationsForAccount: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBudgetNotificationsForAccountRequest,
@@ -2418,8 +2414,8 @@ export const describeBudgetNotificationsForAccount: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBudgetNotificationsForAccountRequest,
@@ -2456,8 +2452,8 @@ export const describeBudgetPerformanceHistory: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBudgetPerformanceHistoryRequest,
@@ -2471,8 +2467,8 @@ export const describeBudgetPerformanceHistory: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBudgetPerformanceHistoryRequest,
@@ -2486,8 +2482,8 @@ export const describeBudgetPerformanceHistory: {
     | InvalidParameterException
     | NotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBudgetPerformanceHistoryRequest,
@@ -2534,8 +2530,8 @@ export const updateBudget: (
   | NotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBudgetRequest,
   output: UpdateBudgetResponse,
@@ -2562,8 +2558,8 @@ export const executeBudgetAction: (
   | NotFoundException
   | ResourceLockedException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteBudgetActionRequest,
   output: ExecuteBudgetActionResponse,
@@ -2589,8 +2585,8 @@ export const tagResource: (
   | NotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2631,8 +2627,8 @@ export const createBudget: (
   | NotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBudgetRequest,
   output: CreateBudgetResponse,
@@ -2663,8 +2659,8 @@ export const createBudgetAction: (
   | NotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBudgetActionRequest,
   output: CreateBudgetActionResponse,
@@ -2692,8 +2688,8 @@ export const updateBudgetAction: (
   | NotFoundException
   | ResourceLockedException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBudgetActionRequest,
   output: UpdateBudgetActionResponse,
@@ -2719,8 +2715,8 @@ export const deleteBudgetAction: (
   | NotFoundException
   | ResourceLockedException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBudgetActionRequest,
   output: DeleteBudgetActionResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MediaConvert",
@@ -7181,35 +7179,31 @@ export const CreateJobResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withConflictError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withQuotaError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**
@@ -7226,8 +7220,8 @@ export const deletePolicy: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePolicyRequest,
   output: DeletePolicyResponse,
@@ -7255,8 +7249,8 @@ export const getJob: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobRequest,
   output: GetJobResponse,
@@ -7284,8 +7278,8 @@ export const getQueue: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQueueRequest,
   output: GetQueueResponse,
@@ -7314,8 +7308,8 @@ export const describeEndpoints: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEndpointsRequest,
@@ -7328,8 +7322,8 @@ export const describeEndpoints: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEndpointsRequest,
@@ -7342,8 +7336,8 @@ export const describeEndpoints: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEndpointsRequest,
@@ -7378,8 +7372,8 @@ export const getJobTemplate: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobTemplateRequest,
   output: GetJobTemplateResponse,
@@ -7407,8 +7401,8 @@ export const getPreset: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPresetRequest,
   output: GetPresetResponse,
@@ -7436,8 +7430,8 @@ export const listTagsForResource: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -7466,8 +7460,8 @@ export const listVersions: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVersionsRequest,
@@ -7480,8 +7474,8 @@ export const listVersions: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVersionsRequest,
@@ -7494,8 +7488,8 @@ export const listVersions: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVersionsRequest,
@@ -7530,8 +7524,8 @@ export const startJobsQuery: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartJobsQueryRequest,
   output: StartJobsQueryResponse,
@@ -7559,8 +7553,8 @@ export const getJobsQueryResults: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobsQueryResultsRequest,
   output: GetJobsQueryResultsResponse,
@@ -7588,8 +7582,8 @@ export const getPolicy: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
@@ -7618,8 +7612,8 @@ export const listJobs: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobsRequest,
@@ -7632,8 +7626,8 @@ export const listJobs: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobsRequest,
@@ -7646,8 +7640,8 @@ export const listJobs: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
@@ -7683,8 +7677,8 @@ export const listJobTemplates: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobTemplatesRequest,
@@ -7697,8 +7691,8 @@ export const listJobTemplates: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobTemplatesRequest,
@@ -7711,8 +7705,8 @@ export const listJobTemplates: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobTemplatesRequest,
@@ -7748,8 +7742,8 @@ export const listPresets: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPresetsRequest,
@@ -7762,8 +7756,8 @@ export const listPresets: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPresetsRequest,
@@ -7776,8 +7770,8 @@ export const listPresets: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPresetsRequest,
@@ -7813,8 +7807,8 @@ export const listQueues: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListQueuesRequest,
@@ -7827,8 +7821,8 @@ export const listQueues: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListQueuesRequest,
@@ -7841,8 +7835,8 @@ export const listQueues: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueuesRequest,
@@ -7877,8 +7871,8 @@ export const putPolicy: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPolicyRequest,
   output: PutPolicyResponse,
@@ -7907,8 +7901,8 @@ export const searchJobs: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchJobsRequest,
@@ -7921,8 +7915,8 @@ export const searchJobs: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchJobsRequest,
@@ -7935,8 +7929,8 @@ export const searchJobs: {
     | NotFoundException
     | ServiceQuotaExceededException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchJobsRequest,
@@ -7971,8 +7965,8 @@ export const updateJobTemplate: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateJobTemplateRequest,
   output: UpdateJobTemplateResponse,
@@ -8000,8 +7994,8 @@ export const updatePreset: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePresetRequest,
   output: UpdatePresetResponse,
@@ -8029,8 +8023,8 @@ export const updateQueue: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateQueueRequest,
   output: UpdateQueueResponse,
@@ -8058,8 +8052,8 @@ export const deletePreset: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePresetRequest,
   output: DeletePresetResponse,
@@ -8087,8 +8081,8 @@ export const deleteQueue: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteQueueRequest,
   output: DeleteQueueResponse,
@@ -8116,8 +8110,8 @@ export const disassociateCertificate: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateCertificateRequest,
   output: DisassociateCertificateResponse,
@@ -8145,8 +8139,8 @@ export const tagResource: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -8174,8 +8168,8 @@ export const untagResource: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -8203,8 +8197,8 @@ export const associateCertificate: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateCertificateRequest,
   output: AssociateCertificateResponse,
@@ -8232,8 +8226,8 @@ export const cancelJob: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelJobRequest,
   output: CancelJobResponse,
@@ -8261,8 +8255,8 @@ export const createResourceShare: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceShareRequest,
   output: CreateResourceShareResponse,
@@ -8290,8 +8284,8 @@ export const deleteJobTemplate: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteJobTemplateRequest,
   output: DeleteJobTemplateResponse,
@@ -8319,8 +8313,8 @@ export const createQueue: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateQueueRequest,
   output: CreateQueueResponse,
@@ -8348,8 +8342,8 @@ export const createJobTemplate: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateJobTemplateRequest,
   output: CreateJobTemplateResponse,
@@ -8377,8 +8371,8 @@ export const createPreset: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePresetRequest,
   output: CreatePresetResponse,
@@ -8406,8 +8400,8 @@ export const probe: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProbeRequest,
   output: ProbeResponse,
@@ -8435,8 +8429,8 @@ export const createJob: (
   | NotFoundException
   | ServiceQuotaExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateJobRequest,
   output: CreateJobResponse,

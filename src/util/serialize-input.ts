@@ -6,7 +6,7 @@
  */
 
 import type * as AST from "effect/SchemaAST";
-import type { Request } from "../request.ts";
+import type { Request } from "../client/request.ts";
 import {
   getHttpHeader,
   getHttpLabelName,

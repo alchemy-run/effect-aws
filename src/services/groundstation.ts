@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "GroundStation",
@@ -2429,9 +2427,7 @@ export const CreateEphemerisRequest = S.suspend(() =>
 export class DependencyException extends S.TaggedError<DependencyException>()(
   "DependencyException",
   { message: S.optional(S.String), parameterName: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String), parameterName: S.optional(S.String) },
@@ -2443,17 +2439,15 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   { message: S.optional(S.String), parameterName: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String), parameterName: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -2466,8 +2460,8 @@ export const untagResource: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2489,8 +2483,8 @@ export const registerAgent: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterAgentRequest,
   output: RegisterAgentResponse,
@@ -2512,8 +2506,8 @@ export const updateAgentStatus: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAgentStatusRequest,
   output: UpdateAgentStatusResponse,
@@ -2533,8 +2527,8 @@ export const describeEphemeris: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEphemerisRequest,
   output: DescribeEphemerisResponse,
@@ -2555,8 +2549,8 @@ export const deleteEphemeris: (
   | InvalidParameterException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEphemerisRequest,
   output: EphemerisIdResponse,
@@ -2578,8 +2572,8 @@ export const listConfigs: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConfigsRequest,
@@ -2588,8 +2582,8 @@ export const listConfigs: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConfigsRequest,
@@ -2598,8 +2592,8 @@ export const listConfigs: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConfigsRequest,
@@ -2627,8 +2621,8 @@ export const listDataflowEndpointGroups: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDataflowEndpointGroupsRequest,
@@ -2637,8 +2631,8 @@ export const listDataflowEndpointGroups: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDataflowEndpointGroupsRequest,
@@ -2647,8 +2641,8 @@ export const listDataflowEndpointGroups: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDataflowEndpointGroupsRequest,
@@ -2676,8 +2670,8 @@ export const listEphemerides: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEphemeridesRequest,
@@ -2686,8 +2680,8 @@ export const listEphemerides: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEphemeridesRequest,
@@ -2696,8 +2690,8 @@ export const listEphemerides: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEphemeridesRequest,
@@ -2725,8 +2719,8 @@ export const listGroundStations: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroundStationsRequest,
@@ -2735,8 +2729,8 @@ export const listGroundStations: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroundStationsRequest,
@@ -2745,8 +2739,8 @@ export const listGroundStations: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroundStationsRequest,
@@ -2774,8 +2768,8 @@ export const listMissionProfiles: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMissionProfilesRequest,
@@ -2784,8 +2778,8 @@ export const listMissionProfiles: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMissionProfilesRequest,
@@ -2794,8 +2788,8 @@ export const listMissionProfiles: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMissionProfilesRequest,
@@ -2822,8 +2816,8 @@ export const getSatellite: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSatelliteRequest,
   output: GetSatelliteResponse,
@@ -2844,8 +2838,8 @@ export const listSatellites: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSatellitesRequest,
@@ -2854,8 +2848,8 @@ export const listSatellites: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSatellitesRequest,
@@ -2864,8 +2858,8 @@ export const listSatellites: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSatellitesRequest,
@@ -2894,8 +2888,8 @@ export const getAgentConfiguration: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAgentConfigurationRequest,
   output: GetAgentConfigurationResponse,
@@ -2917,8 +2911,8 @@ export const getConfig: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConfigRequest,
   output: GetConfigResponse,
@@ -2940,8 +2934,8 @@ export const updateConfig: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigRequest,
   output: ConfigIdResponse,
@@ -2961,8 +2955,8 @@ export const cancelContact: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelContactRequest,
   output: ContactIdResponse,
@@ -2982,8 +2976,8 @@ export const getDataflowEndpointGroup: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataflowEndpointGroupRequest,
   output: GetDataflowEndpointGroupResponse,
@@ -3003,8 +2997,8 @@ export const deleteDataflowEndpointGroup: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataflowEndpointGroupRequest,
   output: DataflowEndpointGroupIdResponse,
@@ -3024,8 +3018,8 @@ export const updateEphemeris: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEphemerisRequest,
   output: EphemerisIdResponse,
@@ -3047,8 +3041,8 @@ export const createMissionProfile: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMissionProfileRequest,
   output: MissionProfileIdResponse,
@@ -3068,8 +3062,8 @@ export const getMissionProfile: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMissionProfileRequest,
   output: GetMissionProfileResponse,
@@ -3091,8 +3085,8 @@ export const updateMissionProfile: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMissionProfileRequest,
   output: MissionProfileIdResponse,
@@ -3112,8 +3106,8 @@ export const deleteConfig: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigRequest,
   output: ConfigIdResponse,
@@ -3133,8 +3127,8 @@ export const deleteMissionProfile: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMissionProfileRequest,
   output: MissionProfileIdResponse,
@@ -3156,8 +3150,8 @@ export const getAgentTaskResponseUrl: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAgentTaskResponseUrlRequest,
   output: GetAgentTaskResponseUrlResponse,
@@ -3177,8 +3171,8 @@ export const getMinuteUsage: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMinuteUsageRequest,
   output: GetMinuteUsageResponse,
@@ -3198,8 +3192,8 @@ export const listTagsForResource: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3219,8 +3213,8 @@ export const tagResource: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3241,8 +3235,8 @@ export const reserveContact: (
   | InvalidParameterException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReserveContactRequest,
   output: ContactIdResponse,
@@ -3266,8 +3260,8 @@ export const listContacts: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContactsRequest,
@@ -3276,8 +3270,8 @@ export const listContacts: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContactsRequest,
@@ -3286,8 +3280,8 @@ export const listContacts: {
     | DependencyException
     | InvalidParameterException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContactsRequest,
@@ -3319,8 +3313,8 @@ export const createDataflowEndpointGroupV2: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataflowEndpointGroupV2Request,
   output: CreateDataflowEndpointGroupV2Response,
@@ -3344,8 +3338,8 @@ export const createConfig: (
   | InvalidParameterException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigRequest,
   output: ConfigIdResponse,
@@ -3366,8 +3360,8 @@ export const describeContact: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeContactRequest,
   output: DescribeContactResponse,
@@ -3391,8 +3385,8 @@ export const createDataflowEndpointGroup: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataflowEndpointGroupRequest,
   output: DataflowEndpointGroupIdResponse,
@@ -3412,8 +3406,8 @@ export const createEphemeris: (
   | DependencyException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEphemerisRequest,
   output: EphemerisIdResponse,

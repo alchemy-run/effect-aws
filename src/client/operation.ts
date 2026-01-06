@@ -1,5 +1,5 @@
 import * as S from "effect/Schema";
-import type { PaginatedTrait } from "./traits.ts";
+import type { PaginatedTrait } from "../traits.ts";
 
 export declare namespace Operation {
   export type Input<Op extends Operation> = S.Schema.Type<Op["input"]>;

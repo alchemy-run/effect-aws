@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CodeStar connections",
@@ -1201,79 +1199,71 @@ export const UpdateSyncBlockerOutput = S.suspend(() =>
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceUnavailableException extends S.TaggedError<ResourceUnavailableException>()(
   "ResourceUnavailableException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConditionalCheckFailedException extends S.TaggedError<ConditionalCheckFailedException>()(
   "ConditionalCheckFailedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidInputException extends S.TaggedError<InvalidInputException>()(
   "InvalidInputException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedOperationException extends S.TaggedError<UnsupportedOperationException>()(
   "UnsupportedOperationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class RetryLatestCommitFailedException extends S.TaggedError<RetryLatestCommitFailedException>()(
   "RetryLatestCommitFailedException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class SyncConfigurationStillExistsException extends S.TaggedError<SyncConfigurationStillExistsException>()(
   "SyncConfigurationStillExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class SyncBlockerDoesNotExistException extends S.TaggedError<SyncBlockerDoesNotExistException>()(
   "SyncBlockerDoesNotExistException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedProviderTypeException extends S.TaggedError<UnsupportedProviderTypeException>()(
   "UnsupportedProviderTypeException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UpdateOutOfSyncException extends S.TaggedError<UpdateOutOfSyncException>()(
   "UpdateOutOfSyncException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -1283,8 +1273,8 @@ export const deleteConnection: (
   input: DeleteConnectionInput,
 ) => Effect.Effect<
   DeleteConnectionOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectionInput,
   output: DeleteConnectionOutput,
@@ -1298,22 +1288,22 @@ export const listConnections: {
     input: ListConnectionsInput,
   ): Effect.Effect<
     ListConnectionsOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConnectionsInput,
   ) => Stream.Stream<
     ListConnectionsOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConnectionsInput,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionsInput,
@@ -1332,8 +1322,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceInput,
 ) => Effect.Effect<
   ListTagsForResourceOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1347,8 +1337,8 @@ export const tagResource: (
   input: TagResourceInput,
 ) => Effect.Effect<
   TagResourceOutput,
-  LimitExceededException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1361,8 +1351,8 @@ export const untagResource: (
   input: UntagResourceInput,
 ) => Effect.Effect<
   UntagResourceOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1381,8 +1371,8 @@ export const createHost: (
   input: CreateHostInput,
 ) => Effect.Effect<
   CreateHostOutput,
-  LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHostInput,
   output: CreateHostOutput,
@@ -1396,10 +1386,8 @@ export const getHost: (
   input: GetHostInput,
 ) => Effect.Effect<
   GetHostOutput,
-  | ResourceNotFoundException
-  | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ResourceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHostInput,
   output: GetHostOutput,
@@ -1413,22 +1401,22 @@ export const listHosts: {
     input: ListHostsInput,
   ): Effect.Effect<
     ListHostsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHostsInput,
   ) => Stream.Stream<
     ListHostsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHostsInput,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHostsInput,
@@ -1449,10 +1437,8 @@ export const deleteHost: (
   input: DeleteHostInput,
 ) => Effect.Effect<
   DeleteHostOutput,
-  | ResourceNotFoundException
-  | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ResourceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHostInput,
   output: DeleteHostOutput,
@@ -1470,8 +1456,8 @@ export const createConnection: (
   | LimitExceededException
   | ResourceNotFoundException
   | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectionInput,
   output: CreateConnectionOutput,
@@ -1488,10 +1474,8 @@ export const getConnection: (
   input: GetConnectionInput,
 ) => Effect.Effect<
   GetConnectionOutput,
-  | ResourceNotFoundException
-  | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ResourceUnavailableException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectionInput,
   output: GetConnectionOutput,
@@ -1508,8 +1492,8 @@ export const updateHost: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHostInput,
   output: UpdateHostOutput,
@@ -1532,8 +1516,8 @@ export const getSyncConfiguration: (
   | InvalidInputException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSyncConfigurationInput,
   output: GetSyncConfigurationOutput,
@@ -1559,8 +1543,8 @@ export const createRepositoryLink: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRepositoryLinkInput,
   output: CreateRepositoryLinkOutput,
@@ -1586,8 +1570,8 @@ export const listRepositorySyncDefinitions: (
   | InvalidInputException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRepositorySyncDefinitionsInput,
   output: ListRepositorySyncDefinitionsOutput,
@@ -1613,8 +1597,8 @@ export const getRepositoryLink: (
   | InvalidInputException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRepositoryLinkInput,
   output: GetRepositoryLinkOutput,
@@ -1641,8 +1625,8 @@ export const listRepositoryLinks: {
     | InvalidInputException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRepositoryLinksInput,
@@ -1654,8 +1638,8 @@ export const listRepositoryLinks: {
     | InvalidInputException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRepositoryLinksInput,
@@ -1667,8 +1651,8 @@ export const listRepositoryLinks: {
     | InvalidInputException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRepositoryLinksInput,
@@ -1700,8 +1684,8 @@ export const deleteSyncConfiguration: (
   | InvalidInputException
   | LimitExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSyncConfigurationInput,
   output: DeleteSyncConfigurationOutput,
@@ -1727,8 +1711,8 @@ export const listSyncConfigurations: {
     | InvalidInputException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSyncConfigurationsInput,
@@ -1739,8 +1723,8 @@ export const listSyncConfigurations: {
     | InvalidInputException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSyncConfigurationsInput,
@@ -1751,8 +1735,8 @@ export const listSyncConfigurations: {
     | InvalidInputException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSyncConfigurationsInput,
@@ -1782,8 +1766,8 @@ export const getSyncBlockerSummary: (
   | InvalidInputException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSyncBlockerSummaryInput,
   output: GetSyncBlockerSummaryOutput,
@@ -1808,8 +1792,8 @@ export const getRepositorySyncStatus: (
   | InvalidInputException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRepositorySyncStatusInput,
   output: GetRepositorySyncStatusOutput,
@@ -1834,8 +1818,8 @@ export const getResourceSyncStatus: (
   | InvalidInputException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceSyncStatusInput,
   output: GetResourceSyncStatusOutput,
@@ -1863,8 +1847,8 @@ export const createSyncConfiguration: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSyncConfigurationInput,
   output: CreateSyncConfigurationOutput,
@@ -1892,8 +1876,8 @@ export const updateSyncBlocker: (
   | RetryLatestCommitFailedException
   | SyncBlockerDoesNotExistException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSyncBlockerInput,
   output: UpdateSyncBlockerOutput,
@@ -1922,8 +1906,8 @@ export const deleteRepositoryLink: (
   | SyncConfigurationStillExistsException
   | ThrottlingException
   | UnsupportedProviderTypeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRepositoryLinkInput,
   output: DeleteRepositoryLinkOutput,
@@ -1954,8 +1938,8 @@ export const updateRepositoryLink: (
   | ResourceNotFoundException
   | ThrottlingException
   | UpdateOutOfSyncException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRepositoryLinkInput,
   output: UpdateRepositoryLinkOutput,
@@ -1983,8 +1967,8 @@ export const updateSyncConfiguration: (
   | ResourceNotFoundException
   | ThrottlingException
   | UpdateOutOfSyncException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSyncConfigurationInput,
   output: UpdateSyncConfigurationOutput,

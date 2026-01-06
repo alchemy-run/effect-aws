@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://kinesis.amazonaws.com/doc/2013-12-02");
 const svc = T.AwsApiService({
@@ -3291,8 +3289,8 @@ export const describeLimits: (
   input: DescribeLimitsInput,
 ) => Effect.Effect<
   DescribeLimitsOutput,
-  LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLimitsInput,
   output: DescribeLimitsOutput,
@@ -3307,8 +3305,8 @@ export const describeAccountSettings: (
   input: DescribeAccountSettingsInput,
 ) => Effect.Effect<
   DescribeAccountSettingsOutput,
-  LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountSettingsInput,
   output: DescribeAccountSettingsOutput,
@@ -3330,8 +3328,8 @@ export const listTagsForStream: (
   | InvalidArgumentException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForStreamInput,
   output: ListTagsForStreamOutput,
@@ -3358,8 +3356,8 @@ export const getResourcePolicy: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyInput,
   output: GetResourcePolicyOutput,
@@ -3400,8 +3398,8 @@ export const registerStreamConsumer: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterStreamConsumerInput,
   output: RegisterStreamConsumerOutput,
@@ -3428,8 +3426,8 @@ export const deleteResourcePolicy: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyInput,
   output: DeleteResourcePolicyResponse,
@@ -3478,8 +3476,8 @@ export const deleteStream: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStreamInput,
   output: DeleteStreamResponse,
@@ -3507,8 +3505,8 @@ export const enableEnhancedMonitoring: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableEnhancedMonitoringInput,
   output: EnhancedMonitoringOutput,
@@ -3545,8 +3543,8 @@ export const increaseStreamRetentionPeriod: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IncreaseStreamRetentionPeriodInput,
   output: IncreaseStreamRetentionPeriodResponse,
@@ -3582,8 +3580,8 @@ export const putResourcePolicy: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyInput,
   output: PutResourcePolicyResponse,
@@ -3617,8 +3615,8 @@ export const removeTagsFromStream: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromStreamInput,
   output: RemoveTagsFromStreamResponse,
@@ -3663,8 +3661,8 @@ export const stopStreamEncryption: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopStreamEncryptionInput,
   output: StopStreamEncryptionResponse,
@@ -3688,8 +3686,8 @@ export const tagResource: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -3713,8 +3711,8 @@ export const untagResource: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -3749,8 +3747,8 @@ export const addTagsToStream: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToStreamInput,
   output: AddTagsToStreamResponse,
@@ -3784,8 +3782,8 @@ export const decreaseStreamRetentionPeriod: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DecreaseStreamRetentionPeriodInput,
   output: DecreaseStreamRetentionPeriodResponse,
@@ -3815,8 +3813,8 @@ export const deregisterStreamConsumer: (
   | InvalidArgumentException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterStreamConsumerInput,
   output: DeregisterStreamConsumerResponse,
@@ -3846,8 +3844,8 @@ export const describeStreamConsumer: (
   | InvalidArgumentException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStreamConsumerInput,
   output: DescribeStreamConsumerOutput,
@@ -3880,8 +3878,8 @@ export const describeStreamSummary: (
   | InvalidArgumentException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStreamSummaryInput,
   output: DescribeStreamSummaryOutput,
@@ -3908,8 +3906,8 @@ export const disableEnhancedMonitoring: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableEnhancedMonitoringInput,
   output: EnhancedMonitoringOutput,
@@ -3935,8 +3933,8 @@ export const listTagsForResource: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -4002,8 +4000,8 @@ export const getShardIterator: (
   | InvalidArgumentException
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetShardIteratorInput,
   output: GetShardIteratorOutput,
@@ -4042,8 +4040,8 @@ export const listShards: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListShardsInput,
   output: ListShardsOutput,
@@ -4074,8 +4072,8 @@ export const updateAccountSettings: (
   | InvalidArgumentException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountSettingsInput,
   output: UpdateAccountSettingsOutput,
@@ -4101,8 +4099,8 @@ export const listStreamConsumers: {
     | LimitExceededException
     | ResourceInUseException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamConsumersInput,
@@ -4113,8 +4111,8 @@ export const listStreamConsumers: {
     | LimitExceededException
     | ResourceInUseException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamConsumersInput,
@@ -4125,8 +4123,8 @@ export const listStreamConsumers: {
     | LimitExceededException
     | ResourceInUseException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamConsumersInput,
@@ -4172,8 +4170,8 @@ export const listStreams: {
     | ExpiredNextTokenException
     | InvalidArgumentException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamsInput,
@@ -4182,8 +4180,8 @@ export const listStreams: {
     | ExpiredNextTokenException
     | InvalidArgumentException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamsInput,
@@ -4192,8 +4190,8 @@ export const listStreams: {
     | ExpiredNextTokenException
     | InvalidArgumentException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamsInput,
@@ -4237,8 +4235,8 @@ export const updateStreamWarmThroughput: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStreamWarmThroughputInput,
   output: UpdateStreamWarmThroughputOutput,
@@ -4310,8 +4308,8 @@ export const updateShardCount: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateShardCountInput,
   output: UpdateShardCountOutput,
@@ -4381,8 +4379,8 @@ export const mergeShards: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MergeShardsInput,
   output: MergeShardsResponse,
@@ -4458,8 +4456,8 @@ export const splitShard: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SplitShardInput,
   output: SplitShardResponse,
@@ -4485,8 +4483,8 @@ export const updateMaxRecordSize: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMaxRecordSizeInput,
   output: UpdateMaxRecordSizeResponse,
@@ -4515,8 +4513,8 @@ export const updateStreamMode: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStreamModeInput,
   output: UpdateStreamModeResponse,
@@ -4577,8 +4575,8 @@ export const createStream: (
   | LimitExceededException
   | ResourceInUseException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStreamInput,
   output: CreateStreamResponse,
@@ -4652,8 +4650,8 @@ export const putRecord: (
   | KMSThrottlingException
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRecordInput,
   output: PutRecordOutput,
@@ -4757,8 +4755,8 @@ export const putRecords: (
   | KMSThrottlingException
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRecordsInput,
   output: PutRecordsOutput,
@@ -4816,8 +4814,8 @@ export const startStreamEncryption: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartStreamEncryptionInput,
   output: StartStreamEncryptionResponse,
@@ -4872,8 +4870,8 @@ export const describeStream: (
   | InvalidArgumentException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStreamInput,
   output: DescribeStreamOutput,
@@ -4961,8 +4959,8 @@ export const getRecords: (
   | KMSThrottlingException
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRecordsInput,
   output: GetRecordsOutput,
@@ -5019,8 +5017,8 @@ export const subscribeToShard: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubscribeToShardInput,
   output: SubscribeToShardOutput,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "TaxSettings",
@@ -1549,21 +1547,19 @@ export const BatchPutTaxRegistrationResponse = S.suspend(() =>
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: SensitiveString, errorCode: S.String },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: SensitiveString, errorCode: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: SensitiveString, errorCode: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: SensitiveString },
-) {}
+).pipe(C.withAuthError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -1571,15 +1567,15 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     errorCode: S.String,
     fieldList: S.optional(ValidationExceptionFieldList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AttachmentUploadException extends S.TaggedError<AttachmentUploadException>()(
   "AttachmentUploadException",
   { message: SensitiveString },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CaseCreationLimitExceededException extends S.TaggedError<CaseCreationLimitExceededException>()(
   "CaseCreationLimitExceededException",
   { message: SensitiveString },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1725,8 +1721,8 @@ export const putTaxRegistration: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTaxRegistrationRequest,
   output: PutTaxRegistrationResponse,
@@ -1745,8 +1741,8 @@ export const batchDeleteTaxRegistration: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteTaxRegistrationRequest,
   output: BatchDeleteTaxRegistrationResponse,
@@ -1762,8 +1758,8 @@ export const getTaxInheritance: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTaxInheritanceRequest,
   output: GetTaxInheritanceResponse,
@@ -1781,8 +1777,8 @@ export const getTaxRegistrationDocument: (
   input: GetTaxRegistrationDocumentRequest,
 ) => Effect.Effect<
   GetTaxRegistrationDocumentResponse,
-  InternalServerException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTaxRegistrationDocumentRequest,
   output: GetTaxRegistrationDocumentResponse,
@@ -1799,8 +1795,8 @@ export const listSupplementalTaxRegistrations: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSupplementalTaxRegistrationsRequest,
@@ -1809,8 +1805,8 @@ export const listSupplementalTaxRegistrations: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSupplementalTaxRegistrationsRequest,
@@ -1819,8 +1815,8 @@ export const listSupplementalTaxRegistrations: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSupplementalTaxRegistrationsRequest,
@@ -1847,8 +1843,8 @@ export const putSupplementalTaxRegistration: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSupplementalTaxRegistrationRequest,
   output: PutSupplementalTaxRegistrationResponse,
@@ -1865,8 +1861,8 @@ export const listTaxExemptions: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTaxExemptionsRequest,
@@ -1875,8 +1871,8 @@ export const listTaxExemptions: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTaxExemptionsRequest,
@@ -1885,8 +1881,8 @@ export const listTaxExemptions: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTaxExemptionsRequest,
@@ -1916,8 +1912,8 @@ export const deleteTaxRegistration: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTaxRegistrationRequest,
   output: DeleteTaxRegistrationResponse,
@@ -1939,8 +1935,8 @@ export const putTaxInheritance: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTaxInheritanceRequest,
   output: PutTaxInheritanceResponse,
@@ -1962,8 +1958,8 @@ export const deleteSupplementalTaxRegistration: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSupplementalTaxRegistrationRequest,
   output: DeleteSupplementalTaxRegistrationResponse,
@@ -1984,8 +1980,8 @@ export const getTaxExemptionTypes: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTaxExemptionTypesRequest,
   output: GetTaxExemptionTypesResponse,
@@ -2005,8 +2001,8 @@ export const batchGetTaxExemptions: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetTaxExemptionsRequest,
   output: BatchGetTaxExemptionsResponse,
@@ -2026,8 +2022,8 @@ export const getTaxRegistration: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTaxRegistrationRequest,
   output: GetTaxRegistrationResponse,
@@ -2049,8 +2045,8 @@ export const listTaxRegistrations: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTaxRegistrationsRequest,
@@ -2059,8 +2055,8 @@ export const listTaxRegistrations: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTaxRegistrationsRequest,
@@ -2069,8 +2065,8 @@ export const listTaxRegistrations: {
     | InternalServerException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTaxRegistrationsRequest,
@@ -2100,8 +2096,8 @@ export const putTaxExemption: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTaxExemptionRequest,
   output: PutTaxExemptionResponse,
@@ -2258,8 +2254,8 @@ export const batchPutTaxRegistration: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchPutTaxRegistrationRequest,
   output: BatchPutTaxRegistrationResponse,

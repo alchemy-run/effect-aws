@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Transcribe",
@@ -2775,27 +2773,23 @@ export const GetCallAnalyticsJobResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalFailureException extends S.TaggedError<InternalFailureException>()(
   "InternalFailureException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2851,8 +2845,8 @@ export const startCallAnalyticsJob: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCallAnalyticsJobRequest,
   output: StartCallAnalyticsJobResponse,
@@ -2905,8 +2899,8 @@ export const startMedicalScribeJob: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMedicalScribeJobRequest,
   output: StartMedicalScribeJobResponse,
@@ -2955,8 +2949,8 @@ export const startTranscriptionJob: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTranscriptionJobRequest,
   output: StartTranscriptionJobResponse,
@@ -2981,8 +2975,8 @@ export const listCallAnalyticsJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCallAnalyticsJobsRequest,
@@ -2991,8 +2985,8 @@ export const listCallAnalyticsJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCallAnalyticsJobsRequest,
@@ -3001,8 +2995,8 @@ export const listCallAnalyticsJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCallAnalyticsJobsRequest,
@@ -3032,8 +3026,8 @@ export const listMedicalScribeJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMedicalScribeJobsRequest,
@@ -3042,8 +3036,8 @@ export const listMedicalScribeJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMedicalScribeJobsRequest,
@@ -3052,8 +3046,8 @@ export const listMedicalScribeJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMedicalScribeJobsRequest,
@@ -3083,8 +3077,8 @@ export const listMedicalTranscriptionJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMedicalTranscriptionJobsRequest,
@@ -3093,8 +3087,8 @@ export const listMedicalTranscriptionJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMedicalTranscriptionJobsRequest,
@@ -3103,8 +3097,8 @@ export const listMedicalTranscriptionJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMedicalTranscriptionJobsRequest,
@@ -3134,8 +3128,8 @@ export const listMedicalVocabularies: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMedicalVocabulariesRequest,
@@ -3144,8 +3138,8 @@ export const listMedicalVocabularies: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMedicalVocabulariesRequest,
@@ -3154,8 +3148,8 @@ export const listMedicalVocabularies: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMedicalVocabulariesRequest,
@@ -3185,8 +3179,8 @@ export const listTranscriptionJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTranscriptionJobsRequest,
@@ -3195,8 +3189,8 @@ export const listTranscriptionJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTranscriptionJobsRequest,
@@ -3205,8 +3199,8 @@ export const listTranscriptionJobs: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTranscriptionJobsRequest,
@@ -3236,8 +3230,8 @@ export const listVocabularyFilters: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVocabularyFiltersRequest,
@@ -3246,8 +3240,8 @@ export const listVocabularyFilters: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVocabularyFiltersRequest,
@@ -3256,8 +3250,8 @@ export const listVocabularyFilters: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVocabularyFiltersRequest,
@@ -3287,8 +3281,8 @@ export const listCallAnalyticsCategories: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCallAnalyticsCategoriesRequest,
@@ -3297,8 +3291,8 @@ export const listCallAnalyticsCategories: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCallAnalyticsCategoriesRequest,
@@ -3307,8 +3301,8 @@ export const listCallAnalyticsCategories: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCallAnalyticsCategoriesRequest,
@@ -3338,8 +3332,8 @@ export const listLanguageModels: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLanguageModelsRequest,
@@ -3348,8 +3342,8 @@ export const listLanguageModels: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLanguageModelsRequest,
@@ -3358,8 +3352,8 @@ export const listLanguageModels: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLanguageModelsRequest,
@@ -3389,8 +3383,8 @@ export const listVocabularies: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVocabulariesRequest,
@@ -3399,8 +3393,8 @@ export const listVocabularies: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVocabulariesRequest,
@@ -3409,8 +3403,8 @@ export const listVocabularies: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVocabulariesRequest,
@@ -3438,8 +3432,8 @@ export const deleteCallAnalyticsJob: (
   | BadRequestException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCallAnalyticsJobRequest,
   output: DeleteCallAnalyticsJobResponse,
@@ -3461,8 +3455,8 @@ export const deleteLanguageModel: (
   | BadRequestException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLanguageModelRequest,
   output: DeleteLanguageModelResponse,
@@ -3484,8 +3478,8 @@ export const deleteMedicalScribeJob: (
   | BadRequestException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMedicalScribeJobRequest,
   output: DeleteMedicalScribeJobResponse,
@@ -3507,8 +3501,8 @@ export const deleteMedicalTranscriptionJob: (
   | BadRequestException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMedicalTranscriptionJobRequest,
   output: DeleteMedicalTranscriptionJobResponse,
@@ -3530,8 +3524,8 @@ export const deleteTranscriptionJob: (
   | BadRequestException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTranscriptionJobRequest,
   output: DeleteTranscriptionJobResponse,
@@ -3567,8 +3561,8 @@ export const createMedicalVocabulary: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMedicalVocabularyRequest,
   output: CreateMedicalVocabularyResponse,
@@ -3603,8 +3597,8 @@ export const createVocabulary: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVocabularyRequest,
   output: CreateVocabularyResponse,
@@ -3638,8 +3632,8 @@ export const createVocabularyFilter: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVocabularyFilterRequest,
   output: CreateVocabularyFilterResponse,
@@ -3672,8 +3666,8 @@ export const createLanguageModel: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLanguageModelRequest,
   output: CreateLanguageModelResponse,
@@ -3730,8 +3724,8 @@ export const startMedicalTranscriptionJob: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMedicalTranscriptionJobRequest,
   output: StartMedicalTranscriptionJobResponse,
@@ -3773,8 +3767,8 @@ export const createCallAnalyticsCategory: (
   | ConflictException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCallAnalyticsCategoryRequest,
   output: CreateCallAnalyticsCategoryResponse,
@@ -3798,8 +3792,8 @@ export const deleteCallAnalyticsCategory: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCallAnalyticsCategoryRequest,
   output: DeleteCallAnalyticsCategoryResponse,
@@ -3836,8 +3830,8 @@ export const getCallAnalyticsJob: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCallAnalyticsJobRequest,
   output: GetCallAnalyticsJobResponse,
@@ -3868,8 +3862,8 @@ export const getMedicalScribeJob: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMedicalScribeJobRequest,
   output: GetMedicalScribeJobResponse,
@@ -3900,8 +3894,8 @@ export const getMedicalTranscriptionJob: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMedicalTranscriptionJobRequest,
   output: GetMedicalTranscriptionJobResponse,
@@ -3935,8 +3929,8 @@ export const getTranscriptionJob: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTranscriptionJobRequest,
   output: GetTranscriptionJobResponse,
@@ -3966,8 +3960,8 @@ export const describeLanguageModel: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLanguageModelRequest,
   output: DescribeLanguageModelResponse,
@@ -3991,8 +3985,8 @@ export const getCallAnalyticsCategory: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCallAnalyticsCategoryRequest,
   output: GetCallAnalyticsCategoryResponse,
@@ -4020,8 +4014,8 @@ export const updateCallAnalyticsCategory: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCallAnalyticsCategoryRequest,
   output: UpdateCallAnalyticsCategoryResponse,
@@ -4051,8 +4045,8 @@ export const getMedicalVocabulary: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMedicalVocabularyRequest,
   output: GetMedicalVocabularyResponse,
@@ -4082,8 +4076,8 @@ export const getVocabulary: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVocabularyRequest,
   output: GetVocabularyResponse,
@@ -4107,8 +4101,8 @@ export const getVocabularyFilter: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVocabularyFilterRequest,
   output: GetVocabularyFilterResponse,
@@ -4134,8 +4128,8 @@ export const listTagsForResource: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4159,8 +4153,8 @@ export const updateVocabularyFilter: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVocabularyFilterRequest,
   output: UpdateVocabularyFilterResponse,
@@ -4184,8 +4178,8 @@ export const deleteMedicalVocabulary: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMedicalVocabularyRequest,
   output: DeleteMedicalVocabularyResponse,
@@ -4209,8 +4203,8 @@ export const deleteVocabulary: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVocabularyRequest,
   output: DeleteVocabularyResponse,
@@ -4234,8 +4228,8 @@ export const deleteVocabularyFilter: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVocabularyFilterRequest,
   output: DeleteVocabularyFilterResponse,
@@ -4260,8 +4254,8 @@ export const updateMedicalVocabulary: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMedicalVocabularyRequest,
   output: UpdateMedicalVocabularyResponse,
@@ -4287,8 +4281,8 @@ export const updateVocabulary: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVocabularyRequest,
   output: UpdateVocabularyResponse,
@@ -4316,8 +4310,8 @@ export const tagResource: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4344,8 +4338,8 @@ export const untagResource: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,

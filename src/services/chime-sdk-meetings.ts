@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Meetings",
@@ -1047,7 +1045,7 @@ export class BadRequestException extends S.TaggedError<BadRequestException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   {
@@ -1055,7 +1053,7 @@ export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
@@ -1063,7 +1061,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   {
@@ -1071,7 +1069,7 @@ export class NotFoundException extends S.TaggedError<NotFoundException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   {
@@ -1079,7 +1077,7 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceFailureException extends S.TaggedError<ServiceFailureException>()(
   "ServiceFailureException",
   {
@@ -1087,9 +1085,7 @@ export class ServiceFailureException extends S.TaggedError<ServiceFailureExcepti
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -1098,7 +1094,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     RequestId: S.optional(S.String),
     ResourceName: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   {
@@ -1107,9 +1103,7 @@ export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailabl
     RequestId: S.optional(S.String),
     RetryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {
@@ -1117,9 +1111,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   {
@@ -1127,7 +1119,7 @@ export class UnauthorizedException extends S.TaggedError<UnauthorizedException>(
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   {
@@ -1136,7 +1128,7 @@ export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
     RequestId: S.optional(S.String),
     ResourceName: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnprocessableEntityException extends S.TaggedError<UnprocessableEntityException>()(
   "UnprocessableEntityException",
   {
@@ -1144,7 +1136,7 @@ export class UnprocessableEntityException extends S.TaggedError<UnprocessableEnt
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1164,8 +1156,8 @@ export const deleteAttendee: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAttendeeRequest,
   output: DeleteAttendeeResponse,
@@ -1195,8 +1187,8 @@ export const tagResource: (
   | ThrottlingException
   | TooManyTagsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1256,8 +1248,8 @@ export const updateAttendeeCapabilities: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAttendeeCapabilitiesRequest,
   output: UpdateAttendeeCapabilitiesResponse,
@@ -1288,8 +1280,8 @@ export const getAttendee: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAttendeeRequest,
   output: GetAttendeeResponse,
@@ -1319,8 +1311,8 @@ export const getMeeting: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMeetingRequest,
   output: GetMeetingResponse,
@@ -1351,8 +1343,8 @@ export const listAttendees: {
     | ServiceUnavailableException
     | ThrottlingException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAttendeesRequest,
@@ -1365,8 +1357,8 @@ export const listAttendees: {
     | ServiceUnavailableException
     | ThrottlingException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAttendeesRequest,
@@ -1379,8 +1371,8 @@ export const listAttendees: {
     | ServiceUnavailableException
     | ThrottlingException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAttendeesRequest,
@@ -1417,8 +1409,8 @@ export const deleteMeeting: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMeetingRequest,
   output: DeleteMeetingResponse,
@@ -1476,8 +1468,8 @@ export const batchUpdateAttendeeCapabilitiesExcept: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateAttendeeCapabilitiesExceptRequest,
   output: BatchUpdateAttendeeCapabilitiesExceptResponse,
@@ -1520,8 +1512,8 @@ export const createMeeting: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMeetingRequest,
   output: CreateMeetingResponse,
@@ -1564,8 +1556,8 @@ export const createMeetingWithAttendees: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMeetingWithAttendeesRequest,
   output: CreateMeetingWithAttendeesResponse,
@@ -1595,8 +1587,8 @@ export const listTagsForResource: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1641,8 +1633,8 @@ export const untagResource: (
   | ServiceUnavailableException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1687,8 +1679,8 @@ export const startMeetingTranscription: (
   | ThrottlingException
   | UnauthorizedException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMeetingTranscriptionRequest,
   output: StartMeetingTranscriptionResponse,
@@ -1728,8 +1720,8 @@ export const stopMeetingTranscription: (
   | ThrottlingException
   | UnauthorizedException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopMeetingTranscriptionRequest,
   output: StopMeetingTranscriptionResponse,
@@ -1761,8 +1753,8 @@ export const batchCreateAttendee: (
   | ThrottlingException
   | UnauthorizedException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateAttendeeRequest,
   output: BatchCreateAttendeeResponse,
@@ -1797,8 +1789,8 @@ export const createAttendee: (
   | ThrottlingException
   | UnauthorizedException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAttendeeRequest,
   output: CreateAttendeeResponse,

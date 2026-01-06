@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://firehose.amazonaws.com/doc/2015-08-04");
 const svc = T.AwsApiService({
@@ -2806,9 +2804,7 @@ export class InvalidSourceException extends S.TaggedError<InvalidSourceException
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 
 //# Operations
 /**
@@ -2826,8 +2822,8 @@ export const listDeliveryStreams: (
   input: ListDeliveryStreamsInput,
 ) => Effect.Effect<
   ListDeliveryStreamsOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDeliveryStreamsInput,
   output: ListDeliveryStreamsOutput,
@@ -2855,8 +2851,8 @@ export const deleteDeliveryStream: (
   input: DeleteDeliveryStreamInput,
 ) => Effect.Effect<
   DeleteDeliveryStreamOutput,
-  ResourceInUseException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUseException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeliveryStreamInput,
   output: DeleteDeliveryStreamOutput,
@@ -2900,8 +2896,8 @@ export const updateDestination: (
   | InvalidArgumentException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDestinationInput,
   output: UpdateDestinationOutput,
@@ -2945,8 +2941,8 @@ export const stopDeliveryStreamEncryption: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDeliveryStreamEncryptionInput,
   output: StopDeliveryStreamEncryptionOutput,
@@ -2979,8 +2975,8 @@ export const tagDeliveryStream: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagDeliveryStreamInput,
   output: TagDeliveryStreamOutput,
@@ -3007,8 +3003,8 @@ export const untagDeliveryStream: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagDeliveryStreamInput,
   output: UntagDeliveryStreamOutput,
@@ -3030,8 +3026,8 @@ export const listTagsForDeliveryStream: (
   | InvalidArgumentException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForDeliveryStreamInput,
   output: ListTagsForDeliveryStreamOutput,
@@ -3098,8 +3094,8 @@ export const startDeliveryStreamEncryption: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDeliveryStreamEncryptionInput,
   output: StartDeliveryStreamEncryptionOutput,
@@ -3171,8 +3167,8 @@ export const putRecord: (
   | InvalidSourceException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRecordInput,
   output: PutRecordOutput,
@@ -3265,8 +3261,8 @@ export const putRecordBatch: (
   | InvalidSourceException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRecordBatchInput,
   output: PutRecordBatchOutput,
@@ -3292,8 +3288,8 @@ export const describeDeliveryStream: (
   input: DescribeDeliveryStreamInput,
 ) => Effect.Effect<
   DescribeDeliveryStreamOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDeliveryStreamInput,
   output: DescribeDeliveryStreamOutput,
@@ -3380,8 +3376,8 @@ export const createDeliveryStream: (
   | InvalidKMSResourceException
   | LimitExceededException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeliveryStreamInput,
   output: CreateDeliveryStreamOutput,

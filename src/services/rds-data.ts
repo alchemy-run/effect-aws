@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "RDS Data",
@@ -723,77 +721,71 @@ export const ExecuteSqlResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DatabaseErrorException extends S.TaggedError<DatabaseErrorException>()(
   "DatabaseErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DatabaseNotFoundException extends S.TaggedError<DatabaseNotFoundException>()(
   "DatabaseNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DatabaseUnavailableException extends S.TaggedError<DatabaseUnavailableException>()(
   "DatabaseUnavailableException",
   {},
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withTimeoutError) {}
 export class DatabaseResumingException extends S.TaggedError<DatabaseResumingException>()(
   "DatabaseResumingException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   {},
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ServiceUnavailableError extends S.TaggedError<ServiceUnavailableError>()(
   "ServiceUnavailableError",
   {},
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class HttpEndpointNotEnabledException extends S.TaggedError<HttpEndpointNotEnabledException>()(
   "HttpEndpointNotEnabledException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidResourceStateException extends S.TaggedError<InvalidResourceStateException>()(
   "InvalidResourceStateException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSecretException extends S.TaggedError<InvalidSecretException>()(
   "InvalidSecretException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SecretsErrorException extends S.TaggedError<SecretsErrorException>()(
   "SecretsErrorException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class StatementTimeoutException extends S.TaggedError<StatementTimeoutException>()(
   "StatementTimeoutException",
   { message: S.optional(S.String), dbConnectionId: S.optional(S.Number) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TransactionNotFoundException extends S.TaggedError<TransactionNotFoundException>()(
   "TransactionNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedResultException extends S.TaggedError<UnsupportedResultException>()(
   "UnsupportedResultException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -812,8 +804,8 @@ export const executeSql: (
   | ForbiddenException
   | InternalServerErrorException
   | ServiceUnavailableError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteSqlRequest,
   output: ExecuteSqlResponse,
@@ -847,8 +839,8 @@ export const rollbackTransaction: (
   | ServiceUnavailableError
   | StatementTimeoutException
   | TransactionNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RollbackTransactionRequest,
   output: RollbackTransactionResponse,
@@ -907,8 +899,8 @@ export const batchExecuteStatement: (
   | ServiceUnavailableError
   | StatementTimeoutException
   | TransactionNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchExecuteStatementRequest,
   output: BatchExecuteStatementResponse,
@@ -961,8 +953,8 @@ export const beginTransaction: (
   | ServiceUnavailableError
   | StatementTimeoutException
   | TransactionNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BeginTransactionRequest,
   output: BeginTransactionResponse,
@@ -1007,8 +999,8 @@ export const commitTransaction: (
   | ServiceUnavailableError
   | StatementTimeoutException
   | TransactionNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CommitTransactionRequest,
   output: CommitTransactionResponse,
@@ -1059,8 +1051,8 @@ export const executeStatement: (
   | StatementTimeoutException
   | TransactionNotFoundException
   | UnsupportedResultException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteStatementRequest,
   output: ExecuteStatementResponse,

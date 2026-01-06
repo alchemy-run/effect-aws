@@ -20,12 +20,12 @@
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as AST from "effect/SchemaAST";
-import { ParseError } from "../error-parser.ts";
+import type { Operation } from "../client/operation.ts";
+import type { Protocol, ProtocolHandler } from "../client/protocol.ts";
+import type { Request } from "../client/request.ts";
+import type { Response } from "../client/response.ts";
+import { ParseError } from "../errors.ts";
 import { parseEventStreamToUnion } from "../eventstream/parser.ts";
-import type { Operation } from "../operation.ts";
-import type { Protocol, ProtocolHandler } from "../protocol.ts";
-import type { Request } from "../request.ts";
-import type { Response } from "../response.ts";
 import {
   getAwsApiService,
   isOutputEventStream,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "https://license-manager.amazonaws.com/doc/2018_08_01",
@@ -3485,21 +3483,21 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ServiceAccessDenied", httpResponseCode: 401 }),
-) {}
+).pipe(C.withAuthError) {}
 export class AuthorizationException extends S.TaggedError<AuthorizationException>()(
   "AuthorizationException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AuthorizationFailure", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConflictException", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class EntitlementNotAllowedException extends S.TaggedError<EntitlementNotAllowedException>()(
   "EntitlementNotAllowedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { Message: S.optional(S.String) },
@@ -3507,19 +3505,17 @@ export class InvalidParameterValueException extends S.TaggedError<InvalidParamet
     code: "InvalidParameterValueProvided",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class FilterLimitExceededException extends S.TaggedError<FilterLimitExceededException>()(
   "FilterLimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "FilterLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RateLimitExceededException extends S.TaggedError<RateLimitExceededException>()(
   "RateLimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "RateLimitExceeded", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class FailedDependencyException extends S.TaggedError<FailedDependencyException>()(
   "FailedDependencyException",
   { Message: S.optional(S.String), ErrorCode: S.optional(S.String) },
@@ -3529,9 +3525,7 @@ export class ServerInternalException extends S.TaggedError<ServerInternalExcepti
   "ServerInternalException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InternalError", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class RedirectException extends S.TaggedError<RedirectException>()(
   "RedirectException",
   {
@@ -3543,25 +3537,25 @@ export class InvalidResourceStateException extends S.TaggedError<InvalidResource
   "InvalidResourceStateException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidResourceState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoEntitlementsAllowedException extends S.TaggedError<NoEntitlementsAllowedException>()(
   "NoEntitlementsAllowedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidResource.NotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LicenseUsageException extends S.TaggedError<LicenseUsageException>()(
   "LicenseUsageException",
   { Message: S.optional(S.String) },
@@ -3570,7 +3564,7 @@ export class LicenseUsageException extends S.TaggedError<LicenseUsageException>(
 export class UnsupportedDigitalSignatureMethodException extends S.TaggedError<UnsupportedDigitalSignatureMethodException>()(
   "UnsupportedDigitalSignatureMethodException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3587,8 +3581,8 @@ export const updateLicenseConfiguration: (
   | RateLimitExceededException
   | ResourceLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLicenseConfigurationRequest,
   output: UpdateLicenseConfigurationResponse,
@@ -3614,8 +3608,8 @@ export const getLicenseConfiguration: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLicenseConfigurationRequest,
   output: GetLicenseConfigurationResponse,
@@ -3639,8 +3633,8 @@ export const listFailuresForLicenseConfigurationOperations: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListFailuresForLicenseConfigurationOperationsRequest,
   output: ListFailuresForLicenseConfigurationOperationsResponse,
@@ -3664,8 +3658,8 @@ export const listLicenseConversionTasks: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicenseConversionTasksRequest,
   output: ListLicenseConversionTasksResponse,
@@ -3689,8 +3683,8 @@ export const getLicenseConversionTask: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLicenseConversionTaskRequest,
   output: GetLicenseConversionTaskResponse,
@@ -3714,8 +3708,8 @@ export const listLicenseSpecificationsForResource: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicenseSpecificationsForResourceRequest,
   output: ListLicenseSpecificationsForResourceResponse,
@@ -3739,8 +3733,8 @@ export const listLicenseVersions: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicenseVersionsRequest,
   output: ListLicenseVersionsResponse,
@@ -3766,8 +3760,8 @@ export const deleteLicenseConfiguration: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLicenseConfigurationRequest,
   output: DeleteLicenseConfigurationResponse,
@@ -3792,8 +3786,8 @@ export const listLicenseConfigurations: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicenseConfigurationsRequest,
   output: ListLicenseConfigurationsResponse,
@@ -3821,8 +3815,8 @@ export const listUsageForLicenseConfiguration: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListUsageForLicenseConfigurationRequest,
   output: ListUsageForLicenseConfigurationResponse,
@@ -3848,8 +3842,8 @@ export const listLicenseConfigurationsForOrganization: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicenseConfigurationsForOrganizationRequest,
   output: ListLicenseConfigurationsForOrganizationResponse,
@@ -3879,8 +3873,8 @@ export const listAssociationsForLicenseConfiguration: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAssociationsForLicenseConfigurationRequest,
   output: ListAssociationsForLicenseConfigurationResponse,
@@ -3904,8 +3898,8 @@ export const getServiceSettings: (
   | AuthorizationException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceSettingsRequest,
   output: GetServiceSettingsResponse,
@@ -3930,8 +3924,8 @@ export const listResourceInventory: (
   | InvalidParameterValueException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListResourceInventoryRequest,
   output: ListResourceInventoryResponse,
@@ -3964,8 +3958,8 @@ export const createLicenseConfiguration: (
   | RateLimitExceededException
   | ResourceLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLicenseConfigurationRequest,
   output: CreateLicenseConfigurationResponse,
@@ -3990,8 +3984,8 @@ export const listTokens: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTokensRequest,
   output: ListTokensResponse,
@@ -4022,8 +4016,8 @@ export const updateLicenseSpecificationsForResource: (
   | LicenseUsageException
   | RateLimitExceededException
   | ServerInternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLicenseSpecificationsForResourceRequest,
   output: UpdateLicenseSpecificationsForResourceResponse,
@@ -4052,8 +4046,8 @@ export const extendLicenseConsumption: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExtendLicenseConsumptionRequest,
   output: ExtendLicenseConsumptionResponse,
@@ -4081,8 +4075,8 @@ export const updateServiceSettings: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceSettingsRequest,
   output: UpdateServiceSettingsResponse,
@@ -4109,8 +4103,8 @@ export const createLicenseAssetGroup: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLicenseAssetGroupRequest,
   output: CreateLicenseAssetGroupResponse,
@@ -4136,8 +4130,8 @@ export const getLicenseAssetGroup: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLicenseAssetGroupRequest,
   output: GetLicenseAssetGroupResponse,
@@ -4163,8 +4157,8 @@ export const getLicenseAssetRuleset: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLicenseAssetRulesetRequest,
   output: GetLicenseAssetRulesetResponse,
@@ -4190,8 +4184,8 @@ export const listAssetsForLicenseAssetGroup: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAssetsForLicenseAssetGroupRequest,
   output: ListAssetsForLicenseAssetGroupResponse,
@@ -4217,8 +4211,8 @@ export const deleteLicenseAssetGroup: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLicenseAssetGroupRequest,
   output: DeleteLicenseAssetGroupResponse,
@@ -4244,8 +4238,8 @@ export const listLicenseAssetGroups: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicenseAssetGroupsRequest,
   output: ListLicenseAssetGroupsResponse,
@@ -4271,8 +4265,8 @@ export const listLicenseAssetRulesets: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicenseAssetRulesetsRequest,
   output: ListLicenseAssetRulesetsResponse,
@@ -4298,8 +4292,8 @@ export const listLicenses: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicensesRequest,
   output: ListLicensesResponse,
@@ -4326,8 +4320,8 @@ export const listTagsForResource: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4353,8 +4347,8 @@ export const updateLicenseAssetGroup: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLicenseAssetGroupRequest,
   output: UpdateLicenseAssetGroupResponse,
@@ -4380,8 +4374,8 @@ export const updateLicenseAssetRuleset: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLicenseAssetRulesetRequest,
   output: UpdateLicenseAssetRulesetResponse,
@@ -4407,8 +4401,8 @@ export const deleteLicenseAssetRuleset: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLicenseAssetRulesetRequest,
   output: DeleteLicenseAssetRulesetResponse,
@@ -4443,8 +4437,8 @@ export const tagResource: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4470,8 +4464,8 @@ export const untagResource: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4497,8 +4491,8 @@ export const getAccessToken: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccessTokenRequest,
   output: GetAccessTokenResponse,
@@ -4523,8 +4517,8 @@ export const createLicenseConversionTaskForResource: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLicenseConversionTaskForResourceRequest,
   output: CreateLicenseConversionTaskForResourceResponse,
@@ -4550,8 +4544,8 @@ export const getLicense: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLicenseRequest,
   output: GetLicenseResponse,
@@ -4577,8 +4571,8 @@ export const getLicenseUsage: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLicenseUsageRequest,
   output: GetLicenseUsageResponse,
@@ -4606,8 +4600,8 @@ export const deleteLicense: (
   | RedirectException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLicenseRequest,
   output: DeleteLicenseResponse,
@@ -4641,8 +4635,8 @@ export const createToken: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTokenRequest,
   output: CreateTokenResponse,
@@ -4671,8 +4665,8 @@ export const deleteToken: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTokenRequest,
   output: DeleteTokenResponse,
@@ -4700,8 +4694,8 @@ export const createLicense: (
   | RedirectException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLicenseRequest,
   output: CreateLicenseResponse,
@@ -4730,8 +4724,8 @@ export const createGrantVersion: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGrantVersionRequest,
   output: CreateGrantVersionResponse,
@@ -4760,8 +4754,8 @@ export const createLicenseManagerReportGenerator: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLicenseManagerReportGeneratorRequest,
   output: CreateLicenseManagerReportGeneratorResponse,
@@ -4790,8 +4784,8 @@ export const getGrant: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGrantRequest,
   output: GetGrantResponse,
@@ -4819,8 +4813,8 @@ export const listDistributedGrants: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDistributedGrantsRequest,
   output: ListDistributedGrantsResponse,
@@ -4848,8 +4842,8 @@ export const deleteGrant: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGrantRequest,
   output: DeleteGrantResponse,
@@ -4878,8 +4872,8 @@ export const listLicenseManagerReportGenerators: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLicenseManagerReportGeneratorsRequest,
   output: ListLicenseManagerReportGeneratorsResponse,
@@ -4910,8 +4904,8 @@ export const listReceivedGrants: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListReceivedGrantsRequest,
   output: ListReceivedGrantsResponse,
@@ -4939,8 +4933,8 @@ export const listReceivedGrantsForOrganization: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListReceivedGrantsForOrganizationRequest,
   output: ListReceivedGrantsForOrganizationResponse,
@@ -4968,8 +4962,8 @@ export const listReceivedLicensesForOrganization: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListReceivedLicensesForOrganizationRequest,
   output: ListReceivedLicensesForOrganizationResponse,
@@ -4997,8 +4991,8 @@ export const rejectGrant: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectGrantRequest,
   output: RejectGrantResponse,
@@ -5030,8 +5024,8 @@ export const deleteLicenseManagerReportGenerator: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLicenseManagerReportGeneratorRequest,
   output: DeleteLicenseManagerReportGeneratorResponse,
@@ -5063,8 +5057,8 @@ export const updateLicenseManagerReportGenerator: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLicenseManagerReportGeneratorRequest,
   output: UpdateLicenseManagerReportGeneratorResponse,
@@ -5093,8 +5087,8 @@ export const acceptGrant: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptGrantRequest,
   output: AcceptGrantResponse,
@@ -5124,8 +5118,8 @@ export const createGrant: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGrantRequest,
   output: CreateGrantResponse,
@@ -5154,8 +5148,8 @@ export const getLicenseManagerReportGenerator: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLicenseManagerReportGeneratorRequest,
   output: GetLicenseManagerReportGeneratorResponse,
@@ -5184,8 +5178,8 @@ export const listReceivedLicenses: (
   | ResourceLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListReceivedLicensesRequest,
   output: ListReceivedLicensesResponse,
@@ -5214,8 +5208,8 @@ export const checkInLicense: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckInLicenseRequest,
   output: CheckInLicenseResponse,
@@ -5245,8 +5239,8 @@ export const createLicenseVersion: (
   | ResourceNotFoundException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLicenseVersionRequest,
   output: CreateLicenseVersionResponse,
@@ -5274,8 +5268,8 @@ export const createLicenseAssetRuleset: (
   | RateLimitExceededException
   | ServerInternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLicenseAssetRulesetRequest,
   output: CreateLicenseAssetRulesetResponse,
@@ -5306,8 +5300,8 @@ export const checkoutBorrowLicense: (
   | ServerInternalException
   | UnsupportedDigitalSignatureMethodException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckoutBorrowLicenseRequest,
   output: CheckoutBorrowLicenseResponse,
@@ -5345,8 +5339,8 @@ export const checkoutLicense: (
   | ServerInternalException
   | UnsupportedDigitalSignatureMethodException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckoutLicenseRequest,
   output: CheckoutLicenseResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://datapipeline.amazonaws.com/doc/2012-10-29/");
 const svc = T.AwsApiService({
@@ -1102,22 +1100,22 @@ export const listPipelines: {
     input: ListPipelinesInput,
   ): Effect.Effect<
     ListPipelinesOutput,
-    InternalServiceError | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceError | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPipelinesInput,
   ) => Stream.Stream<
     ListPipelinesOutput,
-    InternalServiceError | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceError | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPipelinesInput,
   ) => Stream.Stream<
     PipelineIdName,
-    InternalServiceError | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceError | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipelinesInput,
@@ -1158,8 +1156,8 @@ export const reportTaskRunnerHeartbeat: (
   input: ReportTaskRunnerHeartbeatInput,
 ) => Effect.Effect<
   ReportTaskRunnerHeartbeatOutput,
-  InternalServiceError | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServiceError | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReportTaskRunnerHeartbeatInput,
   output: ReportTaskRunnerHeartbeatOutput,
@@ -1192,8 +1190,8 @@ export const createPipeline: (
   input: CreatePipelineInput,
 ) => Effect.Effect<
   CreatePipelineOutput,
-  InternalServiceError | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServiceError | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePipelineInput,
   output: CreatePipelineOutput,
@@ -1231,8 +1229,8 @@ export const deletePipeline: (
   | InternalServiceError
   | InvalidRequestException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePipelineInput,
   output: DeletePipelineResponse,
@@ -1306,8 +1304,8 @@ export const describePipelines: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePipelinesInput,
   output: DescribePipelinesOutput,
@@ -1460,8 +1458,8 @@ export const validatePipelineDefinition: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidatePipelineDefinitionInput,
   output: ValidatePipelineDefinitionOutput,
@@ -1532,8 +1530,8 @@ export const describeObjects: {
     | InvalidRequestException
     | PipelineDeletedException
     | PipelineNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeObjectsInput,
@@ -1543,8 +1541,8 @@ export const describeObjects: {
     | InvalidRequestException
     | PipelineDeletedException
     | PipelineNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeObjectsInput,
@@ -1554,8 +1552,8 @@ export const describeObjects: {
     | InvalidRequestException
     | PipelineDeletedException
     | PipelineNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeObjectsInput,
@@ -1637,8 +1635,8 @@ export const getPipelineDefinition: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPipelineDefinitionInput,
   output: GetPipelineDefinitionOutput,
@@ -1660,8 +1658,8 @@ export const removeTags: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsInput,
   output: RemoveTagsOutput,
@@ -1705,8 +1703,8 @@ export const setStatus: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetStatusInput,
   output: SetStatusResponse,
@@ -1752,8 +1750,8 @@ export const activatePipeline: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ActivatePipelineInput,
   output: ActivatePipelineOutput,
@@ -1775,8 +1773,8 @@ export const addTags: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsInput,
   output: AddTagsOutput,
@@ -1802,8 +1800,8 @@ export const deactivatePipeline: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeactivatePipelineInput,
   output: DeactivatePipelineOutput,
@@ -1964,8 +1962,8 @@ export const putPipelineDefinition: (
   | InvalidRequestException
   | PipelineDeletedException
   | PipelineNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPipelineDefinitionInput,
   output: PutPipelineDefinitionOutput,
@@ -2016,8 +2014,8 @@ export const queryObjects: {
     | InvalidRequestException
     | PipelineDeletedException
     | PipelineNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: QueryObjectsInput,
@@ -2027,8 +2025,8 @@ export const queryObjects: {
     | InvalidRequestException
     | PipelineDeletedException
     | PipelineNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: QueryObjectsInput,
@@ -2038,8 +2036,8 @@ export const queryObjects: {
     | InvalidRequestException
     | PipelineDeletedException
     | PipelineNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: QueryObjectsInput,
@@ -2098,8 +2096,8 @@ export const reportTaskProgress: (
   | PipelineDeletedException
   | PipelineNotFoundException
   | TaskNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReportTaskProgressInput,
   output: ReportTaskProgressOutput,
@@ -2143,8 +2141,8 @@ export const evaluateExpression: (
   | PipelineDeletedException
   | PipelineNotFoundException
   | TaskNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EvaluateExpressionInput,
   output: EvaluateExpressionOutput,
@@ -2188,8 +2186,8 @@ export const setTaskStatus: (
   | PipelineDeletedException
   | PipelineNotFoundException
   | TaskNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetTaskStatusInput,
   output: SetTaskStatusOutput,
@@ -2279,8 +2277,8 @@ export const pollForTask: (
   | InternalServiceError
   | InvalidRequestException
   | TaskNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PollForTaskInput,
   output: PollForTaskOutput,

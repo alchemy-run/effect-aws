@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Pinpoint Email",
@@ -2131,47 +2129,43 @@ export const CreateDeliverabilityTestReportResponse = S.suspend(() =>
 export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException>()(
   "AlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountSuspendedException extends S.TaggedError<AccountSuspendedException>()(
   "AccountSuspendedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MailFromDomainNotVerifiedException extends S.TaggedError<MailFromDomainNotVerifiedException>()(
   "MailFromDomainNotVerifiedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MessageRejected extends S.TaggedError<MessageRejected>()(
   "MessageRejected",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SendingPausedException extends S.TaggedError<SendingPausedException>()(
   "SendingPausedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2182,8 +2176,8 @@ export const getAccount: (
   input: GetAccountRequest,
 ) => Effect.Effect<
   GetAccountResponse,
-  BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountRequest,
   output: GetAccountResponse,
@@ -2207,8 +2201,8 @@ export const getConfigurationSet: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConfigurationSetRequest,
   output: GetConfigurationSetResponse,
@@ -2231,8 +2225,8 @@ export const getConfigurationSetEventDestinations: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConfigurationSetEventDestinationsRequest,
   output: GetConfigurationSetEventDestinationsResponse,
@@ -2250,8 +2244,8 @@ export const getDedicatedIp: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDedicatedIpRequest,
   output: GetDedicatedIpResponse,
@@ -2267,8 +2261,8 @@ export const getDeliverabilityTestReport: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeliverabilityTestReportRequest,
   output: GetDeliverabilityTestReportResponse,
@@ -2287,8 +2281,8 @@ export const getDomainDeliverabilityCampaign: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainDeliverabilityCampaignRequest,
   output: GetDomainDeliverabilityCampaignResponse,
@@ -2306,8 +2300,8 @@ export const getEmailIdentity: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEmailIdentityRequest,
   output: GetEmailIdentityResponse,
@@ -2323,22 +2317,22 @@ export const listEmailIdentities: {
     input: ListEmailIdentitiesRequest,
   ): Effect.Effect<
     ListEmailIdentitiesResponse,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEmailIdentitiesRequest,
   ) => Stream.Stream<
     ListEmailIdentitiesResponse,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEmailIdentitiesRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEmailIdentitiesRequest,
@@ -2369,8 +2363,8 @@ export const putDeliverabilityDashboardOption: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDeliverabilityDashboardOptionRequest,
   output: PutDeliverabilityDashboardOptionResponse,
@@ -2399,8 +2393,8 @@ export const createConfigurationSet: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationSetRequest,
   output: CreateConfigurationSetResponse,
@@ -2424,8 +2418,8 @@ export const deleteDedicatedIpPool: (
   | ConcurrentModificationException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDedicatedIpPoolRequest,
   output: DeleteDedicatedIpPoolResponse,
@@ -2448,8 +2442,8 @@ export const deleteEmailIdentity: (
   | ConcurrentModificationException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEmailIdentityRequest,
   output: DeleteEmailIdentityResponse,
@@ -2480,8 +2474,8 @@ export const tagResource: (
   | ConcurrentModificationException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2503,8 +2497,8 @@ export const untagResource: (
   | ConcurrentModificationException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2530,8 +2524,8 @@ export const createDedicatedIpPool: (
   | ConcurrentModificationException
   | LimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDedicatedIpPoolRequest,
   output: CreateDedicatedIpPoolResponse,
@@ -2567,8 +2561,8 @@ export const createEmailIdentity: (
   | ConcurrentModificationException
   | LimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEmailIdentityRequest,
   output: CreateEmailIdentityResponse,
@@ -2594,22 +2588,22 @@ export const listConfigurationSets: {
     input: ListConfigurationSetsRequest,
   ): Effect.Effect<
     ListConfigurationSetsResponse,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConfigurationSetsRequest,
   ) => Stream.Stream<
     ListConfigurationSetsResponse,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConfigurationSetsRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationSetsRequest,
@@ -2630,22 +2624,22 @@ export const listDedicatedIpPools: {
     input: ListDedicatedIpPoolsRequest,
   ): Effect.Effect<
     ListDedicatedIpPoolsResponse,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDedicatedIpPoolsRequest,
   ) => Stream.Stream<
     ListDedicatedIpPoolsResponse,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDedicatedIpPoolsRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | TooManyRequestsException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDedicatedIpPoolsRequest,
@@ -2664,8 +2658,8 @@ export const putAccountDedicatedIpWarmupAttributes: (
   input: PutAccountDedicatedIpWarmupAttributesRequest,
 ) => Effect.Effect<
   PutAccountDedicatedIpWarmupAttributesResponse,
-  BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccountDedicatedIpWarmupAttributesRequest,
   output: PutAccountDedicatedIpWarmupAttributesResponse,
@@ -2678,8 +2672,8 @@ export const putAccountSendingAttributes: (
   input: PutAccountSendingAttributesRequest,
 ) => Effect.Effect<
   PutAccountSendingAttributesResponse,
-  BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccountSendingAttributesRequest,
   output: PutAccountSendingAttributesResponse,
@@ -2697,8 +2691,8 @@ export const getDedicatedIps: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetDedicatedIpsRequest,
@@ -2707,8 +2701,8 @@ export const getDedicatedIps: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetDedicatedIpsRequest,
@@ -2717,8 +2711,8 @@ export const getDedicatedIps: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetDedicatedIpsRequest,
@@ -2743,8 +2737,8 @@ export const listDeliverabilityTestReports: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeliverabilityTestReportsRequest,
@@ -2753,8 +2747,8 @@ export const listDeliverabilityTestReports: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeliverabilityTestReportsRequest,
@@ -2763,8 +2757,8 @@ export const listDeliverabilityTestReports: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeliverabilityTestReportsRequest,
@@ -2790,8 +2784,8 @@ export const listDomainDeliverabilityCampaigns: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDomainDeliverabilityCampaignsRequest,
@@ -2800,8 +2794,8 @@ export const listDomainDeliverabilityCampaigns: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDomainDeliverabilityCampaignsRequest,
@@ -2810,8 +2804,8 @@ export const listDomainDeliverabilityCampaigns: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDomainDeliverabilityCampaignsRequest,
@@ -2838,8 +2832,8 @@ export const listTagsForResource: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2861,8 +2855,8 @@ export const deleteConfigurationSetEventDestination: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationSetEventDestinationRequest,
   output: DeleteConfigurationSetEventDestinationResponse,
@@ -2879,8 +2873,8 @@ export const putConfigurationSetDeliveryOptions: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConfigurationSetDeliveryOptionsRequest,
   output: PutConfigurationSetDeliveryOptionsResponse,
@@ -2897,8 +2891,8 @@ export const putConfigurationSetReputationOptions: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConfigurationSetReputationOptionsRequest,
   output: PutConfigurationSetReputationOptionsResponse,
@@ -2915,8 +2909,8 @@ export const putConfigurationSetSendingOptions: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConfigurationSetSendingOptionsRequest,
   output: PutConfigurationSetSendingOptionsResponse,
@@ -2933,8 +2927,8 @@ export const putConfigurationSetTrackingOptions: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConfigurationSetTrackingOptionsRequest,
   output: PutConfigurationSetTrackingOptionsResponse,
@@ -2956,8 +2950,8 @@ export const putDedicatedIpInPool: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDedicatedIpInPoolRequest,
   output: PutDedicatedIpInPoolResponse,
@@ -2973,8 +2967,8 @@ export const putDedicatedIpWarmupAttributes: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDedicatedIpWarmupAttributesRequest,
   output: PutDedicatedIpWarmupAttributesResponse,
@@ -2990,8 +2984,8 @@ export const putEmailIdentityDkimAttributes: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEmailIdentityDkimAttributesRequest,
   output: PutEmailIdentityDkimAttributesResponse,
@@ -3019,8 +3013,8 @@ export const putEmailIdentityFeedbackAttributes: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEmailIdentityFeedbackAttributesRequest,
   output: PutEmailIdentityFeedbackAttributesResponse,
@@ -3037,8 +3031,8 @@ export const putEmailIdentityMailFromAttributes: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEmailIdentityMailFromAttributesRequest,
   output: PutEmailIdentityMailFromAttributesResponse,
@@ -3060,8 +3054,8 @@ export const updateConfigurationSetEventDestination: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationSetEventDestinationRequest,
   output: UpdateConfigurationSetEventDestinationResponse,
@@ -3084,8 +3078,8 @@ export const deleteConfigurationSet: (
   | ConcurrentModificationException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationSetRequest,
   output: DeleteConfigurationSetResponse,
@@ -3113,8 +3107,8 @@ export const getDeliverabilityDashboardOptions: (
   | BadRequestException
   | LimitExceededException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeliverabilityDashboardOptionsRequest,
   output: GetDeliverabilityDashboardOptionsResponse,
@@ -3143,8 +3137,8 @@ export const createConfigurationSetEventDestination: (
   | LimitExceededException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationSetEventDestinationRequest,
   output: CreateConfigurationSetEventDestinationResponse,
@@ -3166,8 +3160,8 @@ export const getBlacklistReports: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBlacklistReportsRequest,
   output: GetBlacklistReportsResponse,
@@ -3184,8 +3178,8 @@ export const getDomainStatisticsReport: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainStatisticsReportRequest,
   output: GetDomainStatisticsReportResponse,
@@ -3217,8 +3211,8 @@ export const sendEmail: (
   | NotFoundException
   | SendingPausedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendEmailRequest,
   output: SendEmailResponse,
@@ -3255,8 +3249,8 @@ export const createDeliverabilityTestReport: (
   | NotFoundException
   | SendingPausedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeliverabilityTestReportRequest,
   output: CreateDeliverabilityTestReportResponse,

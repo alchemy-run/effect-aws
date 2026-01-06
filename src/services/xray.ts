@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "XRay", serviceShapeName: "AWSXRay" });
 const auth = T.AwsAuthSigv4({ name: "xray" });
@@ -2654,29 +2652,27 @@ export class InvalidRequestException extends S.TaggedError<InvalidRequestExcepti
 export class InvalidPolicyRevisionIdException extends S.TaggedError<InvalidPolicyRevisionIdException>()(
   "InvalidPolicyRevisionIdException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottledException extends S.TaggedError<ThrottledException>()(
   "ThrottledException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class LockoutPreventionException extends S.TaggedError<LockoutPreventionException>()(
   "LockoutPreventionException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MalformedPolicyDocumentException extends S.TaggedError<MalformedPolicyDocumentException>()(
   "MalformedPolicyDocumentException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RuleLimitExceededException extends S.TaggedError<RuleLimitExceededException>()(
   "RuleLimitExceededException",
   { Message: S.optional(S.String) },
@@ -2684,11 +2680,11 @@ export class RuleLimitExceededException extends S.TaggedError<RuleLimitExceededE
 export class PolicyCountLimitExceededException extends S.TaggedError<PolicyCountLimitExceededException>()(
   "PolicyCountLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PolicySizeLimitExceededException extends S.TaggedError<PolicySizeLimitExceededException>()(
   "PolicySizeLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2701,8 +2697,8 @@ export const deleteResourcePolicy: (
   | InvalidPolicyRevisionIdException
   | InvalidRequestException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResult,
@@ -2719,8 +2715,8 @@ export const deleteSamplingRule: (
   input: DeleteSamplingRuleRequest,
 ) => Effect.Effect<
   DeleteSamplingRuleResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSamplingRuleRequest,
   output: DeleteSamplingRuleResult,
@@ -2733,8 +2729,8 @@ export const getGroup: (
   input: GetGroupRequest,
 ) => Effect.Effect<
   GetGroupResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupRequest,
   output: GetGroupResult,
@@ -2748,22 +2744,22 @@ export const getGroups: {
     input: GetGroupsRequest,
   ): Effect.Effect<
     GetGroupsResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetGroupsRequest,
   ) => Stream.Stream<
     GetGroupsResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetGroupsRequest,
   ) => Stream.Stream<
     GroupSummary,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetGroupsRequest,
@@ -2785,22 +2781,22 @@ export const getInsightEvents: {
     input: GetInsightEventsRequest,
   ): Effect.Effect<
     GetInsightEventsResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetInsightEventsRequest,
   ) => Stream.Stream<
     GetInsightEventsResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetInsightEventsRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetInsightEventsRequest,
@@ -2820,22 +2816,22 @@ export const getInsightSummaries: {
     input: GetInsightSummariesRequest,
   ): Effect.Effect<
     GetInsightSummariesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetInsightSummariesRequest,
   ) => Stream.Stream<
     GetInsightSummariesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetInsightSummariesRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetInsightSummariesRequest,
@@ -2855,22 +2851,22 @@ export const getSamplingStatisticSummaries: {
     input: GetSamplingStatisticSummariesRequest,
   ): Effect.Effect<
     GetSamplingStatisticSummariesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetSamplingStatisticSummariesRequest,
   ) => Stream.Stream<
     GetSamplingStatisticSummariesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetSamplingStatisticSummariesRequest,
   ) => Stream.Stream<
     SamplingStatisticSummary,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSamplingStatisticSummariesRequest,
@@ -2890,22 +2886,22 @@ export const listResourcePolicies: {
     input: ListResourcePoliciesRequest,
   ): Effect.Effect<
     ListResourcePoliciesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourcePoliciesRequest,
   ) => Stream.Stream<
     ListResourcePoliciesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourcePoliciesRequest,
   ) => Stream.Stream<
     ResourcePolicy,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourcePoliciesRequest,
@@ -2924,8 +2920,8 @@ export const putTelemetryRecords: (
   input: PutTelemetryRecordsRequest,
 ) => Effect.Effect<
   PutTelemetryRecordsResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTelemetryRecordsRequest,
   output: PutTelemetryRecordsResult,
@@ -2989,8 +2985,8 @@ export const putTraceSegments: (
   input: PutTraceSegmentsRequest,
 ) => Effect.Effect<
   PutTraceSegmentsResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTraceSegmentsRequest,
   output: PutTraceSegmentsResult,
@@ -3003,8 +2999,8 @@ export const updateSamplingRule: (
   input: UpdateSamplingRuleRequest,
 ) => Effect.Effect<
   UpdateSamplingRuleResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSamplingRuleRequest,
   output: UpdateSamplingRuleResult,
@@ -3021,8 +3017,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -3031,8 +3027,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -3041,8 +3037,8 @@ export const listTagsForResource: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -3074,8 +3070,8 @@ export const startTraceRetrieval: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTraceRetrievalRequest,
   output: StartTraceRetrievalResult,
@@ -3096,8 +3092,8 @@ export const untagResource: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3114,8 +3110,8 @@ export const getEncryptionConfig: (
   input: GetEncryptionConfigRequest,
 ) => Effect.Effect<
   GetEncryptionConfigResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEncryptionConfigRequest,
   output: GetEncryptionConfigResult,
@@ -3129,22 +3125,22 @@ export const getSamplingRules: {
     input: GetSamplingRulesRequest,
   ): Effect.Effect<
     GetSamplingRulesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetSamplingRulesRequest,
   ) => Stream.Stream<
     GetSamplingRulesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetSamplingRulesRequest,
   ) => Stream.Stream<
     SamplingRuleRecord,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSamplingRulesRequest,
@@ -3164,22 +3160,22 @@ export const getTraceGraph: {
     input: GetTraceGraphRequest,
   ): Effect.Effect<
     GetTraceGraphResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetTraceGraphRequest,
   ) => Stream.Stream<
     GetTraceGraphResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetTraceGraphRequest,
   ) => Stream.Stream<
     Service,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTraceGraphRequest,
@@ -3198,8 +3194,8 @@ export const putEncryptionConfig: (
   input: PutEncryptionConfigRequest,
 ) => Effect.Effect<
   PutEncryptionConfigResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEncryptionConfigRequest,
   output: PutEncryptionConfigResult,
@@ -3212,8 +3208,8 @@ export const updateGroup: (
   input: UpdateGroupRequest,
 ) => Effect.Effect<
   UpdateGroupResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupRequest,
   output: UpdateGroupResult,
@@ -3226,8 +3222,8 @@ export const updateTraceSegmentDestination: (
   input: UpdateTraceSegmentDestinationRequest,
 ) => Effect.Effect<
   UpdateTraceSegmentDestinationResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTraceSegmentDestinationRequest,
   output: UpdateTraceSegmentDestinationResult,
@@ -3240,8 +3236,8 @@ export const deleteGroup: (
   input: DeleteGroupRequest,
 ) => Effect.Effect<
   DeleteGroupResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResult,
@@ -3254,8 +3250,8 @@ export const getTraceSegmentDestination: (
   input: GetTraceSegmentDestinationRequest,
 ) => Effect.Effect<
   GetTraceSegmentDestinationResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTraceSegmentDestinationRequest,
   output: GetTraceSegmentDestinationResult,
@@ -3271,8 +3267,8 @@ export const cancelTraceRetrieval: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelTraceRetrievalRequest,
   output: CancelTraceRetrievalResult,
@@ -3289,8 +3285,8 @@ export const createGroup: (
   input: CreateGroupRequest,
 ) => Effect.Effect<
   CreateGroupResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResult,
@@ -3308,22 +3304,22 @@ export const batchGetTraces: {
     input: BatchGetTracesRequest,
   ): Effect.Effect<
     BatchGetTracesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: BatchGetTracesRequest,
   ) => Stream.Stream<
     BatchGetTracesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: BatchGetTracesRequest,
   ) => Stream.Stream<
     Trace,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: BatchGetTracesRequest,
@@ -3344,8 +3340,8 @@ export const getInsight: (
   input: GetInsightRequest,
 ) => Effect.Effect<
   GetInsightResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInsightRequest,
   output: GetInsightResult,
@@ -3359,8 +3355,8 @@ export const getInsightImpactGraph: (
   input: GetInsightImpactGraphRequest,
 ) => Effect.Effect<
   GetInsightImpactGraphResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInsightImpactGraphRequest,
   output: GetInsightImpactGraphResult,
@@ -3384,8 +3380,8 @@ export const getRetrievedTracesGraph: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRetrievedTracesGraphRequest,
   output: GetRetrievedTracesGraphResult,
@@ -3404,22 +3400,22 @@ export const getTimeSeriesServiceStatistics: {
     input: GetTimeSeriesServiceStatisticsRequest,
   ): Effect.Effect<
     GetTimeSeriesServiceStatisticsResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetTimeSeriesServiceStatisticsRequest,
   ) => Stream.Stream<
     GetTimeSeriesServiceStatisticsResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetTimeSeriesServiceStatisticsRequest,
   ) => Stream.Stream<
     TimeSeriesServiceStatistics,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTimeSeriesServiceStatisticsRequest,
@@ -3449,8 +3445,8 @@ export const listRetrievedTraces: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRetrievedTracesRequest,
   output: ListRetrievedTracesResult,
@@ -3472,8 +3468,8 @@ export const updateIndexingRule: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIndexingRuleRequest,
   output: UpdateIndexingRuleResult,
@@ -3494,8 +3490,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ThrottledException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3522,8 +3518,8 @@ export const createSamplingRule: (
   | InvalidRequestException
   | RuleLimitExceededException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSamplingRuleRequest,
   output: CreateSamplingRuleResult,
@@ -3542,8 +3538,8 @@ export const getIndexingRules: (
   input: GetIndexingRulesRequest,
 ) => Effect.Effect<
   GetIndexingRulesResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIndexingRulesRequest,
   output: GetIndexingRulesResult,
@@ -3556,8 +3552,8 @@ export const getSamplingTargets: (
   input: GetSamplingTargetsRequest,
 ) => Effect.Effect<
   GetSamplingTargetsResult,
-  InvalidRequestException | ThrottledException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequestException | ThrottledException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSamplingTargetsRequest,
   output: GetSamplingTargetsResult,
@@ -3575,22 +3571,22 @@ export const getServiceGraph: {
     input: GetServiceGraphRequest,
   ): Effect.Effect<
     GetServiceGraphResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetServiceGraphRequest,
   ) => Stream.Stream<
     GetServiceGraphResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetServiceGraphRequest,
   ) => Stream.Stream<
     Service,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetServiceGraphRequest,
@@ -3618,8 +3614,8 @@ export const putResourcePolicy: (
   | PolicyCountLimitExceededException
   | PolicySizeLimitExceededException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResult,
@@ -3657,22 +3653,22 @@ export const getTraceSummaries: {
     input: GetTraceSummariesRequest,
   ): Effect.Effect<
     GetTraceSummariesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetTraceSummariesRequest,
   ) => Stream.Stream<
     GetTraceSummariesResult,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetTraceSummariesRequest,
   ) => Stream.Stream<
     TraceSummary,
-    InvalidRequestException | ThrottledException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | ThrottledException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTraceSummariesRequest,

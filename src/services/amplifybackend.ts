@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "AmplifyBackend",
@@ -2312,29 +2310,25 @@ export const CreateBackendAuthResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class GatewayTimeoutException extends S.TaggedError<GatewayTimeoutException>()(
   "GatewayTimeoutException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withTimeoutError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   {
     Message: S.optional(S.String).pipe(T.JsonName("message")),
     ResourceType: S.optional(S.String).pipe(T.JsonName("resourceType")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   {
     LimitType: S.optional(S.String).pipe(T.JsonName("limitType")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**
@@ -2348,8 +2342,8 @@ export const cloneBackend: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CloneBackendRequest,
   output: CloneBackendResponse,
@@ -2371,8 +2365,8 @@ export const createBackendAPI: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackendAPIRequest,
   output: CreateBackendAPIResponse,
@@ -2394,8 +2388,8 @@ export const updateBackendAuth: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBackendAuthRequest,
   output: UpdateBackendAuthResponse,
@@ -2417,8 +2411,8 @@ export const createBackendStorage: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackendStorageRequest,
   output: CreateBackendStorageResponse,
@@ -2440,8 +2434,8 @@ export const getBackendStorage: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackendStorageRequest,
   output: GetBackendStorageResponse,
@@ -2463,8 +2457,8 @@ export const listBackendJobs: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBackendJobsRequest,
   output: ListBackendJobsResponse,
@@ -2486,8 +2480,8 @@ export const listS3Buckets: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListS3BucketsRequest,
   output: ListS3BucketsResponse,
@@ -2509,8 +2503,8 @@ export const updateBackendConfig: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBackendConfigRequest,
   output: UpdateBackendConfigResponse,
@@ -2532,8 +2526,8 @@ export const updateBackendStorage: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBackendStorageRequest,
   output: UpdateBackendStorageResponse,
@@ -2555,8 +2549,8 @@ export const createBackend: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackendRequest,
   output: CreateBackendResponse,
@@ -2578,8 +2572,8 @@ export const createBackendConfig: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackendConfigRequest,
   output: CreateBackendConfigResponse,
@@ -2601,8 +2595,8 @@ export const createToken: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTokenRequest,
   output: CreateTokenResponse,
@@ -2624,8 +2618,8 @@ export const deleteBackend: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackendRequest,
   output: DeleteBackendResponse,
@@ -2647,8 +2641,8 @@ export const deleteBackendAPI: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackendAPIRequest,
   output: DeleteBackendAPIResponse,
@@ -2670,8 +2664,8 @@ export const deleteBackendAuth: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackendAuthRequest,
   output: DeleteBackendAuthResponse,
@@ -2693,8 +2687,8 @@ export const deleteBackendStorage: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBackendStorageRequest,
   output: DeleteBackendStorageResponse,
@@ -2716,8 +2710,8 @@ export const deleteToken: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTokenRequest,
   output: DeleteTokenResponse,
@@ -2739,8 +2733,8 @@ export const generateBackendAPIModels: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GenerateBackendAPIModelsRequest,
   output: GenerateBackendAPIModelsResponse,
@@ -2762,8 +2756,8 @@ export const getBackend: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackendRequest,
   output: GetBackendResponse,
@@ -2785,8 +2779,8 @@ export const getBackendAPI: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackendAPIRequest,
   output: GetBackendAPIResponse,
@@ -2808,8 +2802,8 @@ export const getBackendAPIModels: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackendAPIModelsRequest,
   output: GetBackendAPIModelsResponse,
@@ -2831,8 +2825,8 @@ export const getBackendAuth: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackendAuthRequest,
   output: GetBackendAuthResponse,
@@ -2854,8 +2848,8 @@ export const getBackendJob: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBackendJobRequest,
   output: GetBackendJobResponse,
@@ -2877,8 +2871,8 @@ export const getToken: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTokenRequest,
   output: GetTokenResponse,
@@ -2900,8 +2894,8 @@ export const importBackendAuth: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportBackendAuthRequest,
   output: ImportBackendAuthResponse,
@@ -2923,8 +2917,8 @@ export const importBackendStorage: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportBackendStorageRequest,
   output: ImportBackendStorageResponse,
@@ -2946,8 +2940,8 @@ export const removeAllBackends: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveAllBackendsRequest,
   output: RemoveAllBackendsResponse,
@@ -2969,8 +2963,8 @@ export const removeBackendConfig: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveBackendConfigRequest,
   output: RemoveBackendConfigResponse,
@@ -2992,8 +2986,8 @@ export const updateBackendAPI: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBackendAPIRequest,
   output: UpdateBackendAPIResponse,
@@ -3015,8 +3009,8 @@ export const updateBackendJob: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBackendJobRequest,
   output: UpdateBackendJobResponse,
@@ -3038,8 +3032,8 @@ export const createBackendAuth: (
   | GatewayTimeoutException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBackendAuthRequest,
   output: CreateBackendAuthResponse,

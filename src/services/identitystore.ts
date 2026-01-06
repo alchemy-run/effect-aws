@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "identitystore",
@@ -1113,7 +1111,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     RequestId: S.optional(S.String),
     Reason: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -1123,7 +1121,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     Message: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -1131,11 +1129,11 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     RequestId: S.optional(S.String),
     Reason: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -1147,8 +1145,8 @@ export const getUserId: (
   input: GetUserIdRequest,
 ) => Effect.Effect<
   GetUserIdResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserIdRequest,
   output: GetUserIdResponse,
@@ -1164,22 +1162,22 @@ export const listGroups: {
     input: ListGroupsRequest,
   ): Effect.Effect<
     ListGroupsResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupsRequest,
   ) => Stream.Stream<
     ListGroupsResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupsRequest,
   ) => Stream.Stream<
     Group,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
@@ -1203,8 +1201,8 @@ export const createUser: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -1224,8 +1222,8 @@ export const isMemberInGroups: (
   input: IsMemberInGroupsRequest,
 ) => Effect.Effect<
   IsMemberInGroupsResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IsMemberInGroupsRequest,
   output: IsMemberInGroupsResponse,
@@ -1241,22 +1239,22 @@ export const listGroupMembershipsForMember: {
     input: ListGroupMembershipsForMemberRequest,
   ): Effect.Effect<
     ListGroupMembershipsForMemberResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupMembershipsForMemberRequest,
   ) => Stream.Stream<
     ListGroupMembershipsForMemberResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupMembershipsForMemberRequest,
   ) => Stream.Stream<
     GroupMembership,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupMembershipsForMemberRequest,
@@ -1279,22 +1277,22 @@ export const listUsers: {
     input: ListUsersRequest,
   ): Effect.Effect<
     ListUsersResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUsersRequest,
   ) => Stream.Stream<
     ListUsersResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUsersRequest,
   ) => Stream.Stream<
     User,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
@@ -1316,8 +1314,8 @@ export const describeGroupMembership: (
   input: DescribeGroupMembershipRequest,
 ) => Effect.Effect<
   DescribeGroupMembershipResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGroupMembershipRequest,
   output: DescribeGroupMembershipResponse,
@@ -1333,8 +1331,8 @@ export const deleteGroupMembership: (
   | ConflictException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupMembershipRequest,
   output: DeleteGroupMembershipResponse,
@@ -1350,22 +1348,22 @@ export const listGroupMemberships: {
     input: ListGroupMembershipsRequest,
   ): Effect.Effect<
     ListGroupMembershipsResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupMembershipsRequest,
   ) => Stream.Stream<
     ListGroupMembershipsResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupMembershipsRequest,
   ) => Stream.Stream<
     GroupMembership,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupMembershipsRequest,
@@ -1387,8 +1385,8 @@ export const describeGroup: (
   input: DescribeGroupRequest,
 ) => Effect.Effect<
   DescribeGroupResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGroupRequest,
   output: DescribeGroupResponse,
@@ -1403,8 +1401,8 @@ export const describeUser: (
   input: DescribeUserRequest,
 ) => Effect.Effect<
   DescribeUserResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserRequest,
   output: DescribeUserResponse,
@@ -1420,8 +1418,8 @@ export const deleteGroup: (
   | ConflictException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResponse,
@@ -1437,8 +1435,8 @@ export const deleteUser: (
   | ConflictException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -1453,8 +1451,8 @@ export const getGroupMembershipId: (
   input: GetGroupMembershipIdRequest,
 ) => Effect.Effect<
   GetGroupMembershipIdResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupMembershipIdRequest,
   output: GetGroupMembershipIdResponse,
@@ -1469,8 +1467,8 @@ export const getGroupId: (
   input: GetGroupIdRequest,
 ) => Effect.Effect<
   GetGroupIdResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupIdRequest,
   output: GetGroupIdResponse,
@@ -1487,8 +1485,8 @@ export const createGroup: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResponse,
@@ -1510,8 +1508,8 @@ export const updateGroup: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupRequest,
   output: UpdateGroupResponse,
@@ -1533,8 +1531,8 @@ export const updateUser: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,
@@ -1556,8 +1554,8 @@ export const createGroupMembership: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupMembershipRequest,
   output: CreateGroupMembershipResponse,

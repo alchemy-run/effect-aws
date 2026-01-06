@@ -9,7 +9,7 @@
  *    X-Amz-Content-Sha256 and X-Amz-Sha256-Tree-Hash headers
  */
 
-import type { Request } from "../request.ts";
+import type { Request } from "../client/request.ts";
 
 /**
  * Apply Glacier-specific customizations to a request.

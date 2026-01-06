@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Auto Scaling Plans",
@@ -719,36 +717,32 @@ export class ConcurrentUpdateException extends S.TaggedError<ConcurrentUpdateExc
   "ConcurrentUpdateException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConcurrentUpdateException", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InternalServiceException extends S.TaggedError<InternalServiceException>()(
   "InternalServiceException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InternalServiceException", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ObjectNotFoundException extends S.TaggedError<ObjectNotFoundException>()(
   "ObjectNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ObjectNotFoundException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidNextTokenException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceededException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -762,8 +756,8 @@ export const getScalingPlanResourceForecastData: (
   input: GetScalingPlanResourceForecastDataRequest,
 ) => Effect.Effect<
   GetScalingPlanResourceForecastDataResponse,
-  InternalServiceException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServiceException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetScalingPlanResourceForecastDataRequest,
   output: GetScalingPlanResourceForecastDataResponse,
@@ -783,8 +777,8 @@ export const updateScalingPlan: (
   | InternalServiceException
   | ObjectNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateScalingPlanRequest,
   output: UpdateScalingPlanResponse,
@@ -806,8 +800,8 @@ export const describeScalingPlanResources: (
   | InternalServiceException
   | InvalidNextTokenException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeScalingPlanResourcesRequest,
   output: DescribeScalingPlanResourcesResponse,
@@ -835,8 +829,8 @@ export const deleteScalingPlan: (
   | InternalServiceException
   | ObjectNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteScalingPlanRequest,
   output: DeleteScalingPlanResponse,
@@ -858,8 +852,8 @@ export const describeScalingPlans: (
   | InternalServiceException
   | InvalidNextTokenException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeScalingPlansRequest,
   output: DescribeScalingPlansResponse,
@@ -881,8 +875,8 @@ export const createScalingPlan: (
   | InternalServiceException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateScalingPlanRequest,
   output: CreateScalingPlanResponse,

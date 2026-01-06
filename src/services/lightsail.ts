@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region as Rgn,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Lightsail",
@@ -7879,7 +7877,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
     message: S.optional(S.String),
     tip: S.optional(S.String),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidInputException extends S.TaggedError<InvalidInputException>()(
   "InvalidInputException",
   {
@@ -7888,7 +7886,7 @@ export class InvalidInputException extends S.TaggedError<InvalidInputException>(
     message: S.optional(S.String),
     tip: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccountSetupInProgressException extends S.TaggedError<AccountSetupInProgressException>()(
   "AccountSetupInProgressException",
   {
@@ -7915,7 +7913,7 @@ export class NotFoundException extends S.TaggedError<NotFoundException>()(
     message: S.optional(S.String),
     tip: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceException extends S.TaggedError<ServiceException>()(
   "ServiceException",
   {
@@ -7924,9 +7922,7 @@ export class ServiceException extends S.TaggedError<ServiceException>()(
     message: S.optional(S.String),
     tip: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class OperationFailureException extends S.TaggedError<OperationFailureException>()(
   "OperationFailureException",
   {
@@ -7935,7 +7931,7 @@ export class OperationFailureException extends S.TaggedError<OperationFailureExc
     message: S.optional(S.String),
     tip: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthenticatedException extends S.TaggedError<UnauthenticatedException>()(
   "UnauthenticatedException",
   {
@@ -7944,7 +7940,7 @@ export class UnauthenticatedException extends S.TaggedError<UnauthenticatedExcep
     message: S.optional(S.String),
     tip: S.optional(S.String),
   },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -7959,8 +7955,8 @@ export const getContainerAPIMetadata: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerAPIMetadataRequest,
   output: GetContainerAPIMetadataResult,
@@ -7984,8 +7980,8 @@ export const getContainerServices: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerServicesRequest,
   output: ContainerServicesListResult,
@@ -8013,8 +8009,8 @@ export const getDomain: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainRequest,
   output: GetDomainResult,
@@ -8045,8 +8041,8 @@ export const getInstance: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceRequest,
   output: GetInstanceResult,
@@ -8082,8 +8078,8 @@ export const getLoadBalancerTlsCertificates: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoadBalancerTlsCertificatesRequest,
   output: GetLoadBalancerTlsCertificatesResult,
@@ -8113,8 +8109,8 @@ export const getAutoSnapshots: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAutoSnapshotsRequest,
   output: GetAutoSnapshotsResult,
@@ -8147,8 +8143,8 @@ export const getCloudFormationStackRecords: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCloudFormationStackRecordsRequest,
   output: GetCloudFormationStackRecordsResult,
@@ -8178,8 +8174,8 @@ export const getDisk: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDiskRequest,
   output: GetDiskResult,
@@ -8208,8 +8204,8 @@ export const getDistributions: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDistributionsRequest,
   output: GetDistributionsResult,
@@ -8242,8 +8238,8 @@ export const getInstanceAccessDetails: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceAccessDetailsRequest,
   output: GetInstanceAccessDetailsResult,
@@ -8273,8 +8269,8 @@ export const getLoadBalancer: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoadBalancerRequest,
   output: GetLoadBalancerResult,
@@ -8306,8 +8302,8 @@ export const getRegions: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRegionsRequest,
   output: GetRegionsResult,
@@ -8337,8 +8333,8 @@ export const getRelationalDatabase: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseRequest,
   output: GetRelationalDatabaseResult,
@@ -8375,8 +8371,8 @@ export const deleteDisk: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDiskRequest,
   output: DeleteDiskResult,
@@ -8414,8 +8410,8 @@ export const getBlueprints: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBlueprintsRequest,
   output: GetBlueprintsResult,
@@ -8453,8 +8449,8 @@ export const getBundles: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBundlesRequest,
   output: GetBundlesResult,
@@ -8489,8 +8485,8 @@ export const getContactMethods: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContactMethodsRequest,
   output: GetContactMethodsResult,
@@ -8519,8 +8515,8 @@ export const getDiskSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDiskSnapshotRequest,
   output: GetDiskSnapshotResult,
@@ -8551,8 +8547,8 @@ export const getInstancePortStates: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstancePortStatesRequest,
   output: GetInstancePortStatesResult,
@@ -8582,8 +8578,8 @@ export const getInstanceSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceSnapshotRequest,
   output: GetInstanceSnapshotResult,
@@ -8613,8 +8609,8 @@ export const getInstanceState: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceStateRequest,
   output: GetInstanceStateResult,
@@ -8648,8 +8644,8 @@ export const getRelationalDatabaseBlueprints: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseBlueprintsRequest,
   output: GetRelationalDatabaseBlueprintsResult,
@@ -8683,8 +8679,8 @@ export const getRelationalDatabaseBundles: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseBundlesRequest,
   output: GetRelationalDatabaseBundlesResult,
@@ -8714,8 +8710,8 @@ export const getRelationalDatabaseEvents: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseEventsRequest,
   output: GetRelationalDatabaseEventsResult,
@@ -8745,8 +8741,8 @@ export const getRelationalDatabaseLogEvents: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseLogEventsRequest,
   output: GetRelationalDatabaseLogEventsResult,
@@ -8776,8 +8772,8 @@ export const getRelationalDatabaseSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseSnapshotRequest,
   output: GetRelationalDatabaseSnapshotResult,
@@ -8807,8 +8803,8 @@ export const getStaticIp: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStaticIpRequest,
   output: GetStaticIpResult,
@@ -8838,8 +8834,8 @@ export const peerVpc: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PeerVpcRequest,
   output: PeerVpcResult,
@@ -8880,8 +8876,8 @@ export const updateRelationalDatabaseParameters: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRelationalDatabaseParametersRequest,
   output: UpdateRelationalDatabaseParametersResult,
@@ -8909,8 +8905,8 @@ export const deleteDistribution: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDistributionRequest,
   output: DeleteDistributionResult,
@@ -8940,8 +8936,8 @@ export const detachCertificateFromDistribution: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachCertificateFromDistributionRequest,
   output: DetachCertificateFromDistributionResult,
@@ -8968,8 +8964,8 @@ export const disableAddOn: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableAddOnRequest,
   output: DisableAddOnResult,
@@ -8998,8 +8994,8 @@ export const enableAddOn: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableAddOnRequest,
   output: EnableAddOnResult,
@@ -9030,8 +9026,8 @@ export const getDistributionBundles: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDistributionBundlesRequest,
   output: GetDistributionBundlesResult,
@@ -9058,8 +9054,8 @@ export const getDistributionLatestCacheReset: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDistributionLatestCacheResetRequest,
   output: GetDistributionLatestCacheResetResult,
@@ -9090,8 +9086,8 @@ export const getDistributionMetricData: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDistributionMetricDataRequest,
   output: GetDistributionMetricDataResult,
@@ -9131,8 +9127,8 @@ export const putAlarm: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAlarmRequest,
   output: PutAlarmResult,
@@ -9163,8 +9159,8 @@ export const resetDistributionCache: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetDistributionCacheRequest,
   output: ResetDistributionCacheResult,
@@ -9204,8 +9200,8 @@ export const sendContactMethodVerification: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendContactMethodVerificationRequest,
   output: SendContactMethodVerificationResult,
@@ -9241,8 +9237,8 @@ export const testAlarm: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestAlarmRequest,
   output: TestAlarmResult,
@@ -9271,8 +9267,8 @@ export const updateDistribution: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDistributionRequest,
   output: UpdateDistributionResult,
@@ -9309,8 +9305,8 @@ export const updateDistributionBundle: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDistributionBundleRequest,
   output: UpdateDistributionBundleResult,
@@ -9349,8 +9345,8 @@ export const attachCertificateToDistribution: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachCertificateToDistributionRequest,
   output: AttachCertificateToDistributionResult,
@@ -9382,8 +9378,8 @@ export const createContactMethod: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContactMethodRequest,
   output: CreateContactMethodResult,
@@ -9416,8 +9412,8 @@ export const deleteAlarm: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAlarmRequest,
   output: DeleteAlarmResult,
@@ -9445,8 +9441,8 @@ export const deleteAutoSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAutoSnapshotRequest,
   output: DeleteAutoSnapshotResult,
@@ -9479,8 +9475,8 @@ export const deleteContactMethod: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContactMethodRequest,
   output: DeleteContactMethodResult,
@@ -9519,8 +9515,8 @@ export const deleteDiskSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDiskSnapshotRequest,
   output: DeleteDiskSnapshotResult,
@@ -9554,8 +9550,8 @@ export const deleteDomain: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResult,
@@ -9589,8 +9585,8 @@ export const deleteDomainEntry: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainEntryRequest,
   output: DeleteDomainEntryResult,
@@ -9624,8 +9620,8 @@ export const deleteInstance: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInstanceRequest,
   output: DeleteInstanceResult,
@@ -9660,8 +9656,8 @@ export const deleteInstanceSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInstanceSnapshotRequest,
   output: DeleteInstanceSnapshotResult,
@@ -9700,8 +9696,8 @@ export const deleteKeyPair: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteKeyPairRequest,
   output: DeleteKeyPairResult,
@@ -9738,8 +9734,8 @@ export const deleteKnownHostKeys: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteKnownHostKeysRequest,
   output: DeleteKnownHostKeysResult,
@@ -9775,8 +9771,8 @@ export const deleteLoadBalancer: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLoadBalancerRequest,
   output: DeleteLoadBalancerResult,
@@ -9810,8 +9806,8 @@ export const deleteLoadBalancerTlsCertificate: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLoadBalancerTlsCertificateRequest,
   output: DeleteLoadBalancerTlsCertificateResult,
@@ -9845,8 +9841,8 @@ export const deleteRelationalDatabase: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRelationalDatabaseRequest,
   output: DeleteRelationalDatabaseResult,
@@ -9880,8 +9876,8 @@ export const deleteRelationalDatabaseSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRelationalDatabaseSnapshotRequest,
   output: DeleteRelationalDatabaseSnapshotResult,
@@ -9917,8 +9913,8 @@ export const detachDisk: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachDiskRequest,
   output: DetachDiskResult,
@@ -9955,8 +9951,8 @@ export const detachInstancesFromLoadBalancer: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachInstancesFromLoadBalancerRequest,
   output: DetachInstancesFromLoadBalancerResult,
@@ -9986,8 +9982,8 @@ export const detachStaticIp: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachStaticIpRequest,
   output: DetachStaticIpResult,
@@ -10031,8 +10027,8 @@ export const exportSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportSnapshotRequest,
   output: ExportSnapshotResult,
@@ -10062,8 +10058,8 @@ export const getActiveNames: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetActiveNamesRequest,
   output: GetActiveNamesResult,
@@ -10093,8 +10089,8 @@ export const getDisks: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDisksRequest,
   output: GetDisksResult,
@@ -10125,8 +10121,8 @@ export const getDiskSnapshots: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDiskSnapshotsRequest,
   output: GetDiskSnapshotsResult,
@@ -10156,8 +10152,8 @@ export const getDomains: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainsRequest,
   output: GetDomainsResult,
@@ -10192,8 +10188,8 @@ export const getInstanceMetricData: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceMetricDataRequest,
   output: GetInstanceMetricDataResult,
@@ -10224,8 +10220,8 @@ export const getInstances: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstancesRequest,
   output: GetInstancesResult,
@@ -10255,8 +10251,8 @@ export const getInstanceSnapshots: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceSnapshotsRequest,
   output: GetInstanceSnapshotsResult,
@@ -10286,8 +10282,8 @@ export const getKeyPair: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetKeyPairRequest,
   output: GetKeyPairResult,
@@ -10317,8 +10313,8 @@ export const getKeyPairs: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetKeyPairsRequest,
   output: GetKeyPairsResult,
@@ -10352,8 +10348,8 @@ export const getLoadBalancerMetricData: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoadBalancerMetricDataRequest,
   output: GetLoadBalancerMetricDataResult,
@@ -10383,8 +10379,8 @@ export const getLoadBalancers: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoadBalancersRequest,
   output: GetLoadBalancersResult,
@@ -10415,8 +10411,8 @@ export const getOperation: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOperationRequest,
   output: GetOperationResult,
@@ -10450,8 +10446,8 @@ export const getOperations: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOperationsRequest,
   output: GetOperationsResult,
@@ -10481,8 +10477,8 @@ export const getOperationsForResource: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOperationsForResourceRequest,
   output: GetOperationsForResourceResult,
@@ -10512,8 +10508,8 @@ export const getRelationalDatabaseLogStreams: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseLogStreamsRequest,
   output: GetRelationalDatabaseLogStreamsResult,
@@ -10548,8 +10544,8 @@ export const getRelationalDatabaseMasterUserPassword: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseMasterUserPasswordRequest,
   output: GetRelationalDatabaseMasterUserPasswordResult,
@@ -10583,8 +10579,8 @@ export const getRelationalDatabaseMetricData: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseMetricDataRequest,
   output: GetRelationalDatabaseMetricDataResult,
@@ -10619,8 +10615,8 @@ export const getRelationalDatabaseParameters: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseParametersRequest,
   output: GetRelationalDatabaseParametersResult,
@@ -10650,8 +10646,8 @@ export const getRelationalDatabases: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabasesRequest,
   output: GetRelationalDatabasesResult,
@@ -10681,8 +10677,8 @@ export const getRelationalDatabaseSnapshots: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRelationalDatabaseSnapshotsRequest,
   output: GetRelationalDatabaseSnapshotsResult,
@@ -10712,8 +10708,8 @@ export const getStaticIps: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStaticIpsRequest,
   output: GetStaticIpsResult,
@@ -10743,8 +10739,8 @@ export const importKeyPair: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportKeyPairRequest,
   output: ImportKeyPairResult,
@@ -10779,8 +10775,8 @@ export const openInstancePublicPorts: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: OpenInstancePublicPortsRequest,
   output: OpenInstancePublicPortsResult,
@@ -10819,8 +10815,8 @@ export const putInstancePublicPorts: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutInstancePublicPortsRequest,
   output: PutInstancePublicPortsResult,
@@ -10854,8 +10850,8 @@ export const rebootInstance: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootInstanceRequest,
   output: RebootInstanceResult,
@@ -10889,8 +10885,8 @@ export const rebootRelationalDatabase: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootRelationalDatabaseRequest,
   output: RebootRelationalDatabaseResult,
@@ -10920,8 +10916,8 @@ export const releaseStaticIp: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReleaseStaticIpRequest,
   output: ReleaseStaticIpResult,
@@ -10955,8 +10951,8 @@ export const setIpAddressType: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIpAddressTypeRequest,
   output: SetIpAddressTypeResult,
@@ -10995,8 +10991,8 @@ export const startInstance: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartInstanceRequest,
   output: StartInstanceResult,
@@ -11031,8 +11027,8 @@ export const startRelationalDatabase: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRelationalDatabaseRequest,
   output: StartRelationalDatabaseResult,
@@ -11070,8 +11066,8 @@ export const stopInstance: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopInstanceRequest,
   output: StopInstanceResult,
@@ -11109,8 +11105,8 @@ export const stopRelationalDatabase: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopRelationalDatabaseRequest,
   output: StopRelationalDatabaseResult,
@@ -11146,8 +11142,8 @@ export const tagResource: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResult,
@@ -11182,8 +11178,8 @@ export const untagResource: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResult,
@@ -11217,8 +11213,8 @@ export const updateDomainEntry: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainEntryRequest,
   output: UpdateDomainEntryResult,
@@ -11253,8 +11249,8 @@ export const updateInstanceMetadataOptions: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInstanceMetadataOptionsRequest,
   output: UpdateInstanceMetadataOptionsResult,
@@ -11289,8 +11285,8 @@ export const updateLoadBalancerAttribute: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLoadBalancerAttributeRequest,
   output: UpdateLoadBalancerAttributeResult,
@@ -11327,8 +11323,8 @@ export const updateRelationalDatabase: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRelationalDatabaseRequest,
   output: UpdateRelationalDatabaseResult,
@@ -11361,8 +11357,8 @@ export const downloadDefaultKeyPair: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DownloadDefaultKeyPairRequest,
   output: DownloadDefaultKeyPairResult,
@@ -11392,8 +11388,8 @@ export const isVpcPeered: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IsVpcPeeredRequest,
   output: IsVpcPeeredResult,
@@ -11423,8 +11419,8 @@ export const unpeerVpc: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnpeerVpcRequest,
   output: UnpeerVpcResult,
@@ -11454,8 +11450,8 @@ export const allocateStaticIp: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AllocateStaticIpRequest,
   output: AllocateStaticIpResult,
@@ -11490,8 +11486,8 @@ export const attachDisk: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachDiskRequest,
   output: AttachDiskResult,
@@ -11528,8 +11524,8 @@ export const attachInstancesToLoadBalancer: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachInstancesToLoadBalancerRequest,
   output: AttachInstancesToLoadBalancerResult,
@@ -11569,8 +11565,8 @@ export const attachLoadBalancerTlsCertificate: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachLoadBalancerTlsCertificateRequest,
   output: AttachLoadBalancerTlsCertificateResult,
@@ -11600,8 +11596,8 @@ export const attachStaticIp: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachStaticIpRequest,
   output: AttachStaticIpResult,
@@ -11642,8 +11638,8 @@ export const copySnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopySnapshotRequest,
   output: CopySnapshotResult,
@@ -11679,8 +11675,8 @@ export const createDiskFromSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDiskFromSnapshotRequest,
   output: CreateDiskFromSnapshotResult,
@@ -11731,8 +11727,8 @@ export const createDiskSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDiskSnapshotRequest,
   output: CreateDiskSnapshotResult,
@@ -11765,8 +11761,8 @@ export const createDomain: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResult,
@@ -11799,8 +11795,8 @@ export const createInstances: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstancesRequest,
   output: CreateInstancesResult,
@@ -11834,8 +11830,8 @@ export const createInstanceSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstanceSnapshotRequest,
   output: CreateInstanceSnapshotResult,
@@ -11874,8 +11870,8 @@ export const createLoadBalancer: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLoadBalancerRequest,
   output: CreateLoadBalancerResult,
@@ -11911,8 +11907,8 @@ export const createLoadBalancerTlsCertificate: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLoadBalancerTlsCertificateRequest,
   output: CreateLoadBalancerTlsCertificateResult,
@@ -11945,8 +11941,8 @@ export const createRelationalDatabase: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRelationalDatabaseRequest,
   output: CreateRelationalDatabaseResult,
@@ -11984,8 +11980,8 @@ export const createRelationalDatabaseFromSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRelationalDatabaseFromSnapshotRequest,
   output: CreateRelationalDatabaseFromSnapshotResult,
@@ -12019,8 +12015,8 @@ export const createRelationalDatabaseSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRelationalDatabaseSnapshotRequest,
   output: CreateRelationalDatabaseSnapshotResult,
@@ -12054,8 +12050,8 @@ export const closeInstancePublicPorts: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CloseInstancePublicPortsRequest,
   output: CloseInstancePublicPortsResult,
@@ -12091,8 +12087,8 @@ export const createCloudFormationStack: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCloudFormationStackRequest,
   output: CreateCloudFormationStackResult,
@@ -12130,8 +12126,8 @@ export const createKeyPair: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateKeyPairRequest,
   output: CreateKeyPairResult,
@@ -12165,8 +12161,8 @@ export const createDisk: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDiskRequest,
   output: CreateDiskResult,
@@ -12198,8 +12194,8 @@ export const createDistribution: (
   | OperationFailureException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDistributionRequest,
   output: CreateDistributionResult,
@@ -12233,8 +12229,8 @@ export const createDomainEntry: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainEntryRequest,
   output: CreateDomainEntryResult,
@@ -12269,8 +12265,8 @@ export const createInstancesFromSnapshot: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstancesFromSnapshotRequest,
   output: CreateInstancesFromSnapshotResult,
@@ -12309,8 +12305,8 @@ export const getContainerServiceDeployments: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerServiceDeploymentsRequest,
   output: GetContainerServiceDeploymentsResult,
@@ -12337,8 +12333,8 @@ export const getSetupHistory: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSetupHistoryRequest,
   output: GetSetupHistoryResult,
@@ -12367,8 +12363,8 @@ export const updateBucket: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBucketRequest,
   output: UpdateBucketResult,
@@ -12398,8 +12394,8 @@ export const getBucketMetricData: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketMetricDataRequest,
   output: GetBucketMetricDataResult,
@@ -12430,8 +12426,8 @@ export const getContainerImages: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerImagesRequest,
   output: GetContainerImagesResult,
@@ -12466,8 +12462,8 @@ export const getContainerLog: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerLogRequest,
   output: GetContainerLogResult,
@@ -12497,8 +12493,8 @@ export const getBucketAccessKeys: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAccessKeysRequest,
   output: GetBucketAccessKeysResult,
@@ -12528,8 +12524,8 @@ export const getCertificates: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCertificatesRequest,
   output: GetCertificatesResult,
@@ -12559,8 +12555,8 @@ export const getContainerServiceMetricData: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerServiceMetricDataRequest,
   output: GetContainerServiceMetricDataResult,
@@ -12590,8 +12586,8 @@ export const getContainerServicePowers: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerServicePowersRequest,
   output: GetContainerServicePowersResult,
@@ -12622,8 +12618,8 @@ export const registerContainerImage: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterContainerImageRequest,
   output: RegisterContainerImageResult,
@@ -12653,8 +12649,8 @@ export const setResourceAccessForBucket: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetResourceAccessForBucketRequest,
   output: SetResourceAccessForBucketResult,
@@ -12684,8 +12680,8 @@ export const setupInstanceHttps: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetupInstanceHttpsRequest,
   output: SetupInstanceHttpsResult,
@@ -12713,8 +12709,8 @@ export const startGUISession: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartGUISessionRequest,
   output: StartGUISessionResult,
@@ -12742,8 +12738,8 @@ export const stopGUISession: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopGUISessionRequest,
   output: StopGUISessionResult,
@@ -12783,8 +12779,8 @@ export const updateBucketBundle: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBucketBundleRequest,
   output: UpdateBucketBundleResult,
@@ -12811,8 +12807,8 @@ export const updateContainerService: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateContainerServiceRequest,
   output: UpdateContainerServiceResult,
@@ -12838,8 +12834,8 @@ export const deleteContainerService: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContainerServiceRequest,
   output: DeleteContainerServiceResult,
@@ -12883,8 +12879,8 @@ export const createContainerServiceRegistryLogin: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContainerServiceRegistryLoginRequest,
   output: CreateContainerServiceRegistryLoginResult,
@@ -12913,8 +12909,8 @@ export const deleteBucket: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketRequest,
   output: DeleteBucketResult,
@@ -12945,8 +12941,8 @@ export const deleteBucketAccessKey: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketAccessKeyRequest,
   output: DeleteBucketAccessKeyResult,
@@ -12977,8 +12973,8 @@ export const deleteCertificate: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCertificateRequest,
   output: DeleteCertificateResult,
@@ -13009,8 +13005,8 @@ export const createGUISessionAccessDetails: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGUISessionAccessDetailsRequest,
   output: CreateGUISessionAccessDetailsResult,
@@ -13047,8 +13043,8 @@ export const createBucketAccessKey: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBucketAccessKeyRequest,
   output: CreateBucketAccessKeyResult,
@@ -13078,8 +13074,8 @@ export const createContainerService: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContainerServiceRequest,
   output: CreateContainerServiceResult,
@@ -13109,8 +13105,8 @@ export const getLoadBalancerTlsPolicies: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoadBalancerTlsPoliciesRequest,
   output: GetLoadBalancerTlsPoliciesResult,
@@ -13140,8 +13136,8 @@ export const createBucket: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBucketRequest,
   output: CreateBucketResult,
@@ -13171,8 +13167,8 @@ export const getBucketBundles: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketBundlesRequest,
   output: GetBucketBundlesResult,
@@ -13198,8 +13194,8 @@ export const deleteContainerImage: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContainerImageRequest,
   output: DeleteContainerImageResult,
@@ -13230,8 +13226,8 @@ export const getBuckets: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketsRequest,
   output: GetBucketsResult,
@@ -13268,8 +13264,8 @@ export const createContainerServiceDeployment: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContainerServiceDeploymentRequest,
   output: CreateContainerServiceDeploymentResult,
@@ -13303,8 +13299,8 @@ export const getAlarms: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAlarmsRequest,
   output: GetAlarmsResult,
@@ -13343,8 +13339,8 @@ export const createCertificate: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCertificateRequest,
   output: CreateCertificateResult,
@@ -13371,8 +13367,8 @@ export const getCostEstimate: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCostEstimateRequest,
   output: GetCostEstimateResult,
@@ -13405,8 +13401,8 @@ export const getExportSnapshotRecords: (
   | RegionSetupInProgressException
   | ServiceException
   | UnauthenticatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExportSnapshotRecordsRequest,
   output: GetExportSnapshotRecordsResult,

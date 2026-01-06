@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Cost Explorer",
@@ -3952,11 +3950,11 @@ export class DataUnavailableException extends S.TaggedError<DataUnavailableExcep
 export class UnknownMonitorException extends S.TaggedError<UnknownMonitorException>()(
   "UnknownMonitorException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { Message: S.optional(S.String) },
@@ -3972,15 +3970,15 @@ export class BillingViewHealthStatusException extends S.TaggedError<BillingViewH
 export class BackfillLimitExceededException extends S.TaggedError<BackfillLimitExceededException>()(
   "BackfillLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class GenerationExistsException extends S.TaggedError<GenerationExistsException>()(
   "GenerationExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnknownSubscriptionException extends S.TaggedError<UnknownSubscriptionException>()(
   "UnknownSubscriptionException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnresolvableUsageUnitException extends S.TaggedError<UnresolvableUsageUnitException>()(
   "UnresolvableUsageUnitException",
   { Message: S.optional(S.String) },
@@ -3988,11 +3986,11 @@ export class UnresolvableUsageUnitException extends S.TaggedError<UnresolvableUs
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RequestChangedException extends S.TaggedError<RequestChangedException>()(
   "RequestChangedException",
   { Message: S.optional(S.String) },
@@ -4000,7 +3998,7 @@ export class RequestChangedException extends S.TaggedError<RequestChangedExcepti
 export class AnalysisNotFoundException extends S.TaggedError<AnalysisNotFoundException>()(
   "AnalysisNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -4010,8 +4008,8 @@ export const provideAnomalyFeedback: (
   input: ProvideAnomalyFeedbackRequest,
 ) => Effect.Effect<
   ProvideAnomalyFeedbackResponse,
-  LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProvideAnomalyFeedbackRequest,
   output: ProvideAnomalyFeedbackResponse,
@@ -4025,8 +4023,8 @@ export const createAnomalyMonitor: (
   input: CreateAnomalyMonitorRequest,
 ) => Effect.Effect<
   CreateAnomalyMonitorResponse,
-  LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAnomalyMonitorRequest,
   output: CreateAnomalyMonitorResponse,
@@ -4039,8 +4037,8 @@ export const deleteAnomalyMonitor: (
   input: DeleteAnomalyMonitorRequest,
 ) => Effect.Effect<
   DeleteAnomalyMonitorResponse,
-  LimitExceededException | UnknownMonitorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | UnknownMonitorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAnomalyMonitorRequest,
   output: DeleteAnomalyMonitorResponse,
@@ -4054,8 +4052,8 @@ export const deleteCostCategoryDefinition: (
   input: DeleteCostCategoryDefinitionRequest,
 ) => Effect.Effect<
   DeleteCostCategoryDefinitionResponse,
-  LimitExceededException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCostCategoryDefinitionRequest,
   output: DeleteCostCategoryDefinitionResponse,
@@ -4073,8 +4071,8 @@ export const getAnomalyMonitors: {
     | InvalidNextTokenException
     | LimitExceededException
     | UnknownMonitorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetAnomalyMonitorsRequest,
@@ -4083,8 +4081,8 @@ export const getAnomalyMonitors: {
     | InvalidNextTokenException
     | LimitExceededException
     | UnknownMonitorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetAnomalyMonitorsRequest,
@@ -4093,8 +4091,8 @@ export const getAnomalyMonitors: {
     | InvalidNextTokenException
     | LimitExceededException
     | UnknownMonitorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAnomalyMonitorsRequest,
@@ -4119,8 +4117,8 @@ export const getApproximateUsageRecords: (
   input: GetApproximateUsageRecordsRequest,
 ) => Effect.Effect<
   GetApproximateUsageRecordsResponse,
-  DataUnavailableException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApproximateUsageRecordsRequest,
   output: GetApproximateUsageRecordsResponse,
@@ -4146,8 +4144,8 @@ export const getSavingsPlansUtilizationDetails: {
     | DataUnavailableException
     | InvalidNextTokenException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetSavingsPlansUtilizationDetailsRequest,
@@ -4156,8 +4154,8 @@ export const getSavingsPlansUtilizationDetails: {
     | DataUnavailableException
     | InvalidNextTokenException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetSavingsPlansUtilizationDetailsRequest,
@@ -4166,8 +4164,8 @@ export const getSavingsPlansUtilizationDetails: {
     | DataUnavailableException
     | InvalidNextTokenException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSavingsPlansUtilizationDetailsRequest,
@@ -4193,8 +4191,8 @@ export const listCommitmentPurchaseAnalyses: (
   | DataUnavailableException
   | InvalidNextTokenException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListCommitmentPurchaseAnalysesRequest,
   output: ListCommitmentPurchaseAnalysesResponse,
@@ -4212,22 +4210,22 @@ export const listCostAllocationTagBackfillHistory: {
     input: ListCostAllocationTagBackfillHistoryRequest,
   ): Effect.Effect<
     ListCostAllocationTagBackfillHistoryResponse,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCostAllocationTagBackfillHistoryRequest,
   ) => Stream.Stream<
     ListCostAllocationTagBackfillHistoryResponse,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCostAllocationTagBackfillHistoryRequest,
   ) => Stream.Stream<
     CostAllocationTagBackfillRequest,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCostAllocationTagBackfillHistoryRequest,
@@ -4249,22 +4247,22 @@ export const listCostAllocationTags: {
     input: ListCostAllocationTagsRequest,
   ): Effect.Effect<
     ListCostAllocationTagsResponse,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCostAllocationTagsRequest,
   ) => Stream.Stream<
     ListCostAllocationTagsResponse,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCostAllocationTagsRequest,
   ) => Stream.Stream<
     CostAllocationTag,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCostAllocationTagsRequest,
@@ -4291,22 +4289,22 @@ export const listCostCategoryDefinitions: {
     input: ListCostCategoryDefinitionsRequest,
   ): Effect.Effect<
     ListCostCategoryDefinitionsResponse,
-    LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCostCategoryDefinitionsRequest,
   ) => Stream.Stream<
     ListCostCategoryDefinitionsResponse,
-    LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCostCategoryDefinitionsRequest,
   ) => Stream.Stream<
     CostCategoryReference,
-    LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCostCategoryDefinitionsRequest,
@@ -4327,22 +4325,22 @@ export const listCostCategoryResourceAssociations: {
     input: ListCostCategoryResourceAssociationsRequest,
   ): Effect.Effect<
     ListCostCategoryResourceAssociationsResponse,
-    LimitExceededException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCostCategoryResourceAssociationsRequest,
   ) => Stream.Stream<
     ListCostCategoryResourceAssociationsResponse,
-    LimitExceededException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCostCategoryResourceAssociationsRequest,
   ) => Stream.Stream<
     CostCategoryResourceAssociation,
-    LimitExceededException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    LimitExceededException | ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCostCategoryResourceAssociationsRequest,
@@ -4366,8 +4364,8 @@ export const listSavingsPlansPurchaseRecommendationGeneration: (
   | DataUnavailableException
   | InvalidNextTokenException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
   output: ListSavingsPlansPurchaseRecommendationGenerationResponse,
@@ -4386,8 +4384,8 @@ export const startCostAllocationTagBackfill: (
   input: StartCostAllocationTagBackfillRequest,
 ) => Effect.Effect<
   StartCostAllocationTagBackfillResponse,
-  BackfillLimitExceededException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BackfillLimitExceededException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCostAllocationTagBackfillRequest,
   output: StartCostAllocationTagBackfillResponse,
@@ -4400,8 +4398,8 @@ export const deleteAnomalySubscription: (
   input: DeleteAnomalySubscriptionRequest,
 ) => Effect.Effect<
   DeleteAnomalySubscriptionResponse,
-  LimitExceededException | UnknownSubscriptionException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | UnknownSubscriptionException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAnomalySubscriptionRequest,
   output: DeleteAnomalySubscriptionResponse,
@@ -4415,8 +4413,8 @@ export const updateAnomalyMonitor: (
   input: UpdateAnomalyMonitorRequest,
 ) => Effect.Effect<
   UpdateAnomalyMonitorResponse,
-  LimitExceededException | UnknownMonitorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | UnknownMonitorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAnomalyMonitorRequest,
   output: UpdateAnomalyMonitorResponse,
@@ -4431,8 +4429,8 @@ export const createAnomalySubscription: (
   input: CreateAnomalySubscriptionRequest,
 ) => Effect.Effect<
   CreateAnomalySubscriptionResponse,
-  LimitExceededException | UnknownMonitorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | UnknownMonitorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAnomalySubscriptionRequest,
   output: CreateAnomalySubscriptionResponse,
@@ -4446,8 +4444,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  LimitExceededException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4461,8 +4459,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  LimitExceededException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4480,8 +4478,8 @@ export const getAnomalySubscriptions: {
     | InvalidNextTokenException
     | LimitExceededException
     | UnknownSubscriptionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetAnomalySubscriptionsRequest,
@@ -4490,8 +4488,8 @@ export const getAnomalySubscriptions: {
     | InvalidNextTokenException
     | LimitExceededException
     | UnknownSubscriptionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetAnomalySubscriptionsRequest,
@@ -4500,8 +4498,8 @@ export const getAnomalySubscriptions: {
     | InvalidNextTokenException
     | LimitExceededException
     | UnknownSubscriptionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAnomalySubscriptionsRequest,
@@ -4530,8 +4528,8 @@ export const getCostForecast: (
   | DataUnavailableException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCostForecastRequest,
   output: GetCostForecastResponse,
@@ -4556,8 +4554,8 @@ export const updateAnomalySubscription: (
   | LimitExceededException
   | UnknownMonitorException
   | UnknownSubscriptionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAnomalySubscriptionRequest,
   output: UpdateAnomalySubscriptionResponse,
@@ -4580,8 +4578,8 @@ export const describeCostCategoryDefinition: (
   input: DescribeCostCategoryDefinitionRequest,
 ) => Effect.Effect<
   DescribeCostCategoryDefinitionResponse,
-  LimitExceededException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCostCategoryDefinitionRequest,
   output: DescribeCostCategoryDefinitionResponse,
@@ -4602,8 +4600,8 @@ export const getCostAndUsageComparisons: {
     | InvalidNextTokenException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetCostAndUsageComparisonsRequest,
@@ -4614,8 +4612,8 @@ export const getCostAndUsageComparisons: {
     | InvalidNextTokenException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetCostAndUsageComparisonsRequest,
@@ -4626,8 +4624,8 @@ export const getCostAndUsageComparisons: {
     | InvalidNextTokenException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCostAndUsageComparisonsRequest,
@@ -4661,8 +4659,8 @@ export const getCostComparisonDrivers: {
     | InvalidNextTokenException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetCostComparisonDriversRequest,
@@ -4673,8 +4671,8 @@ export const getCostComparisonDrivers: {
     | InvalidNextTokenException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetCostComparisonDriversRequest,
@@ -4685,8 +4683,8 @@ export const getCostComparisonDrivers: {
     | InvalidNextTokenException
     | LimitExceededException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCostComparisonDriversRequest,
@@ -4747,8 +4745,8 @@ export const getReservationCoverage: (
   | DataUnavailableException
   | InvalidNextTokenException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReservationCoverageRequest,
   output: GetReservationCoverageResponse,
@@ -4771,8 +4769,8 @@ export const getReservationUtilization: (
   | DataUnavailableException
   | InvalidNextTokenException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReservationUtilizationRequest,
   output: GetReservationUtilizationResponse,
@@ -4790,8 +4788,8 @@ export const getSavingsPlanPurchaseRecommendationDetails: (
   input: GetSavingsPlanPurchaseRecommendationDetailsRequest,
 ) => Effect.Effect<
   GetSavingsPlanPurchaseRecommendationDetailsResponse,
-  DataUnavailableException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSavingsPlanPurchaseRecommendationDetailsRequest,
   output: GetSavingsPlanPurchaseRecommendationDetailsResponse,
@@ -4823,8 +4821,8 @@ export const getSavingsPlansCoverage: {
     | DataUnavailableException
     | InvalidNextTokenException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetSavingsPlansCoverageRequest,
@@ -4833,8 +4831,8 @@ export const getSavingsPlansCoverage: {
     | DataUnavailableException
     | InvalidNextTokenException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetSavingsPlansCoverageRequest,
@@ -4843,8 +4841,8 @@ export const getSavingsPlansCoverage: {
     | DataUnavailableException
     | InvalidNextTokenException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSavingsPlansCoverageRequest,
@@ -4873,8 +4871,8 @@ export const getSavingsPlansUtilization: (
   input: GetSavingsPlansUtilizationRequest,
 ) => Effect.Effect<
   GetSavingsPlansUtilizationResponse,
-  DataUnavailableException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DataUnavailableException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSavingsPlansUtilizationRequest,
   output: GetSavingsPlansUtilizationResponse,
@@ -4893,8 +4891,8 @@ export const getUsageForecast: (
   | LimitExceededException
   | ResourceNotFoundException
   | UnresolvableUsageUnitException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUsageForecastRequest,
   output: GetUsageForecastResponse,
@@ -4923,8 +4921,8 @@ export const startSavingsPlansPurchaseRecommendationGeneration: (
   | GenerationExistsException
   | LimitExceededException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSavingsPlansPurchaseRecommendationGenerationRequest,
   output: StartSavingsPlansPurchaseRecommendationGenerationResponse,
@@ -4945,8 +4943,8 @@ export const updateCostAllocationTagsStatus: (
   input: UpdateCostAllocationTagsStatusRequest,
 ) => Effect.Effect<
   UpdateCostAllocationTagsStatusResponse,
-  LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCostAllocationTagsStatusRequest,
   output: UpdateCostAllocationTagsStatusResponse,
@@ -4970,8 +4968,8 @@ export const tagResource: (
   | LimitExceededException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4996,8 +4994,8 @@ export const getTags: (
   | LimitExceededException
   | RequestChangedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTagsRequest,
   output: GetTagsResponse,
@@ -5023,8 +5021,8 @@ export const updateCostCategoryDefinition: (
   | LimitExceededException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCostCategoryDefinitionRequest,
   output: UpdateCostCategoryDefinitionResponse,
@@ -5041,8 +5039,8 @@ export const createCostCategoryDefinition: (
   input: CreateCostCategoryDefinitionRequest,
 ) => Effect.Effect<
   CreateCostCategoryDefinitionResponse,
-  LimitExceededException | ServiceQuotaExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededException | ServiceQuotaExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCostCategoryDefinitionRequest,
   output: CreateCostCategoryDefinitionResponse,
@@ -5065,8 +5063,8 @@ export const getCostCategories: (
   | LimitExceededException
   | RequestChangedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCostCategoriesRequest,
   output: GetCostCategoriesResponse,
@@ -5095,8 +5093,8 @@ export const getDimensionValues: (
   | LimitExceededException
   | RequestChangedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDimensionValuesRequest,
   output: GetDimensionValuesResponse,
@@ -5131,8 +5129,8 @@ export const getCostAndUsage: (
   | LimitExceededException
   | RequestChangedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCostAndUsageRequest,
   output: GetCostAndUsageResponse,
@@ -5173,8 +5171,8 @@ export const getCostAndUsageWithResources: (
   | LimitExceededException
   | RequestChangedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCostAndUsageWithResourcesRequest,
   output: GetCostAndUsageWithResourcesResponse,
@@ -5199,8 +5197,8 @@ export const getCommitmentPurchaseAnalysis: (
   | AnalysisNotFoundException
   | DataUnavailableException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCommitmentPurchaseAnalysisRequest,
   output: GetCommitmentPurchaseAnalysisResponse,
@@ -5220,8 +5218,8 @@ export const getSavingsPlansPurchaseRecommendation: (
   input: GetSavingsPlansPurchaseRecommendationRequest,
 ) => Effect.Effect<
   GetSavingsPlansPurchaseRecommendationResponse,
-  InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidNextTokenException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSavingsPlansPurchaseRecommendationRequest,
   output: GetSavingsPlansPurchaseRecommendationResponse,
@@ -5240,8 +5238,8 @@ export const startCommitmentPurchaseAnalysis: (
   | GenerationExistsException
   | LimitExceededException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCommitmentPurchaseAnalysisRequest,
   output: StartCommitmentPurchaseAnalysisResponse,
@@ -5262,22 +5260,22 @@ export const getAnomalies: {
     input: GetAnomaliesRequest,
   ): Effect.Effect<
     GetAnomaliesResponse,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetAnomaliesRequest,
   ) => Stream.Stream<
     GetAnomaliesResponse,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetAnomaliesRequest,
   ) => Stream.Stream<
     Anomaly,
-    InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAnomaliesRequest,
@@ -5317,8 +5315,8 @@ export const getReservationPurchaseRecommendation: (
   | DataUnavailableException
   | InvalidNextTokenException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReservationPurchaseRecommendationRequest,
   output: GetReservationPurchaseRecommendationResponse,
@@ -5340,8 +5338,8 @@ export const getRightsizingRecommendation: (
   input: GetRightsizingRecommendationRequest,
 ) => Effect.Effect<
   GetRightsizingRecommendationResponse,
-  InvalidNextTokenException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidNextTokenException | LimitExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRightsizingRecommendationRequest,
   output: GetRightsizingRecommendationResponse,

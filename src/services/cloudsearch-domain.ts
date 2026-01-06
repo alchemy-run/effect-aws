@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://cloudsearch.amazonaws.com/doc/2013-01-01/");
 const svc = T.AwsApiService({
@@ -572,8 +570,8 @@ export const uploadDocuments: (
   input: UploadDocumentsRequest,
 ) => Effect.Effect<
   UploadDocumentsResponse,
-  DocumentServiceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DocumentServiceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadDocumentsRequest,
   output: UploadDocumentsResponse,
@@ -590,8 +588,8 @@ export const suggest: (
   input: SuggestRequest,
 ) => Effect.Effect<
   SuggestResponse,
-  SearchException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  SearchException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SuggestRequest,
   output: SuggestResponse,
@@ -616,8 +614,8 @@ export const search: (
   input: SearchRequest,
 ) => Effect.Effect<
   SearchResponse,
-  SearchException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  SearchException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SearchRequest,
   output: SearchResponse,

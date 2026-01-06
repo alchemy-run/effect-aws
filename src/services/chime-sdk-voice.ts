@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Voice",
@@ -4219,57 +4217,51 @@ export const GetSpeakerSearchTaskResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceFailureException extends S.TaggedError<ServiceFailureException>()(
   "ServiceFailureException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class GoneException extends S.TaggedError<GoneException>()(
   "GoneException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottledClientException extends S.TaggedError<ThrottledClientException>()(
   "ThrottledClientException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnauthorizedClientException extends S.TaggedError<UnauthorizedClientException>()(
   "UnauthorizedClientException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class UnprocessableEntityException extends S.TaggedError<UnprocessableEntityException>()(
   "UnprocessableEntityException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -4285,8 +4277,8 @@ export const listTagsForResource: (
   | ServiceFailureException
   | ServiceUnavailableException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4313,8 +4305,8 @@ export const putVoiceConnectorEmergencyCallingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorEmergencyCallingConfigurationRequest,
   output: PutVoiceConnectorEmergencyCallingConfigurationResponse,
@@ -4342,8 +4334,8 @@ export const putVoiceConnectorOrigination: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorOriginationRequest,
   output: PutVoiceConnectorOriginationResponse,
@@ -4371,8 +4363,8 @@ export const putVoiceConnectorStreamingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorStreamingConfigurationRequest,
   output: PutVoiceConnectorStreamingConfigurationResponse,
@@ -4404,8 +4396,8 @@ export const createVoiceConnector: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVoiceConnectorRequest,
   output: CreateVoiceConnectorResponse,
@@ -4436,8 +4428,8 @@ export const deleteVoiceProfile: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceProfileRequest,
   output: DeleteVoiceProfileResponse,
@@ -4468,8 +4460,8 @@ export const getSipMediaApplication: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSipMediaApplicationRequest,
   output: GetSipMediaApplicationResponse,
@@ -4498,8 +4490,8 @@ export const getSipRule: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSipRuleRequest,
   output: GetSipRuleResponse,
@@ -4528,8 +4520,8 @@ export const getVoiceConnectorExternalSystemsConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorExternalSystemsConfigurationRequest,
   output: GetVoiceConnectorExternalSystemsConfigurationResponse,
@@ -4558,8 +4550,8 @@ export const getVoiceConnectorGroup: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorGroupRequest,
   output: GetVoiceConnectorGroupResponse,
@@ -4588,8 +4580,8 @@ export const getVoiceConnectorProxy: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorProxyRequest,
   output: GetVoiceConnectorProxyResponse,
@@ -4619,8 +4611,8 @@ export const getVoiceConnectorTerminationHealth: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorTerminationHealthRequest,
   output: GetVoiceConnectorTerminationHealthResponse,
@@ -4649,8 +4641,8 @@ export const getVoiceProfileDomain: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceProfileDomainRequest,
   output: GetVoiceProfileDomainResponse,
@@ -4681,8 +4673,8 @@ export const getVoiceToneAnalysisTask: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceToneAnalysisTaskRequest,
   output: GetVoiceToneAnalysisTaskResponse,
@@ -4713,8 +4705,8 @@ export const listVoiceProfileDomains: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVoiceProfileDomainsRequest,
@@ -4727,8 +4719,8 @@ export const listVoiceProfileDomains: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVoiceProfileDomainsRequest,
@@ -4741,8 +4733,8 @@ export const listVoiceProfileDomains: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVoiceProfileDomainsRequest,
@@ -4777,8 +4769,8 @@ export const listVoiceProfiles: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVoiceProfilesRequest,
@@ -4791,8 +4783,8 @@ export const listVoiceProfiles: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVoiceProfilesRequest,
@@ -4805,8 +4797,8 @@ export const listVoiceProfiles: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVoiceProfilesRequest,
@@ -4843,8 +4835,8 @@ export const putSipMediaApplicationAlexaSkillConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSipMediaApplicationAlexaSkillConfigurationRequest,
   output: PutSipMediaApplicationAlexaSkillConfigurationResponse,
@@ -4872,8 +4864,8 @@ export const putSipMediaApplicationLoggingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSipMediaApplicationLoggingConfigurationRequest,
   output: PutSipMediaApplicationLoggingConfigurationResponse,
@@ -4901,8 +4893,8 @@ export const putVoiceConnectorLoggingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorLoggingConfigurationRequest,
   output: PutVoiceConnectorLoggingConfigurationResponse,
@@ -4931,8 +4923,8 @@ export const putVoiceConnectorTermination: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorTerminationRequest,
   output: PutVoiceConnectorTerminationResponse,
@@ -4964,8 +4956,8 @@ export const updateSipMediaApplicationCall: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSipMediaApplicationCallRequest,
   output: UpdateSipMediaApplicationCallResponse,
@@ -4998,8 +4990,8 @@ export const validateE911Address: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidateE911AddressRequest,
   output: ValidateE911AddressResponse,
@@ -5029,8 +5021,8 @@ export const disassociatePhoneNumbersFromVoiceConnector: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociatePhoneNumbersFromVoiceConnectorRequest,
   output: DisassociatePhoneNumbersFromVoiceConnectorResponse,
@@ -5059,8 +5051,8 @@ export const disassociatePhoneNumbersFromVoiceConnectorGroup: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociatePhoneNumbersFromVoiceConnectorGroupRequest,
   output: DisassociatePhoneNumbersFromVoiceConnectorGroupResponse,
@@ -5090,8 +5082,8 @@ export const getPhoneNumberOrder: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPhoneNumberOrderRequest,
   output: GetPhoneNumberOrderResponse,
@@ -5122,8 +5114,8 @@ export const getSipMediaApplicationAlexaSkillConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSipMediaApplicationAlexaSkillConfigurationRequest,
   output: GetSipMediaApplicationAlexaSkillConfigurationResponse,
@@ -5151,8 +5143,8 @@ export const getSipMediaApplicationLoggingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSipMediaApplicationLoggingConfigurationRequest,
   output: GetSipMediaApplicationLoggingConfigurationResponse,
@@ -5181,8 +5173,8 @@ export const getVoiceConnector: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorRequest,
   output: GetVoiceConnectorResponse,
@@ -5210,8 +5202,8 @@ export const getVoiceConnectorEmergencyCallingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorEmergencyCallingConfigurationRequest,
   output: GetVoiceConnectorEmergencyCallingConfigurationResponse,
@@ -5240,8 +5232,8 @@ export const getVoiceConnectorLoggingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorLoggingConfigurationRequest,
   output: GetVoiceConnectorLoggingConfigurationResponse,
@@ -5269,8 +5261,8 @@ export const getVoiceConnectorOrigination: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorOriginationRequest,
   output: GetVoiceConnectorOriginationResponse,
@@ -5300,8 +5292,8 @@ export const getVoiceConnectorStreamingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorStreamingConfigurationRequest,
   output: GetVoiceConnectorStreamingConfigurationResponse,
@@ -5329,8 +5321,8 @@ export const getVoiceConnectorTermination: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceConnectorTerminationRequest,
   output: GetVoiceConnectorTerminationResponse,
@@ -5359,8 +5351,8 @@ export const getVoiceProfile: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceProfileRequest,
   output: GetVoiceProfileResponse,
@@ -5392,8 +5384,8 @@ export const listPhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPhoneNumbersRequest,
@@ -5406,8 +5398,8 @@ export const listPhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPhoneNumbersRequest,
@@ -5420,8 +5412,8 @@ export const listPhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPhoneNumbersRequest,
@@ -5456,8 +5448,8 @@ export const listProxySessions: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProxySessionsRequest,
@@ -5470,8 +5462,8 @@ export const listProxySessions: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProxySessionsRequest,
@@ -5484,8 +5476,8 @@ export const listProxySessions: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProxySessionsRequest,
@@ -5519,8 +5511,8 @@ export const listVoiceConnectorTerminationCredentials: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVoiceConnectorTerminationCredentialsRequest,
   output: ListVoiceConnectorTerminationCredentialsResponse,
@@ -5549,8 +5541,8 @@ export const putVoiceConnectorProxy: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorProxyRequest,
   output: PutVoiceConnectorProxyResponse,
@@ -5579,8 +5571,8 @@ export const putVoiceConnectorTerminationCredentials: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorTerminationCredentialsRequest,
   output: PutVoiceConnectorTerminationCredentialsResponse,
@@ -5609,8 +5601,8 @@ export const restorePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestorePhoneNumberRequest,
   output: RestorePhoneNumberResponse,
@@ -5639,8 +5631,8 @@ export const updateProxySession: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProxySessionRequest,
   output: UpdateProxySessionResponse,
@@ -5668,8 +5660,8 @@ export const updateVoiceConnector: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVoiceConnectorRequest,
   output: UpdateVoiceConnectorResponse,
@@ -5698,8 +5690,8 @@ export const updateVoiceProfileDomain: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVoiceProfileDomainRequest,
   output: UpdateVoiceProfileDomainResponse,
@@ -5729,8 +5721,8 @@ export const deleteProxySession: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProxySessionRequest,
   output: DeleteProxySessionResponse,
@@ -5759,8 +5751,8 @@ export const deleteVoiceConnectorEmergencyCallingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorEmergencyCallingConfigurationRequest,
   output: DeleteVoiceConnectorEmergencyCallingConfigurationResponse,
@@ -5788,8 +5780,8 @@ export const deleteVoiceConnectorExternalSystemsConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorExternalSystemsConfigurationRequest,
   output: DeleteVoiceConnectorExternalSystemsConfigurationResponse,
@@ -5820,8 +5812,8 @@ export const deleteVoiceConnectorOrigination: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorOriginationRequest,
   output: DeleteVoiceConnectorOriginationResponse,
@@ -5849,8 +5841,8 @@ export const deleteVoiceConnectorProxy: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorProxyRequest,
   output: DeleteVoiceConnectorProxyResponse,
@@ -5878,8 +5870,8 @@ export const deleteVoiceConnectorStreamingConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorStreamingConfigurationRequest,
   output: DeleteVoiceConnectorStreamingConfigurationResponse,
@@ -5910,8 +5902,8 @@ export const deleteVoiceConnectorTermination: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorTerminationRequest,
   output: DeleteVoiceConnectorTerminationResponse,
@@ -5940,8 +5932,8 @@ export const deleteVoiceConnectorTerminationCredentials: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorTerminationCredentialsRequest,
   output: DeleteVoiceConnectorTerminationCredentialsResponse,
@@ -5973,8 +5965,8 @@ export const batchDeletePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeletePhoneNumberRequest,
   output: BatchDeletePhoneNumberResponse,
@@ -6003,8 +5995,8 @@ export const associatePhoneNumbersWithVoiceConnectorGroup: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociatePhoneNumbersWithVoiceConnectorGroupRequest,
   output: AssociatePhoneNumbersWithVoiceConnectorGroupResponse,
@@ -6034,8 +6026,8 @@ export const associatePhoneNumbersWithVoiceConnector: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociatePhoneNumbersWithVoiceConnectorRequest,
   output: AssociatePhoneNumbersWithVoiceConnectorResponse,
@@ -6067,8 +6059,8 @@ export const batchUpdatePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdatePhoneNumberRequest,
   output: BatchUpdatePhoneNumberResponse,
@@ -6097,8 +6089,8 @@ export const createProxySession: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProxySessionRequest,
   output: CreateProxySessionResponse,
@@ -6127,8 +6119,8 @@ export const putVoiceConnectorExternalSystemsConfiguration: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutVoiceConnectorExternalSystemsConfigurationRequest,
   output: PutVoiceConnectorExternalSystemsConfigurationResponse,
@@ -6167,8 +6159,8 @@ export const updatePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePhoneNumberRequest,
   output: UpdatePhoneNumberResponse,
@@ -6198,8 +6190,8 @@ export const updateSipMediaApplication: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSipMediaApplicationRequest,
   output: UpdateSipMediaApplicationResponse,
@@ -6230,8 +6222,8 @@ export const updateSipRule: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSipRuleRequest,
   output: UpdateSipRuleResponse,
@@ -6262,8 +6254,8 @@ export const updateVoiceConnectorGroup: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVoiceConnectorGroupRequest,
   output: UpdateVoiceConnectorGroupResponse,
@@ -6293,8 +6285,8 @@ export const deleteSipMediaApplication: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSipMediaApplicationRequest,
   output: DeleteSipMediaApplicationResponse,
@@ -6324,8 +6316,8 @@ export const deleteSipRule: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSipRuleRequest,
   output: DeleteSipRuleResponse,
@@ -6357,8 +6349,8 @@ export const deleteVoiceConnector: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorRequest,
   output: DeleteVoiceConnectorResponse,
@@ -6390,8 +6382,8 @@ export const deleteVoiceConnectorGroup: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceConnectorGroupRequest,
   output: DeleteVoiceConnectorGroupResponse,
@@ -6422,8 +6414,8 @@ export const deleteVoiceProfileDomain: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceProfileDomainRequest,
   output: DeleteVoiceProfileDomainResponse,
@@ -6452,8 +6444,8 @@ export const getGlobalSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGlobalSettingsRequest,
   output: GetGlobalSettingsResponse,
@@ -6480,8 +6472,8 @@ export const listPhoneNumberOrders: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPhoneNumberOrdersRequest,
@@ -6493,8 +6485,8 @@ export const listPhoneNumberOrders: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPhoneNumberOrdersRequest,
@@ -6506,8 +6498,8 @@ export const listPhoneNumberOrders: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPhoneNumberOrdersRequest,
@@ -6540,8 +6532,8 @@ export const listSipMediaApplications: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSipMediaApplicationsRequest,
@@ -6553,8 +6545,8 @@ export const listSipMediaApplications: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSipMediaApplicationsRequest,
@@ -6566,8 +6558,8 @@ export const listSipMediaApplications: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSipMediaApplicationsRequest,
@@ -6601,8 +6593,8 @@ export const listSipRules: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSipRulesRequest,
@@ -6614,8 +6606,8 @@ export const listSipRules: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSipRulesRequest,
@@ -6627,8 +6619,8 @@ export const listSipRules: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSipRulesRequest,
@@ -6663,8 +6655,8 @@ export const listVoiceConnectorGroups: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVoiceConnectorGroupsRequest,
@@ -6676,8 +6668,8 @@ export const listVoiceConnectorGroups: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVoiceConnectorGroupsRequest,
@@ -6689,8 +6681,8 @@ export const listVoiceConnectorGroups: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVoiceConnectorGroupsRequest,
@@ -6724,8 +6716,8 @@ export const listVoiceConnectors: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVoiceConnectorsRequest,
@@ -6737,8 +6729,8 @@ export const listVoiceConnectors: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVoiceConnectorsRequest,
@@ -6750,8 +6742,8 @@ export const listVoiceConnectors: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVoiceConnectorsRequest,
@@ -6785,8 +6777,8 @@ export const searchAvailablePhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchAvailablePhoneNumbersRequest,
@@ -6799,8 +6791,8 @@ export const searchAvailablePhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchAvailablePhoneNumbersRequest,
@@ -6813,8 +6805,8 @@ export const searchAvailablePhoneNumbers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchAvailablePhoneNumbersRequest,
@@ -6848,8 +6840,8 @@ export const getPhoneNumberSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPhoneNumberSettingsRequest,
   output: GetPhoneNumberSettingsResponse,
@@ -6875,8 +6867,8 @@ export const listAvailableVoiceConnectorRegions: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAvailableVoiceConnectorRegionsRequest,
   output: ListAvailableVoiceConnectorRegionsResponse,
@@ -6902,8 +6894,8 @@ export const updateGlobalSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGlobalSettingsRequest,
   output: UpdateGlobalSettingsResponse,
@@ -6932,8 +6924,8 @@ export const updatePhoneNumberSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePhoneNumberSettingsRequest,
   output: UpdatePhoneNumberSettingsResponse,
@@ -6967,8 +6959,8 @@ export const deletePhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePhoneNumberRequest,
   output: DeletePhoneNumberResponse,
@@ -6997,8 +6989,8 @@ export const getPhoneNumber: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPhoneNumberRequest,
   output: GetPhoneNumberResponse,
@@ -7026,8 +7018,8 @@ export const getProxySession: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProxySessionRequest,
   output: GetProxySessionResponse,
@@ -7062,8 +7054,8 @@ export const createVoiceConnectorGroup: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVoiceConnectorGroupRequest,
   output: CreateVoiceConnectorGroupResponse,
@@ -7095,8 +7087,8 @@ export const createSipMediaApplication: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSipMediaApplicationRequest,
   output: CreateSipMediaApplicationResponse,
@@ -7129,8 +7121,8 @@ export const createSipRule: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSipRuleRequest,
   output: CreateSipRuleResponse,
@@ -7168,8 +7160,8 @@ export const createVoiceProfileDomain: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVoiceProfileDomainRequest,
   output: CreateVoiceProfileDomainResponse,
@@ -7200,8 +7192,8 @@ export const createPhoneNumberOrder: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePhoneNumberOrderRequest,
   output: CreatePhoneNumberOrderResponse,
@@ -7233,8 +7225,8 @@ export const createSipMediaApplicationCall: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSipMediaApplicationCallRequest,
   output: CreateSipMediaApplicationCallResponse,
@@ -7275,8 +7267,8 @@ export const updateVoiceProfile: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVoiceProfileRequest,
   output: UpdateVoiceProfileResponse,
@@ -7317,8 +7309,8 @@ export const createVoiceProfile: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVoiceProfileRequest,
   output: CreateVoiceProfileResponse,
@@ -7352,8 +7344,8 @@ export const getSpeakerSearchTask: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSpeakerSearchTaskRequest,
   output: GetSpeakerSearchTaskResponse,
@@ -7383,8 +7375,8 @@ export const tagResource: (
   | ServiceFailureException
   | ServiceUnavailableException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -7411,8 +7403,8 @@ export const untagResource: (
   | ServiceFailureException
   | ServiceUnavailableException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7439,8 +7431,8 @@ export const listSupportedPhoneNumberCountries: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListSupportedPhoneNumberCountriesRequest,
   output: ListSupportedPhoneNumberCountriesResponse,
@@ -7471,8 +7463,8 @@ export const stopSpeakerSearchTask: (
   | ThrottledClientException
   | UnauthorizedClientException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopSpeakerSearchTaskRequest,
   output: StopSpeakerSearchTaskResponse,
@@ -7506,8 +7498,8 @@ export const stopVoiceToneAnalysisTask: (
   | ThrottledClientException
   | UnauthorizedClientException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopVoiceToneAnalysisTaskRequest,
   output: StopVoiceToneAnalysisTaskResponse,
@@ -7546,8 +7538,8 @@ export const startSpeakerSearchTask: (
   | ThrottledClientException
   | UnauthorizedClientException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSpeakerSearchTaskRequest,
   output: StartSpeakerSearchTaskResponse,
@@ -7590,8 +7582,8 @@ export const startVoiceToneAnalysisTask: (
   | ThrottledClientException
   | UnauthorizedClientException
   | UnprocessableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartVoiceToneAnalysisTaskRequest,
   output: StartVoiceToneAnalysisTaskResponse,

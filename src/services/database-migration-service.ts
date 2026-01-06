@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://dms.amazonaws.com/doc/2016-01-01/");
 const svc = T.AwsApiService({
@@ -7603,7 +7601,7 @@ export class InvalidResourceStateFault extends S.TaggedError<InvalidResourceStat
 export class CollectorNotFoundFault extends S.TaggedError<CollectorNotFoundFault>()(
   "CollectorNotFoundFault",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidOperationFault extends S.TaggedError<InvalidOperationFault>()(
   "InvalidOperationFault",
   { message: S.optional(S.String) },
@@ -7711,8 +7709,8 @@ export const describeAccountAttributes: (
   input: DescribeAccountAttributesMessage,
 ) => Effect.Effect<
   DescribeAccountAttributesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountAttributesMessage,
   output: DescribeAccountAttributesResponse,
@@ -7728,22 +7726,22 @@ export const describeExtensionPackAssociations: {
     input: DescribeExtensionPackAssociationsMessage,
   ): Effect.Effect<
     DescribeExtensionPackAssociationsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeExtensionPackAssociationsMessage,
   ) => Stream.Stream<
     DescribeExtensionPackAssociationsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeExtensionPackAssociationsMessage,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeExtensionPackAssociationsMessage,
@@ -7773,8 +7771,8 @@ export const updateSubscriptionsToEventBridge: (
   input: UpdateSubscriptionsToEventBridgeMessage,
 ) => Effect.Effect<
   UpdateSubscriptionsToEventBridgeResponse,
-  AccessDeniedFault | InvalidResourceStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedFault | InvalidResourceStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSubscriptionsToEventBridgeMessage,
   output: UpdateSubscriptionsToEventBridgeResponse,
@@ -7792,8 +7790,8 @@ export const deleteFleetAdvisorCollector: (
   | AccessDeniedFault
   | CollectorNotFoundFault
   | InvalidResourceStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCollectorRequest,
   output: DeleteFleetAdvisorCollectorResponse,
@@ -7812,22 +7810,22 @@ export const describeConnections: {
     input: DescribeConnectionsMessage,
   ): Effect.Effect<
     DescribeConnectionsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeConnectionsMessage,
   ) => Stream.Stream<
     DescribeConnectionsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeConnectionsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeConnectionsMessage,
@@ -7848,22 +7846,22 @@ export const describeEndpointSettings: {
     input: DescribeEndpointSettingsMessage,
   ): Effect.Effect<
     DescribeEndpointSettingsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEndpointSettingsMessage,
   ) => Stream.Stream<
     DescribeEndpointSettingsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEndpointSettingsMessage,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEndpointSettingsMessage,
@@ -7883,22 +7881,22 @@ export const describeEndpointTypes: {
     input: DescribeEndpointTypesMessage,
   ): Effect.Effect<
     DescribeEndpointTypesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEndpointTypesMessage,
   ) => Stream.Stream<
     DescribeEndpointTypesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEndpointTypesMessage,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEndpointTypesMessage,
@@ -7918,22 +7916,22 @@ export const describeEngineVersions: {
     input: DescribeEngineVersionsMessage,
   ): Effect.Effect<
     DescribeEngineVersionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEngineVersionsMessage,
   ) => Stream.Stream<
     DescribeEngineVersionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEngineVersionsMessage,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEngineVersionsMessage,
@@ -7954,8 +7952,8 @@ export const describeEventCategories: (
   input: DescribeEventCategoriesMessage,
 ) => Effect.Effect<
   DescribeEventCategoriesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventCategoriesMessage,
   output: DescribeEventCategoriesResponse,
@@ -7971,22 +7969,22 @@ export const describeEvents: {
     input: DescribeEventsMessage,
   ): Effect.Effect<
     DescribeEventsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsMessage,
   ) => Stream.Stream<
     DescribeEventsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsMessage,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsMessage,
@@ -8009,22 +8007,22 @@ export const describeFleetAdvisorLsaAnalysis: {
     input: DescribeFleetAdvisorLsaAnalysisRequest,
   ): Effect.Effect<
     DescribeFleetAdvisorLsaAnalysisResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetAdvisorLsaAnalysisRequest,
   ) => Stream.Stream<
     DescribeFleetAdvisorLsaAnalysisResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetAdvisorLsaAnalysisRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetAdvisorLsaAnalysisRequest,
@@ -8047,22 +8045,22 @@ export const describeFleetAdvisorSchemaObjectSummary: {
     input: DescribeFleetAdvisorSchemaObjectSummaryRequest,
   ): Effect.Effect<
     DescribeFleetAdvisorSchemaObjectSummaryResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetAdvisorSchemaObjectSummaryRequest,
   ) => Stream.Stream<
     DescribeFleetAdvisorSchemaObjectSummaryResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetAdvisorSchemaObjectSummaryRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetAdvisorSchemaObjectSummaryRequest,
@@ -8081,8 +8079,8 @@ export const describeMetadataModel: (
   input: DescribeMetadataModelMessage,
 ) => Effect.Effect<
   DescribeMetadataModelResponse,
-  AccessDeniedFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMetadataModelMessage,
   output: DescribeMetadataModelResponse,
@@ -8097,22 +8095,22 @@ export const describeOrderableReplicationInstances: {
     input: DescribeOrderableReplicationInstancesMessage,
   ): Effect.Effect<
     DescribeOrderableReplicationInstancesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOrderableReplicationInstancesMessage,
   ) => Stream.Stream<
     DescribeOrderableReplicationInstancesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOrderableReplicationInstancesMessage,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrderableReplicationInstancesMessage,
@@ -8135,22 +8133,22 @@ export const describeRecommendationLimitations: {
     input: DescribeRecommendationLimitationsRequest,
   ): Effect.Effect<
     DescribeRecommendationLimitationsResponse,
-    AccessDeniedFault | InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRecommendationLimitationsRequest,
   ) => Stream.Stream<
     DescribeRecommendationLimitationsResponse,
-    AccessDeniedFault | InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRecommendationLimitationsRequest,
   ) => Stream.Stream<
     unknown,
-    AccessDeniedFault | InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRecommendationLimitationsRequest,
@@ -8169,8 +8167,8 @@ export const describeRefreshSchemasStatus: (
   input: DescribeRefreshSchemasStatusMessage,
 ) => Effect.Effect<
   DescribeRefreshSchemasStatusResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRefreshSchemasStatusMessage,
   output: DescribeRefreshSchemasStatusResponse,
@@ -8184,22 +8182,22 @@ export const describeReplicationInstanceTaskLogs: {
     input: DescribeReplicationInstanceTaskLogsMessage,
   ): Effect.Effect<
     DescribeReplicationInstanceTaskLogsResponse,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationInstanceTaskLogsMessage,
   ) => Stream.Stream<
     DescribeReplicationInstanceTaskLogsResponse,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationInstanceTaskLogsMessage,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationInstanceTaskLogsMessage,
@@ -8220,22 +8218,22 @@ export const describeReplicationTableStatistics: {
     input: DescribeReplicationTableStatisticsMessage,
   ): Effect.Effect<
     DescribeReplicationTableStatisticsResponse,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationTableStatisticsMessage,
   ) => Stream.Stream<
     DescribeReplicationTableStatisticsResponse,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationTableStatisticsMessage,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationTableStatisticsMessage,
@@ -8259,22 +8257,22 @@ export const describeReplicationTaskAssessmentResults: {
     input: DescribeReplicationTaskAssessmentResultsMessage,
   ): Effect.Effect<
     DescribeReplicationTaskAssessmentResultsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationTaskAssessmentResultsMessage,
   ) => Stream.Stream<
     DescribeReplicationTaskAssessmentResultsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationTaskAssessmentResultsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationTaskAssessmentResultsMessage,
@@ -8297,22 +8295,22 @@ export const describeReplicationTaskIndividualAssessments: {
     input: DescribeReplicationTaskIndividualAssessmentsMessage,
   ): Effect.Effect<
     DescribeReplicationTaskIndividualAssessmentsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationTaskIndividualAssessmentsMessage,
   ) => Stream.Stream<
     DescribeReplicationTaskIndividualAssessmentsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationTaskIndividualAssessmentsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationTaskIndividualAssessmentsMessage,
@@ -8332,8 +8330,8 @@ export const exportMetadataModelAssessment: (
   input: ExportMetadataModelAssessmentMessage,
 ) => Effect.Effect<
   ExportMetadataModelAssessmentResponse,
-  ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportMetadataModelAssessmentMessage,
   output: ExportMetadataModelAssessmentResponse,
@@ -8350,8 +8348,8 @@ export const reloadReplicationTables: (
   input: ReloadReplicationTablesMessage,
 ) => Effect.Effect<
   ReloadReplicationTablesResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReloadReplicationTablesMessage,
   output: ReloadReplicationTablesResponse,
@@ -8368,8 +8366,8 @@ export const describeDataMigrations: {
     | FailedDependencyFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDataMigrationsMessage,
@@ -8378,8 +8376,8 @@ export const describeDataMigrations: {
     | FailedDependencyFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDataMigrationsMessage,
@@ -8388,8 +8386,8 @@ export const describeDataMigrations: {
     | FailedDependencyFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataMigrationsMessage,
@@ -8418,8 +8416,8 @@ export const describeDataProviders: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDataProvidersMessage,
@@ -8428,8 +8426,8 @@ export const describeDataProviders: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDataProvidersMessage,
@@ -8438,8 +8436,8 @@ export const describeDataProviders: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataProvidersMessage,
@@ -8463,8 +8461,8 @@ export const describeInstanceProfiles: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceProfilesMessage,
@@ -8473,8 +8471,8 @@ export const describeInstanceProfiles: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceProfilesMessage,
@@ -8483,8 +8481,8 @@ export const describeInstanceProfiles: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceProfilesMessage,
@@ -8508,8 +8506,8 @@ export const describeMigrationProjects: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMigrationProjectsMessage,
@@ -8518,8 +8516,8 @@ export const describeMigrationProjects: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMigrationProjectsMessage,
@@ -8528,8 +8526,8 @@ export const describeMigrationProjects: {
     | AccessDeniedFault
     | FailedDependencyFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMigrationProjectsMessage,
@@ -8551,8 +8549,8 @@ export const modifyDataMigration: (
   | FailedDependencyFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDataMigrationMessage,
   output: ModifyDataMigrationResponse,
@@ -8576,8 +8574,8 @@ export const modifyDataProvider: (
   | FailedDependencyFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDataProviderMessage,
   output: ModifyDataProviderResponse,
@@ -8600,8 +8598,8 @@ export const startDataMigration: (
   | InvalidResourceStateFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDataMigrationMessage,
   output: StartDataMigrationResponse,
@@ -8623,8 +8621,8 @@ export const stopDataMigration: (
   | FailedDependencyFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDataMigrationMessage,
   output: StopDataMigrationResponse,
@@ -8648,8 +8646,8 @@ export const deleteDataProvider: (
   | FailedDependencyFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataProviderMessage,
   output: DeleteDataProviderResponse,
@@ -8667,8 +8665,8 @@ export const describeConversionConfiguration: (
   input: DescribeConversionConfigurationMessage,
 ) => Effect.Effect<
   DescribeConversionConfigurationResponse,
-  ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConversionConfigurationMessage,
   output: DescribeConversionConfigurationResponse,
@@ -8682,22 +8680,22 @@ export const describeEndpoints: {
     input: DescribeEndpointsMessage,
   ): Effect.Effect<
     DescribeEndpointsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEndpointsMessage,
   ) => Stream.Stream<
     DescribeEndpointsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEndpointsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEndpointsMessage,
@@ -8723,22 +8721,22 @@ export const describeEventSubscriptions: {
     input: DescribeEventSubscriptionsMessage,
   ): Effect.Effect<
     DescribeEventSubscriptionsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventSubscriptionsMessage,
   ) => Stream.Stream<
     DescribeEventSubscriptionsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventSubscriptionsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventSubscriptionsMessage,
@@ -8759,22 +8757,22 @@ export const describeMetadataModelAssessments: {
     input: DescribeMetadataModelAssessmentsMessage,
   ): Effect.Effect<
     DescribeMetadataModelAssessmentsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMetadataModelAssessmentsMessage,
   ) => Stream.Stream<
     DescribeMetadataModelAssessmentsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMetadataModelAssessmentsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMetadataModelAssessmentsMessage,
@@ -8794,22 +8792,22 @@ export const describeMetadataModelChildren: {
     input: DescribeMetadataModelChildrenMessage,
   ): Effect.Effect<
     DescribeMetadataModelChildrenResponse,
-    AccessDeniedFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMetadataModelChildrenMessage,
   ) => Stream.Stream<
     DescribeMetadataModelChildrenResponse,
-    AccessDeniedFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMetadataModelChildrenMessage,
   ) => Stream.Stream<
     MetadataModelReference,
-    AccessDeniedFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMetadataModelChildrenMessage,
@@ -8830,22 +8828,22 @@ export const describeMetadataModelConversions: {
     input: DescribeMetadataModelConversionsMessage,
   ): Effect.Effect<
     DescribeMetadataModelConversionsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMetadataModelConversionsMessage,
   ) => Stream.Stream<
     DescribeMetadataModelConversionsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMetadataModelConversionsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMetadataModelConversionsMessage,
@@ -8865,22 +8863,22 @@ export const describeMetadataModelCreations: {
     input: DescribeMetadataModelCreationsMessage,
   ): Effect.Effect<
     DescribeMetadataModelCreationsResponse,
-    AccessDeniedFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMetadataModelCreationsMessage,
   ) => Stream.Stream<
     DescribeMetadataModelCreationsResponse,
-    AccessDeniedFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMetadataModelCreationsMessage,
   ) => Stream.Stream<
     SchemaConversionRequest,
-    AccessDeniedFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMetadataModelCreationsMessage,
@@ -8901,22 +8899,22 @@ export const describeMetadataModelExportsAsScript: {
     input: DescribeMetadataModelExportsAsScriptMessage,
   ): Effect.Effect<
     DescribeMetadataModelExportsAsScriptResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMetadataModelExportsAsScriptMessage,
   ) => Stream.Stream<
     DescribeMetadataModelExportsAsScriptResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMetadataModelExportsAsScriptMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMetadataModelExportsAsScriptMessage,
@@ -8936,22 +8934,22 @@ export const describeMetadataModelExportsToTarget: {
     input: DescribeMetadataModelExportsToTargetMessage,
   ): Effect.Effect<
     DescribeMetadataModelExportsToTargetResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMetadataModelExportsToTargetMessage,
   ) => Stream.Stream<
     DescribeMetadataModelExportsToTargetResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMetadataModelExportsToTargetMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMetadataModelExportsToTargetMessage,
@@ -8971,22 +8969,22 @@ export const describeMetadataModelImports: {
     input: DescribeMetadataModelImportsMessage,
   ): Effect.Effect<
     DescribeMetadataModelImportsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMetadataModelImportsMessage,
   ) => Stream.Stream<
     DescribeMetadataModelImportsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMetadataModelImportsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMetadataModelImportsMessage,
@@ -9007,22 +9005,22 @@ export const describePendingMaintenanceActions: {
     input: DescribePendingMaintenanceActionsMessage,
   ): Effect.Effect<
     DescribePendingMaintenanceActionsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePendingMaintenanceActionsMessage,
   ) => Stream.Stream<
     DescribePendingMaintenanceActionsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribePendingMaintenanceActionsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePendingMaintenanceActionsMessage,
@@ -9043,22 +9041,22 @@ export const describeReplicationConfigs: {
     input: DescribeReplicationConfigsMessage,
   ): Effect.Effect<
     DescribeReplicationConfigsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationConfigsMessage,
   ) => Stream.Stream<
     DescribeReplicationConfigsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationConfigsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationConfigsMessage,
@@ -9079,22 +9077,22 @@ export const describeReplicationInstances: {
     input: DescribeReplicationInstancesMessage,
   ): Effect.Effect<
     DescribeReplicationInstancesResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationInstancesMessage,
   ) => Stream.Stream<
     DescribeReplicationInstancesResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationInstancesMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationInstancesMessage,
@@ -9114,22 +9112,22 @@ export const describeReplicationSubnetGroups: {
     input: DescribeReplicationSubnetGroupsMessage,
   ): Effect.Effect<
     DescribeReplicationSubnetGroupsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationSubnetGroupsMessage,
   ) => Stream.Stream<
     DescribeReplicationSubnetGroupsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationSubnetGroupsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationSubnetGroupsMessage,
@@ -9157,22 +9155,22 @@ export const describeReplicationTaskAssessmentRuns: {
     input: DescribeReplicationTaskAssessmentRunsMessage,
   ): Effect.Effect<
     DescribeReplicationTaskAssessmentRunsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationTaskAssessmentRunsMessage,
   ) => Stream.Stream<
     DescribeReplicationTaskAssessmentRunsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationTaskAssessmentRunsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationTaskAssessmentRunsMessage,
@@ -9193,22 +9191,22 @@ export const describeReplicationTasks: {
     input: DescribeReplicationTasksMessage,
   ): Effect.Effect<
     DescribeReplicationTasksResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationTasksMessage,
   ) => Stream.Stream<
     DescribeReplicationTasksResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationTasksMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationTasksMessage,
@@ -9231,8 +9229,8 @@ export const removeTagsFromResource: (
   input: RemoveTagsFromResourceMessage,
 ) => Effect.Effect<
   RemoveTagsFromResourceResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceMessage,
   output: RemoveTagsFromResourceResponse,
@@ -9253,8 +9251,8 @@ export const startRecommendations: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRecommendationsRequest,
   output: StartRecommendationsResponse,
@@ -9274,8 +9272,8 @@ export const startReplication: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReplicationMessage,
   output: StartReplicationResponse,
@@ -9294,8 +9292,8 @@ export const startReplicationTask: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReplicationTaskMessage,
   output: StartReplicationTaskResponse,
@@ -9321,8 +9319,8 @@ export const startReplicationTaskAssessment: (
   input: StartReplicationTaskAssessmentMessage,
 ) => Effect.Effect<
   StartReplicationTaskAssessmentResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReplicationTaskAssessmentMessage,
   output: StartReplicationTaskAssessmentResponse,
@@ -9340,8 +9338,8 @@ export const stopReplication: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopReplicationMessage,
   output: StopReplicationResponse,
@@ -9354,8 +9352,8 @@ export const stopReplicationTask: (
   input: StopReplicationTaskMessage,
 ) => Effect.Effect<
   StopReplicationTaskResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopReplicationTaskMessage,
   output: StopReplicationTaskResponse,
@@ -9371,8 +9369,8 @@ export const deleteReplicationSubnetGroup: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationSubnetGroupMessage,
   output: DeleteReplicationSubnetGroupResponse,
@@ -9388,8 +9386,8 @@ export const cancelMetadataModelCreation: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMetadataModelCreationMessage,
   output: CancelMetadataModelCreationResponse,
@@ -9405,8 +9403,8 @@ export const deleteEventSubscription: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventSubscriptionMessage,
   output: DeleteEventSubscriptionResponse,
@@ -9421,8 +9419,8 @@ export const runFleetAdvisorLsaAnalysis: (
   input: RunFleetAdvisorLsaAnalysisRequest,
 ) => Effect.Effect<
   RunFleetAdvisorLsaAnalysisResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RunFleetAdvisorLsaAnalysisRequest,
   output: RunFleetAdvisorLsaAnalysisResponse,
@@ -9441,8 +9439,8 @@ export const addTagsToResource: (
   input: AddTagsToResourceMessage,
 ) => Effect.Effect<
   AddTagsToResourceResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToResourceMessage,
   output: AddTagsToResourceResponse,
@@ -9455,8 +9453,8 @@ export const deleteReplicationTask: (
   input: DeleteReplicationTaskMessage,
 ) => Effect.Effect<
   DeleteReplicationTaskResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationTaskMessage,
   output: DeleteReplicationTaskResponse,
@@ -9476,8 +9474,8 @@ export const deleteReplicationTaskAssessmentRun: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationTaskAssessmentRunMessage,
   output: DeleteReplicationTaskAssessmentRunResponse,
@@ -9512,8 +9510,8 @@ export const describeApplicableIndividualAssessments: {
     | AccessDeniedFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeApplicableIndividualAssessmentsMessage,
@@ -9522,8 +9520,8 @@ export const describeApplicableIndividualAssessments: {
     | AccessDeniedFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeApplicableIndividualAssessmentsMessage,
@@ -9532,8 +9530,8 @@ export const describeApplicableIndividualAssessments: {
     | AccessDeniedFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeApplicableIndividualAssessmentsMessage,
@@ -9553,22 +9551,22 @@ export const describeSchemas: {
     input: DescribeSchemasMessage,
   ): Effect.Effect<
     DescribeSchemasResponse,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSchemasMessage,
   ) => Stream.Stream<
     DescribeSchemasResponse,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSchemasMessage,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSchemasMessage,
@@ -9596,8 +9594,8 @@ export const describeTableStatistics: {
     | AccessDeniedFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTableStatisticsMessage,
@@ -9606,8 +9604,8 @@ export const describeTableStatistics: {
     | AccessDeniedFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTableStatisticsMessage,
@@ -9616,8 +9614,8 @@ export const describeTableStatistics: {
     | AccessDeniedFault
     | InvalidResourceStateFault
     | ResourceNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTableStatisticsMessage,
@@ -9639,8 +9637,8 @@ export const getTargetSelectionRules: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTargetSelectionRulesMessage,
   output: GetTargetSelectionRulesResponse,
@@ -9657,8 +9655,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceMessage,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceMessage,
   output: ListTagsForResourceResponse,
@@ -9671,8 +9669,8 @@ export const modifyConversionConfiguration: (
   input: ModifyConversionConfigurationMessage,
 ) => Effect.Effect<
   ModifyConversionConfigurationResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyConversionConfigurationMessage,
   output: ModifyConversionConfigurationResponse,
@@ -9686,8 +9684,8 @@ export const rebootReplicationInstance: (
   input: RebootReplicationInstanceMessage,
 ) => Effect.Effect<
   RebootReplicationInstanceResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootReplicationInstanceMessage,
   output: RebootReplicationInstanceResponse,
@@ -9703,8 +9701,8 @@ export const reloadTables: (
   input: ReloadTablesMessage,
 ) => Effect.Effect<
   ReloadTablesResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReloadTablesMessage,
   output: ReloadTablesResponse,
@@ -9717,8 +9715,8 @@ export const deleteCertificate: (
   input: DeleteCertificateMessage,
 ) => Effect.Effect<
   DeleteCertificateResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCertificateMessage,
   output: DeleteCertificateResponse,
@@ -9734,8 +9732,8 @@ export const deleteConnection: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectionMessage,
   output: DeleteConnectionResponse,
@@ -9753,8 +9751,8 @@ export const deleteFleetAdvisorDatabases: (
   | AccessDeniedFault
   | InvalidOperationFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFleetAdvisorDatabasesRequest,
   output: DeleteFleetAdvisorDatabasesResponse,
@@ -9774,8 +9772,8 @@ export const deleteInstanceProfile: (
   | FailedDependencyFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInstanceProfileMessage,
   output: DeleteInstanceProfileResponse,
@@ -9799,8 +9797,8 @@ export const deleteReplicationConfig: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationConfigMessage,
   output: DeleteReplicationConfigResponse,
@@ -9814,22 +9812,22 @@ export const describeCertificates: {
     input: DescribeCertificatesMessage,
   ): Effect.Effect<
     DescribeCertificatesResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCertificatesMessage,
   ) => Stream.Stream<
     DescribeCertificatesResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCertificatesMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCertificatesMessage,
@@ -9853,8 +9851,8 @@ export const testConnection: (
   | KMSKeyNotAccessibleFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestConnectionMessage,
   output: TestConnectionResponse,
@@ -9880,8 +9878,8 @@ export const moveReplicationTask: (
   | KMSKeyNotAccessibleFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MoveReplicationTaskMessage,
   output: MoveReplicationTaskResponse,
@@ -9906,8 +9904,8 @@ export const refreshSchemas: (
   | KMSKeyNotAccessibleFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RefreshSchemasMessage,
   output: RefreshSchemasResponse,
@@ -9926,8 +9924,8 @@ export const applyPendingMaintenanceAction: (
   input: ApplyPendingMaintenanceActionMessage,
 ) => Effect.Effect<
   ApplyPendingMaintenanceActionResponse,
-  ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ApplyPendingMaintenanceActionMessage,
   output: ApplyPendingMaintenanceActionResponse,
@@ -9951,8 +9949,8 @@ export const batchStartRecommendations: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchStartRecommendationsRequest,
   output: BatchStartRecommendationsResponse,
@@ -9972,8 +9970,8 @@ export const cancelReplicationTaskAssessmentRun: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelReplicationTaskAssessmentRunMessage,
   output: CancelReplicationTaskAssessmentRunResponse,
@@ -9989,8 +9987,8 @@ export const deleteDataMigration: (
   | FailedDependencyFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataMigrationMessage,
   output: DeleteDataMigrationResponse,
@@ -10010,8 +10008,8 @@ export const deleteEndpoint: (
   input: DeleteEndpointMessage,
 ) => Effect.Effect<
   DeleteEndpointResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointMessage,
   output: DeleteEndpointResponse,
@@ -10030,8 +10028,8 @@ export const deleteMigrationProject: (
   | FailedDependencyFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMigrationProjectMessage,
   output: DeleteMigrationProjectResponse,
@@ -10052,8 +10050,8 @@ export const deleteReplicationInstance: (
   input: DeleteReplicationInstanceMessage,
 ) => Effect.Effect<
   DeleteReplicationInstanceResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationInstanceMessage,
   output: DeleteReplicationInstanceResponse,
@@ -10069,22 +10067,22 @@ export const describeFleetAdvisorCollectors: {
     input: DescribeFleetAdvisorCollectorsRequest,
   ): Effect.Effect<
     DescribeFleetAdvisorCollectorsResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetAdvisorCollectorsRequest,
   ) => Stream.Stream<
     DescribeFleetAdvisorCollectorsResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetAdvisorCollectorsRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetAdvisorCollectorsRequest,
@@ -10106,22 +10104,22 @@ export const describeFleetAdvisorDatabases: {
     input: DescribeFleetAdvisorDatabasesRequest,
   ): Effect.Effect<
     DescribeFleetAdvisorDatabasesResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetAdvisorDatabasesRequest,
   ) => Stream.Stream<
     DescribeFleetAdvisorDatabasesResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetAdvisorDatabasesRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetAdvisorDatabasesRequest,
@@ -10143,22 +10141,22 @@ export const describeFleetAdvisorSchemas: {
     input: DescribeFleetAdvisorSchemasRequest,
   ): Effect.Effect<
     DescribeFleetAdvisorSchemasResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFleetAdvisorSchemasRequest,
   ) => Stream.Stream<
     DescribeFleetAdvisorSchemasResponse,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFleetAdvisorSchemasRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFleetAdvisorSchemasRequest,
@@ -10179,22 +10177,22 @@ export const describeReplications: {
     input: DescribeReplicationsMessage,
   ): Effect.Effect<
     DescribeReplicationsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationsMessage,
   ) => Stream.Stream<
     DescribeReplicationsResponse,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationsMessage,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationsMessage,
@@ -10219,8 +10217,8 @@ export const startMetadataModelCreation: (
   | ResourceAlreadyExistsFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMetadataModelCreationMessage,
   output: StartMetadataModelCreationResponse,
@@ -10243,8 +10241,8 @@ export const createDataMigration: (
   | ResourceAlreadyExistsFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataMigrationMessage,
   output: CreateDataMigrationResponse,
@@ -10275,8 +10273,8 @@ export const modifyEndpoint: (
   | KMSKeyNotAccessibleFault
   | ResourceAlreadyExistsFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyEndpointMessage,
   output: ModifyEndpointResponse,
@@ -10304,8 +10302,8 @@ export const modifyReplicationTask: (
   | KMSKeyNotAccessibleFault
   | ResourceAlreadyExistsFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyReplicationTaskMessage,
   output: ModifyReplicationTaskResponse,
@@ -10337,8 +10335,8 @@ export const createEndpoint: (
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEndpointMessage,
   output: CreateEndpointResponse,
@@ -10363,8 +10361,8 @@ export const importCertificate: (
   | KMSKeyNotAccessibleFault
   | ResourceAlreadyExistsFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportCertificateMessage,
   output: ImportCertificateResponse,
@@ -10387,8 +10385,8 @@ export const createDataProvider: (
   | FailedDependencyFault
   | ResourceAlreadyExistsFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataProviderMessage,
   output: CreateDataProviderResponse,
@@ -10412,8 +10410,8 @@ export const createReplicationTask: (
   | ResourceAlreadyExistsFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicationTaskMessage,
   output: CreateReplicationTaskResponse,
@@ -10447,8 +10445,8 @@ export const modifyReplicationConfig: (
   | KMSKeyNotAccessibleFault
   | ReplicationSubnetGroupDoesNotCoverEnoughAZs
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyReplicationConfigMessage,
   output: ModifyReplicationConfigResponse,
@@ -10478,8 +10476,8 @@ export const createReplicationConfig: (
   | ResourceAlreadyExistsFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicationConfigMessage,
   output: CreateReplicationConfigResponse,
@@ -10504,8 +10502,8 @@ export const cancelMetadataModelConversion: (
   | AccessDeniedFault
   | InvalidResourceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMetadataModelConversionMessage,
   output: CancelMetadataModelConversionResponse,
@@ -10534,8 +10532,8 @@ export const createReplicationSubnetGroup: (
   | ResourceAlreadyExistsFault
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicationSubnetGroupMessage,
   output: CreateReplicationSubnetGroupResponse,
@@ -10561,8 +10559,8 @@ export const modifyReplicationSubnetGroup: (
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
   | SubnetAlreadyInUse
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyReplicationSubnetGroupMessage,
   output: ModifyReplicationSubnetGroupResponse,
@@ -10589,8 +10587,8 @@ export const createFleetAdvisorCollector: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFleetAdvisorCollectorRequest,
   output: CreateFleetAdvisorCollectorResponse,
@@ -10628,8 +10626,8 @@ export const createReplicationInstance: (
   | ResourceNotFoundFault
   | ResourceQuotaExceededFault
   | StorageQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicationInstanceMessage,
   output: CreateReplicationInstanceResponse,
@@ -10663,8 +10661,8 @@ export const startExtensionPackAssociation: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartExtensionPackAssociationMessage,
   output: StartExtensionPackAssociationResponse,
@@ -10695,8 +10693,8 @@ export const createInstanceProfile: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstanceProfileMessage,
   output: CreateInstanceProfileResponse,
@@ -10729,8 +10727,8 @@ export const createMigrationProject: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMigrationProjectMessage,
   output: CreateMigrationProjectResponse,
@@ -10762,8 +10760,8 @@ export const startMetadataModelAssessment: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMetadataModelAssessmentMessage,
   output: StartMetadataModelAssessmentResponse,
@@ -10793,8 +10791,8 @@ export const startMetadataModelConversion: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMetadataModelConversionMessage,
   output: StartMetadataModelConversionResponse,
@@ -10825,8 +10823,8 @@ export const startMetadataModelExportAsScript: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMetadataModelExportAsScriptMessage,
   output: StartMetadataModelExportAsScriptResponse,
@@ -10856,8 +10854,8 @@ export const startMetadataModelExportToTarget: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMetadataModelExportToTargetMessage,
   output: StartMetadataModelExportToTargetResponse,
@@ -10890,8 +10888,8 @@ export const startMetadataModelImport: (
   | ResourceQuotaExceededFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMetadataModelImportMessage,
   output: StartMetadataModelImportResponse,
@@ -10923,8 +10921,8 @@ export const modifyInstanceProfile: (
   | ResourceNotFoundFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyInstanceProfileMessage,
   output: ModifyInstanceProfileResponse,
@@ -10953,8 +10951,8 @@ export const modifyMigrationProject: (
   | ResourceNotFoundFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyMigrationProjectMessage,
   output: ModifyMigrationProjectResponse,
@@ -10978,22 +10976,22 @@ export const describeRecommendations: {
     input: DescribeRecommendationsRequest,
   ): Effect.Effect<
     DescribeRecommendationsResponse,
-    AccessDeniedFault | InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRecommendationsRequest,
   ) => Stream.Stream<
     DescribeRecommendationsResponse,
-    AccessDeniedFault | InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRecommendationsRequest,
   ) => Stream.Stream<
     unknown,
-    AccessDeniedFault | InvalidResourceStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedFault | InvalidResourceStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRecommendationsRequest,
@@ -11022,8 +11020,8 @@ export const modifyReplicationInstance: (
   | ResourceNotFoundFault
   | StorageQuotaExceededFault
   | UpgradeDependencyFailureFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyReplicationInstanceMessage,
   output: ModifyReplicationInstanceResponse,
@@ -11063,8 +11061,8 @@ export const startReplicationTaskAssessmentRun: (
   | ResourceNotFoundFault
   | S3AccessDeniedFault
   | S3ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReplicationTaskAssessmentRunMessage,
   output: StartReplicationTaskAssessmentRunResponse,
@@ -11100,8 +11098,8 @@ export const modifyEventSubscription: (
   | ResourceQuotaExceededFault
   | SNSInvalidTopicFault
   | SNSNoAuthorizationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyEventSubscriptionMessage,
   output: ModifyEventSubscriptionResponse,
@@ -11150,8 +11148,8 @@ export const createEventSubscription: (
   | ResourceQuotaExceededFault
   | SNSInvalidTopicFault
   | SNSNoAuthorizationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventSubscriptionMessage,
   output: CreateEventSubscriptionResponse,

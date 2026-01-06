@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Application Signals",
@@ -1836,30 +1834,28 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AccessDenied", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { Message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { ResourceType: S.String, ResourceId: S.String, Message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ValidationError", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.String },
-) {}
+).pipe(C.withQuotaError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.String },
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -1869,8 +1865,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ResourceNotFoundException | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1883,8 +1879,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  ResourceNotFoundException | ThrottlingException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ThrottlingException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1900,8 +1896,8 @@ export const deleteGroupingConfiguration: (
   | AccessDeniedException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupingConfigurationRequest,
   output: DeleteGroupingConfigurationOutput,
@@ -1915,22 +1911,22 @@ export const listEntityEvents: {
     input: ListEntityEventsInput,
   ): Effect.Effect<
     ListEntityEventsOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEntityEventsInput,
   ) => Stream.Stream<
     ListEntityEventsOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEntityEventsInput,
   ) => Stream.Stream<
     ChangeEvent,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEntityEventsInput,
@@ -1951,22 +1947,22 @@ export const listServiceDependents: {
     input: ListServiceDependentsInput,
   ): Effect.Effect<
     ListServiceDependentsOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceDependentsInput,
   ) => Stream.Stream<
     ListServiceDependentsOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceDependentsInput,
   ) => Stream.Stream<
     ServiceDependent,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceDependentsInput,
@@ -1987,22 +1983,22 @@ export const listServiceOperations: {
     input: ListServiceOperationsInput,
   ): Effect.Effect<
     ListServiceOperationsOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceOperationsInput,
   ) => Stream.Stream<
     ListServiceOperationsOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceOperationsInput,
   ) => Stream.Stream<
     ServiceOperation,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceOperationsInput,
@@ -2025,8 +2021,8 @@ export const getServiceLevelObjective: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceLevelObjectiveInput,
   output: GetServiceLevelObjectiveOutput,
@@ -2042,8 +2038,8 @@ export const listGroupingAttributeDefinitions: (
   | AccessDeniedException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListGroupingAttributeDefinitionsInput,
   output: ListGroupingAttributeDefinitionsOutput,
@@ -2061,8 +2057,8 @@ export const updateServiceLevelObjective: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceLevelObjectiveInput,
   output: UpdateServiceLevelObjectiveOutput,
@@ -2096,8 +2092,8 @@ export const startDiscovery: (
   | AccessDeniedException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDiscoveryInput,
   output: StartDiscoveryOutput,
@@ -2113,8 +2109,8 @@ export const deleteServiceLevelObjective: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceLevelObjectiveInput,
   output: DeleteServiceLevelObjectiveOutput,
@@ -2131,8 +2127,8 @@ export const listServiceLevelObjectiveExclusionWindows: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceLevelObjectiveExclusionWindowsInput,
@@ -2141,8 +2137,8 @@ export const listServiceLevelObjectiveExclusionWindows: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceLevelObjectiveExclusionWindowsInput,
@@ -2151,8 +2147,8 @@ export const listServiceLevelObjectiveExclusionWindows: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceLevelObjectiveExclusionWindowsInput,
@@ -2183,8 +2179,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2201,8 +2197,8 @@ export const getService: (
   input: GetServiceInput,
 ) => Effect.Effect<
   GetServiceOutput,
-  ThrottlingException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ThrottlingException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceInput,
   output: GetServiceOutput,
@@ -2216,22 +2212,22 @@ export const listServices: {
     input: ListServicesInput,
   ): Effect.Effect<
     ListServicesOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServicesInput,
   ) => Stream.Stream<
     ListServicesOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServicesInput,
   ) => Stream.Stream<
     ServiceSummary,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServicesInput,
@@ -2252,22 +2248,22 @@ export const listServiceStates: {
     input: ListServiceStatesInput,
   ): Effect.Effect<
     ListServiceStatesOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceStatesInput,
   ) => Stream.Stream<
     ListServiceStatesOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceStatesInput,
   ) => Stream.Stream<
     ServiceState,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceStatesInput,
@@ -2290,8 +2286,8 @@ export const putGroupingConfiguration: (
   | AccessDeniedException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutGroupingConfigurationInput,
   output: PutGroupingConfigurationOutput,
@@ -2305,22 +2301,22 @@ export const listServiceLevelObjectives: {
     input: ListServiceLevelObjectivesInput,
   ): Effect.Effect<
     ListServiceLevelObjectivesOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceLevelObjectivesInput,
   ) => Stream.Stream<
     ListServiceLevelObjectivesOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceLevelObjectivesInput,
   ) => Stream.Stream<
     ServiceLevelObjectiveSummary,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceLevelObjectivesInput,
@@ -2346,8 +2342,8 @@ export const batchGetServiceLevelObjectiveBudgetReport: (
   input: BatchGetServiceLevelObjectiveBudgetReportInput,
 ) => Effect.Effect<
   BatchGetServiceLevelObjectiveBudgetReportOutput,
-  ThrottlingException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ThrottlingException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetServiceLevelObjectiveBudgetReportInput,
   output: BatchGetServiceLevelObjectiveBudgetReportOutput,
@@ -2363,8 +2359,8 @@ export const batchUpdateExclusionWindows: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateExclusionWindowsInput,
   output: BatchUpdateExclusionWindowsOutput,
@@ -2378,22 +2374,22 @@ export const listServiceDependencies: {
     input: ListServiceDependenciesInput,
   ): Effect.Effect<
     ListServiceDependenciesOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceDependenciesInput,
   ) => Stream.Stream<
     ListServiceDependenciesOutput,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceDependenciesInput,
   ) => Stream.Stream<
     ServiceDependency,
-    ThrottlingException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ThrottlingException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceDependenciesInput,
@@ -2413,8 +2409,8 @@ export const listAuditFindings: (
   input: ListAuditFindingsInput,
 ) => Effect.Effect<
   ListAuditFindingsOutput,
-  ThrottlingException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ThrottlingException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAuditFindingsInput,
   output: ListAuditFindingsOutput,
@@ -2474,8 +2470,8 @@ export const createServiceLevelObjective: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateServiceLevelObjectiveInput,
   output: CreateServiceLevelObjectiveOutput,

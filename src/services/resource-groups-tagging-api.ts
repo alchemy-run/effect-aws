@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Resource Groups Tagging API",
@@ -734,8 +732,8 @@ export const describeReportCreation: (
   | InternalServiceException
   | InvalidParameterException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReportCreationInput,
   output: DescribeReportCreationOutput,
@@ -758,8 +756,8 @@ export const listRequiredTags: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRequiredTagsInput,
@@ -769,8 +767,8 @@ export const listRequiredTags: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRequiredTagsInput,
@@ -780,8 +778,8 @@ export const listRequiredTags: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRequiredTagsInput,
@@ -838,8 +836,8 @@ export const untagResources: (
   | InternalServiceException
   | InvalidParameterException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourcesInput,
   output: UntagResourcesOutput,
@@ -875,8 +873,8 @@ export const getComplianceSummary: {
     | InternalServiceException
     | InvalidParameterException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetComplianceSummaryInput,
@@ -886,8 +884,8 @@ export const getComplianceSummary: {
     | InternalServiceException
     | InvalidParameterException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetComplianceSummaryInput,
@@ -897,8 +895,8 @@ export const getComplianceSummary: {
     | InternalServiceException
     | InvalidParameterException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetComplianceSummaryInput,
@@ -975,8 +973,8 @@ export const tagResources: (
   | InternalServiceException
   | InvalidParameterException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourcesInput,
   output: TagResourcesOutput,
@@ -1018,8 +1016,8 @@ export const startReportCreation: (
   | InternalServiceException
   | InvalidParameterException
   | ThrottledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReportCreationInput,
   output: StartReportCreationOutput,
@@ -1051,8 +1049,8 @@ export const getTagKeys: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetTagKeysInput,
@@ -1062,8 +1060,8 @@ export const getTagKeys: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetTagKeysInput,
@@ -1073,8 +1071,8 @@ export const getTagKeys: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTagKeysInput,
@@ -1111,8 +1109,8 @@ export const getTagValues: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetTagValuesInput,
@@ -1122,8 +1120,8 @@ export const getTagValues: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetTagValuesInput,
@@ -1133,8 +1131,8 @@ export const getTagValues: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTagValuesInput,
@@ -1187,8 +1185,8 @@ export const getResources: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourcesInput,
@@ -1198,8 +1196,8 @@ export const getResources: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetResourcesInput,
@@ -1209,8 +1207,8 @@ export const getResources: {
     | InvalidParameterException
     | PaginationTokenExpiredException
     | ThrottledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourcesInput,

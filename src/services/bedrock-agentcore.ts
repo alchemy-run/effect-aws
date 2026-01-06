@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Bedrock AgentCore",
@@ -2446,37 +2444,31 @@ export const InvokeCodeInterpreterResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidInputException extends S.TaggedError<InvalidInputException>()(
   "InvalidInputException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceException extends S.TaggedError<ServiceException>()(
   "ServiceException",
   { message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class RuntimeClientError extends S.TaggedError<RuntimeClientError>()(
   "RuntimeClientError",
   { message: S.optional(S.String) },
@@ -2484,17 +2476,15 @@ export class RuntimeClientError extends S.TaggedError<RuntimeClientError>()(
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ThrottledException extends S.TaggedError<ThrottledException>()(
   "ThrottledException",
   { message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -2502,11 +2492,11 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     reason: S.String,
     fieldList: S.optional(ValidationExceptionFieldList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateIdException extends S.TaggedError<DuplicateIdException>()(
   "DuplicateIdException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -2525,8 +2515,8 @@ export const getEvent: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventInput,
   output: GetEventOutput,
@@ -2553,8 +2543,8 @@ export const getResourceApiKey: (
   | ThrottlingException
   | UnauthorizedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceApiKeyRequest,
   output: GetResourceApiKeyResponse,
@@ -2580,8 +2570,8 @@ export const getWorkloadAccessToken: (
   | ThrottlingException
   | UnauthorizedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkloadAccessTokenRequest,
   output: GetWorkloadAccessTokenResponse,
@@ -2607,8 +2597,8 @@ export const getWorkloadAccessTokenForJWT: (
   | ThrottlingException
   | UnauthorizedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkloadAccessTokenForJWTRequest,
   output: GetWorkloadAccessTokenForJWTResponse,
@@ -2634,8 +2624,8 @@ export const getWorkloadAccessTokenForUserId: (
   | ThrottlingException
   | UnauthorizedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkloadAccessTokenForUserIdRequest,
   output: GetWorkloadAccessTokenForUserIdResponse,
@@ -2661,8 +2651,8 @@ export const completeResourceTokenAuth: (
   | ThrottlingException
   | UnauthorizedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompleteResourceTokenAuthRequest,
   output: CompleteResourceTokenAuthResponse,
@@ -2691,8 +2681,8 @@ export const stopRuntimeSession: (
   | ThrottlingException
   | UnauthorizedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopRuntimeSessionRequest,
   output: StopRuntimeSessionResponse,
@@ -2730,8 +2720,8 @@ export const listBrowserSessions: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBrowserSessionsRequest,
   output: ListBrowserSessionsResponse,
@@ -2765,8 +2755,8 @@ export const listCodeInterpreterSessions: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListCodeInterpreterSessionsRequest,
   output: ListCodeInterpreterSessionsResponse,
@@ -2800,8 +2790,8 @@ export const getCodeInterpreterSession: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCodeInterpreterSessionRequest,
   output: GetCodeInterpreterSessionResponse,
@@ -2835,8 +2825,8 @@ export const getBrowserSession: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBrowserSessionRequest,
   output: GetBrowserSessionResponse,
@@ -2872,8 +2862,8 @@ export const invokeAgentRuntime: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvokeAgentRuntimeRequest,
   output: InvokeAgentRuntimeResponse,
@@ -2909,8 +2899,8 @@ export const stopBrowserSession: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopBrowserSessionRequest,
   output: StopBrowserSessionResponse,
@@ -2948,8 +2938,8 @@ export const startCodeInterpreterSession: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCodeInterpreterSessionRequest,
   output: StartCodeInterpreterSessionResponse,
@@ -2985,8 +2975,8 @@ export const stopCodeInterpreterSession: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopCodeInterpreterSessionRequest,
   output: StopCodeInterpreterSessionResponse,
@@ -3024,8 +3014,8 @@ export const startBrowserSession: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartBrowserSessionRequest,
   output: StartBrowserSessionResponse,
@@ -3053,8 +3043,8 @@ export const updateBrowserStream: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBrowserStreamRequest,
   output: UpdateBrowserStreamResponse,
@@ -3082,8 +3072,8 @@ export const getAgentCard: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAgentCardRequest,
   output: GetAgentCardResponse,
@@ -3110,8 +3100,8 @@ export const getResourceOauth2Token: (
   | ThrottlingException
   | UnauthorizedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceOauth2TokenRequest,
   output: GetResourceOauth2TokenResponse,
@@ -3141,8 +3131,8 @@ export const retrieveMemoryRecords: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: RetrieveMemoryRecordsInput,
@@ -3155,8 +3145,8 @@ export const retrieveMemoryRecords: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: RetrieveMemoryRecordsInput,
@@ -3169,8 +3159,8 @@ export const retrieveMemoryRecords: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: RetrieveMemoryRecordsInput,
@@ -3206,8 +3196,8 @@ export const startMemoryExtractionJob: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMemoryExtractionJobInput,
   output: StartMemoryExtractionJobOutput,
@@ -3233,8 +3223,8 @@ export const batchCreateMemoryRecords: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateMemoryRecordsInput,
   output: BatchCreateMemoryRecordsOutput,
@@ -3260,8 +3250,8 @@ export const batchDeleteMemoryRecords: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteMemoryRecordsInput,
   output: BatchDeleteMemoryRecordsOutput,
@@ -3290,8 +3280,8 @@ export const getMemoryRecord: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMemoryRecordInput,
   output: GetMemoryRecordOutput,
@@ -3322,8 +3312,8 @@ export const listActors: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListActorsInput,
@@ -3336,8 +3326,8 @@ export const listActors: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListActorsInput,
@@ -3350,8 +3340,8 @@ export const listActors: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActorsInput,
@@ -3389,8 +3379,8 @@ export const listMemoryRecords: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMemoryRecordsInput,
@@ -3403,8 +3393,8 @@ export const listMemoryRecords: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMemoryRecordsInput,
@@ -3417,8 +3407,8 @@ export const listMemoryRecords: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMemoryRecordsInput,
@@ -3456,8 +3446,8 @@ export const listSessions: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSessionsInput,
@@ -3470,8 +3460,8 @@ export const listSessions: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSessionsInput,
@@ -3484,8 +3474,8 @@ export const listSessions: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSessionsInput,
@@ -3522,8 +3512,8 @@ export const deleteEvent: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventInput,
   output: DeleteEventOutput,
@@ -3553,8 +3543,8 @@ export const deleteMemoryRecord: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMemoryRecordInput,
   output: DeleteMemoryRecordOutput,
@@ -3581,8 +3571,8 @@ export const batchUpdateMemoryRecords: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateMemoryRecordsInput,
   output: BatchUpdateMemoryRecordsOutput,
@@ -3613,8 +3603,8 @@ export const createEvent: (
   | ServiceQuotaExceededException
   | ThrottledException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventInput,
   output: CreateEventOutput,
@@ -3645,8 +3635,8 @@ export const listEvents: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventsInput,
@@ -3659,8 +3649,8 @@ export const listEvents: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventsInput,
@@ -3673,8 +3663,8 @@ export const listEvents: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventsInput,
@@ -3711,8 +3701,8 @@ export const listMemoryExtractionJobs: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMemoryExtractionJobsInput,
@@ -3724,8 +3714,8 @@ export const listMemoryExtractionJobs: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMemoryExtractionJobsInput,
@@ -3737,8 +3727,8 @@ export const listMemoryExtractionJobs: {
     | ServiceQuotaExceededException
     | ThrottledException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMemoryExtractionJobsInput,
@@ -3774,8 +3764,8 @@ export const evaluate: (
   | ThrottlingException
   | UnauthorizedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EvaluateRequest,
   output: EvaluateResponse,
@@ -3815,8 +3805,8 @@ export const invokeCodeInterpreter: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvokeCodeInterpreterRequest,
   output: InvokeCodeInterpreterResponse,

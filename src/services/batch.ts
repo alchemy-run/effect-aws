@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://batch.amazonaws.com/doc/2016-08-10/");
 const svc = T.AwsApiService({
@@ -3707,13 +3705,11 @@ export const RegisterJobDefinitionResponse = S.suspend(() =>
 export class ClientException extends S.TaggedError<ClientException>()(
   "ClientException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerException extends S.TaggedError<ServerException>()(
   "ServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 
 //# Operations
 /**
@@ -3736,8 +3732,8 @@ export const cancelJob: (
   input: CancelJobRequest,
 ) => Effect.Effect<
   CancelJobResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelJobRequest,
   output: CancelJobResponse,
@@ -3757,8 +3753,8 @@ export const createJobQueue: (
   input: CreateJobQueueRequest,
 ) => Effect.Effect<
   CreateJobQueueResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateJobQueueRequest,
   output: CreateJobQueueResponse,
@@ -3771,8 +3767,8 @@ export const createServiceEnvironment: (
   input: CreateServiceEnvironmentRequest,
 ) => Effect.Effect<
   CreateServiceEnvironmentResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateServiceEnvironmentRequest,
   output: CreateServiceEnvironmentResponse,
@@ -3790,22 +3786,22 @@ export const describeComputeEnvironments: {
     input: DescribeComputeEnvironmentsRequest,
   ): Effect.Effect<
     DescribeComputeEnvironmentsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeComputeEnvironmentsRequest,
   ) => Stream.Stream<
     DescribeComputeEnvironmentsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeComputeEnvironmentsRequest,
   ) => Stream.Stream<
     ComputeEnvironmentDetail,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeComputeEnvironmentsRequest,
@@ -3827,22 +3823,22 @@ export const describeJobDefinitions: {
     input: DescribeJobDefinitionsRequest,
   ): Effect.Effect<
     DescribeJobDefinitionsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeJobDefinitionsRequest,
   ) => Stream.Stream<
     DescribeJobDefinitionsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeJobDefinitionsRequest,
   ) => Stream.Stream<
     JobDefinition,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeJobDefinitionsRequest,
@@ -3863,22 +3859,22 @@ export const describeJobQueues: {
     input: DescribeJobQueuesRequest,
   ): Effect.Effect<
     DescribeJobQueuesResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeJobQueuesRequest,
   ) => Stream.Stream<
     DescribeJobQueuesResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeJobQueuesRequest,
   ) => Stream.Stream<
     JobQueueDetail,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeJobQueuesRequest,
@@ -3898,8 +3894,8 @@ export const describeSchedulingPolicies: (
   input: DescribeSchedulingPoliciesRequest,
 ) => Effect.Effect<
   DescribeSchedulingPoliciesResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSchedulingPoliciesRequest,
   output: DescribeSchedulingPoliciesResponse,
@@ -3913,22 +3909,22 @@ export const describeServiceEnvironments: {
     input: DescribeServiceEnvironmentsRequest,
   ): Effect.Effect<
     DescribeServiceEnvironmentsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeServiceEnvironmentsRequest,
   ) => Stream.Stream<
     DescribeServiceEnvironmentsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeServiceEnvironmentsRequest,
   ) => Stream.Stream<
     ServiceEnvironmentDetail,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeServiceEnvironmentsRequest,
@@ -3949,22 +3945,22 @@ export const listJobsByConsumableResource: {
     input: ListJobsByConsumableResourceRequest,
   ): Effect.Effect<
     ListJobsByConsumableResourceResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobsByConsumableResourceRequest,
   ) => Stream.Stream<
     ListJobsByConsumableResourceResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobsByConsumableResourceRequest,
   ) => Stream.Stream<
     ListJobsByConsumableResourceSummary,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsByConsumableResourceRequest,
@@ -3985,22 +3981,22 @@ export const listSchedulingPolicies: {
     input: ListSchedulingPoliciesRequest,
   ): Effect.Effect<
     ListSchedulingPoliciesResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSchedulingPoliciesRequest,
   ) => Stream.Stream<
     ListSchedulingPoliciesResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSchedulingPoliciesRequest,
   ) => Stream.Stream<
     SchedulingPolicyListingDetail,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSchedulingPoliciesRequest,
@@ -4021,22 +4017,22 @@ export const listServiceJobs: {
     input: ListServiceJobsRequest,
   ): Effect.Effect<
     ListServiceJobsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceJobsRequest,
   ) => Stream.Stream<
     ListServiceJobsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceJobsRequest,
   ) => Stream.Stream<
     ServiceJobSummary,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceJobsRequest,
@@ -4056,8 +4052,8 @@ export const updateComputeEnvironment: (
   input: UpdateComputeEnvironmentRequest,
 ) => Effect.Effect<
   UpdateComputeEnvironmentResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateComputeEnvironmentRequest,
   output: UpdateComputeEnvironmentResponse,
@@ -4070,8 +4066,8 @@ export const createConsumableResource: (
   input: CreateConsumableResourceRequest,
 ) => Effect.Effect<
   CreateConsumableResourceResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConsumableResourceRequest,
   output: CreateConsumableResourceResponse,
@@ -4084,8 +4080,8 @@ export const describeConsumableResource: (
   input: DescribeConsumableResourceRequest,
 ) => Effect.Effect<
   DescribeConsumableResourceResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConsumableResourceRequest,
   output: DescribeConsumableResourceResponse,
@@ -4099,8 +4095,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4113,8 +4109,8 @@ export const updateConsumableResource: (
   input: UpdateConsumableResourceRequest,
 ) => Effect.Effect<
   UpdateConsumableResourceResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConsumableResourceRequest,
   output: UpdateConsumableResourceResponse,
@@ -4127,8 +4123,8 @@ export const updateJobQueue: (
   input: UpdateJobQueueRequest,
 ) => Effect.Effect<
   UpdateJobQueueResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateJobQueueRequest,
   output: UpdateJobQueueResponse,
@@ -4141,8 +4137,8 @@ export const updateServiceEnvironment: (
   input: UpdateServiceEnvironmentRequest,
 ) => Effect.Effect<
   UpdateServiceEnvironmentResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceEnvironmentRequest,
   output: UpdateServiceEnvironmentResponse,
@@ -4162,8 +4158,8 @@ export const deleteComputeEnvironment: (
   input: DeleteComputeEnvironmentRequest,
 ) => Effect.Effect<
   DeleteComputeEnvironmentResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteComputeEnvironmentRequest,
   output: DeleteComputeEnvironmentResponse,
@@ -4176,8 +4172,8 @@ export const deleteConsumableResource: (
   input: DeleteConsumableResourceRequest,
 ) => Effect.Effect<
   DeleteConsumableResourceResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConsumableResourceRequest,
   output: DeleteConsumableResourceResponse,
@@ -4196,8 +4192,8 @@ export const deleteJobQueue: (
   input: DeleteJobQueueRequest,
 ) => Effect.Effect<
   DeleteJobQueueResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteJobQueueRequest,
   output: DeleteJobQueueResponse,
@@ -4212,8 +4208,8 @@ export const deleteSchedulingPolicy: (
   input: DeleteSchedulingPolicyRequest,
 ) => Effect.Effect<
   DeleteSchedulingPolicyResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSchedulingPolicyRequest,
   output: DeleteSchedulingPolicyResponse,
@@ -4226,8 +4222,8 @@ export const deleteServiceEnvironment: (
   input: DeleteServiceEnvironmentRequest,
 ) => Effect.Effect<
   DeleteServiceEnvironmentResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceEnvironmentRequest,
   output: DeleteServiceEnvironmentResponse,
@@ -4241,8 +4237,8 @@ export const deregisterJobDefinition: (
   input: DeregisterJobDefinitionRequest,
 ) => Effect.Effect<
   DeregisterJobDefinitionResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterJobDefinitionRequest,
   output: DeregisterJobDefinitionResponse,
@@ -4259,8 +4255,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4276,8 +4272,8 @@ export const terminateJob: (
   input: TerminateJobRequest,
 ) => Effect.Effect<
   TerminateJobResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateJobRequest,
   output: TerminateJobResponse,
@@ -4290,8 +4286,8 @@ export const terminateServiceJob: (
   input: TerminateServiceJobRequest,
 ) => Effect.Effect<
   TerminateServiceJobResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateServiceJobRequest,
   output: TerminateServiceJobResponse,
@@ -4304,8 +4300,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4318,8 +4314,8 @@ export const updateSchedulingPolicy: (
   input: UpdateSchedulingPolicyRequest,
 ) => Effect.Effect<
   UpdateSchedulingPolicyResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSchedulingPolicyRequest,
   output: UpdateSchedulingPolicyResponse,
@@ -4332,8 +4328,8 @@ export const createSchedulingPolicy: (
   input: CreateSchedulingPolicyRequest,
 ) => Effect.Effect<
   CreateSchedulingPolicyResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSchedulingPolicyRequest,
   output: CreateSchedulingPolicyResponse,
@@ -4346,8 +4342,8 @@ export const describeServiceJob: (
   input: DescribeServiceJobRequest,
 ) => Effect.Effect<
   DescribeServiceJobResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServiceJobRequest,
   output: DescribeServiceJobResponse,
@@ -4360,8 +4356,8 @@ export const getJobQueueSnapshot: (
   input: GetJobQueueSnapshotRequest,
 ) => Effect.Effect<
   GetJobQueueSnapshotResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobQueueSnapshotRequest,
   output: GetJobQueueSnapshotResponse,
@@ -4375,22 +4371,22 @@ export const listConsumableResources: {
     input: ListConsumableResourcesRequest,
   ): Effect.Effect<
     ListConsumableResourcesResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConsumableResourcesRequest,
   ) => Stream.Stream<
     ListConsumableResourcesResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConsumableResourcesRequest,
   ) => Stream.Stream<
     ConsumableResourceSummary,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConsumableResourcesRequest,
@@ -4422,22 +4418,22 @@ export const listJobs: {
     input: ListJobsRequest,
   ): Effect.Effect<
     ListJobsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobsRequest,
   ) => Stream.Stream<
     ListJobsResponse,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobsRequest,
   ) => Stream.Stream<
     JobSummary,
-    ClientException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClientException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
@@ -4457,8 +4453,8 @@ export const submitServiceJob: (
   input: SubmitServiceJobRequest,
 ) => Effect.Effect<
   SubmitServiceJobResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubmitServiceJobRequest,
   output: SubmitServiceJobResponse,
@@ -4496,8 +4492,8 @@ export const createComputeEnvironment: (
   input: CreateComputeEnvironmentRequest,
 ) => Effect.Effect<
   CreateComputeEnvironmentResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateComputeEnvironmentRequest,
   output: CreateComputeEnvironmentResponse,
@@ -4522,8 +4518,8 @@ export const submitJob: (
   input: SubmitJobRequest,
 ) => Effect.Effect<
   SubmitJobResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubmitJobRequest,
   output: SubmitJobResponse,
@@ -4536,8 +4532,8 @@ export const describeJobs: (
   input: DescribeJobsRequest,
 ) => Effect.Effect<
   DescribeJobsResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeJobsRequest,
   output: DescribeJobsResponse,
@@ -4550,8 +4546,8 @@ export const registerJobDefinition: (
   input: RegisterJobDefinitionRequest,
 ) => Effect.Effect<
   RegisterJobDefinitionResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterJobDefinitionRequest,
   output: RegisterJobDefinitionResponse,

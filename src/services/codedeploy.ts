@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://codedeploy.amazonaws.com/doc/2014-10-06/");
 const svc = T.AwsApiService({
@@ -3190,8 +3188,8 @@ export const deleteResourcesByExternalId: (
   input: DeleteResourcesByExternalIdInput,
 ) => Effect.Effect<
   DeleteResourcesByExternalIdOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcesByExternalIdInput,
   output: DeleteResourcesByExternalIdOutput,
@@ -3204,10 +3202,8 @@ export const deregisterOnPremisesInstance: (
   input: DeregisterOnPremisesInstanceInput,
 ) => Effect.Effect<
   DeregisterOnPremisesInstanceResponse,
-  | InstanceNameRequiredException
-  | InvalidInstanceNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InstanceNameRequiredException | InvalidInstanceNameException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterOnPremisesInstanceInput,
   output: DeregisterOnPremisesInstanceResponse,
@@ -3223,8 +3219,8 @@ export const getOnPremisesInstance: (
   | InstanceNameRequiredException
   | InstanceNotRegisteredException
   | InvalidInstanceNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOnPremisesInstanceInput,
   output: GetOnPremisesInstanceOutput,
@@ -3242,22 +3238,22 @@ export const listApplications: {
     input: ListApplicationsInput,
   ): Effect.Effect<
     ListApplicationsOutput,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationsInput,
   ) => Stream.Stream<
     ListApplicationsOutput,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationsInput,
   ) => Stream.Stream<
     ApplicationName,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsInput,
@@ -3280,8 +3276,8 @@ export const updateApplication: (
   | ApplicationDoesNotExistException
   | ApplicationNameRequiredException
   | InvalidApplicationNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationInput,
   output: UpdateApplicationResponse,
@@ -3302,8 +3298,8 @@ export const getApplication: (
   | ApplicationDoesNotExistException
   | ApplicationNameRequiredException
   | InvalidApplicationNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationInput,
   output: GetApplicationOutput,
@@ -3326,8 +3322,8 @@ export const listDeploymentGroups: {
     | ApplicationNameRequiredException
     | InvalidApplicationNameException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeploymentGroupsInput,
@@ -3337,8 +3333,8 @@ export const listDeploymentGroups: {
     | ApplicationNameRequiredException
     | InvalidApplicationNameException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeploymentGroupsInput,
@@ -3348,8 +3344,8 @@ export const listDeploymentGroups: {
     | ApplicationNameRequiredException
     | InvalidApplicationNameException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentGroupsInput,
@@ -3374,22 +3370,22 @@ export const listDeploymentConfigs: {
     input: ListDeploymentConfigsInput,
   ): Effect.Effect<
     ListDeploymentConfigsOutput,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeploymentConfigsInput,
   ) => Stream.Stream<
     ListDeploymentConfigsOutput,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeploymentConfigsInput,
   ) => Stream.Stream<
     DeploymentConfigName,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentConfigsInput,
@@ -3413,8 +3409,8 @@ export const batchGetApplications: (
   | ApplicationNameRequiredException
   | BatchLimitExceededException
   | InvalidApplicationNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetApplicationsInput,
   output: BatchGetApplicationsOutput,
@@ -3435,8 +3431,8 @@ export const deleteApplication: (
   | ApplicationNameRequiredException
   | InvalidApplicationNameException
   | InvalidRoleException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationInput,
   output: DeleteApplicationResponse,
@@ -3457,8 +3453,8 @@ export const batchGetOnPremisesInstances: (
   | BatchLimitExceededException
   | InstanceNameRequiredException
   | InvalidInstanceNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetOnPremisesInstancesInput,
   output: BatchGetOnPremisesInstancesOutput,
@@ -3479,8 +3475,8 @@ export const getDeploymentConfig: (
   | DeploymentConfigNameRequiredException
   | InvalidComputePlatformException
   | InvalidDeploymentConfigNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentConfigInput,
   output: GetDeploymentConfigOutput,
@@ -3505,8 +3501,8 @@ export const deleteDeploymentConfig: (
   | DeploymentConfigNameRequiredException
   | InvalidDeploymentConfigNameException
   | InvalidOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeploymentConfigInput,
   output: DeleteDeploymentConfigResponse,
@@ -3529,8 +3525,8 @@ export const deleteDeploymentGroup: (
   | InvalidApplicationNameException
   | InvalidDeploymentGroupNameException
   | InvalidRoleException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeploymentGroupInput,
   output: DeleteDeploymentGroupOutput,
@@ -3553,8 +3549,8 @@ export const listTagsForResource: (
   | ArnNotSupportedException
   | InvalidArnException
   | ResourceArnRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -3579,8 +3575,8 @@ export const getDeployment: (
   | DeploymentDoesNotExistException
   | DeploymentIdRequiredException
   | InvalidDeploymentIdException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentInput,
   output: GetDeploymentOutput,
@@ -3604,8 +3600,8 @@ export const batchGetDeploymentGroups: (
   | DeploymentGroupNameRequiredException
   | InvalidApplicationNameException
   | InvalidDeploymentGroupNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetDeploymentGroupsInput,
   output: BatchGetDeploymentGroupsOutput,
@@ -3633,8 +3629,8 @@ export const getDeploymentGroup: (
   | DeploymentGroupNameRequiredException
   | InvalidApplicationNameException
   | InvalidDeploymentGroupNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentGroupInput,
   output: GetDeploymentGroupOutput,
@@ -3661,8 +3657,8 @@ export const registerApplicationRevision: (
   | InvalidApplicationNameException
   | InvalidRevisionException
   | RevisionRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterApplicationRevisionInput,
   output: RegisterApplicationRevisionResponse,
@@ -3685,8 +3681,8 @@ export const listGitHubAccountTokenNames: (
   | InvalidNextTokenException
   | OperationNotSupportedException
   | ResourceValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListGitHubAccountTokenNamesInput,
   output: ListGitHubAccountTokenNamesOutput,
@@ -3710,8 +3706,8 @@ export const listOnPremisesInstances: (
   | InvalidNextTokenException
   | InvalidRegistrationStatusException
   | InvalidTagFilterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListOnPremisesInstancesInput,
   output: ListOnPremisesInstancesOutput,
@@ -3732,8 +3728,8 @@ export const batchGetDeployments: (
   | BatchLimitExceededException
   | DeploymentIdRequiredException
   | InvalidDeploymentIdException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetDeploymentsInput,
   output: BatchGetDeploymentsOutput,
@@ -3757,8 +3753,8 @@ export const batchGetApplicationRevisions: (
   | InvalidApplicationNameException
   | InvalidRevisionException
   | RevisionRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetApplicationRevisionsInput,
   output: BatchGetApplicationRevisionsOutput,
@@ -3784,8 +3780,8 @@ export const getApplicationRevision: (
   | InvalidRevisionException
   | RevisionDoesNotExistException
   | RevisionRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationRevisionInput,
   output: GetApplicationRevisionOutput,
@@ -3810,8 +3806,8 @@ export const deleteGitHubAccountToken: (
   | InvalidGitHubAccountTokenNameException
   | OperationNotSupportedException
   | ResourceValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGitHubAccountTokenInput,
   output: DeleteGitHubAccountTokenOutput,
@@ -3836,8 +3832,8 @@ export const createApplication: (
   | InvalidApplicationNameException
   | InvalidComputePlatformException
   | InvalidTagsToAddException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationInput,
   output: CreateApplicationOutput,
@@ -3870,8 +3866,8 @@ export const batchGetDeploymentInstances: (
   | InvalidComputePlatformException
   | InvalidDeploymentIdException
   | InvalidInstanceNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetDeploymentInstancesInput,
   output: BatchGetDeploymentInstancesOutput,
@@ -3899,8 +3895,8 @@ export const getDeploymentInstance: (
   | InvalidComputePlatformException
   | InvalidDeploymentIdException
   | InvalidInstanceNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentInstanceInput,
   output: GetDeploymentInstanceOutput,
@@ -3928,8 +3924,8 @@ export const removeTagsFromOnPremisesInstances: (
   | InvalidTagException
   | TagLimitExceededException
   | TagRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromOnPremisesInstancesInput,
   output: RemoveTagsFromOnPremisesInstancesResponse,
@@ -3957,8 +3953,8 @@ export const skipWaitTimeForInstanceTermination: (
   | DeploymentNotStartedException
   | InvalidDeploymentIdException
   | UnsupportedActionForDeploymentTypeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SkipWaitTimeForInstanceTerminationInput,
   output: SkipWaitTimeForInstanceTerminationResponse,
@@ -3987,8 +3983,8 @@ export const tagResource: (
   | InvalidTagsToAddException
   | ResourceArnRequiredException
   | TagRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -4017,8 +4013,8 @@ export const addTagsToOnPremisesInstances: (
   | InvalidTagException
   | TagLimitExceededException
   | TagRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToOnPremisesInstancesInput,
   output: AddTagsToOnPremisesInstancesResponse,
@@ -4049,8 +4045,8 @@ export const untagResource: (
   | InvalidTagsToAddException
   | ResourceArnRequiredException
   | TagRequiredException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -4078,8 +4074,8 @@ export const stopDeployment: (
   | DeploymentIdRequiredException
   | InvalidDeploymentIdException
   | UnsupportedActionForDeploymentTypeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDeploymentInput,
   output: StopDeploymentOutput,
@@ -4111,8 +4107,8 @@ export const continueDeployment: (
   | InvalidDeploymentStatusException
   | InvalidDeploymentWaitTypeException
   | UnsupportedActionForDeploymentTypeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ContinueDeploymentInput,
   output: ContinueDeploymentResponse,
@@ -4145,8 +4141,8 @@ export const listApplicationRevisions: {
     | InvalidNextTokenException
     | InvalidSortByException
     | InvalidSortOrderException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationRevisionsInput,
@@ -4162,8 +4158,8 @@ export const listApplicationRevisions: {
     | InvalidNextTokenException
     | InvalidSortByException
     | InvalidSortOrderException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationRevisionsInput,
@@ -4179,8 +4175,8 @@ export const listApplicationRevisions: {
     | InvalidNextTokenException
     | InvalidSortByException
     | InvalidSortOrderException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationRevisionsInput,
@@ -4218,8 +4214,8 @@ export const getDeploymentTarget: (
   | InvalidDeploymentIdException
   | InvalidDeploymentTargetIdException
   | InvalidInstanceNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentTargetInput,
   output: GetDeploymentTargetOutput,
@@ -4256,8 +4252,8 @@ export const putLifecycleEventHookExecutionStatus: (
   | InvalidLifecycleEventHookExecutionStatusException
   | LifecycleEventAlreadyCompletedException
   | UnsupportedActionForDeploymentTypeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLifecycleEventHookExecutionStatusInput,
   output: PutLifecycleEventHookExecutionStatusOutput,
@@ -4304,8 +4300,8 @@ export const batchGetDeploymentTargets: (
   | InstanceDoesNotExistException
   | InvalidDeploymentIdException
   | InvalidDeploymentTargetIdException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetDeploymentTargetsInput,
   output: BatchGetDeploymentTargetsOutput,
@@ -4336,8 +4332,8 @@ export const createDeploymentConfig: (
   | InvalidMinimumHealthyHostValueException
   | InvalidTrafficRoutingConfigurationException
   | InvalidZonalDeploymentConfigurationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeploymentConfigInput,
   output: CreateDeploymentConfigOutput,
@@ -4371,8 +4367,8 @@ export const registerOnPremisesInstance: (
   | InvalidIamUserArnException
   | InvalidInstanceNameException
   | MultipleIamArnsProvidedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterOnPremisesInstanceInput,
   output: RegisterOnPremisesInstanceResponse,
@@ -4409,8 +4405,8 @@ export const listDeployments: {
     | InvalidInputException
     | InvalidNextTokenException
     | InvalidTimeRangeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeploymentsInput,
@@ -4427,8 +4423,8 @@ export const listDeployments: {
     | InvalidInputException
     | InvalidNextTokenException
     | InvalidTimeRangeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeploymentsInput,
@@ -4445,8 +4441,8 @@ export const listDeployments: {
     | InvalidInputException
     | InvalidNextTokenException
     | InvalidTimeRangeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentsInput,
@@ -4493,8 +4489,8 @@ export const listDeploymentInstances: {
     | InvalidInstanceTypeException
     | InvalidNextTokenException
     | InvalidTargetFilterNameException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeploymentInstancesInput,
@@ -4510,8 +4506,8 @@ export const listDeploymentInstances: {
     | InvalidInstanceTypeException
     | InvalidNextTokenException
     | InvalidTargetFilterNameException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeploymentInstancesInput,
@@ -4527,8 +4523,8 @@ export const listDeploymentInstances: {
     | InvalidInstanceTypeException
     | InvalidNextTokenException
     | InvalidTargetFilterNameException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeploymentInstancesInput,
@@ -4567,8 +4563,8 @@ export const listDeploymentTargets: (
   | InvalidInstanceTypeException
   | InvalidNextTokenException
   | InvalidTargetFilterNameException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDeploymentTargetsInput,
   output: ListDeploymentTargetsOutput,
@@ -4617,8 +4613,8 @@ export const createDeployment: (
   | RevisionDoesNotExistException
   | RevisionRequiredException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeploymentInput,
   output: CreateDeploymentOutput,
@@ -4689,8 +4685,8 @@ export const updateDeploymentGroup: (
   | TagSetListLimitExceededException
   | ThrottlingException
   | TriggerTargetsLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeploymentGroupInput,
   output: UpdateDeploymentGroupOutput,
@@ -4768,8 +4764,8 @@ export const createDeploymentGroup: (
   | TagSetListLimitExceededException
   | ThrottlingException
   | TriggerTargetsLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeploymentGroupInput,
   output: CreateDeploymentGroupOutput,

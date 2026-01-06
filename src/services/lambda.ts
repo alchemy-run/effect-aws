@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Lambda",
@@ -5212,53 +5210,51 @@ export const GetDurableExecutionHistoryResponse = S.suspend(() =>
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CallbackTimeoutException extends S.TaggedError<CallbackTimeoutException>()(
   "CallbackTimeoutException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceConflictException extends S.TaggedError<ResourceConflictException>()(
   "ResourceConflictException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class CodeSigningConfigNotFoundException extends S.TaggedError<CodeSigningConfigNotFoundException>()(
   "CodeSigningConfigNotFoundException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CodeStorageExceededException extends S.TaggedError<CodeStorageExceededException>()(
   "CodeStorageExceededException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceException extends S.TaggedError<ServiceException>()(
   "ServiceException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CodeVerificationFailedException extends S.TaggedError<CodeVerificationFailedException>()(
   "CodeVerificationFailedException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DurableExecutionAlreadyStartedException extends S.TaggedError<DurableExecutionAlreadyStartedException>()(
   "DurableExecutionAlreadyStartedException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidRequestContentException extends S.TaggedError<InvalidRequestContentException>()(
   "InvalidRequestContentException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FunctionVersionsPerCapacityProviderLimitExceededException extends S.TaggedError<FunctionVersionsPerCapacityProviderLimitExceededException>()(
   "FunctionVersionsPerCapacityProviderLimitExceededException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PolicyLengthExceededException extends S.TaggedError<PolicyLengthExceededException>()(
   "PolicyLengthExceededException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   {
@@ -5267,18 +5263,16 @@ export class TooManyRequestsException extends S.TaggedError<TooManyRequestsExcep
     message: S.optional(S.String),
     Reason: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ParseError extends S.TaggedError<ParseError>()("ParseError", {}) {}
 export class ProvisionedConcurrencyConfigNotFoundException extends S.TaggedError<ProvisionedConcurrencyConfigNotFoundException>()(
   "ProvisionedConcurrencyConfigNotFoundException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PreconditionFailedException extends S.TaggedError<PreconditionFailedException>()(
   "PreconditionFailedException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
@@ -5286,29 +5280,23 @@ export class PreconditionFailedException extends S.TaggedError<PreconditionFaile
 export class InvalidCodeSignatureException extends S.TaggedError<InvalidCodeSignatureException>()(
   "InvalidCodeSignatureException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EC2AccessDeniedException extends S.TaggedError<EC2AccessDeniedException>()(
   "EC2AccessDeniedException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidRuntimeException extends S.TaggedError<InvalidRuntimeException>()(
   "InvalidRuntimeException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class CapacityProviderLimitExceededException extends S.TaggedError<CapacityProviderLimitExceededException>()(
   "CapacityProviderLimitExceededException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EC2ThrottledException extends S.TaggedError<EC2ThrottledException>()(
   "EC2ThrottledException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class EC2UnexpectedException extends S.TaggedError<EC2UnexpectedException>()(
   "EC2UnexpectedException",
   {
@@ -5316,117 +5304,95 @@ export class EC2UnexpectedException extends S.TaggedError<EC2UnexpectedException
     Message: S.optional(S.String),
     EC2ErrorCode: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class EFSIOException extends S.TaggedError<EFSIOException>()(
   "EFSIOException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class EFSMountConnectivityException extends S.TaggedError<EFSMountConnectivityException>()(
   "EFSMountConnectivityException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withTimeoutError) {}
 export class EFSMountFailureException extends S.TaggedError<EFSMountFailureException>()(
   "EFSMountFailureException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class EFSMountTimeoutException extends S.TaggedError<EFSMountTimeoutException>()(
   "EFSMountTimeoutException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withTimeoutError) {}
 export class ENILimitReachedException extends S.TaggedError<ENILimitReachedException>()(
   "ENILimitReachedException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidSecurityGroupIDException extends S.TaggedError<InvalidSecurityGroupIDException>()(
   "InvalidSecurityGroupIDException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidSubnetIDException extends S.TaggedError<InvalidSubnetIDException>()(
   "InvalidSubnetIDException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidZipFileException extends S.TaggedError<InvalidZipFileException>()(
   "InvalidZipFileException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class KMSAccessDeniedException extends S.TaggedError<KMSAccessDeniedException>()(
   "KMSAccessDeniedException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class KMSDisabledException extends S.TaggedError<KMSDisabledException>()(
   "KMSDisabledException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class KMSInvalidStateException extends S.TaggedError<KMSInvalidStateException>()(
   "KMSInvalidStateException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class KMSNotFoundException extends S.TaggedError<KMSNotFoundException>()(
   "KMSNotFoundException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NoPublishedVersionException extends S.TaggedError<NoPublishedVersionException>()(
   "NoPublishedVersionException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RecursiveInvocationException extends S.TaggedError<RecursiveInvocationException>()(
   "RecursiveInvocationException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RequestTooLargeException extends S.TaggedError<RequestTooLargeException>()(
   "RequestTooLargeException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotReadyException extends S.TaggedError<ResourceNotReadyException>()(
   "ResourceNotReadyException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class SerializedRequestEntityTooLargeException extends S.TaggedError<SerializedRequestEntityTooLargeException>()(
   "SerializedRequestEntityTooLargeException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapStartException extends S.TaggedError<SnapStartException>()(
   "SnapStartException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapStartNotReadyException extends S.TaggedError<SnapStartNotReadyException>()(
   "SnapStartNotReadyException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class SnapStartTimeoutException extends S.TaggedError<SnapStartTimeoutException>()(
   "SnapStartTimeoutException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withTimeoutError) {}
 export class SubnetIPAddressLimitReachedException extends S.TaggedError<SubnetIPAddressLimitReachedException>()(
   "SubnetIPAddressLimitReachedException",
   { Type: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class UnsupportedMediaTypeException extends S.TaggedError<UnsupportedMediaTypeException>()(
   "UnsupportedMediaTypeException",
   { Type: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -5436,8 +5402,8 @@ export const createCodeSigningConfig: (
   input: CreateCodeSigningConfigRequest,
 ) => Effect.Effect<
   CreateCodeSigningConfigResponse,
-  InvalidParameterValueException | ServiceException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | ServiceException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCodeSigningConfigRequest,
   output: CreateCodeSigningConfigResponse,
@@ -5451,22 +5417,22 @@ export const listCodeSigningConfigs: {
     input: ListCodeSigningConfigsRequest,
   ): Effect.Effect<
     ListCodeSigningConfigsResponse,
-    InvalidParameterValueException | ServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCodeSigningConfigsRequest,
   ) => Stream.Stream<
     ListCodeSigningConfigsResponse,
-    InvalidParameterValueException | ServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCodeSigningConfigsRequest,
   ) => Stream.Stream<
     CodeSigningConfig,
-    InvalidParameterValueException | ServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | ServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCodeSigningConfigsRequest,
@@ -5486,11 +5452,8 @@ export const deleteLayerVersion: (
   input: DeleteLayerVersionRequest,
 ) => Effect.Effect<
   DeleteLayerVersionResponse,
-  | ServiceException
-  | TooManyRequestsException
-  | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ServiceException | TooManyRequestsException | ParseError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLayerVersionRequest,
   output: DeleteLayerVersionResponse,
@@ -5508,8 +5471,8 @@ export const getLayerVersion: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLayerVersionRequest,
   output: GetLayerVersionResponse,
@@ -5536,8 +5499,8 @@ export const publishLayerVersion: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PublishLayerVersionRequest,
   output: PublishLayerVersionResponse,
@@ -5563,8 +5526,8 @@ export const getProvisionedConcurrencyConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProvisionedConcurrencyConfigRequest,
   output: GetProvisionedConcurrencyConfigResponse,
@@ -5637,8 +5600,8 @@ export const updateEventSourceMapping: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEventSourceMappingRequest,
   output: EventSourceMappingConfiguration,
@@ -5666,8 +5629,8 @@ export const updateAlias: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAliasRequest,
   output: AliasConfiguration,
@@ -5696,8 +5659,8 @@ export const listFunctionEventInvokeConfigs: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFunctionEventInvokeConfigsRequest,
@@ -5708,8 +5671,8 @@ export const listFunctionEventInvokeConfigs: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFunctionEventInvokeConfigsRequest,
@@ -5720,8 +5683,8 @@ export const listFunctionEventInvokeConfigs: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionEventInvokeConfigsRequest,
@@ -5752,8 +5715,8 @@ export const listTags: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -5776,8 +5739,8 @@ export const stopDurableExecution: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDurableExecutionRequest,
   output: StopDurableExecutionResponse,
@@ -5799,8 +5762,8 @@ export const getCodeSigningConfig: (
   | ResourceNotFoundException
   | ServiceException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCodeSigningConfigRequest,
   output: GetCodeSigningConfigResponse,
@@ -5822,8 +5785,8 @@ export const listFunctionsByCodeSigningConfig: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFunctionsByCodeSigningConfigRequest,
@@ -5832,8 +5795,8 @@ export const listFunctionsByCodeSigningConfig: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFunctionsByCodeSigningConfigRequest,
@@ -5842,8 +5805,8 @@ export const listFunctionsByCodeSigningConfig: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionsByCodeSigningConfigRequest,
@@ -5870,8 +5833,8 @@ export const updateCodeSigningConfig: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCodeSigningConfigRequest,
   output: UpdateCodeSigningConfigResponse,
@@ -5893,8 +5856,8 @@ export const listEventSourceMappings: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventSourceMappingsRequest,
@@ -5904,8 +5867,8 @@ export const listEventSourceMappings: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventSourceMappingsRequest,
@@ -5915,8 +5878,8 @@ export const listEventSourceMappings: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventSourceMappingsRequest,
@@ -5946,8 +5909,8 @@ export const deleteFunctionUrlConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFunctionUrlConfigRequest,
   output: DeleteFunctionUrlConfigResponse,
@@ -5971,8 +5934,8 @@ export const getFunctionConcurrency: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionConcurrencyRequest,
   output: GetFunctionConcurrencyResponse,
@@ -5995,8 +5958,8 @@ export const getFunctionUrlConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionUrlConfigRequest,
   output: GetFunctionUrlConfigResponse,
@@ -6024,8 +5987,8 @@ export const putFunctionConcurrency: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutFunctionConcurrencyRequest,
   output: Concurrency,
@@ -6051,8 +6014,8 @@ export const updateFunctionUrlConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFunctionUrlConfigRequest,
   output: UpdateFunctionUrlConfigResponse,
@@ -6076,8 +6039,8 @@ export const getFunctionCodeSigningConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionCodeSigningConfigRequest,
   output: GetFunctionCodeSigningConfigResponse,
@@ -6100,8 +6063,8 @@ export const getFunctionRecursionConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionRecursionConfigRequest,
   output: GetFunctionRecursionConfigResponse,
@@ -6124,8 +6087,8 @@ export const getFunctionScalingConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionScalingConfigRequest,
   output: GetFunctionScalingConfigResponse,
@@ -6147,8 +6110,8 @@ export const getPolicy: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
@@ -6170,8 +6133,8 @@ export const getRuntimeManagementConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRuntimeManagementConfigRequest,
   output: GetRuntimeManagementConfigResponse,
@@ -6196,8 +6159,8 @@ export const putFunctionCodeSigningConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutFunctionCodeSigningConfigRequest,
   output: PutFunctionCodeSigningConfigResponse,
@@ -6228,8 +6191,8 @@ export const putFunctionRecursionConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutFunctionRecursionConfigRequest,
   output: PutFunctionRecursionConfigResponse,
@@ -6254,8 +6217,8 @@ export const putRuntimeManagementConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRuntimeManagementConfigRequest,
   output: PutRuntimeManagementConfigResponse,
@@ -6278,8 +6241,8 @@ export const getAlias: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAliasRequest,
   output: AliasConfiguration,
@@ -6302,8 +6265,8 @@ export const listAliases: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAliasesRequest,
@@ -6313,8 +6276,8 @@ export const listAliases: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAliasesRequest,
@@ -6324,8 +6287,8 @@ export const listAliases: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAliasesRequest,
@@ -6355,8 +6318,8 @@ export const listVersionsByFunction: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVersionsByFunctionRequest,
@@ -6366,8 +6329,8 @@ export const listVersionsByFunction: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVersionsByFunctionRequest,
@@ -6377,8 +6340,8 @@ export const listVersionsByFunction: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVersionsByFunctionRequest,
@@ -6408,8 +6371,8 @@ export const getLayerVersionPolicy: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLayerVersionPolicyRequest,
   output: GetLayerVersionPolicyResponse,
@@ -6434,8 +6397,8 @@ export const putProvisionedConcurrencyConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutProvisionedConcurrencyConfigRequest,
   output: PutProvisionedConcurrencyConfigResponse,
@@ -6461,8 +6424,8 @@ export const untagResource: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6489,8 +6452,8 @@ export const updateFunctionEventInvokeConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFunctionEventInvokeConfigRequest,
   output: FunctionEventInvokeConfig,
@@ -6514,8 +6477,8 @@ export const deleteCodeSigningConfig: (
   | ResourceNotFoundException
   | ServiceException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCodeSigningConfigRequest,
   output: DeleteCodeSigningConfigResponse,
@@ -6540,8 +6503,8 @@ export const deleteFunctionConcurrency: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFunctionConcurrencyRequest,
   output: DeleteFunctionConcurrencyResponse,
@@ -6567,8 +6530,8 @@ export const getFunctionConfiguration: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionConfigurationRequest,
   output: FunctionConfiguration,
@@ -6590,8 +6553,8 @@ export const getLayerVersionByArn: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLayerVersionByArnRequest,
   output: GetLayerVersionResponse,
@@ -6615,8 +6578,8 @@ export const deleteProvisionedConcurrencyConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProvisionedConcurrencyConfigRequest,
   output: DeleteProvisionedConcurrencyConfigResponse,
@@ -6645,8 +6608,8 @@ export const deleteFunction: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFunctionRequest,
   output: DeleteFunctionResponse,
@@ -6673,8 +6636,8 @@ export const deleteFunctionEventInvokeConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFunctionEventInvokeConfigRequest,
   output: DeleteFunctionEventInvokeConfigResponse,
@@ -6700,8 +6663,8 @@ export const tagResource: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6726,8 +6689,8 @@ export const updateCapacityProvider: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCapacityProviderRequest,
   output: UpdateCapacityProviderResponse,
@@ -6751,8 +6714,8 @@ export const deleteCapacityProvider: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCapacityProviderRequest,
   output: DeleteCapacityProviderResponse,
@@ -6777,8 +6740,8 @@ export const deleteFunctionCodeSigningConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFunctionCodeSigningConfigRequest,
   output: DeleteFunctionCodeSigningConfigResponse,
@@ -6802,8 +6765,8 @@ export const getDurableExecution: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDurableExecutionRequest,
   output: GetDurableExecutionResponse,
@@ -6833,8 +6796,8 @@ export const addPermission: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddPermissionRequest,
   output: AddPermissionResponse,
@@ -6861,8 +6824,8 @@ export const deleteAlias: (
   | ServiceException
   | TooManyRequestsException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAliasRequest,
   output: DeleteAliasResponse,
@@ -6885,8 +6848,8 @@ export const sendDurableExecutionCallbackSuccess: (
   | InvalidParameterValueException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendDurableExecutionCallbackSuccessRequest,
   output: SendDurableExecutionCallbackSuccessResponse,
@@ -6908,8 +6871,8 @@ export const sendDurableExecutionCallbackFailure: (
   | InvalidParameterValueException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendDurableExecutionCallbackFailureRequest,
   output: SendDurableExecutionCallbackFailureResponse,
@@ -6927,8 +6890,8 @@ export const getAccountSettings: (
   input: GetAccountSettingsRequest,
 ) => Effect.Effect<
   GetAccountSettingsResponse,
-  ServiceException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ServiceException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsResponse,
@@ -6945,8 +6908,8 @@ export const sendDurableExecutionCallbackHeartbeat: (
   | InvalidParameterValueException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendDurableExecutionCallbackHeartbeatRequest,
   output: SendDurableExecutionCallbackHeartbeatResponse,
@@ -6968,8 +6931,8 @@ export const listCapacityProviders: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCapacityProvidersRequest,
@@ -6978,8 +6941,8 @@ export const listCapacityProviders: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCapacityProvidersRequest,
@@ -6988,8 +6951,8 @@ export const listCapacityProviders: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCapacityProvidersRequest,
@@ -7021,8 +6984,8 @@ export const listFunctions: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFunctionsRequest,
@@ -7031,8 +6994,8 @@ export const listFunctions: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFunctionsRequest,
@@ -7041,8 +7004,8 @@ export const listFunctions: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionsRequest,
@@ -7073,8 +7036,8 @@ export const getFunctionEventInvokeConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionEventInvokeConfigRequest,
   output: FunctionEventInvokeConfig,
@@ -7098,8 +7061,8 @@ export const listDurableExecutionsByFunction: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDurableExecutionsByFunctionRequest,
@@ -7109,8 +7072,8 @@ export const listDurableExecutionsByFunction: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDurableExecutionsByFunctionRequest,
@@ -7120,8 +7083,8 @@ export const listDurableExecutionsByFunction: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDurableExecutionsByFunctionRequest,
@@ -7158,8 +7121,8 @@ export const putFunctionEventInvokeConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutFunctionEventInvokeConfigRequest,
   output: FunctionEventInvokeConfig,
@@ -7183,8 +7146,8 @@ export const getCapacityProvider: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCapacityProviderRequest,
   output: GetCapacityProviderResponse,
@@ -7207,8 +7170,8 @@ export const listFunctionVersionsByCapacityProvider: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFunctionVersionsByCapacityProviderRequest,
@@ -7218,8 +7181,8 @@ export const listFunctionVersionsByCapacityProvider: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFunctionVersionsByCapacityProviderRequest,
@@ -7229,8 +7192,8 @@ export const listFunctionVersionsByCapacityProvider: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionVersionsByCapacityProviderRequest,
@@ -7259,8 +7222,8 @@ export const getEventSourceMapping: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventSourceMappingRequest,
   output: EventSourceMappingConfiguration,
@@ -7284,8 +7247,8 @@ export const createFunctionUrlConfig: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFunctionUrlConfigRequest,
   output: CreateFunctionUrlConfigResponse,
@@ -7310,8 +7273,8 @@ export const listFunctionUrlConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFunctionUrlConfigsRequest,
@@ -7321,8 +7284,8 @@ export const listFunctionUrlConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFunctionUrlConfigsRequest,
@@ -7332,8 +7295,8 @@ export const listFunctionUrlConfigs: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionUrlConfigsRequest,
@@ -7364,8 +7327,8 @@ export const listProvisionedConcurrencyConfigs: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProvisionedConcurrencyConfigsRequest,
@@ -7376,8 +7339,8 @@ export const listProvisionedConcurrencyConfigs: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProvisionedConcurrencyConfigsRequest,
@@ -7388,8 +7351,8 @@ export const listProvisionedConcurrencyConfigs: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProvisionedConcurrencyConfigsRequest,
@@ -7419,8 +7382,8 @@ export const getFunction: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionRequest,
   output: GetFunctionResponse,
@@ -7443,8 +7406,8 @@ export const putFunctionScalingConfig: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutFunctionScalingConfigRequest,
   output: PutFunctionScalingConfigResponse,
@@ -7471,8 +7434,8 @@ export const createAlias: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAliasRequest,
   output: AliasConfiguration,
@@ -7496,8 +7459,8 @@ export const listLayers: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLayersRequest,
@@ -7506,8 +7469,8 @@ export const listLayers: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLayersRequest,
@@ -7516,8 +7479,8 @@ export const listLayers: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLayersRequest,
@@ -7547,8 +7510,8 @@ export const listLayerVersions: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLayerVersionsRequest,
@@ -7559,8 +7522,8 @@ export const listLayerVersions: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLayerVersionsRequest,
@@ -7571,8 +7534,8 @@ export const listLayerVersions: {
     | ServiceException
     | TooManyRequestsException
     | ParseError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLayerVersionsRequest,
@@ -7606,8 +7569,8 @@ export const deleteEventSourceMapping: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventSourceMappingRequest,
   output: EventSourceMappingConfiguration,
@@ -7633,8 +7596,8 @@ export const removeLayerVersionPermission: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveLayerVersionPermissionRequest,
   output: RemoveLayerVersionPermissionResponse,
@@ -7659,8 +7622,8 @@ export const removePermission: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemovePermissionRequest,
   output: RemovePermissionResponse,
@@ -7692,8 +7655,8 @@ export const publishVersion: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PublishVersionRequest,
   output: FunctionConfiguration,
@@ -7726,8 +7689,8 @@ export const addLayerVersionPermission: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddLayerVersionPermissionRequest,
   output: AddLayerVersionPermissionResponse,
@@ -7755,8 +7718,8 @@ export const getDurableExecutionState: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetDurableExecutionStateRequest,
@@ -7765,8 +7728,8 @@ export const getDurableExecutionState: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetDurableExecutionStateRequest,
@@ -7775,8 +7738,8 @@ export const getDurableExecutionState: {
     | InvalidParameterValueException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetDurableExecutionStateRequest,
@@ -7852,8 +7815,8 @@ export const createEventSourceMapping: (
   | ServiceException
   | TooManyRequestsException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventSourceMappingRequest,
   output: EventSourceMappingConfiguration,
@@ -7889,8 +7852,8 @@ export const updateFunctionConfiguration: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFunctionConfigurationRequest,
   output: FunctionConfiguration,
@@ -7925,8 +7888,8 @@ export const invokeAsync: (
   | ResourceConflictException
   | ResourceNotFoundException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvokeAsyncRequest,
   output: InvokeAsyncResponse,
@@ -7971,8 +7934,8 @@ export const createFunction: (
   | ResourceNotFoundException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFunctionRequest,
   output: FunctionConfiguration,
@@ -8017,8 +7980,8 @@ export const updateFunctionCode: (
   | ServiceException
   | TooManyRequestsException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFunctionCodeRequest,
   output: FunctionConfiguration,
@@ -8048,8 +8011,8 @@ export const checkpointDurableExecution: (
   | InvalidParameterValueException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckpointDurableExecutionRequest,
   output: CheckpointDurableExecutionResponse,
@@ -8073,8 +8036,8 @@ export const getDurableExecutionHistory: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetDurableExecutionHistoryRequest,
@@ -8084,8 +8047,8 @@ export const getDurableExecutionHistory: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetDurableExecutionHistoryRequest,
@@ -8095,8 +8058,8 @@ export const getDurableExecutionHistory: {
     | ResourceNotFoundException
     | ServiceException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetDurableExecutionHistoryRequest,
@@ -8126,8 +8089,8 @@ export const createCapacityProvider: (
   | ResourceConflictException
   | ServiceException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCapacityProviderRequest,
   output: CreateCapacityProviderResponse,
@@ -8194,8 +8157,8 @@ export const invoke: (
   | TooManyRequestsException
   | UnsupportedMediaTypeException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvocationRequest,
   output: InvocationResponse,
@@ -8277,8 +8240,8 @@ export const invokeWithResponseStream: (
   | SubnetIPAddressLimitReachedException
   | TooManyRequestsException
   | UnsupportedMediaTypeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InvokeWithResponseStreamRequest,
   output: InvokeWithResponseStreamResponse,

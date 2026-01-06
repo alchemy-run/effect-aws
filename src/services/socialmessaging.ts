@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "SocialMessaging",
@@ -1378,39 +1376,33 @@ export class DependencyException extends S.TaggedError<DependencyException>()(
   "DependencyException",
   { message: S.optional(S.String) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class InternalServiceException extends S.TaggedError<InternalServiceException>()(
   "InternalServiceException",
   { message: S.optional(S.String) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class AccessDeniedByMetaException extends S.TaggedError<AccessDeniedByMetaException>()(
   "AccessDeniedByMetaException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidParametersException extends S.TaggedError<InvalidParametersException>()(
   "InvalidParametersException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottledRequestException extends S.TaggedError<ThrottledRequestException>()(
   "ThrottledRequestException",
   { message: S.optional(S.String) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1423,8 +1415,8 @@ export const listTagsForResource: (
   | InternalServiceException
   | InvalidParametersException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -1446,8 +1438,8 @@ export const getWhatsAppMessageTemplate: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWhatsAppMessageTemplateInput,
   output: GetWhatsAppMessageTemplateOutput,
@@ -1475,8 +1467,8 @@ export const sendWhatsAppMessage: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendWhatsAppMessageInput,
   output: SendWhatsAppMessageOutput,
@@ -1500,8 +1492,8 @@ export const updateWhatsAppMessageTemplate: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWhatsAppMessageTemplateInput,
   output: UpdateWhatsAppMessageTemplateOutput,
@@ -1525,8 +1517,8 @@ export const createWhatsAppMessageTemplate: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWhatsAppMessageTemplateInput,
   output: CreateWhatsAppMessageTemplateOutput,
@@ -1550,8 +1542,8 @@ export const createWhatsAppMessageTemplateMedia: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWhatsAppMessageTemplateMediaInput,
   output: CreateWhatsAppMessageTemplateMediaOutput,
@@ -1580,8 +1572,8 @@ export const postWhatsAppMessageMedia: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PostWhatsAppMessageMediaInput,
   output: PostWhatsAppMessageMediaOutput,
@@ -1606,8 +1598,8 @@ export const deleteWhatsAppMessageTemplate: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWhatsAppMessageTemplateInput,
   output: DeleteWhatsAppMessageTemplateOutput,
@@ -1632,8 +1624,8 @@ export const listWhatsAppMessageTemplates: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWhatsAppMessageTemplatesInput,
@@ -1644,8 +1636,8 @@ export const listWhatsAppMessageTemplates: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWhatsAppMessageTemplatesInput,
@@ -1656,8 +1648,8 @@ export const listWhatsAppMessageTemplates: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWhatsAppMessageTemplatesInput,
@@ -1688,8 +1680,8 @@ export const listLinkedWhatsAppBusinessAccounts: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLinkedWhatsAppBusinessAccountsInput,
@@ -1699,8 +1691,8 @@ export const listLinkedWhatsAppBusinessAccounts: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLinkedWhatsAppBusinessAccountsInput,
@@ -1710,8 +1702,8 @@ export const listLinkedWhatsAppBusinessAccounts: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLinkedWhatsAppBusinessAccountsInput,
@@ -1742,8 +1734,8 @@ export const getLinkedWhatsAppBusinessAccountPhoneNumber: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLinkedWhatsAppBusinessAccountPhoneNumberInput,
   output: GetLinkedWhatsAppBusinessAccountPhoneNumberOutput,
@@ -1768,8 +1760,8 @@ export const deleteWhatsAppMessageMedia: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWhatsAppMessageMediaInput,
   output: DeleteWhatsAppMessageMediaOutput,
@@ -1794,8 +1786,8 @@ export const getLinkedWhatsAppBusinessAccount: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLinkedWhatsAppBusinessAccountInput,
   output: GetLinkedWhatsAppBusinessAccountOutput,
@@ -1824,8 +1816,8 @@ export const getWhatsAppMessageMedia: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWhatsAppMessageMediaInput,
   output: GetWhatsAppMessageMediaOutput,
@@ -1848,8 +1840,8 @@ export const untagResource: (
   | InternalServiceException
   | InvalidParametersException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -1869,8 +1861,8 @@ export const putWhatsAppBusinessAccountEventDestinations: (
   | InternalServiceException
   | InvalidParametersException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutWhatsAppBusinessAccountEventDestinationsInput,
   output: PutWhatsAppBusinessAccountEventDestinationsOutput,
@@ -1891,8 +1883,8 @@ export const tagResource: (
   | InternalServiceException
   | InvalidParametersException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -1913,8 +1905,8 @@ export const disassociateWhatsAppBusinessAccount: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateWhatsAppBusinessAccountInput,
   output: DisassociateWhatsAppBusinessAccountOutput,
@@ -1937,8 +1929,8 @@ export const createWhatsAppMessageTemplateFromLibrary: (
   | InvalidParametersException
   | ResourceNotFoundException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWhatsAppMessageTemplateFromLibraryInput,
   output: CreateWhatsAppMessageTemplateFromLibraryOutput,
@@ -1963,8 +1955,8 @@ export const listWhatsAppTemplateLibrary: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWhatsAppTemplateLibraryInput,
@@ -1975,8 +1967,8 @@ export const listWhatsAppTemplateLibrary: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWhatsAppTemplateLibraryInput,
@@ -1987,8 +1979,8 @@ export const listWhatsAppTemplateLibrary: {
     | InvalidParametersException
     | ResourceNotFoundException
     | ThrottledRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWhatsAppTemplateLibraryInput,
@@ -2018,8 +2010,8 @@ export const associateWhatsAppBusinessAccount: (
   | InvalidParametersException
   | LimitExceededException
   | ThrottledRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateWhatsAppBusinessAccountInput,
   output: AssociateWhatsAppBusinessAccountOutput,

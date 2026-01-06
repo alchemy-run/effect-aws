@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://workspaces.amazonaws.com/api/v1");
 const svc = T.AwsApiService({
@@ -4775,8 +4773,8 @@ export const listAvailableManagementCidrRanges: (
   input: ListAvailableManagementCidrRangesRequest,
 ) => Effect.Effect<
   ListAvailableManagementCidrRangesResult,
-  AccessDeniedException | InvalidParameterValuesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | InvalidParameterValuesException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAvailableManagementCidrRangesRequest,
   output: ListAvailableManagementCidrRangesResult,
@@ -4790,8 +4788,8 @@ export const describeAccount: (
   input: DescribeAccountRequest,
 ) => Effect.Effect<
   DescribeAccountResult,
-  AccessDeniedException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountRequest,
   output: DescribeAccountResult,
@@ -4805,8 +4803,8 @@ export const describeAccountModifications: (
   input: DescribeAccountModificationsRequest,
 ) => Effect.Effect<
   DescribeAccountModificationsResult,
-  AccessDeniedException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountModificationsRequest,
   output: DescribeAccountModificationsResult,
@@ -4819,8 +4817,8 @@ export const describeIpGroups: (
   input: DescribeIpGroupsRequest,
 ) => Effect.Effect<
   DescribeIpGroupsResult,
-  AccessDeniedException | InvalidParameterValuesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | InvalidParameterValuesException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIpGroupsRequest,
   output: DescribeIpGroupsResult,
@@ -4833,8 +4831,8 @@ export const describeTags: (
   input: DescribeTagsRequest,
 ) => Effect.Effect<
   DescribeTagsResult,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTagsRequest,
   output: DescribeTagsResult,
@@ -4850,22 +4848,22 @@ export const describeWorkspaceBundles: {
     input: DescribeWorkspaceBundlesRequest,
   ): Effect.Effect<
     DescribeWorkspaceBundlesResult,
-    InvalidParameterValuesException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValuesException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeWorkspaceBundlesRequest,
   ) => Stream.Stream<
     DescribeWorkspaceBundlesResult,
-    InvalidParameterValuesException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValuesException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeWorkspaceBundlesRequest,
   ) => Stream.Stream<
     WorkspaceBundle,
-    InvalidParameterValuesException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValuesException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeWorkspaceBundlesRequest,
@@ -4887,8 +4885,8 @@ export const describeWorkspaceImagePermissions: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkspaceImagePermissionsRequest,
   output: DescribeWorkspaceImagePermissionsResult,
@@ -4905,8 +4903,8 @@ export const describeWorkspacesConnectionStatus: (
   input: DescribeWorkspacesConnectionStatusRequest,
 ) => Effect.Effect<
   DescribeWorkspacesConnectionStatusResult,
-  InvalidParameterValuesException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValuesException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkspacesConnectionStatusRequest,
   output: DescribeWorkspacesConnectionStatusResult,
@@ -4922,8 +4920,8 @@ export const describeWorkspaceSnapshots: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkspaceSnapshotsRequest,
   output: DescribeWorkspaceSnapshotsResult,
@@ -4943,8 +4941,8 @@ export const describeWorkspacesPools: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkspacesPoolsRequest,
   output: DescribeWorkspacesPoolsResult,
@@ -4965,8 +4963,8 @@ export const modifyStreamingProperties: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyStreamingPropertiesRequest,
   output: ModifyStreamingPropertiesResult,
@@ -4995,8 +4993,8 @@ export const rebuildWorkspaces: (
   input: RebuildWorkspacesRequest,
 ) => Effect.Effect<
   RebuildWorkspacesResult,
-  OperationNotSupportedException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotSupportedException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebuildWorkspacesRequest,
   output: RebuildWorkspacesResult,
@@ -5012,8 +5010,8 @@ export const startWorkspaces: (
   input: StartWorkspacesRequest,
 ) => Effect.Effect<
   StartWorkspacesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartWorkspacesRequest,
   output: StartWorkspacesResult,
@@ -5030,8 +5028,8 @@ export const stopWorkspaces: (
   input: StopWorkspacesRequest,
 ) => Effect.Effect<
   StopWorkspacesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopWorkspacesRequest,
   output: StopWorkspacesResult,
@@ -5069,8 +5067,8 @@ export const terminateWorkspaces: (
   input: TerminateWorkspacesRequest,
 ) => Effect.Effect<
   TerminateWorkspacesResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateWorkspacesRequest,
   output: TerminateWorkspacesResult,
@@ -5089,8 +5087,8 @@ export const deleteIpGroup: (
   | InvalidParameterValuesException
   | ResourceAssociatedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpGroupRequest,
   output: DeleteIpGroupResult,
@@ -5130,8 +5128,8 @@ export const updateConnectionAliasPermission: (
   | ResourceAssociatedException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectionAliasPermissionRequest,
   output: UpdateConnectionAliasPermissionResult,
@@ -5170,8 +5168,8 @@ export const deleteConnectionAlias: (
   | OperationNotSupportedException
   | ResourceAssociatedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectionAliasRequest,
   output: DeleteConnectionAliasResult,
@@ -5196,8 +5194,8 @@ export const deleteWorkspaceImage: (
   | AccessDeniedException
   | InvalidResourceStateException
   | ResourceAssociatedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceImageRequest,
   output: DeleteWorkspaceImageResult,
@@ -5232,8 +5230,8 @@ export const deregisterWorkspaceDirectory: (
   | InvalidResourceStateException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterWorkspaceDirectoryRequest,
   output: DeregisterWorkspaceDirectoryResult,
@@ -5264,8 +5262,8 @@ export const disassociateConnectionAlias: (
   | InvalidResourceStateException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateConnectionAliasRequest,
   output: DisassociateConnectionAliasResult,
@@ -5289,8 +5287,8 @@ export const disassociateIpGroups: (
   | InvalidResourceStateException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateIpGroupsRequest,
   output: DisassociateIpGroupsResult,
@@ -5313,8 +5311,8 @@ export const revokeIpRules: (
   | InvalidParameterValuesException
   | InvalidResourceStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeIpRulesRequest,
   output: RevokeIpRulesResult,
@@ -5342,8 +5340,8 @@ export const startWorkspacesPool: (
   | OperationNotSupportedException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartWorkspacesPoolRequest,
   output: StartWorkspacesPoolResult,
@@ -5372,8 +5370,8 @@ export const stopWorkspacesPool: (
   | InvalidResourceStateException
   | OperationInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopWorkspacesPoolRequest,
   output: StopWorkspacesPoolResult,
@@ -5397,8 +5395,8 @@ export const terminateWorkspacesPool: (
   | InvalidResourceStateException
   | OperationInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateWorkspacesPoolRequest,
   output: TerminateWorkspacesPoolResult,
@@ -5423,8 +5421,8 @@ export const updateRulesOfIpGroup: (
   | InvalidResourceStateException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRulesOfIpGroupRequest,
   output: UpdateRulesOfIpGroupResult,
@@ -5455,8 +5453,8 @@ export const associateConnectionAlias: (
   | OperationNotSupportedException
   | ResourceAssociatedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateConnectionAliasRequest,
   output: AssociateConnectionAliasResult,
@@ -5486,8 +5484,8 @@ export const modifyWorkspaceState: (
   | InvalidResourceStateException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyWorkspaceStateRequest,
   output: ModifyWorkspaceStateResult,
@@ -5511,8 +5509,8 @@ export const associateIpGroups: (
   | OperationNotSupportedException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateIpGroupsRequest,
   output: AssociateIpGroupsResult,
@@ -5540,8 +5538,8 @@ export const authorizeIpRules: (
   | InvalidResourceStateException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeIpRulesRequest,
   output: AuthorizeIpRulesResult,
@@ -5568,8 +5566,8 @@ export const createConnectionAlias: (
   | OperationNotSupportedException
   | ResourceAlreadyExistsException
   | ResourceLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectionAliasRequest,
   output: CreateConnectionAliasResult,
@@ -5593,8 +5591,8 @@ export const describeWorkspaceAssociations: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkspaceAssociationsRequest,
   output: DescribeWorkspaceAssociationsResult,
@@ -5622,8 +5620,8 @@ export const importWorkspaceImage: (
   | ResourceAlreadyExistsException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportWorkspaceImageRequest,
   output: ImportWorkspaceImageResult,
@@ -5648,8 +5646,8 @@ export const modifyCertificateBasedAuthProperties: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCertificateBasedAuthPropertiesRequest,
   output: ModifyCertificateBasedAuthPropertiesResult,
@@ -5671,8 +5669,8 @@ export const modifyClientProperties: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClientPropertiesRequest,
   output: ModifyClientPropertiesResult,
@@ -5696,8 +5694,8 @@ export const modifySamlProperties: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySamlPropertiesRequest,
   output: ModifySamlPropertiesResult,
@@ -5720,8 +5718,8 @@ export const modifySelfservicePermissions: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySelfservicePermissionsRequest,
   output: ModifySelfservicePermissionsResult,
@@ -5743,8 +5741,8 @@ export const modifyWorkspaceCreationProperties: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyWorkspaceCreationPropertiesRequest,
   output: ModifyWorkspaceCreationPropertiesResult,
@@ -5766,8 +5764,8 @@ export const modifyEndpointEncryptionMode: (
   | AccessDeniedException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyEndpointEncryptionModeRequest,
   output: ModifyEndpointEncryptionModeResponse,
@@ -5798,8 +5796,8 @@ export const restoreWorkspace: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreWorkspaceRequest,
   output: RestoreWorkspaceResult,
@@ -5839,8 +5837,8 @@ export const createUpdatedWorkspaceImage: (
   | ResourceAlreadyExistsException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUpdatedWorkspaceImageRequest,
   output: CreateUpdatedWorkspaceImageResult,
@@ -5868,8 +5866,8 @@ export const createWorkspaceImage: (
   | ResourceAlreadyExistsException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkspaceImageRequest,
   output: CreateWorkspaceImageResult,
@@ -5896,8 +5894,8 @@ export const createWorkspacesPool: (
   | ResourceAlreadyExistsException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkspacesPoolRequest,
   output: CreateWorkspacesPoolResult,
@@ -5922,8 +5920,8 @@ export const describeApplicationAssociations: {
     | InvalidParameterValuesException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeApplicationAssociationsRequest,
@@ -5933,8 +5931,8 @@ export const describeApplicationAssociations: {
     | InvalidParameterValuesException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeApplicationAssociationsRequest,
@@ -5944,8 +5942,8 @@ export const describeApplicationAssociations: {
     | InvalidParameterValuesException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeApplicationAssociationsRequest,
@@ -5974,8 +5972,8 @@ export const describeApplications: {
     | InvalidParameterValuesException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeApplicationsRequest,
@@ -5985,8 +5983,8 @@ export const describeApplications: {
     | InvalidParameterValuesException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeApplicationsRequest,
@@ -5996,8 +5994,8 @@ export const describeApplications: {
     | InvalidParameterValuesException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeApplicationsRequest,
@@ -6025,8 +6023,8 @@ export const describeBundleAssociations: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBundleAssociationsRequest,
   output: DescribeBundleAssociationsResult,
@@ -6053,8 +6051,8 @@ export const deleteClientBranding: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClientBrandingRequest,
   output: DeleteClientBrandingResult,
@@ -6075,8 +6073,8 @@ export const deleteConnectClientAddIn: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectClientAddInRequest,
   output: DeleteConnectClientAddInResult,
@@ -6097,8 +6095,8 @@ export const updateConnectClientAddIn: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectClientAddInRequest,
   output: UpdateConnectClientAddInResult,
@@ -6115,10 +6113,8 @@ export const deleteTags: (
   input: DeleteTagsRequest,
 ) => Effect.Effect<
   DeleteTagsResult,
-  | InvalidParameterValuesException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValuesException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsRequest,
   output: DeleteTagsResult,
@@ -6134,8 +6130,8 @@ export const createTags: (
   | InvalidParameterValuesException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTagsRequest,
   output: CreateTagsResult,
@@ -6161,8 +6157,8 @@ export const describeClientBranding: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClientBrandingRequest,
   output: DescribeClientBrandingResult,
@@ -6182,8 +6178,8 @@ export const describeClientProperties: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClientPropertiesRequest,
   output: DescribeClientPropertiesResult,
@@ -6203,8 +6199,8 @@ export const describeConnectClientAddIns: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConnectClientAddInsRequest,
   output: DescribeConnectClientAddInsResult,
@@ -6228,8 +6224,8 @@ export const describeConnectionAliasPermissions: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConnectionAliasPermissionsRequest,
   output: DescribeConnectionAliasPermissionsResult,
@@ -6247,8 +6243,8 @@ export const describeCustomWorkspaceImageImport: (
   input: DescribeCustomWorkspaceImageImportRequest,
 ) => Effect.Effect<
   DescribeCustomWorkspaceImageImportResult,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCustomWorkspaceImageImportRequest,
   output: DescribeCustomWorkspaceImageImportResult,
@@ -6265,8 +6261,8 @@ export const describeImageAssociations: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImageAssociationsRequest,
   output: DescribeImageAssociationsResult,
@@ -6289,8 +6285,8 @@ export const terminateWorkspacesPoolSession: (
   | OperationInProgressException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateWorkspacesPoolSessionRequest,
   output: TerminateWorkspacesPoolSessionResult,
@@ -6315,8 +6311,8 @@ export const deleteWorkspaceBundle: (
   | InvalidParameterValuesException
   | ResourceAssociatedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkspaceBundleRequest,
   output: DeleteWorkspaceBundleResult,
@@ -6344,8 +6340,8 @@ export const importCustomWorkspaceImage: (
   | ResourceAlreadyExistsException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportCustomWorkspaceImageRequest,
   output: ImportCustomWorkspaceImageResult,
@@ -6370,8 +6366,8 @@ export const createStandbyWorkspaces: (
   | OperationNotSupportedException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStandbyWorkspacesRequest,
   output: CreateStandbyWorkspacesResult,
@@ -6410,8 +6406,8 @@ export const createWorkspaces: (
   CreateWorkspacesResult,
   | InvalidParameterValuesException
   | ResourceLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkspacesRequest,
   output: CreateWorkspacesResult,
@@ -6429,8 +6425,8 @@ export const describeConnectionAliases: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | OperationNotSupportedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConnectionAliasesRequest,
   output: DescribeConnectionAliasesResult,
@@ -6448,8 +6444,8 @@ export const describeWorkspaceImages: (
   input: DescribeWorkspaceImagesRequest,
 ) => Effect.Effect<
   DescribeWorkspaceImagesResult,
-  AccessDeniedException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkspaceImagesRequest,
   output: DescribeWorkspaceImagesResult,
@@ -6465,8 +6461,8 @@ export const describeWorkspacesPoolSessions: (
   | AccessDeniedException
   | InvalidParameterValuesException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkspacesPoolSessionsRequest,
   output: DescribeWorkspacesPoolSessionsResult,
@@ -6487,8 +6483,8 @@ export const getAccountLink: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountLinkRequest,
   output: GetAccountLinkResult,
@@ -6530,8 +6526,8 @@ export const importClientBranding: (
   | InvalidParameterValuesException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportClientBrandingRequest,
   output: ImportClientBrandingResult,
@@ -6567,8 +6563,8 @@ export const migrateWorkspace: (
   | OperationNotSupportedException
   | ResourceNotFoundException
   | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MigrateWorkspaceRequest,
   output: MigrateWorkspaceResult,
@@ -6594,8 +6590,8 @@ export const rebootWorkspaces: (
   input: RebootWorkspacesRequest,
 ) => Effect.Effect<
   RebootWorkspacesResult,
-  OperationNotSupportedException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotSupportedException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootWorkspacesRequest,
   output: RebootWorkspacesResult,
@@ -6615,8 +6611,8 @@ export const updateWorkspacesPool: (
   | OperationNotSupportedException
   | ResourceLimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWorkspacesPoolRequest,
   output: UpdateWorkspacesPoolResult,
@@ -6645,8 +6641,8 @@ export const createConnectClientAddIn: (
   | ResourceAlreadyExistsException
   | ResourceCreationFailedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectClientAddInRequest,
   output: CreateConnectClientAddInResult,
@@ -6670,8 +6666,8 @@ export const disassociateWorkspaceApplication: (
   | OperationNotSupportedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateWorkspaceApplicationRequest,
   output: DisassociateWorkspaceApplicationResult,
@@ -6695,8 +6691,8 @@ export const deleteAccountLinkInvitation: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccountLinkInvitationRequest,
   output: DeleteAccountLinkInvitationResult,
@@ -6720,8 +6716,8 @@ export const rejectAccountLinkInvitation: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectAccountLinkInvitationRequest,
   output: RejectAccountLinkInvitationResult,
@@ -6747,8 +6743,8 @@ export const acceptAccountLinkInvitation: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptAccountLinkInvitationRequest,
   output: AcceptAccountLinkInvitationResult,
@@ -6771,8 +6767,8 @@ export const listAccountLinks: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccountLinksRequest,
@@ -6781,8 +6777,8 @@ export const listAccountLinks: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAccountLinksRequest,
@@ -6791,8 +6787,8 @@ export const listAccountLinks: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccountLinksRequest,
@@ -6816,8 +6812,8 @@ export const createAccountLinkInvitation: (
   | ConflictException
   | InternalServerException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccountLinkInvitationRequest,
   output: CreateAccountLinkInvitationResult,
@@ -6841,8 +6837,8 @@ export const modifyAccount: (
   | InvalidResourceStateException
   | ResourceNotFoundException
   | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyAccountRequest,
   output: ModifyAccountResult,
@@ -6872,8 +6868,8 @@ export const updateWorkspaceBundle: (
   | OperationNotSupportedException
   | ResourceNotFoundException
   | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWorkspaceBundleRequest,
   output: UpdateWorkspaceBundleResult,
@@ -6917,8 +6913,8 @@ export const updateWorkspaceImagePermission: (
   | OperationNotSupportedException
   | ResourceNotFoundException
   | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWorkspaceImagePermissionRequest,
   output: UpdateWorkspaceImagePermissionResult,
@@ -6954,8 +6950,8 @@ export const copyWorkspaceImage: (
   | ResourceLimitExceededException
   | ResourceNotFoundException
   | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyWorkspaceImageRequest,
   output: CopyWorkspaceImageResult,
@@ -6984,8 +6980,8 @@ export const createWorkspaceBundle: (
   | ResourceLimitExceededException
   | ResourceNotFoundException
   | ResourceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkspaceBundleRequest,
   output: CreateWorkspaceBundleResult,
@@ -7011,8 +7007,8 @@ export const describeWorkspaces: {
     DescribeWorkspacesResult,
     | InvalidParameterValuesException
     | ResourceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeWorkspacesRequest,
@@ -7020,8 +7016,8 @@ export const describeWorkspaces: {
     DescribeWorkspacesResult,
     | InvalidParameterValuesException
     | ResourceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeWorkspacesRequest,
@@ -7029,8 +7025,8 @@ export const describeWorkspaces: {
     Workspace,
     | InvalidParameterValuesException
     | ResourceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeWorkspacesRequest,
@@ -7065,8 +7061,8 @@ export const createIpGroup: (
   | ResourceAlreadyExistsException
   | ResourceCreationFailedException
   | ResourceLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpGroupRequest,
   output: CreateIpGroupResult,
@@ -7091,8 +7087,8 @@ export const deployWorkspaceApplications: (
   | OperationNotSupportedException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeployWorkspaceApplicationsRequest,
   output: DeployWorkspaceApplicationsResult,
@@ -7122,8 +7118,8 @@ export const associateWorkspaceApplication: (
   | ResourceAlreadyExistsException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateWorkspaceApplicationRequest,
   output: AssociateWorkspaceApplicationResult,
@@ -7148,22 +7144,22 @@ export const describeWorkspaceDirectories: {
     input: DescribeWorkspaceDirectoriesRequest,
   ): Effect.Effect<
     DescribeWorkspaceDirectoriesResult,
-    InvalidParameterValuesException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValuesException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeWorkspaceDirectoriesRequest,
   ) => Stream.Stream<
     DescribeWorkspaceDirectoriesResult,
-    InvalidParameterValuesException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValuesException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeWorkspaceDirectoriesRequest,
   ) => Stream.Stream<
     WorkspaceDirectory,
-    InvalidParameterValuesException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValuesException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeWorkspaceDirectoriesRequest,
@@ -7189,8 +7185,8 @@ export const modifyWorkspaceAccessProperties: (
   | InvalidParameterValuesException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyWorkspaceAccessPropertiesRequest,
   output: ModifyWorkspaceAccessPropertiesResult,
@@ -7222,8 +7218,8 @@ export const modifyWorkspaceProperties: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | UnsupportedWorkspaceConfigurationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyWorkspacePropertiesRequest,
   output: ModifyWorkspacePropertiesResult,
@@ -7257,8 +7253,8 @@ export const registerWorkspaceDirectory: (
   | ResourceNotFoundException
   | UnsupportedNetworkConfigurationException
   | WorkspacesDefaultRoleNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterWorkspaceDirectoryRequest,
   output: RegisterWorkspaceDirectoryResult,

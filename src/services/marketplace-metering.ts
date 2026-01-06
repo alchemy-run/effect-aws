@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Marketplace Metering",
@@ -602,7 +600,7 @@ export class InvalidTokenException extends S.TaggedError<InvalidTokenException>(
 export class IdempotencyConflictException extends S.TaggedError<IdempotencyConflictException>()(
   "IdempotencyConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidPublicKeyVersionException extends S.TaggedError<InvalidPublicKeyVersionException>()(
   "InvalidPublicKeyVersionException",
   { message: S.optional(S.String) },
@@ -668,8 +666,8 @@ export const resolveCustomer: (
   | InternalServiceErrorException
   | InvalidTokenException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResolveCustomerRequest,
   output: ResolveCustomerResult,
@@ -734,8 +732,8 @@ export const registerUsage: (
   | InvalidRegionException
   | PlatformNotSupportedException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterUsageRequest,
   output: RegisterUsageResult,
@@ -796,8 +794,8 @@ export const batchMeterUsage: (
   | InvalidUsageDimensionException
   | ThrottlingException
   | TimestampOutOfBoundsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchMeterUsageRequest,
   output: BatchMeterUsageResult,
@@ -851,8 +849,8 @@ export const meterUsage: (
   | InvalidUsageDimensionException
   | ThrottlingException
   | TimestampOutOfBoundsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MeterUsageRequest,
   output: MeterUsageResult,

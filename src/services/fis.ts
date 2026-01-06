@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "fis",
@@ -2354,17 +2352,17 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFoundException", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConflictException", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ValidationException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
@@ -2372,7 +2370,7 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     code: "ServiceQuotaExceededException",
     httpResponseCode: 402,
   }),
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -2382,8 +2380,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2396,8 +2394,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2410,8 +2408,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2424,8 +2422,8 @@ export const deleteTargetAccountConfiguration: (
   input: DeleteTargetAccountConfigurationRequest,
 ) => Effect.Effect<
   DeleteTargetAccountConfigurationResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTargetAccountConfigurationRequest,
   output: DeleteTargetAccountConfigurationResponse,
@@ -2438,8 +2436,8 @@ export const getSafetyLever: (
   input: GetSafetyLeverRequest,
 ) => Effect.Effect<
   GetSafetyLeverResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSafetyLeverRequest,
   output: GetSafetyLeverResponse,
@@ -2453,22 +2451,22 @@ export const listExperimentResolvedTargets: {
     input: ListExperimentResolvedTargetsRequest,
   ): Effect.Effect<
     ListExperimentResolvedTargetsResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExperimentResolvedTargetsRequest,
   ) => Stream.Stream<
     ListExperimentResolvedTargetsResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExperimentResolvedTargetsRequest,
   ) => Stream.Stream<
     ResolvedTarget,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExperimentResolvedTargetsRequest,
@@ -2491,8 +2489,8 @@ export const updateSafetyLeverState: (
   | ConflictException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSafetyLeverStateRequest,
   output: UpdateSafetyLeverStateResponse,
@@ -2505,8 +2503,8 @@ export const getExperimentTargetAccountConfiguration: (
   input: GetExperimentTargetAccountConfigurationRequest,
 ) => Effect.Effect<
   GetExperimentTargetAccountConfigurationResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExperimentTargetAccountConfigurationRequest,
   output: GetExperimentTargetAccountConfigurationResponse,
@@ -2520,22 +2518,22 @@ export const listActions: {
     input: ListActionsRequest,
   ): Effect.Effect<
     ListActionsResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListActionsRequest,
   ) => Stream.Stream<
     ListActionsResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListActionsRequest,
   ) => Stream.Stream<
     ActionSummary,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActionsRequest,
@@ -2556,22 +2554,22 @@ export const listExperiments: {
     input: ListExperimentsRequest,
   ): Effect.Effect<
     ListExperimentsResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExperimentsRequest,
   ) => Stream.Stream<
     ListExperimentsResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExperimentsRequest,
   ) => Stream.Stream<
     ExperimentSummary,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExperimentsRequest,
@@ -2591,8 +2589,8 @@ export const listExperimentTargetAccountConfigurations: (
   input: ListExperimentTargetAccountConfigurationsRequest,
 ) => Effect.Effect<
   ListExperimentTargetAccountConfigurationsResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListExperimentTargetAccountConfigurationsRequest,
   output: ListExperimentTargetAccountConfigurationsResponse,
@@ -2606,22 +2604,22 @@ export const listExperimentTemplates: {
     input: ListExperimentTemplatesRequest,
   ): Effect.Effect<
     ListExperimentTemplatesResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExperimentTemplatesRequest,
   ) => Stream.Stream<
     ListExperimentTemplatesResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExperimentTemplatesRequest,
   ) => Stream.Stream<
     ExperimentTemplateSummary,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExperimentTemplatesRequest,
@@ -2642,22 +2640,22 @@ export const listTargetAccountConfigurations: {
     input: ListTargetAccountConfigurationsRequest,
   ): Effect.Effect<
     ListTargetAccountConfigurationsResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTargetAccountConfigurationsRequest,
   ) => Stream.Stream<
     ListTargetAccountConfigurationsResponse,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTargetAccountConfigurationsRequest,
   ) => Stream.Stream<
     TargetAccountConfigurationSummary,
-    ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTargetAccountConfigurationsRequest,
@@ -2678,22 +2676,22 @@ export const listTargetResourceTypes: {
     input: ListTargetResourceTypesRequest,
   ): Effect.Effect<
     ListTargetResourceTypesResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTargetResourceTypesRequest,
   ) => Stream.Stream<
     ListTargetResourceTypesResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTargetResourceTypesRequest,
   ) => Stream.Stream<
     TargetResourceTypeSummary,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTargetResourceTypesRequest,
@@ -2713,8 +2711,8 @@ export const getExperimentTemplate: (
   input: GetExperimentTemplateRequest,
 ) => Effect.Effect<
   GetExperimentTemplateResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExperimentTemplateRequest,
   output: GetExperimentTemplateResponse,
@@ -2727,8 +2725,8 @@ export const getTargetAccountConfiguration: (
   input: GetTargetAccountConfigurationRequest,
 ) => Effect.Effect<
   GetTargetAccountConfigurationResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTargetAccountConfigurationRequest,
   output: GetTargetAccountConfigurationResponse,
@@ -2741,8 +2739,8 @@ export const stopExperiment: (
   input: StopExperimentRequest,
 ) => Effect.Effect<
   StopExperimentResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopExperimentRequest,
   output: StopExperimentResponse,
@@ -2755,8 +2753,8 @@ export const updateTargetAccountConfiguration: (
   input: UpdateTargetAccountConfigurationRequest,
 ) => Effect.Effect<
   UpdateTargetAccountConfigurationResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTargetAccountConfigurationRequest,
   output: UpdateTargetAccountConfigurationResponse,
@@ -2776,8 +2774,8 @@ export const createTargetAccountConfiguration: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTargetAccountConfigurationRequest,
   output: CreateTargetAccountConfigurationResponse,
@@ -2795,8 +2793,8 @@ export const getAction: (
   input: GetActionRequest,
 ) => Effect.Effect<
   GetActionResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetActionRequest,
   output: GetActionResponse,
@@ -2809,8 +2807,8 @@ export const getTargetResourceType: (
   input: GetTargetResourceTypeRequest,
 ) => Effect.Effect<
   GetTargetResourceTypeResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTargetResourceTypeRequest,
   output: GetTargetResourceTypeResponse,
@@ -2826,8 +2824,8 @@ export const updateExperimentTemplate: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateExperimentTemplateRequest,
   output: UpdateExperimentTemplateResponse,
@@ -2848,8 +2846,8 @@ export const startExperiment: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartExperimentRequest,
   output: StartExperimentResponse,
@@ -2887,8 +2885,8 @@ export const createExperimentTemplate: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExperimentTemplateRequest,
   output: CreateExperimentTemplateResponse,
@@ -2906,8 +2904,8 @@ export const deleteExperimentTemplate: (
   input: DeleteExperimentTemplateRequest,
 ) => Effect.Effect<
   DeleteExperimentTemplateResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteExperimentTemplateRequest,
   output: DeleteExperimentTemplateResponse,
@@ -2920,8 +2918,8 @@ export const getExperiment: (
   input: GetExperimentRequest,
 ) => Effect.Effect<
   GetExperimentResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExperimentRequest,
   output: GetExperimentResponse,

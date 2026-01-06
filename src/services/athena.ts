@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Athena",
@@ -3225,8 +3223,8 @@ export const cancelCapacityReservation: (
   input: CancelCapacityReservationInput,
 ) => Effect.Effect<
   CancelCapacityReservationOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelCapacityReservationInput,
   output: CancelCapacityReservationOutput,
@@ -3255,8 +3253,8 @@ export const createDataCatalog: (
   input: CreateDataCatalogInput,
 ) => Effect.Effect<
   CreateDataCatalogOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataCatalogInput,
   output: CreateDataCatalogOutput,
@@ -3269,8 +3267,8 @@ export const deleteDataCatalog: (
   input: DeleteDataCatalogInput,
 ) => Effect.Effect<
   DeleteDataCatalogOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataCatalogInput,
   output: DeleteDataCatalogOutput,
@@ -3284,8 +3282,8 @@ export const getCapacityAssignmentConfiguration: (
   input: GetCapacityAssignmentConfigurationInput,
 ) => Effect.Effect<
   GetCapacityAssignmentConfigurationOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCapacityAssignmentConfigurationInput,
   output: GetCapacityAssignmentConfigurationOutput,
@@ -3298,8 +3296,8 @@ export const getWorkGroup: (
   input: GetWorkGroupInput,
 ) => Effect.Effect<
   GetWorkGroupOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkGroupInput,
   output: GetWorkGroupOutput,
@@ -3316,22 +3314,22 @@ export const listDataCatalogs: {
     input: ListDataCatalogsInput,
   ): Effect.Effect<
     ListDataCatalogsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDataCatalogsInput,
   ) => Stream.Stream<
     ListDataCatalogsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDataCatalogsInput,
   ) => Stream.Stream<
     DataCatalogSummary,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDataCatalogsInput,
@@ -3352,22 +3350,22 @@ export const listPreparedStatements: {
     input: ListPreparedStatementsInput,
   ): Effect.Effect<
     ListPreparedStatementsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPreparedStatementsInput,
   ) => Stream.Stream<
     ListPreparedStatementsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPreparedStatementsInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPreparedStatementsInput,
@@ -3387,22 +3385,22 @@ export const listWorkGroups: {
     input: ListWorkGroupsInput,
   ): Effect.Effect<
     ListWorkGroupsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkGroupsInput,
   ) => Stream.Stream<
     ListWorkGroupsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkGroupsInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkGroupsInput,
@@ -3422,8 +3420,8 @@ export const updateWorkGroup: (
   input: UpdateWorkGroupInput,
 ) => Effect.Effect<
   UpdateWorkGroupOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWorkGroupInput,
   output: UpdateWorkGroupOutput,
@@ -3437,8 +3435,8 @@ export const createCapacityReservation: (
   input: CreateCapacityReservationInput,
 ) => Effect.Effect<
   CreateCapacityReservationOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCapacityReservationInput,
   output: CreateCapacityReservationOutput,
@@ -3452,8 +3450,8 @@ export const createNamedQuery: (
   input: CreateNamedQueryInput,
 ) => Effect.Effect<
   CreateNamedQueryOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNamedQueryInput,
   output: CreateNamedQueryOutput,
@@ -3466,8 +3464,8 @@ export const getDataCatalog: (
   input: GetDataCatalogInput,
 ) => Effect.Effect<
   GetDataCatalogOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataCatalogInput,
   output: GetDataCatalogOutput,
@@ -3481,8 +3479,8 @@ export const getNamedQuery: (
   input: GetNamedQueryInput,
 ) => Effect.Effect<
   GetNamedQueryOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNamedQueryInput,
   output: GetNamedQueryOutput,
@@ -3497,8 +3495,8 @@ export const getQueryExecution: (
   input: GetQueryExecutionInput,
 ) => Effect.Effect<
   GetQueryExecutionOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQueryExecutionInput,
   output: GetQueryExecutionOutput,
@@ -3512,22 +3510,22 @@ export const listCapacityReservations: {
     input: ListCapacityReservationsInput,
   ): Effect.Effect<
     ListCapacityReservationsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCapacityReservationsInput,
   ) => Stream.Stream<
     ListCapacityReservationsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCapacityReservationsInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCapacityReservationsInput,
@@ -3548,22 +3546,22 @@ export const listEngineVersions: {
     input: ListEngineVersionsInput,
   ): Effect.Effect<
     ListEngineVersionsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEngineVersionsInput,
   ) => Stream.Stream<
     ListEngineVersionsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEngineVersionsInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEngineVersionsInput,
@@ -3585,22 +3583,22 @@ export const listNamedQueries: {
     input: ListNamedQueriesInput,
   ): Effect.Effect<
     ListNamedQueriesOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNamedQueriesInput,
   ) => Stream.Stream<
     ListNamedQueriesOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNamedQueriesInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNamedQueriesInput,
@@ -3623,22 +3621,22 @@ export const listQueryExecutions: {
     input: ListQueryExecutionsInput,
   ): Effect.Effect<
     ListQueryExecutionsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListQueryExecutionsInput,
   ) => Stream.Stream<
     ListQueryExecutionsOutput,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListQueryExecutionsInput,
   ) => Stream.Stream<
     unknown,
-    InternalServerException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueryExecutionsInput,
@@ -3659,8 +3657,8 @@ export const putCapacityAssignmentConfiguration: (
   input: PutCapacityAssignmentConfigurationInput,
 ) => Effect.Effect<
   PutCapacityAssignmentConfigurationOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutCapacityAssignmentConfigurationInput,
   output: PutCapacityAssignmentConfigurationOutput,
@@ -3673,8 +3671,8 @@ export const createPreparedStatement: (
   input: CreatePreparedStatementInput,
 ) => Effect.Effect<
   CreatePreparedStatementOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePreparedStatementInput,
   output: CreatePreparedStatementOutput,
@@ -3691,8 +3689,8 @@ export const deleteCapacityReservation: (
   input: DeleteCapacityReservationInput,
 ) => Effect.Effect<
   DeleteCapacityReservationOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCapacityReservationInput,
   output: DeleteCapacityReservationOutput,
@@ -3706,8 +3704,8 @@ export const deleteNamedQuery: (
   input: DeleteNamedQueryInput,
 ) => Effect.Effect<
   DeleteNamedQueryOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNamedQueryInput,
   output: DeleteNamedQueryOutput,
@@ -3721,8 +3719,8 @@ export const deleteWorkGroup: (
   input: DeleteWorkGroupInput,
 ) => Effect.Effect<
   DeleteWorkGroupOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkGroupInput,
   output: DeleteWorkGroupOutput,
@@ -3736,8 +3734,8 @@ export const stopQueryExecution: (
   input: StopQueryExecutionInput,
 ) => Effect.Effect<
   StopQueryExecutionOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopQueryExecutionInput,
   output: StopQueryExecutionOutput,
@@ -3751,8 +3749,8 @@ export const updateCapacityReservation: (
   input: UpdateCapacityReservationInput,
 ) => Effect.Effect<
   UpdateCapacityReservationOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCapacityReservationInput,
   output: UpdateCapacityReservationOutput,
@@ -3765,8 +3763,8 @@ export const updateDataCatalog: (
   input: UpdateDataCatalogInput,
 ) => Effect.Effect<
   UpdateDataCatalogOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataCatalogInput,
   output: UpdateDataCatalogOutput,
@@ -3780,8 +3778,8 @@ export const updateNamedQuery: (
   input: UpdateNamedQueryInput,
 ) => Effect.Effect<
   UpdateNamedQueryOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNamedQueryInput,
   output: UpdateNamedQueryOutput,
@@ -3802,8 +3800,8 @@ export const batchGetNamedQuery: (
   input: BatchGetNamedQueryInput,
 ) => Effect.Effect<
   BatchGetNamedQueryOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetNamedQueryInput,
   output: BatchGetNamedQueryOutput,
@@ -3820,8 +3818,8 @@ export const batchGetPreparedStatement: (
   input: BatchGetPreparedStatementInput,
 ) => Effect.Effect<
   BatchGetPreparedStatementOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetPreparedStatementInput,
   output: BatchGetPreparedStatementOutput,
@@ -3835,8 +3833,8 @@ export const createWorkGroup: (
   input: CreateWorkGroupInput,
 ) => Effect.Effect<
   CreateWorkGroupOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkGroupInput,
   output: CreateWorkGroupOutput,
@@ -3852,8 +3850,8 @@ export const exportNotebook: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportNotebookInput,
   output: ExportNotebookOutput,
@@ -3873,8 +3871,8 @@ export const getCalculationExecution: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCalculationExecutionRequest,
   output: GetCalculationExecutionResponse,
@@ -3891,8 +3889,8 @@ export const getCapacityReservation: (
   input: GetCapacityReservationInput,
 ) => Effect.Effect<
   GetCapacityReservationOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCapacityReservationInput,
   output: GetCapacityReservationOutput,
@@ -3908,8 +3906,8 @@ export const getDatabase: (
   | InternalServerException
   | InvalidRequestException
   | MetadataException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDatabaseInput,
   output: GetDatabaseOutput,
@@ -3925,8 +3923,8 @@ export const getTableMetadata: (
   | InternalServerException
   | InvalidRequestException
   | MetadataException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableMetadataInput,
   output: GetTableMetadataOutput,
@@ -3947,8 +3945,8 @@ export const startQueryExecution: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartQueryExecutionInput,
   output: StartQueryExecutionOutput,
@@ -3970,8 +3968,8 @@ export const listApplicationDPUSizes: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationDPUSizesInput,
@@ -3980,8 +3978,8 @@ export const listApplicationDPUSizes: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationDPUSizesInput,
@@ -3990,8 +3988,8 @@ export const listApplicationDPUSizes: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationDPUSizesInput,
@@ -4017,8 +4015,8 @@ export const listNotebookMetadata: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListNotebookMetadataInput,
   output: ListNotebookMetadataOutput,
@@ -4040,8 +4038,8 @@ export const createNotebook: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNotebookInput,
   output: CreateNotebookOutput,
@@ -4061,8 +4059,8 @@ export const getNotebookMetadata: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNotebookMetadataInput,
   output: GetNotebookMetadataOutput,
@@ -4087,8 +4085,8 @@ export const importNotebook: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportNotebookInput,
   output: ImportNotebookOutput,
@@ -4108,8 +4106,8 @@ export const deleteNotebook: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNotebookInput,
   output: DeleteNotebookOutput,
@@ -4129,8 +4127,8 @@ export const updateNotebook: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNotebookInput,
   output: UpdateNotebookOutput,
@@ -4150,8 +4148,8 @@ export const updateNotebookMetadata: (
   | InternalServerException
   | InvalidRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNotebookMetadataInput,
   output: UpdateNotebookMetadataOutput,
@@ -4172,8 +4170,8 @@ export const getSession: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSessionRequest,
   output: GetSessionResponse,
@@ -4195,8 +4193,8 @@ export const listCalculationExecutions: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCalculationExecutionsRequest,
@@ -4205,8 +4203,8 @@ export const listCalculationExecutions: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCalculationExecutionsRequest,
@@ -4215,8 +4213,8 @@ export const listCalculationExecutions: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCalculationExecutionsRequest,
@@ -4245,8 +4243,8 @@ export const listExecutors: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExecutorsRequest,
@@ -4255,8 +4253,8 @@ export const listExecutors: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExecutorsRequest,
@@ -4265,8 +4263,8 @@ export const listExecutors: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExecutorsRequest,
@@ -4295,8 +4293,8 @@ export const listNotebookSessions: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListNotebookSessionsRequest,
   output: ListNotebookSessionsResponse,
@@ -4320,8 +4318,8 @@ export const listSessions: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSessionsRequest,
@@ -4330,8 +4328,8 @@ export const listSessions: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSessionsRequest,
@@ -4340,8 +4338,8 @@ export const listSessions: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSessionsRequest,
@@ -4373,8 +4371,8 @@ export const startCalculationExecution: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCalculationExecutionRequest,
   output: StartCalculationExecutionResponse,
@@ -4398,8 +4396,8 @@ export const createPresignedNotebookUrl: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePresignedNotebookUrlRequest,
   output: CreatePresignedNotebookUrlResponse,
@@ -4419,8 +4417,8 @@ export const getCalculationExecutionCode: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCalculationExecutionCodeRequest,
   output: GetCalculationExecutionCodeResponse,
@@ -4440,8 +4438,8 @@ export const getCalculationExecutionStatus: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCalculationExecutionStatusRequest,
   output: GetCalculationExecutionStatusResponse,
@@ -4462,8 +4460,8 @@ export const getPreparedStatement: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPreparedStatementInput,
   output: GetPreparedStatementOutput,
@@ -4483,8 +4481,8 @@ export const getResourceDashboard: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceDashboardRequest,
   output: GetResourceDashboardResponse,
@@ -4504,8 +4502,8 @@ export const getSessionEndpoint: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSessionEndpointRequest,
   output: GetSessionEndpointResponse,
@@ -4525,8 +4523,8 @@ export const getSessionStatus: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSessionStatusRequest,
   output: GetSessionStatusResponse,
@@ -4547,8 +4545,8 @@ export const listTagsForResource: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceInput,
@@ -4557,8 +4555,8 @@ export const listTagsForResource: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceInput,
@@ -4567,8 +4565,8 @@ export const listTagsForResource: {
     | InternalServerException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceInput,
@@ -4603,8 +4601,8 @@ export const stopCalculationExecution: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopCalculationExecutionRequest,
   output: StopCalculationExecutionResponse,
@@ -4628,8 +4626,8 @@ export const terminateSession: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateSessionRequest,
   output: TerminateSessionResponse,
@@ -4650,8 +4648,8 @@ export const deletePreparedStatement: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePreparedStatementInput,
   output: DeletePreparedStatementOutput,
@@ -4681,8 +4679,8 @@ export const tagResource: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -4702,8 +4700,8 @@ export const untagResource: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -4723,8 +4721,8 @@ export const updatePreparedStatement: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePreparedStatementInput,
   output: UpdatePreparedStatementOutput,
@@ -4745,8 +4743,8 @@ export const listDatabases: {
     | InternalServerException
     | InvalidRequestException
     | MetadataException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDatabasesInput,
@@ -4755,8 +4753,8 @@ export const listDatabases: {
     | InternalServerException
     | InvalidRequestException
     | MetadataException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDatabasesInput,
@@ -4765,8 +4763,8 @@ export const listDatabases: {
     | InternalServerException
     | InvalidRequestException
     | MetadataException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDatabasesInput,
@@ -4790,8 +4788,8 @@ export const listTableMetadata: {
     | InternalServerException
     | InvalidRequestException
     | MetadataException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTableMetadataInput,
@@ -4800,8 +4798,8 @@ export const listTableMetadata: {
     | InternalServerException
     | InvalidRequestException
     | MetadataException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTableMetadataInput,
@@ -4810,8 +4808,8 @@ export const listTableMetadata: {
     | InternalServerException
     | InvalidRequestException
     | MetadataException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTableMetadataInput,
@@ -4836,8 +4834,8 @@ export const batchGetQueryExecution: (
   input: BatchGetQueryExecutionInput,
 ) => Effect.Effect<
   BatchGetQueryExecutionOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetQueryExecutionInput,
   output: BatchGetQueryExecutionOutput,
@@ -4869,8 +4867,8 @@ export const getQueryResults: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetQueryResultsInput,
@@ -4879,8 +4877,8 @@ export const getQueryResults: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetQueryResultsInput,
@@ -4889,8 +4887,8 @@ export const getQueryResults: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetQueryResultsInput,
@@ -4919,8 +4917,8 @@ export const getQueryRuntimeStatistics: (
   input: GetQueryRuntimeStatisticsInput,
 ) => Effect.Effect<
   GetQueryRuntimeStatisticsOutput,
-  InternalServerException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQueryRuntimeStatisticsInput,
   output: GetQueryRuntimeStatisticsOutput,
@@ -4939,8 +4937,8 @@ export const startSession: (
   | ResourceNotFoundException
   | SessionAlreadyExistsException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSessionRequest,
   output: StartSessionResponse,

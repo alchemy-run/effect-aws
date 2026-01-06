@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "imagebuilder",
@@ -5293,35 +5291,31 @@ export const ListImageScanFindingsResponse = S.suspend(() =>
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CallRateLimitExceededException extends S.TaggedError<CallRateLimitExceededException>()(
   "CallRateLimitExceededException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ClientException extends S.TaggedError<ClientException>()(
   "ClientException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceException extends S.TaggedError<ServiceException>()(
   "ServiceException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class DryRunOperationException extends S.TaggedError<DryRunOperationException>()(
   "DryRunOperationException",
   { message: S.optional(S.String) },
@@ -5329,55 +5323,51 @@ export class DryRunOperationException extends S.TaggedError<DryRunOperationExcep
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidPaginationTokenException extends S.TaggedError<InvalidPaginationTokenException>()(
   "InvalidPaginationTokenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IdempotentParameterMismatchException extends S.TaggedError<IdempotentParameterMismatchException>()(
   "IdempotentParameterMismatchException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterCombinationException extends S.TaggedError<InvalidParameterCombinationException>()(
   "InvalidParameterCombinationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceDependencyException extends S.TaggedError<ResourceDependencyException>()(
   "ResourceDependencyException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidVersionNumberException extends S.TaggedError<InvalidVersionNumberException>()(
   "InvalidVersionNumberException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**
@@ -5390,8 +5380,8 @@ export const tagResource: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5411,8 +5401,8 @@ export const untagResource: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5432,8 +5422,8 @@ export const listTagsForResource: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5456,8 +5446,8 @@ export const importDiskImage: (
   | ClientException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportDiskImageRequest,
   output: ImportDiskImageResponse,
@@ -5480,8 +5470,8 @@ export const importVmImage: (
   | ClientException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportVmImageRequest,
   output: ImportVmImageResponse,
@@ -5504,8 +5494,8 @@ export const putComponentPolicy: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutComponentPolicyRequest,
   output: PutComponentPolicyResponse,
@@ -5545,8 +5535,8 @@ export const listComponents: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListComponentsRequest,
@@ -5559,8 +5549,8 @@ export const listComponents: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListComponentsRequest,
@@ -5573,8 +5563,8 @@ export const listComponents: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComponentsRequest,
@@ -5610,8 +5600,8 @@ export const listLifecycleExecutionResources: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLifecycleExecutionResourcesRequest,
@@ -5624,8 +5614,8 @@ export const listLifecycleExecutionResources: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLifecycleExecutionResourcesRequest,
@@ -5638,8 +5628,8 @@ export const listLifecycleExecutionResources: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLifecycleExecutionResourcesRequest,
@@ -5675,8 +5665,8 @@ export const listContainerRecipes: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContainerRecipesRequest,
@@ -5689,8 +5679,8 @@ export const listContainerRecipes: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContainerRecipesRequest,
@@ -5703,8 +5693,8 @@ export const listContainerRecipes: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContainerRecipesRequest,
@@ -5740,8 +5730,8 @@ export const listDistributionConfigurations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDistributionConfigurationsRequest,
@@ -5754,8 +5744,8 @@ export const listDistributionConfigurations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDistributionConfigurationsRequest,
@@ -5768,8 +5758,8 @@ export const listDistributionConfigurations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDistributionConfigurationsRequest,
@@ -5805,8 +5795,8 @@ export const listImageBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImageBuildVersionsRequest,
@@ -5819,8 +5809,8 @@ export const listImageBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImageBuildVersionsRequest,
@@ -5833,8 +5823,8 @@ export const listImageBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImageBuildVersionsRequest,
@@ -5872,8 +5862,8 @@ export const listImagePackages: {
     | ResourceNotFoundException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImagePackagesRequest,
@@ -5887,8 +5877,8 @@ export const listImagePackages: {
     | ResourceNotFoundException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImagePackagesRequest,
@@ -5902,8 +5892,8 @@ export const listImagePackages: {
     | ResourceNotFoundException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagePackagesRequest,
@@ -5940,8 +5930,8 @@ export const listImageRecipes: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImageRecipesRequest,
@@ -5954,8 +5944,8 @@ export const listImageRecipes: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImageRecipesRequest,
@@ -5968,8 +5958,8 @@ export const listImageRecipes: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImageRecipesRequest,
@@ -6006,8 +5996,8 @@ export const listImages: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImagesRequest,
@@ -6020,8 +6010,8 @@ export const listImages: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImagesRequest,
@@ -6034,8 +6024,8 @@ export const listImages: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagesRequest,
@@ -6071,8 +6061,8 @@ export const listInfrastructureConfigurations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInfrastructureConfigurationsRequest,
@@ -6085,8 +6075,8 @@ export const listInfrastructureConfigurations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInfrastructureConfigurationsRequest,
@@ -6099,8 +6089,8 @@ export const listInfrastructureConfigurations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInfrastructureConfigurationsRequest,
@@ -6136,8 +6126,8 @@ export const listLifecyclePolicies: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLifecyclePoliciesRequest,
@@ -6150,8 +6140,8 @@ export const listLifecyclePolicies: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLifecyclePoliciesRequest,
@@ -6164,8 +6154,8 @@ export const listLifecyclePolicies: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLifecyclePoliciesRequest,
@@ -6202,8 +6192,8 @@ export const listWaitingWorkflowSteps: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWaitingWorkflowStepsRequest,
@@ -6216,8 +6206,8 @@ export const listWaitingWorkflowSteps: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWaitingWorkflowStepsRequest,
@@ -6230,8 +6220,8 @@ export const listWaitingWorkflowSteps: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWaitingWorkflowStepsRequest,
@@ -6267,8 +6257,8 @@ export const listWorkflowBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkflowBuildVersionsRequest,
@@ -6281,8 +6271,8 @@ export const listWorkflowBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkflowBuildVersionsRequest,
@@ -6295,8 +6285,8 @@ export const listWorkflowBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowBuildVersionsRequest,
@@ -6333,8 +6323,8 @@ export const listWorkflowExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkflowExecutionsRequest,
@@ -6347,8 +6337,8 @@ export const listWorkflowExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkflowExecutionsRequest,
@@ -6361,8 +6351,8 @@ export const listWorkflowExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowExecutionsRequest,
@@ -6398,8 +6388,8 @@ export const listWorkflows: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkflowsRequest,
@@ -6412,8 +6402,8 @@ export const listWorkflows: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkflowsRequest,
@@ -6426,8 +6416,8 @@ export const listWorkflows: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowsRequest,
@@ -6464,8 +6454,8 @@ export const listWorkflowStepExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkflowStepExecutionsRequest,
@@ -6478,8 +6468,8 @@ export const listWorkflowStepExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkflowStepExecutionsRequest,
@@ -6492,8 +6482,8 @@ export const listWorkflowStepExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowStepExecutionsRequest,
@@ -6530,8 +6520,8 @@ export const listImagePipelineImages: {
     | ResourceNotFoundException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImagePipelineImagesRequest,
@@ -6545,8 +6535,8 @@ export const listImagePipelineImages: {
     | ResourceNotFoundException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImagePipelineImagesRequest,
@@ -6560,8 +6550,8 @@ export const listImagePipelineImages: {
     | ResourceNotFoundException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagePipelineImagesRequest,
@@ -6598,8 +6588,8 @@ export const listImagePipelines: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImagePipelinesRequest,
@@ -6612,8 +6602,8 @@ export const listImagePipelines: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImagePipelinesRequest,
@@ -6626,8 +6616,8 @@ export const listImagePipelines: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagePipelinesRequest,
@@ -6663,8 +6653,8 @@ export const listLifecycleExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLifecycleExecutionsRequest,
@@ -6677,8 +6667,8 @@ export const listLifecycleExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLifecycleExecutionsRequest,
@@ -6691,8 +6681,8 @@ export const listLifecycleExecutions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLifecycleExecutionsRequest,
@@ -6726,8 +6716,8 @@ export const getComponentPolicy: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComponentPolicyRequest,
   output: GetComponentPolicyResponse,
@@ -6753,8 +6743,8 @@ export const getContainerRecipePolicy: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerRecipePolicyRequest,
   output: GetContainerRecipePolicyResponse,
@@ -6780,8 +6770,8 @@ export const getImagePolicy: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImagePolicyRequest,
   output: GetImagePolicyResponse,
@@ -6807,8 +6797,8 @@ export const getImageRecipePolicy: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImageRecipePolicyRequest,
   output: GetImageRecipePolicyResponse,
@@ -6836,8 +6826,8 @@ export const getMarketplaceResource: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMarketplaceResourceRequest,
   output: GetMarketplaceResourceResponse,
@@ -6864,8 +6854,8 @@ export const getWorkflowExecution: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkflowExecutionRequest,
   output: GetWorkflowExecutionResponse,
@@ -6892,8 +6882,8 @@ export const getWorkflowStepExecution: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkflowStepExecutionRequest,
   output: GetWorkflowStepExecutionResponse,
@@ -6919,8 +6909,8 @@ export const getContainerRecipe: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContainerRecipeRequest,
   output: GetContainerRecipeResponse,
@@ -6946,8 +6936,8 @@ export const getDistributionConfiguration: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDistributionConfigurationRequest,
   output: GetDistributionConfigurationResponse,
@@ -6973,8 +6963,8 @@ export const getImagePipeline: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImagePipelineRequest,
   output: GetImagePipelineResponse,
@@ -7000,8 +6990,8 @@ export const getImageRecipe: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImageRecipeRequest,
   output: GetImageRecipeResponse,
@@ -7027,8 +7017,8 @@ export const getInfrastructureConfiguration: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInfrastructureConfigurationRequest,
   output: GetInfrastructureConfigurationResponse,
@@ -7054,8 +7044,8 @@ export const getLifecyclePolicy: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLifecyclePolicyRequest,
   output: GetLifecyclePolicyResponse,
@@ -7081,8 +7071,8 @@ export const getComponent: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComponentRequest,
   output: GetComponentResponse,
@@ -7108,8 +7098,8 @@ export const getLifecycleExecution: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLifecycleExecutionRequest,
   output: GetLifecycleExecutionResponse,
@@ -7135,8 +7125,8 @@ export const getWorkflow: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWorkflowRequest,
   output: GetWorkflowResponse,
@@ -7162,8 +7152,8 @@ export const getImage: (
   | InvalidRequestException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImageRequest,
   output: GetImageResponse,
@@ -7192,8 +7182,8 @@ export const listComponentBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListComponentBuildVersionsRequest,
@@ -7206,8 +7196,8 @@ export const listComponentBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListComponentBuildVersionsRequest,
@@ -7220,8 +7210,8 @@ export const listComponentBuildVersions: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComponentBuildVersionsRequest,
@@ -7271,8 +7261,8 @@ export const listImageScanFindingAggregations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImageScanFindingAggregationsRequest,
@@ -7285,8 +7275,8 @@ export const listImageScanFindingAggregations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImageScanFindingAggregationsRequest,
@@ -7299,8 +7289,8 @@ export const listImageScanFindingAggregations: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImageScanFindingAggregationsRequest,
@@ -7342,8 +7332,8 @@ export const putContainerRecipePolicy: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutContainerRecipePolicyRequest,
   output: PutContainerRecipePolicyResponse,
@@ -7375,8 +7365,8 @@ export const putImagePolicy: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutImagePolicyRequest,
   output: PutImagePolicyResponse,
@@ -7408,8 +7398,8 @@ export const putImageRecipePolicy: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutImageRecipePolicyRequest,
   output: PutImageRecipePolicyResponse,
@@ -7438,8 +7428,8 @@ export const deleteComponent: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteComponentRequest,
   output: DeleteComponentResponse,
@@ -7468,8 +7458,8 @@ export const cancelLifecycleExecution: (
   | ResourceInUseException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelLifecycleExecutionRequest,
   output: CancelLifecycleExecutionResponse,
@@ -7501,8 +7491,8 @@ export const importComponent: (
   | ResourceInUseException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportComponentRequest,
   output: ImportComponentResponse,
@@ -7536,8 +7526,8 @@ export const updateDistributionConfiguration: (
   | ResourceInUseException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDistributionConfigurationRequest,
   output: UpdateDistributionConfigurationResponse,
@@ -7569,8 +7559,8 @@ export const updateLifecyclePolicy: (
   | ResourceInUseException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLifecyclePolicyRequest,
   output: UpdateLifecyclePolicyResponse,
@@ -7600,8 +7590,8 @@ export const deleteContainerRecipe: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContainerRecipeRequest,
   output: DeleteContainerRecipeResponse,
@@ -7629,8 +7619,8 @@ export const deleteDistributionConfiguration: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDistributionConfigurationRequest,
   output: DeleteDistributionConfigurationResponse,
@@ -7674,8 +7664,8 @@ export const deleteImage: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImageRequest,
   output: DeleteImageResponse,
@@ -7703,8 +7693,8 @@ export const deleteImagePipeline: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImagePipelineRequest,
   output: DeleteImagePipelineResponse,
@@ -7732,8 +7722,8 @@ export const deleteImageRecipe: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImageRecipeRequest,
   output: DeleteImageRecipeResponse,
@@ -7761,8 +7751,8 @@ export const deleteInfrastructureConfiguration: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInfrastructureConfigurationRequest,
   output: DeleteInfrastructureConfigurationResponse,
@@ -7790,8 +7780,8 @@ export const deleteLifecyclePolicy: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLifecyclePolicyRequest,
   output: DeleteLifecyclePolicyResponse,
@@ -7819,8 +7809,8 @@ export const deleteWorkflow: (
   | ResourceDependencyException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkflowRequest,
   output: DeleteWorkflowResponse,
@@ -7849,8 +7839,8 @@ export const retryImage: (
   | ResourceInUseException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetryImageRequest,
   output: RetryImageResponse,
@@ -7883,8 +7873,8 @@ export const sendWorkflowStepAction: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendWorkflowStepActionRequest,
   output: SendWorkflowStepActionResponse,
@@ -7917,8 +7907,8 @@ export const startImagePipelineExecution: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartImagePipelineExecutionRequest,
   output: StartImagePipelineExecutionResponse,
@@ -7955,8 +7945,8 @@ export const updateImagePipeline: (
   | ResourceInUseException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateImagePipelineRequest,
   output: UpdateImagePipelineResponse,
@@ -7987,8 +7977,8 @@ export const updateInfrastructureConfiguration: (
   | ResourceInUseException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInfrastructureConfigurationRequest,
   output: UpdateInfrastructureConfigurationResponse,
@@ -8019,8 +8009,8 @@ export const cancelImageCreation: (
   | ResourceInUseException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelImageCreationRequest,
   output: CancelImageCreationResponse,
@@ -8052,8 +8042,8 @@ export const startResourceStateUpdate: (
   | ResourceNotFoundException
   | ServiceException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartResourceStateUpdateRequest,
   output: StartResourceStateUpdateResponse,
@@ -8084,8 +8074,8 @@ export const listImageScanFindings: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImageScanFindingsRequest,
@@ -8098,8 +8088,8 @@ export const listImageScanFindings: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImageScanFindingsRequest,
@@ -8112,8 +8102,8 @@ export const listImageScanFindings: {
     | InvalidRequestException
     | ServiceException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImageScanFindingsRequest,
@@ -8152,8 +8142,8 @@ export const createImagePipeline: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImagePipelineRequest,
   output: CreateImagePipelineResponse,
@@ -8189,8 +8179,8 @@ export const createWorkflow: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkflowRequest,
   output: CreateWorkflowResponse,
@@ -8228,8 +8218,8 @@ export const createDistributionConfiguration: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDistributionConfigurationRequest,
   output: CreateDistributionConfigurationResponse,
@@ -8266,8 +8256,8 @@ export const createImage: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImageRequest,
   output: CreateImageResponse,
@@ -8302,8 +8292,8 @@ export const createImageRecipe: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImageRecipeRequest,
   output: CreateImageRecipeResponse,
@@ -8347,8 +8337,8 @@ export const createComponent: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateComponentRequest,
   output: CreateComponentResponse,
@@ -8385,8 +8375,8 @@ export const createInfrastructureConfiguration: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInfrastructureConfigurationRequest,
   output: CreateInfrastructureConfigurationResponse,
@@ -8420,8 +8410,8 @@ export const createLifecyclePolicy: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLifecyclePolicyRequest,
   output: CreateLifecyclePolicyResponse,
@@ -8457,8 +8447,8 @@ export const createContainerRecipe: (
   | ServiceException
   | ServiceQuotaExceededException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContainerRecipeRequest,
   output: CreateContainerRecipeResponse,
@@ -8495,8 +8485,8 @@ export const distributeImage: (
   | ServiceQuotaExceededException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DistributeImageRequest,
   output: DistributeImageResponse,

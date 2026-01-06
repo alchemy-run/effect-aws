@@ -38,9 +38,8 @@
     "editor.defaultFormatter": null,
     "editor.formatOnSave": false
   },
-  "files.exclude": {
-    "**/__pycache__": true,
-    "**/*.pyc": true
+  "files.readonlyInclude": {
+    "src/services/**": true
   },
   "[typescript]": {
     "editor.indentSize": 2,

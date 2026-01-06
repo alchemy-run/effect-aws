@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "EC2 Instance Connect",
@@ -318,41 +316,37 @@ export class AuthException extends S.TaggedError<AuthException>()(
   "AuthException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "Forbidden", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class EC2InstanceNotFoundException extends S.TaggedError<EC2InstanceNotFoundException>()(
   "EC2InstanceNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "EC2InstanceNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EC2InstanceStateInvalidException extends S.TaggedError<EC2InstanceStateInvalidException>()(
   "EC2InstanceStateInvalidException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "EC2InstanceStateInvalid", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EC2InstanceTypeInvalidException extends S.TaggedError<EC2InstanceTypeInvalidException>()(
   "EC2InstanceTypeInvalidException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "EC2InstanceTypeInvalid", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EC2InstanceUnavailableException extends S.TaggedError<EC2InstanceUnavailableException>()(
   "EC2InstanceUnavailableException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "EC2InstanceUnavailable", httpResponseCode: 503 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidArgsException extends S.TaggedError<InvalidArgsException>()(
   "InvalidArgsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidArguments", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceException extends S.TaggedError<ServiceException>()(
   "ServiceException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InternalServerError", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class SerialConsoleAccessDisabledException extends S.TaggedError<SerialConsoleAccessDisabledException>()(
   "SerialConsoleAccessDisabledException",
   { Message: S.optional(S.String) },
@@ -360,14 +354,12 @@ export class SerialConsoleAccessDisabledException extends S.TaggedError<SerialCo
     code: "SerialConsoleAccessDisabled",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TooManyRequests", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class SerialConsoleSessionLimitExceededException extends S.TaggedError<SerialConsoleSessionLimitExceededException>()(
   "SerialConsoleSessionLimitExceededException",
   { Message: S.optional(S.String) },
@@ -375,7 +367,7 @@ export class SerialConsoleSessionLimitExceededException extends S.TaggedError<Se
     code: "SerialConsoleSessionLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SerialConsoleSessionUnavailableException extends S.TaggedError<SerialConsoleSessionUnavailableException>()(
   "SerialConsoleSessionUnavailableException",
   { Message: S.optional(S.String) },
@@ -383,9 +375,7 @@ export class SerialConsoleSessionUnavailableException extends S.TaggedError<Seri
     code: "SerialConsoleSessionUnavailable",
     httpResponseCode: 500,
   }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class SerialConsoleSessionUnsupportedException extends S.TaggedError<SerialConsoleSessionUnsupportedException>()(
   "SerialConsoleSessionUnsupportedException",
   { Message: S.optional(S.String) },
@@ -393,7 +383,7 @@ export class SerialConsoleSessionUnsupportedException extends S.TaggedError<Seri
     code: "SerialConsoleSessionUnsupported",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -413,8 +403,8 @@ export const sendSSHPublicKey: (
   | InvalidArgsException
   | ServiceException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendSSHPublicKeyRequest,
   output: SendSSHPublicKeyResponse,
@@ -450,8 +440,8 @@ export const sendSerialConsoleSSHPublicKey: (
   | SerialConsoleSessionUnsupportedException
   | ServiceException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendSerialConsoleSSHPublicKeyRequest,
   output: SendSerialConsoleSSHPublicKeyResponse,

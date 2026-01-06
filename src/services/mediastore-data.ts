@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "https://object.mediastore.amazonaws.com/doc/2017-09-01",
@@ -490,7 +488,7 @@ export const ListItemsResponse = S.suspend(() =>
 export class ContainerNotFoundException extends S.TaggedError<ContainerNotFoundException>()(
   "ContainerNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerError extends S.TaggedError<InternalServerError>()(
   "InternalServerError",
   { Message: S.optional(S.String) },
@@ -498,7 +496,7 @@ export class InternalServerError extends S.TaggedError<InternalServerError>()(
 export class ObjectNotFoundException extends S.TaggedError<ObjectNotFoundException>()(
   "ObjectNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RequestedRangeNotSatisfiableException extends S.TaggedError<RequestedRangeNotSatisfiableException>()(
   "RequestedRangeNotSatisfiableException",
   { Message: S.optional(S.String) },
@@ -514,22 +512,22 @@ export const listItems: {
     input: ListItemsRequest,
   ): Effect.Effect<
     ListItemsResponse,
-    ContainerNotFoundException | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ContainerNotFoundException | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListItemsRequest,
   ) => Stream.Stream<
     ListItemsResponse,
-    ContainerNotFoundException | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ContainerNotFoundException | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListItemsRequest,
   ) => Stream.Stream<
     unknown,
-    ContainerNotFoundException | InternalServerError | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ContainerNotFoundException | InternalServerError | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListItemsRequest,
@@ -548,8 +546,8 @@ export const putObject: (
   input: PutObjectRequest,
 ) => Effect.Effect<
   PutObjectResponse,
-  ContainerNotFoundException | InternalServerError | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ContainerNotFoundException | InternalServerError | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectRequest,
   output: PutObjectResponse,
@@ -565,8 +563,8 @@ export const deleteObject: (
   | ContainerNotFoundException
   | InternalServerError
   | ObjectNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectRequest,
   output: DeleteObjectResponse,
@@ -586,8 +584,8 @@ export const describeObject: (
   | ContainerNotFoundException
   | InternalServerError
   | ObjectNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeObjectRequest,
   output: DescribeObjectResponse,
@@ -608,8 +606,8 @@ export const getObject: (
   | InternalServerError
   | ObjectNotFoundException
   | RequestedRangeNotSatisfiableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectRequest,
   output: GetObjectResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Messaging",
@@ -2705,45 +2703,39 @@ export const CreateChannelFlowResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ServiceFailureException extends S.TaggedError<ServiceFailureException>()(
   "ServiceFailureException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottledClientException extends S.TaggedError<ThrottledClientException>()(
   "ThrottledClientException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnauthorizedClientException extends S.TaggedError<UnauthorizedClientException>()(
   "UnauthorizedClientException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -2767,8 +2759,8 @@ export const getChannelMembershipPreferences: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChannelMembershipPreferencesRequest,
   output: GetChannelMembershipPreferencesResponse,
@@ -2799,8 +2791,8 @@ export const getChannelMessage: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChannelMessageRequest,
   output: GetChannelMessageResponse,
@@ -2836,8 +2828,8 @@ export const putChannelMembershipPreferences: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutChannelMembershipPreferencesRequest,
   output: PutChannelMembershipPreferencesResponse,
@@ -2874,8 +2866,8 @@ export const sendChannelMessage: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendChannelMessageRequest,
   output: SendChannelMessageResponse,
@@ -2918,8 +2910,8 @@ export const createChannelModerator: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelModeratorRequest,
   output: CreateChannelModeratorResponse,
@@ -2974,8 +2966,8 @@ export const getChannelMessageStatus: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChannelMessageStatusRequest,
   output: GetChannelMessageStatusResponse,
@@ -3000,8 +2992,8 @@ export const getMessagingSessionEndpoint: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMessagingSessionEndpointRequest,
   output: GetMessagingSessionEndpointResponse,
@@ -3031,8 +3023,8 @@ export const listChannelBans: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelBansRequest,
@@ -3044,8 +3036,8 @@ export const listChannelBans: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelBansRequest,
@@ -3057,8 +3049,8 @@ export const listChannelBans: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelBansRequest,
@@ -3091,8 +3083,8 @@ export const listChannelFlows: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelFlowsRequest,
@@ -3104,8 +3096,8 @@ export const listChannelFlows: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelFlowsRequest,
@@ -3117,8 +3109,8 @@ export const listChannelFlows: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelFlowsRequest,
@@ -3158,8 +3150,8 @@ export const listChannelMemberships: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelMembershipsRequest,
@@ -3171,8 +3163,8 @@ export const listChannelMemberships: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelMembershipsRequest,
@@ -3184,8 +3176,8 @@ export const listChannelMemberships: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelMembershipsRequest,
@@ -3228,8 +3220,8 @@ export const listChannelMessages: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelMessagesRequest,
@@ -3241,8 +3233,8 @@ export const listChannelMessages: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelMessagesRequest,
@@ -3254,8 +3246,8 @@ export const listChannelMessages: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelMessagesRequest,
@@ -3292,8 +3284,8 @@ export const listChannelModerators: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelModeratorsRequest,
@@ -3305,8 +3297,8 @@ export const listChannelModerators: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelModeratorsRequest,
@@ -3318,8 +3310,8 @@ export const listChannelModerators: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelModeratorsRequest,
@@ -3365,8 +3357,8 @@ export const listChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelsRequest,
@@ -3378,8 +3370,8 @@ export const listChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelsRequest,
@@ -3391,8 +3383,8 @@ export const listChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsRequest,
@@ -3425,8 +3417,8 @@ export const listChannelsAssociatedWithChannelFlow: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelsAssociatedWithChannelFlowRequest,
@@ -3438,8 +3430,8 @@ export const listChannelsAssociatedWithChannelFlow: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelsAssociatedWithChannelFlowRequest,
@@ -3451,8 +3443,8 @@ export const listChannelsAssociatedWithChannelFlow: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsAssociatedWithChannelFlowRequest,
@@ -3485,8 +3477,8 @@ export const listSubChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSubChannelsRequest,
@@ -3498,8 +3490,8 @@ export const listSubChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSubChannelsRequest,
@@ -3511,8 +3503,8 @@ export const listSubChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSubChannelsRequest,
@@ -3553,8 +3545,8 @@ export const searchChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchChannelsRequest,
@@ -3566,8 +3558,8 @@ export const searchChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchChannelsRequest,
@@ -3579,8 +3571,8 @@ export const searchChannels: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchChannelsRequest,
@@ -3623,8 +3615,8 @@ export const putChannelExpirationSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutChannelExpirationSettingsRequest,
   output: PutChannelExpirationSettingsResponse,
@@ -3657,8 +3649,8 @@ export const redactChannelMessage: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RedactChannelMessageRequest,
   output: RedactChannelMessageResponse,
@@ -3692,8 +3684,8 @@ export const updateChannel: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelRequest,
   output: UpdateChannelResponse,
@@ -3721,8 +3713,8 @@ export const updateChannelFlow: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelFlowRequest,
   output: UpdateChannelFlowResponse,
@@ -3754,8 +3746,8 @@ export const updateChannelMessage: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelMessageRequest,
   output: UpdateChannelMessageResponse,
@@ -3787,8 +3779,8 @@ export const updateChannelReadMarker: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelReadMarkerRequest,
   output: UpdateChannelReadMarkerResponse,
@@ -3821,8 +3813,8 @@ export const deleteChannel: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelRequest,
   output: DeleteChannelResponse,
@@ -3853,8 +3845,8 @@ export const deleteChannelFlow: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelFlowRequest,
   output: DeleteChannelFlowResponse,
@@ -3886,8 +3878,8 @@ export const deleteChannelMembership: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelMembershipRequest,
   output: DeleteChannelMembershipResponse,
@@ -3920,8 +3912,8 @@ export const listChannelMembershipsForAppInstanceUser: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelMembershipsForAppInstanceUserRequest,
@@ -3933,8 +3925,8 @@ export const listChannelMembershipsForAppInstanceUser: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelMembershipsForAppInstanceUserRequest,
@@ -3946,8 +3938,8 @@ export const listChannelMembershipsForAppInstanceUser: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelMembershipsForAppInstanceUserRequest,
@@ -3984,8 +3976,8 @@ export const listChannelsModeratedByAppInstanceUser: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelsModeratedByAppInstanceUserRequest,
@@ -3997,8 +3989,8 @@ export const listChannelsModeratedByAppInstanceUser: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelsModeratedByAppInstanceUserRequest,
@@ -4010,8 +4002,8 @@ export const listChannelsModeratedByAppInstanceUser: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelsModeratedByAppInstanceUserRequest,
@@ -4043,8 +4035,8 @@ export const listTagsForResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4074,8 +4066,8 @@ export const deleteChannelBan: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelBanRequest,
   output: DeleteChannelBanResponse,
@@ -4107,8 +4099,8 @@ export const deleteChannelMessage: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelMessageRequest,
   output: DeleteChannelMessageResponse,
@@ -4138,8 +4130,8 @@ export const deleteChannelModerator: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelModeratorRequest,
   output: DeleteChannelModeratorResponse,
@@ -4166,8 +4158,8 @@ export const deleteMessagingStreamingConfigurations: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMessagingStreamingConfigurationsRequest,
   output: DeleteMessagingStreamingConfigurationsResponse,
@@ -4193,8 +4185,8 @@ export const untagResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4229,8 +4221,8 @@ export const channelFlowCallback: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ChannelFlowCallbackRequest,
   output: ChannelFlowCallbackResponse,
@@ -4262,8 +4254,8 @@ export const describeChannel: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelRequest,
   output: DescribeChannelResponse,
@@ -4289,8 +4281,8 @@ export const describeChannelFlow: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelFlowRequest,
   output: DescribeChannelFlowResponse,
@@ -4321,8 +4313,8 @@ export const describeChannelModeratedByAppInstanceUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelModeratedByAppInstanceUserRequest,
   output: DescribeChannelModeratedByAppInstanceUserResponse,
@@ -4353,8 +4345,8 @@ export const describeChannelMembershipForAppInstanceUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelMembershipForAppInstanceUserRequest,
   output: DescribeChannelMembershipForAppInstanceUserResponse,
@@ -4383,8 +4375,8 @@ export const putMessagingStreamingConfigurations: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMessagingStreamingConfigurationsRequest,
   output: PutMessagingStreamingConfigurationsResponse,
@@ -4437,8 +4429,8 @@ export const createChannelMembership: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelMembershipRequest,
   output: CreateChannelMembershipResponse,
@@ -4476,8 +4468,8 @@ export const disassociateChannelFlow: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateChannelFlowRequest,
   output: DisassociateChannelFlowResponse,
@@ -4507,8 +4499,8 @@ export const getMessagingStreamingConfigurations: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMessagingStreamingConfigurationsRequest,
   output: GetMessagingStreamingConfigurationsResponse,
@@ -4543,8 +4535,8 @@ export const associateChannelFlow: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateChannelFlowRequest,
   output: AssociateChannelFlowResponse,
@@ -4574,8 +4566,8 @@ export const batchCreateChannelMembership: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateChannelMembershipRequest,
   output: BatchCreateChannelMembershipResponse,
@@ -4608,8 +4600,8 @@ export const describeChannelBan: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelBanRequest,
   output: DescribeChannelBanResponse,
@@ -4641,8 +4633,8 @@ export const describeChannelMembership: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelMembershipRequest,
   output: DescribeChannelMembershipResponse,
@@ -4674,8 +4666,8 @@ export const describeChannelModerator: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChannelModeratorRequest,
   output: DescribeChannelModeratorResponse,
@@ -4703,8 +4695,8 @@ export const tagResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4740,8 +4732,8 @@ export const createChannel: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelRequest,
   output: CreateChannelResponse,
@@ -4781,8 +4773,8 @@ export const createChannelBan: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelBanRequest,
   output: CreateChannelBanResponse,
@@ -4826,8 +4818,8 @@ export const createChannelFlow: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelFlowRequest,
   output: CreateChannelFlowResponse,

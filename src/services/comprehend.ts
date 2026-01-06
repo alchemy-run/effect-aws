@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Comprehend",
@@ -4491,17 +4489,15 @@ export const DescribeEntityRecognizerResponse = S.suspend(() =>
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class BatchSizeLimitExceededException extends S.TaggedError<BatchSizeLimitExceededException>()(
   "BatchSizeLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   {
@@ -4509,57 +4505,55 @@ export class InvalidRequestException extends S.TaggedError<InvalidRequestExcepti
     Reason: S.optional(S.String),
     Detail: S.optional(InvalidRequestDetail),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidFilterException extends S.TaggedError<InvalidFilterException>()(
   "InvalidFilterException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class JobNotFoundException extends S.TaggedError<JobNotFoundException>()(
   "JobNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TextSizeLimitExceededException extends S.TaggedError<TextSizeLimitExceededException>()(
   "TextSizeLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class KmsKeyValidationException extends S.TaggedError<KmsKeyValidationException>()(
   "KmsKeyValidationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceUnavailableException extends S.TaggedError<ResourceUnavailableException>()(
   "ResourceUnavailableException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedLanguageException extends S.TaggedError<UnsupportedLanguageException>()(
   "UnsupportedLanguageException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagKeysException extends S.TaggedError<TooManyTagKeysException>()(
   "TooManyTagKeysException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -4574,8 +4568,8 @@ export const listFlywheels: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFlywheelsRequest,
@@ -4585,8 +4579,8 @@ export const listFlywheels: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFlywheelsRequest,
@@ -4596,8 +4590,8 @@ export const listFlywheels: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlywheelsRequest,
@@ -4645,8 +4639,8 @@ export const classifyDocument: (
   | InvalidRequestException
   | ResourceUnavailableException
   | TextSizeLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ClassifyDocumentRequest,
   output: ClassifyDocumentResponse,
@@ -4671,8 +4665,8 @@ export const startFlywheelIteration: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFlywheelIterationRequest,
   output: StartFlywheelIterationResponse,
@@ -4698,8 +4692,8 @@ export const deleteEndpoint: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointRequest,
   output: DeleteEndpointResponse,
@@ -4732,8 +4726,8 @@ export const deleteEntityRecognizer: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEntityRecognizerRequest,
   output: DeleteEntityRecognizerResponse,
@@ -4763,8 +4757,8 @@ export const deleteFlywheel: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFlywheelRequest,
   output: DeleteFlywheelResponse,
@@ -4791,8 +4785,8 @@ export const listDatasets: {
     | InvalidRequestException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDatasetsRequest,
@@ -4803,8 +4797,8 @@ export const listDatasets: {
     | InvalidRequestException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDatasetsRequest,
@@ -4815,8 +4809,8 @@ export const listDatasets: {
     | InvalidRequestException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetsRequest,
@@ -4845,8 +4839,8 @@ export const describeResourcePolicy: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResourcePolicyRequest,
   output: DescribeResourcePolicyResponse,
@@ -4866,8 +4860,8 @@ export const listTagsForResource: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4889,8 +4883,8 @@ export const putResourcePolicy: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -4910,8 +4904,8 @@ export const deleteResourcePolicy: (
   | InternalServerException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -4938,8 +4932,8 @@ export const stopTrainingDocumentClassifier: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTrainingDocumentClassifierRequest,
   output: StopTrainingDocumentClassifierResponse,
@@ -4967,8 +4961,8 @@ export const stopTrainingEntityRecognizer: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTrainingEntityRecognizerRequest,
   output: StopTrainingEntityRecognizerResponse,
@@ -4992,8 +4986,8 @@ export const describeDataset: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -5017,8 +5011,8 @@ export const describeEndpoint: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEndpointRequest,
   output: DescribeEndpointResponse,
@@ -5041,8 +5035,8 @@ export const describeFlywheel: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFlywheelRequest,
   output: DescribeFlywheelResponse,
@@ -5068,8 +5062,8 @@ export const listFlywheelIterationHistory: {
     | InvalidRequestException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFlywheelIterationHistoryRequest,
@@ -5080,8 +5074,8 @@ export const listFlywheelIterationHistory: {
     | InvalidRequestException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFlywheelIterationHistoryRequest,
@@ -5092,8 +5086,8 @@ export const listFlywheelIterationHistory: {
     | InvalidRequestException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlywheelIterationHistoryRequest,
@@ -5132,8 +5126,8 @@ export const deleteDocumentClassifier: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDocumentClassifierRequest,
   output: DeleteDocumentClassifierResponse,
@@ -5157,8 +5151,8 @@ export const describeDocumentClassifier: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDocumentClassifierRequest,
   output: DescribeDocumentClassifierResponse,
@@ -5191,8 +5185,8 @@ export const stopDominantLanguageDetectionJob: (
   | InternalServerException
   | InvalidRequestException
   | JobNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDominantLanguageDetectionJobRequest,
   output: StopDominantLanguageDetectionJobResponse,
@@ -5224,8 +5218,8 @@ export const stopEntitiesDetectionJob: (
   | InternalServerException
   | InvalidRequestException
   | JobNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopEntitiesDetectionJobRequest,
   output: StopEntitiesDetectionJobResponse,
@@ -5245,8 +5239,8 @@ export const stopEventsDetectionJob: (
   | InternalServerException
   | InvalidRequestException
   | JobNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopEventsDetectionJobRequest,
   output: StopEventsDetectionJobResponse,
@@ -5278,8 +5272,8 @@ export const stopKeyPhrasesDetectionJob: (
   | InternalServerException
   | InvalidRequestException
   | JobNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopKeyPhrasesDetectionJobRequest,
   output: StopKeyPhrasesDetectionJobResponse,
@@ -5299,8 +5293,8 @@ export const stopPiiEntitiesDetectionJob: (
   | InternalServerException
   | InvalidRequestException
   | JobNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopPiiEntitiesDetectionJobRequest,
   output: StopPiiEntitiesDetectionJobResponse,
@@ -5332,8 +5326,8 @@ export const stopSentimentDetectionJob: (
   | InternalServerException
   | InvalidRequestException
   | JobNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopSentimentDetectionJobRequest,
   output: StopSentimentDetectionJobResponse,
@@ -5365,8 +5359,8 @@ export const stopTargetedSentimentDetectionJob: (
   | InternalServerException
   | InvalidRequestException
   | JobNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTargetedSentimentDetectionJobRequest,
   output: StopTargetedSentimentDetectionJobResponse,
@@ -5388,8 +5382,8 @@ export const describeDocumentClassificationJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDocumentClassificationJobRequest,
   output: DescribeDocumentClassificationJobResponse,
@@ -5412,8 +5406,8 @@ export const describeDominantLanguageDetectionJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDominantLanguageDetectionJobRequest,
   output: DescribeDominantLanguageDetectionJobResponse,
@@ -5436,8 +5430,8 @@ export const describeEntitiesDetectionJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntitiesDetectionJobRequest,
   output: DescribeEntitiesDetectionJobResponse,
@@ -5459,8 +5453,8 @@ export const describeEventsDetectionJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventsDetectionJobRequest,
   output: DescribeEventsDetectionJobResponse,
@@ -5483,8 +5477,8 @@ export const describeKeyPhrasesDetectionJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeKeyPhrasesDetectionJobRequest,
   output: DescribeKeyPhrasesDetectionJobResponse,
@@ -5507,8 +5501,8 @@ export const describeSentimentDetectionJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSentimentDetectionJobRequest,
   output: DescribeSentimentDetectionJobResponse,
@@ -5531,8 +5525,8 @@ export const describeTargetedSentimentDetectionJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTargetedSentimentDetectionJobRequest,
   output: DescribeTargetedSentimentDetectionJobResponse,
@@ -5555,8 +5549,8 @@ export const describeTopicsDetectionJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTopicsDetectionJobRequest,
   output: DescribeTopicsDetectionJobResponse,
@@ -5578,8 +5572,8 @@ export const detectDominantLanguage: (
   | InternalServerException
   | InvalidRequestException
   | TextSizeLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectDominantLanguageRequest,
   output: DetectDominantLanguageResponse,
@@ -5601,8 +5595,8 @@ export const batchDetectDominantLanguage: (
   | InternalServerException
   | InvalidRequestException
   | TextSizeLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDetectDominantLanguageRequest,
   output: BatchDetectDominantLanguageResponse,
@@ -5624,8 +5618,8 @@ export const listDocumentClassifierSummaries: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDocumentClassifierSummariesRequest,
@@ -5634,8 +5628,8 @@ export const listDocumentClassifierSummaries: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDocumentClassifierSummariesRequest,
@@ -5644,8 +5638,8 @@ export const listDocumentClassifierSummaries: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDocumentClassifierSummariesRequest,
@@ -5673,8 +5667,8 @@ export const listEndpoints: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEndpointsRequest,
@@ -5683,8 +5677,8 @@ export const listEndpoints: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEndpointsRequest,
@@ -5693,8 +5687,8 @@ export const listEndpoints: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEndpointsRequest,
@@ -5722,8 +5716,8 @@ export const listEntityRecognizerSummaries: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEntityRecognizerSummariesRequest,
@@ -5732,8 +5726,8 @@ export const listEntityRecognizerSummaries: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEntityRecognizerSummariesRequest,
@@ -5742,8 +5736,8 @@ export const listEntityRecognizerSummaries: {
     | InternalServerException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEntityRecognizerSummariesRequest,
@@ -5771,8 +5765,8 @@ export const listDocumentClassificationJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDocumentClassificationJobsRequest,
@@ -5782,8 +5776,8 @@ export const listDocumentClassificationJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDocumentClassificationJobsRequest,
@@ -5793,8 +5787,8 @@ export const listDocumentClassificationJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDocumentClassificationJobsRequest,
@@ -5823,8 +5817,8 @@ export const listDocumentClassifiers: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDocumentClassifiersRequest,
@@ -5834,8 +5828,8 @@ export const listDocumentClassifiers: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDocumentClassifiersRequest,
@@ -5845,8 +5839,8 @@ export const listDocumentClassifiers: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDocumentClassifiersRequest,
@@ -5875,8 +5869,8 @@ export const listDominantLanguageDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDominantLanguageDetectionJobsRequest,
@@ -5886,8 +5880,8 @@ export const listDominantLanguageDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDominantLanguageDetectionJobsRequest,
@@ -5897,8 +5891,8 @@ export const listDominantLanguageDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDominantLanguageDetectionJobsRequest,
@@ -5927,8 +5921,8 @@ export const listEntitiesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEntitiesDetectionJobsRequest,
@@ -5938,8 +5932,8 @@ export const listEntitiesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEntitiesDetectionJobsRequest,
@@ -5949,8 +5943,8 @@ export const listEntitiesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEntitiesDetectionJobsRequest,
@@ -5985,8 +5979,8 @@ export const listEntityRecognizers: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEntityRecognizersRequest,
@@ -5996,8 +5990,8 @@ export const listEntityRecognizers: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEntityRecognizersRequest,
@@ -6007,8 +6001,8 @@ export const listEntityRecognizers: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEntityRecognizersRequest,
@@ -6037,8 +6031,8 @@ export const listEventsDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEventsDetectionJobsRequest,
@@ -6048,8 +6042,8 @@ export const listEventsDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEventsDetectionJobsRequest,
@@ -6059,8 +6053,8 @@ export const listEventsDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventsDetectionJobsRequest,
@@ -6089,8 +6083,8 @@ export const listKeyPhrasesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListKeyPhrasesDetectionJobsRequest,
@@ -6100,8 +6094,8 @@ export const listKeyPhrasesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListKeyPhrasesDetectionJobsRequest,
@@ -6111,8 +6105,8 @@ export const listKeyPhrasesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListKeyPhrasesDetectionJobsRequest,
@@ -6141,8 +6135,8 @@ export const listPiiEntitiesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPiiEntitiesDetectionJobsRequest,
@@ -6152,8 +6146,8 @@ export const listPiiEntitiesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPiiEntitiesDetectionJobsRequest,
@@ -6163,8 +6157,8 @@ export const listPiiEntitiesDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPiiEntitiesDetectionJobsRequest,
@@ -6194,8 +6188,8 @@ export const listSentimentDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSentimentDetectionJobsRequest,
@@ -6205,8 +6199,8 @@ export const listSentimentDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSentimentDetectionJobsRequest,
@@ -6216,8 +6210,8 @@ export const listSentimentDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSentimentDetectionJobsRequest,
@@ -6246,8 +6240,8 @@ export const listTargetedSentimentDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTargetedSentimentDetectionJobsRequest,
@@ -6257,8 +6251,8 @@ export const listTargetedSentimentDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTargetedSentimentDetectionJobsRequest,
@@ -6268,8 +6262,8 @@ export const listTargetedSentimentDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTargetedSentimentDetectionJobsRequest,
@@ -6298,8 +6292,8 @@ export const listTopicsDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTopicsDetectionJobsRequest,
@@ -6309,8 +6303,8 @@ export const listTopicsDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTopicsDetectionJobsRequest,
@@ -6320,8 +6314,8 @@ export const listTopicsDetectionJobs: {
     | InvalidFilterException
     | InvalidRequestException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsDetectionJobsRequest,
@@ -6351,8 +6345,8 @@ export const describeFlywheelIteration: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFlywheelIterationRequest,
   output: DescribeFlywheelIterationResponse,
@@ -6375,8 +6369,8 @@ export const describePiiEntitiesDetectionJob: (
   | InvalidRequestException
   | JobNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePiiEntitiesDetectionJobRequest,
   output: DescribePiiEntitiesDetectionJobResponse,
@@ -6399,8 +6393,8 @@ export const updateFlywheel: (
   | KmsKeyValidationException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFlywheelRequest,
   output: UpdateFlywheelResponse,
@@ -6424,8 +6418,8 @@ export const describeEntityRecognizer: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntityRecognizerRequest,
   output: DescribeEntityRecognizerResponse,
@@ -6449,8 +6443,8 @@ export const detectSyntax: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectSyntaxRequest,
   output: DetectSyntaxResponse,
@@ -6475,8 +6469,8 @@ export const tagResource: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6500,8 +6494,8 @@ export const untagResource: (
   | InvalidRequestException
   | ResourceNotFoundException
   | TooManyTagKeysException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6526,8 +6520,8 @@ export const detectTargetedSentiment: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectTargetedSentimentRequest,
   output: DetectTargetedSentimentResponse,
@@ -6551,8 +6545,8 @@ export const detectToxicContent: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectToxicContentRequest,
   output: DetectToxicContentResponse,
@@ -6577,8 +6571,8 @@ export const batchDetectEntities: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDetectEntitiesRequest,
   output: BatchDetectEntitiesResponse,
@@ -6602,8 +6596,8 @@ export const batchDetectKeyPhrases: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDetectKeyPhrasesRequest,
   output: BatchDetectKeyPhrasesResponse,
@@ -6629,8 +6623,8 @@ export const batchDetectSentiment: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDetectSentimentRequest,
   output: BatchDetectSentimentResponse,
@@ -6656,8 +6650,8 @@ export const batchDetectSyntax: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDetectSyntaxRequest,
   output: BatchDetectSyntaxResponse,
@@ -6684,8 +6678,8 @@ export const batchDetectTargetedSentiment: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDetectTargetedSentimentRequest,
   output: BatchDetectTargetedSentimentResponse,
@@ -6710,8 +6704,8 @@ export const containsPiiEntities: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ContainsPiiEntitiesRequest,
   output: ContainsPiiEntitiesResponse,
@@ -6733,8 +6727,8 @@ export const detectKeyPhrases: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectKeyPhrasesRequest,
   output: DetectKeyPhrasesResponse,
@@ -6757,8 +6751,8 @@ export const detectPiiEntities: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectPiiEntitiesRequest,
   output: DetectPiiEntitiesResponse,
@@ -6781,8 +6775,8 @@ export const detectSentiment: (
   | InvalidRequestException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectSentimentRequest,
   output: DetectSentimentResponse,
@@ -6822,8 +6816,8 @@ export const detectEntities: (
   | ResourceUnavailableException
   | TextSizeLimitExceededException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectEntitiesRequest,
   output: DetectEntitiesResponse,
@@ -6850,8 +6844,8 @@ export const updateEndpoint: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEndpointRequest,
   output: UpdateEndpointResponse,
@@ -6882,8 +6876,8 @@ export const createEndpoint: (
   | ResourceUnavailableException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEndpointRequest,
   output: CreateEndpointResponse,
@@ -6914,8 +6908,8 @@ export const createDataset: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
@@ -6948,8 +6942,8 @@ export const createDocumentClassifier: (
   | TooManyRequestsException
   | TooManyTagsException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDocumentClassifierRequest,
   output: CreateDocumentClassifierResponse,
@@ -6981,8 +6975,8 @@ export const createEntityRecognizer: (
   | TooManyRequestsException
   | TooManyTagsException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEntityRecognizerRequest,
   output: CreateEntityRecognizerResponse,
@@ -7028,8 +7022,8 @@ export const createFlywheel: (
   | TooManyRequestsException
   | TooManyTagsException
   | UnsupportedLanguageException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFlywheelRequest,
   output: CreateFlywheelResponse,
@@ -7061,8 +7055,8 @@ export const startDominantLanguageDetectionJob: (
   | ResourceInUseException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDominantLanguageDetectionJobRequest,
   output: StartDominantLanguageDetectionJobResponse,
@@ -7095,8 +7089,8 @@ export const startEntitiesDetectionJob: (
   | ResourceUnavailableException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartEntitiesDetectionJobRequest,
   output: StartEntitiesDetectionJobResponse,
@@ -7124,8 +7118,8 @@ export const startEventsDetectionJob: (
   | ResourceInUseException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartEventsDetectionJobRequest,
   output: StartEventsDetectionJobResponse,
@@ -7153,8 +7147,8 @@ export const startKeyPhrasesDetectionJob: (
   | ResourceInUseException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartKeyPhrasesDetectionJobRequest,
   output: StartKeyPhrasesDetectionJobResponse,
@@ -7182,8 +7176,8 @@ export const startSentimentDetectionJob: (
   | ResourceInUseException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSentimentDetectionJobRequest,
   output: StartSentimentDetectionJobResponse,
@@ -7211,8 +7205,8 @@ export const startTargetedSentimentDetectionJob: (
   | ResourceInUseException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTargetedSentimentDetectionJobRequest,
   output: StartTargetedSentimentDetectionJobResponse,
@@ -7239,8 +7233,8 @@ export const startTopicsDetectionJob: (
   | ResourceInUseException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTopicsDetectionJobRequest,
   output: StartTopicsDetectionJobResponse,
@@ -7270,8 +7264,8 @@ export const startDocumentClassificationJob: (
   | ResourceUnavailableException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDocumentClassificationJobRequest,
   output: StartDocumentClassificationJobResponse,
@@ -7299,8 +7293,8 @@ export const startPiiEntitiesDetectionJob: (
   | ResourceInUseException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartPiiEntitiesDetectionJobRequest,
   output: StartPiiEntitiesDetectionJobResponse,
@@ -7336,8 +7330,8 @@ export const importModel: (
   | ResourceUnavailableException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportModelRequest,
   output: ImportModelResponse,

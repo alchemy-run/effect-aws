@@ -13,13 +13,13 @@
 import * as Effect from "effect/Effect";
 import * as ParseResult from "effect/ParseResult";
 import * as Schema from "effect/Schema";
-import { COMMON_ERRORS, UnknownAwsError } from "./aws/errors.ts";
+import { COMMON_ERRORS, UnknownAwsError } from "../errors.ts";
+import { getAwsQueryError, getProtocol } from "../traits.ts";
+import { getIdentifier } from "../util/ast.ts";
 import type { Operation } from "./operation.ts";
 import type { Protocol, ProtocolHandler } from "./protocol.ts";
 import type { Response } from "./response.ts";
 import { makeStreamParser } from "./stream-parser.ts";
-import { getAwsQueryError, getProtocol } from "./traits.ts";
-import { getIdentifier } from "./util/ast.ts";
 
 export interface ResponseParserOptions {
   /** Override the protocol (otherwise discovered from schema annotations) */
@@ -39,7 +39,7 @@ export type ResponseParser<A, R> = (
  * @param options - Optional overrides
  * @returns A function that parses responses
  */
-export const makeResponseParser = <A, I, R>(
+export const makeResponseParser = <A>(
   operation: Operation,
   options?: ResponseParserOptions,
 ) => {

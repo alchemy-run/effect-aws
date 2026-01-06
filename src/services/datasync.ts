@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "DataSync",
@@ -2555,8 +2553,8 @@ export const cancelTaskExecution: (
   input: CancelTaskExecutionRequest,
 ) => Effect.Effect<
   CancelTaskExecutionResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelTaskExecutionRequest,
   output: CancelTaskExecutionResponse,
@@ -2573,8 +2571,8 @@ export const createAgent: (
   input: CreateAgentRequest,
 ) => Effect.Effect<
   CreateAgentResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAgentRequest,
   output: CreateAgentResponse,
@@ -2592,8 +2590,8 @@ export const createLocationAzureBlob: (
   input: CreateLocationAzureBlobRequest,
 ) => Effect.Effect<
   CreateLocationAzureBlobResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationAzureBlobRequest,
   output: CreateLocationAzureBlobResponse,
@@ -2612,8 +2610,8 @@ export const createLocationEfs: (
   input: CreateLocationEfsRequest,
 ) => Effect.Effect<
   CreateLocationEfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationEfsRequest,
   output: CreateLocationEfsResponse,
@@ -2632,8 +2630,8 @@ export const createLocationHdfs: (
   input: CreateLocationHdfsRequest,
 ) => Effect.Effect<
   CreateLocationHdfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationHdfsRequest,
   output: CreateLocationHdfsResponse,
@@ -2652,8 +2650,8 @@ export const createLocationNfs: (
   input: CreateLocationNfsRequest,
 ) => Effect.Effect<
   CreateLocationNfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationNfsRequest,
   output: CreateLocationNfsResponse,
@@ -2678,8 +2676,8 @@ export const createLocationS3: (
   input: CreateLocationS3Request,
 ) => Effect.Effect<
   CreateLocationS3Response,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationS3Request,
   output: CreateLocationS3Response,
@@ -2697,8 +2695,8 @@ export const createLocationSmb: (
   input: CreateLocationSmbRequest,
 ) => Effect.Effect<
   CreateLocationSmbResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationSmbRequest,
   output: CreateLocationSmbResponse,
@@ -2712,8 +2710,8 @@ export const describeAgent: (
   input: DescribeAgentRequest,
 ) => Effect.Effect<
   DescribeAgentResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAgentRequest,
   output: DescribeAgentResponse,
@@ -2727,8 +2725,8 @@ export const describeLocationAzureBlob: (
   input: DescribeLocationAzureBlobRequest,
 ) => Effect.Effect<
   DescribeLocationAzureBlobResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationAzureBlobRequest,
   output: DescribeLocationAzureBlobResponse,
@@ -2742,8 +2740,8 @@ export const describeTask: (
   input: DescribeTaskRequest,
 ) => Effect.Effect<
   DescribeTaskResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTaskRequest,
   output: DescribeTaskResponse,
@@ -2762,8 +2760,8 @@ export const describeTaskExecution: (
   input: DescribeTaskExecutionRequest,
 ) => Effect.Effect<
   DescribeTaskExecutionResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTaskExecutionRequest,
   output: DescribeTaskExecutionResponse,
@@ -2788,22 +2786,22 @@ export const listAgents: {
     input: ListAgentsRequest,
   ): Effect.Effect<
     ListAgentsResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAgentsRequest,
   ) => Stream.Stream<
     ListAgentsResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAgentsRequest,
   ) => Stream.Stream<
     AgentListEntry,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAgentsRequest,
@@ -2824,22 +2822,22 @@ export const listTaskExecutions: {
     input: ListTaskExecutionsRequest,
   ): Effect.Effect<
     ListTaskExecutionsResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTaskExecutionsRequest,
   ) => Stream.Stream<
     ListTaskExecutionsResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTaskExecutionsRequest,
   ) => Stream.Stream<
     TaskExecutionListEntry,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTaskExecutionsRequest,
@@ -2863,8 +2861,8 @@ export const updateLocationFsxOntap: (
   input: UpdateLocationFsxOntapRequest,
 ) => Effect.Effect<
   UpdateLocationFsxOntapResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationFsxOntapRequest,
   output: UpdateLocationFsxOntapResponse,
@@ -2882,8 +2880,8 @@ export const createLocationFsxLustre: (
   input: CreateLocationFsxLustreRequest,
 ) => Effect.Effect<
   CreateLocationFsxLustreResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationFsxLustreRequest,
   output: CreateLocationFsxLustreResponse,
@@ -2905,8 +2903,8 @@ export const createLocationFsxOpenZfs: (
   input: CreateLocationFsxOpenZfsRequest,
 ) => Effect.Effect<
   CreateLocationFsxOpenZfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationFsxOpenZfsRequest,
   output: CreateLocationFsxOpenZfsResponse,
@@ -2925,8 +2923,8 @@ export const createLocationFsxWindows: (
   input: CreateLocationFsxWindowsRequest,
 ) => Effect.Effect<
   CreateLocationFsxWindowsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationFsxWindowsRequest,
   output: CreateLocationFsxWindowsResponse,
@@ -2943,8 +2941,8 @@ export const createLocationObjectStorage: (
   input: CreateLocationObjectStorageRequest,
 ) => Effect.Effect<
   CreateLocationObjectStorageResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationObjectStorageRequest,
   output: CreateLocationObjectStorageResponse,
@@ -2957,8 +2955,8 @@ export const describeLocationEfs: (
   input: DescribeLocationEfsRequest,
 ) => Effect.Effect<
   DescribeLocationEfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationEfsRequest,
   output: DescribeLocationEfsResponse,
@@ -2971,8 +2969,8 @@ export const describeLocationFsxLustre: (
   input: DescribeLocationFsxLustreRequest,
 ) => Effect.Effect<
   DescribeLocationFsxLustreResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationFsxLustreRequest,
   output: DescribeLocationFsxLustreResponse,
@@ -2988,8 +2986,8 @@ export const describeLocationFsxOntap: (
   input: DescribeLocationFsxOntapRequest,
 ) => Effect.Effect<
   DescribeLocationFsxOntapResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationFsxOntapRequest,
   output: DescribeLocationFsxOntapResponse,
@@ -3005,8 +3003,8 @@ export const describeLocationFsxOpenZfs: (
   input: DescribeLocationFsxOpenZfsRequest,
 ) => Effect.Effect<
   DescribeLocationFsxOpenZfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationFsxOpenZfsRequest,
   output: DescribeLocationFsxOpenZfsResponse,
@@ -3019,8 +3017,8 @@ export const describeLocationFsxWindows: (
   input: DescribeLocationFsxWindowsRequest,
 ) => Effect.Effect<
   DescribeLocationFsxWindowsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationFsxWindowsRequest,
   output: DescribeLocationFsxWindowsResponse,
@@ -3034,8 +3032,8 @@ export const describeLocationHdfs: (
   input: DescribeLocationHdfsRequest,
 ) => Effect.Effect<
   DescribeLocationHdfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationHdfsRequest,
   output: DescribeLocationHdfsResponse,
@@ -3049,8 +3047,8 @@ export const describeLocationNfs: (
   input: DescribeLocationNfsRequest,
 ) => Effect.Effect<
   DescribeLocationNfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationNfsRequest,
   output: DescribeLocationNfsResponse,
@@ -3064,8 +3062,8 @@ export const describeLocationObjectStorage: (
   input: DescribeLocationObjectStorageRequest,
 ) => Effect.Effect<
   DescribeLocationObjectStorageResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationObjectStorageRequest,
   output: DescribeLocationObjectStorageResponse,
@@ -3079,8 +3077,8 @@ export const describeLocationS3: (
   input: DescribeLocationS3Request,
 ) => Effect.Effect<
   DescribeLocationS3Response,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationS3Request,
   output: DescribeLocationS3Response,
@@ -3094,8 +3092,8 @@ export const describeLocationSmb: (
   input: DescribeLocationSmbRequest,
 ) => Effect.Effect<
   DescribeLocationSmbResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLocationSmbRequest,
   output: DescribeLocationSmbResponse,
@@ -3109,22 +3107,22 @@ export const listTagsForResource: {
     input: ListTagsForResourceRequest,
   ): Effect.Effect<
     ListTagsForResourceResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
   ) => Stream.Stream<
     ListTagsForResourceResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
   ) => Stream.Stream<
     TagListEntry,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -3152,8 +3150,8 @@ export const startTaskExecution: (
   input: StartTaskExecutionRequest,
 ) => Effect.Effect<
   StartTaskExecutionResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTaskExecutionRequest,
   output: StartTaskExecutionResponse,
@@ -3171,8 +3169,8 @@ export const deleteAgent: (
   input: DeleteAgentRequest,
 ) => Effect.Effect<
   DeleteAgentResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAgentRequest,
   output: DeleteAgentResponse,
@@ -3185,8 +3183,8 @@ export const deleteLocation: (
   input: DeleteLocationRequest,
 ) => Effect.Effect<
   DeleteLocationResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLocationRequest,
   output: DeleteLocationResponse,
@@ -3199,8 +3197,8 @@ export const deleteTask: (
   input: DeleteTaskRequest,
 ) => Effect.Effect<
   DeleteTaskResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTaskRequest,
   output: DeleteTaskResponse,
@@ -3217,8 +3215,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3231,8 +3229,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3245,8 +3243,8 @@ export const updateAgent: (
   input: UpdateAgentRequest,
 ) => Effect.Effect<
   UpdateAgentResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAgentRequest,
   output: UpdateAgentResponse,
@@ -3262,8 +3260,8 @@ export const updateLocationAzureBlob: (
   input: UpdateLocationAzureBlobRequest,
 ) => Effect.Effect<
   UpdateLocationAzureBlobResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationAzureBlobRequest,
   output: UpdateLocationAzureBlobResponse,
@@ -3280,8 +3278,8 @@ export const updateLocationEfs: (
   input: UpdateLocationEfsRequest,
 ) => Effect.Effect<
   UpdateLocationEfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationEfsRequest,
   output: UpdateLocationEfsResponse,
@@ -3298,8 +3296,8 @@ export const updateLocationFsxLustre: (
   input: UpdateLocationFsxLustreRequest,
 ) => Effect.Effect<
   UpdateLocationFsxLustreResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationFsxLustreRequest,
   output: UpdateLocationFsxLustreResponse,
@@ -3319,8 +3317,8 @@ export const updateLocationFsxOpenZfs: (
   input: UpdateLocationFsxOpenZfsRequest,
 ) => Effect.Effect<
   UpdateLocationFsxOpenZfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationFsxOpenZfsRequest,
   output: UpdateLocationFsxOpenZfsResponse,
@@ -3337,8 +3335,8 @@ export const updateLocationFsxWindows: (
   input: UpdateLocationFsxWindowsRequest,
 ) => Effect.Effect<
   UpdateLocationFsxWindowsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationFsxWindowsRequest,
   output: UpdateLocationFsxWindowsResponse,
@@ -3355,8 +3353,8 @@ export const updateLocationHdfs: (
   input: UpdateLocationHdfsRequest,
 ) => Effect.Effect<
   UpdateLocationHdfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationHdfsRequest,
   output: UpdateLocationHdfsResponse,
@@ -3373,8 +3371,8 @@ export const updateLocationNfs: (
   input: UpdateLocationNfsRequest,
 ) => Effect.Effect<
   UpdateLocationNfsResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationNfsRequest,
   output: UpdateLocationNfsResponse,
@@ -3391,8 +3389,8 @@ export const updateLocationObjectStorage: (
   input: UpdateLocationObjectStorageRequest,
 ) => Effect.Effect<
   UpdateLocationObjectStorageResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationObjectStorageRequest,
   output: UpdateLocationObjectStorageResponse,
@@ -3413,8 +3411,8 @@ export const updateLocationS3: (
   input: UpdateLocationS3Request,
 ) => Effect.Effect<
   UpdateLocationS3Response,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationS3Request,
   output: UpdateLocationS3Response,
@@ -3431,8 +3429,8 @@ export const updateLocationSmb: (
   input: UpdateLocationSmbRequest,
 ) => Effect.Effect<
   UpdateLocationSmbResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLocationSmbRequest,
   output: UpdateLocationSmbResponse,
@@ -3446,8 +3444,8 @@ export const updateTask: (
   input: UpdateTaskRequest,
 ) => Effect.Effect<
   UpdateTaskResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTaskRequest,
   output: UpdateTaskResponse,
@@ -3466,8 +3464,8 @@ export const updateTaskExecution: (
   input: UpdateTaskExecutionRequest,
 ) => Effect.Effect<
   UpdateTaskExecutionResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTaskExecutionRequest,
   output: UpdateTaskExecutionResponse,
@@ -3485,8 +3483,8 @@ export const createLocationFsxOntap: (
   input: CreateLocationFsxOntapRequest,
 ) => Effect.Effect<
   CreateLocationFsxOntapResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocationFsxOntapRequest,
   output: CreateLocationFsxOntapResponse,
@@ -3504,22 +3502,22 @@ export const listLocations: {
     input: ListLocationsRequest,
   ): Effect.Effect<
     ListLocationsResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLocationsRequest,
   ) => Stream.Stream<
     ListLocationsResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLocationsRequest,
   ) => Stream.Stream<
     LocationListEntry,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLocationsRequest,
@@ -3540,22 +3538,22 @@ export const listTasks: {
     input: ListTasksRequest,
   ): Effect.Effect<
     ListTasksResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTasksRequest,
   ) => Stream.Stream<
     ListTasksResponse,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTasksRequest,
   ) => Stream.Stream<
     TaskListEntry,
-    InternalException | InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTasksRequest,
@@ -3584,8 +3582,8 @@ export const createTask: (
   input: CreateTaskRequest,
 ) => Effect.Effect<
   CreateTaskResponse,
-  InternalException | InvalidRequestException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalException | InvalidRequestException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTaskRequest,
   output: CreateTaskResponse,

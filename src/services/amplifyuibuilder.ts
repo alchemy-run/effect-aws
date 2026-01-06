@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "AmplifyUIBuilder",
@@ -2586,35 +2584,31 @@ export const CreateFormResponse = S.suspend(() =>
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceConflictException extends S.TaggedError<ResourceConflictException>()(
   "ResourceConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -2626,8 +2620,8 @@ export const refreshToken: (
   input: RefreshTokenRequest,
 ) => Effect.Effect<
   RefreshTokenResponse,
-  InvalidParameterException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RefreshTokenRequest,
   output: RefreshTokenResponse,
@@ -2642,22 +2636,22 @@ export const listComponents: {
     input: ListComponentsRequest,
   ): Effect.Effect<
     ListComponentsResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListComponentsRequest,
   ) => Stream.Stream<
     ListComponentsResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListComponentsRequest,
   ) => Stream.Stream<
     ComponentSummary,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComponentsRequest,
@@ -2678,22 +2672,22 @@ export const listForms: {
     input: ListFormsRequest,
   ): Effect.Effect<
     ListFormsResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFormsRequest,
   ) => Stream.Stream<
     ListFormsResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFormsRequest,
   ) => Stream.Stream<
     FormSummary,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFormsRequest,
@@ -2715,22 +2709,22 @@ export const listThemes: {
     input: ListThemesRequest,
   ): Effect.Effect<
     ListThemesResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListThemesRequest,
   ) => Stream.Stream<
     ListThemesResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListThemesRequest,
   ) => Stream.Stream<
     ThemeSummary,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThemesRequest,
@@ -2751,22 +2745,22 @@ export const exportComponents: {
     input: ExportComponentsRequest,
   ): Effect.Effect<
     ExportComponentsResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ExportComponentsRequest,
   ) => Stream.Stream<
     ExportComponentsResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ExportComponentsRequest,
   ) => Stream.Stream<
     Component,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ExportComponentsRequest,
@@ -2786,22 +2780,22 @@ export const exportForms: {
     input: ExportFormsRequest,
   ): Effect.Effect<
     ExportFormsResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ExportFormsRequest,
   ) => Stream.Stream<
     ExportFormsResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ExportFormsRequest,
   ) => Stream.Stream<
     Form,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ExportFormsRequest,
@@ -2821,22 +2815,22 @@ export const exportThemes: {
     input: ExportThemesRequest,
   ): Effect.Effect<
     ExportThemesResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ExportThemesRequest,
   ) => Stream.Stream<
     ExportThemesResponse,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ExportThemesRequest,
   ) => Stream.Stream<
     Theme,
-    InternalServerException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServerException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ExportThemesRequest,
@@ -2857,8 +2851,8 @@ export const exchangeCodeForToken: (
   input: ExchangeCodeForTokenRequest,
 ) => Effect.Effect<
   ExchangeCodeForTokenResponse,
-  InvalidParameterException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExchangeCodeForTokenRequest,
   output: ExchangeCodeForTokenResponse,
@@ -2871,8 +2865,8 @@ export const putMetadataFlag: (
   input: PutMetadataFlagRequest,
 ) => Effect.Effect<
   PutMetadataFlagResponse,
-  InvalidParameterException | UnauthorizedException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterException | UnauthorizedException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMetadataFlagRequest,
   output: PutMetadataFlagResponse,
@@ -2889,8 +2883,8 @@ export const listCodegenJobs: {
     | InternalServerException
     | InvalidParameterException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCodegenJobsRequest,
@@ -2899,8 +2893,8 @@ export const listCodegenJobs: {
     | InternalServerException
     | InvalidParameterException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCodegenJobsRequest,
@@ -2909,8 +2903,8 @@ export const listCodegenJobs: {
     | InternalServerException
     | InvalidParameterException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCodegenJobsRequest,
@@ -2937,8 +2931,8 @@ export const getComponent: (
   | InternalServerException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComponentRequest,
   output: GetComponentResponse,
@@ -2958,8 +2952,8 @@ export const updateComponent: (
   | InternalServerException
   | InvalidParameterException
   | ResourceConflictException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateComponentRequest,
   output: UpdateComponentResponse,
@@ -2976,8 +2970,8 @@ export const getMetadata: (
   input: GetMetadataRequest,
 ) => Effect.Effect<
   GetMetadataResponse,
-  InvalidParameterException | UnauthorizedException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterException | UnauthorizedException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMetadataRequest,
   output: GetMetadataResponse,
@@ -2993,8 +2987,8 @@ export const getForm: (
   | InternalServerException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFormRequest,
   output: GetFormResponse,
@@ -3014,8 +3008,8 @@ export const getTheme: (
   | InternalServerException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetThemeRequest,
   output: GetThemeResponse,
@@ -3037,8 +3031,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3060,8 +3054,8 @@ export const deleteComponent: (
   | InternalServerException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteComponentRequest,
   output: DeleteComponentResponse,
@@ -3081,8 +3075,8 @@ export const deleteForm: (
   | InternalServerException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFormRequest,
   output: DeleteFormResponse,
@@ -3102,8 +3096,8 @@ export const deleteTheme: (
   | InternalServerException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteThemeRequest,
   output: DeleteThemeResponse,
@@ -3125,8 +3119,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3150,8 +3144,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3174,8 +3168,8 @@ export const getCodegenJob: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCodegenJobRequest,
   output: GetCodegenJobResponse,
@@ -3196,8 +3190,8 @@ export const updateForm: (
   | InternalServerException
   | InvalidParameterException
   | ResourceConflictException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFormRequest,
   output: UpdateFormResponse,
@@ -3217,8 +3211,8 @@ export const updateTheme: (
   | InternalServerException
   | InvalidParameterException
   | ResourceConflictException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateThemeRequest,
   output: UpdateThemeResponse,
@@ -3239,8 +3233,8 @@ export const createTheme: (
   | InvalidParameterException
   | ResourceConflictException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateThemeRequest,
   output: CreateThemeResponse,
@@ -3262,8 +3256,8 @@ export const createComponent: (
   | InvalidParameterException
   | ResourceConflictException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateComponentRequest,
   output: CreateComponentResponse,
@@ -3284,8 +3278,8 @@ export const startCodegenJob: (
   | InternalServerException
   | InvalidParameterException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCodegenJobRequest,
   output: StartCodegenJobResponse,
@@ -3306,8 +3300,8 @@ export const createForm: (
   | InvalidParameterException
   | ResourceConflictException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFormRequest,
   output: CreateFormResponse,

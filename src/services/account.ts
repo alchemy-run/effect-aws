@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region as Rgn,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "Account", serviceShapeName: "Account" });
 const auth = T.AwsAuthSigv4({ name: "account" });
@@ -842,7 +840,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
     message: S.String,
     errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   {
@@ -850,16 +848,14 @@ export class InternalServerException extends S.TaggedError<InternalServerExcepti
     errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
     message: S.String,
     errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   {
@@ -867,16 +863,14 @@ export class TooManyRequestsException extends S.TaggedError<TooManyRequestsExcep
     errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
   T.Retryable({ throttling: true }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
     message: S.String,
     errorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceUnavailableException extends S.TaggedError<ResourceUnavailableException>()(
   "ResourceUnavailableException",
   {
@@ -891,7 +885,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     reason: S.optional(S.String),
     fieldList: S.optional(ValidationExceptionFieldList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -905,8 +899,8 @@ export const putAccountName: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccountNameRequest,
   output: PutAccountNameResponse,
@@ -933,8 +927,8 @@ export const getAlternateContact: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAlternateContactRequest,
   output: GetAlternateContactResponse,
@@ -958,8 +952,8 @@ export const listRegions: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRegionsRequest,
@@ -969,8 +963,8 @@ export const listRegions: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRegionsRequest,
@@ -980,8 +974,8 @@ export const listRegions: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRegionsRequest,
@@ -1010,8 +1004,8 @@ export const getAccountInformation: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountInformationRequest,
   output: GetAccountInformationResponse,
@@ -1035,8 +1029,8 @@ export const putContactInformation: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutContactInformationRequest,
   output: PutContactInformationResponse,
@@ -1058,8 +1052,8 @@ export const getRegionOptStatus: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRegionOptStatusRequest,
   output: GetRegionOptStatusResponse,
@@ -1085,8 +1079,8 @@ export const putAlternateContact: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAlternateContactRequest,
   output: PutAlternateContactResponse,
@@ -1111,8 +1105,8 @@ export const disableRegion: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableRegionRequest,
   output: DisableRegionResponse,
@@ -1136,8 +1130,8 @@ export const enableRegion: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableRegionRequest,
   output: EnableRegionResponse,
@@ -1162,8 +1156,8 @@ export const acceptPrimaryEmailUpdate: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptPrimaryEmailUpdateRequest,
   output: AcceptPrimaryEmailUpdateResponse,
@@ -1190,8 +1184,8 @@ export const getContactInformation: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetContactInformationRequest,
   output: GetContactInformationResponse,
@@ -1215,8 +1209,8 @@ export const getPrimaryEmail: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPrimaryEmailRequest,
   output: GetPrimaryEmailResponse,
@@ -1244,8 +1238,8 @@ export const deleteAlternateContact: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAlternateContactRequest,
   output: DeleteAlternateContactResponse,
@@ -1270,8 +1264,8 @@ export const startPrimaryEmailUpdate: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartPrimaryEmailUpdateRequest,
   output: StartPrimaryEmailUpdateResponse,
@@ -1297,8 +1291,8 @@ export const getGovCloudAccountInformation: (
   | ResourceUnavailableException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Rgn.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGovCloudAccountInformationRequest,
   output: GetGovCloudAccountInformationResponse,

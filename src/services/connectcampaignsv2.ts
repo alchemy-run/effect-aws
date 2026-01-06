@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ConnectCampaignsV2",
@@ -2148,7 +2146,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
     message: S.String,
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   {
@@ -2156,23 +2154,21 @@ export class InternalServerException extends S.TaggedError<InternalServerExcepti
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
     message: S.String,
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
     message: S.String,
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {
@@ -2180,16 +2176,14 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class InvalidStateException extends S.TaggedError<InvalidStateException>()(
   "InvalidStateException",
   {
     message: S.String,
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidCampaignStateException extends S.TaggedError<InvalidCampaignStateException>()(
   "InvalidCampaignStateException",
   {
@@ -2197,21 +2191,21 @@ export class InvalidCampaignStateException extends S.TaggedError<InvalidCampaign
     message: S.String,
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
     message: S.String,
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
     message: S.String,
     xAmzErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -2225,8 +2219,8 @@ export const deleteCampaign: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCampaignRequest,
   output: DeleteCampaignResponse,
@@ -2248,8 +2242,8 @@ export const listCampaigns: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCampaignsRequest,
@@ -2258,8 +2252,8 @@ export const listCampaigns: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCampaignsRequest,
@@ -2268,8 +2262,8 @@ export const listCampaigns: {
     | AccessDeniedException
     | InternalServerException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCampaignsRequest,
@@ -2293,8 +2287,8 @@ export const getCampaignStateBatch: (
   | InternalServerException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCampaignStateBatchRequest,
   output: GetCampaignStateBatchResponse,
@@ -2318,8 +2312,8 @@ export const listConnectInstanceIntegrations: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConnectInstanceIntegrationsRequest,
@@ -2330,8 +2324,8 @@ export const listConnectInstanceIntegrations: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConnectInstanceIntegrationsRequest,
@@ -2342,8 +2336,8 @@ export const listConnectInstanceIntegrations: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConnectInstanceIntegrationsRequest,
@@ -2375,8 +2369,8 @@ export const putConnectInstanceIntegration: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConnectInstanceIntegrationRequest,
   output: PutConnectInstanceIntegrationResponse,
@@ -2402,8 +2396,8 @@ export const deleteConnectInstanceConfig: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectInstanceConfigRequest,
   output: DeleteConnectInstanceConfigResponse,
@@ -2428,8 +2422,8 @@ export const deleteConnectInstanceIntegration: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectInstanceIntegrationRequest,
   output: DeleteConnectInstanceIntegrationResponse,
@@ -2452,8 +2446,8 @@ export const describeCampaign: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCampaignRequest,
   output: DescribeCampaignResponse,
@@ -2475,8 +2469,8 @@ export const getConnectInstanceConfig: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetConnectInstanceConfigRequest,
   output: GetConnectInstanceConfigResponse,
@@ -2498,8 +2492,8 @@ export const getInstanceOnboardingJobStatus: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceOnboardingJobStatusRequest,
   output: GetInstanceOnboardingJobStatusResponse,
@@ -2522,8 +2516,8 @@ export const putInstanceCommunicationLimits: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutInstanceCommunicationLimitsRequest,
   output: PutInstanceCommunicationLimitsResponse,
@@ -2548,8 +2542,8 @@ export const startInstanceOnboardingJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartInstanceOnboardingJobRequest,
   output: StartInstanceOnboardingJobResponse,
@@ -2574,8 +2568,8 @@ export const getCampaignState: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCampaignStateRequest,
   output: GetCampaignStateResponse,
@@ -2598,8 +2592,8 @@ export const getInstanceCommunicationLimits: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceCommunicationLimitsRequest,
   output: GetInstanceCommunicationLimitsResponse,
@@ -2622,8 +2616,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2647,8 +2641,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2672,8 +2666,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2697,8 +2691,8 @@ export const deleteCampaignChannelSubtypeConfig: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCampaignChannelSubtypeConfigRequest,
   output: DeleteCampaignChannelSubtypeConfigResponse,
@@ -2722,8 +2716,8 @@ export const updateCampaignChannelSubtypeConfig: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignChannelSubtypeConfigRequest,
   output: UpdateCampaignChannelSubtypeConfigResponse,
@@ -2747,8 +2741,8 @@ export const updateCampaignName: (
   | InternalServerException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignNameRequest,
   output: UpdateCampaignNameResponse,
@@ -2773,8 +2767,8 @@ export const deleteCampaignCommunicationLimits: (
   | InvalidCampaignStateException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCampaignCommunicationLimitsRequest,
   output: DeleteCampaignCommunicationLimitsResponse,
@@ -2799,8 +2793,8 @@ export const deleteInstanceOnboardingJob: (
   | InvalidStateException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInstanceOnboardingJobRequest,
   output: DeleteInstanceOnboardingJobResponse,
@@ -2825,8 +2819,8 @@ export const deleteCampaignCommunicationTime: (
   | InvalidCampaignStateException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCampaignCommunicationTimeRequest,
   output: DeleteCampaignCommunicationTimeResponse,
@@ -2853,8 +2847,8 @@ export const pauseCampaign: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PauseCampaignRequest,
   output: PauseCampaignResponse,
@@ -2882,8 +2876,8 @@ export const resumeCampaign: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResumeCampaignRequest,
   output: ResumeCampaignResponse,
@@ -2911,8 +2905,8 @@ export const startCampaign: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCampaignRequest,
   output: StartCampaignResponse,
@@ -2940,8 +2934,8 @@ export const stopCampaign: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopCampaignRequest,
   output: StopCampaignResponse,
@@ -2968,8 +2962,8 @@ export const updateCampaignCommunicationLimits: (
   | InvalidCampaignStateException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignCommunicationLimitsRequest,
   output: UpdateCampaignCommunicationLimitsResponse,
@@ -2995,8 +2989,8 @@ export const updateCampaignCommunicationTime: (
   | InvalidCampaignStateException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignCommunicationTimeRequest,
   output: UpdateCampaignCommunicationTimeResponse,
@@ -3022,8 +3016,8 @@ export const updateCampaignFlowAssociation: (
   | InvalidCampaignStateException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignFlowAssociationRequest,
   output: UpdateCampaignFlowAssociationResponse,
@@ -3049,8 +3043,8 @@ export const updateCampaignSchedule: (
   | InvalidCampaignStateException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignScheduleRequest,
   output: UpdateCampaignScheduleResponse,
@@ -3076,8 +3070,8 @@ export const updateCampaignSource: (
   | InvalidCampaignStateException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignSourceRequest,
   output: UpdateCampaignSourceResponse,
@@ -3104,8 +3098,8 @@ export const putProfileOutboundRequestBatch: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutProfileOutboundRequestBatchRequest,
   output: PutProfileOutboundRequestBatchResponse,
@@ -3133,8 +3127,8 @@ export const putOutboundRequestBatch: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutOutboundRequestBatchRequest,
   output: PutOutboundRequestBatchResponse,
@@ -3162,8 +3156,8 @@ export const createCampaign: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCampaignRequest,
   output: CreateCampaignResponse,

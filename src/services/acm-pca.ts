@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ACM PCA",
@@ -1298,22 +1296,22 @@ export const listCertificateAuthorities: {
     input: ListCertificateAuthoritiesRequest,
   ): Effect.Effect<
     ListCertificateAuthoritiesResponse,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCertificateAuthoritiesRequest,
   ) => Stream.Stream<
     ListCertificateAuthoritiesResponse,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCertificateAuthoritiesRequest,
   ) => Stream.Stream<
     CertificateAuthority,
-    InvalidNextTokenException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCertificateAuthoritiesRequest,
@@ -1347,8 +1345,8 @@ export const describeCertificateAuthority: (
   input: DescribeCertificateAuthorityRequest,
 ) => Effect.Effect<
   DescribeCertificateAuthorityResponse,
-  InvalidArnException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidArnException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCertificateAuthorityRequest,
   output: DescribeCertificateAuthorityResponse,
@@ -1378,8 +1376,8 @@ export const listPermissions: {
     | InvalidStateException
     | RequestFailedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPermissionsRequest,
@@ -1390,8 +1388,8 @@ export const listPermissions: {
     | InvalidStateException
     | RequestFailedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPermissionsRequest,
@@ -1402,8 +1400,8 @@ export const listPermissions: {
     | InvalidStateException
     | RequestFailedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPermissionsRequest,
@@ -1450,8 +1448,8 @@ export const deletePolicy: (
   | LockoutPreventedException
   | RequestFailedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePolicyRequest,
   output: DeletePolicyResponse,
@@ -1474,8 +1472,8 @@ export const describeCertificateAuthorityAuditReport: (
   | InvalidArgsException
   | InvalidArnException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCertificateAuthorityAuditReportRequest,
   output: DescribeCertificateAuthorityAuditReportResponse,
@@ -1506,8 +1504,8 @@ export const deleteCertificateAuthority: (
   | InvalidArnException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCertificateAuthorityRequest,
   output: DeleteCertificateAuthorityResponse,
@@ -1528,8 +1526,8 @@ export const getCertificateAuthorityCertificate: (
   | InvalidArnException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCertificateAuthorityCertificateRequest,
   output: GetCertificateAuthorityCertificateResponse,
@@ -1549,8 +1547,8 @@ export const restoreCertificateAuthority: (
   | InvalidArnException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreCertificateAuthorityRequest,
   output: RestoreCertificateAuthorityResponse,
@@ -1575,8 +1573,8 @@ export const updateCertificateAuthority: (
   | InvalidPolicyException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCertificateAuthorityRequest,
   output: UpdateCertificateAuthorityResponse,
@@ -1611,8 +1609,8 @@ export const getPolicy: (
   | InvalidStateException
   | RequestFailedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPolicyRequest,
   output: GetPolicyResponse,
@@ -1635,8 +1633,8 @@ export const listTags: {
     | InvalidStateException
     | RequestFailedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsRequest,
@@ -1646,8 +1644,8 @@ export const listTags: {
     | InvalidStateException
     | RequestFailedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsRequest,
@@ -1657,8 +1655,8 @@ export const listTags: {
     | InvalidStateException
     | RequestFailedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsRequest,
@@ -1698,8 +1696,8 @@ export const deletePermission: (
   | InvalidStateException
   | RequestFailedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePermissionRequest,
   output: DeletePermissionResponse,
@@ -1721,8 +1719,8 @@ export const untagCertificateAuthority: (
   | InvalidStateException
   | InvalidTagException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagCertificateAuthorityRequest,
   output: UntagCertificateAuthorityResponse,
@@ -1760,8 +1758,8 @@ export const putPolicy: (
   | LockoutPreventedException
   | RequestFailedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPolicyRequest,
   output: PutPolicyResponse,
@@ -1797,8 +1795,8 @@ export const createPermission: (
   | PermissionAlreadyExistsException
   | RequestFailedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePermissionRequest,
   output: CreatePermissionResponse,
@@ -1825,8 +1823,8 @@ export const tagCertificateAuthority: (
   | InvalidTagException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagCertificateAuthorityRequest,
   output: TagCertificateAuthorityResponse,
@@ -1850,8 +1848,8 @@ export const getCertificate: (
   | RequestFailedException
   | RequestInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCertificateRequest,
   output: GetCertificateResponse,
@@ -1875,8 +1873,8 @@ export const getCertificateAuthorityCsr: (
   | RequestFailedException
   | RequestInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCertificateAuthorityCsrRequest,
   output: GetCertificateAuthorityCsrResponse,
@@ -1907,8 +1905,8 @@ export const createCertificateAuthorityAuditReport: (
   | RequestFailedException
   | RequestInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCertificateAuthorityAuditReportRequest,
   output: CreateCertificateAuthorityAuditReportResponse,
@@ -2011,8 +2009,8 @@ export const importCertificateAuthorityCertificate: (
   | RequestFailedException
   | RequestInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportCertificateAuthorityCertificateRequest,
   output: ImportCertificateAuthorityCertificateResponse,
@@ -2050,8 +2048,8 @@ export const revokeCertificate: (
   | RequestFailedException
   | RequestInProgressException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeCertificateRequest,
   output: RevokeCertificateResponse,
@@ -2082,8 +2080,8 @@ export const createCertificateAuthority: (
   | InvalidPolicyException
   | InvalidTagException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCertificateAuthorityRequest,
   output: CreateCertificateAuthorityResponse,
@@ -2109,8 +2107,8 @@ export const issueCertificate: (
   | LimitExceededException
   | MalformedCSRException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IssueCertificateRequest,
   output: IssueCertificateResponse,

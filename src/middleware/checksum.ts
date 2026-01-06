@@ -2,10 +2,10 @@ import type { Checksum } from "@smithy/types";
 import { toBase64 } from "@smithy/util-base64";
 import * as Effect from "effect/Effect";
 import type * as S from "effect/Schema";
+import type { Request as ProtocolRequest } from "../client/request.ts";
 import { getCrc32ChecksumAlgorithmFunction } from "../hash/crc32.ts";
 import { getMd5ChecksumAlgorithmFunction } from "../hash/md5.ts";
 import { toUint8Array } from "../hash/utf8.ts";
-import type { Request as ProtocolRequest } from "../request.ts";
 import { getAwsProtocolsHttpChecksum } from "../traits.ts";
 import { createBufferedReadableStream } from "../util/stream.ts";
 

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://autoscaling.amazonaws.com/doc/2011-01-01/");
 const svc = T.AwsApiService({
@@ -4171,41 +4169,37 @@ export class ResourceContentionFault extends S.TaggedError<ResourceContentionFau
   "ResourceContentionFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceContention", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InstanceRefreshInProgressFault extends S.TaggedError<InstanceRefreshInProgressFault>()(
   "InstanceRefreshInProgressFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InstanceRefreshInProgress", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AlreadyExistsFault extends S.TaggedError<AlreadyExistsFault>()(
   "AlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededFault extends S.TaggedError<LimitExceededFault>()(
   "LimitExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceInUseFault extends S.TaggedError<ResourceInUseFault>()(
   "ResourceInUseFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ScalingActivityInProgressFault extends S.TaggedError<ScalingActivityInProgressFault>()(
   "ScalingActivityInProgressFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ScalingActivityInProgress", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceLinkedRoleFailure extends S.TaggedError<ServiceLinkedRoleFailure>()(
   "ServiceLinkedRoleFailure",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ServiceLinkedRoleFailure", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ActiveInstanceRefreshNotFoundFault extends S.TaggedError<ActiveInstanceRefreshNotFoundFault>()(
   "ActiveInstanceRefreshNotFoundFault",
   { message: S.optional(S.String) },
@@ -4213,12 +4207,12 @@ export class ActiveInstanceRefreshNotFoundFault extends S.TaggedError<ActiveInst
     code: "ActiveInstanceRefreshNotFound",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextToken extends S.TaggedError<InvalidNextToken>()(
   "InvalidNextToken",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IdempotentParameterMismatchError extends S.TaggedError<IdempotentParameterMismatchError>()(
   "IdempotentParameterMismatchError",
   { Message: S.optional(S.String) },
@@ -4226,7 +4220,7 @@ export class IdempotentParameterMismatchError extends S.TaggedError<IdempotentPa
     code: "IdempotentParameterMismatch",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IrreversibleInstanceRefreshFault extends S.TaggedError<IrreversibleInstanceRefreshFault>()(
   "IrreversibleInstanceRefreshFault",
   { message: S.optional(S.String) },
@@ -4234,7 +4228,7 @@ export class IrreversibleInstanceRefreshFault extends S.TaggedError<Irreversible
     code: "IrreversibleInstanceRefresh",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -4273,8 +4267,8 @@ export const completeLifecycleAction: (
   input: CompleteLifecycleActionType,
 ) => Effect.Effect<
   CompleteLifecycleActionAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompleteLifecycleActionType,
   output: CompleteLifecycleActionAnswer,
@@ -4291,8 +4285,8 @@ export const deleteLifecycleHook: (
   input: DeleteLifecycleHookType,
 ) => Effect.Effect<
   DeleteLifecycleHookAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLifecycleHookType,
   output: DeleteLifecycleHookAnswer,
@@ -4305,8 +4299,8 @@ export const deleteNotificationConfiguration: (
   input: DeleteNotificationConfigurationType,
 ) => Effect.Effect<
   DeleteNotificationConfigurationResponse,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNotificationConfigurationType,
   output: DeleteNotificationConfigurationResponse,
@@ -4319,8 +4313,8 @@ export const deleteScheduledAction: (
   input: DeleteScheduledActionType,
 ) => Effect.Effect<
   DeleteScheduledActionResponse,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteScheduledActionType,
   output: DeleteScheduledActionResponse,
@@ -4338,8 +4332,8 @@ export const describeAccountLimits: (
   input: DescribeAccountLimitsRequest,
 ) => Effect.Effect<
   DescribeAccountLimitsAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountLimitsRequest,
   output: DescribeAccountLimitsAnswer,
@@ -4352,8 +4346,8 @@ export const describeAutoScalingNotificationTypes: (
   input: DescribeAutoScalingNotificationTypesRequest,
 ) => Effect.Effect<
   DescribeAutoScalingNotificationTypesAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAutoScalingNotificationTypesRequest,
   output: DescribeAutoScalingNotificationTypesAnswer,
@@ -4372,8 +4366,8 @@ export const describeLifecycleHookTypes: (
   input: DescribeLifecycleHookTypesRequest,
 ) => Effect.Effect<
   DescribeLifecycleHookTypesAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLifecycleHookTypesRequest,
   output: DescribeLifecycleHookTypesAnswer,
@@ -4390,8 +4384,8 @@ export const describeTerminationPolicyTypes: (
   input: DescribeTerminationPolicyTypesRequest,
 ) => Effect.Effect<
   DescribeTerminationPolicyTypesAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTerminationPolicyTypesRequest,
   output: DescribeTerminationPolicyTypesAnswer,
@@ -4419,8 +4413,8 @@ export const detachLoadBalancers: (
   input: DetachLoadBalancersType,
 ) => Effect.Effect<
   DetachLoadBalancersResultType,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachLoadBalancersType,
   output: DetachLoadBalancersResultType,
@@ -4450,8 +4444,8 @@ export const detachLoadBalancerTargetGroups: (
   input: DetachLoadBalancerTargetGroupsType,
 ) => Effect.Effect<
   DetachLoadBalancerTargetGroupsResultType,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachLoadBalancerTargetGroupsType,
   output: DetachLoadBalancerTargetGroupsResultType,
@@ -4470,8 +4464,8 @@ export const detachTrafficSources: (
   input: DetachTrafficSourcesType,
 ) => Effect.Effect<
   DetachTrafficSourcesResultType,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachTrafficSourcesType,
   output: DetachTrafficSourcesResultType,
@@ -4484,8 +4478,8 @@ export const disableMetricsCollection: (
   input: DisableMetricsCollectionQuery,
 ) => Effect.Effect<
   DisableMetricsCollectionResponse,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableMetricsCollectionQuery,
   output: DisableMetricsCollectionResponse,
@@ -4504,8 +4498,8 @@ export const enableMetricsCollection: (
   input: EnableMetricsCollectionQuery,
 ) => Effect.Effect<
   EnableMetricsCollectionResponse,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableMetricsCollectionQuery,
   output: EnableMetricsCollectionResponse,
@@ -4547,8 +4541,8 @@ export const recordLifecycleActionHeartbeat: (
   input: RecordLifecycleActionHeartbeatType,
 ) => Effect.Effect<
   RecordLifecycleActionHeartbeatAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RecordLifecycleActionHeartbeatType,
   output: RecordLifecycleActionHeartbeatAnswer,
@@ -4565,8 +4559,8 @@ export const setInstanceHealth: (
   input: SetInstanceHealthQuery,
 ) => Effect.Effect<
   SetInstanceHealthResponse,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetInstanceHealthQuery,
   output: SetInstanceHealthResponse,
@@ -4588,8 +4582,8 @@ export const describeAdjustmentTypes: (
   input: DescribeAdjustmentTypesRequest,
 ) => Effect.Effect<
   DescribeAdjustmentTypesAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAdjustmentTypesRequest,
   output: DescribeAdjustmentTypesAnswer,
@@ -4602,8 +4596,8 @@ export const describeMetricCollectionTypes: (
   input: DescribeMetricCollectionTypesRequest,
 ) => Effect.Effect<
   DescribeMetricCollectionTypesAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMetricCollectionTypesRequest,
   output: DescribeMetricCollectionTypesAnswer,
@@ -4617,8 +4611,8 @@ export const describeScalingProcessTypes: (
   input: DescribeScalingProcessTypesRequest,
 ) => Effect.Effect<
   ProcessesType,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeScalingProcessTypesRequest,
   output: ProcessesType,
@@ -4644,8 +4638,8 @@ export const detachInstances: (
   input: DetachInstancesQuery,
 ) => Effect.Effect<
   DetachInstancesAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachInstancesQuery,
   output: DetachInstancesAnswer,
@@ -4670,8 +4664,8 @@ export const enterStandby: (
   input: EnterStandbyQuery,
 ) => Effect.Effect<
   EnterStandbyAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnterStandbyQuery,
   output: EnterStandbyAnswer,
@@ -4691,8 +4685,8 @@ export const exitStandby: (
   input: ExitStandbyQuery,
 ) => Effect.Effect<
   ExitStandbyAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExitStandbyQuery,
   output: ExitStandbyAnswer,
@@ -4720,8 +4714,8 @@ export const putWarmPool: (
   | InstanceRefreshInProgressFault
   | LimitExceededFault
   | ResourceContentionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutWarmPoolType,
   output: PutWarmPoolAnswer,
@@ -4746,8 +4740,8 @@ export const suspendProcesses: (
   input: ScalingProcessQuery,
 ) => Effect.Effect<
   SuspendProcessesResponse,
-  ResourceContentionFault | ResourceInUseFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ResourceInUseFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalingProcessQuery,
   output: SuspendProcessesResponse,
@@ -4774,8 +4768,8 @@ export const putScheduledUpdateGroupAction: (
   | AlreadyExistsFault
   | LimitExceededFault
   | ResourceContentionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutScheduledUpdateGroupActionType,
   output: PutScheduledUpdateGroupActionResponse,
@@ -4826,8 +4820,8 @@ export const putLifecycleHook: (
   input: PutLifecycleHookType,
 ) => Effect.Effect<
   PutLifecycleHookAnswer,
-  LimitExceededFault | ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededFault | ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLifecycleHookType,
   output: PutLifecycleHookAnswer,
@@ -4848,8 +4842,8 @@ export const setInstanceProtection: (
   input: SetInstanceProtectionQuery,
 ) => Effect.Effect<
   SetInstanceProtectionAnswer,
-  LimitExceededFault | ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededFault | ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetInstanceProtectionQuery,
   output: SetInstanceProtectionAnswer,
@@ -4872,8 +4866,8 @@ export const createOrUpdateTags: (
   | LimitExceededFault
   | ResourceContentionFault
   | ResourceInUseFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOrUpdateTagsType,
   output: CreateOrUpdateTagsResponse,
@@ -4903,8 +4897,8 @@ export const attachInstances: (
   input: AttachInstancesQuery,
 ) => Effect.Effect<
   AttachInstancesResponse,
-  ResourceContentionFault | ServiceLinkedRoleFailure | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ServiceLinkedRoleFailure | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachInstancesQuery,
   output: AttachInstancesResponse,
@@ -4941,8 +4935,8 @@ export const deleteAutoScalingGroup: (
   | ResourceContentionFault
   | ResourceInUseFault
   | ScalingActivityInProgressFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAutoScalingGroupType,
   output: DeleteAutoScalingGroupResponse,
@@ -4962,8 +4956,8 @@ export const deleteLaunchConfiguration: (
   input: LaunchConfigurationNameType,
 ) => Effect.Effect<
   DeleteLaunchConfigurationResponse,
-  ResourceContentionFault | ResourceInUseFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ResourceInUseFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: LaunchConfigurationNameType,
   output: DeleteLaunchConfigurationResponse,
@@ -4976,8 +4970,8 @@ export const deleteTags: (
   input: DeleteTagsType,
 ) => Effect.Effect<
   DeleteTagsResponse,
-  ResourceContentionFault | ResourceInUseFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ResourceInUseFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsType,
   output: DeleteTagsResponse,
@@ -4994,8 +4988,8 @@ export const resumeProcesses: (
   input: ScalingProcessQuery,
 ) => Effect.Effect<
   ResumeProcessesResponse,
-  ResourceContentionFault | ResourceInUseFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ResourceInUseFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScalingProcessQuery,
   output: ResumeProcessesResponse,
@@ -5015,8 +5009,8 @@ export const deleteWarmPool: (
   | ResourceContentionFault
   | ResourceInUseFault
   | ScalingActivityInProgressFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWarmPoolType,
   output: DeleteWarmPoolAnswer,
@@ -5035,10 +5029,8 @@ export const executePolicy: (
   input: ExecutePolicyType,
 ) => Effect.Effect<
   ExecutePolicyResponse,
-  | ResourceContentionFault
-  | ScalingActivityInProgressFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ScalingActivityInProgressFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecutePolicyType,
   output: ExecutePolicyResponse,
@@ -5058,10 +5050,8 @@ export const setDesiredCapacity: (
   input: SetDesiredCapacityType,
 ) => Effect.Effect<
   SetDesiredCapacityResponse,
-  | ResourceContentionFault
-  | ScalingActivityInProgressFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ScalingActivityInProgressFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetDesiredCapacityType,
   output: SetDesiredCapacityResponse,
@@ -5089,10 +5079,8 @@ export const terminateInstanceInAutoScalingGroup: (
   input: TerminateInstanceInAutoScalingGroupType,
 ) => Effect.Effect<
   ActivityType,
-  | ResourceContentionFault
-  | ScalingActivityInProgressFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ScalingActivityInProgressFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateInstanceInAutoScalingGroupType,
   output: ActivityType,
@@ -5112,8 +5100,8 @@ export const deletePolicy: (
   input: DeletePolicyType,
 ) => Effect.Effect<
   DeletePolicyResponse,
-  ResourceContentionFault | ServiceLinkedRoleFailure | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | ServiceLinkedRoleFailure | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePolicyType,
   output: DeletePolicyResponse,
@@ -5148,8 +5136,8 @@ export const attachLoadBalancers: (
   | InstanceRefreshInProgressFault
   | ResourceContentionFault
   | ServiceLinkedRoleFailure
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachLoadBalancersType,
   output: AttachLoadBalancersResultType,
@@ -5189,8 +5177,8 @@ export const attachTrafficSources: (
   | InstanceRefreshInProgressFault
   | ResourceContentionFault
   | ServiceLinkedRoleFailure
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachTrafficSourcesType,
   output: AttachTrafficSourcesResultType,
@@ -5250,8 +5238,8 @@ export const updateAutoScalingGroup: (
   | ResourceContentionFault
   | ScalingActivityInProgressFault
   | ServiceLinkedRoleFailure
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAutoScalingGroupType,
   output: UpdateAutoScalingGroupResponse,
@@ -5299,8 +5287,8 @@ export const attachLoadBalancerTargetGroups: (
   | InstanceRefreshInProgressFault
   | ResourceContentionFault
   | ServiceLinkedRoleFailure
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachLoadBalancerTargetGroupsType,
   output: AttachLoadBalancerTargetGroupsResultType,
@@ -5331,8 +5319,8 @@ export const putNotificationConfiguration: (
   | LimitExceededFault
   | ResourceContentionFault
   | ServiceLinkedRoleFailure
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutNotificationConfigurationType,
   output: PutNotificationConfigurationResponse,
@@ -5349,8 +5337,8 @@ export const batchDeleteScheduledAction: (
   input: BatchDeleteScheduledActionType,
 ) => Effect.Effect<
   BatchDeleteScheduledActionAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteScheduledActionType,
   output: BatchDeleteScheduledActionAnswer,
@@ -5366,8 +5354,8 @@ export const batchPutScheduledUpdateGroupAction: (
   | AlreadyExistsFault
   | LimitExceededFault
   | ResourceContentionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchPutScheduledUpdateGroupActionType,
   output: BatchPutScheduledUpdateGroupActionAnswer,
@@ -5392,8 +5380,8 @@ export const cancelInstanceRefresh: (
   | ActiveInstanceRefreshNotFoundFault
   | LimitExceededFault
   | ResourceContentionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelInstanceRefreshType,
   output: CancelInstanceRefreshAnswer,
@@ -5426,8 +5414,8 @@ export const createLaunchConfiguration: (
   | AlreadyExistsFault
   | LimitExceededFault
   | ResourceContentionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLaunchConfigurationType,
   output: CreateLaunchConfigurationResponse,
@@ -5440,8 +5428,8 @@ export const describeLifecycleHooks: (
   input: DescribeLifecycleHooksType,
 ) => Effect.Effect<
   DescribeLifecycleHooksAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLifecycleHooksType,
   output: DescribeLifecycleHooksAnswer,
@@ -5465,8 +5453,8 @@ export const getPredictiveScalingForecast: (
   input: GetPredictiveScalingForecastType,
 ) => Effect.Effect<
   GetPredictiveScalingForecastAnswer,
-  ResourceContentionFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPredictiveScalingForecastType,
   output: GetPredictiveScalingForecastAnswer,
@@ -5480,22 +5468,22 @@ export const describeAutoScalingInstances: {
     input: DescribeAutoScalingInstancesType,
   ): Effect.Effect<
     AutoScalingInstancesType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAutoScalingInstancesType,
   ) => Stream.Stream<
     AutoScalingInstancesType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAutoScalingInstancesType,
   ) => Stream.Stream<
     AutoScalingInstanceDetails,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAutoScalingInstancesType,
@@ -5519,8 +5507,8 @@ export const describePolicies: {
     | InvalidNextToken
     | ResourceContentionFault
     | ServiceLinkedRoleFailure
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePoliciesType,
@@ -5529,8 +5517,8 @@ export const describePolicies: {
     | InvalidNextToken
     | ResourceContentionFault
     | ServiceLinkedRoleFailure
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribePoliciesType,
@@ -5539,8 +5527,8 @@ export const describePolicies: {
     | InvalidNextToken
     | ResourceContentionFault
     | ServiceLinkedRoleFailure
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePoliciesType,
@@ -5561,10 +5549,8 @@ export const launchInstances: (
   input: LaunchInstancesRequest,
 ) => Effect.Effect<
   LaunchInstancesResult,
-  | IdempotentParameterMismatchError
-  | ResourceContentionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  IdempotentParameterMismatchError | ResourceContentionFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: LaunchInstancesRequest,
   output: LaunchInstancesResult,
@@ -5606,8 +5592,8 @@ export const startInstanceRefresh: (
   | InstanceRefreshInProgressFault
   | LimitExceededFault
   | ResourceContentionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartInstanceRefreshType,
   output: StartInstanceRefreshAnswer,
@@ -5649,8 +5635,8 @@ export const rollbackInstanceRefresh: (
   | IrreversibleInstanceRefreshFault
   | LimitExceededFault
   | ResourceContentionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RollbackInstanceRefreshType,
   output: RollbackInstanceRefreshAnswer,
@@ -5669,22 +5655,22 @@ export const describeLaunchConfigurations: {
     input: LaunchConfigurationNamesType,
   ): Effect.Effect<
     LaunchConfigurationsType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: LaunchConfigurationNamesType,
   ) => Stream.Stream<
     LaunchConfigurationsType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: LaunchConfigurationNamesType,
   ) => Stream.Stream<
     LaunchConfiguration,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: LaunchConfigurationNamesType,
@@ -5738,22 +5724,22 @@ export const describeLoadBalancers: {
     input: DescribeLoadBalancersRequest,
   ): Effect.Effect<
     DescribeLoadBalancersResponse,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLoadBalancersRequest,
   ) => Stream.Stream<
     DescribeLoadBalancersResponse,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLoadBalancersRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLoadBalancersRequest,
@@ -5806,22 +5792,22 @@ export const describeLoadBalancerTargetGroups: {
     input: DescribeLoadBalancerTargetGroupsRequest,
   ): Effect.Effect<
     DescribeLoadBalancerTargetGroupsResponse,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLoadBalancerTargetGroupsRequest,
   ) => Stream.Stream<
     DescribeLoadBalancerTargetGroupsResponse,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLoadBalancerTargetGroupsRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLoadBalancerTargetGroupsRequest,
@@ -5842,22 +5828,22 @@ export const describeNotificationConfigurations: {
     input: DescribeNotificationConfigurationsType,
   ): Effect.Effect<
     DescribeNotificationConfigurationsAnswer,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNotificationConfigurationsType,
   ) => Stream.Stream<
     DescribeNotificationConfigurationsAnswer,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNotificationConfigurationsType,
   ) => Stream.Stream<
     NotificationConfiguration,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNotificationConfigurationsType,
@@ -5888,22 +5874,22 @@ export const describeScalingActivities: {
     input: DescribeScalingActivitiesType,
   ): Effect.Effect<
     ActivitiesType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScalingActivitiesType,
   ) => Stream.Stream<
     ActivitiesType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScalingActivitiesType,
   ) => Stream.Stream<
     Activity,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScalingActivitiesType,
@@ -5928,22 +5914,22 @@ export const describeScheduledActions: {
     input: DescribeScheduledActionsType,
   ): Effect.Effect<
     ScheduledActionsType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScheduledActionsType,
   ) => Stream.Stream<
     ScheduledActionsType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScheduledActionsType,
   ) => Stream.Stream<
     ScheduledUpdateGroupAction,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduledActionsType,
@@ -5975,22 +5961,22 @@ export const describeTags: {
     input: DescribeTagsType,
   ): Effect.Effect<
     TagsType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTagsType,
   ) => Stream.Stream<
     TagsType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTagsType,
   ) => Stream.Stream<
     TagDescription,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTagsType,
@@ -6017,22 +6003,22 @@ export const describeTrafficSources: {
     input: DescribeTrafficSourcesRequest,
   ): Effect.Effect<
     DescribeTrafficSourcesResponse,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrafficSourcesRequest,
   ) => Stream.Stream<
     DescribeTrafficSourcesResponse,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrafficSourcesRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrafficSourcesRequest,
@@ -6058,8 +6044,8 @@ export const describeWarmPool: {
     | InvalidNextToken
     | LimitExceededFault
     | ResourceContentionFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeWarmPoolType,
@@ -6068,8 +6054,8 @@ export const describeWarmPool: {
     | InvalidNextToken
     | LimitExceededFault
     | ResourceContentionFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeWarmPoolType,
@@ -6078,8 +6064,8 @@ export const describeWarmPool: {
     | InvalidNextToken
     | LimitExceededFault
     | ResourceContentionFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeWarmPoolType,
@@ -6109,22 +6095,22 @@ export const describeAutoScalingGroups: {
     input: AutoScalingGroupNamesType,
   ): Effect.Effect<
     AutoScalingGroupsType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: AutoScalingGroupNamesType,
   ) => Stream.Stream<
     AutoScalingGroupsType,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: AutoScalingGroupNamesType,
   ) => Stream.Stream<
     AutoScalingGroup,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: AutoScalingGroupNamesType,
@@ -6157,22 +6143,22 @@ export const describeInstanceRefreshes: {
     input: DescribeInstanceRefreshesType,
   ): Effect.Effect<
     DescribeInstanceRefreshesAnswer,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInstanceRefreshesType,
   ) => Stream.Stream<
     DescribeInstanceRefreshesAnswer,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInstanceRefreshesType,
   ) => Stream.Stream<
     unknown,
-    InvalidNextToken | ResourceContentionFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | ResourceContentionFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInstanceRefreshesType,
@@ -6207,8 +6193,8 @@ export const putScalingPolicy: (
   | LimitExceededFault
   | ResourceContentionFault
   | ServiceLinkedRoleFailure
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutScalingPolicyType,
   output: PolicyARNType,
@@ -6245,8 +6231,8 @@ export const createAutoScalingGroup: (
   | LimitExceededFault
   | ResourceContentionFault
   | ServiceLinkedRoleFailure
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAutoScalingGroupType,
   output: CreateAutoScalingGroupResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://appsync.amazonaws.com");
 const svc = T.AwsApiService({
@@ -3841,33 +3839,31 @@ export const GetDataSourceIntrospectionResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class GraphQLSchemaException extends S.TaggedError<GraphQLSchemaException>()(
   "GraphQLSchemaException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ApiKeyValidityOutOfBoundsException extends S.TaggedError<ApiKeyValidityOutOfBoundsException>()(
   "ApiKeyValidityOutOfBoundsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ApiKeyLimitExceededException extends S.TaggedError<ApiKeyLimitExceededException>()(
   "ApiKeyLimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalFailureException extends S.TaggedError<InternalFailureException>()(
   "InternalFailureException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ApiLimitExceededException extends S.TaggedError<ApiLimitExceededException>()(
   "ApiLimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   {
@@ -3875,29 +3871,27 @@ export class BadRequestException extends S.TaggedError<BadRequestException>()(
     reason: S.optional(S.String),
     detail: S.optional(BadRequestDetail),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withQuotaError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -3911,8 +3905,8 @@ export const getApiAssociation: (
   | BadRequestException
   | InternalFailureException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApiAssociationRequest,
   output: GetApiAssociationResponse,
@@ -3934,8 +3928,8 @@ export const getDomainName: (
   | BadRequestException
   | InternalFailureException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainNameRequest,
   output: GetDomainNameResponse,
@@ -3957,8 +3951,8 @@ export const listDomainNames: {
     | AccessDeniedException
     | BadRequestException
     | InternalFailureException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDomainNamesRequest,
@@ -3967,8 +3961,8 @@ export const listDomainNames: {
     | AccessDeniedException
     | BadRequestException
     | InternalFailureException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDomainNamesRequest,
@@ -3977,8 +3971,8 @@ export const listDomainNames: {
     | AccessDeniedException
     | BadRequestException
     | InternalFailureException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDomainNamesRequest,
@@ -4007,8 +4001,8 @@ export const updateDomainName: (
   | ConcurrentModificationException
   | InternalFailureException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainNameRequest,
   output: UpdateDomainNameResponse,
@@ -4032,8 +4026,8 @@ export const deleteDomainName: (
   | ConcurrentModificationException
   | InternalFailureException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainNameRequest,
   output: DeleteDomainNameResponse,
@@ -4057,8 +4051,8 @@ export const disassociateApi: (
   | ConcurrentModificationException
   | InternalFailureException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateApiRequest,
   output: DisassociateApiResponse,
@@ -4081,8 +4075,8 @@ export const associateApi: (
   | BadRequestException
   | InternalFailureException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateApiRequest,
   output: AssociateApiResponse,
@@ -4103,8 +4097,8 @@ export const createDomainName: (
   | AccessDeniedException
   | BadRequestException
   | InternalFailureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainNameRequest,
   output: CreateDomainNameResponse,
@@ -4129,8 +4123,8 @@ export const evaluateCode: (
   | AccessDeniedException
   | BadRequestException
   | InternalFailureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EvaluateCodeRequest,
   output: EvaluateCodeResponse,
@@ -4158,8 +4152,8 @@ export const evaluateMappingTemplate: (
   | AccessDeniedException
   | BadRequestException
   | InternalFailureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EvaluateMappingTemplateRequest,
   output: EvaluateMappingTemplateResponse,
@@ -4181,8 +4175,8 @@ export const getDataSourceIntrospection: (
   | BadRequestException
   | InternalFailureException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataSourceIntrospectionRequest,
   output: GetDataSourceIntrospectionResponse,
@@ -4198,8 +4192,8 @@ export const getFunction: (
   | ConcurrentModificationException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFunctionRequest,
   output: GetFunctionResponse,
@@ -4222,8 +4216,8 @@ export const listTagsForResource: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4250,8 +4244,8 @@ export const createApi: (
   | InternalFailureException
   | ServiceQuotaExceededException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApiRequest,
   output: CreateApiResponse,
@@ -4274,8 +4268,8 @@ export const deleteApiKey: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApiKeyRequest,
   output: DeleteApiKeyResponse,
@@ -4298,8 +4292,8 @@ export const deleteDataSource: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataSourceRequest,
   output: DeleteDataSourceResponse,
@@ -4323,8 +4317,8 @@ export const deleteFunction: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFunctionRequest,
   output: DeleteFunctionResponse,
@@ -4348,8 +4342,8 @@ export const deleteResolver: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResolverRequest,
   output: DeleteResolverResponse,
@@ -4373,8 +4367,8 @@ export const deleteType: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTypeRequest,
   output: DeleteTypeResponse,
@@ -4398,8 +4392,8 @@ export const flushApiCache: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FlushApiCacheRequest,
   output: FlushApiCacheResponse,
@@ -4424,8 +4418,8 @@ export const deleteApi: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApiRequest,
   output: DeleteApiResponse,
@@ -4451,8 +4445,8 @@ export const disassociateMergedGraphqlApi: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateMergedGraphqlApiRequest,
   output: DisassociateMergedGraphqlApiResponse,
@@ -4477,8 +4471,8 @@ export const disassociateSourceGraphqlApi: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateSourceGraphqlApiRequest,
   output: DisassociateSourceGraphqlApiResponse,
@@ -4502,8 +4496,8 @@ export const getApiCache: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApiCacheRequest,
   output: GetApiCacheResponse,
@@ -4528,8 +4522,8 @@ export const getGraphqlApiEnvironmentVariables: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGraphqlApiEnvironmentVariablesRequest,
   output: GetGraphqlApiEnvironmentVariablesResponse,
@@ -4552,8 +4546,8 @@ export const getSchemaCreationStatus: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSchemaCreationStatusRequest,
   output: GetSchemaCreationStatusResponse,
@@ -4575,8 +4569,8 @@ export const getSourceApiAssociation: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSourceApiAssociationRequest,
   output: GetSourceApiAssociationResponse,
@@ -4599,8 +4593,8 @@ export const getType: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTypeRequest,
   output: GetTypeResponse,
@@ -4629,8 +4623,8 @@ export const listApiKeys: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApiKeysRequest,
@@ -4640,8 +4634,8 @@ export const listApiKeys: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApiKeysRequest,
@@ -4651,8 +4645,8 @@ export const listApiKeys: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApiKeysRequest,
@@ -4684,8 +4678,8 @@ export const listApis: {
     | BadRequestException
     | InternalFailureException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApisRequest,
@@ -4694,8 +4688,8 @@ export const listApis: {
     | BadRequestException
     | InternalFailureException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApisRequest,
@@ -4704,8 +4698,8 @@ export const listApis: {
     | BadRequestException
     | InternalFailureException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApisRequest,
@@ -4737,8 +4731,8 @@ export const listChannelNamespaces: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListChannelNamespacesRequest,
@@ -4748,8 +4742,8 @@ export const listChannelNamespaces: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListChannelNamespacesRequest,
@@ -4759,8 +4753,8 @@ export const listChannelNamespaces: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChannelNamespacesRequest,
@@ -4790,8 +4784,8 @@ export const listDataSources: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDataSourcesRequest,
@@ -4801,8 +4795,8 @@ export const listDataSources: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDataSourcesRequest,
@@ -4812,8 +4806,8 @@ export const listDataSources: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDataSourcesRequest,
@@ -4843,8 +4837,8 @@ export const listFunctions: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFunctionsRequest,
@@ -4854,8 +4848,8 @@ export const listFunctions: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFunctionsRequest,
@@ -4865,8 +4859,8 @@ export const listFunctions: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFunctionsRequest,
@@ -4895,8 +4889,8 @@ export const listGraphqlApis: {
     | BadRequestException
     | InternalFailureException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGraphqlApisRequest,
@@ -4905,8 +4899,8 @@ export const listGraphqlApis: {
     | BadRequestException
     | InternalFailureException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGraphqlApisRequest,
@@ -4915,8 +4909,8 @@ export const listGraphqlApis: {
     | BadRequestException
     | InternalFailureException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGraphqlApisRequest,
@@ -4945,8 +4939,8 @@ export const listResolvers: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolversRequest,
@@ -4956,8 +4950,8 @@ export const listResolvers: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolversRequest,
@@ -4967,8 +4961,8 @@ export const listResolvers: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolversRequest,
@@ -4998,8 +4992,8 @@ export const listResolversByFunction: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResolversByFunctionRequest,
@@ -5009,8 +5003,8 @@ export const listResolversByFunction: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResolversByFunctionRequest,
@@ -5020,8 +5014,8 @@ export const listResolversByFunction: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResolversByFunctionRequest,
@@ -5052,8 +5046,8 @@ export const listTypes: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTypesRequest,
@@ -5064,8 +5058,8 @@ export const listTypes: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTypesRequest,
@@ -5076,8 +5070,8 @@ export const listTypes: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypesRequest,
@@ -5109,8 +5103,8 @@ export const listTypesByAssociation: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTypesByAssociationRequest,
@@ -5121,8 +5115,8 @@ export const listTypesByAssociation: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTypesByAssociationRequest,
@@ -5133,8 +5127,8 @@ export const listTypesByAssociation: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypesByAssociationRequest,
@@ -5168,8 +5162,8 @@ export const startSchemaCreation: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSchemaCreationRequest,
   output: StartSchemaCreationResponse,
@@ -5194,8 +5188,8 @@ export const startSchemaMerge: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSchemaMergeRequest,
   output: StartSchemaMergeResponse,
@@ -5220,8 +5214,8 @@ export const updateApi: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApiRequest,
   output: UpdateApiResponse,
@@ -5246,8 +5240,8 @@ export const updateApiCache: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApiCacheRequest,
   output: UpdateApiCacheResponse,
@@ -5272,8 +5266,8 @@ export const updateChannelNamespace: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateChannelNamespaceRequest,
   output: UpdateChannelNamespaceResponse,
@@ -5298,8 +5292,8 @@ export const updateDataSource: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataSourceRequest,
   output: UpdateDataSourceResponse,
@@ -5323,8 +5317,8 @@ export const updateFunction: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFunctionRequest,
   output: UpdateFunctionResponse,
@@ -5349,8 +5343,8 @@ export const updateGraphqlApi: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGraphqlApiRequest,
   output: UpdateGraphqlApiResponse,
@@ -5375,8 +5369,8 @@ export const updateResolver: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResolverRequest,
   output: UpdateResolverResponse,
@@ -5400,8 +5394,8 @@ export const updateSourceApiAssociation: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSourceApiAssociationRequest,
   output: UpdateSourceApiAssociationResponse,
@@ -5425,8 +5419,8 @@ export const updateType: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTypeRequest,
   output: UpdateTypeResponse,
@@ -5451,8 +5445,8 @@ export const deleteChannelNamespace: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChannelNamespaceRequest,
   output: DeleteChannelNamespaceResponse,
@@ -5478,8 +5472,8 @@ export const deleteGraphqlApi: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGraphqlApiRequest,
   output: DeleteGraphqlApiResponse,
@@ -5504,8 +5498,8 @@ export const createApiCache: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApiCacheRequest,
   output: CreateApiCacheResponse,
@@ -5532,8 +5526,8 @@ export const createResolver: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResolverRequest,
   output: CreateResolverResponse,
@@ -5557,8 +5551,8 @@ export const createType: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTypeRequest,
   output: CreateTypeResponse,
@@ -5582,8 +5576,8 @@ export const getChannelNamespace: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChannelNamespaceRequest,
   output: GetChannelNamespaceResponse,
@@ -5607,8 +5601,8 @@ export const getDataSource: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataSourceRequest,
   output: GetDataSourceResponse,
@@ -5632,8 +5626,8 @@ export const getGraphqlApi: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGraphqlApiRequest,
   output: GetGraphqlApiResponse,
@@ -5657,8 +5651,8 @@ export const listSourceApiAssociations: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSourceApiAssociationsRequest,
@@ -5668,8 +5662,8 @@ export const listSourceApiAssociations: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSourceApiAssociationsRequest,
@@ -5679,8 +5673,8 @@ export const listSourceApiAssociations: {
     | InternalFailureException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSourceApiAssociationsRequest,
@@ -5747,8 +5741,8 @@ export const putGraphqlApiEnvironmentVariables: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutGraphqlApiEnvironmentVariablesRequest,
   output: PutGraphqlApiEnvironmentVariablesResponse,
@@ -5773,8 +5767,8 @@ export const startDataSourceIntrospection: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDataSourceIntrospectionRequest,
   output: StartDataSourceIntrospectionResponse,
@@ -5800,8 +5794,8 @@ export const createFunction: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFunctionRequest,
   output: CreateFunctionResponse,
@@ -5825,8 +5819,8 @@ export const getApi: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApiRequest,
   output: GetApiResponse,
@@ -5850,8 +5844,8 @@ export const createDataSource: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataSourceRequest,
   output: CreateDataSourceResponse,
@@ -5874,8 +5868,8 @@ export const getIntrospectionSchema: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIntrospectionSchemaRequest,
   output: GetIntrospectionSchemaResponse,
@@ -5896,8 +5890,8 @@ export const getResolver: (
   | ConcurrentModificationException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResolverRequest,
   output: GetResolverResponse,
@@ -5919,8 +5913,8 @@ export const deleteApiCache: (
   | InternalFailureException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApiCacheRequest,
   output: DeleteApiCacheResponse,
@@ -5945,8 +5939,8 @@ export const tagResource: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5972,8 +5966,8 @@ export const untagResource: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6000,8 +5994,8 @@ export const associateMergedGraphqlApi: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateMergedGraphqlApiRequest,
   output: AssociateMergedGraphqlApiResponse,
@@ -6028,8 +6022,8 @@ export const associateSourceGraphqlApi: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSourceGraphqlApiRequest,
   output: AssociateSourceGraphqlApiResponse,
@@ -6055,8 +6049,8 @@ export const updateApiKey: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApiKeyRequest,
   output: UpdateApiKeyResponse,
@@ -6083,8 +6077,8 @@ export const createApiKey: (
   | LimitExceededException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApiKeyRequest,
   output: CreateApiKeyResponse,
@@ -6111,8 +6105,8 @@ export const createGraphqlApi: (
   | InternalFailureException
   | LimitExceededException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGraphqlApiRequest,
   output: CreateGraphqlApiResponse,
@@ -6139,8 +6133,8 @@ export const createChannelNamespace: (
   | NotFoundException
   | ServiceQuotaExceededException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChannelNamespaceRequest,
   output: CreateChannelNamespaceResponse,

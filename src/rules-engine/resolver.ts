@@ -12,8 +12,8 @@
 
 import * as Effect from "effect/Effect";
 import * as AST from "effect/SchemaAST";
-import type { Operation } from "../operation.ts";
-import type { Request } from "../request.ts";
+import type { Operation } from "../client/operation.ts";
+import type { Request } from "../client/request.ts";
 import {
   getContextParam,
   getEndpointRuleSet,

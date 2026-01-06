@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors as Err,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://s3.amazonaws.com/doc/2006-03-01/");
 const svc = T.AwsApiService({ sdkId: "S3", serviceShapeName: "AmazonS3" });
@@ -17145,11 +17143,11 @@ export class MalformedPolicy extends S.TaggedError<MalformedPolicy>()(
 export class IdempotencyParameterMismatch extends S.TaggedError<IdempotencyParameterMismatch>()(
   "IdempotencyParameterMismatch",
   {},
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchUpload extends S.TaggedError<NoSuchUpload>()(
   "NoSuchUpload",
   {},
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchKey extends S.TaggedError<NoSuchKey>()("NoSuchKey", {}) {}
 export class NoSuchConfiguration extends S.TaggedError<NoSuchConfiguration>()(
   "NoSuchConfiguration",
@@ -17192,19 +17190,19 @@ export class NotFound extends S.TaggedError<NotFound>()("NotFound", {}) {}
 export class EncryptionTypeMismatch extends S.TaggedError<EncryptionTypeMismatch>()(
   "EncryptionTypeMismatch",
   {},
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidWriteOffset extends S.TaggedError<InvalidWriteOffset>()(
   "InvalidWriteOffset",
   {},
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyParts extends S.TaggedError<TooManyParts>()(
   "TooManyParts",
   {},
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidObjectState extends S.TaggedError<InvalidObjectState>()(
   "InvalidObjectState",
   { StorageClass: S.optional(S.String), AccessTier: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class MalformedXML extends S.TaggedError<MalformedXML>()(
   "MalformedXML",
   {},
@@ -17212,15 +17210,15 @@ export class MalformedXML extends S.TaggedError<MalformedXML>()(
 export class ObjectNotInActiveTierError extends S.TaggedError<ObjectNotInActiveTierError>()(
   "ObjectNotInActiveTierError",
   {},
-) {}
+).pipe(C.withAuthError) {}
 export class BucketAlreadyExists extends S.TaggedError<BucketAlreadyExists>()(
   "BucketAlreadyExists",
   {},
-) {}
+).pipe(C.withConflictError) {}
 export class BucketAlreadyOwnedByYou extends S.TaggedError<BucketAlreadyOwnedByYou>()(
   "BucketAlreadyOwnedByYou",
   {},
-) {}
+).pipe(C.withConflictError) {}
 export class IllegalLocationConstraintException extends S.TaggedError<IllegalLocationConstraintException>()(
   "IllegalLocationConstraintException",
   {},
@@ -17244,7 +17242,7 @@ export class InvalidBucketState extends S.TaggedError<InvalidBucketState>()(
 export class ObjectAlreadyInActiveTierError extends S.TaggedError<ObjectAlreadyInActiveTierError>()(
   "ObjectAlreadyInActiveTierError",
   {},
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -17286,8 +17284,8 @@ export const deleteBucket: (
   input: DeleteBucketRequest,
 ) => Effect.Effect<
   DeleteBucketResponse,
-  BucketNotEmpty | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BucketNotEmpty | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketRequest,
   output: DeleteBucketResponse,
@@ -17321,8 +17319,8 @@ export const deleteBucketAnalyticsConfiguration: (
   input: DeleteBucketAnalyticsConfigurationRequest,
 ) => Effect.Effect<
   DeleteBucketAnalyticsConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketAnalyticsConfigurationRequest,
   output: DeleteBucketAnalyticsConfigurationResponse,
@@ -17351,8 +17349,8 @@ export const deleteBucketCors: (
   input: DeleteBucketCorsRequest,
 ) => Effect.Effect<
   DeleteBucketCorsResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketCorsRequest,
   output: DeleteBucketCorsResponse,
@@ -17400,8 +17398,8 @@ export const deleteBucketEncryption: (
   input: DeleteBucketEncryptionRequest,
 ) => Effect.Effect<
   DeleteBucketEncryptionResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketEncryptionRequest,
   output: DeleteBucketEncryptionResponse,
@@ -17432,8 +17430,8 @@ export const deleteBucketIntelligentTieringConfiguration: (
   input: DeleteBucketIntelligentTieringConfigurationRequest,
 ) => Effect.Effect<
   DeleteBucketIntelligentTieringConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketIntelligentTieringConfigurationRequest,
   output: DeleteBucketIntelligentTieringConfigurationResponse,
@@ -17465,8 +17463,8 @@ export const deleteBucketInventoryConfiguration: (
   input: DeleteBucketInventoryConfigurationRequest,
 ) => Effect.Effect<
   DeleteBucketInventoryConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketInventoryConfigurationRequest,
   output: DeleteBucketInventoryConfigurationResponse,
@@ -17525,8 +17523,8 @@ export const deleteBucketLifecycle: (
   input: DeleteBucketLifecycleRequest,
 ) => Effect.Effect<
   DeleteBucketLifecycleResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketLifecycleRequest,
   output: DeleteBucketLifecycleResponse,
@@ -17567,8 +17565,8 @@ export const deleteBucketMetadataConfiguration: (
   input: DeleteBucketMetadataConfigurationRequest,
 ) => Effect.Effect<
   DeleteBucketMetadataConfigurationResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketMetadataConfigurationRequest,
   output: DeleteBucketMetadataConfigurationResponse,
@@ -17615,8 +17613,8 @@ export const deleteBucketMetadataTableConfiguration: (
   input: DeleteBucketMetadataTableConfigurationRequest,
 ) => Effect.Effect<
   DeleteBucketMetadataTableConfigurationResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketMetadataTableConfigurationRequest,
   output: DeleteBucketMetadataTableConfigurationResponse,
@@ -17652,8 +17650,8 @@ export const deleteBucketMetricsConfiguration: (
   input: DeleteBucketMetricsConfigurationRequest,
 ) => Effect.Effect<
   DeleteBucketMetricsConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketMetricsConfigurationRequest,
   output: DeleteBucketMetricsConfigurationResponse,
@@ -17681,8 +17679,8 @@ export const deleteBucketOwnershipControls: (
   input: DeleteBucketOwnershipControlsRequest,
 ) => Effect.Effect<
   DeleteBucketOwnershipControlsResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketOwnershipControlsRequest,
   output: DeleteBucketOwnershipControlsResponse,
@@ -17741,8 +17739,8 @@ export const deleteBucketPolicy: (
   input: DeleteBucketPolicyRequest,
 ) => Effect.Effect<
   DeleteBucketPolicyResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketPolicyRequest,
   output: DeleteBucketPolicyResponse,
@@ -17775,8 +17773,8 @@ export const deleteBucketReplication: (
   input: DeleteBucketReplicationRequest,
 ) => Effect.Effect<
   DeleteBucketReplicationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketReplicationRequest,
   output: DeleteBucketReplicationResponse,
@@ -17804,8 +17802,8 @@ export const deleteBucketTagging: (
   input: DeleteBucketTaggingRequest,
 ) => Effect.Effect<
   DeleteBucketTaggingResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketTaggingRequest,
   output: DeleteBucketTaggingResponse,
@@ -17839,8 +17837,8 @@ export const deleteBucketWebsite: (
   input: DeleteBucketWebsiteRequest,
 ) => Effect.Effect<
   DeleteBucketWebsiteResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBucketWebsiteRequest,
   output: DeleteBucketWebsiteResponse,
@@ -17873,8 +17871,8 @@ export const deletePublicAccessBlock: (
   input: DeletePublicAccessBlockRequest,
 ) => Effect.Effect<
   DeletePublicAccessBlockResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePublicAccessBlockRequest,
   output: DeletePublicAccessBlockResponse,
@@ -17913,8 +17911,8 @@ export const getBucketNotificationConfiguration: (
   input: GetBucketNotificationConfigurationRequest,
 ) => Effect.Effect<
   NotificationConfiguration,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketNotificationConfigurationRequest,
   output: NotificationConfiguration,
@@ -17981,8 +17979,8 @@ export const putBucketPolicy: (
   input: PutBucketPolicyRequest,
 ) => Effect.Effect<
   PutBucketPolicyResponse,
-  AccessDenied | MalformedPolicy | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDenied | MalformedPolicy | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketPolicyRequest,
   output: PutBucketPolicyResponse,
@@ -18037,8 +18035,8 @@ export const renameObject: (
   input: RenameObjectRequest,
 ) => Effect.Effect<
   RenameObjectOutput,
-  IdempotencyParameterMismatch | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  IdempotencyParameterMismatch | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RenameObjectRequest,
   output: RenameObjectOutput,
@@ -18091,8 +18089,8 @@ export const writeGetObjectResponse: (
   input: WriteGetObjectResponseRequest,
 ) => Effect.Effect<
   WriteGetObjectResponseResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: WriteGetObjectResponseRequest,
   output: WriteGetObjectResponseResponse,
@@ -18156,8 +18154,8 @@ export const abortMultipartUpload: (
   input: AbortMultipartUploadRequest,
 ) => Effect.Effect<
   AbortMultipartUploadOutput,
-  NoSuchUpload | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchUpload | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AbortMultipartUploadRequest,
   output: AbortMultipartUploadOutput,
@@ -18341,8 +18339,8 @@ export const createMultipartUpload: (
   input: CreateMultipartUploadRequest,
 ) => Effect.Effect<
   CreateMultipartUploadOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMultipartUploadRequest,
   output: CreateMultipartUploadOutput,
@@ -18442,8 +18440,8 @@ export const deleteObject: (
   input: DeleteObjectRequest,
 ) => Effect.Effect<
   DeleteObjectOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectRequest,
   output: DeleteObjectOutput,
@@ -18474,8 +18472,8 @@ export const deleteObjectTagging: (
   input: DeleteObjectTaggingRequest,
 ) => Effect.Effect<
   DeleteObjectTaggingOutput,
-  NoSuchKey | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchKey | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectTaggingRequest,
   output: DeleteObjectTaggingOutput,
@@ -18488,8 +18486,8 @@ export const getBucketAbac: (
   input: GetBucketAbacRequest,
 ) => Effect.Effect<
   GetBucketAbacOutput,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAbacRequest,
   output: GetBucketAbacOutput,
@@ -18528,8 +18526,8 @@ export const getBucketAccelerateConfiguration: (
   input: GetBucketAccelerateConfigurationRequest,
 ) => Effect.Effect<
   GetBucketAccelerateConfigurationOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAccelerateConfigurationRequest,
   output: GetBucketAccelerateConfigurationOutput,
@@ -18566,8 +18564,8 @@ export const getBucketAcl: (
   input: GetBucketAclRequest,
 ) => Effect.Effect<
   GetBucketAclOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAclRequest,
   output: GetBucketAclOutput,
@@ -18601,8 +18599,8 @@ export const getBucketAnalyticsConfiguration: (
   input: GetBucketAnalyticsConfigurationRequest,
 ) => Effect.Effect<
   GetBucketAnalyticsConfigurationOutput,
-  NoSuchBucket | NoSuchConfiguration | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchConfiguration | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketAnalyticsConfigurationRequest,
   output: GetBucketAnalyticsConfigurationOutput,
@@ -18638,8 +18636,8 @@ export const getBucketCors: (
   input: GetBucketCorsRequest,
 ) => Effect.Effect<
   GetBucketCorsOutput,
-  NoSuchBucket | NoSuchCORSConfiguration | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchCORSConfiguration | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketCorsRequest,
   output: GetBucketCorsOutput,
@@ -18687,8 +18685,8 @@ export const getBucketEncryption: (
   input: GetBucketEncryptionRequest,
 ) => Effect.Effect<
   GetBucketEncryptionOutput,
-  NoSuchBucket | ParseError | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketEncryptionRequest,
   output: GetBucketEncryptionOutput,
@@ -18719,8 +18717,8 @@ export const getBucketIntelligentTieringConfiguration: (
   input: GetBucketIntelligentTieringConfigurationRequest,
 ) => Effect.Effect<
   GetBucketIntelligentTieringConfigurationOutput,
-  NoSuchBucket | NoSuchConfiguration | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchConfiguration | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketIntelligentTieringConfigurationRequest,
   output: GetBucketIntelligentTieringConfigurationOutput,
@@ -18753,8 +18751,8 @@ export const getBucketInventoryConfiguration: (
   input: GetBucketInventoryConfigurationRequest,
 ) => Effect.Effect<
   GetBucketInventoryConfigurationOutput,
-  NoSuchBucket | NoSuchConfiguration | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchConfiguration | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketInventoryConfigurationRequest,
   output: GetBucketInventoryConfigurationOutput,
@@ -18830,8 +18828,8 @@ export const getBucketLifecycleConfiguration: (
   input: GetBucketLifecycleConfigurationRequest,
 ) => Effect.Effect<
   GetBucketLifecycleConfigurationOutput,
-  NoSuchBucket | NoSuchLifecycleConfiguration | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchLifecycleConfiguration | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketLifecycleConfigurationRequest,
   output: GetBucketLifecycleConfigurationOutput,
@@ -18876,8 +18874,8 @@ export const getBucketLocation: (
   input: GetBucketLocationRequest,
 ) => Effect.Effect<
   GetBucketLocationOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketLocationRequest,
   output: GetBucketLocationOutput,
@@ -18901,8 +18899,8 @@ export const getBucketLogging: (
   input: GetBucketLoggingRequest,
 ) => Effect.Effect<
   GetBucketLoggingOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketLoggingRequest,
   output: GetBucketLoggingOutput,
@@ -18939,8 +18937,8 @@ export const getBucketMetricsConfiguration: (
   input: GetBucketMetricsConfigurationRequest,
 ) => Effect.Effect<
   GetBucketMetricsConfigurationOutput,
-  NoSuchBucket | NoSuchConfiguration | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchConfiguration | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketMetricsConfigurationRequest,
   output: GetBucketMetricsConfigurationOutput,
@@ -18978,8 +18976,8 @@ export const getBucketOwnershipControls: (
   input: GetBucketOwnershipControlsRequest,
 ) => Effect.Effect<
   GetBucketOwnershipControlsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketOwnershipControlsRequest,
   output: GetBucketOwnershipControlsOutput,
@@ -19044,8 +19042,8 @@ export const getBucketPolicy: (
   input: GetBucketPolicyRequest,
 ) => Effect.Effect<
   GetBucketPolicyOutput,
-  NoSuchBucket | NoSuchBucketPolicy | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchBucketPolicy | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketPolicyRequest,
   output: GetBucketPolicyOutput,
@@ -19085,8 +19083,8 @@ export const getBucketReplication: (
   input: GetBucketReplicationRequest,
 ) => Effect.Effect<
   GetBucketReplicationOutput,
-  NoSuchBucket | ReplicationConfigurationNotFoundError | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | ReplicationConfigurationNotFoundError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketReplicationRequest,
   output: GetBucketReplicationOutput,
@@ -19108,8 +19106,8 @@ export const getBucketRequestPayment: (
   input: GetBucketRequestPaymentRequest,
 ) => Effect.Effect<
   GetBucketRequestPaymentOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketRequestPaymentRequest,
   output: GetBucketRequestPaymentOutput,
@@ -19143,8 +19141,8 @@ export const getBucketTagging: (
   input: GetBucketTaggingRequest,
 ) => Effect.Effect<
   GetBucketTaggingOutput,
-  NoSuchBucket | NoSuchTagSet | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchTagSet | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketTaggingRequest,
   output: GetBucketTaggingOutput,
@@ -19175,8 +19173,8 @@ export const getBucketVersioning: (
   input: GetBucketVersioningRequest,
 ) => Effect.Effect<
   GetBucketVersioningOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketVersioningRequest,
   output: GetBucketVersioningOutput,
@@ -19205,8 +19203,8 @@ export const getBucketWebsite: (
   input: GetBucketWebsiteRequest,
 ) => Effect.Effect<
   GetBucketWebsiteOutput,
-  NoSuchBucket | NoSuchWebsiteConfiguration | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchWebsiteConfiguration | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketWebsiteRequest,
   output: GetBucketWebsiteOutput,
@@ -19246,8 +19244,8 @@ export const getObjectAcl: (
   input: GetObjectAclRequest,
 ) => Effect.Effect<
   GetObjectAclOutput,
-  NoSuchKey | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchKey | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectAclRequest,
   output: GetObjectAclOutput,
@@ -19270,8 +19268,8 @@ export const getObjectLegalHold: (
   input: GetObjectLegalHoldRequest,
 ) => Effect.Effect<
   GetObjectLegalHoldOutput,
-  InvalidRequest | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequest | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectLegalHoldRequest,
   output: GetObjectLegalHoldOutput,
@@ -19294,8 +19292,8 @@ export const getObjectLockConfiguration: (
   input: GetObjectLockConfigurationRequest,
 ) => Effect.Effect<
   GetObjectLockConfigurationOutput,
-  NoSuchBucket | ObjectLockConfigurationNotFoundError | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | ObjectLockConfigurationNotFoundError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectLockConfigurationRequest,
   output: GetObjectLockConfigurationOutput,
@@ -19318,8 +19316,8 @@ export const getObjectRetention: (
   input: GetObjectRetentionRequest,
 ) => Effect.Effect<
   GetObjectRetentionOutput,
-  InvalidRequest | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequest | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectRetentionRequest,
   output: GetObjectRetentionOutput,
@@ -19355,8 +19353,8 @@ export const getObjectTagging: (
   input: GetObjectTaggingRequest,
 ) => Effect.Effect<
   GetObjectTaggingOutput,
-  NoSuchBucket | NoSuchKey | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | NoSuchKey | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectTaggingRequest,
   output: GetObjectTaggingOutput,
@@ -19385,8 +19383,8 @@ export const getObjectTorrent: (
   input: GetObjectTorrentRequest,
 ) => Effect.Effect<
   GetObjectTorrentOutput,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectTorrentRequest,
   output: GetObjectTorrentOutput,
@@ -19429,8 +19427,8 @@ export const getPublicAccessBlock: (
   input: GetPublicAccessBlockRequest,
 ) => Effect.Effect<
   GetPublicAccessBlockOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPublicAccessBlockRequest,
   output: GetPublicAccessBlockOutput,
@@ -19502,8 +19500,8 @@ export const headBucket: (
   input: HeadBucketRequest,
 ) => Effect.Effect<
   HeadBucketOutput,
-  NotFound | ParseError | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: HeadBucketRequest,
   output: HeadBucketOutput,
@@ -19621,8 +19619,8 @@ export const headObject: (
   input: HeadObjectRequest,
 ) => Effect.Effect<
   HeadObjectOutput,
-  NotFound | ParseError | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFound | ParseError | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: HeadObjectRequest,
   output: HeadObjectOutput,
@@ -19664,8 +19662,8 @@ export const listBucketAnalyticsConfigurations: (
   input: ListBucketAnalyticsConfigurationsRequest,
 ) => Effect.Effect<
   ListBucketAnalyticsConfigurationsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBucketAnalyticsConfigurationsRequest,
   output: ListBucketAnalyticsConfigurationsOutput,
@@ -19696,8 +19694,8 @@ export const listBucketIntelligentTieringConfigurations: (
   input: ListBucketIntelligentTieringConfigurationsRequest,
 ) => Effect.Effect<
   ListBucketIntelligentTieringConfigurationsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBucketIntelligentTieringConfigurationsRequest,
   output: ListBucketIntelligentTieringConfigurationsOutput,
@@ -19737,8 +19735,8 @@ export const listBucketInventoryConfigurations: (
   input: ListBucketInventoryConfigurationsRequest,
 ) => Effect.Effect<
   ListBucketInventoryConfigurationsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBucketInventoryConfigurationsRequest,
   output: ListBucketInventoryConfigurationsOutput,
@@ -19780,8 +19778,8 @@ export const listBucketMetricsConfigurations: (
   input: ListBucketMetricsConfigurationsRequest,
 ) => Effect.Effect<
   ListBucketMetricsConfigurationsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListBucketMetricsConfigurationsRequest,
   output: ListBucketMetricsConfigurationsOutput,
@@ -19819,22 +19817,22 @@ export const listDirectoryBuckets: {
     input: ListDirectoryBucketsRequest,
   ): Effect.Effect<
     ListDirectoryBucketsOutput,
-    Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListDirectoryBucketsRequest,
   ) => Stream.Stream<
     ListDirectoryBucketsOutput,
-    Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListDirectoryBucketsRequest,
   ) => Stream.Stream<
     Bucket,
-    Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDirectoryBucketsRequest,
@@ -19918,22 +19916,22 @@ export const listObjectsV2: {
     input: ListObjectsV2Request,
   ): Effect.Effect<
     ListObjectsV2Output,
-    NoSuchBucket | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NoSuchBucket | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListObjectsV2Request,
   ) => Stream.Stream<
     ListObjectsV2Output,
-    NoSuchBucket | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NoSuchBucket | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListObjectsV2Request,
   ) => Stream.Stream<
     unknown,
-    NoSuchBucket | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NoSuchBucket | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListObjectsV2Request,
@@ -19952,8 +19950,8 @@ export const putBucketAbac: (
   input: PutBucketAbacRequest,
 ) => Effect.Effect<
   PutBucketAbacResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketAbacRequest,
   output: PutBucketAbacResponse,
@@ -19999,8 +19997,8 @@ export const putBucketAccelerateConfiguration: (
   input: PutBucketAccelerateConfigurationRequest,
 ) => Effect.Effect<
   PutBucketAccelerateConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketAccelerateConfigurationRequest,
   output: PutBucketAccelerateConfigurationResponse,
@@ -20026,8 +20024,8 @@ export const putBucketRequestPayment: (
   input: PutBucketRequestPaymentRequest,
 ) => Effect.Effect<
   PutBucketRequestPaymentResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketRequestPaymentRequest,
   output: PutBucketRequestPaymentResponse,
@@ -20079,8 +20077,8 @@ export const putBucketTagging: (
   input: PutBucketTaggingRequest,
 ) => Effect.Effect<
   PutBucketTaggingResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketTaggingRequest,
   output: PutBucketTaggingResponse,
@@ -20133,8 +20131,8 @@ export const putBucketVersioning: (
   input: PutBucketVersioningRequest,
 ) => Effect.Effect<
   PutBucketVersioningResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketVersioningRequest,
   output: PutBucketVersioningResponse,
@@ -20260,8 +20258,8 @@ export const putObject: (
   | InvalidWriteOffset
   | TooManyParts
   | NoSuchBucket
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectRequest,
   output: PutObjectOutput,
@@ -20420,8 +20418,8 @@ export const putObjectAcl: (
   input: PutObjectAclRequest,
 ) => Effect.Effect<
   PutObjectAclOutput,
-  NoSuchKey | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchKey | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectAclRequest,
   output: PutObjectAclOutput,
@@ -20471,8 +20469,8 @@ export const putObjectTagging: (
   input: PutObjectTaggingRequest,
 ) => Effect.Effect<
   PutObjectTaggingOutput,
-  NoSuchKey | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchKey | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectTaggingRequest,
   output: PutObjectTaggingOutput,
@@ -20512,8 +20510,8 @@ export const putPublicAccessBlock: (
   input: PutPublicAccessBlockRequest,
 ) => Effect.Effect<
   PutPublicAccessBlockResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPublicAccessBlockRequest,
   output: PutPublicAccessBlockResponse,
@@ -20663,8 +20661,8 @@ export const uploadPart: (
   input: UploadPartRequest,
 ) => Effect.Effect<
   UploadPartOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadPartRequest,
   output: UploadPartOutput,
@@ -20730,8 +20728,8 @@ export const createBucketMetadataConfiguration: (
   input: CreateBucketMetadataConfigurationRequest,
 ) => Effect.Effect<
   CreateBucketMetadataConfigurationResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBucketMetadataConfigurationRequest,
   output: CreateBucketMetadataConfigurationResponse,
@@ -20789,8 +20787,8 @@ export const createBucketMetadataTableConfiguration: (
   input: CreateBucketMetadataTableConfigurationRequest,
 ) => Effect.Effect<
   CreateBucketMetadataTableConfigurationResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBucketMetadataTableConfigurationRequest,
   output: CreateBucketMetadataTableConfigurationResponse,
@@ -20895,8 +20893,8 @@ export const createSession: (
   input: CreateSessionRequest,
 ) => Effect.Effect<
   CreateSessionOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSessionRequest,
   output: CreateSessionOutput,
@@ -20928,8 +20926,8 @@ export const getBucketPolicyStatus: (
   input: GetBucketPolicyStatusRequest,
 ) => Effect.Effect<
   GetBucketPolicyStatusOutput,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketPolicyStatusRequest,
   output: GetBucketPolicyStatusOutput,
@@ -21071,8 +21069,8 @@ export const getObject: (
   input: GetObjectRequest,
 ) => Effect.Effect<
   GetObjectOutput,
-  InvalidObjectState | NoSuchKey | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidObjectState | NoSuchKey | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectRequest,
   output: GetObjectOutput,
@@ -21101,22 +21099,22 @@ export const listBuckets: {
     input: ListBucketsRequest,
   ): Effect.Effect<
     ListBucketsOutput,
-    Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBucketsRequest,
   ) => Stream.Stream<
     ListBucketsOutput,
-    Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBucketsRequest,
   ) => Stream.Stream<
     Bucket,
-    Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBucketsRequest,
@@ -21220,8 +21218,8 @@ export const listMultipartUploads: (
   input: ListMultipartUploadsRequest,
 ) => Effect.Effect<
   ListMultipartUploadsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMultipartUploadsRequest,
   output: ListMultipartUploadsOutput,
@@ -21257,8 +21255,8 @@ export const listObjectVersions: (
   input: ListObjectVersionsRequest,
 ) => Effect.Effect<
   ListObjectVersionsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListObjectVersionsRequest,
   output: ListObjectVersionsOutput,
@@ -21331,22 +21329,22 @@ export const listParts: {
     input: ListPartsRequest,
   ): Effect.Effect<
     ListPartsOutput,
-    NoSuchBucket | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NoSuchBucket | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPartsRequest,
   ) => Stream.Stream<
     ListPartsOutput,
-    NoSuchBucket | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NoSuchBucket | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPartsRequest,
   ) => Stream.Stream<
     Part,
-    NoSuchBucket | Err.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    NoSuchBucket | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPartsRequest,
@@ -21409,8 +21407,8 @@ export const putBucketCors: (
   input: PutBucketCorsRequest,
 ) => Effect.Effect<
   PutBucketCorsResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketCorsRequest,
   output: PutBucketCorsResponse,
@@ -21437,8 +21435,8 @@ export const putBucketOwnershipControls: (
   input: PutBucketOwnershipControlsRequest,
 ) => Effect.Effect<
   PutBucketOwnershipControlsResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketOwnershipControlsRequest,
   output: PutBucketOwnershipControlsResponse,
@@ -21457,8 +21455,8 @@ export const putObjectLegalHold: (
   input: PutObjectLegalHoldRequest,
 ) => Effect.Effect<
   PutObjectLegalHoldOutput,
-  MalformedXML | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  MalformedXML | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectLegalHoldRequest,
   output: PutObjectLegalHoldOutput,
@@ -21480,8 +21478,8 @@ export const putObjectRetention: (
   input: PutObjectRetentionRequest,
 ) => Effect.Effect<
   PutObjectRetentionOutput,
-  InvalidRequest | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequest | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectRetentionRequest,
   output: PutObjectRetentionOutput,
@@ -21537,8 +21535,8 @@ export const updateBucketMetadataInventoryTableConfiguration: (
   input: UpdateBucketMetadataInventoryTableConfigurationRequest,
 ) => Effect.Effect<
   UpdateBucketMetadataInventoryTableConfigurationResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBucketMetadataInventoryTableConfigurationRequest,
   output: UpdateBucketMetadataInventoryTableConfigurationResponse,
@@ -21572,8 +21570,8 @@ export const updateBucketMetadataJournalTableConfiguration: (
   input: UpdateBucketMetadataJournalTableConfigurationRequest,
 ) => Effect.Effect<
   UpdateBucketMetadataJournalTableConfigurationResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBucketMetadataJournalTableConfigurationRequest,
   output: UpdateBucketMetadataJournalTableConfigurationResponse,
@@ -21743,8 +21741,8 @@ export const uploadPartCopy: (
   input: UploadPartCopyRequest,
 ) => Effect.Effect<
   UploadPartCopyOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadPartCopyRequest,
   output: UploadPartCopyOutput,
@@ -21867,8 +21865,8 @@ export const completeMultipartUpload: (
   input: CompleteMultipartUploadRequest,
 ) => Effect.Effect<
   CompleteMultipartUploadOutput,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompleteMultipartUploadRequest,
   output: CompleteMultipartUploadOutput,
@@ -22038,8 +22036,8 @@ export const copyObject: (
   input: CopyObjectRequest,
 ) => Effect.Effect<
   CopyObjectOutput,
-  ObjectNotInActiveTierError | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ObjectNotInActiveTierError | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyObjectRequest,
   output: CopyObjectOutput,
@@ -22160,8 +22158,8 @@ export const createBucket: (
   | InvalidArgument
   | InvalidBucketName
   | InvalidLocationConstraint
-  | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBucketRequest,
   output: CreateBucketOutput,
@@ -22318,8 +22316,8 @@ export const getObjectAttributes: (
   input: GetObjectAttributesRequest,
 ) => Effect.Effect<
   GetObjectAttributesOutput,
-  NoSuchKey | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchKey | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectAttributesRequest,
   output: GetObjectAttributesOutput,
@@ -22355,8 +22353,8 @@ export const listObjects: (
   input: ListObjectsRequest,
 ) => Effect.Effect<
   ListObjectsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListObjectsRequest,
   output: ListObjectsOutput,
@@ -22511,8 +22509,8 @@ export const putBucketAcl: (
   input: PutBucketAclRequest,
 ) => Effect.Effect<
   PutBucketAclResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketAclRequest,
   output: PutBucketAclResponse,
@@ -22607,8 +22605,8 @@ export const putBucketEncryption: (
   input: PutBucketEncryptionRequest,
 ) => Effect.Effect<
   PutBucketEncryptionResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketEncryptionRequest,
   output: PutBucketEncryptionResponse,
@@ -22665,8 +22663,8 @@ export const putBucketIntelligentTieringConfiguration: (
   input: PutBucketIntelligentTieringConfigurationRequest,
 ) => Effect.Effect<
   PutBucketIntelligentTieringConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketIntelligentTieringConfigurationRequest,
   output: PutBucketIntelligentTieringConfigurationResponse,
@@ -22711,8 +22709,8 @@ export const putBucketMetricsConfiguration: (
   input: PutBucketMetricsConfigurationRequest,
 ) => Effect.Effect<
   PutBucketMetricsConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketMetricsConfigurationRequest,
   output: PutBucketMetricsConfigurationResponse,
@@ -22793,8 +22791,8 @@ export const putBucketWebsite: (
   input: PutBucketWebsiteRequest,
 ) => Effect.Effect<
   PutBucketWebsiteResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketWebsiteRequest,
   output: PutBucketWebsiteResponse,
@@ -22896,8 +22894,8 @@ export const deleteObjects: (
   input: DeleteObjectsRequest,
 ) => Effect.Effect<
   DeleteObjectsOutput,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectsRequest,
   output: DeleteObjectsOutput,
@@ -22937,8 +22935,8 @@ export const getBucketMetadataConfiguration: (
   input: GetBucketMetadataConfigurationRequest,
 ) => Effect.Effect<
   GetBucketMetadataConfigurationOutput,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketMetadataConfigurationRequest,
   output: GetBucketMetadataConfigurationOutput,
@@ -22984,8 +22982,8 @@ export const getBucketMetadataTableConfiguration: (
   input: GetBucketMetadataTableConfigurationRequest,
 ) => Effect.Effect<
   GetBucketMetadataTableConfigurationOutput,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBucketMetadataTableConfigurationRequest,
   output: GetBucketMetadataTableConfigurationOutput,
@@ -23063,8 +23061,8 @@ export const putBucketLogging: (
   input: PutBucketLoggingRequest,
 ) => Effect.Effect<
   PutBucketLoggingResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketLoggingRequest,
   output: PutBucketLoggingResponse,
@@ -23093,8 +23091,8 @@ export const putObjectLockConfiguration: (
   input: PutObjectLockConfigurationRequest,
 ) => Effect.Effect<
   PutObjectLockConfigurationOutput,
-  InvalidBucketState | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidBucketState | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutObjectLockConfigurationRequest,
   output: PutObjectLockConfigurationOutput,
@@ -23167,8 +23165,8 @@ export const putBucketAnalyticsConfiguration: (
   input: PutBucketAnalyticsConfigurationRequest,
 ) => Effect.Effect<
   PutBucketAnalyticsConfigurationResponse,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketAnalyticsConfigurationRequest,
   output: PutBucketAnalyticsConfigurationResponse,
@@ -23250,8 +23248,8 @@ export const putBucketInventoryConfiguration: (
   input: PutBucketInventoryConfigurationRequest,
 ) => Effect.Effect<
   PutBucketInventoryConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketInventoryConfigurationRequest,
   output: PutBucketInventoryConfigurationResponse,
@@ -23357,8 +23355,8 @@ export const putBucketLifecycleConfiguration: (
   input: PutBucketLifecycleConfigurationRequest,
 ) => Effect.Effect<
   PutBucketLifecycleConfigurationOutput,
-  InvalidRequest | MalformedXML | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequest | MalformedXML | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketLifecycleConfigurationRequest,
   output: PutBucketLifecycleConfigurationOutput,
@@ -23421,8 +23419,8 @@ export const putBucketNotificationConfiguration: (
   input: PutBucketNotificationConfigurationRequest,
 ) => Effect.Effect<
   PutBucketNotificationConfigurationResponse,
-  NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketNotificationConfigurationRequest,
   output: PutBucketNotificationConfigurationResponse,
@@ -23493,8 +23491,8 @@ export const putBucketReplication: (
   input: PutBucketReplicationRequest,
 ) => Effect.Effect<
   PutBucketReplicationResponse,
-  InvalidRequest | NoSuchBucket | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidRequest | NoSuchBucket | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBucketReplicationRequest,
   output: PutBucketReplicationResponse,
@@ -23644,8 +23642,8 @@ export const restoreObject: (
   input: RestoreObjectRequest,
 ) => Effect.Effect<
   RestoreObjectOutput,
-  ObjectAlreadyInActiveTierError | NoSuchKey | Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ObjectAlreadyInActiveTierError | NoSuchKey | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreObjectRequest,
   output: RestoreObjectOutput,
@@ -23746,8 +23744,8 @@ export const selectObjectContent: (
   input: SelectObjectContentRequest,
 ) => Effect.Effect<
   SelectObjectContentOutput,
-  Err.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SelectObjectContentRequest,
   output: SelectObjectContentOutput,

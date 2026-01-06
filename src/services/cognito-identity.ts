@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials as Creds,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials as Creds } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://cognito-identity.amazonaws.com/doc/2014-06-30/",
@@ -1230,45 +1228,43 @@ export class InternalErrorException extends S.TaggedError<InternalErrorException
 export class ExternalServiceException extends S.TaggedError<ExternalServiceException>()(
   "ExternalServiceException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotAuthorizedException extends S.TaggedError<NotAuthorizedException>()(
   "NotAuthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class DeveloperUserAlreadyRegisteredException extends S.TaggedError<DeveloperUserAlreadyRegisteredException>()(
   "DeveloperUserAlreadyRegisteredException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidIdentityPoolConfigurationException extends S.TaggedError<InvalidIdentityPoolConfigurationException>()(
   "InvalidIdentityPoolConfigurationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceConflictException extends S.TaggedError<ResourceConflictException>()(
   "ResourceConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -1285,8 +1281,8 @@ export const deleteIdentities: (
   | InternalErrorException
   | InvalidParameterException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentitiesInput,
   output: DeleteIdentitiesResponse,
@@ -1312,8 +1308,8 @@ export const deleteIdentityPool: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentityPoolInput,
   output: DeleteIdentityPoolResponse,
@@ -1354,8 +1350,8 @@ export const getOpenIdTokenForDeveloperIdentity: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOpenIdTokenForDeveloperIdentityInput,
   output: GetOpenIdTokenForDeveloperIdentityResponse,
@@ -1386,8 +1382,8 @@ export const setIdentityPoolRoles: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetIdentityPoolRolesInput,
   output: SetIdentityPoolRolesResponse,
@@ -1417,8 +1413,8 @@ export const listIdentityPools: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIdentityPoolsInput,
@@ -1429,8 +1425,8 @@ export const listIdentityPools: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIdentityPoolsInput,
@@ -1441,8 +1437,8 @@ export const listIdentityPools: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Creds.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Creds | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIdentityPoolsInput,
@@ -1477,8 +1473,8 @@ export const describeIdentity: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdentityInput,
   output: IdentityDescription,
@@ -1503,8 +1499,8 @@ export const getPrincipalTagAttributeMap: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPrincipalTagAttributeMapInput,
   output: GetPrincipalTagAttributeMapResponse,
@@ -1531,8 +1527,8 @@ export const listIdentities: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListIdentitiesInput,
   output: ListIdentitiesResponse,
@@ -1561,8 +1557,8 @@ export const listTagsForResource: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceResponse,
@@ -1587,8 +1583,8 @@ export const setPrincipalTagAttributeMap: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetPrincipalTagAttributeMapInput,
   output: SetPrincipalTagAttributeMapResponse,
@@ -1616,8 +1612,8 @@ export const describeIdentityPool: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdentityPoolInput,
   output: IdentityPool,
@@ -1658,8 +1654,8 @@ export const tagResource: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -1684,8 +1680,8 @@ export const untagResource: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -1717,8 +1713,8 @@ export const updateIdentityPool: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IdentityPool,
   output: IdentityPool,
@@ -1749,8 +1745,8 @@ export const getIdentityPoolRoles: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityPoolRolesInput,
   output: GetIdentityPoolRolesResponse,
@@ -1794,8 +1790,8 @@ export const lookupDeveloperIdentity: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: LookupDeveloperIdentityInput,
   output: LookupDeveloperIdentityResponse,
@@ -1836,8 +1832,8 @@ export const mergeDeveloperIdentities: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MergeDeveloperIdentitiesInput,
   output: MergeDeveloperIdentitiesResponse,
@@ -1868,8 +1864,8 @@ export const unlinkIdentity: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnlinkIdentityInput,
   output: UnlinkIdentityResponse,
@@ -1902,8 +1898,8 @@ export const unlinkDeveloperIdentity: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnlinkDeveloperIdentityInput,
   output: UnlinkDeveloperIdentityResponse,
@@ -1936,8 +1932,8 @@ export const getOpenIdToken: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOpenIdTokenInput,
   output: GetOpenIdTokenResponse,
@@ -1983,8 +1979,8 @@ export const createIdentityPool: (
   | NotAuthorizedException
   | ResourceConflictException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIdentityPoolInput,
   output: IdentityPool,
@@ -2015,8 +2011,8 @@ export const getId: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdInput,
   output: GetIdResponse,
@@ -2050,8 +2046,8 @@ export const getCredentialsForIdentity: (
   | ResourceConflictException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Creds.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Creds | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCredentialsForIdentityInput,
   output: GetCredentialsForIdentityResponse,

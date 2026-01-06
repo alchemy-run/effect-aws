@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Service Catalog",
@@ -4099,8 +4097,8 @@ export const disassociateBudgetFromResource: (
   input: DisassociateBudgetFromResourceInput,
 ) => Effect.Effect<
   DisassociateBudgetFromResourceOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateBudgetFromResourceInput,
   output: DisassociateBudgetFromResourceOutput,
@@ -4116,8 +4114,8 @@ export const executeProvisionedProductPlan: (
   | InvalidParametersException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteProvisionedProductPlanInput,
   output: ExecuteProvisionedProductPlanOutput,
@@ -4135,28 +4133,22 @@ export const getProvisionedProductOutputs: {
     input: GetProvisionedProductOutputsInput,
   ): Effect.Effect<
     GetProvisionedProductOutputsOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetProvisionedProductOutputsInput,
   ) => Stream.Stream<
     GetProvisionedProductOutputsOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetProvisionedProductOutputsInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetProvisionedProductOutputsInput,
@@ -4204,8 +4196,8 @@ export const importAsProvisionedProduct: (
   | InvalidParametersException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportAsProvisionedProductInput,
   output: ImportAsProvisionedProductOutput,
@@ -4226,28 +4218,22 @@ export const listAcceptedPortfolioShares: {
     input: ListAcceptedPortfolioSharesInput,
   ): Effect.Effect<
     ListAcceptedPortfolioSharesOutput,
-    | InvalidParametersException
-    | OperationNotSupportedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | OperationNotSupportedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListAcceptedPortfolioSharesInput,
   ) => Stream.Stream<
     ListAcceptedPortfolioSharesOutput,
-    | InvalidParametersException
-    | OperationNotSupportedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | OperationNotSupportedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListAcceptedPortfolioSharesInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | OperationNotSupportedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | OperationNotSupportedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAcceptedPortfolioSharesInput,
@@ -4267,28 +4253,22 @@ export const listBudgetsForResource: {
     input: ListBudgetsForResourceInput,
   ): Effect.Effect<
     ListBudgetsForResourceOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBudgetsForResourceInput,
   ) => Stream.Stream<
     ListBudgetsForResourceOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBudgetsForResourceInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBudgetsForResourceInput,
@@ -4308,28 +4288,22 @@ export const listConstraintsForPortfolio: {
     input: ListConstraintsForPortfolioInput,
   ): Effect.Effect<
     ListConstraintsForPortfolioOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListConstraintsForPortfolioInput,
   ) => Stream.Stream<
     ListConstraintsForPortfolioOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListConstraintsForPortfolioInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConstraintsForPortfolioInput,
@@ -4356,8 +4330,8 @@ export const listOrganizationPortfolioAccess: {
     | InvalidParametersException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListOrganizationPortfolioAccessInput,
@@ -4366,8 +4340,8 @@ export const listOrganizationPortfolioAccess: {
     | InvalidParametersException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListOrganizationPortfolioAccessInput,
@@ -4376,8 +4350,8 @@ export const listOrganizationPortfolioAccess: {
     | InvalidParametersException
     | OperationNotSupportedException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationPortfolioAccessInput,
@@ -4403,28 +4377,22 @@ export const listPortfolioAccess: {
     input: ListPortfolioAccessInput,
   ): Effect.Effect<
     ListPortfolioAccessOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPortfolioAccessInput,
   ) => Stream.Stream<
     ListPortfolioAccessOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPortfolioAccessInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPortfolioAccessInput,
@@ -4444,22 +4412,22 @@ export const listPortfolios: {
     input: ListPortfoliosInput,
   ): Effect.Effect<
     ListPortfoliosOutput,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPortfoliosInput,
   ) => Stream.Stream<
     ListPortfoliosOutput,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPortfoliosInput,
   ) => Stream.Stream<
     unknown,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPortfoliosInput,
@@ -4479,28 +4447,22 @@ export const listPortfoliosForProduct: {
     input: ListPortfoliosForProductInput,
   ): Effect.Effect<
     ListPortfoliosForProductOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPortfoliosForProductInput,
   ) => Stream.Stream<
     ListPortfoliosForProductOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPortfoliosForProductInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPortfoliosForProductInput,
@@ -4519,8 +4481,8 @@ export const listProvisioningArtifacts: (
   input: ListProvisioningArtifactsInput,
 ) => Effect.Effect<
   ListProvisioningArtifactsOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListProvisioningArtifactsInput,
   output: ListProvisioningArtifactsOutput,
@@ -4534,28 +4496,22 @@ export const listServiceActionsForProvisioningArtifact: {
     input: ListServiceActionsForProvisioningArtifactInput,
   ): Effect.Effect<
     ListServiceActionsForProvisioningArtifactOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceActionsForProvisioningArtifactInput,
   ) => Stream.Stream<
     ListServiceActionsForProvisioningArtifactOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceActionsForProvisioningArtifactInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceActionsForProvisioningArtifactInput,
@@ -4576,8 +4532,8 @@ export const scanProvisionedProducts: (
   input: ScanProvisionedProductsInput,
 ) => Effect.Effect<
   ScanProvisionedProductsOutput,
-  InvalidParametersException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScanProvisionedProductsInput,
   output: ScanProvisionedProductsOutput,
@@ -4591,28 +4547,22 @@ export const searchProductsAsAdmin: {
     input: SearchProductsAsAdminInput,
   ): Effect.Effect<
     SearchProductsAsAdminOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: SearchProductsAsAdminInput,
   ) => Stream.Stream<
     SearchProductsAsAdminOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: SearchProductsAsAdminInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchProductsAsAdminInput,
@@ -4635,8 +4585,8 @@ export const terminateProvisionedProduct: (
   input: TerminateProvisionedProductInput,
 ) => Effect.Effect<
   TerminateProvisionedProductOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateProvisionedProductInput,
   output: TerminateProvisionedProductOutput,
@@ -4649,8 +4599,8 @@ export const updateConstraint: (
   input: UpdateConstraintInput,
 ) => Effect.Effect<
   UpdateConstraintOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConstraintInput,
   output: UpdateConstraintOutput,
@@ -4685,8 +4635,8 @@ export const updatePortfolioShare: (
   | InvalidStateException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePortfolioShareInput,
   output: UpdatePortfolioShareOutput,
@@ -4706,8 +4656,8 @@ export const updateProvisioningArtifact: (
   input: UpdateProvisioningArtifactInput,
 ) => Effect.Effect<
   UpdateProvisioningArtifactOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProvisioningArtifactInput,
   output: UpdateProvisioningArtifactOutput,
@@ -4720,8 +4670,8 @@ export const updateServiceAction: (
   input: UpdateServiceActionInput,
 ) => Effect.Effect<
   UpdateServiceActionOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceActionInput,
   output: UpdateServiceActionOutput,
@@ -4736,8 +4686,8 @@ export const deleteConstraint: (
   input: DeleteConstraintInput,
 ) => Effect.Effect<
   DeleteConstraintOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConstraintInput,
   output: DeleteConstraintOutput,
@@ -4750,8 +4700,8 @@ export const deleteProvisionedProductPlan: (
   input: DeleteProvisionedProductPlanInput,
 ) => Effect.Effect<
   DeleteProvisionedProductPlanOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProvisionedProductPlanInput,
   output: DeleteProvisionedProductPlanOutput,
@@ -4771,8 +4721,8 @@ export const deleteProvisioningArtifact: (
   | InvalidParametersException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProvisioningArtifactInput,
   output: DeleteProvisioningArtifactOutput,
@@ -4792,8 +4742,8 @@ export const deleteServiceAction: (
   | InvalidParametersException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceActionInput,
   output: DeleteServiceActionOutput,
@@ -4829,8 +4779,8 @@ export const disassociatePrincipalFromPortfolio: (
   input: DisassociatePrincipalFromPortfolioInput,
 ) => Effect.Effect<
   DisassociatePrincipalFromPortfolioOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociatePrincipalFromPortfolioInput,
   output: DisassociatePrincipalFromPortfolioOutput,
@@ -4848,8 +4798,8 @@ export const disassociateProductFromPortfolio: (
   | InvalidParametersException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateProductFromPortfolioInput,
   output: DisassociateProductFromPortfolioOutput,
@@ -4866,8 +4816,8 @@ export const disassociateServiceActionFromProvisioningArtifact: (
   input: DisassociateServiceActionFromProvisioningArtifactInput,
 ) => Effect.Effect<
   DisassociateServiceActionFromProvisioningArtifactOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateServiceActionFromProvisioningArtifactInput,
   output: DisassociateServiceActionFromProvisioningArtifactOutput,
@@ -4881,8 +4831,8 @@ export const notifyTerminateProvisionedProductEngineWorkflowResult: (
   input: NotifyTerminateProvisionedProductEngineWorkflowResultInput,
 ) => Effect.Effect<
   NotifyTerminateProvisionedProductEngineWorkflowResultOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: NotifyTerminateProvisionedProductEngineWorkflowResultInput,
   output: NotifyTerminateProvisionedProductEngineWorkflowResultOutput,
@@ -4896,8 +4846,8 @@ export const notifyUpdateProvisionedProductEngineWorkflowResult: (
   input: NotifyUpdateProvisionedProductEngineWorkflowResultInput,
 ) => Effect.Effect<
   NotifyUpdateProvisionedProductEngineWorkflowResultOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: NotifyUpdateProvisionedProductEngineWorkflowResultInput,
   output: NotifyUpdateProvisionedProductEngineWorkflowResultOutput,
@@ -4911,10 +4861,8 @@ export const getAWSOrganizationsAccessStatus: (
   input: GetAWSOrganizationsAccessStatusInput,
 ) => Effect.Effect<
   GetAWSOrganizationsAccessStatusOutput,
-  | OperationNotSupportedException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotSupportedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAWSOrganizationsAccessStatusInput,
   output: GetAWSOrganizationsAccessStatusOutput,
@@ -4943,8 +4891,8 @@ export const enableAWSOrganizationsAccess: (
   | InvalidStateException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableAWSOrganizationsAccessInput,
   output: EnableAWSOrganizationsAccessOutput,
@@ -4969,8 +4917,8 @@ export const deletePortfolioShare: (
   | InvalidStateException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePortfolioShareInput,
   output: DeletePortfolioShareOutput,
@@ -4988,8 +4936,8 @@ export const rejectPortfolioShare: (
   input: RejectPortfolioShareInput,
 ) => Effect.Effect<
   RejectPortfolioShareOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectPortfolioShareInput,
   output: RejectPortfolioShareOutput,
@@ -5002,8 +4950,8 @@ export const describeConstraint: (
   input: DescribeConstraintInput,
 ) => Effect.Effect<
   DescribeConstraintOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConstraintInput,
   output: DescribeConstraintOutput,
@@ -5016,8 +4964,8 @@ export const describeCopyProductStatus: (
   input: DescribeCopyProductStatusInput,
 ) => Effect.Effect<
   DescribeCopyProductStatusOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCopyProductStatusInput,
   output: DescribeCopyProductStatusOutput,
@@ -5030,8 +4978,8 @@ export const describeProductView: (
   input: DescribeProductViewInput,
 ) => Effect.Effect<
   DescribeProductViewOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProductViewInput,
   output: DescribeProductViewOutput,
@@ -5060,8 +5008,8 @@ export const disableAWSOrganizationsAccess: (
   | InvalidStateException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableAWSOrganizationsAccessInput,
   output: DisableAWSOrganizationsAccessOutput,
@@ -5081,8 +5029,8 @@ export const acceptPortfolioShare: (
   | InvalidParametersException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptPortfolioShareInput,
   output: AcceptPortfolioShareOutput,
@@ -5099,8 +5047,8 @@ export const batchAssociateServiceActionWithProvisioningArtifact: (
   input: BatchAssociateServiceActionWithProvisioningArtifactInput,
 ) => Effect.Effect<
   BatchAssociateServiceActionWithProvisioningArtifactOutput,
-  InvalidParametersException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchAssociateServiceActionWithProvisioningArtifactInput,
   output: BatchAssociateServiceActionWithProvisioningArtifactOutput,
@@ -5113,8 +5061,8 @@ export const batchDisassociateServiceActionFromProvisioningArtifact: (
   input: BatchDisassociateServiceActionFromProvisioningArtifactInput,
 ) => Effect.Effect<
   BatchDisassociateServiceActionFromProvisioningArtifactOutput,
-  InvalidParametersException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDisassociateServiceActionFromProvisioningArtifactInput,
   output: BatchDisassociateServiceActionFromProvisioningArtifactOutput,
@@ -5135,8 +5083,8 @@ export const copyProduct: (
   input: CopyProductInput,
 ) => Effect.Effect<
   CopyProductOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyProductInput,
   output: CopyProductOutput,
@@ -5155,8 +5103,8 @@ export const createConstraint: (
   | InvalidParametersException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConstraintInput,
   output: CreateConstraintOutput,
@@ -5199,8 +5147,8 @@ export const createPortfolioShare: (
   | LimitExceededException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePortfolioShareInput,
   output: CreatePortfolioShareOutput,
@@ -5232,8 +5180,8 @@ export const createProvisionedProductPlan: (
   | InvalidParametersException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProvisionedProductPlanInput,
   output: CreateProvisionedProductPlanOutput,
@@ -5259,8 +5207,8 @@ export const createProvisioningArtifact: (
   | InvalidParametersException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProvisioningArtifactInput,
   output: CreateProvisioningArtifactOutput,
@@ -5277,8 +5225,8 @@ export const createServiceAction: (
   input: CreateServiceActionInput,
 ) => Effect.Effect<
   CreateServiceActionOutput,
-  InvalidParametersException | LimitExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | LimitExceededException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateServiceActionInput,
   output: CreateServiceActionOutput,
@@ -5293,8 +5241,8 @@ export const describePortfolio: (
   input: DescribePortfolioInput,
 ) => Effect.Effect<
   DescribePortfolioOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePortfolioInput,
   output: DescribePortfolioOutput,
@@ -5314,28 +5262,22 @@ export const describePortfolioShares: {
     input: DescribePortfolioSharesInput,
   ): Effect.Effect<
     DescribePortfolioSharesOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePortfolioSharesInput,
   ) => Stream.Stream<
     DescribePortfolioSharesOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePortfolioSharesInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePortfolioSharesInput,
@@ -5360,8 +5302,8 @@ export const describeProduct: (
   input: DescribeProductInput,
 ) => Effect.Effect<
   DescribeProductOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProductInput,
   output: DescribeProductOutput,
@@ -5374,8 +5316,8 @@ export const describeProvisionedProduct: (
   input: DescribeProvisionedProductInput,
 ) => Effect.Effect<
   DescribeProvisionedProductOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProvisionedProductInput,
   output: DescribeProvisionedProductOutput,
@@ -5396,8 +5338,8 @@ export const describeProvisioningParameters: (
   input: DescribeProvisioningParametersInput,
 ) => Effect.Effect<
   DescribeProvisioningParametersOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProvisioningParametersInput,
   output: DescribeProvisioningParametersOutput,
@@ -5410,8 +5352,8 @@ export const describeServiceAction: (
   input: DescribeServiceActionInput,
 ) => Effect.Effect<
   DescribeServiceActionOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServiceActionInput,
   output: DescribeServiceActionOutput,
@@ -5424,8 +5366,8 @@ export const describeServiceActionExecutionParameters: (
   input: DescribeServiceActionExecutionParametersInput,
 ) => Effect.Effect<
   DescribeServiceActionExecutionParametersOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServiceActionExecutionParametersInput,
   output: DescribeServiceActionExecutionParametersOutput,
@@ -5441,8 +5383,8 @@ export const executeProvisionedProductServiceAction: (
   | InvalidParametersException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteProvisionedProductServiceActionInput,
   output: ExecuteProvisionedProductServiceActionOutput,
@@ -5480,28 +5422,22 @@ export const listLaunchPaths: {
     input: ListLaunchPathsInput,
   ): Effect.Effect<
     ListLaunchPathsOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListLaunchPathsInput,
   ) => Stream.Stream<
     ListLaunchPathsOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListLaunchPathsInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLaunchPathsInput,
@@ -5521,28 +5457,22 @@ export const listPrincipalsForPortfolio: {
     input: ListPrincipalsForPortfolioInput,
   ): Effect.Effect<
     ListPrincipalsForPortfolioOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPrincipalsForPortfolioInput,
   ) => Stream.Stream<
     ListPrincipalsForPortfolioOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPrincipalsForPortfolioInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPrincipalsForPortfolioInput,
@@ -5562,28 +5492,22 @@ export const listProvisioningArtifactsForServiceAction: {
     input: ListProvisioningArtifactsForServiceActionInput,
   ): Effect.Effect<
     ListProvisioningArtifactsForServiceActionOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListProvisioningArtifactsForServiceActionInput,
   ) => Stream.Stream<
     ListProvisioningArtifactsForServiceActionOutput,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListProvisioningArtifactsForServiceActionInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProvisioningArtifactsForServiceActionInput,
@@ -5602,8 +5526,8 @@ export const listRecordHistory: (
   input: ListRecordHistoryInput,
 ) => Effect.Effect<
   ListRecordHistoryOutput,
-  InvalidParametersException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRecordHistoryInput,
   output: ListRecordHistoryOutput,
@@ -5617,22 +5541,22 @@ export const listServiceActions: {
     input: ListServiceActionsInput,
   ): Effect.Effect<
     ListServiceActionsOutput,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListServiceActionsInput,
   ) => Stream.Stream<
     ListServiceActionsOutput,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListServiceActionsInput,
   ) => Stream.Stream<
     unknown,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServiceActionsInput,
@@ -5651,8 +5575,8 @@ export const listStackInstancesForProvisionedProduct: (
   input: ListStackInstancesForProvisionedProductInput,
 ) => Effect.Effect<
   ListStackInstancesForProvisionedProductOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListStackInstancesForProvisionedProductInput,
   output: ListStackInstancesForProvisionedProductOutput,
@@ -5666,8 +5590,8 @@ export const notifyProvisionProductEngineWorkflowResult: (
   input: NotifyProvisionProductEngineWorkflowResultInput,
 ) => Effect.Effect<
   NotifyProvisionProductEngineWorkflowResultOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: NotifyProvisionProductEngineWorkflowResultInput,
   output: NotifyProvisionProductEngineWorkflowResultOutput,
@@ -5712,8 +5636,8 @@ export const provisionProduct: (
   | DuplicateResourceException
   | InvalidParametersException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ProvisionProductInput,
   output: ProvisionProductOutput,
@@ -5733,8 +5657,8 @@ export const updateProduct: (
   | InvalidParametersException
   | ResourceNotFoundException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProductInput,
   output: UpdateProductOutput,
@@ -5757,8 +5681,8 @@ export const updateProvisionedProduct: (
   input: UpdateProvisionedProductInput,
 ) => Effect.Effect<
   UpdateProvisionedProductOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProvisionedProductInput,
   output: UpdateProvisionedProductOutput,
@@ -5774,8 +5698,8 @@ export const updateProvisionedProductProperties: (
   | InvalidParametersException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProvisionedProductPropertiesInput,
   output: UpdateProvisionedProductPropertiesOutput,
@@ -5796,8 +5720,8 @@ export const associateBudgetWithResource: (
   | InvalidParametersException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateBudgetWithResourceInput,
   output: AssociateBudgetWithResourceOutput,
@@ -5821,8 +5745,8 @@ export const updatePortfolio: (
   | LimitExceededException
   | ResourceNotFoundException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePortfolioInput,
   output: UpdatePortfolioOutput,
@@ -5859,8 +5783,8 @@ export const associatePrincipalWithPortfolio: (
   | InvalidParametersException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociatePrincipalWithPortfolioInput,
   output: AssociatePrincipalWithPortfolioOutput,
@@ -5882,8 +5806,8 @@ export const associateProductWithPortfolio: (
   | InvalidParametersException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateProductWithPortfolioInput,
   output: AssociateProductWithPortfolioOutput,
@@ -5904,8 +5828,8 @@ export const associateServiceActionWithProvisioningArtifact: (
   | InvalidParametersException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateServiceActionWithProvisioningArtifactInput,
   output: AssociateServiceActionWithProvisioningArtifactOutput,
@@ -5929,8 +5853,8 @@ export const associateTagOptionWithResource: (
   | LimitExceededException
   | ResourceNotFoundException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateTagOptionWithResourceInput,
   output: AssociateTagOptionWithResourceOutput,
@@ -5954,8 +5878,8 @@ export const updateTagOption: (
   | InvalidParametersException
   | ResourceNotFoundException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTagOptionInput,
   output: UpdateTagOptionOutput,
@@ -5982,8 +5906,8 @@ export const deletePortfolio: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePortfolioInput,
   output: DeletePortfolioOutput,
@@ -6009,8 +5933,8 @@ export const deleteProduct: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProductInput,
   output: DeleteProductOutput,
@@ -6028,10 +5952,8 @@ export const disassociateTagOptionFromResource: (
   input: DisassociateTagOptionFromResourceInput,
 ) => Effect.Effect<
   DisassociateTagOptionFromResourceOutput,
-  | ResourceNotFoundException
-  | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | TagOptionNotMigratedException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateTagOptionFromResourceInput,
   output: DisassociateTagOptionFromResourceOutput,
@@ -6049,8 +5971,8 @@ export const deleteTagOption: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagOptionInput,
   output: DeleteTagOptionOutput,
@@ -6067,10 +5989,8 @@ export const describeTagOption: (
   input: DescribeTagOptionInput,
 ) => Effect.Effect<
   DescribeTagOptionOutput,
-  | ResourceNotFoundException
-  | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | TagOptionNotMigratedException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTagOptionInput,
   output: DescribeTagOptionOutput,
@@ -6088,8 +6008,8 @@ export const createPortfolio: (
   | InvalidParametersException
   | LimitExceededException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePortfolioInput,
   output: CreatePortfolioOutput,
@@ -6109,8 +6029,8 @@ export const createTagOption: (
   | DuplicateResourceException
   | LimitExceededException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTagOptionInput,
   output: CreateTagOptionOutput,
@@ -6131,8 +6051,8 @@ export const listResourcesForTagOption: {
     | InvalidParametersException
     | ResourceNotFoundException
     | TagOptionNotMigratedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourcesForTagOptionInput,
@@ -6141,8 +6061,8 @@ export const listResourcesForTagOption: {
     | InvalidParametersException
     | ResourceNotFoundException
     | TagOptionNotMigratedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListResourcesForTagOptionInput,
@@ -6151,8 +6071,8 @@ export const listResourcesForTagOption: {
     | InvalidParametersException
     | ResourceNotFoundException
     | TagOptionNotMigratedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesForTagOptionInput,
@@ -6176,28 +6096,22 @@ export const listTagOptions: {
     input: ListTagOptionsInput,
   ): Effect.Effect<
     ListTagOptionsOutput,
-    | InvalidParametersException
-    | TagOptionNotMigratedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | TagOptionNotMigratedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagOptionsInput,
   ) => Stream.Stream<
     ListTagOptionsOutput,
-    | InvalidParametersException
-    | TagOptionNotMigratedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | TagOptionNotMigratedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTagOptionsInput,
   ) => Stream.Stream<
     unknown,
-    | InvalidParametersException
-    | TagOptionNotMigratedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | TagOptionNotMigratedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagOptionsInput,
@@ -6220,8 +6134,8 @@ export const describePortfolioShareStatus: (
   | InvalidParametersException
   | OperationNotSupportedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePortfolioShareStatusInput,
   output: DescribePortfolioShareStatusOutput,
@@ -6238,8 +6152,8 @@ export const describeProvisioningArtifact: (
   input: DescribeProvisioningArtifactInput,
 ) => Effect.Effect<
   DescribeProvisioningArtifactOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProvisioningArtifactInput,
   output: DescribeProvisioningArtifactOutput,
@@ -6259,8 +6173,8 @@ export const describeRecord: (
   input: DescribeRecordInput,
 ) => Effect.Effect<
   DescribeRecordOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRecordInput,
   output: DescribeRecordOutput,
@@ -6273,8 +6187,8 @@ export const listProvisionedProductPlans: (
   input: ListProvisionedProductPlansInput,
 ) => Effect.Effect<
   ListProvisionedProductPlansOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListProvisionedProductPlansInput,
   output: ListProvisionedProductPlansOutput,
@@ -6288,22 +6202,22 @@ export const searchProvisionedProducts: {
     input: SearchProvisionedProductsInput,
   ): Effect.Effect<
     SearchProvisionedProductsOutput,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: SearchProvisionedProductsInput,
   ) => Stream.Stream<
     SearchProvisionedProductsOutput,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: SearchProvisionedProductsInput,
   ) => Stream.Stream<
     unknown,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchProvisionedProductsInput,
@@ -6332,8 +6246,8 @@ export const createProduct: (
   | InvalidParametersException
   | LimitExceededException
   | TagOptionNotMigratedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProductInput,
   output: CreateProductOutput,
@@ -6350,8 +6264,8 @@ export const describeProductAsAdmin: (
   input: DescribeProductAsAdminInput,
 ) => Effect.Effect<
   DescribeProductAsAdminOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProductAsAdminInput,
   output: DescribeProductAsAdminOutput,
@@ -6364,8 +6278,8 @@ export const describeProvisionedProductPlan: (
   input: DescribeProvisionedProductPlanInput,
 ) => Effect.Effect<
   DescribeProvisionedProductPlanOutput,
-  InvalidParametersException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParametersException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProvisionedProductPlanInput,
   output: DescribeProvisionedProductPlanOutput,
@@ -6379,22 +6293,22 @@ export const searchProducts: {
     input: SearchProductsInput,
   ): Effect.Effect<
     SearchProductsOutput,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: SearchProductsInput,
   ) => Stream.Stream<
     SearchProductsOutput,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: SearchProductsInput,
   ) => Stream.Stream<
     unknown,
-    InvalidParametersException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParametersException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchProductsInput,

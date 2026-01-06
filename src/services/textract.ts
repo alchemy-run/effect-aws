@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Textract",
@@ -1735,7 +1733,7 @@ export class HumanLoopQuotaExceededException extends S.TaggedError<HumanLoopQuot
     Message: S.optional(S.String),
     Code: S.optional(S.String),
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class InvalidS3ObjectException extends S.TaggedError<InvalidS3ObjectException>()(
   "InvalidS3ObjectException",
   { Message: S.optional(S.String), Code: S.optional(S.String) },
@@ -1833,8 +1831,8 @@ export const getDocumentAnalysis: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentAnalysisRequest,
   output: GetDocumentAnalysisResponse,
@@ -1877,8 +1875,8 @@ export const getLendingAnalysisSummary: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLendingAnalysisSummaryRequest,
   output: GetLendingAnalysisSummaryResponse,
@@ -1935,8 +1933,8 @@ export const getDocumentTextDetection: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDocumentTextDetectionRequest,
   output: GetDocumentTextDetectionResponse,
@@ -1985,8 +1983,8 @@ export const getExpenseAnalysis: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExpenseAnalysisRequest,
   output: GetExpenseAnalysisResponse,
@@ -2028,8 +2026,8 @@ export const getLendingAnalysis: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLendingAnalysisRequest,
   output: GetLendingAnalysisResponse,
@@ -2058,8 +2056,8 @@ export const listAdapters: {
     | ProvisionedThroughputExceededException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAdaptersRequest,
@@ -2071,8 +2069,8 @@ export const listAdapters: {
     | ProvisionedThroughputExceededException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAdaptersRequest,
@@ -2084,8 +2082,8 @@ export const listAdapters: {
     | ProvisionedThroughputExceededException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAdaptersRequest,
@@ -2132,8 +2130,8 @@ export const analyzeExpense: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | UnsupportedDocumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AnalyzeExpenseRequest,
   output: AnalyzeExpenseResponse,
@@ -2165,8 +2163,8 @@ export const getAdapterVersion: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAdapterVersionRequest,
   output: GetAdapterVersionResponse,
@@ -2195,8 +2193,8 @@ export const listAdapterVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAdapterVersionsRequest,
@@ -2209,8 +2207,8 @@ export const listAdapterVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAdapterVersionsRequest,
@@ -2223,8 +2221,8 @@ export const listAdapterVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAdapterVersionsRequest,
@@ -2261,8 +2259,8 @@ export const updateAdapter: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAdapterRequest,
   output: UpdateAdapterResponse,
@@ -2293,8 +2291,8 @@ export const deleteAdapterVersion: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAdapterVersionRequest,
   output: DeleteAdapterVersionResponse,
@@ -2323,8 +2321,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2353,8 +2351,8 @@ export const tagResource: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2383,8 +2381,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2413,8 +2411,8 @@ export const deleteAdapter: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAdapterRequest,
   output: DeleteAdapterResponse,
@@ -2452,8 +2450,8 @@ export const createAdapterVersion: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAdapterVersionRequest,
   output: CreateAdapterVersionResponse,
@@ -2488,8 +2486,8 @@ export const getAdapter: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAdapterRequest,
   output: GetAdapterResponse,
@@ -2524,8 +2522,8 @@ export const createAdapter: (
   | ServiceQuotaExceededException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAdapterRequest,
   output: CreateAdapterResponse,
@@ -2561,8 +2559,8 @@ export const analyzeID: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | UnsupportedDocumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AnalyzeIDRequest,
   output: AnalyzeIDResponse,
@@ -2606,8 +2604,8 @@ export const detectDocumentText: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | UnsupportedDocumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectDocumentTextRequest,
   output: DetectDocumentTextResponse,
@@ -2657,8 +2655,8 @@ export const startExpenseAnalysis: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | UnsupportedDocumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartExpenseAnalysisRequest,
   output: StartExpenseAnalysisResponse,
@@ -2722,8 +2720,8 @@ export const startLendingAnalysis: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | UnsupportedDocumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartLendingAnalysisRequest,
   output: StartLendingAnalysisResponse,
@@ -2777,8 +2775,8 @@ export const startDocumentAnalysis: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | UnsupportedDocumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDocumentAnalysisRequest,
   output: StartDocumentAnalysisResponse,
@@ -2832,8 +2830,8 @@ export const startDocumentTextDetection: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | UnsupportedDocumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDocumentTextDetectionRequest,
   output: StartDocumentTextDetectionResponse,
@@ -2912,8 +2910,8 @@ export const analyzeDocument: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | UnsupportedDocumentException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AnalyzeDocumentRequest,
   output: AnalyzeDocumentResponse,

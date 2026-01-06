@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "SQS", serviceShapeName: "AmazonSQS" });
 const auth = T.AwsAuthSigv4({ name: "sqs" });
@@ -1165,7 +1163,7 @@ export class InvalidAddress extends S.TaggedError<InvalidAddress>()(
   "InvalidAddress",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidAddress", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidIdFormat extends S.TaggedError<InvalidIdFormat>()(
   "InvalidIdFormat",
   {},
@@ -1174,7 +1172,7 @@ export class InvalidSecurity extends S.TaggedError<InvalidSecurity>()(
   "InvalidSecurity",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSecurity", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidAttributeName extends S.TaggedError<InvalidAttributeName>()(
   "InvalidAttributeName",
   { message: S.optional(S.String) },
@@ -1186,12 +1184,12 @@ export class MessageNotInflight extends S.TaggedError<MessageNotInflight>()(
     code: "AWS.SimpleQueueService.MessageNotInflight",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OverLimit extends S.TaggedError<OverLimit>()(
   "OverLimit",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "OverLimit", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class QueueDoesNotExist extends S.TaggedError<QueueDoesNotExist>()(
   "QueueDoesNotExist",
   { message: S.optional(S.String) },
@@ -1199,12 +1197,12 @@ export class QueueDoesNotExist extends S.TaggedError<QueueDoesNotExist>()(
     code: "AWS.SimpleQueueService.NonExistentQueue",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RequestThrottled extends S.TaggedError<RequestThrottled>()(
   "RequestThrottled",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "RequestThrottled", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class PurgeQueueInProgress extends S.TaggedError<PurgeQueueInProgress>()(
   "PurgeQueueInProgress",
   { message: S.optional(S.String) },
@@ -1212,7 +1210,7 @@ export class PurgeQueueInProgress extends S.TaggedError<PurgeQueueInProgress>()(
     code: "AWS.SimpleQueueService.PurgeQueueInProgress",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidAttributeValue extends S.TaggedError<InvalidAttributeValue>()(
   "InvalidAttributeValue",
   { message: S.optional(S.String) },
@@ -1224,17 +1222,17 @@ export class BatchEntryIdsNotDistinct extends S.TaggedError<BatchEntryIdsNotDist
     code: "AWS.SimpleQueueService.BatchEntryIdsNotDistinct",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFoundException", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsAccessDenied extends S.TaggedError<KmsAccessDenied>()(
   "KmsAccessDenied",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMS.AccessDeniedException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidMessageContents extends S.TaggedError<InvalidMessageContents>()(
   "InvalidMessageContents",
   { message: S.optional(S.String) },
@@ -1246,12 +1244,12 @@ export class UnsupportedOperation extends S.TaggedError<UnsupportedOperation>()(
     code: "AWS.SimpleQueueService.UnsupportedOperation",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReceiptHandleIsInvalid extends S.TaggedError<ReceiptHandleIsInvalid>()(
   "ReceiptHandleIsInvalid",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReceiptHandleIsInvalid", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   {},
@@ -1267,7 +1265,7 @@ export class QueueDeletedRecently extends S.TaggedError<QueueDeletedRecently>()(
     code: "AWS.SimpleQueueService.QueueDeletedRecently",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EmptyBatchRequest extends S.TaggedError<EmptyBatchRequest>()(
   "EmptyBatchRequest",
   { message: S.optional(S.String) },
@@ -1275,12 +1273,12 @@ export class EmptyBatchRequest extends S.TaggedError<EmptyBatchRequest>()(
     code: "AWS.SimpleQueueService.EmptyBatchRequest",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsDisabled extends S.TaggedError<KmsDisabled>()(
   "KmsDisabled",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMS.DisabledException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BatchRequestTooLong extends S.TaggedError<BatchRequestTooLong>()(
   "BatchRequestTooLong",
   { message: S.optional(S.String) },
@@ -1288,12 +1286,12 @@ export class BatchRequestTooLong extends S.TaggedError<BatchRequestTooLong>()(
     code: "AWS.SimpleQueueService.BatchRequestTooLong",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class QueueNameExists extends S.TaggedError<QueueNameExists>()(
   "QueueNameExists",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "QueueAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidBatchEntryId extends S.TaggedError<InvalidBatchEntryId>()(
   "InvalidBatchEntryId",
   { message: S.optional(S.String) },
@@ -1301,7 +1299,7 @@ export class InvalidBatchEntryId extends S.TaggedError<InvalidBatchEntryId>()(
     code: "AWS.SimpleQueueService.InvalidBatchEntryId",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsInvalidKeyUsage extends S.TaggedError<KmsInvalidKeyUsage>()(
   "KmsInvalidKeyUsage",
   { message: S.optional(S.String) },
@@ -1309,7 +1307,7 @@ export class KmsInvalidKeyUsage extends S.TaggedError<KmsInvalidKeyUsage>()(
     code: "KMS.InvalidKeyUsageException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyEntriesInBatchRequest extends S.TaggedError<TooManyEntriesInBatchRequest>()(
   "TooManyEntriesInBatchRequest",
   { message: S.optional(S.String) },
@@ -1317,27 +1315,27 @@ export class TooManyEntriesInBatchRequest extends S.TaggedError<TooManyEntriesIn
     code: "AWS.SimpleQueueService.TooManyEntriesInBatchRequest",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsInvalidState extends S.TaggedError<KmsInvalidState>()(
   "KmsInvalidState",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMS.InvalidStateException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsNotFound extends S.TaggedError<KmsNotFound>()(
   "KmsNotFound",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMS.NotFoundException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KmsOptInRequired extends S.TaggedError<KmsOptInRequired>()(
   "KmsOptInRequired",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMS.OptInRequired", httpResponseCode: 403 }),
-) {}
+).pipe(C.withAuthError) {}
 export class KmsThrottled extends S.TaggedError<KmsThrottled>()(
   "KmsThrottled",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMS.ThrottlingException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ParseError extends S.TaggedError<ParseError>()("ParseError", {}) {}
 export class MissingRequiredParameterException extends S.TaggedError<MissingRequiredParameterException>()(
   "MissingRequiredParameterException",
@@ -1372,8 +1370,8 @@ export const purgeQueue: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurgeQueueRequest,
   output: PurgeQueueResponse,
@@ -1442,8 +1440,8 @@ export const changeMessageVisibility: (
   | ReceiptHandleIsInvalid
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ChangeMessageVisibilityRequest,
   output: ChangeMessageVisibilityResponse,
@@ -1481,8 +1479,8 @@ export const cancelMessageMoveTask: (
   | ResourceNotFoundException
   | UnsupportedOperation
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelMessageMoveTaskRequest,
   output: CancelMessageMoveTaskResult,
@@ -1522,8 +1520,8 @@ export const startMessageMoveTask: (
   | ResourceNotFoundException
   | UnsupportedOperation
   | CommonServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMessageMoveTaskRequest,
   output: StartMessageMoveTaskResult,
@@ -1566,8 +1564,8 @@ export const setQueueAttributes: (
   | RequestThrottled
   | UnsupportedOperation
   | CommonServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetQueueAttributesRequest,
   output: SetQueueAttributesResponse,
@@ -1606,8 +1604,8 @@ export const getQueueUrl: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQueueUrlRequest,
   output: GetQueueUrlResult,
@@ -1644,8 +1642,8 @@ export const listDeadLetterSourceQueues: {
     | QueueDoesNotExist
     | RequestThrottled
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeadLetterSourceQueuesRequest,
@@ -1656,8 +1654,8 @@ export const listDeadLetterSourceQueues: {
     | QueueDoesNotExist
     | RequestThrottled
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeadLetterSourceQueuesRequest,
@@ -1668,8 +1666,8 @@ export const listDeadLetterSourceQueues: {
     | QueueDoesNotExist
     | RequestThrottled
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeadLetterSourceQueuesRequest,
@@ -1706,8 +1704,8 @@ export const listQueueTags: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListQueueTagsRequest,
   output: ListQueueTagsResult,
@@ -1751,8 +1749,8 @@ export const deleteQueue: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteQueueRequest,
   output: DeleteQueueResponse,
@@ -1785,8 +1783,8 @@ export const removePermission: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemovePermissionRequest,
   output: RemovePermissionResponse,
@@ -1829,8 +1827,8 @@ export const tagQueue: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagQueueRequest,
   output: TagQueueResponse,
@@ -1859,8 +1857,8 @@ export const untagQueue: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagQueueRequest,
   output: UntagQueueResponse,
@@ -1909,8 +1907,8 @@ export const addPermission: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddPermissionRequest,
   output: AddPermissionResponse,
@@ -1950,8 +1948,8 @@ export const listQueues: {
     | InvalidSecurity
     | RequestThrottled
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListQueuesRequest,
@@ -1961,8 +1959,8 @@ export const listQueues: {
     | InvalidSecurity
     | RequestThrottled
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListQueuesRequest,
@@ -1972,8 +1970,8 @@ export const listQueues: {
     | InvalidSecurity
     | RequestThrottled
     | UnsupportedOperation
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueuesRequest,
@@ -2006,8 +2004,8 @@ export const getQueueAttributes: (
   | QueueDoesNotExist
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetQueueAttributesRequest,
   output: GetQueueAttributesResult,
@@ -2042,8 +2040,8 @@ export const listMessageMoveTasks: (
   | ResourceNotFoundException
   | UnsupportedOperation
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMessageMoveTasksRequest,
   output: ListMessageMoveTasksResult,
@@ -2090,8 +2088,8 @@ export const deleteMessage: (
   | ReceiptHandleIsInvalid
   | RequestThrottled
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMessageRequest,
   output: DeleteMessageResponse,
@@ -2166,8 +2164,8 @@ export const createQueue: (
   | RequestThrottled
   | UnsupportedOperation
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateQueueRequest,
   output: CreateQueueResult,
@@ -2208,8 +2206,8 @@ export const changeMessageVisibilityBatch: (
   | RequestThrottled
   | TooManyEntriesInBatchRequest
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ChangeMessageVisibilityBatchRequest,
   output: ChangeMessageVisibilityBatchResult,
@@ -2246,8 +2244,8 @@ export const deleteMessageBatch: (
   | RequestThrottled
   | TooManyEntriesInBatchRequest
   | UnsupportedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMessageBatchRequest,
   output: DeleteMessageBatchResult,
@@ -2321,8 +2319,8 @@ export const receiveMessage: (
   | RequestThrottled
   | UnsupportedOperation
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReceiveMessageRequest,
   output: ReceiveMessageResult,
@@ -2389,8 +2387,8 @@ export const sendMessageBatch: (
   | UnsupportedOperation
   | InvalidParameterValueException
   | ParseError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendMessageBatchRequest,
   output: SendMessageBatchResult,
@@ -2444,8 +2442,8 @@ export const sendMessage: (
   | UnsupportedOperation
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendMessageRequest,
   output: SendMessageResult,

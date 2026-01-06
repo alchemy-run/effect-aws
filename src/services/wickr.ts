@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Wickr",
@@ -2567,35 +2565,31 @@ export const ErrorDetailList = S.Array(ErrorDetail);
 export class BadRequestError extends S.TaggedError<BadRequestError>()(
   "BadRequestError",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenError extends S.TaggedError<ForbiddenError>()(
   "ForbiddenError",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerError extends S.TaggedError<InternalServerError>()(
   "InternalServerError",
   { message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class RateLimitError extends S.TaggedError<RateLimitError>()(
   "RateLimitError",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundError extends S.TaggedError<ResourceNotFoundError>()(
   "ResourceNotFoundError",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedError extends S.TaggedError<UnauthorizedError>()(
   "UnauthorizedError",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ValidationError extends S.TaggedError<ValidationError>()(
   "ValidationError",
   { reasons: S.optional(ErrorDetailList) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2612,8 +2606,8 @@ export const listNetworks: {
     | RateLimitError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNetworksRequest,
@@ -2625,8 +2619,8 @@ export const listNetworks: {
     | RateLimitError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNetworksRequest,
@@ -2638,8 +2632,8 @@ export const listNetworks: {
     | RateLimitError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNetworksRequest,
@@ -2673,8 +2667,8 @@ export const createSecurityGroup: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSecurityGroupRequest,
   output: CreateSecurityGroupResponse,
@@ -2702,8 +2696,8 @@ export const updateNetworkSettings: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNetworkSettingsRequest,
   output: UpdateNetworkSettingsResponse,
@@ -2731,8 +2725,8 @@ export const updateSecurityGroup: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSecurityGroupRequest,
   output: UpdateSecurityGroupResponse,
@@ -2760,8 +2754,8 @@ export const batchResetDevicesForUser: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchResetDevicesForUserRequest,
   output: BatchResetDevicesForUserResponse,
@@ -2789,8 +2783,8 @@ export const getGuestUserHistoryCount: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGuestUserHistoryCountRequest,
   output: GetGuestUserHistoryCountResponse,
@@ -2818,8 +2812,8 @@ export const getNetworkSettings: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNetworkSettingsRequest,
   output: GetNetworkSettingsResponse,
@@ -2847,8 +2841,8 @@ export const getOidcInfo: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOidcInfoRequest,
   output: GetOidcInfoResponse,
@@ -2876,8 +2870,8 @@ export const getSecurityGroup: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSecurityGroupRequest,
   output: GetSecurityGroupResponse,
@@ -2906,8 +2900,8 @@ export const listBlockedGuestUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBlockedGuestUsersRequest,
@@ -2920,8 +2914,8 @@ export const listBlockedGuestUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBlockedGuestUsersRequest,
@@ -2934,8 +2928,8 @@ export const listBlockedGuestUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBlockedGuestUsersRequest,
@@ -2971,8 +2965,8 @@ export const listBots: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBotsRequest,
@@ -2985,8 +2979,8 @@ export const listBots: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBotsRequest,
@@ -2999,8 +2993,8 @@ export const listBots: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBotsRequest,
@@ -3036,8 +3030,8 @@ export const listDevicesForUser: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevicesForUserRequest,
@@ -3050,8 +3044,8 @@ export const listDevicesForUser: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDevicesForUserRequest,
@@ -3064,8 +3058,8 @@ export const listDevicesForUser: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesForUserRequest,
@@ -3101,8 +3095,8 @@ export const listGuestUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGuestUsersRequest,
@@ -3115,8 +3109,8 @@ export const listGuestUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGuestUsersRequest,
@@ -3129,8 +3123,8 @@ export const listGuestUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGuestUsersRequest,
@@ -3166,8 +3160,8 @@ export const listSecurityGroupUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSecurityGroupUsersRequest,
@@ -3180,8 +3174,8 @@ export const listSecurityGroupUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSecurityGroupUsersRequest,
@@ -3194,8 +3188,8 @@ export const listSecurityGroupUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityGroupUsersRequest,
@@ -3232,8 +3226,8 @@ export const updateUser: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,
@@ -3261,8 +3255,8 @@ export const batchToggleUserSuspendStatus: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchToggleUserSuspendStatusRequest,
   output: BatchToggleUserSuspendStatusResponse,
@@ -3290,8 +3284,8 @@ export const createBot: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBotRequest,
   output: CreateBotResponse,
@@ -3319,8 +3313,8 @@ export const createDataRetentionBot: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataRetentionBotRequest,
   output: CreateDataRetentionBotResponse,
@@ -3348,8 +3342,8 @@ export const createDataRetentionBotChallenge: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataRetentionBotChallengeRequest,
   output: CreateDataRetentionBotChallengeResponse,
@@ -3377,8 +3371,8 @@ export const createNetwork: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkRequest,
   output: CreateNetworkResponse,
@@ -3406,8 +3400,8 @@ export const deleteBot: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBotRequest,
   output: DeleteBotResponse,
@@ -3435,8 +3429,8 @@ export const deleteDataRetentionBot: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataRetentionBotRequest,
   output: DeleteDataRetentionBotResponse,
@@ -3464,8 +3458,8 @@ export const deleteNetwork: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkRequest,
   output: DeleteNetworkResponse,
@@ -3493,8 +3487,8 @@ export const deleteSecurityGroup: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSecurityGroupRequest,
   output: DeleteSecurityGroupResponse,
@@ -3522,8 +3516,8 @@ export const getBot: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBotRequest,
   output: GetBotResponse,
@@ -3551,8 +3545,8 @@ export const getBotsCount: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBotsCountRequest,
   output: GetBotsCountResponse,
@@ -3580,8 +3574,8 @@ export const getDataRetentionBot: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataRetentionBotRequest,
   output: GetDataRetentionBotResponse,
@@ -3609,8 +3603,8 @@ export const getNetwork: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNetworkRequest,
   output: GetNetworkResponse,
@@ -3638,8 +3632,8 @@ export const getUser: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserRequest,
   output: GetUserResponse,
@@ -3667,8 +3661,8 @@ export const getUsersCount: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUsersCountRequest,
   output: GetUsersCountResponse,
@@ -3697,8 +3691,8 @@ export const listSecurityGroups: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSecurityGroupsRequest,
@@ -3711,8 +3705,8 @@ export const listSecurityGroups: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSecurityGroupsRequest,
@@ -3725,8 +3719,8 @@ export const listSecurityGroups: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSecurityGroupsRequest,
@@ -3762,8 +3756,8 @@ export const listUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUsersRequest,
@@ -3776,8 +3770,8 @@ export const listUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUsersRequest,
@@ -3790,8 +3784,8 @@ export const listUsers: {
     | ResourceNotFoundError
     | UnauthorizedError
     | ValidationError
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
@@ -3826,8 +3820,8 @@ export const registerOidcConfig: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterOidcConfigRequest,
   output: RegisterOidcConfigResponse,
@@ -3855,8 +3849,8 @@ export const registerOidcConfigTest: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterOidcConfigTestRequest,
   output: RegisterOidcConfigTestResponse,
@@ -3884,8 +3878,8 @@ export const updateBot: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBotRequest,
   output: UpdateBotResponse,
@@ -3913,8 +3907,8 @@ export const updateDataRetention: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataRetentionRequest,
   output: UpdateDataRetentionResponse,
@@ -3942,8 +3936,8 @@ export const updateGuestUser: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGuestUserRequest,
   output: UpdateGuestUserResponse,
@@ -3971,8 +3965,8 @@ export const updateNetwork: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNetworkRequest,
   output: UpdateNetworkResponse,
@@ -4002,8 +3996,8 @@ export const batchCreateUser: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateUserRequest,
   output: BatchCreateUserResponse,
@@ -4031,8 +4025,8 @@ export const batchDeleteUser: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteUserRequest,
   output: BatchDeleteUserResponse,
@@ -4060,8 +4054,8 @@ export const batchLookupUserUname: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchLookupUserUnameRequest,
   output: BatchLookupUserUnameResponse,
@@ -4089,8 +4083,8 @@ export const batchReinviteUser: (
   | ResourceNotFoundError
   | UnauthorizedError
   | ValidationError
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchReinviteUserRequest,
   output: BatchReinviteUserResponse,

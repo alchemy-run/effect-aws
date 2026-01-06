@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "GuardDuty",
@@ -8477,37 +8475,35 @@ export class BadRequestException extends S.TaggedError<BadRequestException>()(
     Message: S.optional(S.String).pipe(T.JsonName("message")),
     Type: S.optional(S.String).pipe(T.JsonName("__type")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   {
     Message: S.optional(S.String).pipe(T.JsonName("message")),
     Type: S.optional(S.String).pipe(T.JsonName("__type")),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   {
     Message: S.optional(S.String).pipe(T.JsonName("message")),
     Type: S.optional(S.String).pipe(T.JsonName("__type")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
     Message: S.optional(S.String).pipe(T.JsonName("message")),
     Type: S.optional(S.String).pipe(T.JsonName("__type")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
     Message: S.optional(S.String).pipe(T.JsonName("message")),
     Type: S.optional(S.String).pipe(T.JsonName("__type")),
   },
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -8518,8 +8514,8 @@ export const acceptAdministratorInvitation: (
   input: AcceptAdministratorInvitationRequest,
 ) => Effect.Effect<
   AcceptAdministratorInvitationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptAdministratorInvitationRequest,
   output: AcceptAdministratorInvitationResponse,
@@ -8555,8 +8551,8 @@ export const createMembers: (
   input: CreateMembersRequest,
 ) => Effect.Effect<
   CreateMembersResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMembersRequest,
   output: CreateMembersResponse,
@@ -8570,8 +8566,8 @@ export const createPublishingDestination: (
   input: CreatePublishingDestinationRequest,
 ) => Effect.Effect<
   CreatePublishingDestinationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePublishingDestinationRequest,
   output: CreatePublishingDestinationResponse,
@@ -8585,8 +8581,8 @@ export const declineInvitations: (
   input: DeclineInvitationsRequest,
 ) => Effect.Effect<
   DeclineInvitationsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeclineInvitationsRequest,
   output: DeclineInvitationsResponse,
@@ -8610,8 +8606,8 @@ export const getAdministratorAccount: (
   input: GetAdministratorAccountRequest,
 ) => Effect.Effect<
   GetAdministratorAccountResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAdministratorAccountRequest,
   output: GetAdministratorAccountResponse,
@@ -8625,8 +8621,8 @@ export const getMasterAccount: (
   input: GetMasterAccountRequest,
 ) => Effect.Effect<
   GetMasterAccountResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMasterAccountRequest,
   output: GetMasterAccountResponse,
@@ -8640,8 +8636,8 @@ export const getMembers: (
   input: GetMembersRequest,
 ) => Effect.Effect<
   GetMembersResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMembersRequest,
   output: GetMembersResponse,
@@ -8656,22 +8652,22 @@ export const listInvitations: {
     input: ListInvitationsRequest,
   ): Effect.Effect<
     ListInvitationsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInvitationsRequest,
   ) => Stream.Stream<
     ListInvitationsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInvitationsRequest,
   ) => Stream.Stream<
     Invitation,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInvitationsRequest,
@@ -8695,8 +8691,8 @@ export const listMalwareProtectionPlans: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMalwareProtectionPlansRequest,
   output: ListMalwareProtectionPlansResponse,
@@ -8716,22 +8712,22 @@ export const listOrganizationAdminAccounts: {
     input: ListOrganizationAdminAccountsRequest,
   ): Effect.Effect<
     ListOrganizationAdminAccountsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOrganizationAdminAccountsRequest,
   ) => Stream.Stream<
     ListOrganizationAdminAccountsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOrganizationAdminAccountsRequest,
   ) => Stream.Stream<
     AdminAccount,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOrganizationAdminAccountsRequest,
@@ -8753,22 +8749,22 @@ export const listPublishingDestinations: {
     input: ListPublishingDestinationsRequest,
   ): Effect.Effect<
     ListPublishingDestinationsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPublishingDestinationsRequest,
   ) => Stream.Stream<
     ListPublishingDestinationsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPublishingDestinationsRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPublishingDestinationsRequest,
@@ -8791,8 +8787,8 @@ export const createThreatEntitySet: (
   input: CreateThreatEntitySetRequest,
 ) => Effect.Effect<
   CreateThreatEntitySetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateThreatEntitySetRequest,
   output: CreateThreatEntitySetResponse,
@@ -8811,8 +8807,8 @@ export const createTrustedEntitySet: (
   input: CreateTrustedEntitySetRequest,
 ) => Effect.Effect<
   CreateTrustedEntitySetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrustedEntitySetRequest,
   output: CreateTrustedEntitySetResponse,
@@ -8826,8 +8822,8 @@ export const deleteInvitations: (
   input: DeleteInvitationsRequest,
 ) => Effect.Effect<
   DeleteInvitationsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInvitationsRequest,
   output: DeleteInvitationsResponse,
@@ -8845,8 +8841,8 @@ export const deleteMembers: (
   input: DeleteMembersRequest,
 ) => Effect.Effect<
   DeleteMembersResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMembersRequest,
   output: DeleteMembersResponse,
@@ -8860,8 +8856,8 @@ export const describePublishingDestination: (
   input: DescribePublishingDestinationRequest,
 ) => Effect.Effect<
   DescribePublishingDestinationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePublishingDestinationRequest,
   output: DescribePublishingDestinationResponse,
@@ -8896,8 +8892,8 @@ export const disassociateMembers: (
   input: DisassociateMembersRequest,
 ) => Effect.Effect<
   DisassociateMembersResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateMembersRequest,
   output: DisassociateMembersResponse,
@@ -8910,8 +8906,8 @@ export const getFilter: (
   input: GetFilterRequest,
 ) => Effect.Effect<
   GetFilterResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFilterRequest,
   output: GetFilterResponse,
@@ -8924,8 +8920,8 @@ export const getIPSet: (
   input: GetIPSetRequest,
 ) => Effect.Effect<
   GetIPSetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIPSetRequest,
   output: GetIPSetResponse,
@@ -8942,8 +8938,8 @@ export const getMalwareScanSettings: (
   input: GetMalwareScanSettingsRequest,
 ) => Effect.Effect<
   GetMalwareScanSettingsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMalwareScanSettingsRequest,
   output: GetMalwareScanSettingsResponse,
@@ -8956,8 +8952,8 @@ export const getThreatEntitySet: (
   input: GetThreatEntitySetRequest,
 ) => Effect.Effect<
   GetThreatEntitySetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetThreatEntitySetRequest,
   output: GetThreatEntitySetResponse,
@@ -8970,8 +8966,8 @@ export const getThreatIntelSet: (
   input: GetThreatIntelSetRequest,
 ) => Effect.Effect<
   GetThreatIntelSetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetThreatIntelSetRequest,
   output: GetThreatIntelSetResponse,
@@ -8984,8 +8980,8 @@ export const getTrustedEntitySet: (
   input: GetTrustedEntitySetRequest,
 ) => Effect.Effect<
   GetTrustedEntitySetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTrustedEntitySetRequest,
   output: GetTrustedEntitySetResponse,
@@ -9027,8 +9023,8 @@ export const inviteMembers: (
   input: InviteMembersRequest,
 ) => Effect.Effect<
   InviteMembersResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InviteMembersRequest,
   output: InviteMembersResponse,
@@ -9042,22 +9038,22 @@ export const listDetectors: {
     input: ListDetectorsRequest,
   ): Effect.Effect<
     ListDetectorsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDetectorsRequest,
   ) => Stream.Stream<
     ListDetectorsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDetectorsRequest,
   ) => Stream.Stream<
     DetectorId,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDetectorsRequest,
@@ -9078,22 +9074,22 @@ export const listFilters: {
     input: ListFiltersRequest,
   ): Effect.Effect<
     ListFiltersResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFiltersRequest,
   ) => Stream.Stream<
     ListFiltersResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFiltersRequest,
   ) => Stream.Stream<
     FilterName,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFiltersRequest,
@@ -9117,22 +9113,22 @@ export const listFindings: {
     input: ListFindingsRequest,
   ): Effect.Effect<
     ListFindingsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFindingsRequest,
   ) => Stream.Stream<
     ListFindingsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFindingsRequest,
   ) => Stream.Stream<
     FindingId,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFindingsRequest,
@@ -9155,22 +9151,22 @@ export const listIPSets: {
     input: ListIPSetsRequest,
   ): Effect.Effect<
     ListIPSetsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIPSetsRequest,
   ) => Stream.Stream<
     ListIPSetsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIPSetsRequest,
   ) => Stream.Stream<
     String,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIPSetsRequest,
@@ -9192,22 +9188,22 @@ export const listMembers: {
     input: ListMembersRequest,
   ): Effect.Effect<
     ListMembersResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMembersRequest,
   ) => Stream.Stream<
     ListMembersResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMembersRequest,
   ) => Stream.Stream<
     Member,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMembersRequest,
@@ -9233,8 +9229,8 @@ export const listTagsForResource: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -9254,22 +9250,22 @@ export const listThreatEntitySets: {
     input: ListThreatEntitySetsRequest,
   ): Effect.Effect<
     ListThreatEntitySetsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListThreatEntitySetsRequest,
   ) => Stream.Stream<
     ListThreatEntitySetsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListThreatEntitySetsRequest,
   ) => Stream.Stream<
     String,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThreatEntitySetsRequest,
@@ -9292,22 +9288,22 @@ export const listThreatIntelSets: {
     input: ListThreatIntelSetsRequest,
   ): Effect.Effect<
     ListThreatIntelSetsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListThreatIntelSetsRequest,
   ) => Stream.Stream<
     ListThreatIntelSetsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListThreatIntelSetsRequest,
   ) => Stream.Stream<
     String,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThreatIntelSetsRequest,
@@ -9330,22 +9326,22 @@ export const listTrustedEntitySets: {
     input: ListTrustedEntitySetsRequest,
   ): Effect.Effect<
     ListTrustedEntitySetsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTrustedEntitySetsRequest,
   ) => Stream.Stream<
     ListTrustedEntitySetsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTrustedEntitySetsRequest,
   ) => Stream.Stream<
     String,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrustedEntitySetsRequest,
@@ -9371,8 +9367,8 @@ export const sendObjectMalwareScan: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendObjectMalwareScanRequest,
   output: SendObjectMalwareScanResponse,
@@ -9390,8 +9386,8 @@ export const startMonitoringMembers: (
   input: StartMonitoringMembersRequest,
 ) => Effect.Effect<
   StartMonitoringMembersResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMonitoringMembersRequest,
   output: StartMonitoringMembersResponse,
@@ -9410,8 +9406,8 @@ export const stopMonitoringMembers: (
   input: StopMonitoringMembersRequest,
 ) => Effect.Effect<
   StopMonitoringMembersResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopMonitoringMembersRequest,
   output: StopMonitoringMembersResponse,
@@ -9424,8 +9420,8 @@ export const updateFilter: (
   input: UpdateFilterRequest,
 ) => Effect.Effect<
   UpdateFilterResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFilterRequest,
   output: UpdateFilterResponse,
@@ -9438,8 +9434,8 @@ export const acceptInvitation: (
   input: AcceptInvitationRequest,
 ) => Effect.Effect<
   AcceptInvitationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptInvitationRequest,
   output: AcceptInvitationResponse,
@@ -9455,8 +9451,8 @@ export const archiveFindings: (
   input: ArchiveFindingsRequest,
 ) => Effect.Effect<
   ArchiveFindingsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ArchiveFindingsRequest,
   output: ArchiveFindingsResponse,
@@ -9471,8 +9467,8 @@ export const createSampleFindings: (
   input: CreateSampleFindingsRequest,
 ) => Effect.Effect<
   CreateSampleFindingsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSampleFindingsRequest,
   output: CreateSampleFindingsResponse,
@@ -9485,8 +9481,8 @@ export const deleteDetector: (
   input: DeleteDetectorRequest,
 ) => Effect.Effect<
   DeleteDetectorResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDetectorRequest,
   output: DeleteDetectorResponse,
@@ -9499,8 +9495,8 @@ export const deleteFilter: (
   input: DeleteFilterRequest,
 ) => Effect.Effect<
   DeleteFilterResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFilterRequest,
   output: DeleteFilterResponse,
@@ -9514,8 +9510,8 @@ export const deleteIPSet: (
   input: DeleteIPSetRequest,
 ) => Effect.Effect<
   DeleteIPSetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIPSetRequest,
   output: DeleteIPSetResponse,
@@ -9528,8 +9524,8 @@ export const deletePublishingDestination: (
   input: DeletePublishingDestinationRequest,
 ) => Effect.Effect<
   DeletePublishingDestinationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePublishingDestinationRequest,
   output: DeletePublishingDestinationResponse,
@@ -9543,8 +9539,8 @@ export const deleteThreatEntitySet: (
   input: DeleteThreatEntitySetRequest,
 ) => Effect.Effect<
   DeleteThreatEntitySetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteThreatEntitySetRequest,
   output: DeleteThreatEntitySetResponse,
@@ -9557,8 +9553,8 @@ export const deleteThreatIntelSet: (
   input: DeleteThreatIntelSetRequest,
 ) => Effect.Effect<
   DeleteThreatIntelSetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteThreatIntelSetRequest,
   output: DeleteThreatIntelSetResponse,
@@ -9572,8 +9568,8 @@ export const deleteTrustedEntitySet: (
   input: DeleteTrustedEntitySetRequest,
 ) => Effect.Effect<
   DeleteTrustedEntitySetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrustedEntitySetRequest,
   output: DeleteTrustedEntitySetResponse,
@@ -9588,8 +9584,8 @@ export const disableOrganizationAdminAccount: (
   input: DisableOrganizationAdminAccountRequest,
 ) => Effect.Effect<
   DisableOrganizationAdminAccountResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableOrganizationAdminAccountRequest,
   output: DisableOrganizationAdminAccountResponse,
@@ -9613,8 +9609,8 @@ export const disassociateFromAdministratorAccount: (
   input: DisassociateFromAdministratorAccountRequest,
 ) => Effect.Effect<
   DisassociateFromAdministratorAccountResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateFromAdministratorAccountRequest,
   output: DisassociateFromAdministratorAccountResponse,
@@ -9634,8 +9630,8 @@ export const disassociateFromMasterAccount: (
   input: DisassociateFromMasterAccountRequest,
 ) => Effect.Effect<
   DisassociateFromMasterAccountResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateFromMasterAccountRequest,
   output: DisassociateFromMasterAccountResponse,
@@ -9650,8 +9646,8 @@ export const enableOrganizationAdminAccount: (
   input: EnableOrganizationAdminAccountRequest,
 ) => Effect.Effect<
   EnableOrganizationAdminAccountResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableOrganizationAdminAccountRequest,
   output: EnableOrganizationAdminAccountResponse,
@@ -9665,8 +9661,8 @@ export const getInvitationsCount: (
   input: GetInvitationsCountRequest,
 ) => Effect.Effect<
   GetInvitationsCountResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInvitationsCountRequest,
   output: GetInvitationsCountResponse,
@@ -9679,8 +9675,8 @@ export const unarchiveFindings: (
   input: UnarchiveFindingsRequest,
 ) => Effect.Effect<
   UnarchiveFindingsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnarchiveFindingsRequest,
   output: UnarchiveFindingsResponse,
@@ -9703,8 +9699,8 @@ export const updateDetector: (
   input: UpdateDetectorRequest,
 ) => Effect.Effect<
   UpdateDetectorResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDetectorRequest,
   output: UpdateDetectorResponse,
@@ -9717,8 +9713,8 @@ export const updateFindingsFeedback: (
   input: UpdateFindingsFeedbackRequest,
 ) => Effect.Effect<
   UpdateFindingsFeedbackResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFindingsFeedbackRequest,
   output: UpdateFindingsFeedbackResponse,
@@ -9732,8 +9728,8 @@ export const updatePublishingDestination: (
   input: UpdatePublishingDestinationRequest,
 ) => Effect.Effect<
   UpdatePublishingDestinationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePublishingDestinationRequest,
   output: UpdatePublishingDestinationResponse,
@@ -9746,8 +9742,8 @@ export const updateThreatEntitySet: (
   input: UpdateThreatEntitySetRequest,
 ) => Effect.Effect<
   UpdateThreatEntitySetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateThreatEntitySetRequest,
   output: UpdateThreatEntitySetResponse,
@@ -9760,8 +9756,8 @@ export const updateTrustedEntitySet: (
   input: UpdateTrustedEntitySetRequest,
 ) => Effect.Effect<
   UpdateTrustedEntitySetResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrustedEntitySetRequest,
   output: UpdateTrustedEntitySetResponse,
@@ -9777,8 +9773,8 @@ export const tagResource: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -9798,8 +9794,8 @@ export const untagResource: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -9819,8 +9815,8 @@ export const updateIPSet: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIPSetRequest,
   output: UpdateIPSetResponse,
@@ -9840,8 +9836,8 @@ export const updateThreatIntelSet: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateThreatIntelSetRequest,
   output: UpdateThreatIntelSetResponse,
@@ -9864,8 +9860,8 @@ export const createIPSet: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIPSetRequest,
   output: CreateIPSetResponse,
@@ -9887,8 +9883,8 @@ export const createThreatIntelSet: (
   | AccessDeniedException
   | BadRequestException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateThreatIntelSetRequest,
   output: CreateThreatIntelSetResponse,
@@ -9912,8 +9908,8 @@ export const getFindingsStatistics: (
   input: GetFindingsStatisticsRequest,
 ) => Effect.Effect<
   GetFindingsStatisticsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFindingsStatisticsRequest,
   output: GetFindingsStatisticsResponse,
@@ -9931,8 +9927,8 @@ export const getMalwareProtectionPlan: (
   | BadRequestException
   | InternalServerErrorException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMalwareProtectionPlanRequest,
   output: GetMalwareProtectionPlanResponse,
@@ -9960,8 +9956,8 @@ export const updateMemberDetectors: (
   input: UpdateMemberDetectorsRequest,
 ) => Effect.Effect<
   UpdateMemberDetectorsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMemberDetectorsRequest,
   output: UpdateMemberDetectorsResponse,
@@ -9978,8 +9974,8 @@ export const updateMalwareProtectionPlan: (
   | BadRequestException
   | InternalServerErrorException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMalwareProtectionPlanRequest,
   output: UpdateMalwareProtectionPlanResponse,
@@ -10003,8 +9999,8 @@ export const deleteMalwareProtectionPlan: (
   | BadRequestException
   | InternalServerErrorException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMalwareProtectionPlanRequest,
   output: DeleteMalwareProtectionPlanResponse,
@@ -10023,8 +10019,8 @@ export const createFilter: (
   input: CreateFilterRequest,
 ) => Effect.Effect<
   CreateFilterResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFilterRequest,
   output: CreateFilterResponse,
@@ -10044,8 +10040,8 @@ export const createMalwareProtectionPlan: (
   | BadRequestException
   | ConflictException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMalwareProtectionPlanRequest,
   output: CreateMalwareProtectionPlanResponse,
@@ -10067,8 +10063,8 @@ export const getMemberDetectors: (
   input: GetMemberDetectorsRequest,
 ) => Effect.Effect<
   GetMemberDetectorsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMemberDetectorsRequest,
   output: GetMemberDetectorsResponse,
@@ -10085,8 +10081,8 @@ export const getOrganizationStatistics: (
   input: GetOrganizationStatisticsRequest,
 ) => Effect.Effect<
   GetOrganizationStatisticsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOrganizationStatisticsRequest,
   output: GetOrganizationStatisticsResponse,
@@ -10100,8 +10096,8 @@ export const getRemainingFreeTrialDays: (
   input: GetRemainingFreeTrialDaysRequest,
 ) => Effect.Effect<
   GetRemainingFreeTrialDaysResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRemainingFreeTrialDaysRequest,
   output: GetRemainingFreeTrialDaysResponse,
@@ -10116,22 +10112,22 @@ export const listMalwareScans: {
     input: ListMalwareScansRequest,
   ): Effect.Effect<
     ListMalwareScansResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMalwareScansRequest,
   ) => Stream.Stream<
     ListMalwareScansResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMalwareScansRequest,
   ) => Stream.Stream<
     MalwareScan,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMalwareScansRequest,
@@ -10155,8 +10151,8 @@ export const updateMalwareScanSettings: (
   input: UpdateMalwareScanSettingsRequest,
 ) => Effect.Effect<
   UpdateMalwareScanSettingsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMalwareScanSettingsRequest,
   output: UpdateMalwareScanSettingsResponse,
@@ -10180,8 +10176,8 @@ export const updateOrganizationConfiguration: (
   input: UpdateOrganizationConfigurationRequest,
 ) => Effect.Effect<
   UpdateOrganizationConfigurationResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateOrganizationConfigurationRequest,
   output: UpdateOrganizationConfigurationResponse,
@@ -10204,8 +10200,8 @@ export const startMalwareScan: (
   | BadRequestException
   | ConflictException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMalwareScanRequest,
   output: StartMalwareScanResponse,
@@ -10242,8 +10238,8 @@ export const createDetector: (
   input: CreateDetectorRequest,
 ) => Effect.Effect<
   CreateDetectorResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDetectorRequest,
   output: CreateDetectorResponse,
@@ -10262,22 +10258,22 @@ export const describeOrganizationConfiguration: {
     input: DescribeOrganizationConfigurationRequest,
   ): Effect.Effect<
     DescribeOrganizationConfigurationResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOrganizationConfigurationRequest,
   ) => Stream.Stream<
     DescribeOrganizationConfigurationResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOrganizationConfigurationRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConfigurationRequest,
@@ -10300,8 +10296,8 @@ export const getDetector: (
   input: GetDetectorRequest,
 ) => Effect.Effect<
   GetDetectorResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDetectorRequest,
   output: GetDetectorResponse,
@@ -10322,8 +10318,8 @@ export const getMalwareScan: (
   | BadRequestException
   | InternalServerErrorException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMalwareScanRequest,
   output: GetMalwareScanResponse,
@@ -10344,22 +10340,22 @@ export const getUsageStatistics: {
     input: GetUsageStatisticsRequest,
   ): Effect.Effect<
     GetUsageStatisticsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetUsageStatisticsRequest,
   ) => Stream.Stream<
     GetUsageStatisticsResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetUsageStatisticsRequest,
   ) => Stream.Stream<
     unknown,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetUsageStatisticsRequest,
@@ -10384,22 +10380,22 @@ export const describeMalwareScans: {
     input: DescribeMalwareScansRequest,
   ): Effect.Effect<
     DescribeMalwareScansResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMalwareScansRequest,
   ) => Stream.Stream<
     DescribeMalwareScansResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMalwareScansRequest,
   ) => Stream.Stream<
     Scan,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMalwareScansRequest,
@@ -10422,8 +10418,8 @@ export const getCoverageStatistics: (
   input: GetCoverageStatisticsRequest,
 ) => Effect.Effect<
   GetCoverageStatisticsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCoverageStatisticsRequest,
   output: GetCoverageStatisticsResponse,
@@ -10441,22 +10437,22 @@ export const listCoverage: {
     input: ListCoverageRequest,
   ): Effect.Effect<
     ListCoverageResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCoverageRequest,
   ) => Stream.Stream<
     ListCoverageResponse,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCoverageRequest,
   ) => Stream.Stream<
     CoverageResource,
-    BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BadRequestException | InternalServerErrorException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCoverageRequest,
@@ -10476,8 +10472,8 @@ export const getFindings: (
   input: GetFindingsRequest,
 ) => Effect.Effect<
   GetFindingsResponse,
-  BadRequestException | InternalServerErrorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | InternalServerErrorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFindingsRequest,
   output: GetFindingsResponse,

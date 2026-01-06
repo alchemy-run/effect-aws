@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "schemas", serviceShapeName: "schemas" });
 const auth = T.AwsAuthSigv4({ name: "schemas" });
@@ -1505,45 +1503,39 @@ export const SearchSchemasResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Code: S.String, Message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Code: S.String, Message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Code: S.String, Message: S.String },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { Code: S.String, Message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class GoneException extends S.TaggedError<GoneException>()(
   "GoneException",
   { Code: S.String, Message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Code: S.String, Message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Code: S.String, Message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { Code: S.String, Message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Code: S.String, Message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class PreconditionFailedException extends S.TaggedError<PreconditionFailedException>()(
   "PreconditionFailedException",
   { Code: S.String, Message: S.String },
@@ -1561,8 +1553,8 @@ export const listTagsForResource: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1587,8 +1579,8 @@ export const updateSchema: (
   | InternalServerErrorException
   | NotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSchemaRequest,
   output: UpdateSchemaResponse,
@@ -1611,8 +1603,8 @@ export const tagResource: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1634,8 +1626,8 @@ export const untagResource: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1659,8 +1651,8 @@ export const createSchema: (
   | ForbiddenException
   | InternalServerErrorException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSchemaRequest,
   output: CreateSchemaResponse,
@@ -1684,8 +1676,8 @@ export const searchSchemas: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchSchemasRequest,
@@ -1696,8 +1688,8 @@ export const searchSchemas: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchSchemasRequest,
@@ -1708,8 +1700,8 @@ export const searchSchemas: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchSchemasRequest,
@@ -1742,8 +1734,8 @@ export const putCodeBinding: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutCodeBindingRequest,
   output: PutCodeBindingResponse,
@@ -1771,8 +1763,8 @@ export const putResourcePolicy: (
   | PreconditionFailedException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyRequest,
   output: PutResourcePolicyResponse,
@@ -1800,8 +1792,8 @@ export const listSchemaVersions: {
     | NotFoundException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSchemaVersionsRequest,
@@ -1813,8 +1805,8 @@ export const listSchemaVersions: {
     | NotFoundException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSchemaVersionsRequest,
@@ -1826,8 +1818,8 @@ export const listSchemaVersions: {
     | NotFoundException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSchemaVersionsRequest,
@@ -1860,8 +1852,8 @@ export const describeDiscoverer: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDiscovererRequest,
   output: DescribeDiscovererResponse,
@@ -1887,8 +1879,8 @@ export const describeRegistry: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRegistryRequest,
   output: DescribeRegistryResponse,
@@ -1914,8 +1906,8 @@ export const describeSchema: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSchemaRequest,
   output: DescribeSchemaResponse,
@@ -1941,8 +1933,8 @@ export const getResourcePolicy: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyRequest,
   output: GetResourcePolicyResponse,
@@ -1968,8 +1960,8 @@ export const startDiscoverer: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDiscovererRequest,
   output: StartDiscovererResponse,
@@ -1995,8 +1987,8 @@ export const stopDiscoverer: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDiscovererRequest,
   output: StopDiscovererResponse,
@@ -2022,8 +2014,8 @@ export const updateDiscoverer: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDiscovererRequest,
   output: UpdateDiscovererResponse,
@@ -2049,8 +2041,8 @@ export const updateRegistry: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRegistryRequest,
   output: UpdateRegistryResponse,
@@ -2076,8 +2068,8 @@ export const deleteRegistry: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRegistryRequest,
   output: DeleteRegistryResponse,
@@ -2103,8 +2095,8 @@ export const deleteResourcePolicy: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyRequest,
   output: DeleteResourcePolicyResponse,
@@ -2130,8 +2122,8 @@ export const deleteSchema: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSchemaRequest,
   output: DeleteSchemaResponse,
@@ -2157,8 +2149,8 @@ export const deleteSchemaVersion: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSchemaVersionRequest,
   output: DeleteSchemaVersionResponse,
@@ -2184,8 +2176,8 @@ export const listDiscoverers: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDiscoverersRequest,
@@ -2196,8 +2188,8 @@ export const listDiscoverers: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDiscoverersRequest,
@@ -2208,8 +2200,8 @@ export const listDiscoverers: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDiscoverersRequest,
@@ -2241,8 +2233,8 @@ export const listRegistries: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRegistriesRequest,
@@ -2253,8 +2245,8 @@ export const listRegistries: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRegistriesRequest,
@@ -2265,8 +2257,8 @@ export const listRegistries: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRegistriesRequest,
@@ -2298,8 +2290,8 @@ export const listSchemas: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSchemasRequest,
@@ -2310,8 +2302,8 @@ export const listSchemas: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSchemasRequest,
@@ -2322,8 +2314,8 @@ export const listSchemas: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSchemasRequest,
@@ -2355,8 +2347,8 @@ export const createRegistry: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRegistryRequest,
   output: CreateRegistryResponse,
@@ -2381,8 +2373,8 @@ export const getDiscoveredSchema: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDiscoveredSchemaRequest,
   output: GetDiscoveredSchemaResponse,
@@ -2407,8 +2399,8 @@ export const createDiscoverer: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDiscovererRequest,
   output: CreateDiscovererResponse,
@@ -2434,8 +2426,8 @@ export const deleteDiscoverer: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDiscovererRequest,
   output: DeleteDiscovererResponse,
@@ -2461,8 +2453,8 @@ export const describeCodeBinding: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCodeBindingRequest,
   output: DescribeCodeBindingResponse,
@@ -2489,8 +2481,8 @@ export const exportSchema: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportSchemaRequest,
   output: ExportSchemaResponse,
@@ -2517,8 +2509,8 @@ export const getCodeBindingSource: (
   | NotFoundException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCodeBindingSourceRequest,
   output: GetCodeBindingSourceResponse,

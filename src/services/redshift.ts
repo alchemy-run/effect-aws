@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://redshift.amazonaws.com/doc/2012-12-01/");
 const svc = T.AwsApiService({
@@ -7228,17 +7226,17 @@ export class ClusterNotFoundFault extends S.TaggedError<ClusterNotFoundFault>()(
   "ClusterNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDataShareFault extends S.TaggedError<InvalidDataShareFault>()(
   "InvalidDataShareFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDataShareFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterStateFault extends S.TaggedError<InvalidClusterStateFault>()(
   "InvalidClusterStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidClusterState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterParameterGroupNotFoundFault extends S.TaggedError<ClusterParameterGroupNotFoundFault>()(
   "ClusterParameterGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -7246,7 +7244,7 @@ export class ClusterParameterGroupNotFoundFault extends S.TaggedError<ClusterPar
     code: "ClusterParameterGroupNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSecurityGroupNotFoundFault extends S.TaggedError<ClusterSecurityGroupNotFoundFault>()(
   "ClusterSecurityGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -7254,7 +7252,7 @@ export class ClusterSecurityGroupNotFoundFault extends S.TaggedError<ClusterSecu
     code: "ClusterSecurityGroupNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSubnetGroupNotFoundFault extends S.TaggedError<ClusterSubnetGroupNotFoundFault>()(
   "ClusterSubnetGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -7262,7 +7260,7 @@ export class ClusterSubnetGroupNotFoundFault extends S.TaggedError<ClusterSubnet
     code: "ClusterSubnetGroupNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSubscriptionStateFault extends S.TaggedError<InvalidSubscriptionStateFault>()(
   "InvalidSubscriptionStateFault",
   { message: S.optional(S.String) },
@@ -7270,7 +7268,7 @@ export class InvalidSubscriptionStateFault extends S.TaggedError<InvalidSubscrip
     code: "InvalidSubscriptionStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class HsmClientCertificateNotFoundFault extends S.TaggedError<HsmClientCertificateNotFoundFault>()(
   "HsmClientCertificateNotFoundFault",
   { message: S.optional(S.String) },
@@ -7278,7 +7276,7 @@ export class HsmClientCertificateNotFoundFault extends S.TaggedError<HsmClientCe
     code: "HsmClientCertificateNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class HsmConfigurationNotFoundFault extends S.TaggedError<HsmConfigurationNotFoundFault>()(
   "HsmConfigurationNotFoundFault",
   { message: S.optional(S.String) },
@@ -7286,7 +7284,7 @@ export class HsmConfigurationNotFoundFault extends S.TaggedError<HsmConfiguratio
     code: "HsmConfigurationNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DependentServiceAccessDeniedFault extends S.TaggedError<DependentServiceAccessDeniedFault>()(
   "DependentServiceAccessDeniedFault",
   { message: S.optional(S.String) },
@@ -7294,17 +7292,17 @@ export class DependentServiceAccessDeniedFault extends S.TaggedError<DependentSe
     code: "DependentServiceAccessDenied",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class ResourceNotFoundFault extends S.TaggedError<ResourceNotFoundFault>()(
   "ResourceNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ScheduledActionNotFoundFault extends S.TaggedError<ScheduledActionNotFoundFault>()(
   "ScheduledActionNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ScheduledActionNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSnapshotCopyGrantStateFault extends S.TaggedError<InvalidSnapshotCopyGrantStateFault>()(
   "InvalidSnapshotCopyGrantStateFault",
   { message: S.optional(S.String) },
@@ -7312,7 +7310,7 @@ export class InvalidSnapshotCopyGrantStateFault extends S.TaggedError<InvalidSna
     code: "InvalidSnapshotCopyGrantStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterSnapshotScheduleStateFault extends S.TaggedError<InvalidClusterSnapshotScheduleStateFault>()(
   "InvalidClusterSnapshotScheduleStateFault",
   { message: S.optional(S.String) },
@@ -7320,22 +7318,22 @@ export class InvalidClusterSnapshotScheduleStateFault extends S.TaggedError<Inva
     code: "InvalidClusterSnapshotScheduleState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTagFault extends S.TaggedError<InvalidTagFault>()(
   "InvalidTagFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidTagFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedOperationFault extends S.TaggedError<UnsupportedOperationFault>()(
   "UnsupportedOperationFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UnsupportedOperation", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BucketNotFoundFault extends S.TaggedError<BucketNotFoundFault>()(
   "BucketNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "BucketNotFoundFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationAlreadyExistsFault extends S.TaggedError<IntegrationAlreadyExistsFault>()(
   "IntegrationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7343,22 +7341,22 @@ export class IntegrationAlreadyExistsFault extends S.TaggedError<IntegrationAlre
     code: "IntegrationAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidScheduleFault extends S.TaggedError<InvalidScheduleFault>()(
   "InvalidScheduleFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSchedule", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidUsageLimitFault extends S.TaggedError<InvalidUsageLimitFault>()(
   "InvalidUsageLimitFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidUsageLimit", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PartnerNotFoundFault extends S.TaggedError<PartnerNotFoundFault>()(
   "PartnerNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "PartnerNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointAuthorizationAlreadyExistsFault extends S.TaggedError<EndpointAuthorizationAlreadyExistsFault>()(
   "EndpointAuthorizationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7366,7 +7364,7 @@ export class EndpointAuthorizationAlreadyExistsFault extends S.TaggedError<Endpo
     code: "EndpointAuthorizationAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BatchModifyClusterSnapshotsLimitExceededFault extends S.TaggedError<BatchModifyClusterSnapshotsLimitExceededFault>()(
   "BatchModifyClusterSnapshotsLimitExceededFault",
   { message: S.optional(S.String) },
@@ -7374,7 +7372,7 @@ export class BatchModifyClusterSnapshotsLimitExceededFault extends S.TaggedError
     code: "BatchModifyClusterSnapshotsLimitExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSnapshotAlreadyExistsFault extends S.TaggedError<ClusterSnapshotAlreadyExistsFault>()(
   "ClusterSnapshotAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7382,7 +7380,7 @@ export class ClusterSnapshotAlreadyExistsFault extends S.TaggedError<ClusterSnap
     code: "ClusterSnapshotAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthenticationProfileAlreadyExistsFault extends S.TaggedError<AuthenticationProfileAlreadyExistsFault>()(
   "AuthenticationProfileAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7390,7 +7388,7 @@ export class AuthenticationProfileAlreadyExistsFault extends S.TaggedError<Authe
     code: "AuthenticationProfileAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSecurityGroupAlreadyExistsFault extends S.TaggedError<ClusterSecurityGroupAlreadyExistsFault>()(
   "ClusterSecurityGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7398,7 +7396,7 @@ export class ClusterSecurityGroupAlreadyExistsFault extends S.TaggedError<Cluste
     code: "ClusterSecurityGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomCnameAssociationFault extends S.TaggedError<CustomCnameAssociationFault>()(
   "CustomCnameAssociationFault",
   { message: S.optional(S.String) },
@@ -7406,12 +7404,12 @@ export class CustomCnameAssociationFault extends S.TaggedError<CustomCnameAssoci
     code: "CustomCnameAssociationFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidScheduledActionFault extends S.TaggedError<InvalidScheduledActionFault>()(
   "InvalidScheduledActionFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidScheduledAction", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthenticationProfileNotFoundFault extends S.TaggedError<AuthenticationProfileNotFoundFault>()(
   "AuthenticationProfileNotFoundFault",
   { message: S.optional(S.String) },
@@ -7419,7 +7417,7 @@ export class AuthenticationProfileNotFoundFault extends S.TaggedError<Authentica
     code: "AuthenticationProfileNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterParameterGroupStateFault extends S.TaggedError<InvalidClusterParameterGroupStateFault>()(
   "InvalidClusterParameterGroupStateFault",
   { message: S.optional(S.String) },
@@ -7427,7 +7425,7 @@ export class InvalidClusterParameterGroupStateFault extends S.TaggedError<Invali
     code: "InvalidClusterParameterGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterSecurityGroupStateFault extends S.TaggedError<InvalidClusterSecurityGroupStateFault>()(
   "InvalidClusterSecurityGroupStateFault",
   { message: S.optional(S.String) },
@@ -7435,12 +7433,12 @@ export class InvalidClusterSecurityGroupStateFault extends S.TaggedError<Invalid
     code: "InvalidClusterSecurityGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSnapshotNotFoundFault extends S.TaggedError<ClusterSnapshotNotFoundFault>()(
   "ClusterSnapshotNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterSnapshotNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterSubnetGroupStateFault extends S.TaggedError<InvalidClusterSubnetGroupStateFault>()(
   "InvalidClusterSubnetGroupStateFault",
   { message: S.optional(S.String) },
@@ -7448,12 +7446,12 @@ export class InvalidClusterSubnetGroupStateFault extends S.TaggedError<InvalidCl
     code: "InvalidClusterSubnetGroupStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionNotFoundFault extends S.TaggedError<SubscriptionNotFoundFault>()(
   "SubscriptionNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubscriptionNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidHsmClientCertificateStateFault extends S.TaggedError<InvalidHsmClientCertificateStateFault>()(
   "InvalidHsmClientCertificateStateFault",
   { message: S.optional(S.String) },
@@ -7461,7 +7459,7 @@ export class InvalidHsmClientCertificateStateFault extends S.TaggedError<Invalid
     code: "InvalidHsmClientCertificateStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidHsmConfigurationStateFault extends S.TaggedError<InvalidHsmConfigurationStateFault>()(
   "InvalidHsmConfigurationStateFault",
   { message: S.optional(S.String) },
@@ -7469,7 +7467,7 @@ export class InvalidHsmConfigurationStateFault extends S.TaggedError<InvalidHsmC
     code: "InvalidHsmConfigurationStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DependentServiceUnavailableFault extends S.TaggedError<DependentServiceUnavailableFault>()(
   "DependentServiceUnavailableFault",
   { message: S.optional(S.String) },
@@ -7477,12 +7475,12 @@ export class DependentServiceUnavailableFault extends S.TaggedError<DependentSer
     code: "DependentServiceUnavailableFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedOperation extends S.TaggedError<UnauthorizedOperation>()(
   "UnauthorizedOperation",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UnauthorizedOperation", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotCopyGrantNotFoundFault extends S.TaggedError<SnapshotCopyGrantNotFoundFault>()(
   "SnapshotCopyGrantNotFoundFault",
   { message: S.optional(S.String) },
@@ -7490,27 +7488,27 @@ export class SnapshotCopyGrantNotFoundFault extends S.TaggedError<SnapshotCopyGr
     code: "SnapshotCopyGrantNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotScheduleNotFoundFault extends S.TaggedError<SnapshotScheduleNotFoundFault>()(
   "SnapshotScheduleNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SnapshotScheduleNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UsageLimitNotFoundFault extends S.TaggedError<UsageLimitNotFoundFault>()(
   "UsageLimitNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UsageLimitNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNamespaceFault extends S.TaggedError<InvalidNamespaceFault>()(
   "InvalidNamespaceFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidNamespaceFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointNotFoundFault extends S.TaggedError<EndpointNotFoundFault>()(
   "EndpointNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "EndpointNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotCopyAlreadyDisabledFault extends S.TaggedError<SnapshotCopyAlreadyDisabledFault>()(
   "SnapshotCopyAlreadyDisabledFault",
   { message: S.optional(S.String) },
@@ -7518,7 +7516,7 @@ export class SnapshotCopyAlreadyDisabledFault extends S.TaggedError<SnapshotCopy
     code: "SnapshotCopyAlreadyDisabledFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientS3BucketPolicyFault extends S.TaggedError<InsufficientS3BucketPolicyFault>()(
   "InsufficientS3BucketPolicyFault",
   { message: S.optional(S.String) },
@@ -7526,27 +7524,27 @@ export class InsufficientS3BucketPolicyFault extends S.TaggedError<InsufficientS
     code: "InsufficientS3BucketPolicyFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CopyToRegionDisabledFault extends S.TaggedError<CopyToRegionDisabledFault>()(
   "CopyToRegionDisabledFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "CopyToRegionDisabledFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RedshiftInvalidParameterFault extends S.TaggedError<RedshiftInvalidParameterFault>()(
   "RedshiftInvalidParameterFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "RedshiftInvalidParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterAlreadyExistsFault extends S.TaggedError<ClusterAlreadyExistsFault>()(
   "ClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterOnLatestRevisionFault extends S.TaggedError<ClusterOnLatestRevisionFault>()(
   "ClusterOnLatestRevisionFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterOnLatestRevision", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSubnetQuotaExceededFault extends S.TaggedError<ClusterSubnetQuotaExceededFault>()(
   "ClusterSubnetQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7554,12 +7552,12 @@ export class ClusterSubnetQuotaExceededFault extends S.TaggedError<ClusterSubnet
     code: "ClusterSubnetQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SNSInvalidTopicFault extends S.TaggedError<SNSInvalidTopicFault>()(
   "SNSInvalidTopicFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SNSInvalidTopic", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationConflictOperationFault extends S.TaggedError<IntegrationConflictOperationFault>()(
   "IntegrationConflictOperationFault",
   { message: S.optional(S.String) },
@@ -7567,7 +7565,7 @@ export class IntegrationConflictOperationFault extends S.TaggedError<Integration
     code: "IntegrationConflictOperationFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRetentionPeriodFault extends S.TaggedError<InvalidRetentionPeriodFault>()(
   "InvalidRetentionPeriodFault",
   { message: S.optional(S.String) },
@@ -7575,22 +7573,22 @@ export class InvalidRetentionPeriodFault extends S.TaggedError<InvalidRetentionP
     code: "InvalidRetentionPeriodFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeAlreadyExistsFault extends S.TaggedError<ReservedNodeAlreadyExistsFault>()(
   "ReservedNodeAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedNodeAlreadyExists", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictPolicyUpdateFault extends S.TaggedError<ConflictPolicyUpdateFault>()(
   "ConflictPolicyUpdateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConflictPolicyUpdateFault", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class AccessToSnapshotDeniedFault extends S.TaggedError<AccessToSnapshotDeniedFault>()(
   "AccessToSnapshotDeniedFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AccessToSnapshotDenied", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientClusterCapacityFault extends S.TaggedError<InsufficientClusterCapacityFault>()(
   "InsufficientClusterCapacityFault",
   { message: S.optional(S.String) },
@@ -7598,12 +7596,12 @@ export class InsufficientClusterCapacityFault extends S.TaggedError<Insufficient
     code: "InsufficientClusterCapacity",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthorizationNotFoundFault extends S.TaggedError<AuthorizationNotFoundFault>()(
   "AuthorizationNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AuthorizationNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DependentServiceRequestThrottlingFault extends S.TaggedError<DependentServiceRequestThrottlingFault>()(
   "DependentServiceRequestThrottlingFault",
   { message: S.optional(S.String) },
@@ -7611,12 +7609,12 @@ export class DependentServiceRequestThrottlingFault extends S.TaggedError<Depend
     code: "DependentServiceRequestThrottlingFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResizeNotFoundFault extends S.TaggedError<ResizeNotFoundFault>()(
   "ResizeNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResizeNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointAuthorizationNotFoundFault extends S.TaggedError<EndpointAuthorizationNotFoundFault>()(
   "EndpointAuthorizationNotFoundFault",
   { message: S.optional(S.String) },
@@ -7624,17 +7622,17 @@ export class EndpointAuthorizationNotFoundFault extends S.TaggedError<EndpointAu
     code: "EndpointAuthorizationNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagLimitExceededFault extends S.TaggedError<TagLimitExceededFault>()(
   "TagLimitExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TagLimitExceededFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededFault extends S.TaggedError<LimitExceededFault>()(
   "LimitExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceededFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedPartnerIntegrationFault extends S.TaggedError<UnauthorizedPartnerIntegrationFault>()(
   "UnauthorizedPartnerIntegrationFault",
   { message: S.optional(S.String) },
@@ -7642,7 +7640,7 @@ export class UnauthorizedPartnerIntegrationFault extends S.TaggedError<Unauthori
     code: "UnauthorizedPartnerIntegration",
     httpResponseCode: 401,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class EndpointAuthorizationsPerClusterLimitExceededFault extends S.TaggedError<EndpointAuthorizationsPerClusterLimitExceededFault>()(
   "EndpointAuthorizationsPerClusterLimitExceededFault",
   { message: S.optional(S.String) },
@@ -7650,7 +7648,7 @@ export class EndpointAuthorizationsPerClusterLimitExceededFault extends S.Tagged
     code: "EndpointAuthorizationsPerClusterLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BatchDeleteRequestSizeExceededFault extends S.TaggedError<BatchDeleteRequestSizeExceededFault>()(
   "BatchDeleteRequestSizeExceededFault",
   { message: S.optional(S.String) },
@@ -7658,7 +7656,7 @@ export class BatchDeleteRequestSizeExceededFault extends S.TaggedError<BatchDele
     code: "BatchDeleteRequestSizeExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthenticationProfileQuotaExceededFault extends S.TaggedError<AuthenticationProfileQuotaExceededFault>()(
   "AuthenticationProfileQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7666,7 +7664,7 @@ export class AuthenticationProfileQuotaExceededFault extends S.TaggedError<Authe
     code: "AuthenticationProfileQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterParameterGroupAlreadyExistsFault extends S.TaggedError<ClusterParameterGroupAlreadyExistsFault>()(
   "ClusterParameterGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7674,7 +7672,7 @@ export class ClusterParameterGroupAlreadyExistsFault extends S.TaggedError<Clust
     code: "ClusterParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSecurityGroupQuotaExceededFault extends S.TaggedError<ClusterSecurityGroupQuotaExceededFault>()(
   "ClusterSecurityGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7682,7 +7680,7 @@ export class ClusterSecurityGroupQuotaExceededFault extends S.TaggedError<Cluste
     code: "QuotaExceeded.ClusterSecurityGroup",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventSubscriptionQuotaExceededFault extends S.TaggedError<EventSubscriptionQuotaExceededFault>()(
   "EventSubscriptionQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7690,7 +7688,7 @@ export class EventSubscriptionQuotaExceededFault extends S.TaggedError<EventSubs
     code: "EventSubscriptionQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class HsmClientCertificateAlreadyExistsFault extends S.TaggedError<HsmClientCertificateAlreadyExistsFault>()(
   "HsmClientCertificateAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7698,7 +7696,7 @@ export class HsmClientCertificateAlreadyExistsFault extends S.TaggedError<HsmCli
     code: "HsmClientCertificateAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class HsmConfigurationAlreadyExistsFault extends S.TaggedError<HsmConfigurationAlreadyExistsFault>()(
   "HsmConfigurationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7706,7 +7704,7 @@ export class HsmConfigurationAlreadyExistsFault extends S.TaggedError<HsmConfigu
     code: "HsmConfigurationAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ScheduledActionAlreadyExistsFault extends S.TaggedError<ScheduledActionAlreadyExistsFault>()(
   "ScheduledActionAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7714,7 +7712,7 @@ export class ScheduledActionAlreadyExistsFault extends S.TaggedError<ScheduledAc
     code: "ScheduledActionAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ScheduleDefinitionTypeUnsupportedFault extends S.TaggedError<ScheduleDefinitionTypeUnsupportedFault>()(
   "ScheduleDefinitionTypeUnsupportedFault",
   { message: S.optional(S.String) },
@@ -7722,7 +7720,7 @@ export class ScheduleDefinitionTypeUnsupportedFault extends S.TaggedError<Schedu
     code: "ScheduleDefinitionTypeUnsupported",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidAuthenticationProfileRequestFault extends S.TaggedError<InvalidAuthenticationProfileRequestFault>()(
   "InvalidAuthenticationProfileRequestFault",
   { message: S.optional(S.String) },
@@ -7730,7 +7728,7 @@ export class InvalidAuthenticationProfileRequestFault extends S.TaggedError<Inva
     code: "InvalidAuthenticationProfileRequestFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterSnapshotStateFault extends S.TaggedError<InvalidClusterSnapshotStateFault>()(
   "InvalidClusterSnapshotStateFault",
   { message: S.optional(S.String) },
@@ -7738,7 +7736,7 @@ export class InvalidClusterSnapshotStateFault extends S.TaggedError<InvalidClust
     code: "InvalidClusterSnapshotState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterSubnetStateFault extends S.TaggedError<InvalidClusterSubnetStateFault>()(
   "InvalidClusterSubnetStateFault",
   { message: S.optional(S.String) },
@@ -7746,7 +7744,7 @@ export class InvalidClusterSubnetStateFault extends S.TaggedError<InvalidCluster
     code: "InvalidClusterSubnetStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RedshiftIdcApplicationNotExistsFault extends S.TaggedError<RedshiftIdcApplicationNotExistsFault>()(
   "RedshiftIdcApplicationNotExistsFault",
   { message: S.optional(S.String) },
@@ -7754,12 +7752,12 @@ export class RedshiftIdcApplicationNotExistsFault extends S.TaggedError<Redshift
     code: "RedshiftIdcApplicationNotExists",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationNotFoundFault extends S.TaggedError<IntegrationNotFoundFault>()(
   "IntegrationNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "IntegrationNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeExchangeNotFoundFault extends S.TaggedError<ReservedNodeExchangeNotFoundFault>()(
   "ReservedNodeExchangeNotFoundFault",
   { message: S.optional(S.String) },
@@ -7767,7 +7765,7 @@ export class ReservedNodeExchangeNotFoundFault extends S.TaggedError<ReservedNod
     code: "ReservedNodeExchangeNotFond",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeOfferingNotFoundFault extends S.TaggedError<ReservedNodeOfferingNotFoundFault>()(
   "ReservedNodeOfferingNotFoundFault",
   { message: S.optional(S.String) },
@@ -7775,32 +7773,32 @@ export class ReservedNodeOfferingNotFoundFault extends S.TaggedError<ReservedNod
     code: "ReservedNodeOfferingNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TableRestoreNotFoundFault extends S.TaggedError<TableRestoreNotFoundFault>()(
   "TableRestoreNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TableRestoreNotFoundFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidS3BucketNameFault extends S.TaggedError<InvalidS3BucketNameFault>()(
   "InvalidS3BucketNameFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidS3BucketNameFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidReservedNodeStateFault extends S.TaggedError<InvalidReservedNodeStateFault>()(
   "InvalidReservedNodeStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidReservedNodeState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidPolicyFault extends S.TaggedError<InvalidPolicyFault>()(
   "InvalidPolicyFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidPolicyFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SNSNoAuthorizationFault extends S.TaggedError<SNSNoAuthorizationFault>()(
   "SNSNoAuthorizationFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SNSNoAuthorization", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationConflictStateFault extends S.TaggedError<IntegrationConflictStateFault>()(
   "IntegrationConflictStateFault",
   { message: S.optional(S.String) },
@@ -7808,22 +7806,22 @@ export class IntegrationConflictStateFault extends S.TaggedError<IntegrationConf
     code: "IntegrationConflictStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotCopyDisabledFault extends S.TaggedError<SnapshotCopyDisabledFault>()(
   "SnapshotCopyDisabledFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SnapshotCopyDisabledFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterQuotaExceededFault extends S.TaggedError<ClusterQuotaExceededFault>()(
   "ClusterQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidAuthorizationStateFault extends S.TaggedError<InvalidAuthorizationStateFault>()(
   "InvalidAuthorizationStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidAuthorizationState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSnapshotQuotaExceededFault extends S.TaggedError<ClusterSnapshotQuotaExceededFault>()(
   "ClusterSnapshotQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7831,7 +7829,7 @@ export class ClusterSnapshotQuotaExceededFault extends S.TaggedError<ClusterSnap
     code: "ClusterSnapshotQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomDomainAssociationNotFoundFault extends S.TaggedError<CustomDomainAssociationNotFoundFault>()(
   "CustomDomainAssociationNotFoundFault",
   { message: S.optional(S.String) },
@@ -7839,7 +7837,7 @@ export class CustomDomainAssociationNotFoundFault extends S.TaggedError<CustomDo
     code: "CustomDomainAssociationNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ScheduledActionTypeUnsupportedFault extends S.TaggedError<ScheduledActionTypeUnsupportedFault>()(
   "ScheduledActionTypeUnsupportedFault",
   { message: S.optional(S.String) },
@@ -7847,7 +7845,7 @@ export class ScheduledActionTypeUnsupportedFault extends S.TaggedError<Scheduled
     code: "ScheduledActionTypeUnsupported",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InProgressTableRestoreQuotaExceededFault extends S.TaggedError<InProgressTableRestoreQuotaExceededFault>()(
   "InProgressTableRestoreQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7855,12 +7853,12 @@ export class InProgressTableRestoreQuotaExceededFault extends S.TaggedError<InPr
     code: "InProgressTableRestoreQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeNotFoundFault extends S.TaggedError<ReservedNodeNotFoundFault>()(
   "ReservedNodeNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedNodeNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotScheduleUpdateInProgressFault extends S.TaggedError<SnapshotScheduleUpdateInProgressFault>()(
   "SnapshotScheduleUpdateInProgressFault",
   { message: S.optional(S.String) },
@@ -7868,12 +7866,12 @@ export class SnapshotScheduleUpdateInProgressFault extends S.TaggedError<Snapsho
     code: "SnapshotScheduleUpdateInProgress",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidEndpointStateFault extends S.TaggedError<InvalidEndpointStateFault>()(
   "InvalidEndpointStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidEndpointState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationQuotaExceededFault extends S.TaggedError<IntegrationQuotaExceededFault>()(
   "IntegrationQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7881,12 +7879,12 @@ export class IntegrationQuotaExceededFault extends S.TaggedError<IntegrationQuot
     code: "IntegrationQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UsageLimitAlreadyExistsFault extends S.TaggedError<UsageLimitAlreadyExistsFault>()(
   "UsageLimitAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UsageLimitAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotCopyGrantAlreadyExistsFault extends S.TaggedError<SnapshotCopyGrantAlreadyExistsFault>()(
   "SnapshotCopyGrantAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7894,7 +7892,7 @@ export class SnapshotCopyGrantAlreadyExistsFault extends S.TaggedError<SnapshotC
     code: "SnapshotCopyGrantAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IncompatibleOrderableOptions extends S.TaggedError<IncompatibleOrderableOptions>()(
   "IncompatibleOrderableOptions",
   { message: S.optional(S.String) },
@@ -7902,17 +7900,17 @@ export class IncompatibleOrderableOptions extends S.TaggedError<IncompatibleOrde
     code: "IncompatibleOrderableOptions",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterTrackFault extends S.TaggedError<InvalidClusterTrackFault>()(
   "InvalidClusterTrackFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidClusterTrack", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSubnet extends S.TaggedError<InvalidSubnet>()(
   "InvalidSubnet",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthorizationAlreadyExistsFault extends S.TaggedError<AuthorizationAlreadyExistsFault>()(
   "AuthorizationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7920,7 +7918,7 @@ export class AuthorizationAlreadyExistsFault extends S.TaggedError<Authorization
     code: "AuthorizationAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterParameterGroupQuotaExceededFault extends S.TaggedError<ClusterParameterGroupQuotaExceededFault>()(
   "ClusterParameterGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7928,7 +7926,7 @@ export class ClusterParameterGroupQuotaExceededFault extends S.TaggedError<Clust
     code: "ClusterParameterGroupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSubnetGroupAlreadyExistsFault extends S.TaggedError<ClusterSubnetGroupAlreadyExistsFault>()(
   "ClusterSubnetGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7936,12 +7934,12 @@ export class ClusterSubnetGroupAlreadyExistsFault extends S.TaggedError<ClusterS
     code: "ClusterSubnetGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessToClusterDeniedFault extends S.TaggedError<AccessToClusterDeniedFault>()(
   "AccessToClusterDeniedFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AccessToClusterDenied", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class HsmClientCertificateQuotaExceededFault extends S.TaggedError<HsmClientCertificateQuotaExceededFault>()(
   "HsmClientCertificateQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7949,7 +7947,7 @@ export class HsmClientCertificateQuotaExceededFault extends S.TaggedError<HsmCli
     code: "HsmClientCertificateQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class HsmConfigurationQuotaExceededFault extends S.TaggedError<HsmConfigurationQuotaExceededFault>()(
   "HsmConfigurationQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7957,7 +7955,7 @@ export class HsmConfigurationQuotaExceededFault extends S.TaggedError<HsmConfigu
     code: "HsmConfigurationQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ScheduledActionQuotaExceededFault extends S.TaggedError<ScheduledActionQuotaExceededFault>()(
   "ScheduledActionQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -7965,7 +7963,7 @@ export class ScheduledActionQuotaExceededFault extends S.TaggedError<ScheduledAc
     code: "ScheduledActionQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotScheduleAlreadyExistsFault extends S.TaggedError<SnapshotScheduleAlreadyExistsFault>()(
   "SnapshotScheduleAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -7973,12 +7971,12 @@ export class SnapshotScheduleAlreadyExistsFault extends S.TaggedError<SnapshotSc
     code: "SnapshotScheduleAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidS3KeyPrefixFault extends S.TaggedError<InvalidS3KeyPrefixFault>()(
   "InvalidS3KeyPrefixFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidS3KeyPrefixFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeAlreadyMigratedFault extends S.TaggedError<ReservedNodeAlreadyMigratedFault>()(
   "ReservedNodeAlreadyMigratedFault",
   { message: S.optional(S.String) },
@@ -7986,12 +7984,12 @@ export class ReservedNodeAlreadyMigratedFault extends S.TaggedError<ReservedNode
     code: "ReservedNodeAlreadyMigrated",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SNSTopicArnNotFoundFault extends S.TaggedError<SNSTopicArnNotFoundFault>()(
   "SNSTopicArnNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SNSTopicArnNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTableRestoreArgumentFault extends S.TaggedError<InvalidTableRestoreArgumentFault>()(
   "InvalidTableRestoreArgumentFault",
   { message: S.optional(S.String) },
@@ -7999,12 +7997,12 @@ export class InvalidTableRestoreArgumentFault extends S.TaggedError<InvalidTable
     code: "InvalidTableRestoreArgument",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeQuotaExceededFault extends S.TaggedError<ReservedNodeQuotaExceededFault>()(
   "ReservedNodeQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedNodeQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NumberOfNodesPerClusterLimitExceededFault extends S.TaggedError<NumberOfNodesPerClusterLimitExceededFault>()(
   "NumberOfNodesPerClusterLimitExceededFault",
   { message: S.optional(S.String) },
@@ -8012,7 +8010,7 @@ export class NumberOfNodesPerClusterLimitExceededFault extends S.TaggedError<Num
     code: "NumberOfNodesPerClusterLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationSourceNotFoundFault extends S.TaggedError<IntegrationSourceNotFoundFault>()(
   "IntegrationSourceNotFoundFault",
   { message: S.optional(S.String) },
@@ -8020,7 +8018,7 @@ export class IntegrationSourceNotFoundFault extends S.TaggedError<IntegrationSou
     code: "IntegrationSourceNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotCopyGrantQuotaExceededFault extends S.TaggedError<SnapshotCopyGrantQuotaExceededFault>()(
   "SnapshotCopyGrantQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -8028,7 +8026,7 @@ export class SnapshotCopyGrantQuotaExceededFault extends S.TaggedError<SnapshotC
     code: "SnapshotCopyGrantQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotCopyAlreadyEnabledFault extends S.TaggedError<SnapshotCopyAlreadyEnabledFault>()(
   "SnapshotCopyAlreadyEnabledFault",
   { message: S.optional(S.String) },
@@ -8036,17 +8034,17 @@ export class SnapshotCopyAlreadyEnabledFault extends S.TaggedError<SnapshotCopyA
     code: "SnapshotCopyAlreadyEnabledFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidElasticIpFault extends S.TaggedError<InvalidElasticIpFault>()(
   "InvalidElasticIpFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidElasticIpFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetAlreadyInUse extends S.TaggedError<SubnetAlreadyInUse>()(
   "SubnetAlreadyInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetAlreadyInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthorizationQuotaExceededFault extends S.TaggedError<AuthorizationQuotaExceededFault>()(
   "AuthorizationQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -8054,7 +8052,7 @@ export class AuthorizationQuotaExceededFault extends S.TaggedError<Authorization
     code: "AuthorizationQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterSubnetGroupQuotaExceededFault extends S.TaggedError<ClusterSubnetGroupQuotaExceededFault>()(
   "ClusterSubnetGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -8062,12 +8060,12 @@ export class ClusterSubnetGroupQuotaExceededFault extends S.TaggedError<ClusterS
     code: "ClusterSubnetGroupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointAlreadyExistsFault extends S.TaggedError<EndpointAlreadyExistsFault>()(
   "EndpointAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "EndpointAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RedshiftIdcApplicationAlreadyExistsFault extends S.TaggedError<RedshiftIdcApplicationAlreadyExistsFault>()(
   "RedshiftIdcApplicationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -8075,7 +8073,7 @@ export class RedshiftIdcApplicationAlreadyExistsFault extends S.TaggedError<Reds
     code: "RedshiftIdcApplicationAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotScheduleQuotaExceededFault extends S.TaggedError<SnapshotScheduleQuotaExceededFault>()(
   "SnapshotScheduleQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -8083,12 +8081,12 @@ export class SnapshotScheduleQuotaExceededFault extends S.TaggedError<SnapshotSc
     code: "SnapshotScheduleQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SourceNotFoundFault extends S.TaggedError<SourceNotFoundFault>()(
   "SourceNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SourceNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NumberOfNodesQuotaExceededFault extends S.TaggedError<NumberOfNodesQuotaExceededFault>()(
   "NumberOfNodesQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -8096,7 +8094,7 @@ export class NumberOfNodesQuotaExceededFault extends S.TaggedError<NumberOfNodes
     code: "NumberOfNodesQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationTargetNotFoundFault extends S.TaggedError<IntegrationTargetNotFoundFault>()(
   "IntegrationTargetNotFoundFault",
   { message: S.optional(S.String) },
@@ -8104,7 +8102,7 @@ export class IntegrationTargetNotFoundFault extends S.TaggedError<IntegrationTar
     code: "IntegrationTargetNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnknownSnapshotCopyRegionFault extends S.TaggedError<UnknownSnapshotCopyRegionFault>()(
   "UnknownSnapshotCopyRegionFault",
   { message: S.optional(S.String) },
@@ -8112,7 +8110,7 @@ export class UnknownSnapshotCopyRegionFault extends S.TaggedError<UnknownSnapsho
     code: "UnknownSnapshotCopyRegionFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class Ipv6CidrBlockNotFoundFault extends S.TaggedError<Ipv6CidrBlockNotFoundFault>()(
   "Ipv6CidrBlockNotFoundFault",
   { message: S.optional(S.String) },
@@ -8120,12 +8118,12 @@ export class Ipv6CidrBlockNotFoundFault extends S.TaggedError<Ipv6CidrBlockNotFo
     code: "Ipv6CidrBlockNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRestoreFault extends S.TaggedError<InvalidRestoreFault>()(
   "InvalidRestoreFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidRestore", httpResponseCode: 406 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetworkStateFault>()(
   "InvalidVPCNetworkStateFault",
   { message: S.optional(S.String) },
@@ -8133,7 +8131,7 @@ export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetwork
     code: "InvalidVPCNetworkStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointsPerAuthorizationLimitExceededFault extends S.TaggedError<EndpointsPerAuthorizationLimitExceededFault>()(
   "EndpointsPerAuthorizationLimitExceededFault",
   { message: S.optional(S.String) },
@@ -8141,7 +8139,7 @@ export class EndpointsPerAuthorizationLimitExceededFault extends S.TaggedError<E
     code: "EndpointsPerAuthorizationLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RedshiftIdcApplicationQuotaExceededFault extends S.TaggedError<RedshiftIdcApplicationQuotaExceededFault>()(
   "RedshiftIdcApplicationQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -8149,7 +8147,7 @@ export class RedshiftIdcApplicationQuotaExceededFault extends S.TaggedError<Reds
     code: "RedshiftIdcApplicationQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionCategoryNotFoundFault extends S.TaggedError<SubscriptionCategoryNotFoundFault>()(
   "SubscriptionCategoryNotFoundFault",
   { message: S.optional(S.String) },
@@ -8157,22 +8155,22 @@ export class SubscriptionCategoryNotFoundFault extends S.TaggedError<Subscriptio
     code: "SubscriptionCategoryNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedOptionFault extends S.TaggedError<UnsupportedOptionFault>()(
   "UnsupportedOptionFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UnsupportedOptionFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionAlreadyExistFault extends S.TaggedError<SubscriptionAlreadyExistFault>()(
   "SubscriptionAlreadyExistFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubscriptionAlreadyExist", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TableLimitExceededFault extends S.TaggedError<TableLimitExceededFault>()(
   "TableLimitExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TableLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EndpointsPerClusterLimitExceededFault extends S.TaggedError<EndpointsPerClusterLimitExceededFault>()(
   "EndpointsPerClusterLimitExceededFault",
   { message: S.optional(S.String) },
@@ -8180,7 +8178,7 @@ export class EndpointsPerClusterLimitExceededFault extends S.TaggedError<Endpoin
     code: "EndpointsPerClusterLimitExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionEventIdNotFoundFault extends S.TaggedError<SubscriptionEventIdNotFoundFault>()(
   "SubscriptionEventIdNotFoundFault",
   { message: S.optional(S.String) },
@@ -8188,7 +8186,7 @@ export class SubscriptionEventIdNotFoundFault extends S.TaggedError<Subscription
     code: "SubscriptionEventIdNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionSeverityNotFoundFault extends S.TaggedError<SubscriptionSeverityNotFoundFault>()(
   "SubscriptionSeverityNotFoundFault",
   { message: S.optional(S.String) },
@@ -8196,7 +8194,7 @@ export class SubscriptionSeverityNotFoundFault extends S.TaggedError<Subscriptio
     code: "SubscriptionSeverityNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -8206,8 +8204,8 @@ export const describeStorage: (
   input: DescribeStorageRequest,
 ) => Effect.Effect<
   CustomerStorageMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStorageRequest,
   output: CustomerStorageMessage,
@@ -8222,8 +8220,8 @@ export const authorizeDataShare: (
   input: AuthorizeDataShareMessage,
 ) => Effect.Effect<
   DataShare,
-  InvalidDataShareFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidDataShareFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeDataShareMessage,
   output: DataShare,
@@ -8237,8 +8235,8 @@ export const deleteTags: (
   input: DeleteTagsMessage,
 ) => Effect.Effect<
   DeleteTagsResponse,
-  InvalidTagFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidTagFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsMessage,
   output: DeleteTagsResponse,
@@ -8270,22 +8268,22 @@ export const describeClusterParameterGroups: {
     input: DescribeClusterParameterGroupsMessage,
   ): Effect.Effect<
     ClusterParameterGroupsMessage,
-    ClusterParameterGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterParameterGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterParameterGroupsMessage,
   ) => Stream.Stream<
     ClusterParameterGroupsMessage,
-    ClusterParameterGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterParameterGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterParameterGroupsMessage,
   ) => Stream.Stream<
     ClusterParameterGroup,
-    ClusterParameterGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterParameterGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterParameterGroupsMessage,
@@ -8318,22 +8316,22 @@ export const describeClusterParameters: {
     input: DescribeClusterParametersMessage,
   ): Effect.Effect<
     ClusterParameterGroupDetails,
-    ClusterParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterParametersMessage,
   ) => Stream.Stream<
     ClusterParameterGroupDetails,
-    ClusterParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterParametersMessage,
   ) => Stream.Stream<
     Parameter,
-    ClusterParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterParametersMessage,
@@ -8368,22 +8366,22 @@ export const describeClusters: {
     input: DescribeClustersMessage,
   ): Effect.Effect<
     ClustersMessage,
-    ClusterNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClustersMessage,
   ) => Stream.Stream<
     ClustersMessage,
-    ClusterNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClustersMessage,
   ) => Stream.Stream<
     Cluster,
-    ClusterNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClustersMessage,
@@ -8420,22 +8418,22 @@ export const describeClusterSecurityGroups: {
     input: DescribeClusterSecurityGroupsMessage,
   ): Effect.Effect<
     ClusterSecurityGroupMessage,
-    ClusterSecurityGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterSecurityGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterSecurityGroupsMessage,
   ) => Stream.Stream<
     ClusterSecurityGroupMessage,
-    ClusterSecurityGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterSecurityGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterSecurityGroupsMessage,
   ) => Stream.Stream<
     ClusterSecurityGroup,
-    ClusterSecurityGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterSecurityGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterSecurityGroupsMessage,
@@ -8468,22 +8466,22 @@ export const describeClusterSubnetGroups: {
     input: DescribeClusterSubnetGroupsMessage,
   ): Effect.Effect<
     ClusterSubnetGroupMessage,
-    ClusterSubnetGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterSubnetGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterSubnetGroupsMessage,
   ) => Stream.Stream<
     ClusterSubnetGroupMessage,
-    ClusterSubnetGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterSubnetGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterSubnetGroupsMessage,
   ) => Stream.Stream<
     ClusterSubnetGroup,
-    ClusterSubnetGroupNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterSubnetGroupNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterSubnetGroupsMessage,
@@ -8505,22 +8503,22 @@ export const describeDataShares: {
     input: DescribeDataSharesMessage,
   ): Effect.Effect<
     DescribeDataSharesResult,
-    InvalidDataShareFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidDataShareFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDataSharesMessage,
   ) => Stream.Stream<
     DescribeDataSharesResult,
-    InvalidDataShareFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidDataShareFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDataSharesMessage,
   ) => Stream.Stream<
     DataShare,
-    InvalidDataShareFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidDataShareFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataSharesMessage,
@@ -8541,22 +8539,22 @@ export const describeEndpointAuthorization: {
     input: DescribeEndpointAuthorizationMessage,
   ): Effect.Effect<
     EndpointAuthorizationList,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEndpointAuthorizationMessage,
   ) => Stream.Stream<
     EndpointAuthorizationList,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEndpointAuthorizationMessage,
   ) => Stream.Stream<
     EndpointAuthorization,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEndpointAuthorizationMessage,
@@ -8588,22 +8586,22 @@ export const describeHsmClientCertificates: {
     input: DescribeHsmClientCertificatesMessage,
   ): Effect.Effect<
     HsmClientCertificateMessage,
-    HsmClientCertificateNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    HsmClientCertificateNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeHsmClientCertificatesMessage,
   ) => Stream.Stream<
     HsmClientCertificateMessage,
-    HsmClientCertificateNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    HsmClientCertificateNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeHsmClientCertificatesMessage,
   ) => Stream.Stream<
     HsmClientCertificate,
-    HsmClientCertificateNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    HsmClientCertificateNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeHsmClientCertificatesMessage,
@@ -8636,22 +8634,22 @@ export const describeHsmConfigurations: {
     input: DescribeHsmConfigurationsMessage,
   ): Effect.Effect<
     HsmConfigurationMessage,
-    HsmConfigurationNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    HsmConfigurationNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeHsmConfigurationsMessage,
   ) => Stream.Stream<
     HsmConfigurationMessage,
-    HsmConfigurationNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    HsmConfigurationNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeHsmConfigurationsMessage,
   ) => Stream.Stream<
     HsmConfiguration,
-    HsmConfigurationNotFoundFault | InvalidTagFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    HsmConfigurationNotFoundFault | InvalidTagFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeHsmConfigurationsMessage,
@@ -8672,8 +8670,8 @@ export const describeLoggingStatus: (
   input: DescribeLoggingStatusMessage,
 ) => Effect.Effect<
   LoggingStatus,
-  ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLoggingStatusMessage,
   output: LoggingStatus,
@@ -8687,22 +8685,22 @@ export const describeSnapshotSchedules: {
     input: DescribeSnapshotSchedulesMessage,
   ): Effect.Effect<
     DescribeSnapshotSchedulesOutputMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSnapshotSchedulesMessage,
   ) => Stream.Stream<
     DescribeSnapshotSchedulesOutputMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSnapshotSchedulesMessage,
   ) => Stream.Stream<
     SnapshotSchedule,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotSchedulesMessage,
@@ -8736,22 +8734,22 @@ export const describeUsageLimits: {
     input: DescribeUsageLimitsMessage,
   ): Effect.Effect<
     UsageLimitList,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeUsageLimitsMessage,
   ) => Stream.Stream<
     UsageLimitList,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeUsageLimitsMessage,
   ) => Stream.Stream<
     UsageLimit,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeUsageLimitsMessage,
@@ -8795,8 +8793,8 @@ export const getClusterCredentials: (
   input: GetClusterCredentialsMessage,
 ) => Effect.Effect<
   ClusterCredentials,
-  ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetClusterCredentialsMessage,
   output: ClusterCredentials,
@@ -8819,8 +8817,8 @@ export const getClusterCredentialsWithIAM: (
   input: GetClusterCredentialsWithIAMMessage,
 ) => Effect.Effect<
   ClusterExtendedCredentials,
-  ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetClusterCredentialsWithIAMMessage,
   output: ClusterExtendedCredentials,
@@ -8838,8 +8836,8 @@ export const modifyClusterIamRoles: (
   input: ModifyClusterIamRolesMessage,
 ) => Effect.Effect<
   ModifyClusterIamRolesResult,
-  ClusterNotFoundFault | InvalidClusterStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClusterNotFoundFault | InvalidClusterStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterIamRolesMessage,
   output: ModifyClusterIamRolesResult,
@@ -8852,8 +8850,8 @@ export const modifyClusterMaintenance: (
   input: ModifyClusterMaintenanceMessage,
 ) => Effect.Effect<
   ModifyClusterMaintenanceResult,
-  ClusterNotFoundFault | InvalidClusterStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClusterNotFoundFault | InvalidClusterStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterMaintenanceMessage,
   output: ModifyClusterMaintenanceResult,
@@ -8869,8 +8867,8 @@ export const pauseCluster: (
   | ClusterNotFoundFault
   | InvalidClusterStateFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PauseClusterMessage,
   output: PauseClusterResult,
@@ -8894,8 +8892,8 @@ export const rebootCluster: (
   input: RebootClusterMessage,
 ) => Effect.Effect<
   RebootClusterResult,
-  ClusterNotFoundFault | InvalidClusterStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClusterNotFoundFault | InvalidClusterStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootClusterMessage,
   output: RebootClusterResult,
@@ -8912,8 +8910,8 @@ export const disableLogging: (
   | ClusterNotFoundFault
   | InvalidClusterStateFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableLoggingMessage,
   output: LoggingStatus,
@@ -8930,8 +8928,8 @@ export const deauthorizeDataShare: (
   input: DeauthorizeDataShareMessage,
 ) => Effect.Effect<
   DataShare,
-  InvalidDataShareFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidDataShareFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeauthorizeDataShareMessage,
   output: DataShare,
@@ -8944,8 +8942,8 @@ export const rejectDataShare: (
   input: RejectDataShareMessage,
 ) => Effect.Effect<
   DataShare,
-  InvalidDataShareFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidDataShareFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectDataShareMessage,
   output: DataShare,
@@ -8958,8 +8956,8 @@ export const deleteResourcePolicy: (
   input: DeleteResourcePolicyMessage,
 ) => Effect.Effect<
   DeleteResourcePolicyResponse,
-  ResourceNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundFault | UnsupportedOperationFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourcePolicyMessage,
   output: DeleteResourcePolicyResponse,
@@ -8976,8 +8974,8 @@ export const createCustomDomainAssociation: (
   | ClusterNotFoundFault
   | CustomCnameAssociationFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomDomainAssociationMessage,
   output: CreateCustomDomainAssociationResult,
@@ -8999,8 +8997,8 @@ export const deleteClusterParameterGroup: (
   DeleteClusterParameterGroupResponse,
   | ClusterParameterGroupNotFoundFault
   | InvalidClusterParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterParameterGroupMessage,
   output: DeleteClusterParameterGroupResponse,
@@ -9025,8 +9023,8 @@ export const deleteClusterSecurityGroup: (
   DeleteClusterSecurityGroupResponse,
   | ClusterSecurityGroupNotFoundFault
   | InvalidClusterSecurityGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterSecurityGroupMessage,
   output: DeleteClusterSecurityGroupResponse,
@@ -9042,10 +9040,8 @@ export const deleteEventSubscription: (
   input: DeleteEventSubscriptionMessage,
 ) => Effect.Effect<
   DeleteEventSubscriptionResponse,
-  | InvalidSubscriptionStateFault
-  | SubscriptionNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidSubscriptionStateFault | SubscriptionNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventSubscriptionMessage,
   output: DeleteEventSubscriptionResponse,
@@ -9060,8 +9056,8 @@ export const deleteHsmClientCertificate: (
   DeleteHsmClientCertificateResponse,
   | HsmClientCertificateNotFoundFault
   | InvalidHsmClientCertificateStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHsmClientCertificateMessage,
   output: DeleteHsmClientCertificateResponse,
@@ -9079,8 +9075,8 @@ export const deleteHsmConfiguration: (
   DeleteHsmConfigurationResponse,
   | HsmConfigurationNotFoundFault
   | InvalidHsmConfigurationStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHsmConfigurationMessage,
   output: DeleteHsmConfigurationResponse,
@@ -9093,8 +9089,8 @@ export const deleteScheduledAction: (
   input: DeleteScheduledActionMessage,
 ) => Effect.Effect<
   DeleteScheduledActionResponse,
-  ScheduledActionNotFoundFault | UnauthorizedOperation | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ScheduledActionNotFoundFault | UnauthorizedOperation | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteScheduledActionMessage,
   output: DeleteScheduledActionResponse,
@@ -9109,8 +9105,8 @@ export const deleteSnapshotCopyGrant: (
   DeleteSnapshotCopyGrantResponse,
   | InvalidSnapshotCopyGrantStateFault
   | SnapshotCopyGrantNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSnapshotCopyGrantMessage,
   output: DeleteSnapshotCopyGrantResponse,
@@ -9125,8 +9121,8 @@ export const deleteSnapshotSchedule: (
   DeleteSnapshotScheduleResponse,
   | InvalidClusterSnapshotScheduleStateFault
   | SnapshotScheduleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSnapshotScheduleMessage,
   output: DeleteSnapshotScheduleResponse,
@@ -9142,8 +9138,8 @@ export const deleteUsageLimit: (
   input: DeleteUsageLimitMessage,
 ) => Effect.Effect<
   DeleteUsageLimitResponse,
-  UnsupportedOperationFault | UsageLimitNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  UnsupportedOperationFault | UsageLimitNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUsageLimitMessage,
   output: DeleteUsageLimitResponse,
@@ -9175,8 +9171,8 @@ export const describeClusterSnapshots: {
     | ClusterSnapshotNotFoundFault
     | InvalidTagFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterSnapshotsMessage,
@@ -9186,8 +9182,8 @@ export const describeClusterSnapshots: {
     | ClusterSnapshotNotFoundFault
     | InvalidTagFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterSnapshotsMessage,
@@ -9197,8 +9193,8 @@ export const describeClusterSnapshots: {
     | ClusterSnapshotNotFoundFault
     | InvalidTagFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterSnapshotsMessage,
@@ -9229,22 +9225,22 @@ export const describeClusterVersions: {
     input: DescribeClusterVersionsMessage,
   ): Effect.Effect<
     ClusterVersionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterVersionsMessage,
   ) => Stream.Stream<
     ClusterVersionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterVersionsMessage,
   ) => Stream.Stream<
     ClusterVersion,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterVersionsMessage,
@@ -9265,22 +9261,22 @@ export const describeDataSharesForConsumer: {
     input: DescribeDataSharesForConsumerMessage,
   ): Effect.Effect<
     DescribeDataSharesForConsumerResult,
-    InvalidNamespaceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNamespaceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDataSharesForConsumerMessage,
   ) => Stream.Stream<
     DescribeDataSharesForConsumerResult,
-    InvalidNamespaceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNamespaceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDataSharesForConsumerMessage,
   ) => Stream.Stream<
     DataShare,
-    InvalidNamespaceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNamespaceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataSharesForConsumerMessage,
@@ -9306,22 +9302,22 @@ export const describeDefaultClusterParameters: {
     input: DescribeDefaultClusterParametersMessage,
   ): Effect.Effect<
     DescribeDefaultClusterParametersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDefaultClusterParametersMessage,
   ) => Stream.Stream<
     DescribeDefaultClusterParametersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDefaultClusterParametersMessage,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDefaultClusterParametersMessage,
@@ -9345,8 +9341,8 @@ export const describeEndpointAccess: {
     | ClusterNotFoundFault
     | EndpointNotFoundFault
     | InvalidClusterStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEndpointAccessMessage,
@@ -9355,8 +9351,8 @@ export const describeEndpointAccess: {
     | ClusterNotFoundFault
     | EndpointNotFoundFault
     | InvalidClusterStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEndpointAccessMessage,
@@ -9365,8 +9361,8 @@ export const describeEndpointAccess: {
     | ClusterNotFoundFault
     | EndpointNotFoundFault
     | InvalidClusterStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEndpointAccessMessage,
@@ -9394,22 +9390,22 @@ export const describeEvents: {
     input: DescribeEventsMessage,
   ): Effect.Effect<
     EventsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsMessage,
   ) => Stream.Stream<
     EventsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsMessage,
   ) => Stream.Stream<
     Event,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsMessage,
@@ -9430,22 +9426,22 @@ export const describeScheduledActions: {
     input: DescribeScheduledActionsMessage,
   ): Effect.Effect<
     ScheduledActionsMessage,
-    ScheduledActionNotFoundFault | UnauthorizedOperation | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ScheduledActionNotFoundFault | UnauthorizedOperation | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeScheduledActionsMessage,
   ) => Stream.Stream<
     ScheduledActionsMessage,
-    ScheduledActionNotFoundFault | UnauthorizedOperation | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ScheduledActionNotFoundFault | UnauthorizedOperation | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeScheduledActionsMessage,
   ) => Stream.Stream<
     ScheduledAction,
-    ScheduledActionNotFoundFault | UnauthorizedOperation | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ScheduledActionNotFoundFault | UnauthorizedOperation | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeScheduledActionsMessage,
@@ -9488,22 +9484,22 @@ export const describeTags: {
     input: DescribeTagsMessage,
   ): Effect.Effect<
     TaggedResourceListMessage,
-    InvalidTagFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTagsMessage,
   ) => Stream.Stream<
     TaggedResourceListMessage,
-    InvalidTagFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTagsMessage,
   ) => Stream.Stream<
     TaggedResource,
-    InvalidTagFault | ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTagsMessage,
@@ -9533,8 +9529,8 @@ export const disableSnapshotCopy: (
   | SnapshotCopyAlreadyDisabledFault
   | UnauthorizedOperation
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableSnapshotCopyMessage,
   output: DisableSnapshotCopyResult,
@@ -9568,8 +9564,8 @@ export const getIdentityCenterAuthToken: (
   | InvalidClusterStateFault
   | RedshiftInvalidParameterFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityCenterAuthTokenRequest,
   output: GetIdentityCenterAuthTokenResponse,
@@ -9590,8 +9586,8 @@ export const modifyAquaConfiguration: (
   | ClusterNotFoundFault
   | InvalidClusterStateFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyAquaInputMessage,
   output: ModifyAquaOutputMessage,
@@ -9613,8 +9609,8 @@ export const modifyClusterDbRevision: (
   | ClusterOnLatestRevisionFault
   | InvalidClusterStateFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterDbRevisionMessage,
   output: ModifyClusterDbRevisionResult,
@@ -9636,8 +9632,8 @@ export const resumeCluster: (
   | InsufficientClusterCapacityFault
   | InvalidClusterStateFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResumeClusterMessage,
   output: ResumeClusterResult,
@@ -9662,8 +9658,8 @@ export const revokeClusterSecurityGroupIngress: (
   | AuthorizationNotFoundFault
   | ClusterSecurityGroupNotFoundFault
   | InvalidClusterSecurityGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeClusterSecurityGroupIngressMessage,
   output: RevokeClusterSecurityGroupIngressResult,
@@ -9684,8 +9680,8 @@ export const rotateEncryptionKey: (
   | DependentServiceRequestThrottlingFault
   | InvalidClusterStateFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RotateEncryptionKeyMessage,
   output: RotateEncryptionKeyResult,
@@ -9712,8 +9708,8 @@ export const describeResize: (
   | ClusterNotFoundFault
   | ResizeNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResizeMessage,
   output: ResizeProgressMessage,
@@ -9736,8 +9732,8 @@ export const modifyClusterParameterGroup: (
   ClusterParameterGroupNameMessage,
   | ClusterParameterGroupNotFoundFault
   | InvalidClusterParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterParameterGroupMessage,
   output: ClusterParameterGroupNameMessage,
@@ -9758,8 +9754,8 @@ export const resetClusterParameterGroup: (
   ClusterParameterGroupNameMessage,
   | ClusterParameterGroupNotFoundFault
   | InvalidClusterParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetClusterParameterGroupMessage,
   output: ClusterParameterGroupNameMessage,
@@ -9788,22 +9784,22 @@ export const describeEventSubscriptions: {
     input: DescribeEventSubscriptionsMessage,
   ): Effect.Effect<
     EventSubscriptionsMessage,
-    InvalidTagFault | SubscriptionNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | SubscriptionNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventSubscriptionsMessage,
   ) => Stream.Stream<
     EventSubscriptionsMessage,
-    InvalidTagFault | SubscriptionNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | SubscriptionNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventSubscriptionsMessage,
   ) => Stream.Stream<
     EventSubscription,
-    InvalidTagFault | SubscriptionNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | SubscriptionNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventSubscriptionsMessage,
@@ -9827,8 +9823,8 @@ export const failoverPrimaryCompute: (
   | InvalidClusterStateFault
   | UnauthorizedOperation
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FailoverPrimaryComputeInputMessage,
   output: FailoverPrimaryComputeResult,
@@ -9852,22 +9848,22 @@ export const describeSnapshotCopyGrants: {
     input: DescribeSnapshotCopyGrantsMessage,
   ): Effect.Effect<
     SnapshotCopyGrantMessage,
-    InvalidTagFault | SnapshotCopyGrantNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | SnapshotCopyGrantNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSnapshotCopyGrantsMessage,
   ) => Stream.Stream<
     SnapshotCopyGrantMessage,
-    InvalidTagFault | SnapshotCopyGrantNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | SnapshotCopyGrantNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSnapshotCopyGrantsMessage,
   ) => Stream.Stream<
     SnapshotCopyGrant,
-    InvalidTagFault | SnapshotCopyGrantNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidTagFault | SnapshotCopyGrantNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotCopyGrantsMessage,
@@ -9890,8 +9886,8 @@ export const modifyClusterSnapshotSchedule: (
   | ClusterNotFoundFault
   | InvalidClusterSnapshotScheduleStateFault
   | SnapshotScheduleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterSnapshotScheduleMessage,
   output: ModifyClusterSnapshotScheduleResponse,
@@ -9918,8 +9914,8 @@ export const createTags: (
   | InvalidTagFault
   | ResourceNotFoundFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTagsMessage,
   output: CreateTagsResponse,
@@ -9941,8 +9937,8 @@ export const modifyUsageLimit: (
   | InvalidUsageLimitFault
   | UnsupportedOperationFault
   | UsageLimitNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyUsageLimitMessage,
   output: UsageLimit,
@@ -9960,22 +9956,22 @@ export const describeDataSharesForProducer: {
     input: DescribeDataSharesForProducerMessage,
   ): Effect.Effect<
     DescribeDataSharesForProducerResult,
-    InvalidNamespaceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNamespaceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDataSharesForProducerMessage,
   ) => Stream.Stream<
     DescribeDataSharesForProducerResult,
-    InvalidNamespaceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNamespaceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDataSharesForProducerMessage,
   ) => Stream.Stream<
     DataShare,
-    InvalidNamespaceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNamespaceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDataSharesForProducerMessage,
@@ -9998,8 +9994,8 @@ export const registerNamespace: (
   | ClusterNotFoundFault
   | InvalidClusterStateFault
   | InvalidNamespaceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterNamespaceInputMessage,
   output: RegisterNamespaceOutputMessage,
@@ -10016,8 +10012,8 @@ export const disassociateDataShareConsumer: (
   input: DisassociateDataShareConsumerMessage,
 ) => Effect.Effect<
   DataShare,
-  InvalidDataShareFault | InvalidNamespaceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidDataShareFault | InvalidNamespaceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateDataShareConsumerMessage,
   output: DataShare,
@@ -10032,8 +10028,8 @@ export const associateDataShareConsumer: (
   input: AssociateDataShareConsumerMessage,
 ) => Effect.Effect<
   DataShare,
-  InvalidDataShareFault | InvalidNamespaceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidDataShareFault | InvalidNamespaceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateDataShareConsumerMessage,
   output: DataShare,
@@ -10048,8 +10044,8 @@ export const batchModifyClusterSnapshots: (
   BatchModifyClusterSnapshotsOutputMessage,
   | BatchModifyClusterSnapshotsLimitExceededFault
   | InvalidRetentionPeriodFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchModifyClusterSnapshotsMessage,
   output: BatchModifyClusterSnapshotsOutputMessage,
@@ -10075,8 +10071,8 @@ export const revokeSnapshotAccess: (
   | AuthorizationNotFoundFault
   | ClusterSnapshotNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeSnapshotAccessMessage,
   output: RevokeSnapshotAccessResult,
@@ -10098,8 +10094,8 @@ export const cancelResize: (
   | InvalidClusterStateFault
   | ResizeNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelResizeMessage,
   output: ResizeProgressMessage,
@@ -10123,8 +10119,8 @@ export const addPartner: (
   | PartnerNotFoundFault
   | UnauthorizedPartnerIntegrationFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PartnerIntegrationInputMessage,
   output: PartnerIntegrationOutputMessage,
@@ -10142,8 +10138,8 @@ export const batchDeleteClusterSnapshots: (
   input: BatchDeleteClusterSnapshotsRequest,
 ) => Effect.Effect<
   BatchDeleteClusterSnapshotsResult,
-  BatchDeleteRequestSizeExceededFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BatchDeleteRequestSizeExceededFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteClusterSnapshotsRequest,
   output: BatchDeleteClusterSnapshotsResult,
@@ -10165,8 +10161,8 @@ export const createClusterSecurityGroup: (
   | ClusterSecurityGroupQuotaExceededFault
   | InvalidTagFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterSecurityGroupMessage,
   output: CreateClusterSecurityGroupResult,
@@ -10186,8 +10182,8 @@ export const deleteAuthenticationProfile: (
   DeleteAuthenticationProfileResult,
   | AuthenticationProfileNotFoundFault
   | InvalidAuthenticationProfileRequestFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAuthenticationProfileMessage,
   output: DeleteAuthenticationProfileResult,
@@ -10212,8 +10208,8 @@ export const deleteClusterSnapshot: (
   DeleteClusterSnapshotResult,
   | ClusterSnapshotNotFoundFault
   | InvalidClusterSnapshotStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterSnapshotMessage,
   output: DeleteClusterSnapshotResult,
@@ -10229,8 +10225,8 @@ export const deleteClusterSubnetGroup: (
   | ClusterSubnetGroupNotFoundFault
   | InvalidClusterSubnetGroupStateFault
   | InvalidClusterSubnetStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterSubnetGroupMessage,
   output: DeleteClusterSubnetGroupResponse,
@@ -10251,8 +10247,8 @@ export const deleteRedshiftIdcApplication: (
   | DependentServiceUnavailableFault
   | RedshiftIdcApplicationNotExistsFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRedshiftIdcApplicationMessage,
   output: DeleteRedshiftIdcApplicationResponse,
@@ -10273,8 +10269,8 @@ export const deregisterNamespace: (
   | ClusterNotFoundFault
   | InvalidClusterStateFault
   | InvalidNamespaceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterNamespaceInputMessage,
   output: DeregisterNamespaceOutputMessage,
@@ -10291,8 +10287,8 @@ export const describeAccountAttributes: (
   input: DescribeAccountAttributesMessage,
 ) => Effect.Effect<
   AccountAttributeList,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountAttributesMessage,
   output: AccountAttributeList,
@@ -10306,22 +10302,22 @@ export const describeClusterDbRevisions: {
     input: DescribeClusterDbRevisionsMessage,
   ): Effect.Effect<
     ClusterDbRevisionsMessage,
-    ClusterNotFoundFault | InvalidClusterStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | InvalidClusterStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterDbRevisionsMessage,
   ) => Stream.Stream<
     ClusterDbRevisionsMessage,
-    ClusterNotFoundFault | InvalidClusterStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | InvalidClusterStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterDbRevisionsMessage,
   ) => Stream.Stream<
     ClusterDbRevision,
-    ClusterNotFoundFault | InvalidClusterStateFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | InvalidClusterStateFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterDbRevisionsMessage,
@@ -10343,8 +10339,8 @@ export const describeEventCategories: (
   input: DescribeEventCategoriesMessage,
 ) => Effect.Effect<
   EventCategoriesMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventCategoriesMessage,
   output: EventCategoriesMessage,
@@ -10361,8 +10357,8 @@ export const describeInboundIntegrations: {
     | IntegrationNotFoundFault
     | InvalidNamespaceFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInboundIntegrationsMessage,
@@ -10371,8 +10367,8 @@ export const describeInboundIntegrations: {
     | IntegrationNotFoundFault
     | InvalidNamespaceFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInboundIntegrationsMessage,
@@ -10381,8 +10377,8 @@ export const describeInboundIntegrations: {
     | IntegrationNotFoundFault
     | InvalidNamespaceFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInboundIntegrationsMessage,
@@ -10413,8 +10409,8 @@ export const describeNodeConfigurationOptions: {
     | ClusterSnapshotNotFoundFault
     | InvalidClusterSnapshotStateFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNodeConfigurationOptionsMessage,
@@ -10425,8 +10421,8 @@ export const describeNodeConfigurationOptions: {
     | ClusterSnapshotNotFoundFault
     | InvalidClusterSnapshotStateFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNodeConfigurationOptionsMessage,
@@ -10437,8 +10433,8 @@ export const describeNodeConfigurationOptions: {
     | ClusterSnapshotNotFoundFault
     | InvalidClusterSnapshotStateFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNodeConfigurationOptionsMessage,
@@ -10477,8 +10473,8 @@ export const describeReservedNodeOfferings: {
     | DependentServiceUnavailableFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedNodeOfferingsMessage,
@@ -10487,8 +10483,8 @@ export const describeReservedNodeOfferings: {
     | DependentServiceUnavailableFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedNodeOfferingsMessage,
@@ -10497,8 +10493,8 @@ export const describeReservedNodeOfferings: {
     | DependentServiceUnavailableFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedNodeOfferingsMessage,
@@ -10528,22 +10524,22 @@ export const describeTableRestoreStatus: {
     input: DescribeTableRestoreStatusMessage,
   ): Effect.Effect<
     TableRestoreStatusMessage,
-    ClusterNotFoundFault | TableRestoreNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | TableRestoreNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTableRestoreStatusMessage,
   ) => Stream.Stream<
     TableRestoreStatusMessage,
-    ClusterNotFoundFault | TableRestoreNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | TableRestoreNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTableRestoreStatusMessage,
   ) => Stream.Stream<
     TableRestoreStatus,
-    ClusterNotFoundFault | TableRestoreNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | TableRestoreNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTableRestoreStatusMessage,
@@ -10566,8 +10562,8 @@ export const getResourcePolicy: (
   | InvalidPolicyFault
   | ResourceNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourcePolicyMessage,
   output: GetResourcePolicyResult,
@@ -10585,22 +10581,22 @@ export const listRecommendations: {
     input: ListRecommendationsMessage,
   ): Effect.Effect<
     ListRecommendationsResult,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRecommendationsMessage,
   ) => Stream.Stream<
     ListRecommendationsResult,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRecommendationsMessage,
   ) => Stream.Stream<
     Recommendation,
-    ClusterNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRecommendationsMessage,
@@ -10625,8 +10621,8 @@ export const modifyIntegration: (
   | IntegrationConflictStateFault
   | IntegrationNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIntegrationMessage,
   output: Integration,
@@ -10656,8 +10652,8 @@ export const modifySnapshotCopyRetentionPeriod: (
   | InvalidRetentionPeriodFault
   | SnapshotCopyDisabledFault
   | UnauthorizedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySnapshotCopyRetentionPeriodMessage,
   output: ModifySnapshotCopyRetentionPeriodResult,
@@ -10679,8 +10675,8 @@ export const describePartners: (
   | ClusterNotFoundFault
   | UnauthorizedPartnerIntegrationFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePartnersInputMessage,
   output: DescribePartnersOutputMessage,
@@ -10701,8 +10697,8 @@ export const deletePartner: (
   | PartnerNotFoundFault
   | UnauthorizedPartnerIntegrationFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PartnerIntegrationInputMessage,
   output: PartnerIntegrationOutputMessage,
@@ -10724,8 +10720,8 @@ export const updatePartnerStatus: (
   | PartnerNotFoundFault
   | UnauthorizedPartnerIntegrationFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePartnerStatusInputMessage,
   output: PartnerIntegrationOutputMessage,
@@ -10755,8 +10751,8 @@ export const createClusterSnapshot: (
   | InvalidRetentionPeriodFault
   | InvalidTagFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterSnapshotMessage,
   output: CreateClusterSnapshotResult,
@@ -10780,8 +10776,8 @@ export const modifyAuthenticationProfile: (
   | AuthenticationProfileNotFoundFault
   | AuthenticationProfileQuotaExceededFault
   | InvalidAuthenticationProfileRequestFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyAuthenticationProfileMessage,
   output: ModifyAuthenticationProfileResult,
@@ -10802,8 +10798,8 @@ export const modifyCustomDomainAssociation: (
   | CustomCnameAssociationFault
   | CustomDomainAssociationNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCustomDomainAssociationMessage,
   output: ModifyCustomDomainAssociationResult,
@@ -10828,8 +10824,8 @@ export const modifyScheduledAction: (
   | ScheduledActionTypeUnsupportedFault
   | UnauthorizedOperation
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyScheduledActionMessage,
   output: ScheduledAction,
@@ -10852,8 +10848,8 @@ export const describeAuthenticationProfiles: (
   DescribeAuthenticationProfilesResult,
   | AuthenticationProfileNotFoundFault
   | InvalidAuthenticationProfileRequestFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAuthenticationProfilesMessage,
   output: DescribeAuthenticationProfilesResult,
@@ -10872,8 +10868,8 @@ export const createAuthenticationProfile: (
   | AuthenticationProfileAlreadyExistsFault
   | AuthenticationProfileQuotaExceededFault
   | InvalidAuthenticationProfileRequestFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAuthenticationProfileMessage,
   output: CreateAuthenticationProfileResult,
@@ -10895,8 +10891,8 @@ export const modifyClusterSnapshot: (
   | ClusterSnapshotNotFoundFault
   | InvalidClusterSnapshotStateFault
   | InvalidRetentionPeriodFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterSnapshotMessage,
   output: ModifyClusterSnapshotResult,
@@ -10914,28 +10910,22 @@ export const describeReservedNodes: {
     input: DescribeReservedNodesMessage,
   ): Effect.Effect<
     ReservedNodesMessage,
-    | DependentServiceUnavailableFault
-    | ReservedNodeNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DependentServiceUnavailableFault | ReservedNodeNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedNodesMessage,
   ) => Stream.Stream<
     ReservedNodesMessage,
-    | DependentServiceUnavailableFault
-    | ReservedNodeNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DependentServiceUnavailableFault | ReservedNodeNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedNodesMessage,
   ) => Stream.Stream<
     ReservedNode,
-    | DependentServiceUnavailableFault
-    | ReservedNodeNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DependentServiceUnavailableFault | ReservedNodeNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedNodesMessage,
@@ -10960,8 +10950,8 @@ export const describeRedshiftIdcApplications: {
     | DependentServiceUnavailableFault
     | RedshiftIdcApplicationNotExistsFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRedshiftIdcApplicationsMessage,
@@ -10971,8 +10961,8 @@ export const describeRedshiftIdcApplications: {
     | DependentServiceUnavailableFault
     | RedshiftIdcApplicationNotExistsFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRedshiftIdcApplicationsMessage,
@@ -10982,8 +10972,8 @@ export const describeRedshiftIdcApplications: {
     | DependentServiceUnavailableFault
     | RedshiftIdcApplicationNotExistsFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRedshiftIdcApplicationsMessage,
@@ -11015,8 +11005,8 @@ export const modifyLakehouseConfiguration: (
   | RedshiftIdcApplicationNotExistsFault
   | UnauthorizedOperation
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyLakehouseConfigurationMessage,
   output: LakehouseConfiguration,
@@ -11041,8 +11031,8 @@ export const modifyRedshiftIdcApplication: (
   | DependentServiceUnavailableFault
   | RedshiftIdcApplicationNotExistsFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyRedshiftIdcApplicationMessage,
   output: ModifyRedshiftIdcApplicationResult,
@@ -11064,8 +11054,8 @@ export const modifySnapshotSchedule: (
   | InvalidScheduleFault
   | SnapshotScheduleNotFoundFault
   | SnapshotScheduleUpdateInProgressFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifySnapshotScheduleMessage,
   output: SnapshotSchedule,
@@ -11087,8 +11077,8 @@ export const deleteEndpointAccess: (
   | InvalidClusterSecurityGroupStateFault
   | InvalidClusterStateFault
   | InvalidEndpointStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointAccessMessage,
   output: EndpointAccess,
@@ -11108,22 +11098,22 @@ export const describeIntegrations: {
     input: DescribeIntegrationsMessage,
   ): Effect.Effect<
     IntegrationsMessage,
-    IntegrationNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IntegrationNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIntegrationsMessage,
   ) => Stream.Stream<
     IntegrationsMessage,
-    IntegrationNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IntegrationNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIntegrationsMessage,
   ) => Stream.Stream<
     Integration,
-    IntegrationNotFoundFault | UnsupportedOperationFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IntegrationNotFoundFault | UnsupportedOperationFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIntegrationsMessage,
@@ -11147,8 +11137,8 @@ export const putResourcePolicy: (
   | InvalidPolicyFault
   | ResourceNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourcePolicyMessage,
   output: PutResourcePolicyResult,
@@ -11170,8 +11160,8 @@ export const deleteIntegration: (
   | IntegrationConflictStateFault
   | IntegrationNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIntegrationMessage,
   output: Integration,
@@ -11197,8 +11187,8 @@ export const createUsageLimit: (
   | TagLimitExceededFault
   | UnsupportedOperationFault
   | UsageLimitAlreadyExistsFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUsageLimitMessage,
   output: UsageLimit,
@@ -11225,8 +11215,8 @@ export const authorizeEndpointAccess: (
   | InvalidAuthorizationStateFault
   | InvalidClusterStateFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeEndpointAccessMessage,
   output: EndpointAuthorization,
@@ -11264,8 +11254,8 @@ export const copyClusterSnapshot: (
   | ClusterSnapshotQuotaExceededFault
   | InvalidClusterSnapshotStateFault
   | InvalidRetentionPeriodFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyClusterSnapshotMessage,
   output: CopyClusterSnapshotResult,
@@ -11289,8 +11279,8 @@ export const deleteCustomDomainAssociation: (
   | CustomCnameAssociationFault
   | CustomDomainAssociationNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomDomainAssociationMessage,
   output: DeleteCustomDomainAssociationResponse,
@@ -11311,8 +11301,8 @@ export const describeCustomDomainAssociations: {
     CustomDomainAssociationsMessage,
     | CustomDomainAssociationNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCustomDomainAssociationsMessage,
@@ -11320,8 +11310,8 @@ export const describeCustomDomainAssociations: {
     CustomDomainAssociationsMessage,
     | CustomDomainAssociationNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCustomDomainAssociationsMessage,
@@ -11329,8 +11319,8 @@ export const describeCustomDomainAssociations: {
     Association,
     | CustomDomainAssociationNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCustomDomainAssociationsMessage,
@@ -11355,8 +11345,8 @@ export const describeReservedNodeExchangeStatus: {
     | ReservedNodeExchangeNotFoundFault
     | ReservedNodeNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedNodeExchangeStatusInputMessage,
@@ -11365,8 +11355,8 @@ export const describeReservedNodeExchangeStatus: {
     | ReservedNodeExchangeNotFoundFault
     | ReservedNodeNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedNodeExchangeStatusInputMessage,
@@ -11375,8 +11365,8 @@ export const describeReservedNodeExchangeStatus: {
     | ReservedNodeExchangeNotFoundFault
     | ReservedNodeNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedNodeExchangeStatusInputMessage,
@@ -11406,8 +11396,8 @@ export const modifyEndpointAccess: (
   | InvalidClusterStateFault
   | InvalidEndpointStateFault
   | UnauthorizedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyEndpointAccessMessage,
   output: EndpointAccess,
@@ -11434,8 +11424,8 @@ export const revokeEndpointAccess: (
   | InvalidClusterSecurityGroupStateFault
   | InvalidClusterStateFault
   | InvalidEndpointStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeEndpointAccessMessage,
   output: EndpointAuthorization,
@@ -11470,8 +11460,8 @@ export const createClusterParameterGroup: (
   | ClusterParameterGroupQuotaExceededFault
   | InvalidTagFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterParameterGroupMessage,
   output: CreateClusterParameterGroupResult,
@@ -11501,8 +11491,8 @@ export const createHsmClientCertificate: (
   | HsmClientCertificateQuotaExceededFault
   | InvalidTagFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHsmClientCertificateMessage,
   output: CreateHsmClientCertificateResult,
@@ -11531,8 +11521,8 @@ export const createHsmConfiguration: (
   | HsmConfigurationQuotaExceededFault
   | InvalidTagFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHsmConfigurationMessage,
   output: CreateHsmConfigurationResult,
@@ -11559,8 +11549,8 @@ export const createScheduledAction: (
   | ScheduledActionTypeUnsupportedFault
   | UnauthorizedOperation
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateScheduledActionMessage,
   output: ScheduledAction,
@@ -11603,8 +11593,8 @@ export const deleteCluster: (
   | ClusterSnapshotQuotaExceededFault
   | InvalidClusterStateFault
   | InvalidRetentionPeriodFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterMessage,
   output: DeleteClusterResult,
@@ -11624,22 +11614,22 @@ export const describeClusterTracks: {
     input: DescribeClusterTracksMessage,
   ): Effect.Effect<
     TrackListMessage,
-    InvalidClusterTrackFault | UnauthorizedOperation | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidClusterTrackFault | UnauthorizedOperation | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterTracksMessage,
   ) => Stream.Stream<
     TrackListMessage,
-    InvalidClusterTrackFault | UnauthorizedOperation | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidClusterTrackFault | UnauthorizedOperation | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterTracksMessage,
   ) => Stream.Stream<
     MaintenanceTrack,
-    InvalidClusterTrackFault | UnauthorizedOperation | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidClusterTrackFault | UnauthorizedOperation | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterTracksMessage,
@@ -11668,22 +11658,22 @@ export const describeOrderableClusterOptions: {
     input: DescribeOrderableClusterOptionsMessage,
   ): Effect.Effect<
     OrderableClusterOptionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOrderableClusterOptionsMessage,
   ) => Stream.Stream<
     OrderableClusterOptionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOrderableClusterOptionsMessage,
   ) => Stream.Stream<
     OrderableClusterOption,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrderableClusterOptionsMessage,
@@ -11711,8 +11701,8 @@ export const enableLogging: (
   | InvalidS3BucketNameFault
   | InvalidS3KeyPrefixFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableLoggingMessage,
   output: LoggingStatus,
@@ -11744,8 +11734,8 @@ export const getReservedNodeExchangeConfigurationOptions: {
     | ReservedNodeNotFoundFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetReservedNodeExchangeConfigurationOptionsInputMessage,
@@ -11759,8 +11749,8 @@ export const getReservedNodeExchangeConfigurationOptions: {
     | ReservedNodeNotFoundFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetReservedNodeExchangeConfigurationOptionsInputMessage,
@@ -11774,8 +11764,8 @@ export const getReservedNodeExchangeConfigurationOptions: {
     | ReservedNodeNotFoundFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetReservedNodeExchangeConfigurationOptionsInputMessage,
@@ -11826,8 +11816,8 @@ export const restoreTableFromClusterSnapshot: (
   | InvalidClusterStateFault
   | InvalidTableRestoreArgumentFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreTableFromClusterSnapshotMessage,
   output: RestoreTableFromClusterSnapshotResult,
@@ -11860,8 +11850,8 @@ export const purchaseReservedNodeOffering: (
   | ReservedNodeOfferingNotFoundFault
   | ReservedNodeQuotaExceededFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseReservedNodeOfferingMessage,
   output: PurchaseReservedNodeOfferingResult,
@@ -11887,8 +11877,8 @@ export const getReservedNodeExchangeOfferings: {
     | ReservedNodeNotFoundFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetReservedNodeExchangeOfferingsInputMessage,
@@ -11900,8 +11890,8 @@ export const getReservedNodeExchangeOfferings: {
     | ReservedNodeNotFoundFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetReservedNodeExchangeOfferingsInputMessage,
@@ -11913,8 +11903,8 @@ export const getReservedNodeExchangeOfferings: {
     | ReservedNodeNotFoundFault
     | ReservedNodeOfferingNotFoundFault
     | UnsupportedOperationFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetReservedNodeExchangeOfferingsInputMessage,
@@ -11949,8 +11939,8 @@ export const acceptReservedNodeExchange: (
   | ReservedNodeNotFoundFault
   | ReservedNodeOfferingNotFoundFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptReservedNodeExchangeInputMessage,
   output: AcceptReservedNodeExchangeOutputMessage,
@@ -11983,8 +11973,8 @@ export const createSnapshotCopyGrant: (
   | SnapshotCopyGrantAlreadyExistsFault
   | SnapshotCopyGrantQuotaExceededFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotCopyGrantMessage,
   output: CreateSnapshotCopyGrantResult,
@@ -12029,8 +12019,8 @@ export const modifyClusterSubnetGroup: (
   | InvalidSubnet
   | SubnetAlreadyInUse
   | UnauthorizedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterSubnetGroupMessage,
   output: ModifyClusterSubnetGroupResult,
@@ -12072,8 +12062,8 @@ export const authorizeClusterSecurityGroupIngress: (
   | AuthorizationQuotaExceededFault
   | ClusterSecurityGroupNotFoundFault
   | InvalidClusterSecurityGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeClusterSecurityGroupIngressMessage,
   output: AuthorizeClusterSecurityGroupIngressResult,
@@ -12105,8 +12095,8 @@ export const createClusterSubnetGroup: (
   | InvalidTagFault
   | TagLimitExceededFault
   | UnauthorizedOperation
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterSubnetGroupMessage,
   output: CreateClusterSubnetGroupResult,
@@ -12134,8 +12124,8 @@ export const createSnapshotSchedule: (
   | SnapshotScheduleAlreadyExistsFault
   | SnapshotScheduleQuotaExceededFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotScheduleMessage,
   output: SnapshotSchedule,
@@ -12167,8 +12157,8 @@ export const authorizeSnapshotAccess: (
   | InvalidClusterSnapshotStateFault
   | LimitExceededFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeSnapshotAccessMessage,
   output: AuthorizeSnapshotAccessResult,
@@ -12198,8 +12188,8 @@ export const createIntegration: (
   | InvalidTagFault
   | TagLimitExceededFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIntegrationMessage,
   output: Integration,
@@ -12234,8 +12224,8 @@ export const enableSnapshotCopy: (
   | SnapshotCopyGrantNotFoundFault
   | UnauthorizedOperation
   | UnknownSnapshotCopyRegionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableSnapshotCopyMessage,
   output: EnableSnapshotCopyResult,
@@ -12312,8 +12302,8 @@ export const createCluster: (
   | TagLimitExceededFault
   | UnauthorizedOperation
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterMessage,
   output: CreateClusterResult,
@@ -12419,8 +12409,8 @@ export const restoreFromClusterSnapshot: (
   | TagLimitExceededFault
   | UnauthorizedOperation
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreFromClusterSnapshotMessage,
   output: RestoreFromClusterSnapshotResult,
@@ -12476,8 +12466,8 @@ export const createRedshiftIdcApplication: (
   | RedshiftIdcApplicationQuotaExceededFault
   | TagLimitExceededFault
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRedshiftIdcApplicationMessage,
   output: CreateRedshiftIdcApplicationResult,
@@ -12535,8 +12525,8 @@ export const resizeCluster: (
   | UnauthorizedOperation
   | UnsupportedOperationFault
   | UnsupportedOptionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResizeClusterMessage,
   output: ResizeClusterResult,
@@ -12615,8 +12605,8 @@ export const modifyCluster: (
   | UnauthorizedOperation
   | UnsupportedOperationFault
   | UnsupportedOptionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyClusterMessage,
   output: ModifyClusterResult,
@@ -12662,8 +12652,8 @@ export const createEndpointAccess: (
   | InvalidClusterStateFault
   | UnauthorizedOperation
   | UnsupportedOperationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEndpointAccessMessage,
   output: EndpointAccess,
@@ -12696,8 +12686,8 @@ export const modifyEventSubscription: (
   | SubscriptionEventIdNotFoundFault
   | SubscriptionNotFoundFault
   | SubscriptionSeverityNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyEventSubscriptionMessage,
   output: ModifyEventSubscriptionResult,
@@ -12749,8 +12739,8 @@ export const createEventSubscription: (
   | SubscriptionEventIdNotFoundFault
   | SubscriptionSeverityNotFoundFault
   | TagLimitExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventSubscriptionMessage,
   output: CreateEventSubscriptionResult,

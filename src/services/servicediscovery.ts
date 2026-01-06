@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ServiceDiscovery",
@@ -1563,49 +1561,47 @@ export const UpdatePrivateDnsNamespaceResponse = S.suspend(() =>
 export class InvalidInput extends S.TaggedError<InvalidInput>()(
   "InvalidInput",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomHealthNotFound extends S.TaggedError<CustomHealthNotFound>()(
   "CustomHealthNotFound",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateRequest extends S.TaggedError<DuplicateRequest>()(
   "DuplicateRequest",
   { Message: S.optional(S.String), DuplicateOperationId: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceInUse extends S.TaggedError<ResourceInUse>()(
   "ResourceInUse",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class NamespaceNotFound extends S.TaggedError<NamespaceNotFound>()(
   "NamespaceNotFound",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InstanceNotFound extends S.TaggedError<InstanceNotFound>()(
   "InstanceNotFound",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceAttributesLimitExceededException extends S.TaggedError<ServiceAttributesLimitExceededException>()(
   "ServiceAttributesLimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceNotFound extends S.TaggedError<ServiceNotFound>()(
   "ServiceNotFound",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RequestLimitExceeded extends S.TaggedError<RequestLimitExceeded>()(
   "RequestLimitExceeded",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceLimitExceeded extends S.TaggedError<ResourceLimitExceeded>()(
   "ResourceLimitExceeded",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NamespaceAlreadyExists extends S.TaggedError<NamespaceAlreadyExists>()(
   "NamespaceAlreadyExists",
   {
@@ -1613,15 +1609,15 @@ export class NamespaceAlreadyExists extends S.TaggedError<NamespaceAlreadyExists
     CreatorRequestId: S.optional(S.String),
     NamespaceId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { Message: S.optional(S.String), ResourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class OperationNotFound extends S.TaggedError<OperationNotFound>()(
   "OperationNotFound",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceAlreadyExists extends S.TaggedError<ServiceAlreadyExists>()(
   "ServiceAlreadyExists",
   {
@@ -1630,7 +1626,7 @@ export class ServiceAlreadyExists extends S.TaggedError<ServiceAlreadyExists>()(
     ServiceId: S.optional(S.String),
     ServiceArn: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1640,8 +1636,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  InvalidInput | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -1659,8 +1655,8 @@ export const updateHttpNamespace: (
   | InvalidInput
   | NamespaceNotFound
   | ResourceInUse
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHttpNamespaceRequest,
   output: UpdateHttpNamespaceResponse,
@@ -1673,8 +1669,8 @@ export const deleteServiceAttributes: (
   input: DeleteServiceAttributesRequest,
 ) => Effect.Effect<
   DeleteServiceAttributesResponse,
-  InvalidInput | ServiceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | ServiceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceAttributesRequest,
   output: DeleteServiceAttributesResponse,
@@ -1692,8 +1688,8 @@ export const deleteNamespace: (
   | InvalidInput
   | NamespaceNotFound
   | ResourceInUse
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNamespaceRequest,
   output: DeleteNamespaceResponse,
@@ -1706,8 +1702,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  InvalidInput | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1720,8 +1716,8 @@ export const getInstance: (
   input: GetInstanceRequest,
 ) => Effect.Effect<
   GetInstanceResponse,
-  InstanceNotFound | InvalidInput | ServiceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InstanceNotFound | InvalidInput | ServiceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceRequest,
   output: GetInstanceResponse,
@@ -1740,22 +1736,22 @@ export const getInstancesHealthStatus: {
     input: GetInstancesHealthStatusRequest,
   ): Effect.Effect<
     GetInstancesHealthStatusResponse,
-    InstanceNotFound | InvalidInput | ServiceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InstanceNotFound | InvalidInput | ServiceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetInstancesHealthStatusRequest,
   ) => Stream.Stream<
     GetInstancesHealthStatusResponse,
-    InstanceNotFound | InvalidInput | ServiceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InstanceNotFound | InvalidInput | ServiceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetInstancesHealthStatusRequest,
   ) => Stream.Stream<
     unknown,
-    InstanceNotFound | InvalidInput | ServiceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InstanceNotFound | InvalidInput | ServiceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetInstancesHealthStatusRequest,
@@ -1775,8 +1771,8 @@ export const deleteService: (
   input: DeleteServiceRequest,
 ) => Effect.Effect<
   DeleteServiceResponse,
-  InvalidInput | ResourceInUse | ServiceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | ResourceInUse | ServiceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceRequest,
   output: DeleteServiceResponse,
@@ -1789,8 +1785,8 @@ export const getService: (
   input: GetServiceRequest,
 ) => Effect.Effect<
   GetServiceResponse,
-  InvalidInput | ServiceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | ServiceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceRequest,
   output: GetServiceResponse,
@@ -1803,8 +1799,8 @@ export const getServiceAttributes: (
   input: GetServiceAttributesRequest,
 ) => Effect.Effect<
   GetServiceAttributesResponse,
-  InvalidInput | ServiceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | ServiceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetServiceAttributesRequest,
   output: GetServiceAttributesResponse,
@@ -1819,22 +1815,22 @@ export const listInstances: {
     input: ListInstancesRequest,
   ): Effect.Effect<
     ListInstancesResponse,
-    InvalidInput | ServiceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | ServiceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInstancesRequest,
   ) => Stream.Stream<
     ListInstancesResponse,
-    InvalidInput | ServiceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | ServiceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInstancesRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidInput | ServiceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | ServiceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInstancesRequest,
@@ -1865,8 +1861,8 @@ export const updateInstanceCustomHealthStatus: (
   | InstanceNotFound
   | InvalidInput
   | ServiceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInstanceCustomHealthStatusRequest,
   output: UpdateInstanceCustomHealthStatusResponse,
@@ -1887,8 +1883,8 @@ export const updateServiceAttributes: (
   | InvalidInput
   | ServiceAttributesLimitExceededException
   | ServiceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceAttributesRequest,
   output: UpdateServiceAttributesResponse,
@@ -1911,8 +1907,8 @@ export const deregisterInstance: (
   | InvalidInput
   | ResourceInUse
   | ServiceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterInstanceRequest,
   output: DeregisterInstanceResponse,
@@ -1935,8 +1931,8 @@ export const discoverInstancesRevision: (
   | NamespaceNotFound
   | RequestLimitExceeded
   | ServiceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DiscoverInstancesRevisionRequest,
   output: DiscoverInstancesRevisionResponse,
@@ -1955,22 +1951,22 @@ export const listNamespaces: {
     input: ListNamespacesRequest,
   ): Effect.Effect<
     ListNamespacesResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNamespacesRequest,
   ) => Stream.Stream<
     ListNamespacesResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNamespacesRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNamespacesRequest,
@@ -1990,22 +1986,22 @@ export const listOperations: {
     input: ListOperationsRequest,
   ): Effect.Effect<
     ListOperationsResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOperationsRequest,
   ) => Stream.Stream<
     ListOperationsResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOperationsRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOperationsRequest,
@@ -2026,22 +2022,22 @@ export const listServices: {
     input: ListServicesRequest,
   ): Effect.Effect<
     ListServicesResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServicesRequest,
   ) => Stream.Stream<
     ListServicesResponse,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServicesRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidInput | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidInput | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServicesRequest,
@@ -2088,8 +2084,8 @@ export const updateService: (
   input: UpdateServiceRequest,
 ) => Effect.Effect<
   UpdateServiceResponse,
-  DuplicateRequest | InvalidInput | ServiceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DuplicateRequest | InvalidInput | ServiceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceRequest,
   output: UpdateServiceResponse,
@@ -2139,8 +2135,8 @@ export const registerInstance: (
   | ResourceInUse
   | ResourceLimitExceeded
   | ServiceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterInstanceRequest,
   output: RegisterInstanceResponse,
@@ -2167,8 +2163,8 @@ export const discoverInstances: (
   | NamespaceNotFound
   | RequestLimitExceeded
   | ServiceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DiscoverInstancesRequest,
   output: DiscoverInstancesResponse,
@@ -2189,8 +2185,8 @@ export const tagResource: (
   | InvalidInput
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2216,8 +2212,8 @@ export const createPublicDnsNamespace: (
   | NamespaceAlreadyExists
   | ResourceLimitExceeded
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePublicDnsNamespaceRequest,
   output: CreatePublicDnsNamespaceResponse,
@@ -2246,8 +2242,8 @@ export const createHttpNamespace: (
   | NamespaceAlreadyExists
   | ResourceLimitExceeded
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHttpNamespaceRequest,
   output: CreateHttpNamespaceResponse,
@@ -2278,8 +2274,8 @@ export const createPrivateDnsNamespace: (
   | NamespaceAlreadyExists
   | ResourceLimitExceeded
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePrivateDnsNamespaceRequest,
   output: CreatePrivateDnsNamespaceResponse,
@@ -2298,8 +2294,8 @@ export const getNamespace: (
   input: GetNamespaceRequest,
 ) => Effect.Effect<
   GetNamespaceResponse,
-  InvalidInput | NamespaceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | NamespaceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNamespaceRequest,
   output: GetNamespaceResponse,
@@ -2315,8 +2311,8 @@ export const getOperation: (
   input: GetOperationRequest,
 ) => Effect.Effect<
   GetOperationResponse,
-  InvalidInput | OperationNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidInput | OperationNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOperationRequest,
   output: GetOperationResponse,
@@ -2333,8 +2329,8 @@ export const updatePublicDnsNamespace: (
   | InvalidInput
   | NamespaceNotFound
   | ResourceInUse
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePublicDnsNamespaceRequest,
   output: UpdatePublicDnsNamespaceResponse,
@@ -2374,8 +2370,8 @@ export const createService: (
   | ResourceLimitExceeded
   | ServiceAlreadyExists
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateServiceRequest,
   output: CreateServiceResponse,
@@ -2399,8 +2395,8 @@ export const updatePrivateDnsNamespace: (
   | InvalidInput
   | NamespaceNotFound
   | ResourceInUse
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePrivateDnsNamespaceRequest,
   output: UpdatePrivateDnsNamespaceResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://directoryservice.amazonaws.com/doc/2015-04-16/",
@@ -3974,8 +3972,8 @@ export const cancelSchemaExtension: (
   | ClientException
   | EntityDoesNotExistException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelSchemaExtensionRequest,
   output: CancelSchemaExtensionResult,
@@ -3997,8 +3995,8 @@ export const createAlias: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAliasRequest,
   output: CreateAliasResult,
@@ -4024,8 +4022,8 @@ export const describeUpdateDirectory: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeUpdateDirectoryRequest,
@@ -4037,8 +4035,8 @@ export const describeUpdateDirectory: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeUpdateDirectoryRequest,
@@ -4050,8 +4048,8 @@ export const describeUpdateDirectory: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeUpdateDirectoryRequest,
@@ -4082,8 +4080,8 @@ export const disableSso: (
   | EntityDoesNotExistException
   | InsufficientPermissionsException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableSsoRequest,
   output: DisableSsoResult,
@@ -4105,8 +4103,8 @@ export const getSnapshotLimits: (
   | ClientException
   | EntityDoesNotExistException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSnapshotLimitsRequest,
   output: GetSnapshotLimitsResult,
@@ -4126,8 +4124,8 @@ export const deleteDirectory: (
   | ClientException
   | EntityDoesNotExistException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDirectoryRequest,
   output: DeleteDirectoryResult,
@@ -4143,8 +4141,8 @@ export const getDirectoryLimits: (
   | ClientException
   | EntityDoesNotExistException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDirectoryLimitsRequest,
   output: GetDirectoryLimitsResult,
@@ -4161,8 +4159,8 @@ export const disableRadius: (
   | ClientException
   | EntityDoesNotExistException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableRadiusRequest,
   output: DisableRadiusResult,
@@ -4183,8 +4181,8 @@ export const createDirectory: (
   | DirectoryLimitExceededException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDirectoryRequest,
   output: CreateDirectoryResult,
@@ -4210,8 +4208,8 @@ export const describeEventTopics: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventTopicsRequest,
   output: DescribeEventTopicsResult,
@@ -4234,8 +4232,8 @@ export const rejectSharedDirectory: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectSharedDirectoryRequest,
   output: RejectSharedDirectoryResult,
@@ -4258,8 +4256,8 @@ export const deleteSnapshot: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSnapshotRequest,
   output: DeleteSnapshotResult,
@@ -4282,8 +4280,8 @@ export const updateTrust: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrustRequest,
   output: UpdateTrustResult,
@@ -4305,8 +4303,8 @@ export const deregisterEventTopic: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterEventTopicRequest,
   output: DeregisterEventTopicResult,
@@ -4332,8 +4330,8 @@ export const registerEventTopic: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterEventTopicRequest,
   output: RegisterEventTopicResult,
@@ -4355,8 +4353,8 @@ export const removeTagsFromResource: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceRequest,
   output: RemoveTagsFromResourceResult,
@@ -4385,8 +4383,8 @@ export const restoreFromSnapshot: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreFromSnapshotRequest,
   output: RestoreFromSnapshotResult,
@@ -4409,8 +4407,8 @@ export const updateRadius: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRadiusRequest,
   output: UpdateRadiusResult,
@@ -4434,8 +4432,8 @@ export const enableRadius: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableRadiusRequest,
   output: EnableRadiusResult,
@@ -4462,8 +4460,8 @@ export const connectDirectory: (
   | DirectoryLimitExceededException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConnectDirectoryRequest,
   output: ConnectDirectoryResult,
@@ -4486,8 +4484,8 @@ export const acceptSharedDirectory: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptSharedDirectoryRequest,
   output: AcceptSharedDirectoryResult,
@@ -4511,8 +4509,8 @@ export const removeIpRoutes: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveIpRoutesRequest,
   output: RemoveIpRoutesResult,
@@ -4544,8 +4542,8 @@ export const disableCAEnrollmentPolicy: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableCAEnrollmentPolicyRequest,
   output: DisableCAEnrollmentPolicyResult,
@@ -4582,8 +4580,8 @@ export const enableCAEnrollmentPolicy: (
   | EntityDoesNotExistException
   | InvalidParameterException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableCAEnrollmentPolicyRequest,
   output: EnableCAEnrollmentPolicyResult,
@@ -4620,8 +4618,8 @@ export const describeSnapshots: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSnapshotsRequest,
@@ -4632,8 +4630,8 @@ export const describeSnapshots: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSnapshotsRequest,
@@ -4644,8 +4642,8 @@ export const describeSnapshots: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsRequest,
@@ -4677,8 +4675,8 @@ export const listIpRoutes: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIpRoutesRequest,
@@ -4689,8 +4687,8 @@ export const listIpRoutes: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIpRoutesRequest,
@@ -4701,8 +4699,8 @@ export const listIpRoutes: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIpRoutesRequest,
@@ -4733,8 +4731,8 @@ export const listLogSubscriptions: {
     | EntityDoesNotExistException
     | InvalidNextTokenException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLogSubscriptionsRequest,
@@ -4744,8 +4742,8 @@ export const listLogSubscriptions: {
     | EntityDoesNotExistException
     | InvalidNextTokenException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLogSubscriptionsRequest,
@@ -4755,8 +4753,8 @@ export const listLogSubscriptions: {
     | EntityDoesNotExistException
     | InvalidNextTokenException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLogSubscriptionsRequest,
@@ -4786,8 +4784,8 @@ export const listSchemaExtensions: {
     | EntityDoesNotExistException
     | InvalidNextTokenException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSchemaExtensionsRequest,
@@ -4797,8 +4795,8 @@ export const listSchemaExtensions: {
     | EntityDoesNotExistException
     | InvalidNextTokenException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSchemaExtensionsRequest,
@@ -4808,8 +4806,8 @@ export const listSchemaExtensions: {
     | EntityDoesNotExistException
     | InvalidNextTokenException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSchemaExtensionsRequest,
@@ -4840,8 +4838,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -4852,8 +4850,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -4864,8 +4862,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -4910,8 +4908,8 @@ export const describeDirectories: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDirectoriesRequest,
@@ -4922,8 +4920,8 @@ export const describeDirectories: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDirectoriesRequest,
@@ -4934,8 +4932,8 @@ export const describeDirectories: {
     | InvalidNextTokenException
     | InvalidParameterException
     | ServiceException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDirectoriesRequest,
@@ -4968,8 +4966,8 @@ export const enableSso: (
   | EntityDoesNotExistException
   | InsufficientPermissionsException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableSsoRequest,
   output: EnableSsoResult,
@@ -4996,8 +4994,8 @@ export const createComputer: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateComputerRequest,
   output: CreateComputerResult,
@@ -5027,8 +5025,8 @@ export const describeHybridADUpdate: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHybridADUpdateRequest,
   output: DescribeHybridADUpdateResult,
@@ -5053,8 +5051,8 @@ export const unshareDirectory: (
   | EntityDoesNotExistException
   | InvalidTargetException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnshareDirectoryRequest,
   output: UnshareDirectoryResult,
@@ -5079,8 +5077,8 @@ export const startSchemaExtension: (
   | InvalidParameterException
   | ServiceException
   | SnapshotLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSchemaExtensionRequest,
   output: StartSchemaExtensionResult,
@@ -5107,8 +5105,8 @@ export const addTagsToResource: (
   | InvalidParameterException
   | ServiceException
   | TagLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToResourceRequest,
   output: AddTagsToResourceResult,
@@ -5137,8 +5135,8 @@ export const addRegion: (
   | RegionLimitExceededException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddRegionRequest,
   output: AddRegionResult,
@@ -5177,8 +5175,8 @@ export const addIpRoutes: (
   | InvalidParameterException
   | IpRouteLimitExceededException
   | ServiceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddIpRoutesRequest,
   output: AddIpRoutesResult,
@@ -5206,8 +5204,8 @@ export const describeADAssessment: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeADAssessmentRequest,
   output: DescribeADAssessmentResult,
@@ -5233,8 +5231,8 @@ export const describeDomainControllers: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDomainControllersRequest,
@@ -5246,8 +5244,8 @@ export const describeDomainControllers: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDomainControllersRequest,
@@ -5259,8 +5257,8 @@ export const describeDomainControllers: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDomainControllersRequest,
@@ -5292,8 +5290,8 @@ export const describeSettings: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSettingsRequest,
   output: DescribeSettingsResult,
@@ -5319,8 +5317,8 @@ export const describeCAEnrollmentPolicy: (
   | DirectoryDoesNotExistException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCAEnrollmentPolicyRequest,
   output: DescribeCAEnrollmentPolicyResult,
@@ -5342,8 +5340,8 @@ export const deleteLogSubscription: (
   | EntityDoesNotExistException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLogSubscriptionRequest,
   output: DeleteLogSubscriptionResult,
@@ -5369,8 +5367,8 @@ export const removeRegion: (
   | DirectoryUnavailableException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveRegionRequest,
   output: RemoveRegionResult,
@@ -5396,8 +5394,8 @@ export const describeDirectoryDataAccess: (
   | DirectoryDoesNotExistException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDirectoryDataAccessRequest,
   output: DescribeDirectoryDataAccessResult,
@@ -5430,8 +5428,8 @@ export const createHybridAD: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHybridADRequest,
   output: CreateHybridADResult,
@@ -5459,8 +5457,8 @@ export const describeCertificate: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCertificateRequest,
   output: DescribeCertificateResult,
@@ -5490,8 +5488,8 @@ export const describeClientAuthenticationSettings: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClientAuthenticationSettingsRequest,
@@ -5503,8 +5501,8 @@ export const describeClientAuthenticationSettings: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClientAuthenticationSettingsRequest,
@@ -5516,8 +5514,8 @@ export const describeClientAuthenticationSettings: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClientAuthenticationSettingsRequest,
@@ -5552,8 +5550,8 @@ export const listADAssessments: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListADAssessmentsRequest,
@@ -5564,8 +5562,8 @@ export const listADAssessments: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListADAssessmentsRequest,
@@ -5576,8 +5574,8 @@ export const listADAssessments: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListADAssessmentsRequest,
@@ -5629,8 +5627,8 @@ export const startADAssessment: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartADAssessmentRequest,
   output: StartADAssessmentResult,
@@ -5669,8 +5667,8 @@ export const updateHybridAD: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHybridADRequest,
   output: UpdateHybridADResult,
@@ -5700,8 +5698,8 @@ export const deleteADAssessment: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteADAssessmentRequest,
   output: DeleteADAssessmentResult,
@@ -5726,8 +5724,8 @@ export const deleteTrust: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrustRequest,
   output: DeleteTrustResult,
@@ -5755,8 +5753,8 @@ export const verifyTrust: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifyTrustRequest,
   output: VerifyTrustResult,
@@ -5788,8 +5786,8 @@ export const createTrust: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrustRequest,
   output: CreateTrustResult,
@@ -5818,8 +5816,8 @@ export const createMicrosoftAD: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMicrosoftADRequest,
   output: CreateMicrosoftADResult,
@@ -5847,8 +5845,8 @@ export const deregisterCertificate: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterCertificateRequest,
   output: DeregisterCertificateResult,
@@ -5879,8 +5877,8 @@ export const createConditionalForwarder: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConditionalForwarderRequest,
   output: CreateConditionalForwarderResult,
@@ -5908,8 +5906,8 @@ export const deleteConditionalForwarder: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConditionalForwarderRequest,
   output: DeleteConditionalForwarderResult,
@@ -5936,8 +5934,8 @@ export const updateConditionalForwarder: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConditionalForwarderRequest,
   output: UpdateConditionalForwarderResult,
@@ -5966,8 +5964,8 @@ export const describeConditionalForwarders: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConditionalForwardersRequest,
   output: DescribeConditionalForwardersResult,
@@ -5994,8 +5992,8 @@ export const disableLDAPS: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableLDAPSRequest,
   output: DisableLDAPSResult,
@@ -6022,8 +6020,8 @@ export const disableClientAuthentication: (
   | InvalidClientAuthStatusException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableClientAuthenticationRequest,
   output: DisableClientAuthenticationResult,
@@ -6050,8 +6048,8 @@ export const describeLDAPSSettings: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLDAPSSettingsRequest,
@@ -6063,8 +6061,8 @@ export const describeLDAPSSettings: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLDAPSSettingsRequest,
@@ -6076,8 +6074,8 @@ export const describeLDAPSSettings: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLDAPSSettingsRequest,
@@ -6113,8 +6111,8 @@ export const describeRegions: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRegionsRequest,
@@ -6127,8 +6125,8 @@ export const describeRegions: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRegionsRequest,
@@ -6141,8 +6139,8 @@ export const describeRegions: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRegionsRequest,
@@ -6179,8 +6177,8 @@ export const describeTrusts: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTrustsRequest,
@@ -6192,8 +6190,8 @@ export const describeTrusts: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTrustsRequest,
@@ -6205,8 +6203,8 @@ export const describeTrusts: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTrustsRequest,
@@ -6241,8 +6239,8 @@ export const listCertificates: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCertificatesRequest,
@@ -6254,8 +6252,8 @@ export const listCertificates: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCertificatesRequest,
@@ -6267,8 +6265,8 @@ export const listCertificates: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCertificatesRequest,
@@ -6302,8 +6300,8 @@ export const describeSharedDirectories: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSharedDirectoriesRequest,
@@ -6315,8 +6313,8 @@ export const describeSharedDirectories: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSharedDirectoriesRequest,
@@ -6328,8 +6326,8 @@ export const describeSharedDirectories: {
     | InvalidParameterException
     | ServiceException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSharedDirectoriesRequest,
@@ -6367,8 +6365,8 @@ export const updateNumberOfDomainControllers: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNumberOfDomainControllersRequest,
   output: UpdateNumberOfDomainControllersResult,
@@ -6396,8 +6394,8 @@ export const createLogSubscription: (
   | InsufficientPermissionsException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLogSubscriptionRequest,
   output: CreateLogSubscriptionResult,
@@ -6425,8 +6423,8 @@ export const disableDirectoryDataAccess: (
   | DirectoryUnavailableException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableDirectoryDataAccessRequest,
   output: DisableDirectoryDataAccessResult,
@@ -6455,8 +6453,8 @@ export const enableDirectoryDataAccess: (
   | DirectoryUnavailableException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableDirectoryDataAccessRequest,
   output: EnableDirectoryDataAccessResult,
@@ -6484,8 +6482,8 @@ export const createSnapshot: (
   | InvalidParameterException
   | ServiceException
   | SnapshotLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotRequest,
   output: CreateSnapshotResult,
@@ -6513,8 +6511,8 @@ export const updateDirectorySetup: (
   | ServiceException
   | SnapshotLimitExceededException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDirectorySetupRequest,
   output: UpdateDirectorySetupResult,
@@ -6545,8 +6543,8 @@ export const enableLDAPS: (
   | NoAvailableCertificateException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableLDAPSRequest,
   output: EnableLDAPSResult,
@@ -6575,8 +6573,8 @@ export const enableClientAuthentication: (
   | NoAvailableCertificateException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableClientAuthenticationRequest,
   output: EnableClientAuthenticationResult,
@@ -6606,8 +6604,8 @@ export const registerCertificate: (
   | InvalidParameterException
   | ServiceException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterCertificateRequest,
   output: RegisterCertificateResult,
@@ -6638,8 +6636,8 @@ export const updateSettings: (
   | ServiceException
   | UnsupportedOperationException
   | UnsupportedSettingsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSettingsRequest,
   output: UpdateSettingsResult,
@@ -6683,8 +6681,8 @@ export const resetUserPassword: (
   | ServiceException
   | UnsupportedOperationException
   | UserDoesNotExistException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetUserPasswordRequest,
   output: ResetUserPasswordResult,
@@ -6730,8 +6728,8 @@ export const shareDirectory: (
   | ServiceException
   | ShareLimitExceededException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ShareDirectoryRequest,
   output: ShareDirectoryResult,

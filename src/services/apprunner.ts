@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://apprunner.amazonaws.com/doc/2020-05-15/");
 const svc = T.AwsApiService({
@@ -2072,29 +2070,27 @@ export class InternalServiceErrorException extends S.TaggedError<InternalService
   "InternalServiceErrorException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InternalServiceError", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidRequest", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidStateException extends S.TaggedError<InvalidStateException>()(
   "InvalidStateException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotfound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ServiceQuotaExceeded", httpResponseCode: 402 }),
-) {}
+).pipe(C.withQuotaError) {}
 
 //# Operations
 /**
@@ -2105,28 +2101,22 @@ export const listVpcConnectors: {
     input: ListVpcConnectorsRequest,
   ): Effect.Effect<
     ListVpcConnectorsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVpcConnectorsRequest,
   ) => Stream.Stream<
     ListVpcConnectorsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVpcConnectorsRequest,
   ) => Stream.Stream<
     unknown,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVpcConnectorsRequest,
@@ -2151,28 +2141,22 @@ export const listAutoScalingConfigurations: {
     input: ListAutoScalingConfigurationsRequest,
   ): Effect.Effect<
     ListAutoScalingConfigurationsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAutoScalingConfigurationsRequest,
   ) => Stream.Stream<
     ListAutoScalingConfigurationsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAutoScalingConfigurationsRequest,
   ) => Stream.Stream<
     unknown,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAutoScalingConfigurationsRequest,
@@ -2192,28 +2176,22 @@ export const listConnections: {
     input: ListConnectionsRequest,
   ): Effect.Effect<
     ListConnectionsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConnectionsRequest,
   ) => Stream.Stream<
     ListConnectionsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConnectionsRequest,
   ) => Stream.Stream<
     unknown,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConnectionsRequest,
@@ -2238,28 +2216,22 @@ export const listObservabilityConfigurations: {
     input: ListObservabilityConfigurationsRequest,
   ): Effect.Effect<
     ListObservabilityConfigurationsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListObservabilityConfigurationsRequest,
   ) => Stream.Stream<
     ListObservabilityConfigurationsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListObservabilityConfigurationsRequest,
   ) => Stream.Stream<
     unknown,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListObservabilityConfigurationsRequest,
@@ -2279,28 +2251,22 @@ export const listServices: {
     input: ListServicesRequest,
   ): Effect.Effect<
     ListServicesResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServicesRequest,
   ) => Stream.Stream<
     ListServicesResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServicesRequest,
   ) => Stream.Stream<
     unknown,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServicesRequest,
@@ -2320,28 +2286,22 @@ export const listVpcIngressConnections: {
     input: ListVpcIngressConnectionsRequest,
   ): Effect.Effect<
     ListVpcIngressConnectionsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVpcIngressConnectionsRequest,
   ) => Stream.Stream<
     ListVpcIngressConnectionsResponse,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVpcIngressConnectionsRequest,
   ) => Stream.Stream<
     unknown,
-    | InternalServiceErrorException
-    | InvalidRequestException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceErrorException | InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVpcIngressConnectionsRequest,
@@ -2364,8 +2324,8 @@ export const updateDefaultAutoScalingConfiguration: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDefaultAutoScalingConfigurationRequest,
   output: UpdateDefaultAutoScalingConfigurationResponse,
@@ -2396,8 +2356,8 @@ export const createAutoScalingConfiguration: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAutoScalingConfigurationRequest,
   output: CreateAutoScalingConfigurationResponse,
@@ -2425,8 +2385,8 @@ export const updateService: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceRequest,
   output: UpdateServiceResponse,
@@ -2454,8 +2414,8 @@ export const updateVpcIngressConnection: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVpcIngressConnectionRequest,
   output: UpdateVpcIngressConnectionResponse,
@@ -2477,8 +2437,8 @@ export const untagResource: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2504,8 +2464,8 @@ export const disassociateCustomDomain: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateCustomDomainRequest,
   output: DisassociateCustomDomainResponse,
@@ -2527,8 +2487,8 @@ export const listTagsForResource: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2554,8 +2514,8 @@ export const pauseService: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PauseServiceRequest,
   output: PauseServiceResponse,
@@ -2580,8 +2540,8 @@ export const resumeService: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResumeServiceRequest,
   output: ResumeServiceResponse,
@@ -2603,8 +2563,8 @@ export const createVpcIngressConnection: (
   | InvalidRequestException
   | InvalidStateException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcIngressConnectionRequest,
   output: CreateVpcIngressConnectionResponse,
@@ -2631,8 +2591,8 @@ export const deleteService: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceRequest,
   output: DeleteServiceResponse,
@@ -2662,8 +2622,8 @@ export const deleteVpcIngressConnection: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcIngressConnectionRequest,
   output: DeleteVpcIngressConnectionResponse,
@@ -2689,8 +2649,8 @@ export const associateCustomDomain: (
   | InternalServiceErrorException
   | InvalidRequestException
   | InvalidStateException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateCustomDomainRequest,
   output: AssociateCustomDomainResponse,
@@ -2711,8 +2671,8 @@ export const deleteConnection: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectionRequest,
   output: DeleteConnectionResponse,
@@ -2733,8 +2693,8 @@ export const deleteVpcConnector: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcConnectorRequest,
   output: DeleteVpcConnectorResponse,
@@ -2754,8 +2714,8 @@ export const describeAutoScalingConfiguration: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAutoScalingConfigurationRequest,
   output: DescribeAutoScalingConfigurationResponse,
@@ -2776,8 +2736,8 @@ export const describeCustomDomains: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCustomDomainsRequest,
@@ -2786,8 +2746,8 @@ export const describeCustomDomains: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCustomDomainsRequest,
@@ -2796,8 +2756,8 @@ export const describeCustomDomains: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCustomDomainsRequest,
@@ -2823,8 +2783,8 @@ export const describeObservabilityConfiguration: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeObservabilityConfigurationRequest,
   output: DescribeObservabilityConfigurationResponse,
@@ -2844,8 +2804,8 @@ export const describeService: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServiceRequest,
   output: DescribeServiceResponse,
@@ -2865,8 +2825,8 @@ export const describeVpcConnector: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcConnectorRequest,
   output: DescribeVpcConnectorResponse,
@@ -2886,8 +2846,8 @@ export const describeVpcIngressConnection: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcIngressConnectionRequest,
   output: DescribeVpcIngressConnectionResponse,
@@ -2908,8 +2868,8 @@ export const listServicesForAutoScalingConfiguration: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServicesForAutoScalingConfigurationRequest,
@@ -2918,8 +2878,8 @@ export const listServicesForAutoScalingConfiguration: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServicesForAutoScalingConfigurationRequest,
@@ -2928,8 +2888,8 @@ export const listServicesForAutoScalingConfiguration: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServicesForAutoScalingConfigurationRequest,
@@ -2962,8 +2922,8 @@ export const startDeployment: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDeploymentRequest,
   output: StartDeploymentResponse,
@@ -2985,8 +2945,8 @@ export const deleteAutoScalingConfiguration: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAutoScalingConfigurationRequest,
   output: DeleteAutoScalingConfigurationResponse,
@@ -3007,8 +2967,8 @@ export const deleteObservabilityConfiguration: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObservabilityConfigurationRequest,
   output: DeleteObservabilityConfigurationResponse,
@@ -3032,8 +2992,8 @@ export const listOperations: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOperationsRequest,
@@ -3042,8 +3002,8 @@ export const listOperations: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOperationsRequest,
@@ -3052,8 +3012,8 @@ export const listOperations: {
     | InternalServiceErrorException
     | InvalidRequestException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOperationsRequest,
@@ -3080,8 +3040,8 @@ export const tagResource: (
   | InvalidRequestException
   | InvalidStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3107,8 +3067,8 @@ export const createConnection: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectionRequest,
   output: CreateConnectionResponse,
@@ -3138,8 +3098,8 @@ export const createObservabilityConfiguration: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateObservabilityConfigurationRequest,
   output: CreateObservabilityConfigurationResponse,
@@ -3160,8 +3120,8 @@ export const createVpcConnector: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcConnectorRequest,
   output: CreateVpcConnectorResponse,
@@ -3183,8 +3143,8 @@ export const createService: (
   | InternalServiceErrorException
   | InvalidRequestException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateServiceRequest,
   output: CreateServiceResponse,

@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Rekognition",
@@ -4577,7 +4575,7 @@ export class HumanLoopQuotaExceededException extends S.TaggedError<HumanLoopQuot
     Code: S.optional(S.String),
     Logref: S.optional(S.String),
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   {
@@ -4658,8 +4656,8 @@ export const listMediaAnalysisJobs: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMediaAnalysisJobsRequest,
@@ -4671,8 +4669,8 @@ export const listMediaAnalysisJobs: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMediaAnalysisJobsRequest,
@@ -4684,8 +4682,8 @@ export const listMediaAnalysisJobs: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMediaAnalysisJobsRequest,
@@ -4724,8 +4722,8 @@ export const describeProjectVersions: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeProjectVersionsRequest,
@@ -4738,8 +4736,8 @@ export const describeProjectVersions: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeProjectVersionsRequest,
@@ -4752,8 +4750,8 @@ export const describeProjectVersions: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeProjectVersionsRequest,
@@ -4831,8 +4829,8 @@ export const searchFacesByImage: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SearchFacesByImageRequest,
   output: SearchFacesByImageResponse,
@@ -4866,8 +4864,8 @@ export const describeDataset: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDatasetRequest,
   output: DescribeDatasetResponse,
@@ -4912,8 +4910,8 @@ export const getFaceDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetFaceDetectionRequest,
@@ -4926,8 +4924,8 @@ export const getFaceDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetFaceDetectionRequest,
@@ -4940,8 +4938,8 @@ export const getFaceDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetFaceDetectionRequest,
@@ -5006,8 +5004,8 @@ export const getFaceSearch: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetFaceSearchRequest,
@@ -5020,8 +5018,8 @@ export const getFaceSearch: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetFaceSearchRequest,
@@ -5034,8 +5032,8 @@ export const getFaceSearch: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetFaceSearchRequest,
@@ -5069,8 +5067,8 @@ export const getMediaAnalysisJob: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMediaAnalysisJobRequest,
   output: GetMediaAnalysisJobResponse,
@@ -5123,8 +5121,8 @@ export const getSegmentDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetSegmentDetectionRequest,
@@ -5137,8 +5135,8 @@ export const getSegmentDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetSegmentDetectionRequest,
@@ -5151,8 +5149,8 @@ export const getSegmentDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSegmentDetectionRequest,
@@ -5208,8 +5206,8 @@ export const getTextDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetTextDetectionRequest,
@@ -5222,8 +5220,8 @@ export const getTextDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetTextDetectionRequest,
@@ -5236,8 +5234,8 @@ export const getTextDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTextDetectionRequest,
@@ -5275,8 +5273,8 @@ export const searchUsers: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SearchUsersRequest,
   output: SearchUsersResponse,
@@ -5306,8 +5304,8 @@ export const deleteFaces: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFacesRequest,
   output: DeleteFacesResponse,
@@ -5341,8 +5339,8 @@ export const getCelebrityInfo: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCelebrityInfoRequest,
   output: GetCelebrityInfoResponse,
@@ -5385,8 +5383,8 @@ export const searchFaces: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SearchFacesRequest,
   output: SearchFacesResponse,
@@ -5418,8 +5416,8 @@ export const deleteUser: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -5452,8 +5450,8 @@ export const describeCollection: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCollectionRequest,
   output: DescribeCollectionResponse,
@@ -5480,8 +5478,8 @@ export const describeStreamProcessor: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStreamProcessorRequest,
   output: DescribeStreamProcessorResponse,
@@ -5511,8 +5509,8 @@ export const listTagsForResource: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5542,8 +5540,8 @@ export const untagResource: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5578,8 +5576,8 @@ export const disassociateFaces: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateFacesRequest,
   output: DisassociateFacesResponse,
@@ -5641,8 +5639,8 @@ export const getPersonTracking: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetPersonTrackingRequest,
@@ -5655,8 +5653,8 @@ export const getPersonTracking: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetPersonTrackingRequest,
@@ -5669,8 +5667,8 @@ export const getPersonTracking: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetPersonTrackingRequest,
@@ -5711,8 +5709,8 @@ export const listFaces: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFacesRequest,
@@ -5725,8 +5723,8 @@ export const listFaces: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFacesRequest,
@@ -5739,8 +5737,8 @@ export const listFaces: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFacesRequest,
@@ -5782,8 +5780,8 @@ export const listProjectPolicies: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProjectPoliciesRequest,
@@ -5796,8 +5794,8 @@ export const listProjectPolicies: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProjectPoliciesRequest,
@@ -5810,8 +5808,8 @@ export const listProjectPolicies: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProjectPoliciesRequest,
@@ -5851,8 +5849,8 @@ export const listUsers: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUsersRequest,
@@ -5865,8 +5863,8 @@ export const listUsers: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUsersRequest,
@@ -5879,8 +5877,8 @@ export const listUsers: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
@@ -5924,8 +5922,8 @@ export const listCollections: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCollectionsRequest,
@@ -5938,8 +5936,8 @@ export const listCollections: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCollectionsRequest,
@@ -5952,8 +5950,8 @@ export const listCollections: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCollectionsRequest,
@@ -6032,8 +6030,8 @@ export const getCelebrityRecognition: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetCelebrityRecognitionRequest,
@@ -6046,8 +6044,8 @@ export const getCelebrityRecognition: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetCelebrityRecognitionRequest,
@@ -6060,8 +6058,8 @@ export const getCelebrityRecognition: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCelebrityRecognitionRequest,
@@ -6126,8 +6124,8 @@ export const getContentModeration: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetContentModerationRequest,
@@ -6140,8 +6138,8 @@ export const getContentModeration: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetContentModerationRequest,
@@ -6154,8 +6152,8 @@ export const getContentModeration: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetContentModerationRequest,
@@ -6201,8 +6199,8 @@ export const searchUsersByImage: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SearchUsersByImageRequest,
   output: SearchUsersByImageResponse,
@@ -6238,8 +6236,8 @@ export const deleteProjectPolicy: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProjectPolicyRequest,
   output: DeleteProjectPolicyResponse,
@@ -6271,8 +6269,8 @@ export const startStreamProcessor: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartStreamProcessorRequest,
   output: StartStreamProcessorResponse,
@@ -6300,8 +6298,8 @@ export const updateStreamProcessor: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStreamProcessorRequest,
   output: UpdateStreamProcessorResponse,
@@ -6338,8 +6336,8 @@ export const deleteProject: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProjectRequest,
   output: DeleteProjectResponse,
@@ -6375,8 +6373,8 @@ export const deleteProjectVersion: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProjectVersionRequest,
   output: DeleteProjectVersionResponse,
@@ -6410,8 +6408,8 @@ export const stopProjectVersion: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopProjectVersionRequest,
   output: StopProjectVersionResponse,
@@ -6440,8 +6438,8 @@ export const deleteStreamProcessor: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStreamProcessorRequest,
   output: DeleteStreamProcessorResponse,
@@ -6469,8 +6467,8 @@ export const stopStreamProcessor: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopStreamProcessorRequest,
   output: StopStreamProcessorResponse,
@@ -6525,8 +6523,8 @@ export const updateDatasetEntries: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDatasetEntriesRequest,
   output: UpdateDatasetEntriesResponse,
@@ -6567,8 +6565,8 @@ export const deleteDataset: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDatasetRequest,
   output: DeleteDatasetResponse,
@@ -6602,8 +6600,8 @@ export const createProject: (
   | ProvisionedThroughputExceededException
   | ResourceInUseException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProjectRequest,
   output: CreateProjectResponse,
@@ -6656,8 +6654,8 @@ export const createDataset: (
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDatasetRequest,
   output: CreateDatasetResponse,
@@ -6687,8 +6685,8 @@ export const listStreamProcessors: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStreamProcessorsRequest,
@@ -6700,8 +6698,8 @@ export const listStreamProcessors: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStreamProcessorsRequest,
@@ -6713,8 +6711,8 @@ export const listStreamProcessors: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStreamProcessorsRequest,
@@ -6749,8 +6747,8 @@ export const describeProjects: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeProjectsRequest,
@@ -6762,8 +6760,8 @@ export const describeProjects: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeProjectsRequest,
@@ -6775,8 +6773,8 @@ export const describeProjects: {
     | InvalidParameterException
     | ProvisionedThroughputExceededException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeProjectsRequest,
@@ -6819,8 +6817,8 @@ export const createFaceLivenessSession: (
   | InvalidParameterException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFaceLivenessSessionRequest,
   output: CreateFaceLivenessSessionResponse,
@@ -6878,8 +6876,8 @@ export const recognizeCelebrities: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RecognizeCelebritiesRequest,
   output: RecognizeCelebritiesResponse,
@@ -6929,8 +6927,8 @@ export const detectFaces: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectFacesRequest,
   output: DetectFacesResponse,
@@ -6989,8 +6987,8 @@ export const detectText: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectTextRequest,
   output: DetectTextResponse,
@@ -7075,8 +7073,8 @@ export const compareFaces: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompareFacesRequest,
   output: CompareFacesResponse,
@@ -7109,8 +7107,8 @@ export const deleteCollection: (
   | ProvisionedThroughputExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCollectionRequest,
   output: DeleteCollectionResponse,
@@ -7241,8 +7239,8 @@ export const detectLabels: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectLabelsRequest,
   output: DetectLabelsResponse,
@@ -7337,8 +7335,8 @@ export const getLabelDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetLabelDetectionRequest,
@@ -7351,8 +7349,8 @@ export const getLabelDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetLabelDetectionRequest,
@@ -7365,8 +7363,8 @@ export const getLabelDetection: {
     | ProvisionedThroughputExceededException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetLabelDetectionRequest,
@@ -7413,8 +7411,8 @@ export const startProjectVersion: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartProjectVersionRequest,
   output: StartProjectVersionResponse,
@@ -7451,8 +7449,8 @@ export const getFaceLivenessSessionResults: (
   | ProvisionedThroughputExceededException
   | SessionNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFaceLivenessSessionResultsRequest,
   output: GetFaceLivenessSessionResultsResponse,
@@ -7501,8 +7499,8 @@ export const detectModerationLabels: (
   | ResourceNotFoundException
   | ResourceNotReadyException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectModerationLabelsRequest,
   output: DetectModerationLabelsResponse,
@@ -7566,8 +7564,8 @@ export const detectProtectiveEquipment: (
   | InvalidS3ObjectException
   | ProvisionedThroughputExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectProtectiveEquipmentRequest,
   output: DetectProtectiveEquipmentResponse,
@@ -7612,8 +7610,8 @@ export const createCollection: (
   | ResourceAlreadyExistsException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCollectionRequest,
   output: CreateCollectionResponse,
@@ -7654,8 +7652,8 @@ export const startFaceSearch: (
   | ResourceNotFoundException
   | ThrottlingException
   | VideoTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFaceSearchRequest,
   output: StartFaceSearchResponse,
@@ -7700,8 +7698,8 @@ export const distributeDatasetEntries: (
   | ResourceNotFoundException
   | ResourceNotReadyException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DistributeDatasetEntriesRequest,
   output: DistributeDatasetEntriesResponse,
@@ -7774,8 +7772,8 @@ export const detectCustomLabels: (
   | ResourceNotFoundException
   | ResourceNotReadyException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectCustomLabelsRequest,
   output: DetectCustomLabelsResponse,
@@ -7812,8 +7810,8 @@ export const startMediaAnalysisJob: (
   | ResourceNotFoundException
   | ResourceNotReadyException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMediaAnalysisJobRequest,
   output: StartMediaAnalysisJobResponse,
@@ -7854,8 +7852,8 @@ export const listDatasetLabels: {
     | ResourceNotFoundException
     | ResourceNotReadyException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDatasetLabelsRequest,
@@ -7870,8 +7868,8 @@ export const listDatasetLabels: {
     | ResourceNotFoundException
     | ResourceNotReadyException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDatasetLabelsRequest,
@@ -7886,8 +7884,8 @@ export const listDatasetLabels: {
     | ResourceNotFoundException
     | ResourceNotReadyException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetLabelsRequest,
@@ -7942,8 +7940,8 @@ export const listDatasetEntries: {
     | ResourceNotFoundException
     | ResourceNotReadyException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDatasetEntriesRequest,
@@ -7958,8 +7956,8 @@ export const listDatasetEntries: {
     | ResourceNotFoundException
     | ResourceNotReadyException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDatasetEntriesRequest,
@@ -7974,8 +7972,8 @@ export const listDatasetEntries: {
     | ResourceNotFoundException
     | ResourceNotReadyException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDatasetEntriesRequest,
@@ -8046,8 +8044,8 @@ export const associateFaces: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateFacesRequest,
   output: AssociateFacesResponse,
@@ -8082,8 +8080,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -8121,8 +8119,8 @@ export const createUser: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -8246,8 +8244,8 @@ export const indexFaces: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IndexFacesRequest,
   output: IndexFacesResponse,
@@ -8302,8 +8300,8 @@ export const putProjectPolicy: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutProjectPolicyRequest,
   output: PutProjectPolicyResponse,
@@ -8362,8 +8360,8 @@ export const copyProjectVersion: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyProjectVersionRequest,
   output: CopyProjectVersionResponse,
@@ -8423,8 +8421,8 @@ export const createProjectVersion: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProjectVersionRequest,
   output: CreateProjectVersionResponse,
@@ -8483,8 +8481,8 @@ export const createStreamProcessor: (
   | ResourceInUseException
   | ServiceQuotaExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStreamProcessorRequest,
   output: CreateStreamProcessorResponse,
@@ -8528,8 +8526,8 @@ export const startContentModeration: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | VideoTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartContentModerationRequest,
   output: StartContentModerationResponse,
@@ -8588,8 +8586,8 @@ export const startLabelDetection: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | VideoTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartLabelDetectionRequest,
   output: StartLabelDetectionResponse,
@@ -8630,8 +8628,8 @@ export const startTextDetection: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | VideoTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTextDetectionRequest,
   output: StartTextDetectionResponse,
@@ -8676,8 +8674,8 @@ export const startFaceDetection: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | VideoTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFaceDetectionRequest,
   output: StartFaceDetectionResponse,
@@ -8724,8 +8722,8 @@ export const startPersonTracking: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | VideoTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartPersonTrackingRequest,
   output: StartPersonTrackingResponse,
@@ -8769,8 +8767,8 @@ export const startCelebrityRecognition: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | VideoTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCelebrityRecognitionRequest,
   output: StartCelebrityRecognitionResponse,
@@ -8819,8 +8817,8 @@ export const startSegmentDetection: (
   | ProvisionedThroughputExceededException
   | ThrottlingException
   | VideoTooLargeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSegmentDetectionRequest,
   output: StartSegmentDetectionResponse,

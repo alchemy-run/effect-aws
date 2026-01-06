@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://devicefarm.amazonaws.com/doc/2015-06-23/");
 const svc = T.AwsApiService({
@@ -3785,9 +3783,7 @@ export class NotFoundException extends S.TaggedError<NotFoundException>()(
 export class InternalServiceException extends S.TaggedError<InternalServiceException>()(
   "InternalServiceException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ServiceAccountException extends S.TaggedError<ServiceAccountException>()(
   "ServiceAccountException",
   { message: S.optional(S.String) },
@@ -3799,7 +3795,7 @@ export class InvalidOperationException extends S.TaggedError<InvalidOperationExc
 export class CannotDeleteException extends S.TaggedError<CannotDeleteException>()(
   "CannotDeleteException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class NotEligibleException extends S.TaggedError<NotEligibleException>()(
   "NotEligibleException",
   { message: S.optional(S.String) },
@@ -3811,15 +3807,15 @@ export class IdempotencyException extends S.TaggedError<IdempotencyException>()(
 export class TagOperationException extends S.TaggedError<TagOperationException>()(
   "TagOperationException",
   { message: S.optional(S.String), resourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagPolicyException extends S.TaggedError<TagPolicyException>()(
   "TagPolicyException",
   { message: S.optional(S.String), resourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String), resourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3830,22 +3826,22 @@ export const listTestGridProjects: {
     input: ListTestGridProjectsRequest,
   ): Effect.Effect<
     ListTestGridProjectsResult,
-    ArgumentException | InternalServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ArgumentException | InternalServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTestGridProjectsRequest,
   ) => Stream.Stream<
     ListTestGridProjectsResult,
-    ArgumentException | InternalServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ArgumentException | InternalServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTestGridProjectsRequest,
   ) => Stream.Stream<
     unknown,
-    ArgumentException | InternalServiceException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ArgumentException | InternalServiceException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTestGridProjectsRequest,
@@ -3868,8 +3864,8 @@ export const listTestGridSessionActions: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTestGridSessionActionsRequest,
@@ -3878,8 +3874,8 @@ export const listTestGridSessionActions: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTestGridSessionActionsRequest,
@@ -3888,8 +3884,8 @@ export const listTestGridSessionActions: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTestGridSessionActionsRequest,
@@ -3912,8 +3908,8 @@ export const listTestGridSessionArtifacts: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTestGridSessionArtifactsRequest,
@@ -3922,8 +3918,8 @@ export const listTestGridSessionArtifacts: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTestGridSessionArtifactsRequest,
@@ -3932,8 +3928,8 @@ export const listTestGridSessionArtifacts: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTestGridSessionArtifactsRequest,
@@ -3953,8 +3949,8 @@ export const listVPCEConfigurations: (
   input: ListVPCEConfigurationsRequest,
 ) => Effect.Effect<
   ListVPCEConfigurationsResult,
-  ArgumentException | ServiceAccountException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ArgumentException | ServiceAccountException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVPCEConfigurationsRequest,
   output: ListVPCEConfigurationsResult,
@@ -3971,8 +3967,8 @@ export const updateVPCEConfiguration: (
   | InvalidOperationException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVPCEConfigurationRequest,
   output: UpdateVPCEConfigurationResult,
@@ -3996,8 +3992,8 @@ export const deleteTestGridProject: (
   | CannotDeleteException
   | InternalServiceException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTestGridProjectRequest,
   output: DeleteTestGridProjectResult,
@@ -4019,8 +4015,8 @@ export const getInstanceProfile: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInstanceProfileRequest,
   output: GetInstanceProfileResult,
@@ -4042,8 +4038,8 @@ export const getNetworkProfile: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetNetworkProfileRequest,
   output: GetNetworkProfileResult,
@@ -4065,8 +4061,8 @@ export const getUpload: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUploadRequest,
   output: GetUploadResult,
@@ -4090,8 +4086,8 @@ export const installToRemoteAccessSession: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InstallToRemoteAccessSessionRequest,
   output: InstallToRemoteAccessSessionResult,
@@ -4114,8 +4110,8 @@ export const listDeviceInstances: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDeviceInstancesRequest,
   output: ListDeviceInstancesResult,
@@ -4138,8 +4134,8 @@ export const listDevicePools: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevicePoolsRequest,
@@ -4149,8 +4145,8 @@ export const listDevicePools: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDevicePoolsRequest,
@@ -4160,8 +4156,8 @@ export const listDevicePools: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevicePoolsRequest,
@@ -4189,8 +4185,8 @@ export const listInstanceProfiles: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListInstanceProfilesRequest,
   output: ListInstanceProfilesResult,
@@ -4213,8 +4209,8 @@ export const listJobs: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobsRequest,
@@ -4224,8 +4220,8 @@ export const listJobs: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobsRequest,
@@ -4235,8 +4231,8 @@ export const listJobs: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
@@ -4264,8 +4260,8 @@ export const listNetworkProfiles: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListNetworkProfilesRequest,
   output: ListNetworkProfilesResult,
@@ -4288,8 +4284,8 @@ export const listProjects: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProjectsRequest,
@@ -4299,8 +4295,8 @@ export const listProjects: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProjectsRequest,
@@ -4310,8 +4306,8 @@ export const listProjects: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProjectsRequest,
@@ -4339,8 +4335,8 @@ export const listRemoteAccessSessions: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRemoteAccessSessionsRequest,
   output: ListRemoteAccessSessionsResult,
@@ -4363,8 +4359,8 @@ export const listRuns: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRunsRequest,
@@ -4374,8 +4370,8 @@ export const listRuns: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRunsRequest,
@@ -4385,8 +4381,8 @@ export const listRuns: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRunsRequest,
@@ -4415,8 +4411,8 @@ export const listSuites: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSuitesRequest,
@@ -4426,8 +4422,8 @@ export const listSuites: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSuitesRequest,
@@ -4437,8 +4433,8 @@ export const listSuites: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSuitesRequest,
@@ -4467,8 +4463,8 @@ export const listTests: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTestsRequest,
@@ -4478,8 +4474,8 @@ export const listTests: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTestsRequest,
@@ -4489,8 +4485,8 @@ export const listTests: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTestsRequest,
@@ -4519,8 +4515,8 @@ export const listUploads: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUploadsRequest,
@@ -4530,8 +4526,8 @@ export const listUploads: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUploadsRequest,
@@ -4541,8 +4537,8 @@ export const listUploads: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUploadsRequest,
@@ -4573,8 +4569,8 @@ export const stopJob: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopJobRequest,
   output: StopJobResult,
@@ -4596,8 +4592,8 @@ export const stopRemoteAccessSession: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopRemoteAccessSessionRequest,
   output: StopRemoteAccessSessionResult,
@@ -4622,8 +4618,8 @@ export const stopRun: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopRunRequest,
   output: StopRunResult,
@@ -4645,8 +4641,8 @@ export const updateDeviceInstance: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeviceInstanceRequest,
   output: UpdateDeviceInstanceResult,
@@ -4670,8 +4666,8 @@ export const updateDevicePool: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDevicePoolRequest,
   output: UpdateDevicePoolResult,
@@ -4693,8 +4689,8 @@ export const updateInstanceProfile: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInstanceProfileRequest,
   output: UpdateInstanceProfileResult,
@@ -4716,8 +4712,8 @@ export const updateNetworkProfile: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNetworkProfileRequest,
   output: UpdateNetworkProfileResult,
@@ -4740,8 +4736,8 @@ export const updateProject: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProjectRequest,
   output: UpdateProjectResult,
@@ -4763,8 +4759,8 @@ export const updateUpload: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUploadRequest,
   output: UpdateUploadResult,
@@ -4786,8 +4782,8 @@ export const deleteInstanceProfile: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInstanceProfileRequest,
   output: DeleteInstanceProfileResult,
@@ -4809,8 +4805,8 @@ export const deleteNetworkProfile: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkProfileRequest,
   output: DeleteNetworkProfileResult,
@@ -4834,8 +4830,8 @@ export const deleteProject: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProjectRequest,
   output: DeleteProjectResult,
@@ -4859,8 +4855,8 @@ export const deleteRemoteAccessSession: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRemoteAccessSessionRequest,
   output: DeleteRemoteAccessSessionResult,
@@ -4884,8 +4880,8 @@ export const deleteRun: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRunRequest,
   output: DeleteRunResult,
@@ -4907,8 +4903,8 @@ export const deleteUpload: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUploadRequest,
   output: DeleteUploadResult,
@@ -4930,8 +4926,8 @@ export const createDevicePool: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDevicePoolRequest,
   output: CreateDevicePoolResult,
@@ -4954,8 +4950,8 @@ export const createInstanceProfile: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstanceProfileRequest,
   output: CreateInstanceProfileResult,
@@ -4977,8 +4973,8 @@ export const createNetworkProfile: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkProfileRequest,
   output: CreateNetworkProfileResult,
@@ -5000,8 +4996,8 @@ export const createUpload: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUploadRequest,
   output: CreateUploadResult,
@@ -5023,8 +5019,8 @@ export const createVPCEConfiguration: (
   | ArgumentException
   | LimitExceededException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVPCEConfigurationRequest,
   output: CreateVPCEConfigurationResult,
@@ -5042,8 +5038,8 @@ export const deleteDevicePool: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDevicePoolRequest,
   output: DeleteDevicePoolResult,
@@ -5066,8 +5062,8 @@ export const getAccountSettings: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAccountSettingsRequest,
   output: GetAccountSettingsResult,
@@ -5089,8 +5085,8 @@ export const getDeviceInstance: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeviceInstanceRequest,
   output: GetDeviceInstanceResult,
@@ -5112,8 +5108,8 @@ export const getDevicePool: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDevicePoolRequest,
   output: GetDevicePoolResult,
@@ -5135,8 +5131,8 @@ export const getProject: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProjectRequest,
   output: GetProjectResult,
@@ -5158,8 +5154,8 @@ export const getSuite: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSuiteRequest,
   output: GetSuiteResult,
@@ -5181,8 +5177,8 @@ export const getTest: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTestRequest,
   output: GetTestResult,
@@ -5204,8 +5200,8 @@ export const listTestGridSessions: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTestGridSessionsRequest,
@@ -5214,8 +5210,8 @@ export const listTestGridSessions: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTestGridSessionsRequest,
@@ -5224,8 +5220,8 @@ export const listTestGridSessions: {
     | ArgumentException
     | InternalServiceException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTestGridSessionsRequest,
@@ -5248,8 +5244,8 @@ export const updateTestGridProject: (
   | InternalServiceException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTestGridProjectRequest,
   output: UpdateTestGridProjectResult,
@@ -5271,8 +5267,8 @@ export const createTestGridUrl: (
   | ArgumentException
   | InternalServiceException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTestGridUrlRequest,
   output: CreateTestGridUrlResult,
@@ -5289,8 +5285,8 @@ export const createTestGridProject: (
   | ArgumentException
   | InternalServiceException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTestGridProjectRequest,
   output: CreateTestGridProjectResult,
@@ -5306,8 +5302,8 @@ export const getTestGridProject: (
   | ArgumentException
   | InternalServiceException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTestGridProjectRequest,
   output: GetTestGridProjectResult,
@@ -5327,8 +5323,8 @@ export const getTestGridSession: (
   | ArgumentException
   | InternalServiceException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTestGridSessionRequest,
   output: GetTestGridSessionResult,
@@ -5345,8 +5341,8 @@ export const getVPCEConfiguration: (
   | ArgumentException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVPCEConfigurationRequest,
   output: GetVPCEConfigurationResult,
@@ -5364,8 +5360,8 @@ export const listArtifacts: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListArtifactsRequest,
@@ -5375,8 +5371,8 @@ export const listArtifacts: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListArtifactsRequest,
@@ -5386,8 +5382,8 @@ export const listArtifacts: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListArtifactsRequest,
@@ -5416,8 +5412,8 @@ export const listDevices: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevicesRequest,
@@ -5427,8 +5423,8 @@ export const listDevices: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDevicesRequest,
@@ -5438,8 +5434,8 @@ export const listDevices: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesRequest,
@@ -5468,8 +5464,8 @@ export const listSamples: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSamplesRequest,
@@ -5479,8 +5475,8 @@ export const listSamples: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSamplesRequest,
@@ -5490,8 +5486,8 @@ export const listSamples: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSamplesRequest,
@@ -5519,8 +5515,8 @@ export const deleteVPCEConfiguration: (
   | InvalidOperationException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVPCEConfigurationRequest,
   output: DeleteVPCEConfigurationResult,
@@ -5542,8 +5538,8 @@ export const createRemoteAccessSession: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRemoteAccessSessionRequest,
   output: CreateRemoteAccessSessionResult,
@@ -5565,8 +5561,8 @@ export const getDevice: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeviceRequest,
   output: GetDeviceResult,
@@ -5588,8 +5584,8 @@ export const getJob: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobRequest,
   output: GetJobResult,
@@ -5611,8 +5607,8 @@ export const getRemoteAccessSession: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRemoteAccessSessionRequest,
   output: GetRemoteAccessSessionResult,
@@ -5634,8 +5630,8 @@ export const getRun: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRunRequest,
   output: GetRunResult,
@@ -5660,8 +5656,8 @@ export const listOfferingPromotions: (
   | NotEligibleException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListOfferingPromotionsRequest,
   output: ListOfferingPromotionsResult,
@@ -5689,8 +5685,8 @@ export const listOfferings: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOfferingsRequest,
@@ -5701,8 +5697,8 @@ export const listOfferings: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOfferingsRequest,
@@ -5713,8 +5709,8 @@ export const listOfferings: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOfferingsRequest,
@@ -5748,8 +5744,8 @@ export const listOfferingTransactions: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOfferingTransactionsRequest,
@@ -5760,8 +5756,8 @@ export const listOfferingTransactions: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOfferingTransactionsRequest,
@@ -5772,8 +5768,8 @@ export const listOfferingTransactions: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOfferingTransactionsRequest,
@@ -5803,8 +5799,8 @@ export const scheduleRun: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ScheduleRunRequest,
   output: ScheduleRunResult,
@@ -5828,8 +5824,8 @@ export const createProject: (
   | NotFoundException
   | ServiceAccountException
   | TagOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProjectRequest,
   output: CreateProjectResult,
@@ -5856,8 +5852,8 @@ export const purchaseOffering: (
   | NotEligibleException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseOfferingRequest,
   output: PurchaseOfferingResult,
@@ -5883,8 +5879,8 @@ export const renewOffering: (
   | NotEligibleException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RenewOfferingRequest,
   output: RenewOfferingResult,
@@ -5912,8 +5908,8 @@ export const getOfferingStatus: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetOfferingStatusRequest,
@@ -5924,8 +5920,8 @@ export const getOfferingStatus: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetOfferingStatusRequest,
@@ -5936,8 +5932,8 @@ export const getOfferingStatus: {
     | NotEligibleException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetOfferingStatusRequest,
@@ -5958,11 +5954,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  | ArgumentException
-  | NotFoundException
-  | TagOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ArgumentException | NotFoundException | TagOperationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5975,11 +5968,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  | ArgumentException
-  | NotFoundException
-  | TagOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ArgumentException | NotFoundException | TagOperationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5996,8 +5986,8 @@ export const getDevicePoolCompatibility: (
   | LimitExceededException
   | NotFoundException
   | ServiceAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDevicePoolCompatibilityRequest,
   output: GetDevicePoolCompatibilityResult,
@@ -6025,8 +6015,8 @@ export const listUniqueProblems: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUniqueProblemsRequest,
@@ -6036,8 +6026,8 @@ export const listUniqueProblems: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUniqueProblemsRequest,
@@ -6047,8 +6037,8 @@ export const listUniqueProblems: {
     | LimitExceededException
     | NotFoundException
     | ServiceAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUniqueProblemsRequest,
@@ -6079,8 +6069,8 @@ export const tagResource: (
   | TagOperationException
   | TagPolicyException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,

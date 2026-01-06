@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://waf.amazonaws.com/doc/2019-07-29/");
 const svc = T.AwsApiService({
@@ -4147,8 +4145,8 @@ export const listAvailableManagedRuleGroups: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAvailableManagedRuleGroupsRequest,
   output: ListAvailableManagedRuleGroupsResponse,
@@ -4169,8 +4167,8 @@ export const listIPSets: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListIPSetsRequest,
   output: ListIPSetsResponse,
@@ -4194,8 +4192,8 @@ export const listManagedRuleSets: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListManagedRuleSetsRequest,
   output: ListManagedRuleSetsResponse,
@@ -4219,8 +4217,8 @@ export const listMobileSdkReleases: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListMobileSdkReleasesRequest,
   output: ListMobileSdkReleasesResponse,
@@ -4241,8 +4239,8 @@ export const listRegexPatternSets: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRegexPatternSetsRequest,
   output: ListRegexPatternSetsResponse,
@@ -4263,8 +4261,8 @@ export const listRuleGroups: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRuleGroupsRequest,
   output: ListRuleGroupsResponse,
@@ -4285,8 +4283,8 @@ export const listWebACLs: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListWebACLsRequest,
   output: ListWebACLsResponse,
@@ -4306,8 +4304,8 @@ export const describeManagedProductsByVendor: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeManagedProductsByVendorRequest,
   output: DescribeManagedProductsByVendorResponse,
@@ -4327,8 +4325,8 @@ export const listLoggingConfigurations: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListLoggingConfigurationsRequest,
   output: ListLoggingConfigurationsResponse,
@@ -4348,8 +4346,8 @@ export const describeAllManagedProducts: (
   | WAFInternalErrorException
   | WAFInvalidOperationException
   | WAFInvalidParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAllManagedProductsRequest,
   output: DescribeAllManagedProductsResponse,
@@ -4371,8 +4369,8 @@ export const getPermissionPolicy: (
   | WAFInternalErrorException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPermissionPolicyRequest,
   output: GetPermissionPolicyResponse,
@@ -4397,8 +4395,8 @@ export const listAPIKeys: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFInvalidResourceException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAPIKeysRequest,
   output: ListAPIKeysResponse,
@@ -4436,8 +4434,8 @@ export const putPermissionPolicy: (
   | WAFInvalidParameterException
   | WAFInvalidPermissionPolicyException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPermissionPolicyRequest,
   output: PutPermissionPolicyResponse,
@@ -4459,8 +4457,8 @@ export const getRegexPatternSet: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRegexPatternSetRequest,
   output: GetRegexPatternSetResponse,
@@ -4482,8 +4480,8 @@ export const getRuleGroup: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRuleGroupRequest,
   output: GetRuleGroupResponse,
@@ -4505,8 +4503,8 @@ export const listAvailableManagedRuleGroupVersions: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAvailableManagedRuleGroupVersionsRequest,
   output: ListAvailableManagedRuleGroupVersionsResponse,
@@ -4531,8 +4529,8 @@ export const generateMobileSdkReleaseUrl: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GenerateMobileSdkReleaseUrlRequest,
   output: GenerateMobileSdkReleaseUrlResponse,
@@ -4554,8 +4552,8 @@ export const getLoggingConfiguration: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLoggingConfigurationRequest,
   output: GetLoggingConfigurationResponse,
@@ -4587,8 +4585,8 @@ export const listResourcesForWebACL: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListResourcesForWebACLRequest,
   output: ListResourcesForWebACLResponse,
@@ -4618,8 +4616,8 @@ export const disassociateWebACL: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateWebACLRequest,
   output: DisassociateWebACLResponse,
@@ -4642,8 +4640,8 @@ export const deletePermissionPolicy: (
   | WAFInternalErrorException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePermissionPolicyRequest,
   output: DeletePermissionPolicyResponse,
@@ -4664,8 +4662,8 @@ export const getIPSet: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIPSetRequest,
   output: GetIPSetResponse,
@@ -4691,8 +4689,8 @@ export const getMobileSdkRelease: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMobileSdkReleaseRequest,
   output: GetMobileSdkReleaseResponse,
@@ -4719,8 +4717,8 @@ export const getDecryptedAPIKey: (
   | WAFInvalidParameterException
   | WAFInvalidResourceException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDecryptedAPIKeyRequest,
   output: GetDecryptedAPIKeyResponse,
@@ -4745,8 +4743,8 @@ export const describeManagedRuleGroup: (
   | WAFInvalidParameterException
   | WAFInvalidResourceException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeManagedRuleGroupRequest,
   output: DescribeManagedRuleGroupResponse,
@@ -4777,8 +4775,8 @@ export const createAPIKey: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFLimitsExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAPIKeyRequest,
   output: CreateAPIKeyResponse,
@@ -4804,8 +4802,8 @@ export const getManagedRuleSet: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetManagedRuleSetRequest,
   output: GetManagedRuleSetResponse,
@@ -4835,8 +4833,8 @@ export const getSampledRequests: (
   | WAFInternalErrorException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSampledRequestsRequest,
   output: GetSampledRequestsResponse,
@@ -4857,8 +4855,8 @@ export const getWebACL: (
   | WAFInvalidOperationException
   | WAFInvalidParameterException
   | WAFNonexistentItemException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWebACLRequest,
   output: GetWebACLResponse,
@@ -4894,8 +4892,8 @@ export const putManagedRuleSetVersions: (
   | WAFInvalidParameterException
   | WAFNonexistentItemException
   | WAFOptimisticLockException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutManagedRuleSetVersionsRequest,
   output: PutManagedRuleSetVersionsResponse,
@@ -4938,8 +4936,8 @@ export const getRateBasedStatementManagedKeys: (
   | WAFInvalidParameterException
   | WAFNonexistentItemException
   | WAFUnsupportedAggregateKeyTypeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRateBasedStatementManagedKeysRequest,
   output: GetRateBasedStatementManagedKeysResponse,
@@ -4975,8 +4973,8 @@ export const getWebACLForResource: (
   | WAFInvalidParameterException
   | WAFNonexistentItemException
   | WAFUnavailableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetWebACLForResourceRequest,
   output: GetWebACLForResourceResponse,
@@ -5026,8 +5024,8 @@ export const updateIPSet: (
   | WAFLimitsExceededException
   | WAFNonexistentItemException
   | WAFOptimisticLockException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIPSetRequest,
   output: UpdateIPSetResponse,
@@ -5055,8 +5053,8 @@ export const deleteFirewallManagerRuleGroups: (
   | WAFInvalidParameterException
   | WAFNonexistentItemException
   | WAFOptimisticLockException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFirewallManagerRuleGroupsRequest,
   output: DeleteFirewallManagerRuleGroupsResponse,
@@ -5086,8 +5084,8 @@ export const updateManagedRuleSetVersionExpiryDate: (
   | WAFInvalidParameterException
   | WAFNonexistentItemException
   | WAFOptimisticLockException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateManagedRuleSetVersionExpiryDateRequest,
   output: UpdateManagedRuleSetVersionExpiryDateResponse,
@@ -5111,8 +5109,8 @@ export const deleteLoggingConfiguration: (
   | WAFInvalidParameterException
   | WAFNonexistentItemException
   | WAFOptimisticLockException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLoggingConfigurationRequest,
   output: DeleteLoggingConfigurationResponse,
@@ -5138,8 +5136,8 @@ export const deleteAPIKey: (
   | WAFInvalidParameterException
   | WAFNonexistentItemException
   | WAFOptimisticLockException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAPIKeyRequest,
   output: DeleteAPIKeyResponse,
@@ -5189,8 +5187,8 @@ export const updateRegexPatternSet: (
   | WAFLimitsExceededException
   | WAFNonexistentItemException
   | WAFOptimisticLockException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRegexPatternSetRequest,
   output: UpdateRegexPatternSetResponse,
@@ -5239,8 +5237,8 @@ export const associateWebACL: (
   | WAFLimitsExceededException
   | WAFNonexistentItemException
   | WAFUnavailableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateWebACLRequest,
   output: AssociateWebACLResponse,
@@ -5275,8 +5273,8 @@ export const listTagsForResource: (
   | WAFNonexistentItemException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -5336,8 +5334,8 @@ export const updateWebACL: (
   | WAFOptimisticLockException
   | WAFSubscriptionNotFoundException
   | WAFUnavailableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWebACLRequest,
   output: UpdateWebACLResponse,
@@ -5372,8 +5370,8 @@ export const deleteIPSet: (
   | WAFOptimisticLockException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIPSetRequest,
   output: DeleteIPSetResponse,
@@ -5403,8 +5401,8 @@ export const deleteRegexPatternSet: (
   | WAFOptimisticLockException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRegexPatternSetRequest,
   output: DeleteRegexPatternSetResponse,
@@ -5434,8 +5432,8 @@ export const deleteRuleGroup: (
   | WAFOptimisticLockException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRuleGroupRequest,
   output: DeleteRuleGroupResponse,
@@ -5486,8 +5484,8 @@ export const deleteWebACL: (
   | WAFOptimisticLockException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWebACLRequest,
   output: DeleteWebACLResponse,
@@ -5520,8 +5518,8 @@ export const createIPSet: (
   | WAFOptimisticLockException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIPSetRequest,
   output: CreateIPSetResponse,
@@ -5552,8 +5550,8 @@ export const createRegexPatternSet: (
   | WAFOptimisticLockException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRegexPatternSetRequest,
   output: CreateRegexPatternSetResponse,
@@ -5584,8 +5582,8 @@ export const untagResource: (
   | WAFNonexistentItemException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5620,8 +5618,8 @@ export const tagResource: (
   | WAFNonexistentItemException
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5678,8 +5676,8 @@ export const updateRuleGroup: (
   | WAFOptimisticLockException
   | WAFSubscriptionNotFoundException
   | WAFUnavailableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRuleGroupRequest,
   output: UpdateRuleGroupResponse,
@@ -5716,8 +5714,8 @@ export const createRuleGroup: (
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
   | WAFUnavailableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRuleGroupRequest,
   output: CreateRuleGroupResponse,
@@ -5758,8 +5756,8 @@ export const createWebACL: (
   | WAFTagOperationException
   | WAFTagOperationInternalErrorException
   | WAFUnavailableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWebACLRequest,
   output: CreateWebACLResponse,
@@ -5807,8 +5805,8 @@ export const checkCapacity: (
   | WAFNonexistentItemException
   | WAFSubscriptionNotFoundException
   | WAFUnavailableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CheckCapacityRequest,
   output: CheckCapacityResponse,
@@ -5878,8 +5876,8 @@ export const putLoggingConfiguration: (
   | WAFNonexistentItemException
   | WAFOptimisticLockException
   | WAFServiceLinkedRoleErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutLoggingConfigurationRequest,
   output: PutLoggingConfigurationResponse,

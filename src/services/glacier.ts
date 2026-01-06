@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://glacier.amazonaws.com/doc/2012-06-01/");
 const svc = T.AwsApiService({ sdkId: "Glacier", serviceShapeName: "Glacier" });
@@ -1828,7 +1826,7 @@ export class InvalidParameterValueException extends S.TaggedError<InvalidParamet
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MissingParameterValueException extends S.TaggedError<MissingParameterValueException>()(
   "MissingParameterValueException",
   {
@@ -1836,7 +1834,7 @@ export class MissingParameterValueException extends S.TaggedError<MissingParamet
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   {
@@ -1844,7 +1842,7 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoLongerSupportedException extends S.TaggedError<NoLongerSupportedException>()(
   "NoLongerSupportedException",
   {
@@ -1852,7 +1850,7 @@ export class NoLongerSupportedException extends S.TaggedError<NoLongerSupportedE
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -1860,7 +1858,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   {
@@ -1868,9 +1866,7 @@ export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailabl
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class RequestTimeoutException extends S.TaggedError<RequestTimeoutException>()(
   "RequestTimeoutException",
   {
@@ -1878,7 +1874,7 @@ export class RequestTimeoutException extends S.TaggedError<RequestTimeoutExcepti
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withTimeoutError) {}
 export class InsufficientCapacityException extends S.TaggedError<InsufficientCapacityException>()(
   "InsufficientCapacityException",
   {
@@ -1886,7 +1882,7 @@ export class InsufficientCapacityException extends S.TaggedError<InsufficientCap
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PolicyEnforcedException extends S.TaggedError<PolicyEnforcedException>()(
   "PolicyEnforcedException",
   {
@@ -1894,7 +1890,7 @@ export class PolicyEnforcedException extends S.TaggedError<PolicyEnforcedExcepti
     code: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1909,8 +1905,8 @@ export const listProvisionedCapacity: (
   | MissingParameterValueException
   | NoLongerSupportedException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListProvisionedCapacityInput,
   output: ListProvisionedCapacityOutput,
@@ -1975,8 +1971,8 @@ export const uploadMultipartPart: (
   | RequestTimeoutException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadMultipartPartInput,
   output: UploadMultipartPartOutput,
@@ -2006,8 +2002,8 @@ export const addTagsToVault: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToVaultInput,
   output: AddTagsToVaultResponse,
@@ -2053,8 +2049,8 @@ export const describeJob: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeJobInput,
   output: GlacierJobDescription,
@@ -2109,8 +2105,8 @@ export const initiateVaultLock: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitiateVaultLockInput,
   output: InitiateVaultLockOutput,
@@ -2160,8 +2156,8 @@ export const listMultipartUploads: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMultipartUploadsInput,
@@ -2172,8 +2168,8 @@ export const listMultipartUploads: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMultipartUploadsInput,
@@ -2184,8 +2180,8 @@ export const listMultipartUploads: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMultipartUploadsInput,
@@ -2239,8 +2235,8 @@ export const listParts: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPartsInput,
@@ -2251,8 +2247,8 @@ export const listParts: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPartsInput,
@@ -2263,8 +2259,8 @@ export const listParts: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPartsInput,
@@ -2333,8 +2329,8 @@ export const completeMultipartUpload: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompleteMultipartUploadInput,
   output: ArchiveCreationOutput,
@@ -2376,8 +2372,8 @@ export const describeVault: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVaultInput,
   output: DescribeVaultOutput,
@@ -2440,8 +2436,8 @@ export const getJobOutput: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobOutputInput,
   output: GetJobOutputOutput,
@@ -2470,8 +2466,8 @@ export const getVaultAccessPolicy: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVaultAccessPolicyInput,
   output: GetVaultAccessPolicyOutput,
@@ -2517,8 +2513,8 @@ export const getVaultLock: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVaultLockInput,
   output: GetVaultLockOutput,
@@ -2558,8 +2554,8 @@ export const getVaultNotifications: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVaultNotificationsInput,
   output: GetVaultNotificationsOutput,
@@ -2615,8 +2611,8 @@ export const initiateMultipartUpload: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitiateMultipartUploadInput,
   output: InitiateMultipartUploadOutput,
@@ -2674,8 +2670,8 @@ export const listJobs: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListJobsInput,
@@ -2686,8 +2682,8 @@ export const listJobs: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListJobsInput,
@@ -2698,8 +2694,8 @@ export const listJobs: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsInput,
@@ -2732,8 +2728,8 @@ export const listTagsForVault: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForVaultInput,
   output: ListTagsForVaultOutput,
@@ -2777,8 +2773,8 @@ export const listVaults: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVaultsInput,
@@ -2789,8 +2785,8 @@ export const listVaults: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVaultsInput,
@@ -2801,8 +2797,8 @@ export const listVaults: {
     | NoLongerSupportedException
     | ResourceNotFoundException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVaultsInput,
@@ -2838,8 +2834,8 @@ export const setVaultAccessPolicy: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetVaultAccessPolicyInput,
   output: SetVaultAccessPolicyResponse,
@@ -2893,8 +2889,8 @@ export const setVaultNotifications: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetVaultNotificationsInput,
   output: SetVaultNotificationsResponse,
@@ -2933,8 +2929,8 @@ export const abortVaultLock: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AbortVaultLockInput,
   output: AbortVaultLockResponse,
@@ -2973,8 +2969,8 @@ export const completeVaultLock: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompleteVaultLockInput,
   output: CompleteVaultLockResponse,
@@ -3021,8 +3017,8 @@ export const deleteArchive: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteArchiveInput,
   output: DeleteArchiveResponse,
@@ -3066,8 +3062,8 @@ export const deleteVault: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVaultInput,
   output: DeleteVaultResponse,
@@ -3098,8 +3094,8 @@ export const deleteVaultAccessPolicy: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVaultAccessPolicyInput,
   output: DeleteVaultAccessPolicyResponse,
@@ -3136,8 +3132,8 @@ export const deleteVaultNotifications: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVaultNotificationsInput,
   output: DeleteVaultNotificationsResponse,
@@ -3164,8 +3160,8 @@ export const removeTagsFromVault: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromVaultInput,
   output: RemoveTagsFromVaultResponse,
@@ -3194,8 +3190,8 @@ export const setDataRetrievalPolicy: (
   | MissingParameterValueException
   | NoLongerSupportedException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetDataRetrievalPolicyInput,
   output: SetDataRetrievalPolicyResponse,
@@ -3219,8 +3215,8 @@ export const getDataRetrievalPolicy: (
   | MissingParameterValueException
   | NoLongerSupportedException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataRetrievalPolicyInput,
   output: GetDataRetrievalPolicyOutput,
@@ -3264,8 +3260,8 @@ export const createVault: (
   | MissingParameterValueException
   | NoLongerSupportedException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVaultInput,
   output: CreateVaultOutput,
@@ -3289,8 +3285,8 @@ export const purchaseProvisionedCapacity: (
   | MissingParameterValueException
   | NoLongerSupportedException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseProvisionedCapacityInput,
   output: PurchaseProvisionedCapacityOutput,
@@ -3331,8 +3327,8 @@ export const abortMultipartUpload: (
   | NoLongerSupportedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AbortMultipartUploadInput,
   output: AbortMultipartUploadResponse,
@@ -3389,8 +3385,8 @@ export const uploadArchive: (
   | RequestTimeoutException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UploadArchiveInput,
   output: ArchiveCreationOutput,
@@ -3420,8 +3416,8 @@ export const initiateJob: (
   | PolicyEnforcedException
   | ResourceNotFoundException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitiateJobInput,
   output: InitiateJobOutput,

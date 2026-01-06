@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://sagemaker.amazonaws.com/doc/2017-05-13/");
 const svc = T.AwsApiService({
@@ -28477,8 +28475,8 @@ export const disableSagemakerServicecatalogPortfolio: (
   input: DisableSagemakerServicecatalogPortfolioInput,
 ) => Effect.Effect<
   DisableSagemakerServicecatalogPortfolioOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableSagemakerServicecatalogPortfolioInput,
   output: DisableSagemakerServicecatalogPortfolioOutput,
@@ -28491,8 +28489,8 @@ export const enableSagemakerServicecatalogPortfolio: (
   input: EnableSagemakerServicecatalogPortfolioInput,
 ) => Effect.Effect<
   EnableSagemakerServicecatalogPortfolioOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableSagemakerServicecatalogPortfolioInput,
   output: EnableSagemakerServicecatalogPortfolioOutput,
@@ -28505,8 +28503,8 @@ export const deleteCodeRepository: (
   input: DeleteCodeRepositoryInput,
 ) => Effect.Effect<
   DeleteCodeRepositoryResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCodeRepositoryInput,
   output: DeleteCodeRepositoryResponse,
@@ -28523,8 +28521,8 @@ export const deleteEndpoint: (
   input: DeleteEndpointInput,
 ) => Effect.Effect<
   DeleteEndpointResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointInput,
   output: DeleteEndpointResponse,
@@ -28539,8 +28537,8 @@ export const deleteEndpointConfig: (
   input: DeleteEndpointConfigInput,
 ) => Effect.Effect<
   DeleteEndpointConfigResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointConfigInput,
   output: DeleteEndpointConfigResponse,
@@ -28553,8 +28551,8 @@ export const deleteHyperParameterTuningJob: (
   input: DeleteHyperParameterTuningJobRequest,
 ) => Effect.Effect<
   DeleteHyperParameterTuningJobResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHyperParameterTuningJobRequest,
   output: DeleteHyperParameterTuningJobResponse,
@@ -28567,8 +28565,8 @@ export const deleteInferenceComponent: (
   input: DeleteInferenceComponentInput,
 ) => Effect.Effect<
   DeleteInferenceComponentResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInferenceComponentInput,
   output: DeleteInferenceComponentResponse,
@@ -28581,8 +28579,8 @@ export const deleteModel: (
   input: DeleteModelInput,
 ) => Effect.Effect<
   DeleteModelResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelInput,
   output: DeleteModelResponse,
@@ -28595,8 +28593,8 @@ export const deleteModelPackageGroupPolicy: (
   input: DeleteModelPackageGroupPolicyInput,
 ) => Effect.Effect<
   DeleteModelPackageGroupPolicyResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelPackageGroupPolicyInput,
   output: DeleteModelPackageGroupPolicyResponse,
@@ -28611,8 +28609,8 @@ export const deleteNotebookInstance: (
   input: DeleteNotebookInstanceInput,
 ) => Effect.Effect<
   DeleteNotebookInstanceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNotebookInstanceInput,
   output: DeleteNotebookInstanceResponse,
@@ -28625,8 +28623,8 @@ export const deleteNotebookInstanceLifecycleConfig: (
   input: DeleteNotebookInstanceLifecycleConfigInput,
 ) => Effect.Effect<
   DeleteNotebookInstanceLifecycleConfigResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNotebookInstanceLifecycleConfigInput,
   output: DeleteNotebookInstanceLifecycleConfigResponse,
@@ -28645,8 +28643,8 @@ export const deleteTags: (
   input: DeleteTagsInput,
 ) => Effect.Effect<
   DeleteTagsOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTagsInput,
   output: DeleteTagsOutput,
@@ -28663,8 +28661,8 @@ export const deleteWorkforce: (
   input: DeleteWorkforceRequest,
 ) => Effect.Effect<
   DeleteWorkforceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkforceRequest,
   output: DeleteWorkforceResponse,
@@ -28677,8 +28675,8 @@ export const deregisterDevices: (
   input: DeregisterDevicesRequest,
 ) => Effect.Effect<
   DeregisterDevicesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterDevicesRequest,
   output: DeregisterDevicesResponse,
@@ -28691,8 +28689,8 @@ export const getSagemakerServicecatalogPortfolioStatus: (
   input: GetSagemakerServicecatalogPortfolioStatusInput,
 ) => Effect.Effect<
   GetSagemakerServicecatalogPortfolioStatusOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSagemakerServicecatalogPortfolioStatusInput,
   output: GetSagemakerServicecatalogPortfolioStatusOutput,
@@ -28705,8 +28703,8 @@ export const startEdgeDeploymentStage: (
   input: StartEdgeDeploymentStageRequest,
 ) => Effect.Effect<
   StartEdgeDeploymentStageResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartEdgeDeploymentStageRequest,
   output: StartEdgeDeploymentStageResponse,
@@ -28719,8 +28717,8 @@ export const stopEdgeDeploymentStage: (
   input: StopEdgeDeploymentStageRequest,
 ) => Effect.Effect<
   StopEdgeDeploymentStageResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopEdgeDeploymentStageRequest,
   output: StopEdgeDeploymentStageResponse,
@@ -28733,8 +28731,8 @@ export const stopEdgePackagingJob: (
   input: StopEdgePackagingJobRequest,
 ) => Effect.Effect<
   StopEdgePackagingJobResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopEdgePackagingJobRequest,
   output: StopEdgePackagingJobResponse,
@@ -28749,8 +28747,8 @@ export const stopNotebookInstance: (
   input: StopNotebookInstanceInput,
 ) => Effect.Effect<
   StopNotebookInstanceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopNotebookInstanceInput,
   output: StopNotebookInstanceResponse,
@@ -28763,8 +28761,8 @@ export const updateDevices: (
   input: UpdateDevicesRequest,
 ) => Effect.Effect<
   UpdateDevicesResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDevicesRequest,
   output: UpdateDevicesResponse,
@@ -28777,8 +28775,8 @@ export const createEdgeDeploymentStage: (
   input: CreateEdgeDeploymentStageRequest,
 ) => Effect.Effect<
   CreateEdgeDeploymentStageResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEdgeDeploymentStageRequest,
   output: CreateEdgeDeploymentStageResponse,
@@ -28803,8 +28801,8 @@ export const createExperiment: (
   input: CreateExperimentRequest,
 ) => Effect.Effect<
   CreateExperimentResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExperimentRequest,
   output: CreateExperimentResponse,
@@ -28817,8 +28815,8 @@ export const createMlflowApp: (
   input: CreateMlflowAppRequest,
 ) => Effect.Effect<
   CreateMlflowAppResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMlflowAppRequest,
   output: CreateMlflowAppResponse,
@@ -28831,8 +28829,8 @@ export const createMlflowTrackingServer: (
   input: CreateMlflowTrackingServerRequest,
 ) => Effect.Effect<
   CreateMlflowTrackingServerResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMlflowTrackingServerRequest,
   output: CreateMlflowTrackingServerResponse,
@@ -28845,8 +28843,8 @@ export const createModelPackageGroup: (
   input: CreateModelPackageGroupInput,
 ) => Effect.Effect<
   CreateModelPackageGroupOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelPackageGroupInput,
   output: CreateModelPackageGroupOutput,
@@ -28865,8 +28863,8 @@ export const createPresignedNotebookInstanceUrl: (
   input: CreatePresignedNotebookInstanceUrlInput,
 ) => Effect.Effect<
   CreatePresignedNotebookInstanceUrlOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePresignedNotebookInstanceUrlInput,
   output: CreatePresignedNotebookInstanceUrlOutput,
@@ -28879,8 +28877,8 @@ export const deleteAlgorithm: (
   input: DeleteAlgorithmInput,
 ) => Effect.Effect<
   DeleteAlgorithmResponse,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAlgorithmInput,
   output: DeleteAlgorithmResponse,
@@ -28893,8 +28891,8 @@ export const deleteAppImageConfig: (
   input: DeleteAppImageConfigRequest,
 ) => Effect.Effect<
   DeleteAppImageConfigResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppImageConfigRequest,
   output: DeleteAppImageConfigResponse,
@@ -28907,8 +28905,8 @@ export const deleteArtifact: (
   input: DeleteArtifactRequest,
 ) => Effect.Effect<
   DeleteArtifactResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteArtifactRequest,
   output: DeleteArtifactResponse,
@@ -28921,8 +28919,8 @@ export const deleteAssociation: (
   input: DeleteAssociationRequest,
 ) => Effect.Effect<
   DeleteAssociationResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAssociationRequest,
   output: DeleteAssociationResponse,
@@ -28935,8 +28933,8 @@ export const deleteCluster: (
   input: DeleteClusterRequest,
 ) => Effect.Effect<
   DeleteClusterResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -28949,8 +28947,8 @@ export const deleteContext: (
   input: DeleteContextRequest,
 ) => Effect.Effect<
   DeleteContextResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteContextRequest,
   output: DeleteContextResponse,
@@ -28963,8 +28961,8 @@ export const deleteDomain: (
   input: DeleteDomainRequest,
 ) => Effect.Effect<
   DeleteDomainResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -28977,8 +28975,8 @@ export const deleteExperiment: (
   input: DeleteExperimentRequest,
 ) => Effect.Effect<
   DeleteExperimentResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteExperimentRequest,
   output: DeleteExperimentResponse,
@@ -28993,8 +28991,8 @@ export const deleteInferenceExperiment: (
   input: DeleteInferenceExperimentRequest,
 ) => Effect.Effect<
   DeleteInferenceExperimentResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInferenceExperimentRequest,
   output: DeleteInferenceExperimentResponse,
@@ -29007,8 +29005,8 @@ export const deleteMlflowApp: (
   input: DeleteMlflowAppRequest,
 ) => Effect.Effect<
   DeleteMlflowAppResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMlflowAppRequest,
   output: DeleteMlflowAppResponse,
@@ -29021,8 +29019,8 @@ export const deleteMlflowTrackingServer: (
   input: DeleteMlflowTrackingServerRequest,
 ) => Effect.Effect<
   DeleteMlflowTrackingServerResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMlflowTrackingServerRequest,
   output: DeleteMlflowTrackingServerResponse,
@@ -29035,8 +29033,8 @@ export const deletePartnerApp: (
   input: DeletePartnerAppRequest,
 ) => Effect.Effect<
   DeletePartnerAppResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePartnerAppRequest,
   output: DeletePartnerAppResponse,
@@ -29049,8 +29047,8 @@ export const deletePipeline: (
   input: DeletePipelineRequest,
 ) => Effect.Effect<
   DeletePipelineResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePipelineRequest,
   output: DeletePipelineResponse,
@@ -29063,8 +29061,8 @@ export const deleteTrial: (
   input: DeleteTrialRequest,
 ) => Effect.Effect<
   DeleteTrialResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrialRequest,
   output: DeleteTrialResponse,
@@ -29077,8 +29075,8 @@ export const deleteTrialComponent: (
   input: DeleteTrialComponentRequest,
 ) => Effect.Effect<
   DeleteTrialComponentResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrialComponentRequest,
   output: DeleteTrialComponentResponse,
@@ -29091,8 +29089,8 @@ export const deleteWorkteam: (
   input: DeleteWorkteamRequest,
 ) => Effect.Effect<
   DeleteWorkteamResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkteamRequest,
   output: DeleteWorkteamResponse,
@@ -29105,8 +29103,8 @@ export const describeApp: (
   input: DescribeAppRequest,
 ) => Effect.Effect<
   DescribeAppResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppRequest,
   output: DescribeAppResponse,
@@ -29119,8 +29117,8 @@ export const describeAppImageConfig: (
   input: DescribeAppImageConfigRequest,
 ) => Effect.Effect<
   DescribeAppImageConfigResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppImageConfigRequest,
   output: DescribeAppImageConfigResponse,
@@ -29133,8 +29131,8 @@ export const describeArtifact: (
   input: DescribeArtifactRequest,
 ) => Effect.Effect<
   DescribeArtifactResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeArtifactRequest,
   output: DescribeArtifactResponse,
@@ -29147,8 +29145,8 @@ export const describeClusterSchedulerConfig: (
   input: DescribeClusterSchedulerConfigRequest,
 ) => Effect.Effect<
   DescribeClusterSchedulerConfigResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterSchedulerConfigRequest,
   output: DescribeClusterSchedulerConfigResponse,
@@ -29161,8 +29159,8 @@ export const describeCodeRepository: (
   input: DescribeCodeRepositoryInput,
 ) => Effect.Effect<
   DescribeCodeRepositoryOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCodeRepositoryInput,
   output: DescribeCodeRepositoryOutput,
@@ -29175,8 +29173,8 @@ export const describeComputeQuota: (
   input: DescribeComputeQuotaRequest,
 ) => Effect.Effect<
   DescribeComputeQuotaResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeComputeQuotaRequest,
   output: DescribeComputeQuotaResponse,
@@ -29189,8 +29187,8 @@ export const describeContext: (
   input: DescribeContextRequest,
 ) => Effect.Effect<
   DescribeContextResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeContextRequest,
   output: DescribeContextResponse,
@@ -29203,8 +29201,8 @@ export const describeDataQualityJobDefinition: (
   input: DescribeDataQualityJobDefinitionRequest,
 ) => Effect.Effect<
   DescribeDataQualityJobDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDataQualityJobDefinitionRequest,
   output: DescribeDataQualityJobDefinitionResponse,
@@ -29217,8 +29215,8 @@ export const describeDeviceFleet: (
   input: DescribeDeviceFleetRequest,
 ) => Effect.Effect<
   DescribeDeviceFleetResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDeviceFleetRequest,
   output: DescribeDeviceFleetResponse,
@@ -29231,8 +29229,8 @@ export const describeDomain: (
   input: DescribeDomainRequest,
 ) => Effect.Effect<
   DescribeDomainResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainRequest,
   output: DescribeDomainResponse,
@@ -29245,8 +29243,8 @@ export const describeEndpointConfig: (
   input: DescribeEndpointConfigInput,
 ) => Effect.Effect<
   DescribeEndpointConfigOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEndpointConfigInput,
   output: DescribeEndpointConfigOutput,
@@ -29259,8 +29257,8 @@ export const describeFeatureMetadata: (
   input: DescribeFeatureMetadataRequest,
 ) => Effect.Effect<
   DescribeFeatureMetadataResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFeatureMetadataRequest,
   output: DescribeFeatureMetadataResponse,
@@ -29273,8 +29271,8 @@ export const describeFlowDefinition: (
   input: DescribeFlowDefinitionRequest,
 ) => Effect.Effect<
   DescribeFlowDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFlowDefinitionRequest,
   output: DescribeFlowDefinitionResponse,
@@ -29287,8 +29285,8 @@ export const describeHub: (
   input: DescribeHubRequest,
 ) => Effect.Effect<
   DescribeHubResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHubRequest,
   output: DescribeHubResponse,
@@ -29301,8 +29299,8 @@ export const describeImage: (
   input: DescribeImageRequest,
 ) => Effect.Effect<
   DescribeImageResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImageRequest,
   output: DescribeImageResponse,
@@ -29315,8 +29313,8 @@ export const describeImageVersion: (
   input: DescribeImageVersionRequest,
 ) => Effect.Effect<
   DescribeImageVersionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeImageVersionRequest,
   output: DescribeImageVersionResponse,
@@ -29329,8 +29327,8 @@ export const describeLineageGroup: (
   input: DescribeLineageGroupRequest,
 ) => Effect.Effect<
   DescribeLineageGroupResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLineageGroupRequest,
   output: DescribeLineageGroupResponse,
@@ -29343,8 +29341,8 @@ export const describeMlflowApp: (
   input: DescribeMlflowAppRequest,
 ) => Effect.Effect<
   DescribeMlflowAppResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMlflowAppRequest,
   output: DescribeMlflowAppResponse,
@@ -29357,8 +29355,8 @@ export const describeMlflowTrackingServer: (
   input: DescribeMlflowTrackingServerRequest,
 ) => Effect.Effect<
   DescribeMlflowTrackingServerResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMlflowTrackingServerRequest,
   output: DescribeMlflowTrackingServerResponse,
@@ -29371,8 +29369,8 @@ export const describeModelBiasJobDefinition: (
   input: DescribeModelBiasJobDefinitionRequest,
 ) => Effect.Effect<
   DescribeModelBiasJobDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeModelBiasJobDefinitionRequest,
   output: DescribeModelBiasJobDefinitionResponse,
@@ -29385,8 +29383,8 @@ export const describeModelCard: (
   input: DescribeModelCardRequest,
 ) => Effect.Effect<
   DescribeModelCardResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeModelCardRequest,
   output: DescribeModelCardResponse,
@@ -29399,8 +29397,8 @@ export const describeModelExplainabilityJobDefinition: (
   input: DescribeModelExplainabilityJobDefinitionRequest,
 ) => Effect.Effect<
   DescribeModelExplainabilityJobDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeModelExplainabilityJobDefinitionRequest,
   output: DescribeModelExplainabilityJobDefinitionResponse,
@@ -29413,8 +29411,8 @@ export const describeModelPackageGroup: (
   input: DescribeModelPackageGroupInput,
 ) => Effect.Effect<
   DescribeModelPackageGroupOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeModelPackageGroupInput,
   output: DescribeModelPackageGroupOutput,
@@ -29427,8 +29425,8 @@ export const describeModelQualityJobDefinition: (
   input: DescribeModelQualityJobDefinitionRequest,
 ) => Effect.Effect<
   DescribeModelQualityJobDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeModelQualityJobDefinitionRequest,
   output: DescribeModelQualityJobDefinitionResponse,
@@ -29441,8 +29439,8 @@ export const describeNotebookInstance: (
   input: DescribeNotebookInstanceInput,
 ) => Effect.Effect<
   DescribeNotebookInstanceOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNotebookInstanceInput,
   output: DescribeNotebookInstanceOutput,
@@ -29457,8 +29455,8 @@ export const describeNotebookInstanceLifecycleConfig: (
   input: DescribeNotebookInstanceLifecycleConfigInput,
 ) => Effect.Effect<
   DescribeNotebookInstanceLifecycleConfigOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNotebookInstanceLifecycleConfigInput,
   output: DescribeNotebookInstanceLifecycleConfigOutput,
@@ -29471,8 +29469,8 @@ export const describePipeline: (
   input: DescribePipelineRequest,
 ) => Effect.Effect<
   DescribePipelineResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePipelineRequest,
   output: DescribePipelineResponse,
@@ -29485,8 +29483,8 @@ export const describePipelineDefinitionForExecution: (
   input: DescribePipelineDefinitionForExecutionRequest,
 ) => Effect.Effect<
   DescribePipelineDefinitionForExecutionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePipelineDefinitionForExecutionRequest,
   output: DescribePipelineDefinitionForExecutionResponse,
@@ -29499,8 +29497,8 @@ export const describeProcessingJob: (
   input: DescribeProcessingJobRequest,
 ) => Effect.Effect<
   DescribeProcessingJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProcessingJobRequest,
   output: DescribeProcessingJobResponse,
@@ -29513,8 +29511,8 @@ export const describeSpace: (
   input: DescribeSpaceRequest,
 ) => Effect.Effect<
   DescribeSpaceResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSpaceRequest,
   output: DescribeSpaceResponse,
@@ -29527,8 +29525,8 @@ export const describeStudioLifecycleConfig: (
   input: DescribeStudioLifecycleConfigRequest,
 ) => Effect.Effect<
   DescribeStudioLifecycleConfigResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStudioLifecycleConfigRequest,
   output: DescribeStudioLifecycleConfigResponse,
@@ -29541,8 +29539,8 @@ export const describeTransformJob: (
   input: DescribeTransformJobRequest,
 ) => Effect.Effect<
   DescribeTransformJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTransformJobRequest,
   output: DescribeTransformJobResponse,
@@ -29555,8 +29553,8 @@ export const describeUserProfile: (
   input: DescribeUserProfileRequest,
 ) => Effect.Effect<
   DescribeUserProfileResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserProfileRequest,
   output: DescribeUserProfileResponse,
@@ -29571,8 +29569,8 @@ export const detachClusterNodeVolume: (
   input: DetachClusterNodeVolumeRequest,
 ) => Effect.Effect<
   DetachClusterNodeVolumeResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachClusterNodeVolumeRequest,
   output: DetachClusterNodeVolumeResponse,
@@ -29587,8 +29585,8 @@ export const disassociateTrialComponent: (
   input: DisassociateTrialComponentRequest,
 ) => Effect.Effect<
   DisassociateTrialComponentResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateTrialComponentRequest,
   output: DisassociateTrialComponentResponse,
@@ -29601,8 +29599,8 @@ export const getLineageGroupPolicy: (
   input: GetLineageGroupPolicyRequest,
 ) => Effect.Effect<
   GetLineageGroupPolicyResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLineageGroupPolicyRequest,
   output: GetLineageGroupPolicyResponse,
@@ -29615,8 +29613,8 @@ export const getModelPackageGroupPolicy: (
   input: GetModelPackageGroupPolicyInput,
 ) => Effect.Effect<
   GetModelPackageGroupPolicyOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetModelPackageGroupPolicyInput,
   output: GetModelPackageGroupPolicyOutput,
@@ -29629,11 +29627,8 @@ export const importHubContent: (
   input: ImportHubContentRequest,
 ) => Effect.Effect<
   ImportHubContentResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportHubContentRequest,
   output: ImportHubContentResponse,
@@ -29647,22 +29642,22 @@ export const listAliases: {
     input: ListAliasesRequest,
   ): Effect.Effect<
     ListAliasesResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAliasesRequest,
   ) => Stream.Stream<
     ListAliasesResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAliasesRequest,
   ) => Stream.Stream<
     SageMakerImageVersionAlias,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAliasesRequest,
@@ -29683,22 +29678,22 @@ export const listCandidatesForAutoMLJob: {
     input: ListCandidatesForAutoMLJobRequest,
   ): Effect.Effect<
     ListCandidatesForAutoMLJobResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCandidatesForAutoMLJobRequest,
   ) => Stream.Stream<
     ListCandidatesForAutoMLJobResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCandidatesForAutoMLJobRequest,
   ) => Stream.Stream<
     AutoMLCandidate,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCandidatesForAutoMLJobRequest,
@@ -29718,8 +29713,8 @@ export const listHubContentVersions: (
   input: ListHubContentVersionsRequest,
 ) => Effect.Effect<
   ListHubContentVersionsResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListHubContentVersionsRequest,
   output: ListHubContentVersionsResponse,
@@ -29733,22 +29728,22 @@ export const listModelBiasJobDefinitions: {
     input: ListModelBiasJobDefinitionsRequest,
   ): Effect.Effect<
     ListModelBiasJobDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelBiasJobDefinitionsRequest,
   ) => Stream.Stream<
     ListModelBiasJobDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelBiasJobDefinitionsRequest,
   ) => Stream.Stream<
     MonitoringJobDefinitionSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelBiasJobDefinitionsRequest,
@@ -29769,22 +29764,22 @@ export const listModelExplainabilityJobDefinitions: {
     input: ListModelExplainabilityJobDefinitionsRequest,
   ): Effect.Effect<
     ListModelExplainabilityJobDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelExplainabilityJobDefinitionsRequest,
   ) => Stream.Stream<
     ListModelExplainabilityJobDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelExplainabilityJobDefinitionsRequest,
   ) => Stream.Stream<
     MonitoringJobDefinitionSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelExplainabilityJobDefinitionsRequest,
@@ -29805,22 +29800,22 @@ export const listModelQualityJobDefinitions: {
     input: ListModelQualityJobDefinitionsRequest,
   ): Effect.Effect<
     ListModelQualityJobDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelQualityJobDefinitionsRequest,
   ) => Stream.Stream<
     ListModelQualityJobDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelQualityJobDefinitionsRequest,
   ) => Stream.Stream<
     MonitoringJobDefinitionSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelQualityJobDefinitionsRequest,
@@ -29841,22 +29836,22 @@ export const listMonitoringExecutions: {
     input: ListMonitoringExecutionsRequest,
   ): Effect.Effect<
     ListMonitoringExecutionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMonitoringExecutionsRequest,
   ) => Stream.Stream<
     ListMonitoringExecutionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMonitoringExecutionsRequest,
   ) => Stream.Stream<
     MonitoringExecutionSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMonitoringExecutionsRequest,
@@ -29877,22 +29872,22 @@ export const listPipelineParametersForExecution: {
     input: ListPipelineParametersForExecutionRequest,
   ): Effect.Effect<
     ListPipelineParametersForExecutionResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPipelineParametersForExecutionRequest,
   ) => Stream.Stream<
     ListPipelineParametersForExecutionResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPipelineParametersForExecutionRequest,
   ) => Stream.Stream<
     Parameter,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipelineParametersForExecutionRequest,
@@ -29913,22 +29908,22 @@ export const listSubscribedWorkteams: {
     input: ListSubscribedWorkteamsRequest,
   ): Effect.Effect<
     ListSubscribedWorkteamsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSubscribedWorkteamsRequest,
   ) => Stream.Stream<
     ListSubscribedWorkteamsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSubscribedWorkteamsRequest,
   ) => Stream.Stream<
     SubscribedWorkteam,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSubscribedWorkteamsRequest,
@@ -29949,22 +29944,22 @@ export const listTags: {
     input: ListTagsInput,
   ): Effect.Effect<
     ListTagsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsInput,
   ) => Stream.Stream<
     ListTagsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsInput,
   ) => Stream.Stream<
     Tag,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsInput,
@@ -29985,22 +29980,22 @@ export const listTrainingJobsForHyperParameterTuningJob: {
     input: ListTrainingJobsForHyperParameterTuningJobRequest,
   ): Effect.Effect<
     ListTrainingJobsForHyperParameterTuningJobResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTrainingJobsForHyperParameterTuningJobRequest,
   ) => Stream.Stream<
     ListTrainingJobsForHyperParameterTuningJobResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTrainingJobsForHyperParameterTuningJobRequest,
   ) => Stream.Stream<
     HyperParameterTrainingJobSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrainingJobsForHyperParameterTuningJobRequest,
@@ -30021,22 +30016,22 @@ export const listWorkforces: {
     input: ListWorkforcesRequest,
   ): Effect.Effect<
     ListWorkforcesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkforcesRequest,
   ) => Stream.Stream<
     ListWorkforcesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkforcesRequest,
   ) => Stream.Stream<
     Workforce,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkforcesRequest,
@@ -30057,22 +30052,22 @@ export const listWorkteams: {
     input: ListWorkteamsRequest,
   ): Effect.Effect<
     ListWorkteamsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkteamsRequest,
   ) => Stream.Stream<
     ListWorkteamsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkteamsRequest,
   ) => Stream.Stream<
     Workteam,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkteamsRequest,
@@ -30092,8 +30087,8 @@ export const putModelPackageGroupPolicy: (
   input: PutModelPackageGroupPolicyInput,
 ) => Effect.Effect<
   PutModelPackageGroupPolicyOutput,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutModelPackageGroupPolicyInput,
   output: PutModelPackageGroupPolicyOutput,
@@ -30106,8 +30101,8 @@ export const registerDevices: (
   input: RegisterDevicesRequest,
 ) => Effect.Effect<
   RegisterDevicesResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterDevicesRequest,
   output: RegisterDevicesResponse,
@@ -30120,11 +30115,8 @@ export const retryPipelineExecution: (
   input: RetryPipelineExecutionRequest,
 ) => Effect.Effect<
   RetryPipelineExecutionResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetryPipelineExecutionRequest,
   output: RetryPipelineExecutionResponse,
@@ -30137,11 +30129,8 @@ export const sendPipelineExecutionStepFailure: (
   input: SendPipelineExecutionStepFailureRequest,
 ) => Effect.Effect<
   SendPipelineExecutionStepFailureResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendPipelineExecutionStepFailureRequest,
   output: SendPipelineExecutionStepFailureResponse,
@@ -30154,8 +30143,8 @@ export const startInferenceExperiment: (
   input: StartInferenceExperimentRequest,
 ) => Effect.Effect<
   StartInferenceExperimentResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartInferenceExperimentRequest,
   output: StartInferenceExperimentResponse,
@@ -30168,8 +30157,8 @@ export const startMlflowTrackingServer: (
   input: StartMlflowTrackingServerRequest,
 ) => Effect.Effect<
   StartMlflowTrackingServerResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMlflowTrackingServerRequest,
   output: StartMlflowTrackingServerResponse,
@@ -30182,8 +30171,8 @@ export const startSession: (
   input: StartSessionRequest,
 ) => Effect.Effect<
   StartSessionResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartSessionRequest,
   output: StartSessionResponse,
@@ -30196,8 +30185,8 @@ export const stopMlflowTrackingServer: (
   input: StopMlflowTrackingServerRequest,
 ) => Effect.Effect<
   StopMlflowTrackingServerResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopMlflowTrackingServerRequest,
   output: StopMlflowTrackingServerResponse,
@@ -30222,8 +30211,8 @@ export const stopPipelineExecution: (
   input: StopPipelineExecutionRequest,
 ) => Effect.Effect<
   StopPipelineExecutionResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopPipelineExecutionRequest,
   output: StopPipelineExecutionResponse,
@@ -30236,8 +30225,8 @@ export const updateAction: (
   input: UpdateActionRequest,
 ) => Effect.Effect<
   UpdateActionResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateActionRequest,
   output: UpdateActionResponse,
@@ -30250,8 +30239,8 @@ export const updateAppImageConfig: (
   input: UpdateAppImageConfigRequest,
 ) => Effect.Effect<
   UpdateAppImageConfigResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAppImageConfigRequest,
   output: UpdateAppImageConfigResponse,
@@ -30264,8 +30253,8 @@ export const updateArtifact: (
   input: UpdateArtifactRequest,
 ) => Effect.Effect<
   UpdateArtifactResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateArtifactRequest,
   output: UpdateArtifactResponse,
@@ -30278,11 +30267,8 @@ export const updateCluster: (
   input: UpdateClusterRequest,
 ) => Effect.Effect<
   UpdateClusterResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResponse,
@@ -30295,11 +30281,8 @@ export const updateClusterSchedulerConfig: (
   input: UpdateClusterSchedulerConfigRequest,
 ) => Effect.Effect<
   UpdateClusterSchedulerConfigResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterSchedulerConfigRequest,
   output: UpdateClusterSchedulerConfigResponse,
@@ -30312,11 +30295,8 @@ export const updateComputeQuota: (
   input: UpdateComputeQuotaRequest,
 ) => Effect.Effect<
   UpdateComputeQuotaResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateComputeQuotaRequest,
   output: UpdateComputeQuotaResponse,
@@ -30329,8 +30309,8 @@ export const updateContext: (
   input: UpdateContextRequest,
 ) => Effect.Effect<
   UpdateContextResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateContextRequest,
   output: UpdateContextResponse,
@@ -30343,8 +30323,8 @@ export const updateExperiment: (
   input: UpdateExperimentRequest,
 ) => Effect.Effect<
   UpdateExperimentResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateExperimentRequest,
   output: UpdateExperimentResponse,
@@ -30357,8 +30337,8 @@ export const updateFeatureMetadata: (
   input: UpdateFeatureMetadataRequest,
 ) => Effect.Effect<
   UpdateFeatureMetadataResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFeatureMetadataRequest,
   output: UpdateFeatureMetadataResponse,
@@ -30371,8 +30351,8 @@ export const updateHub: (
   input: UpdateHubRequest,
 ) => Effect.Effect<
   UpdateHubResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHubRequest,
   output: UpdateHubResponse,
@@ -30401,8 +30381,8 @@ export const updateHubContent: (
   input: UpdateHubContentRequest,
 ) => Effect.Effect<
   UpdateHubContentResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHubContentRequest,
   output: UpdateHubContentResponse,
@@ -30421,8 +30401,8 @@ export const updateHubContentReference: (
   input: UpdateHubContentReferenceRequest,
 ) => Effect.Effect<
   UpdateHubContentReferenceResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateHubContentReferenceRequest,
   output: UpdateHubContentReferenceResponse,
@@ -30435,8 +30415,8 @@ export const updateImage: (
   input: UpdateImageRequest,
 ) => Effect.Effect<
   UpdateImageResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateImageRequest,
   output: UpdateImageResponse,
@@ -30449,8 +30429,8 @@ export const updateImageVersion: (
   input: UpdateImageVersionRequest,
 ) => Effect.Effect<
   UpdateImageVersionResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateImageVersionRequest,
   output: UpdateImageVersionResponse,
@@ -30463,8 +30443,8 @@ export const updateInferenceComponentRuntimeConfig: (
   input: UpdateInferenceComponentRuntimeConfigInput,
 ) => Effect.Effect<
   UpdateInferenceComponentRuntimeConfigOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInferenceComponentRuntimeConfigInput,
   output: UpdateInferenceComponentRuntimeConfigOutput,
@@ -30477,8 +30457,8 @@ export const updateInferenceExperiment: (
   input: UpdateInferenceExperimentRequest,
 ) => Effect.Effect<
   UpdateInferenceExperimentResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInferenceExperimentRequest,
   output: UpdateInferenceExperimentResponse,
@@ -30491,8 +30471,8 @@ export const updateMlflowApp: (
   input: UpdateMlflowAppRequest,
 ) => Effect.Effect<
   UpdateMlflowAppResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMlflowAppRequest,
   output: UpdateMlflowAppResponse,
@@ -30505,11 +30485,8 @@ export const updateMlflowTrackingServer: (
   input: UpdateMlflowTrackingServerRequest,
 ) => Effect.Effect<
   UpdateMlflowTrackingServerResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMlflowTrackingServerRequest,
   output: UpdateMlflowTrackingServerResponse,
@@ -30524,11 +30501,8 @@ export const updateModelCard: (
   input: UpdateModelCardRequest,
 ) => Effect.Effect<
   UpdateModelCardResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateModelCardRequest,
   output: UpdateModelCardResponse,
@@ -30541,8 +30515,8 @@ export const updateModelPackage: (
   input: UpdateModelPackageInput,
 ) => Effect.Effect<
   UpdateModelPackageOutput,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateModelPackageInput,
   output: UpdateModelPackageOutput,
@@ -30555,8 +30529,8 @@ export const updateMonitoringAlert: (
   input: UpdateMonitoringAlertRequest,
 ) => Effect.Effect<
   UpdateMonitoringAlertResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMonitoringAlertRequest,
   output: UpdateMonitoringAlertResponse,
@@ -30569,8 +30543,8 @@ export const updateMonitoringSchedule: (
   input: UpdateMonitoringScheduleRequest,
 ) => Effect.Effect<
   UpdateMonitoringScheduleResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMonitoringScheduleRequest,
   output: UpdateMonitoringScheduleResponse,
@@ -30583,8 +30557,8 @@ export const updatePartnerApp: (
   input: UpdatePartnerAppRequest,
 ) => Effect.Effect<
   UpdatePartnerAppResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePartnerAppRequest,
   output: UpdatePartnerAppResponse,
@@ -30597,8 +30571,8 @@ export const updatePipeline: (
   input: UpdatePipelineRequest,
 ) => Effect.Effect<
   UpdatePipelineResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePipelineRequest,
   output: UpdatePipelineResponse,
@@ -30611,8 +30585,8 @@ export const updatePipelineExecution: (
   input: UpdatePipelineExecutionRequest,
 ) => Effect.Effect<
   UpdatePipelineExecutionResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePipelineExecutionRequest,
   output: UpdatePipelineExecutionResponse,
@@ -30625,8 +30599,8 @@ export const updatePipelineVersion: (
   input: UpdatePipelineVersionRequest,
 ) => Effect.Effect<
   UpdatePipelineVersionResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePipelineVersionRequest,
   output: UpdatePipelineVersionResponse,
@@ -30641,11 +30615,8 @@ export const updateSpace: (
   input: UpdateSpaceRequest,
 ) => Effect.Effect<
   UpdateSpaceResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSpaceRequest,
   output: UpdateSpaceResponse,
@@ -30658,8 +30629,8 @@ export const updateTrial: (
   input: UpdateTrialRequest,
 ) => Effect.Effect<
   UpdateTrialResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrialRequest,
   output: UpdateTrialResponse,
@@ -30672,8 +30643,8 @@ export const updateTrialComponent: (
   input: UpdateTrialComponentRequest,
 ) => Effect.Effect<
   UpdateTrialComponentResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrialComponentRequest,
   output: UpdateTrialComponentResponse,
@@ -30686,11 +30657,8 @@ export const updateUserProfile: (
   input: UpdateUserProfileRequest,
 ) => Effect.Effect<
   UpdateUserProfileResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserProfileRequest,
   output: UpdateUserProfileResponse,
@@ -30719,8 +30687,8 @@ export const updateWorkforce: (
   input: UpdateWorkforceRequest,
 ) => Effect.Effect<
   UpdateWorkforceResponse,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWorkforceRequest,
   output: UpdateWorkforceResponse,
@@ -30733,8 +30701,8 @@ export const updateWorkteam: (
   input: UpdateWorkteamRequest,
 ) => Effect.Effect<
   UpdateWorkteamResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWorkteamRequest,
   output: UpdateWorkteamResponse,
@@ -30747,8 +30715,8 @@ export const createEdgePackagingJob: (
   input: CreateEdgePackagingJobRequest,
 ) => Effect.Effect<
   CreateEdgePackagingJobResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEdgePackagingJobRequest,
   output: CreateEdgePackagingJobResponse,
@@ -30761,8 +30729,8 @@ export const startNotebookInstance: (
   input: StartNotebookInstanceInput,
 ) => Effect.Effect<
   StartNotebookInstanceResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartNotebookInstanceInput,
   output: StartNotebookInstanceResponse,
@@ -30775,8 +30743,8 @@ export const updateNotebookInstance: (
   input: UpdateNotebookInstanceInput,
 ) => Effect.Effect<
   UpdateNotebookInstanceOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNotebookInstanceInput,
   output: UpdateNotebookInstanceOutput,
@@ -30789,8 +30757,8 @@ export const updateNotebookInstanceLifecycleConfig: (
   input: UpdateNotebookInstanceLifecycleConfigInput,
 ) => Effect.Effect<
   UpdateNotebookInstanceLifecycleConfigOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNotebookInstanceLifecycleConfigInput,
   output: UpdateNotebookInstanceLifecycleConfigOutput,
@@ -30803,8 +30771,8 @@ export const addAssociation: (
   input: AddAssociationRequest,
 ) => Effect.Effect<
   AddAssociationResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddAssociationRequest,
   output: AddAssociationResponse,
@@ -30817,8 +30785,8 @@ export const associateTrialComponent: (
   input: AssociateTrialComponentRequest,
 ) => Effect.Effect<
   AssociateTrialComponentResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateTrialComponentRequest,
   output: AssociateTrialComponentResponse,
@@ -30831,8 +30799,8 @@ export const deleteModelCard: (
   input: DeleteModelCardRequest,
 ) => Effect.Effect<
   DeleteModelCardResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelCardRequest,
   output: DeleteModelCardResponse,
@@ -30847,8 +30815,8 @@ export const deleteModelPackage: (
   input: DeleteModelPackageInput,
 ) => Effect.Effect<
   DeleteModelPackageResponse,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelPackageInput,
   output: DeleteModelPackageResponse,
@@ -30861,8 +30829,8 @@ export const deleteModelPackageGroup: (
   input: DeleteModelPackageGroupInput,
 ) => Effect.Effect<
   DeleteModelPackageGroupResponse,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelPackageGroupInput,
   output: DeleteModelPackageGroupResponse,
@@ -30875,8 +30843,8 @@ export const deleteProject: (
   input: DeleteProjectInput,
 ) => Effect.Effect<
   DeleteProjectResponse,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProjectInput,
   output: DeleteProjectResponse,
@@ -30889,8 +30857,8 @@ export const deleteDeviceFleet: (
   input: DeleteDeviceFleetRequest,
 ) => Effect.Effect<
   DeleteDeviceFleetResponse,
-  ResourceInUse | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeviceFleetRequest,
   output: DeleteDeviceFleetResponse,
@@ -30903,8 +30871,8 @@ export const deleteEdgeDeploymentPlan: (
   input: DeleteEdgeDeploymentPlanRequest,
 ) => Effect.Effect<
   DeleteEdgeDeploymentPlanResponse,
-  ResourceInUse | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEdgeDeploymentPlanRequest,
   output: DeleteEdgeDeploymentPlanResponse,
@@ -30917,8 +30885,8 @@ export const deleteEdgeDeploymentStage: (
   input: DeleteEdgeDeploymentStageRequest,
 ) => Effect.Effect<
   DeleteEdgeDeploymentStageResponse,
-  ResourceInUse | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEdgeDeploymentStageRequest,
   output: DeleteEdgeDeploymentStageResponse,
@@ -30931,8 +30899,8 @@ export const deleteFlowDefinition: (
   input: DeleteFlowDefinitionRequest,
 ) => Effect.Effect<
   DeleteFlowDefinitionResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFlowDefinitionRequest,
   output: DeleteFlowDefinitionResponse,
@@ -30945,8 +30913,8 @@ export const deleteHub: (
   input: DeleteHubRequest,
 ) => Effect.Effect<
   DeleteHubResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHubRequest,
   output: DeleteHubResponse,
@@ -30959,8 +30927,8 @@ export const deleteHubContent: (
   input: DeleteHubContentRequest,
 ) => Effect.Effect<
   DeleteHubContentResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHubContentRequest,
   output: DeleteHubContentResponse,
@@ -30973,8 +30941,8 @@ export const deleteImage: (
   input: DeleteImageRequest,
 ) => Effect.Effect<
   DeleteImageResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImageRequest,
   output: DeleteImageResponse,
@@ -30987,8 +30955,8 @@ export const deleteImageVersion: (
   input: DeleteImageVersionRequest,
 ) => Effect.Effect<
   DeleteImageVersionResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteImageVersionRequest,
   output: DeleteImageVersionResponse,
@@ -31001,8 +30969,8 @@ export const deleteProcessingJob: (
   input: DeleteProcessingJobRequest,
 ) => Effect.Effect<
   DeleteProcessingJobResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProcessingJobRequest,
   output: DeleteProcessingJobResponse,
@@ -31015,8 +30983,8 @@ export const deleteSpace: (
   input: DeleteSpaceRequest,
 ) => Effect.Effect<
   DeleteSpaceResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSpaceRequest,
   output: DeleteSpaceResponse,
@@ -31029,8 +30997,8 @@ export const deleteStudioLifecycleConfig: (
   input: DeleteStudioLifecycleConfigRequest,
 ) => Effect.Effect<
   DeleteStudioLifecycleConfigResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStudioLifecycleConfigRequest,
   output: DeleteStudioLifecycleConfigResponse,
@@ -31043,8 +31011,8 @@ export const deleteTrainingJob: (
   input: DeleteTrainingJobRequest,
 ) => Effect.Effect<
   DeleteTrainingJobResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrainingJobRequest,
   output: DeleteTrainingJobResponse,
@@ -31057,8 +31025,8 @@ export const deleteUserProfile: (
   input: DeleteUserProfileRequest,
 ) => Effect.Effect<
   DeleteUserProfileResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserProfileRequest,
   output: DeleteUserProfileResponse,
@@ -31071,8 +31039,8 @@ export const updateDeviceFleet: (
   input: UpdateDeviceFleetRequest,
 ) => Effect.Effect<
   UpdateDeviceFleetResponse,
-  ResourceInUse | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeviceFleetRequest,
   output: UpdateDeviceFleetResponse,
@@ -31085,8 +31053,8 @@ export const createDeviceFleet: (
   input: CreateDeviceFleetRequest,
 ) => Effect.Effect<
   CreateDeviceFleetResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeviceFleetRequest,
   output: CreateDeviceFleetResponse,
@@ -31099,11 +31067,8 @@ export const createHubContentReference: (
   input: CreateHubContentReferenceRequest,
 ) => Effect.Effect<
   CreateHubContentReferenceResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHubContentReferenceRequest,
   output: CreateHubContentReferenceResponse,
@@ -31116,8 +31081,8 @@ export const createImage: (
   input: CreateImageRequest,
 ) => Effect.Effect<
   CreateImageResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImageRequest,
   output: CreateImageResponse,
@@ -31130,11 +31095,8 @@ export const createImageVersion: (
   input: CreateImageVersionRequest,
 ) => Effect.Effect<
   CreateImageVersionResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImageVersionRequest,
   output: CreateImageVersionResponse,
@@ -31147,8 +31109,8 @@ export const createStudioLifecycleConfig: (
   input: CreateStudioLifecycleConfigRequest,
 ) => Effect.Effect<
   CreateStudioLifecycleConfigResponse,
-  ResourceInUse | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStudioLifecycleConfigRequest,
   output: CreateStudioLifecycleConfigResponse,
@@ -31191,11 +31153,8 @@ export const createTrainingPlan: (
   input: CreateTrainingPlanRequest,
 ) => Effect.Effect<
   CreateTrainingPlanResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrainingPlanRequest,
   output: CreateTrainingPlanResponse,
@@ -31208,8 +31167,8 @@ export const createUserProfile: (
   input: CreateUserProfileRequest,
 ) => Effect.Effect<
   CreateUserProfileResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserProfileRequest,
   output: CreateUserProfileResponse,
@@ -31222,8 +31181,8 @@ export const deleteClusterSchedulerConfig: (
   input: DeleteClusterSchedulerConfigRequest,
 ) => Effect.Effect<
   DeleteClusterSchedulerConfigResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterSchedulerConfigRequest,
   output: DeleteClusterSchedulerConfigResponse,
@@ -31238,8 +31197,8 @@ export const deleteCompilationJob: (
   input: DeleteCompilationJobRequest,
 ) => Effect.Effect<
   DeleteCompilationJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCompilationJobRequest,
   output: DeleteCompilationJobResponse,
@@ -31252,8 +31211,8 @@ export const deleteComputeQuota: (
   input: DeleteComputeQuotaRequest,
 ) => Effect.Effect<
   DeleteComputeQuotaResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteComputeQuotaRequest,
   output: DeleteComputeQuotaResponse,
@@ -31266,8 +31225,8 @@ export const deleteDataQualityJobDefinition: (
   input: DeleteDataQualityJobDefinitionRequest,
 ) => Effect.Effect<
   DeleteDataQualityJobDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataQualityJobDefinitionRequest,
   output: DeleteDataQualityJobDefinitionResponse,
@@ -31284,8 +31243,8 @@ export const deleteFeatureGroup: (
   input: DeleteFeatureGroupRequest,
 ) => Effect.Effect<
   DeleteFeatureGroupResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFeatureGroupRequest,
   output: DeleteFeatureGroupResponse,
@@ -31298,8 +31257,8 @@ export const deleteHubContentReference: (
   input: DeleteHubContentReferenceRequest,
 ) => Effect.Effect<
   DeleteHubContentReferenceResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHubContentReferenceRequest,
   output: DeleteHubContentReferenceResponse,
@@ -31314,8 +31273,8 @@ export const deleteHumanTaskUi: (
   input: DeleteHumanTaskUiRequest,
 ) => Effect.Effect<
   DeleteHumanTaskUiResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteHumanTaskUiRequest,
   output: DeleteHumanTaskUiResponse,
@@ -31328,8 +31287,8 @@ export const deleteModelBiasJobDefinition: (
   input: DeleteModelBiasJobDefinitionRequest,
 ) => Effect.Effect<
   DeleteModelBiasJobDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelBiasJobDefinitionRequest,
   output: DeleteModelBiasJobDefinitionResponse,
@@ -31342,8 +31301,8 @@ export const deleteModelExplainabilityJobDefinition: (
   input: DeleteModelExplainabilityJobDefinitionRequest,
 ) => Effect.Effect<
   DeleteModelExplainabilityJobDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelExplainabilityJobDefinitionRequest,
   output: DeleteModelExplainabilityJobDefinitionResponse,
@@ -31356,8 +31315,8 @@ export const deleteModelQualityJobDefinition: (
   input: DeleteModelQualityJobDefinitionRequest,
 ) => Effect.Effect<
   DeleteModelQualityJobDefinitionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelQualityJobDefinitionRequest,
   output: DeleteModelQualityJobDefinitionResponse,
@@ -31370,8 +31329,8 @@ export const deleteMonitoringSchedule: (
   input: DeleteMonitoringScheduleRequest,
 ) => Effect.Effect<
   DeleteMonitoringScheduleResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMonitoringScheduleRequest,
   output: DeleteMonitoringScheduleResponse,
@@ -31384,8 +31343,8 @@ export const deleteOptimizationJob: (
   input: DeleteOptimizationJobRequest,
 ) => Effect.Effect<
   DeleteOptimizationJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOptimizationJobRequest,
   output: DeleteOptimizationJobResponse,
@@ -31400,8 +31359,8 @@ export const startMonitoringSchedule: (
   input: StartMonitoringScheduleRequest,
 ) => Effect.Effect<
   StartMonitoringScheduleResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMonitoringScheduleRequest,
   output: StartMonitoringScheduleResponse,
@@ -31414,8 +31373,8 @@ export const stopAutoMLJob: (
   input: StopAutoMLJobRequest,
 ) => Effect.Effect<
   StopAutoMLJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopAutoMLJobRequest,
   output: StopAutoMLJobResponse,
@@ -31432,8 +31391,8 @@ export const stopCompilationJob: (
   input: StopCompilationJobRequest,
 ) => Effect.Effect<
   StopCompilationJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopCompilationJobRequest,
   output: StopCompilationJobResponse,
@@ -31448,8 +31407,8 @@ export const stopHyperParameterTuningJob: (
   input: StopHyperParameterTuningJobRequest,
 ) => Effect.Effect<
   StopHyperParameterTuningJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopHyperParameterTuningJobRequest,
   output: StopHyperParameterTuningJobResponse,
@@ -31462,8 +31421,8 @@ export const stopInferenceRecommendationsJob: (
   input: StopInferenceRecommendationsJobRequest,
 ) => Effect.Effect<
   StopInferenceRecommendationsJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopInferenceRecommendationsJobRequest,
   output: StopInferenceRecommendationsJobResponse,
@@ -31476,8 +31435,8 @@ export const stopLabelingJob: (
   input: StopLabelingJobRequest,
 ) => Effect.Effect<
   StopLabelingJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopLabelingJobRequest,
   output: StopLabelingJobResponse,
@@ -31490,8 +31449,8 @@ export const stopMonitoringSchedule: (
   input: StopMonitoringScheduleRequest,
 ) => Effect.Effect<
   StopMonitoringScheduleResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopMonitoringScheduleRequest,
   output: StopMonitoringScheduleResponse,
@@ -31504,8 +31463,8 @@ export const stopOptimizationJob: (
   input: StopOptimizationJobRequest,
 ) => Effect.Effect<
   StopOptimizationJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopOptimizationJobRequest,
   output: StopOptimizationJobResponse,
@@ -31518,8 +31477,8 @@ export const stopProcessingJob: (
   input: StopProcessingJobRequest,
 ) => Effect.Effect<
   StopProcessingJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopProcessingJobRequest,
   output: StopProcessingJobResponse,
@@ -31534,8 +31493,8 @@ export const stopTrainingJob: (
   input: StopTrainingJobRequest,
 ) => Effect.Effect<
   StopTrainingJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTrainingJobRequest,
   output: StopTrainingJobResponse,
@@ -31550,8 +31509,8 @@ export const stopTransformJob: (
   input: StopTransformJobRequest,
 ) => Effect.Effect<
   StopTransformJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTransformJobRequest,
   output: StopTransformJobResponse,
@@ -31566,8 +31525,8 @@ export const attachClusterNodeVolume: (
   input: AttachClusterNodeVolumeRequest,
 ) => Effect.Effect<
   AttachClusterNodeVolumeResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachClusterNodeVolumeRequest,
   output: AttachClusterNodeVolumeResponse,
@@ -31580,8 +31539,8 @@ export const createPartnerAppPresignedUrl: (
   input: CreatePartnerAppPresignedUrlRequest,
 ) => Effect.Effect<
   CreatePartnerAppPresignedUrlResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePartnerAppPresignedUrlRequest,
   output: CreatePartnerAppPresignedUrlResponse,
@@ -31602,8 +31561,8 @@ export const createPresignedDomainUrl: (
   input: CreatePresignedDomainUrlRequest,
 ) => Effect.Effect<
   CreatePresignedDomainUrlResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePresignedDomainUrlRequest,
   output: CreatePresignedDomainUrlResponse,
@@ -31616,8 +31575,8 @@ export const createPresignedMlflowAppUrl: (
   input: CreatePresignedMlflowAppUrlRequest,
 ) => Effect.Effect<
   CreatePresignedMlflowAppUrlResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePresignedMlflowAppUrlRequest,
   output: CreatePresignedMlflowAppUrlResponse,
@@ -31630,8 +31589,8 @@ export const createPresignedMlflowTrackingServerUrl: (
   input: CreatePresignedMlflowTrackingServerUrlRequest,
 ) => Effect.Effect<
   CreatePresignedMlflowTrackingServerUrlResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePresignedMlflowTrackingServerUrlRequest,
   output: CreatePresignedMlflowTrackingServerUrlResponse,
@@ -31650,8 +31609,8 @@ export const createTrial: (
   input: CreateTrialRequest,
 ) => Effect.Effect<
   CreateTrialResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrialRequest,
   output: CreateTrialResponse,
@@ -31664,8 +31623,8 @@ export const deleteAction: (
   input: DeleteActionRequest,
 ) => Effect.Effect<
   DeleteActionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteActionRequest,
   output: DeleteActionResponse,
@@ -31678,8 +31637,8 @@ export const deleteApp: (
   input: DeleteAppRequest,
 ) => Effect.Effect<
   DeleteAppResponse,
-  ResourceInUse | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppRequest,
   output: DeleteAppResponse,
@@ -31698,8 +31657,8 @@ export const addTags: (
   input: AddTagsInput,
 ) => Effect.Effect<
   AddTagsOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsInput,
   output: AddTagsOutput,
@@ -31716,8 +31675,8 @@ export const batchDeleteClusterNodes: (
   input: BatchDeleteClusterNodesRequest,
 ) => Effect.Effect<
   BatchDeleteClusterNodesResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteClusterNodesRequest,
   output: BatchDeleteClusterNodesResponse,
@@ -31738,8 +31697,8 @@ export const batchRebootClusterNodes: (
   input: BatchRebootClusterNodesRequest,
 ) => Effect.Effect<
   BatchRebootClusterNodesResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchRebootClusterNodesRequest,
   output: BatchRebootClusterNodesResponse,
@@ -31762,8 +31721,8 @@ export const batchReplaceClusterNodes: (
   input: BatchReplaceClusterNodesRequest,
 ) => Effect.Effect<
   BatchReplaceClusterNodesResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchReplaceClusterNodesRequest,
   output: BatchReplaceClusterNodesResponse,
@@ -31776,8 +31735,8 @@ export const createAction: (
   input: CreateActionRequest,
 ) => Effect.Effect<
   CreateActionResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateActionRequest,
   output: CreateActionResponse,
@@ -31790,8 +31749,8 @@ export const createApp: (
   input: CreateAppRequest,
 ) => Effect.Effect<
   CreateAppResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppRequest,
   output: CreateAppResponse,
@@ -31806,8 +31765,8 @@ export const createCodeRepository: (
   input: CreateCodeRepositoryInput,
 ) => Effect.Effect<
   CreateCodeRepositoryOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCodeRepositoryInput,
   output: CreateCodeRepositoryOutput,
@@ -31820,8 +31779,8 @@ export const createContext: (
   input: CreateContextRequest,
 ) => Effect.Effect<
   CreateContextResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateContextRequest,
   output: CreateContextResponse,
@@ -31834,8 +31793,8 @@ export const createHub: (
   input: CreateHubRequest,
 ) => Effect.Effect<
   CreateHubResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHubRequest,
   output: CreateHubResponse,
@@ -31848,8 +31807,8 @@ export const createHumanTaskUi: (
   input: CreateHumanTaskUiRequest,
 ) => Effect.Effect<
   CreateHumanTaskUiResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHumanTaskUiRequest,
   output: CreateHumanTaskUiResponse,
@@ -31864,8 +31823,8 @@ export const createModelCard: (
   input: CreateModelCardRequest,
 ) => Effect.Effect<
   CreateModelCardResponse,
-  ConflictException | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelCardRequest,
   output: CreateModelCardResponse,
@@ -31878,11 +31837,8 @@ export const createModelCardExportJob: (
   input: CreateModelCardExportJobRequest,
 ) => Effect.Effect<
   CreateModelCardExportJobResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelCardExportJobRequest,
   output: CreateModelCardExportJobResponse,
@@ -31895,8 +31851,8 @@ export const createModelExplainabilityJobDefinition: (
   input: CreateModelExplainabilityJobDefinitionRequest,
 ) => Effect.Effect<
   CreateModelExplainabilityJobDefinitionResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelExplainabilityJobDefinitionRequest,
   output: CreateModelExplainabilityJobDefinitionResponse,
@@ -31909,8 +31865,8 @@ export const createModelQualityJobDefinition: (
   input: CreateModelQualityJobDefinitionRequest,
 ) => Effect.Effect<
   CreateModelQualityJobDefinitionResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelQualityJobDefinitionRequest,
   output: CreateModelQualityJobDefinitionResponse,
@@ -31941,8 +31897,8 @@ export const createNotebookInstance: (
   input: CreateNotebookInstanceInput,
 ) => Effect.Effect<
   CreateNotebookInstanceOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNotebookInstanceInput,
   output: CreateNotebookInstanceOutput,
@@ -31965,8 +31921,8 @@ export const createNotebookInstanceLifecycleConfig: (
   input: CreateNotebookInstanceLifecycleConfigInput,
 ) => Effect.Effect<
   CreateNotebookInstanceLifecycleConfigOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNotebookInstanceLifecycleConfigInput,
   output: CreateNotebookInstanceLifecycleConfigOutput,
@@ -31979,11 +31935,8 @@ export const createPipeline: (
   input: CreatePipelineRequest,
 ) => Effect.Effect<
   CreatePipelineResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePipelineRequest,
   output: CreatePipelineResponse,
@@ -31998,8 +31951,8 @@ export const describeCompilationJob: (
   input: DescribeCompilationJobRequest,
 ) => Effect.Effect<
   DescribeCompilationJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCompilationJobRequest,
   output: DescribeCompilationJobResponse,
@@ -32012,8 +31965,8 @@ export const describeDevice: (
   input: DescribeDeviceRequest,
 ) => Effect.Effect<
   DescribeDeviceResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDeviceRequest,
   output: DescribeDeviceResponse,
@@ -32026,8 +31979,8 @@ export const describeEdgePackagingJob: (
   input: DescribeEdgePackagingJobRequest,
 ) => Effect.Effect<
   DescribeEdgePackagingJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEdgePackagingJobRequest,
   output: DescribeEdgePackagingJobResponse,
@@ -32040,8 +31993,8 @@ export const describeExperiment: (
   input: DescribeExperimentRequest,
 ) => Effect.Effect<
   DescribeExperimentResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeExperimentRequest,
   output: DescribeExperimentResponse,
@@ -32054,8 +32007,8 @@ export const describeFeatureGroup: (
   input: DescribeFeatureGroupRequest,
 ) => Effect.Effect<
   DescribeFeatureGroupResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFeatureGroupRequest,
   output: DescribeFeatureGroupResponse,
@@ -32068,8 +32021,8 @@ export const describeHubContent: (
   input: DescribeHubContentRequest,
 ) => Effect.Effect<
   DescribeHubContentResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHubContentRequest,
   output: DescribeHubContentResponse,
@@ -32082,8 +32035,8 @@ export const describeHumanTaskUi: (
   input: DescribeHumanTaskUiRequest,
 ) => Effect.Effect<
   DescribeHumanTaskUiResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHumanTaskUiRequest,
   output: DescribeHumanTaskUiResponse,
@@ -32096,8 +32049,8 @@ export const describeInferenceExperiment: (
   input: DescribeInferenceExperimentRequest,
 ) => Effect.Effect<
   DescribeInferenceExperimentResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInferenceExperimentRequest,
   output: DescribeInferenceExperimentResponse,
@@ -32110,8 +32063,8 @@ export const describeLabelingJob: (
   input: DescribeLabelingJobRequest,
 ) => Effect.Effect<
   DescribeLabelingJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeLabelingJobRequest,
   output: DescribeLabelingJobResponse,
@@ -32124,8 +32077,8 @@ export const describeModelCardExportJob: (
   input: DescribeModelCardExportJobRequest,
 ) => Effect.Effect<
   DescribeModelCardExportJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeModelCardExportJobRequest,
   output: DescribeModelCardExportJobResponse,
@@ -32138,8 +32091,8 @@ export const describeMonitoringSchedule: (
   input: DescribeMonitoringScheduleRequest,
 ) => Effect.Effect<
   DescribeMonitoringScheduleResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMonitoringScheduleRequest,
   output: DescribeMonitoringScheduleResponse,
@@ -32152,8 +32105,8 @@ export const describeOptimizationJob: (
   input: DescribeOptimizationJobRequest,
 ) => Effect.Effect<
   DescribeOptimizationJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeOptimizationJobRequest,
   output: DescribeOptimizationJobResponse,
@@ -32166,8 +32119,8 @@ export const describePartnerApp: (
   input: DescribePartnerAppRequest,
 ) => Effect.Effect<
   DescribePartnerAppResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePartnerAppRequest,
   output: DescribePartnerAppResponse,
@@ -32180,8 +32133,8 @@ export const describePipelineExecution: (
   input: DescribePipelineExecutionRequest,
 ) => Effect.Effect<
   DescribePipelineExecutionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePipelineExecutionRequest,
   output: DescribePipelineExecutionResponse,
@@ -32194,8 +32147,8 @@ export const describeReservedCapacity: (
   input: DescribeReservedCapacityRequest,
 ) => Effect.Effect<
   DescribeReservedCapacityResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReservedCapacityRequest,
   output: DescribeReservedCapacityResponse,
@@ -32208,8 +32161,8 @@ export const describeSubscribedWorkteam: (
   input: DescribeSubscribedWorkteamRequest,
 ) => Effect.Effect<
   DescribeSubscribedWorkteamResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSubscribedWorkteamRequest,
   output: DescribeSubscribedWorkteamResponse,
@@ -32224,8 +32177,8 @@ export const describeTrainingJob: (
   input: DescribeTrainingJobRequest,
 ) => Effect.Effect<
   DescribeTrainingJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrainingJobRequest,
   output: DescribeTrainingJobResponse,
@@ -32238,8 +32191,8 @@ export const describeTrainingPlan: (
   input: DescribeTrainingPlanRequest,
 ) => Effect.Effect<
   DescribeTrainingPlanResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrainingPlanRequest,
   output: DescribeTrainingPlanResponse,
@@ -32252,8 +32205,8 @@ export const describeTrial: (
   input: DescribeTrialRequest,
 ) => Effect.Effect<
   DescribeTrialResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrialRequest,
   output: DescribeTrialResponse,
@@ -32266,8 +32219,8 @@ export const describeTrialComponent: (
   input: DescribeTrialComponentRequest,
 ) => Effect.Effect<
   DescribeTrialComponentResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTrialComponentRequest,
   output: DescribeTrialComponentResponse,
@@ -32280,8 +32233,8 @@ export const describeWorkteam: (
   input: DescribeWorkteamRequest,
 ) => Effect.Effect<
   DescribeWorkteamResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkteamRequest,
   output: DescribeWorkteamResponse,
@@ -32294,8 +32247,8 @@ export const getDeviceFleetReport: (
   input: GetDeviceFleetReportRequest,
 ) => Effect.Effect<
   GetDeviceFleetReportResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeviceFleetReportRequest,
   output: GetDeviceFleetReportResponse,
@@ -32309,22 +32262,22 @@ export const listActions: {
     input: ListActionsRequest,
   ): Effect.Effect<
     ListActionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListActionsRequest,
   ) => Stream.Stream<
     ListActionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListActionsRequest,
   ) => Stream.Stream<
     ActionSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActionsRequest,
@@ -32345,22 +32298,22 @@ export const listAlgorithms: {
     input: ListAlgorithmsInput,
   ): Effect.Effect<
     ListAlgorithmsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAlgorithmsInput,
   ) => Stream.Stream<
     ListAlgorithmsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAlgorithmsInput,
   ) => Stream.Stream<
     AlgorithmSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAlgorithmsInput,
@@ -32381,22 +32334,22 @@ export const listAppImageConfigs: {
     input: ListAppImageConfigsRequest,
   ): Effect.Effect<
     ListAppImageConfigsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppImageConfigsRequest,
   ) => Stream.Stream<
     ListAppImageConfigsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppImageConfigsRequest,
   ) => Stream.Stream<
     AppImageConfigDetails,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppImageConfigsRequest,
@@ -32417,22 +32370,22 @@ export const listApps: {
     input: ListAppsRequest,
   ): Effect.Effect<
     ListAppsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppsRequest,
   ) => Stream.Stream<
     ListAppsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppsRequest,
   ) => Stream.Stream<
     AppDetails,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppsRequest,
@@ -32453,22 +32406,22 @@ export const listArtifacts: {
     input: ListArtifactsRequest,
   ): Effect.Effect<
     ListArtifactsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListArtifactsRequest,
   ) => Stream.Stream<
     ListArtifactsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListArtifactsRequest,
   ) => Stream.Stream<
     ArtifactSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListArtifactsRequest,
@@ -32489,22 +32442,22 @@ export const listAssociations: {
     input: ListAssociationsRequest,
   ): Effect.Effect<
     ListAssociationsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssociationsRequest,
   ) => Stream.Stream<
     ListAssociationsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssociationsRequest,
   ) => Stream.Stream<
     AssociationSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssociationsRequest,
@@ -32525,22 +32478,22 @@ export const listAutoMLJobs: {
     input: ListAutoMLJobsRequest,
   ): Effect.Effect<
     ListAutoMLJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAutoMLJobsRequest,
   ) => Stream.Stream<
     ListAutoMLJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAutoMLJobsRequest,
   ) => Stream.Stream<
     AutoMLJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAutoMLJobsRequest,
@@ -32561,22 +32514,22 @@ export const listClusterEvents: {
     input: ListClusterEventsRequest,
   ): Effect.Effect<
     ListClusterEventsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClusterEventsRequest,
   ) => Stream.Stream<
     ListClusterEventsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClusterEventsRequest,
   ) => Stream.Stream<
     ClusterEventSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClusterEventsRequest,
@@ -32597,22 +32550,22 @@ export const listClusterNodes: {
     input: ListClusterNodesRequest,
   ): Effect.Effect<
     ListClusterNodesResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClusterNodesRequest,
   ) => Stream.Stream<
     ListClusterNodesResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClusterNodesRequest,
   ) => Stream.Stream<
     ClusterNodeSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClusterNodesRequest,
@@ -32633,22 +32586,22 @@ export const listClusters: {
     input: ListClustersRequest,
   ): Effect.Effect<
     ListClustersResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClustersRequest,
   ) => Stream.Stream<
     ListClustersResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClustersRequest,
   ) => Stream.Stream<
     ClusterSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
@@ -32669,22 +32622,22 @@ export const listClusterSchedulerConfigs: {
     input: ListClusterSchedulerConfigsRequest,
   ): Effect.Effect<
     ListClusterSchedulerConfigsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClusterSchedulerConfigsRequest,
   ) => Stream.Stream<
     ListClusterSchedulerConfigsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClusterSchedulerConfigsRequest,
   ) => Stream.Stream<
     ClusterSchedulerConfigSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClusterSchedulerConfigsRequest,
@@ -32705,22 +32658,22 @@ export const listCodeRepositories: {
     input: ListCodeRepositoriesInput,
   ): Effect.Effect<
     ListCodeRepositoriesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCodeRepositoriesInput,
   ) => Stream.Stream<
     ListCodeRepositoriesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCodeRepositoriesInput,
   ) => Stream.Stream<
     CodeRepositorySummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCodeRepositoriesInput,
@@ -32743,22 +32696,22 @@ export const listCompilationJobs: {
     input: ListCompilationJobsRequest,
   ): Effect.Effect<
     ListCompilationJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCompilationJobsRequest,
   ) => Stream.Stream<
     ListCompilationJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCompilationJobsRequest,
   ) => Stream.Stream<
     CompilationJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCompilationJobsRequest,
@@ -32779,22 +32732,22 @@ export const listComputeQuotas: {
     input: ListComputeQuotasRequest,
   ): Effect.Effect<
     ListComputeQuotasResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListComputeQuotasRequest,
   ) => Stream.Stream<
     ListComputeQuotasResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListComputeQuotasRequest,
   ) => Stream.Stream<
     ComputeQuotaSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListComputeQuotasRequest,
@@ -32815,22 +32768,22 @@ export const listContexts: {
     input: ListContextsRequest,
   ): Effect.Effect<
     ListContextsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContextsRequest,
   ) => Stream.Stream<
     ListContextsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContextsRequest,
   ) => Stream.Stream<
     ContextSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContextsRequest,
@@ -32851,22 +32804,22 @@ export const listDataQualityJobDefinitions: {
     input: ListDataQualityJobDefinitionsRequest,
   ): Effect.Effect<
     ListDataQualityJobDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDataQualityJobDefinitionsRequest,
   ) => Stream.Stream<
     ListDataQualityJobDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDataQualityJobDefinitionsRequest,
   ) => Stream.Stream<
     MonitoringJobDefinitionSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDataQualityJobDefinitionsRequest,
@@ -32887,22 +32840,22 @@ export const listDeviceFleets: {
     input: ListDeviceFleetsRequest,
   ): Effect.Effect<
     ListDeviceFleetsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeviceFleetsRequest,
   ) => Stream.Stream<
     ListDeviceFleetsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeviceFleetsRequest,
   ) => Stream.Stream<
     DeviceFleetSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeviceFleetsRequest,
@@ -32923,22 +32876,22 @@ export const listDomains: {
     input: ListDomainsRequest,
   ): Effect.Effect<
     ListDomainsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDomainsRequest,
   ) => Stream.Stream<
     ListDomainsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDomainsRequest,
   ) => Stream.Stream<
     DomainDetails,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsRequest,
@@ -32959,22 +32912,22 @@ export const listEdgeDeploymentPlans: {
     input: ListEdgeDeploymentPlansRequest,
   ): Effect.Effect<
     ListEdgeDeploymentPlansResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEdgeDeploymentPlansRequest,
   ) => Stream.Stream<
     ListEdgeDeploymentPlansResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEdgeDeploymentPlansRequest,
   ) => Stream.Stream<
     EdgeDeploymentPlanSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEdgeDeploymentPlansRequest,
@@ -32995,22 +32948,22 @@ export const listEdgePackagingJobs: {
     input: ListEdgePackagingJobsRequest,
   ): Effect.Effect<
     ListEdgePackagingJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEdgePackagingJobsRequest,
   ) => Stream.Stream<
     ListEdgePackagingJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEdgePackagingJobsRequest,
   ) => Stream.Stream<
     EdgePackagingJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEdgePackagingJobsRequest,
@@ -33031,22 +32984,22 @@ export const listEndpointConfigs: {
     input: ListEndpointConfigsInput,
   ): Effect.Effect<
     ListEndpointConfigsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEndpointConfigsInput,
   ) => Stream.Stream<
     ListEndpointConfigsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEndpointConfigsInput,
   ) => Stream.Stream<
     EndpointConfigSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEndpointConfigsInput,
@@ -33067,22 +33020,22 @@ export const listEndpoints: {
     input: ListEndpointsInput,
   ): Effect.Effect<
     ListEndpointsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEndpointsInput,
   ) => Stream.Stream<
     ListEndpointsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEndpointsInput,
   ) => Stream.Stream<
     EndpointSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEndpointsInput,
@@ -33103,22 +33056,22 @@ export const listExperiments: {
     input: ListExperimentsRequest,
   ): Effect.Effect<
     ListExperimentsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExperimentsRequest,
   ) => Stream.Stream<
     ListExperimentsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExperimentsRequest,
   ) => Stream.Stream<
     ExperimentSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExperimentsRequest,
@@ -33139,22 +33092,22 @@ export const listFeatureGroups: {
     input: ListFeatureGroupsRequest,
   ): Effect.Effect<
     ListFeatureGroupsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFeatureGroupsRequest,
   ) => Stream.Stream<
     ListFeatureGroupsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFeatureGroupsRequest,
   ) => Stream.Stream<
     FeatureGroupSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFeatureGroupsRequest,
@@ -33175,22 +33128,22 @@ export const listFlowDefinitions: {
     input: ListFlowDefinitionsRequest,
   ): Effect.Effect<
     ListFlowDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFlowDefinitionsRequest,
   ) => Stream.Stream<
     ListFlowDefinitionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFlowDefinitionsRequest,
   ) => Stream.Stream<
     FlowDefinitionSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowDefinitionsRequest,
@@ -33210,8 +33163,8 @@ export const listHubContents: (
   input: ListHubContentsRequest,
 ) => Effect.Effect<
   ListHubContentsResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListHubContentsRequest,
   output: ListHubContentsResponse,
@@ -33224,8 +33177,8 @@ export const listHubs: (
   input: ListHubsRequest,
 ) => Effect.Effect<
   ListHubsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListHubsRequest,
   output: ListHubsResponse,
@@ -33239,22 +33192,22 @@ export const listHumanTaskUis: {
     input: ListHumanTaskUisRequest,
   ): Effect.Effect<
     ListHumanTaskUisResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHumanTaskUisRequest,
   ) => Stream.Stream<
     ListHumanTaskUisResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHumanTaskUisRequest,
   ) => Stream.Stream<
     HumanTaskUiSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHumanTaskUisRequest,
@@ -33275,22 +33228,22 @@ export const listHyperParameterTuningJobs: {
     input: ListHyperParameterTuningJobsRequest,
   ): Effect.Effect<
     ListHyperParameterTuningJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListHyperParameterTuningJobsRequest,
   ) => Stream.Stream<
     ListHyperParameterTuningJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListHyperParameterTuningJobsRequest,
   ) => Stream.Stream<
     HyperParameterTuningJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHyperParameterTuningJobsRequest,
@@ -33311,22 +33264,22 @@ export const listImages: {
     input: ListImagesRequest,
   ): Effect.Effect<
     ListImagesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImagesRequest,
   ) => Stream.Stream<
     ListImagesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImagesRequest,
   ) => Stream.Stream<
     Image,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagesRequest,
@@ -33347,22 +33300,22 @@ export const listImageVersions: {
     input: ListImageVersionsRequest,
   ): Effect.Effect<
     ListImageVersionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImageVersionsRequest,
   ) => Stream.Stream<
     ListImageVersionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImageVersionsRequest,
   ) => Stream.Stream<
     ImageVersion,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImageVersionsRequest,
@@ -33383,22 +33336,22 @@ export const listInferenceComponents: {
     input: ListInferenceComponentsInput,
   ): Effect.Effect<
     ListInferenceComponentsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInferenceComponentsInput,
   ) => Stream.Stream<
     ListInferenceComponentsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInferenceComponentsInput,
   ) => Stream.Stream<
     InferenceComponentSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInferenceComponentsInput,
@@ -33419,22 +33372,22 @@ export const listInferenceExperiments: {
     input: ListInferenceExperimentsRequest,
   ): Effect.Effect<
     ListInferenceExperimentsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInferenceExperimentsRequest,
   ) => Stream.Stream<
     ListInferenceExperimentsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInferenceExperimentsRequest,
   ) => Stream.Stream<
     InferenceExperimentSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInferenceExperimentsRequest,
@@ -33455,22 +33408,22 @@ export const listInferenceRecommendationsJobs: {
     input: ListInferenceRecommendationsJobsRequest,
   ): Effect.Effect<
     ListInferenceRecommendationsJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInferenceRecommendationsJobsRequest,
   ) => Stream.Stream<
     ListInferenceRecommendationsJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInferenceRecommendationsJobsRequest,
   ) => Stream.Stream<
     InferenceRecommendationsJob,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInferenceRecommendationsJobsRequest,
@@ -33491,22 +33444,22 @@ export const listLabelingJobs: {
     input: ListLabelingJobsRequest,
   ): Effect.Effect<
     ListLabelingJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLabelingJobsRequest,
   ) => Stream.Stream<
     ListLabelingJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLabelingJobsRequest,
   ) => Stream.Stream<
     LabelingJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLabelingJobsRequest,
@@ -33527,22 +33480,22 @@ export const listLineageGroups: {
     input: ListLineageGroupsRequest,
   ): Effect.Effect<
     ListLineageGroupsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLineageGroupsRequest,
   ) => Stream.Stream<
     ListLineageGroupsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLineageGroupsRequest,
   ) => Stream.Stream<
     LineageGroupSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLineageGroupsRequest,
@@ -33563,22 +33516,22 @@ export const listMlflowApps: {
     input: ListMlflowAppsRequest,
   ): Effect.Effect<
     ListMlflowAppsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMlflowAppsRequest,
   ) => Stream.Stream<
     ListMlflowAppsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMlflowAppsRequest,
   ) => Stream.Stream<
     MlflowAppSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMlflowAppsRequest,
@@ -33599,22 +33552,22 @@ export const listMlflowTrackingServers: {
     input: ListMlflowTrackingServersRequest,
   ): Effect.Effect<
     ListMlflowTrackingServersResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMlflowTrackingServersRequest,
   ) => Stream.Stream<
     ListMlflowTrackingServersResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMlflowTrackingServersRequest,
   ) => Stream.Stream<
     TrackingServerSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMlflowTrackingServersRequest,
@@ -33635,22 +33588,22 @@ export const listModelCardExportJobs: {
     input: ListModelCardExportJobsRequest,
   ): Effect.Effect<
     ListModelCardExportJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelCardExportJobsRequest,
   ) => Stream.Stream<
     ListModelCardExportJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelCardExportJobsRequest,
   ) => Stream.Stream<
     ModelCardExportJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelCardExportJobsRequest,
@@ -33671,22 +33624,22 @@ export const listModelCards: {
     input: ListModelCardsRequest,
   ): Effect.Effect<
     ListModelCardsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelCardsRequest,
   ) => Stream.Stream<
     ListModelCardsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelCardsRequest,
   ) => Stream.Stream<
     ModelCardSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelCardsRequest,
@@ -33707,22 +33660,22 @@ export const listModelCardVersions: {
     input: ListModelCardVersionsRequest,
   ): Effect.Effect<
     ListModelCardVersionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelCardVersionsRequest,
   ) => Stream.Stream<
     ListModelCardVersionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelCardVersionsRequest,
   ) => Stream.Stream<
     ModelCardVersionSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelCardVersionsRequest,
@@ -33743,22 +33696,22 @@ export const listModelPackageGroups: {
     input: ListModelPackageGroupsInput,
   ): Effect.Effect<
     ListModelPackageGroupsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelPackageGroupsInput,
   ) => Stream.Stream<
     ListModelPackageGroupsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelPackageGroupsInput,
   ) => Stream.Stream<
     ModelPackageGroupSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelPackageGroupsInput,
@@ -33779,22 +33732,22 @@ export const listModelPackages: {
     input: ListModelPackagesInput,
   ): Effect.Effect<
     ListModelPackagesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelPackagesInput,
   ) => Stream.Stream<
     ListModelPackagesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelPackagesInput,
   ) => Stream.Stream<
     ModelPackageSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelPackagesInput,
@@ -33815,22 +33768,22 @@ export const listModels: {
     input: ListModelsInput,
   ): Effect.Effect<
     ListModelsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelsInput,
   ) => Stream.Stream<
     ListModelsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelsInput,
   ) => Stream.Stream<
     ModelSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelsInput,
@@ -33851,22 +33804,22 @@ export const listMonitoringAlertHistory: {
     input: ListMonitoringAlertHistoryRequest,
   ): Effect.Effect<
     ListMonitoringAlertHistoryResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMonitoringAlertHistoryRequest,
   ) => Stream.Stream<
     ListMonitoringAlertHistoryResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMonitoringAlertHistoryRequest,
   ) => Stream.Stream<
     MonitoringAlertHistorySummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMonitoringAlertHistoryRequest,
@@ -33887,22 +33840,22 @@ export const listMonitoringSchedules: {
     input: ListMonitoringSchedulesRequest,
   ): Effect.Effect<
     ListMonitoringSchedulesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMonitoringSchedulesRequest,
   ) => Stream.Stream<
     ListMonitoringSchedulesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMonitoringSchedulesRequest,
   ) => Stream.Stream<
     MonitoringScheduleSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMonitoringSchedulesRequest,
@@ -33923,22 +33876,22 @@ export const listNotebookInstanceLifecycleConfigs: {
     input: ListNotebookInstanceLifecycleConfigsInput,
   ): Effect.Effect<
     ListNotebookInstanceLifecycleConfigsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNotebookInstanceLifecycleConfigsInput,
   ) => Stream.Stream<
     ListNotebookInstanceLifecycleConfigsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNotebookInstanceLifecycleConfigsInput,
   ) => Stream.Stream<
     NotebookInstanceLifecycleConfigSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNotebookInstanceLifecycleConfigsInput,
@@ -33959,22 +33912,22 @@ export const listNotebookInstances: {
     input: ListNotebookInstancesInput,
   ): Effect.Effect<
     ListNotebookInstancesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNotebookInstancesInput,
   ) => Stream.Stream<
     ListNotebookInstancesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNotebookInstancesInput,
   ) => Stream.Stream<
     NotebookInstanceSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNotebookInstancesInput,
@@ -33995,22 +33948,22 @@ export const listOptimizationJobs: {
     input: ListOptimizationJobsRequest,
   ): Effect.Effect<
     ListOptimizationJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOptimizationJobsRequest,
   ) => Stream.Stream<
     ListOptimizationJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOptimizationJobsRequest,
   ) => Stream.Stream<
     OptimizationJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOptimizationJobsRequest,
@@ -34031,22 +33984,22 @@ export const listPartnerApps: {
     input: ListPartnerAppsRequest,
   ): Effect.Effect<
     ListPartnerAppsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPartnerAppsRequest,
   ) => Stream.Stream<
     ListPartnerAppsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPartnerAppsRequest,
   ) => Stream.Stream<
     PartnerAppSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPartnerAppsRequest,
@@ -34067,22 +34020,22 @@ export const listPipelineExecutions: {
     input: ListPipelineExecutionsRequest,
   ): Effect.Effect<
     ListPipelineExecutionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPipelineExecutionsRequest,
   ) => Stream.Stream<
     ListPipelineExecutionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPipelineExecutionsRequest,
   ) => Stream.Stream<
     PipelineExecutionSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipelineExecutionsRequest,
@@ -34103,22 +34056,22 @@ export const listPipelines: {
     input: ListPipelinesRequest,
   ): Effect.Effect<
     ListPipelinesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPipelinesRequest,
   ) => Stream.Stream<
     ListPipelinesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPipelinesRequest,
   ) => Stream.Stream<
     PipelineSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipelinesRequest,
@@ -34139,22 +34092,22 @@ export const listPipelineVersions: {
     input: ListPipelineVersionsRequest,
   ): Effect.Effect<
     ListPipelineVersionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPipelineVersionsRequest,
   ) => Stream.Stream<
     ListPipelineVersionsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPipelineVersionsRequest,
   ) => Stream.Stream<
     PipelineVersionSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipelineVersionsRequest,
@@ -34175,22 +34128,22 @@ export const listProcessingJobs: {
     input: ListProcessingJobsRequest,
   ): Effect.Effect<
     ListProcessingJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProcessingJobsRequest,
   ) => Stream.Stream<
     ListProcessingJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProcessingJobsRequest,
   ) => Stream.Stream<
     ProcessingJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProcessingJobsRequest,
@@ -34211,22 +34164,22 @@ export const listProjects: {
     input: ListProjectsInput,
   ): Effect.Effect<
     ListProjectsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListProjectsInput,
   ) => Stream.Stream<
     ListProjectsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListProjectsInput,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListProjectsInput,
@@ -34246,22 +34199,22 @@ export const listResourceCatalogs: {
     input: ListResourceCatalogsRequest,
   ): Effect.Effect<
     ListResourceCatalogsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceCatalogsRequest,
   ) => Stream.Stream<
     ListResourceCatalogsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceCatalogsRequest,
   ) => Stream.Stream<
     ResourceCatalog,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceCatalogsRequest,
@@ -34282,22 +34235,22 @@ export const listStageDevices: {
     input: ListStageDevicesRequest,
   ): Effect.Effect<
     ListStageDevicesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStageDevicesRequest,
   ) => Stream.Stream<
     ListStageDevicesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStageDevicesRequest,
   ) => Stream.Stream<
     DeviceDeploymentSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStageDevicesRequest,
@@ -34318,22 +34271,22 @@ export const listStudioLifecycleConfigs: {
     input: ListStudioLifecycleConfigsRequest,
   ): Effect.Effect<
     ListStudioLifecycleConfigsResponse,
-    ResourceInUse | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceInUse | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStudioLifecycleConfigsRequest,
   ) => Stream.Stream<
     ListStudioLifecycleConfigsResponse,
-    ResourceInUse | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceInUse | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStudioLifecycleConfigsRequest,
   ) => Stream.Stream<
     StudioLifecycleConfigDetails,
-    ResourceInUse | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceInUse | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStudioLifecycleConfigsRequest,
@@ -34366,22 +34319,22 @@ export const listTrainingJobs: {
     input: ListTrainingJobsRequest,
   ): Effect.Effect<
     ListTrainingJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTrainingJobsRequest,
   ) => Stream.Stream<
     ListTrainingJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTrainingJobsRequest,
   ) => Stream.Stream<
     TrainingJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrainingJobsRequest,
@@ -34402,22 +34355,22 @@ export const listTransformJobs: {
     input: ListTransformJobsRequest,
   ): Effect.Effect<
     ListTransformJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTransformJobsRequest,
   ) => Stream.Stream<
     ListTransformJobsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTransformJobsRequest,
   ) => Stream.Stream<
     TransformJobSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTransformJobsRequest,
@@ -34444,22 +34397,22 @@ export const listTrialComponents: {
     input: ListTrialComponentsRequest,
   ): Effect.Effect<
     ListTrialComponentsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTrialComponentsRequest,
   ) => Stream.Stream<
     ListTrialComponentsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTrialComponentsRequest,
   ) => Stream.Stream<
     TrialComponentSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrialComponentsRequest,
@@ -34480,22 +34433,22 @@ export const listTrials: {
     input: ListTrialsRequest,
   ): Effect.Effect<
     ListTrialsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTrialsRequest,
   ) => Stream.Stream<
     ListTrialsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTrialsRequest,
   ) => Stream.Stream<
     TrialSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrialsRequest,
@@ -34516,22 +34469,22 @@ export const listUltraServersByReservedCapacity: {
     input: ListUltraServersByReservedCapacityRequest,
   ): Effect.Effect<
     ListUltraServersByReservedCapacityResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUltraServersByReservedCapacityRequest,
   ) => Stream.Stream<
     ListUltraServersByReservedCapacityResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUltraServersByReservedCapacityRequest,
   ) => Stream.Stream<
     UltraServer,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUltraServersByReservedCapacityRequest,
@@ -34552,22 +34505,22 @@ export const listUserProfiles: {
     input: ListUserProfilesRequest,
   ): Effect.Effect<
     ListUserProfilesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUserProfilesRequest,
   ) => Stream.Stream<
     ListUserProfilesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUserProfilesRequest,
   ) => Stream.Stream<
     UserProfileDetails,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUserProfilesRequest,
@@ -34587,11 +34540,8 @@ export const sendPipelineExecutionStepSuccess: (
   input: SendPipelineExecutionStepSuccessRequest,
 ) => Effect.Effect<
   SendPipelineExecutionStepSuccessResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendPipelineExecutionStepSuccessRequest,
   output: SendPipelineExecutionStepSuccessResponse,
@@ -34604,8 +34554,8 @@ export const stopInferenceExperiment: (
   input: StopInferenceExperimentRequest,
 ) => Effect.Effect<
   StopInferenceExperimentResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopInferenceExperimentRequest,
   output: StopInferenceExperimentResponse,
@@ -34618,8 +34568,8 @@ export const updateCodeRepository: (
   input: UpdateCodeRepositoryInput,
 ) => Effect.Effect<
   UpdateCodeRepositoryOutput,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCodeRepositoryInput,
   output: UpdateCodeRepositoryOutput,
@@ -34638,8 +34588,8 @@ export const updateEndpoint: (
   input: UpdateEndpointInput,
 ) => Effect.Effect<
   UpdateEndpointOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEndpointInput,
   output: UpdateEndpointOutput,
@@ -34656,8 +34606,8 @@ export const updateFeatureGroup: (
   input: UpdateFeatureGroupRequest,
 ) => Effect.Effect<
   UpdateFeatureGroupResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFeatureGroupRequest,
   output: UpdateFeatureGroupResponse,
@@ -34670,8 +34620,8 @@ export const updateTrainingJob: (
   input: UpdateTrainingJobRequest,
 ) => Effect.Effect<
   UpdateTrainingJobResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTrainingJobRequest,
   output: UpdateTrainingJobResponse,
@@ -34686,8 +34636,8 @@ export const batchAddClusterNodes: (
   input: BatchAddClusterNodesRequest,
 ) => Effect.Effect<
   BatchAddClusterNodesResponse,
-  ResourceLimitExceeded | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchAddClusterNodesRequest,
   output: BatchAddClusterNodesResponse,
@@ -34700,8 +34650,8 @@ export const batchDescribeModelPackage: (
   input: BatchDescribeModelPackageInput,
 ) => Effect.Effect<
   BatchDescribeModelPackageOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDescribeModelPackageInput,
   output: BatchDescribeModelPackageOutput,
@@ -34714,8 +34664,8 @@ export const createArtifact: (
   input: CreateArtifactRequest,
 ) => Effect.Effect<
   CreateArtifactResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateArtifactRequest,
   output: CreateArtifactResponse,
@@ -34728,8 +34678,8 @@ export const createClusterSchedulerConfig: (
   input: CreateClusterSchedulerConfigRequest,
 ) => Effect.Effect<
   CreateClusterSchedulerConfigResponse,
-  ConflictException | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterSchedulerConfigRequest,
   output: CreateClusterSchedulerConfigResponse,
@@ -34758,8 +34708,8 @@ export const createCompilationJob: (
   input: CreateCompilationJobRequest,
 ) => Effect.Effect<
   CreateCompilationJobResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCompilationJobRequest,
   output: CreateCompilationJobResponse,
@@ -34772,8 +34722,8 @@ export const createEdgeDeploymentPlan: (
   input: CreateEdgeDeploymentPlanRequest,
 ) => Effect.Effect<
   CreateEdgeDeploymentPlanResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEdgeDeploymentPlanRequest,
   output: CreateEdgeDeploymentPlanResponse,
@@ -34787,22 +34737,22 @@ export const createHubContentPresignedUrls: {
     input: CreateHubContentPresignedUrlsRequest,
   ): Effect.Effect<
     CreateHubContentPresignedUrlsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: CreateHubContentPresignedUrlsRequest,
   ) => Stream.Stream<
     CreateHubContentPresignedUrlsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: CreateHubContentPresignedUrlsRequest,
   ) => Stream.Stream<
     AuthorizedUrl,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: CreateHubContentPresignedUrlsRequest,
@@ -34822,8 +34772,8 @@ export const createInferenceComponent: (
   input: CreateInferenceComponentInput,
 ) => Effect.Effect<
   CreateInferenceComponentOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInferenceComponentInput,
   output: CreateInferenceComponentOutput,
@@ -34836,8 +34786,8 @@ export const createModelBiasJobDefinition: (
   input: CreateModelBiasJobDefinitionRequest,
 ) => Effect.Effect<
   CreateModelBiasJobDefinitionResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelBiasJobDefinitionRequest,
   output: CreateModelBiasJobDefinitionResponse,
@@ -34850,8 +34800,8 @@ export const createPartnerApp: (
   input: CreatePartnerAppRequest,
 ) => Effect.Effect<
   CreatePartnerAppResponse,
-  ConflictException | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePartnerAppRequest,
   output: CreatePartnerAppResponse,
@@ -34870,8 +34820,8 @@ export const createTrialComponent: (
   input: CreateTrialComponentRequest,
 ) => Effect.Effect<
   CreateTrialComponentResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrialComponentRequest,
   output: CreateTrialComponentResponse,
@@ -34890,8 +34840,8 @@ export const createWorkforce: (
   input: CreateWorkforceRequest,
 ) => Effect.Effect<
   CreateWorkforceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkforceRequest,
   output: CreateWorkforceResponse,
@@ -34904,8 +34854,8 @@ export const describeAction: (
   input: DescribeActionRequest,
 ) => Effect.Effect<
   DescribeActionResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeActionRequest,
   output: DescribeActionResponse,
@@ -34918,8 +34868,8 @@ export const describeAlgorithm: (
   input: DescribeAlgorithmInput,
 ) => Effect.Effect<
   DescribeAlgorithmOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAlgorithmInput,
   output: DescribeAlgorithmOutput,
@@ -34932,8 +34882,8 @@ export const describeCluster: (
   input: DescribeClusterRequest,
 ) => Effect.Effect<
   DescribeClusterResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterRequest,
   output: DescribeClusterResponse,
@@ -34946,8 +34896,8 @@ export const describeClusterNode: (
   input: DescribeClusterNodeRequest,
 ) => Effect.Effect<
   DescribeClusterNodeResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterNodeRequest,
   output: DescribeClusterNodeResponse,
@@ -34960,8 +34910,8 @@ export const describeEdgeDeploymentPlan: (
   input: DescribeEdgeDeploymentPlanRequest,
 ) => Effect.Effect<
   DescribeEdgeDeploymentPlanResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEdgeDeploymentPlanRequest,
   output: DescribeEdgeDeploymentPlanResponse,
@@ -34974,8 +34924,8 @@ export const describeHyperParameterTuningJob: (
   input: DescribeHyperParameterTuningJobRequest,
 ) => Effect.Effect<
   DescribeHyperParameterTuningJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHyperParameterTuningJobRequest,
   output: DescribeHyperParameterTuningJobResponse,
@@ -34988,8 +34938,8 @@ export const describeInferenceComponent: (
   input: DescribeInferenceComponentInput,
 ) => Effect.Effect<
   DescribeInferenceComponentOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInferenceComponentInput,
   output: DescribeInferenceComponentOutput,
@@ -35002,8 +34952,8 @@ export const describeModel: (
   input: DescribeModelInput,
 ) => Effect.Effect<
   DescribeModelOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeModelInput,
   output: DescribeModelOutput,
@@ -35020,8 +34970,8 @@ export const describeModelPackage: (
   input: DescribeModelPackageInput,
 ) => Effect.Effect<
   DescribeModelPackageOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeModelPackageInput,
   output: DescribeModelPackageOutput,
@@ -35036,8 +34986,8 @@ export const describeWorkforce: (
   input: DescribeWorkforceRequest,
 ) => Effect.Effect<
   DescribeWorkforceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkforceRequest,
   output: DescribeWorkforceResponse,
@@ -35051,22 +35001,22 @@ export const listDevices: {
     input: ListDevicesRequest,
   ): Effect.Effect<
     ListDevicesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevicesRequest,
   ) => Stream.Stream<
     ListDevicesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDevicesRequest,
   ) => Stream.Stream<
     DeviceSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevicesRequest,
@@ -35089,22 +35039,22 @@ export const listInferenceRecommendationsJobSteps: {
     input: ListInferenceRecommendationsJobStepsRequest,
   ): Effect.Effect<
     ListInferenceRecommendationsJobStepsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInferenceRecommendationsJobStepsRequest,
   ) => Stream.Stream<
     ListInferenceRecommendationsJobStepsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInferenceRecommendationsJobStepsRequest,
   ) => Stream.Stream<
     InferenceRecommendationsJobStep,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInferenceRecommendationsJobStepsRequest,
@@ -35125,22 +35075,22 @@ export const listLabelingJobsForWorkteam: {
     input: ListLabelingJobsForWorkteamRequest,
   ): Effect.Effect<
     ListLabelingJobsForWorkteamResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListLabelingJobsForWorkteamRequest,
   ) => Stream.Stream<
     ListLabelingJobsForWorkteamResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListLabelingJobsForWorkteamRequest,
   ) => Stream.Stream<
     LabelingJobForWorkteamSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLabelingJobsForWorkteamRequest,
@@ -35161,22 +35111,22 @@ export const listSpaces: {
     input: ListSpacesRequest,
   ): Effect.Effect<
     ListSpacesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSpacesRequest,
   ) => Stream.Stream<
     ListSpacesResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSpacesRequest,
   ) => Stream.Stream<
     SpaceDetails,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSpacesRequest,
@@ -35197,22 +35147,22 @@ export const listTrainingPlans: {
     input: ListTrainingPlansRequest,
   ): Effect.Effect<
     ListTrainingPlansResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTrainingPlansRequest,
   ) => Stream.Stream<
     ListTrainingPlansResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTrainingPlansRequest,
   ) => Stream.Stream<
     TrainingPlanSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrainingPlansRequest,
@@ -35232,8 +35182,8 @@ export const renderUiTemplate: (
   input: RenderUiTemplateRequest,
 ) => Effect.Effect<
   RenderUiTemplateResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RenderUiTemplateRequest,
   output: RenderUiTemplateResponse,
@@ -35252,8 +35202,8 @@ export const searchTrainingPlanOfferings: (
   input: SearchTrainingPlanOfferingsRequest,
 ) => Effect.Effect<
   SearchTrainingPlanOfferingsResponse,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SearchTrainingPlanOfferingsRequest,
   output: SearchTrainingPlanOfferingsResponse,
@@ -35266,11 +35216,8 @@ export const startPipelineExecution: (
   input: StartPipelineExecutionRequest,
 ) => Effect.Effect<
   StartPipelineExecutionResponse,
-  | ConflictException
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartPipelineExecutionRequest,
   output: StartPipelineExecutionResponse,
@@ -35283,11 +35230,8 @@ export const updateDomain: (
   input: UpdateDomainRequest,
 ) => Effect.Effect<
   UpdateDomainResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainRequest,
   output: UpdateDomainResponse,
@@ -35300,8 +35244,8 @@ export const updateEndpointWeightsAndCapacities: (
   input: UpdateEndpointWeightsAndCapacitiesInput,
 ) => Effect.Effect<
   UpdateEndpointWeightsAndCapacitiesOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEndpointWeightsAndCapacitiesInput,
   output: UpdateEndpointWeightsAndCapacitiesOutput,
@@ -35314,8 +35258,8 @@ export const createAppImageConfig: (
   input: CreateAppImageConfigRequest,
 ) => Effect.Effect<
   CreateAppImageConfigResponse,
-  ResourceInUse | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppImageConfigRequest,
   output: CreateAppImageConfigResponse,
@@ -35340,8 +35284,8 @@ export const createAutoMLJob: (
   input: CreateAutoMLJobRequest,
 ) => Effect.Effect<
   CreateAutoMLJobResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAutoMLJobRequest,
   output: CreateAutoMLJobResponse,
@@ -35354,8 +35298,8 @@ export const createCluster: (
   input: CreateClusterRequest,
 ) => Effect.Effect<
   CreateClusterResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -35368,8 +35312,8 @@ export const createComputeQuota: (
   input: CreateComputeQuotaRequest,
 ) => Effect.Effect<
   CreateComputeQuotaResponse,
-  ConflictException | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateComputeQuotaRequest,
   output: CreateComputeQuotaResponse,
@@ -35414,8 +35358,8 @@ export const createEndpoint: (
   input: CreateEndpointInput,
 ) => Effect.Effect<
   CreateEndpointOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEndpointInput,
   output: CreateEndpointOutput,
@@ -35434,8 +35378,8 @@ export const createFeatureGroup: (
   input: CreateFeatureGroupRequest,
 ) => Effect.Effect<
   CreateFeatureGroupResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFeatureGroupRequest,
   output: CreateFeatureGroupResponse,
@@ -35448,8 +35392,8 @@ export const createFlowDefinition: (
   input: CreateFlowDefinitionRequest,
 ) => Effect.Effect<
   CreateFlowDefinitionResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFlowDefinitionRequest,
   output: CreateFlowDefinitionResponse,
@@ -35466,8 +35410,8 @@ export const createHyperParameterTuningJob: (
   input: CreateHyperParameterTuningJobRequest,
 ) => Effect.Effect<
   CreateHyperParameterTuningJobResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateHyperParameterTuningJobRequest,
   output: CreateHyperParameterTuningJobResponse,
@@ -35486,8 +35430,8 @@ export const createInferenceExperiment: (
   input: CreateInferenceExperimentRequest,
 ) => Effect.Effect<
   CreateInferenceExperimentResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInferenceExperimentRequest,
   output: CreateInferenceExperimentResponse,
@@ -35516,8 +35460,8 @@ export const createLabelingJob: (
   input: CreateLabelingJobRequest,
 ) => Effect.Effect<
   CreateLabelingJobResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLabelingJobRequest,
   output: CreateLabelingJobResponse,
@@ -35538,8 +35482,8 @@ export const createModelPackage: (
   input: CreateModelPackageInput,
 ) => Effect.Effect<
   CreateModelPackageOutput,
-  ConflictException | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelPackageInput,
   output: CreateModelPackageOutput,
@@ -35552,8 +35496,8 @@ export const createMonitoringSchedule: (
   input: CreateMonitoringScheduleRequest,
 ) => Effect.Effect<
   CreateMonitoringScheduleResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMonitoringScheduleRequest,
   output: CreateMonitoringScheduleResponse,
@@ -35568,8 +35512,8 @@ export const createOptimizationJob: (
   input: CreateOptimizationJobRequest,
 ) => Effect.Effect<
   CreateOptimizationJobResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOptimizationJobRequest,
   output: CreateOptimizationJobResponse,
@@ -35582,11 +35526,8 @@ export const createProcessingJob: (
   input: CreateProcessingJobRequest,
 ) => Effect.Effect<
   CreateProcessingJobResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProcessingJobRequest,
   output: CreateProcessingJobResponse,
@@ -35599,8 +35540,8 @@ export const createProject: (
   input: CreateProjectInput,
 ) => Effect.Effect<
   CreateProjectOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProjectInput,
   output: CreateProjectOutput,
@@ -35629,11 +35570,8 @@ export const createTransformJob: (
   input: CreateTransformJobRequest,
 ) => Effect.Effect<
   CreateTransformJobResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransformJobRequest,
   output: CreateTransformJobResponse,
@@ -35648,8 +35586,8 @@ export const createWorkteam: (
   input: CreateWorkteamRequest,
 ) => Effect.Effect<
   CreateWorkteamResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWorkteamRequest,
   output: CreateWorkteamResponse,
@@ -35664,8 +35602,8 @@ export const describeAutoMLJob: (
   input: DescribeAutoMLJobRequest,
 ) => Effect.Effect<
   DescribeAutoMLJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAutoMLJobRequest,
   output: DescribeAutoMLJobResponse,
@@ -35678,8 +35616,8 @@ export const describeAutoMLJobV2: (
   input: DescribeAutoMLJobV2Request,
 ) => Effect.Effect<
   DescribeAutoMLJobV2Response,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAutoMLJobV2Request,
   output: DescribeAutoMLJobV2Response,
@@ -35692,8 +35630,8 @@ export const describeEndpoint: (
   input: DescribeEndpointInput,
 ) => Effect.Effect<
   DescribeEndpointOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEndpointInput,
   output: DescribeEndpointOutput,
@@ -35706,8 +35644,8 @@ export const describeInferenceRecommendationsJob: (
   input: DescribeInferenceRecommendationsJobRequest,
 ) => Effect.Effect<
   DescribeInferenceRecommendationsJobResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInferenceRecommendationsJobRequest,
   output: DescribeInferenceRecommendationsJobResponse,
@@ -35720,8 +35658,8 @@ export const describeProject: (
   input: DescribeProjectInput,
 ) => Effect.Effect<
   DescribeProjectOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeProjectInput,
   output: DescribeProjectOutput,
@@ -35734,8 +35672,8 @@ export const getSearchSuggestions: (
   input: GetSearchSuggestionsRequest,
 ) => Effect.Effect<
   GetSearchSuggestionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSearchSuggestionsRequest,
   output: GetSearchSuggestionsResponse,
@@ -35749,22 +35687,22 @@ export const listModelMetadata: {
     input: ListModelMetadataRequest,
   ): Effect.Effect<
     ListModelMetadataResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListModelMetadataRequest,
   ) => Stream.Stream<
     ListModelMetadataResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListModelMetadataRequest,
   ) => Stream.Stream<
     ModelMetadataSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelMetadataRequest,
@@ -35785,22 +35723,22 @@ export const listMonitoringAlerts: {
     input: ListMonitoringAlertsRequest,
   ): Effect.Effect<
     ListMonitoringAlertsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMonitoringAlertsRequest,
   ) => Stream.Stream<
     ListMonitoringAlertsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMonitoringAlertsRequest,
   ) => Stream.Stream<
     MonitoringAlertSummary,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMonitoringAlertsRequest,
@@ -35821,22 +35759,22 @@ export const queryLineage: {
     input: QueryLineageRequest,
   ): Effect.Effect<
     QueryLineageResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: QueryLineageRequest,
   ) => Stream.Stream<
     QueryLineageResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: QueryLineageRequest,
   ) => Stream.Stream<
     unknown,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: QueryLineageRequest,
@@ -35857,8 +35795,8 @@ export const updateClusterSoftware: (
   input: UpdateClusterSoftwareRequest,
 ) => Effect.Effect<
   UpdateClusterSoftwareResponse,
-  ConflictException | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterSoftwareRequest,
   output: UpdateClusterSoftwareResponse,
@@ -35871,8 +35809,8 @@ export const updateInferenceComponent: (
   input: UpdateInferenceComponentInput,
 ) => Effect.Effect<
   UpdateInferenceComponentOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInferenceComponentInput,
   output: UpdateInferenceComponentOutput,
@@ -35887,8 +35825,8 @@ export const updateProject: (
   input: UpdateProjectInput,
 ) => Effect.Effect<
   UpdateProjectOutput,
-  ConflictException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProjectInput,
   output: UpdateProjectOutput,
@@ -35901,8 +35839,8 @@ export const createAlgorithm: (
   input: CreateAlgorithmInput,
 ) => Effect.Effect<
   CreateAlgorithmOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAlgorithmInput,
   output: CreateAlgorithmOutput,
@@ -35915,8 +35853,8 @@ export const createDataQualityJobDefinition: (
   input: CreateDataQualityJobDefinitionRequest,
 ) => Effect.Effect<
   CreateDataQualityJobDefinitionResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataQualityJobDefinitionRequest,
   output: CreateDataQualityJobDefinitionResponse,
@@ -35949,8 +35887,8 @@ export const createDomain: (
   input: CreateDomainRequest,
 ) => Effect.Effect<
   CreateDomainResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResponse,
@@ -35971,8 +35909,8 @@ export const createEndpointConfig: (
   input: CreateEndpointConfigInput,
 ) => Effect.Effect<
   CreateEndpointConfigOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEndpointConfigInput,
   output: CreateEndpointConfigOutput,
@@ -35985,8 +35923,8 @@ export const createInferenceRecommendationsJob: (
   input: CreateInferenceRecommendationsJobRequest,
 ) => Effect.Effect<
   CreateInferenceRecommendationsJobResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInferenceRecommendationsJobRequest,
   output: CreateInferenceRecommendationsJobResponse,
@@ -36007,8 +35945,8 @@ export const createModel: (
   input: CreateModelInput,
 ) => Effect.Effect<
   CreateModelOutput,
-  ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelInput,
   output: CreateModelOutput,
@@ -36021,8 +35959,8 @@ export const createSpace: (
   input: CreateSpaceRequest,
 ) => Effect.Effect<
   CreateSpaceResponse,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSpaceRequest,
   output: CreateSpaceResponse,
@@ -36065,11 +36003,8 @@ export const createTrainingJob: (
   input: CreateTrainingJobRequest,
 ) => Effect.Effect<
   CreateTrainingJobResponse,
-  | ResourceInUse
-  | ResourceLimitExceeded
-  | ResourceNotFound
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrainingJobRequest,
   output: CreateTrainingJobResponse,
@@ -36083,22 +36018,22 @@ export const listPipelineExecutionSteps: {
     input: ListPipelineExecutionStepsRequest,
   ): Effect.Effect<
     ListPipelineExecutionStepsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPipelineExecutionStepsRequest,
   ) => Stream.Stream<
     ListPipelineExecutionStepsResponse,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPipelineExecutionStepsRequest,
   ) => Stream.Stream<
     PipelineExecutionStep,
-    ResourceNotFound | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFound | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipelineExecutionStepsRequest,
@@ -36134,8 +36069,8 @@ export const createAutoMLJobV2: (
   input: CreateAutoMLJobV2Request,
 ) => Effect.Effect<
   CreateAutoMLJobV2Response,
-  ResourceInUse | ResourceLimitExceeded | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceInUse | ResourceLimitExceeded | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAutoMLJobV2Request,
   output: CreateAutoMLJobV2Response,
@@ -36148,8 +36083,8 @@ export const describeClusterEvent: (
   input: DescribeClusterEventRequest,
 ) => Effect.Effect<
   DescribeClusterEventResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterEventRequest,
   output: DescribeClusterEventResponse,
@@ -36162,8 +36097,8 @@ export const getScalingConfigurationRecommendation: (
   input: GetScalingConfigurationRecommendationRequest,
 ) => Effect.Effect<
   GetScalingConfigurationRecommendationResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetScalingConfigurationRecommendationRequest,
   output: GetScalingConfigurationRecommendationResponse,
@@ -36181,22 +36116,22 @@ export const search: {
     input: SearchRequest,
   ): Effect.Effect<
     SearchResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchRequest,
   ) => Stream.Stream<
     SearchResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchRequest,
   ) => Stream.Stream<
     SearchRecord,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchRequest,

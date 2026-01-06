@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://swf.amazonaws.com/doc/2012-01-25");
 const svc = T.AwsApiService({
@@ -3260,7 +3258,7 @@ export class TypeNotDeprecatedFault extends S.TaggedError<TypeNotDeprecatedFault
 export class TooManyTagsFault extends S.TaggedError<TooManyTagsFault>()(
   "TooManyTagsFault",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class WorkflowExecutionAlreadyStartedFault extends S.TaggedError<WorkflowExecutionAlreadyStartedFault>()(
   "WorkflowExecutionAlreadyStartedFault",
   { message: S.optional(S.String) },
@@ -3301,22 +3299,22 @@ export const listDomains: {
     input: ListDomainsInput,
   ): Effect.Effect<
     DomainInfos,
-    OperationNotPermittedFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDomainsInput,
   ) => Stream.Stream<
     DomainInfos,
-    OperationNotPermittedFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDomainsInput,
   ) => Stream.Stream<
     DomainInfo,
-    OperationNotPermittedFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsInput,
@@ -3365,8 +3363,8 @@ export const deprecateDomain: (
   | DomainDeprecatedFault
   | OperationNotPermittedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprecateDomainInput,
   output: DeprecateDomainResponse,
@@ -3411,8 +3409,8 @@ export const describeActivityType: (
   input: DescribeActivityTypeInput,
 ) => Effect.Effect<
   ActivityTypeDetail,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeActivityTypeInput,
   output: ActivityTypeDetail,
@@ -3445,8 +3443,8 @@ export const describeDomain: (
   input: DescribeDomainInput,
 ) => Effect.Effect<
   DomainDetail,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainInput,
   output: DomainDetail,
@@ -3487,8 +3485,8 @@ export const describeWorkflowType: (
   input: DescribeWorkflowTypeInput,
 ) => Effect.Effect<
   WorkflowTypeDetail,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkflowTypeInput,
   output: WorkflowTypeDetail,
@@ -3536,22 +3534,22 @@ export const listClosedWorkflowExecutions: {
     input: ListClosedWorkflowExecutionsInput,
   ): Effect.Effect<
     WorkflowExecutionInfos,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClosedWorkflowExecutionsInput,
   ) => Stream.Stream<
     WorkflowExecutionInfos,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClosedWorkflowExecutionsInput,
   ) => Stream.Stream<
     WorkflowExecutionInfo,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClosedWorkflowExecutionsInput,
@@ -3608,8 +3606,8 @@ export const registerActivityType: (
   | OperationNotPermittedFault
   | TypeAlreadyExistsFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterActivityTypeInput,
   output: RegisterActivityTypeResponse,
@@ -3644,8 +3642,8 @@ export const respondDecisionTaskCompleted: (
   input: RespondDecisionTaskCompletedInput,
 ) => Effect.Effect<
   RespondDecisionTaskCompletedResponse,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RespondDecisionTaskCompletedInput,
   output: RespondDecisionTaskCompletedResponse,
@@ -3690,8 +3688,8 @@ export const deleteActivityType: (
   | OperationNotPermittedFault
   | TypeNotDeprecatedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteActivityTypeInput,
   output: DeleteActivityTypeResponse,
@@ -3743,8 +3741,8 @@ export const deprecateWorkflowType: (
   | OperationNotPermittedFault
   | TypeDeprecatedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprecateWorkflowTypeInput,
   output: DeprecateWorkflowTypeResponse,
@@ -3785,22 +3783,22 @@ export const listActivityTypes: {
     input: ListActivityTypesInput,
   ): Effect.Effect<
     ActivityTypeInfos,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListActivityTypesInput,
   ) => Stream.Stream<
     ActivityTypeInfos,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListActivityTypesInput,
   ) => Stream.Stream<
     ActivityTypeInfo,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActivityTypesInput,
@@ -3841,22 +3839,22 @@ export const listWorkflowTypes: {
     input: ListWorkflowTypesInput,
   ): Effect.Effect<
     WorkflowTypeInfos,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWorkflowTypesInput,
   ) => Stream.Stream<
     WorkflowTypeInfos,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWorkflowTypesInput,
   ) => Stream.Stream<
     WorkflowTypeInfo,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWorkflowTypesInput,
@@ -3918,8 +3916,8 @@ export const recordActivityTaskHeartbeat: (
   input: RecordActivityTaskHeartbeatInput,
 ) => Effect.Effect<
   ActivityTaskStatus,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RecordActivityTaskHeartbeatInput,
   output: ActivityTaskStatus,
@@ -3958,8 +3956,8 @@ export const undeprecateDomain: (
   | DomainAlreadyExistsFault
   | OperationNotPermittedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UndeprecateDomainInput,
   output: UndeprecateDomainResponse,
@@ -4011,22 +4009,22 @@ export const listOpenWorkflowExecutions: {
     input: ListOpenWorkflowExecutionsInput,
   ): Effect.Effect<
     WorkflowExecutionInfos,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOpenWorkflowExecutionsInput,
   ) => Stream.Stream<
     WorkflowExecutionInfos,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOpenWorkflowExecutionsInput,
   ) => Stream.Stream<
     WorkflowExecutionInfo,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOpenWorkflowExecutionsInput,
@@ -4076,8 +4074,8 @@ export const requestCancelWorkflowExecution: (
   input: RequestCancelWorkflowExecutionInput,
 ) => Effect.Effect<
   RequestCancelWorkflowExecutionResponse,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RequestCancelWorkflowExecutionInput,
   output: RequestCancelWorkflowExecutionResponse,
@@ -4124,8 +4122,8 @@ export const respondActivityTaskCanceled: (
   input: RespondActivityTaskCanceledInput,
 ) => Effect.Effect<
   RespondActivityTaskCanceledResponse,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RespondActivityTaskCanceledInput,
   output: RespondActivityTaskCanceledResponse,
@@ -4170,8 +4168,8 @@ export const respondActivityTaskCompleted: (
   input: RespondActivityTaskCompletedInput,
 ) => Effect.Effect<
   RespondActivityTaskCompletedResponse,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RespondActivityTaskCompletedInput,
   output: RespondActivityTaskCompletedResponse,
@@ -4211,8 +4209,8 @@ export const respondActivityTaskFailed: (
   input: RespondActivityTaskFailedInput,
 ) => Effect.Effect<
   RespondActivityTaskFailedResponse,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RespondActivityTaskFailedInput,
   output: RespondActivityTaskFailedResponse,
@@ -4254,8 +4252,8 @@ export const signalWorkflowExecution: (
   input: SignalWorkflowExecutionInput,
 ) => Effect.Effect<
   SignalWorkflowExecutionResponse,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SignalWorkflowExecutionInput,
   output: SignalWorkflowExecutionResponse,
@@ -4300,8 +4298,8 @@ export const terminateWorkflowExecution: (
   input: TerminateWorkflowExecutionInput,
 ) => Effect.Effect<
   TerminateWorkflowExecutionResponse,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateWorkflowExecutionInput,
   output: TerminateWorkflowExecutionResponse,
@@ -4347,8 +4345,8 @@ export const countClosedWorkflowExecutions: (
   input: CountClosedWorkflowExecutionsInput,
 ) => Effect.Effect<
   WorkflowExecutionCount,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CountClosedWorkflowExecutionsInput,
   output: WorkflowExecutionCount,
@@ -4394,8 +4392,8 @@ export const countOpenWorkflowExecutions: (
   input: CountOpenWorkflowExecutionsInput,
 ) => Effect.Effect<
   WorkflowExecutionCount,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CountOpenWorkflowExecutionsInput,
   output: WorkflowExecutionCount,
@@ -4431,8 +4429,8 @@ export const countPendingActivityTasks: (
   input: CountPendingActivityTasksInput,
 ) => Effect.Effect<
   PendingTaskCount,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CountPendingActivityTasksInput,
   output: PendingTaskCount,
@@ -4468,8 +4466,8 @@ export const countPendingDecisionTasks: (
   input: CountPendingDecisionTasksInput,
 ) => Effect.Effect<
   PendingTaskCount,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CountPendingDecisionTasksInput,
   output: PendingTaskCount,
@@ -4485,8 +4483,8 @@ export const untagResource: (
   | LimitExceededFault
   | OperationNotPermittedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -4506,8 +4504,8 @@ export const listTagsForResource: (
   | LimitExceededFault
   | OperationNotPermittedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -4557,8 +4555,8 @@ export const pollForActivityTask: (
   | LimitExceededFault
   | OperationNotPermittedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PollForActivityTaskInput,
   output: ActivityTask,
@@ -4621,8 +4619,8 @@ export const pollForDecisionTask: {
     | LimitExceededFault
     | OperationNotPermittedFault
     | UnknownResourceFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: PollForDecisionTaskInput,
@@ -4631,8 +4629,8 @@ export const pollForDecisionTask: {
     | LimitExceededFault
     | OperationNotPermittedFault
     | UnknownResourceFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: PollForDecisionTaskInput,
@@ -4641,8 +4639,8 @@ export const pollForDecisionTask: {
     | LimitExceededFault
     | OperationNotPermittedFault
     | UnknownResourceFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: PollForDecisionTaskInput,
@@ -4697,8 +4695,8 @@ export const deprecateActivityType: (
   | OperationNotPermittedFault
   | TypeDeprecatedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeprecateActivityTypeInput,
   output: DeprecateActivityTypeResponse,
@@ -4721,8 +4719,8 @@ export const tagResource: (
   | OperationNotPermittedFault
   | TooManyTagsFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -4773,8 +4771,8 @@ export const undeprecateActivityType: (
   | OperationNotPermittedFault
   | TypeAlreadyExistsFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UndeprecateActivityTypeInput,
   output: UndeprecateActivityTypeResponse,
@@ -4824,8 +4822,8 @@ export const undeprecateWorkflowType: (
   | OperationNotPermittedFault
   | TypeAlreadyExistsFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UndeprecateWorkflowTypeInput,
   output: UndeprecateWorkflowTypeResponse,
@@ -4881,8 +4879,8 @@ export const registerWorkflowType: (
   | OperationNotPermittedFault
   | TypeAlreadyExistsFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterWorkflowTypeInput,
   output: RegisterWorkflowTypeResponse,
@@ -4933,8 +4931,8 @@ export const deleteWorkflowType: (
   | OperationNotPermittedFault
   | TypeNotDeprecatedFault
   | UnknownResourceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWorkflowTypeInput,
   output: DeleteWorkflowTypeResponse,
@@ -4974,8 +4972,8 @@ export const registerDomain: (
   | LimitExceededFault
   | OperationNotPermittedFault
   | TooManyTagsFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterDomainInput,
   output: RegisterDomainResponse,
@@ -5016,8 +5014,8 @@ export const describeWorkflowExecution: (
   input: DescribeWorkflowExecutionInput,
 ) => Effect.Effect<
   WorkflowExecutionDetail,
-  OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeWorkflowExecutionInput,
   output: WorkflowExecutionDetail,
@@ -5055,22 +5053,22 @@ export const getWorkflowExecutionHistory: {
     input: GetWorkflowExecutionHistoryInput,
   ): Effect.Effect<
     History,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetWorkflowExecutionHistoryInput,
   ) => Stream.Stream<
     History,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetWorkflowExecutionHistoryInput,
   ) => Stream.Stream<
     HistoryEvent,
-    OperationNotPermittedFault | UnknownResourceFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotPermittedFault | UnknownResourceFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetWorkflowExecutionHistoryInput,
@@ -5138,8 +5136,8 @@ export const startWorkflowExecution: (
   | TypeDeprecatedFault
   | UnknownResourceFault
   | WorkflowExecutionAlreadyStartedFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartWorkflowExecutionInput,
   output: Run,

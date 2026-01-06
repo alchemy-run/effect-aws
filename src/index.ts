@@ -14,7 +14,7 @@
  *
  * @since 0.0.0
  */
-export * as Credentials from "./aws/credentials.ts";
+export * as Credentials from "./credentials.ts";
 
 /**
  * AWS Endpoint configuration for custom or local endpoints.
@@ -30,29 +30,7 @@ export * as Credentials from "./aws/credentials.ts";
  *
  * @since 0.0.0
  */
-export * as Endpoint from "./aws/endpoint.ts";
-
-/**
- * Error categories for classifying AWS errors.
- *
- * @example
- * ```ts
- * import { ErrorCategory } from "distilled-aws"
- *
- * // Check if an error is transient
- * if (ErrorCategory.isTransientError(error)) {
- *   // Retry logic
- * }
- *
- * // Use category-based error handling
- * effect.pipe(
- *   ErrorCategory.catchCategory("THROTTLING_ERROR", (e) => ...)
- * )
- * ```
- *
- * @since 0.0.0
- */
-export * as ErrorCategory from "./error-category.ts";
+export * as Endpoint from "./endpoint.ts";
 
 /**
  * Common AWS error types shared across all services.
@@ -67,7 +45,7 @@ export * as ErrorCategory from "./error-category.ts";
  *
  * @since 0.0.0
  */
-export * as Errors from "./aws/errors.ts";
+export * as Errors from "./errors.ts";
 
 /**
  * AWS Region configuration.
@@ -82,30 +60,7 @@ export * as Errors from "./aws/errors.ts";
  *
  * @since 0.0.0
  */
-export * as Region from "./aws/region.ts";
-
-/**
- * Operation type for AWS API calls.
- *
- * @since 0.0.0
- * @internal - only exported for type portability
- */
-export type { Operation } from "./operation.ts";
-
-/**
- * Smithy trait annotations for AWS service schemas.
- *
- * @since 0.0.0
- */
-export * as Traits from "./traits.ts";
-
-/**
- * Sensitive data schemas for the smithy.api#sensitive trait.
- * Wraps values in Effect's Redacted type to prevent accidental logging.
- *
- * @since 0.0.0
- */
-export { Sensitive, SensitiveBlob, SensitiveString } from "./sensitive.ts";
+export * as Region from "./region.ts";
 
 /**
  * Retry policy configuration for AWS API calls.
@@ -148,4 +103,19 @@ export { Sensitive, SensitiveBlob, SensitiveString } from "./sensitive.ts";
  *
  * @since 0.0.0
  */
-export * as Retry from "./retry-policy.ts";
+export * as Retry from "./retry.ts";
+
+/**
+ * Sensitive data schemas for the smithy.api#sensitive trait.
+ * Wraps values in Effect's Redacted type to prevent accidental logging.
+ *
+ * @since 0.0.0
+ */
+export * as Sensitive from "./sensitive.ts";
+
+/**
+ * Smithy trait annotations for AWS service schemas.
+ *
+ * @since 0.0.0
+ */
+export * as Traits from "./traits.ts";

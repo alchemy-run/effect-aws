@@ -2,8 +2,9 @@ import type * as Effect from "effect/Effect";
 import * as S from "effect/Schema";
 import * as AST from "effect/SchemaAST";
 import * as Stream from "effect/Stream";
+import type { Protocol } from "./client/protocol.ts";
+import type { Request as ProtocolRequest } from "./client/request.ts";
 import { applyHttpChecksum } from "./middleware/checksum.ts";
-import type { Protocol } from "./protocol.ts";
 import {
   awsJson1_0Protocol,
   awsJson1_1Protocol,
@@ -12,7 +13,6 @@ import { awsQueryProtocol } from "./protocols/aws-query.ts";
 import { ec2QueryProtocol } from "./protocols/ec2-query.ts";
 import { restJson1Protocol } from "./protocols/rest-json.ts";
 import { restXmlProtocol } from "./protocols/rest-xml.ts";
-import type { Request as ProtocolRequest } from "./request.ts";
 import type { RuleSetObject } from "./rules-engine/model.ts";
 
 /**

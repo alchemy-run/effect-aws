@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ServerlessApplicationRepository",
@@ -1177,46 +1175,42 @@ export class BadRequestException extends S.TaggedError<BadRequestException>()(
     ErrorCode: S.optional(S.String).pipe(T.JsonName("errorCode")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
     ErrorCode: S.optional(S.String).pipe(T.JsonName("errorCode")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   {
     ErrorCode: S.optional(S.String).pipe(T.JsonName("errorCode")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   {
     ErrorCode: S.optional(S.String).pipe(T.JsonName("errorCode")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   {
     ErrorCode: S.optional(S.String).pipe(T.JsonName("errorCode")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   {
     ErrorCode: S.optional(S.String).pipe(T.JsonName("errorCode")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**
@@ -1231,8 +1225,8 @@ export const createApplication: (
   | ForbiddenException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -1257,8 +1251,8 @@ export const listApplicationDependencies: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationDependenciesRequest,
@@ -1269,8 +1263,8 @@ export const listApplicationDependencies: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationDependenciesRequest,
@@ -1281,8 +1275,8 @@ export const listApplicationDependencies: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationDependenciesRequest,
@@ -1312,8 +1306,8 @@ export const listApplications: {
     | ForbiddenException
     | InternalServerErrorException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationsRequest,
@@ -1323,8 +1317,8 @@ export const listApplications: {
     | ForbiddenException
     | InternalServerErrorException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationsRequest,
@@ -1334,8 +1328,8 @@ export const listApplications: {
     | ForbiddenException
     | InternalServerErrorException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
@@ -1365,8 +1359,8 @@ export const listApplicationVersions: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationVersionsRequest,
@@ -1377,8 +1371,8 @@ export const listApplicationVersions: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationVersionsRequest,
@@ -1389,8 +1383,8 @@ export const listApplicationVersions: {
     | InternalServerErrorException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationVersionsRequest,
@@ -1423,8 +1417,8 @@ export const putApplicationPolicy: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutApplicationPolicyRequest,
   output: PutApplicationPolicyResponse,
@@ -1449,8 +1443,8 @@ export const updateApplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -1475,8 +1469,8 @@ export const getApplicationPolicy: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationPolicyRequest,
   output: GetApplicationPolicyResponse,
@@ -1500,8 +1494,8 @@ export const getCloudFormationTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCloudFormationTemplateRequest,
   output: GetCloudFormationTemplateResponse,
@@ -1527,8 +1521,8 @@ export const unshareApplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnshareApplicationRequest,
   output: UnshareApplicationResponse,
@@ -1552,8 +1546,8 @@ export const createCloudFormationTemplate: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCloudFormationTemplateRequest,
   output: CreateCloudFormationTemplateResponse,
@@ -1578,8 +1572,8 @@ export const deleteApplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -1604,8 +1598,8 @@ export const createApplicationVersion: (
   | ForbiddenException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationVersionRequest,
   output: CreateApplicationVersionResponse,
@@ -1628,8 +1622,8 @@ export const createCloudFormationChangeSet: (
   | ForbiddenException
   | InternalServerErrorException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCloudFormationChangeSetRequest,
   output: CreateCloudFormationChangeSetResponse,
@@ -1652,8 +1646,8 @@ export const getApplication: (
   | InternalServerErrorException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: GetApplicationResponse,

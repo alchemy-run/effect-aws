@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "EKS",
@@ -4298,11 +4296,11 @@ export class InvalidRequestException extends S.TaggedError<InvalidRequestExcepti
     subscriptionId: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -4313,7 +4311,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     subscriptionId: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   {
@@ -4324,11 +4322,11 @@ export class InvalidParameterException extends S.TaggedError<InvalidParameterExc
     subscriptionId: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ClientException extends S.TaggedError<ClientException>()(
   "ClientException",
   {
@@ -4338,11 +4336,11 @@ export class ClientException extends S.TaggedError<ClientException>()(
     subscriptionId: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerException extends S.TaggedError<ServerException>()(
   "ServerException",
   {
@@ -4352,9 +4350,7 @@ export class ServerException extends S.TaggedError<ServerException>()(
     subscriptionId: S.optional(S.String),
     message: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   {
@@ -4363,11 +4359,11 @@ export class ResourceInUseException extends S.TaggedError<ResourceInUseException
     addonName: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidStateException extends S.TaggedError<InvalidStateException>()(
   "InvalidStateException",
   { clusterName: S.optional(S.String), message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   {
@@ -4376,19 +4372,15 @@ export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitE
     subscriptionId: S.optional(S.String),
     message: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { clusterName: S.optional(S.String), message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnsupportedAvailabilityZoneException extends S.TaggedError<UnsupportedAvailabilityZoneException>()(
   "UnsupportedAvailabilityZoneException",
   {
@@ -4397,7 +4389,7 @@ export class UnsupportedAvailabilityZoneException extends S.TaggedError<Unsuppor
     nodegroupName: S.optional(S.String),
     validZones: S.optional(StringList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourcePropagationDelayException extends S.TaggedError<ResourcePropagationDelayException>()(
   "ResourcePropagationDelayException",
   { message: S.optional(S.String) },
@@ -4417,8 +4409,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  BadRequestException | NotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | NotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4431,8 +4423,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  BadRequestException | NotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | NotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4445,8 +4437,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  BadRequestException | NotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | NotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4466,8 +4458,8 @@ export const deleteAccessEntry: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessEntryRequest,
   output: DeleteAccessEntryResponse,
@@ -4487,8 +4479,8 @@ export const deleteEksAnywhereSubscription: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEksAnywhereSubscriptionRequest,
   output: DeleteEksAnywhereSubscriptionResponse,
@@ -4514,8 +4506,8 @@ export const describeUpdate: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUpdateRequest,
   output: DescribeUpdateResponse,
@@ -4549,8 +4541,8 @@ export const listInsights: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListInsightsRequest,
@@ -4560,8 +4552,8 @@ export const listInsights: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListInsightsRequest,
@@ -4571,8 +4563,8 @@ export const listInsights: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInsightsRequest,
@@ -4603,8 +4595,8 @@ export const deletePodIdentityAssociation: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePodIdentityAssociationRequest,
   output: DeletePodIdentityAssociationResponse,
@@ -4627,8 +4619,8 @@ export const describeAddon: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAddonRequest,
   output: DescribeAddonResponse,
@@ -4650,8 +4642,8 @@ export const describeAddonConfiguration: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAddonConfigurationRequest,
   output: DescribeAddonConfigurationResponse,
@@ -4672,8 +4664,8 @@ export const describeClusterVersions: {
     | InvalidParameterException
     | InvalidRequestException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClusterVersionsRequest,
@@ -4682,8 +4674,8 @@ export const describeClusterVersions: {
     | InvalidParameterException
     | InvalidRequestException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClusterVersionsRequest,
@@ -4692,8 +4684,8 @@ export const describeClusterVersions: {
     | InvalidParameterException
     | InvalidRequestException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClusterVersionsRequest,
@@ -4714,22 +4706,22 @@ export const listAccessPolicies: {
     input: ListAccessPoliciesRequest,
   ): Effect.Effect<
     ListAccessPoliciesResponse,
-    ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessPoliciesRequest,
   ) => Stream.Stream<
     ListAccessPoliciesResponse,
-    ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessPoliciesRequest,
   ) => Stream.Stream<
     AccessPolicy,
-    ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessPoliciesRequest,
@@ -4753,8 +4745,8 @@ export const listAssociatedAccessPolicies: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssociatedAccessPoliciesRequest,
@@ -4763,8 +4755,8 @@ export const listAssociatedAccessPolicies: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssociatedAccessPoliciesRequest,
@@ -4773,8 +4765,8 @@ export const listAssociatedAccessPolicies: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssociatedAccessPoliciesRequest,
@@ -4795,22 +4787,22 @@ export const listCapabilities: {
     input: ListCapabilitiesRequest,
   ): Effect.Effect<
     ListCapabilitiesResponse,
-    InvalidParameterException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCapabilitiesRequest,
   ) => Stream.Stream<
     ListCapabilitiesResponse,
-    InvalidParameterException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCapabilitiesRequest,
   ) => Stream.Stream<
     CapabilitySummary,
-    InvalidParameterException | ServerException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterException | ServerException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCapabilitiesRequest,
@@ -4836,8 +4828,8 @@ export const listPodIdentityAssociations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPodIdentityAssociationsRequest,
@@ -4847,8 +4839,8 @@ export const listPodIdentityAssociations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPodIdentityAssociationsRequest,
@@ -4858,8 +4850,8 @@ export const listPodIdentityAssociations: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPodIdentityAssociationsRequest,
@@ -4887,8 +4879,8 @@ export const describeAccessEntry: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccessEntryRequest,
   output: DescribeAccessEntryResponse,
@@ -4904,8 +4896,8 @@ export const disassociateAccessPolicy: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateAccessPolicyRequest,
   output: DisassociateAccessPolicyResponse,
@@ -4922,8 +4914,8 @@ export const describeInsightsRefresh: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInsightsRefreshRequest,
   output: DescribeInsightsRefreshResponse,
@@ -4950,8 +4942,8 @@ export const describePodIdentityAssociation: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePodIdentityAssociationRequest,
   output: DescribePodIdentityAssociationResponse,
@@ -4974,8 +4966,8 @@ export const listAccessEntries: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccessEntriesRequest,
@@ -4985,8 +4977,8 @@ export const listAccessEntries: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccessEntriesRequest,
@@ -4996,8 +4988,8 @@ export const listAccessEntries: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccessEntriesRequest,
@@ -5026,8 +5018,8 @@ export const startInsightsRefresh: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartInsightsRefreshRequest,
   output: StartInsightsRefreshResponse,
@@ -5049,8 +5041,8 @@ export const updateAccessEntry: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccessEntryRequest,
   output: UpdateAccessEntryResponse,
@@ -5090,8 +5082,8 @@ export const updatePodIdentityAssociation: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePodIdentityAssociationRequest,
   output: UpdatePodIdentityAssociationResponse,
@@ -5115,8 +5107,8 @@ export const associateAccessPolicy: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateAccessPolicyRequest,
   output: AssociateAccessPolicyResponse,
@@ -5138,8 +5130,8 @@ export const describeCapability: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCapabilityRequest,
   output: DescribeCapabilityResponse,
@@ -5161,8 +5153,8 @@ export const describeFargateProfile: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFargateProfileRequest,
   output: DescribeFargateProfileResponse,
@@ -5186,8 +5178,8 @@ export const listAddons: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAddonsRequest,
@@ -5198,8 +5190,8 @@ export const listAddons: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAddonsRequest,
@@ -5210,8 +5202,8 @@ export const listAddons: {
     | InvalidRequestException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAddonsRequest,
@@ -5243,8 +5235,8 @@ export const listFargateProfiles: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFargateProfilesRequest,
@@ -5254,8 +5246,8 @@ export const listFargateProfiles: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFargateProfilesRequest,
@@ -5265,8 +5257,8 @@ export const listFargateProfiles: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFargateProfilesRequest,
@@ -5297,8 +5289,8 @@ export const listUpdates: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUpdatesRequest,
@@ -5308,8 +5300,8 @@ export const listUpdates: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUpdatesRequest,
@@ -5319,8 +5311,8 @@ export const listUpdates: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUpdatesRequest,
@@ -5351,8 +5343,8 @@ export const updateEksAnywhereSubscription: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEksAnywhereSubscriptionRequest,
   output: UpdateEksAnywhereSubscriptionResponse,
@@ -5382,8 +5374,8 @@ export const updateNodegroupConfig: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNodegroupConfigRequest,
   output: UpdateNodegroupConfigResponse,
@@ -5423,8 +5415,8 @@ export const createAccessEntry: (
   | ResourceLimitExceededException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccessEntryRequest,
   output: CreateAccessEntryResponse,
@@ -5477,8 +5469,8 @@ export const createPodIdentityAssociation: (
   | ResourceLimitExceededException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePodIdentityAssociationRequest,
   output: CreatePodIdentityAssociationResponse,
@@ -5504,8 +5496,8 @@ export const updateAddon: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAddonRequest,
   output: UpdateAddonResponse,
@@ -5557,8 +5549,8 @@ export const updateNodegroupVersion: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateNodegroupVersionRequest,
   output: UpdateNodegroupVersionResponse,
@@ -5588,8 +5580,8 @@ export const createAddon: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAddonRequest,
   output: CreateAddonResponse,
@@ -5617,8 +5609,8 @@ export const deleteAddon: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAddonRequest,
   output: DeleteAddonResponse,
@@ -5651,8 +5643,8 @@ export const deleteFargateProfile: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFargateProfileRequest,
   output: DeleteFargateProfileResponse,
@@ -5678,8 +5670,8 @@ export const describeAddonVersions: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAddonVersionsRequest,
@@ -5688,8 +5680,8 @@ export const describeAddonVersions: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAddonVersionsRequest,
@@ -5698,8 +5690,8 @@ export const describeAddonVersions: {
     | InvalidParameterException
     | ResourceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAddonVersionsRequest,
@@ -5730,8 +5722,8 @@ export const updateCapability: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCapabilityRequest,
   output: UpdateCapabilityResponse,
@@ -5762,8 +5754,8 @@ export const describeCluster: (
   | ResourceNotFoundException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterRequest,
   output: DescribeClusterResponse,
@@ -5802,8 +5794,8 @@ export const updateClusterVersion: (
   | ResourceNotFoundException
   | ServerException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterVersionRequest,
   output: UpdateClusterVersionResponse,
@@ -5829,8 +5821,8 @@ export const describeEksAnywhereSubscription: (
   | ResourceNotFoundException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEksAnywhereSubscriptionRequest,
   output: DescribeEksAnywhereSubscriptionResponse,
@@ -5853,8 +5845,8 @@ export const describeNodegroup: (
   | ResourceNotFoundException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNodegroupRequest,
   output: DescribeNodegroupResponse,
@@ -5878,8 +5870,8 @@ export const listClusters: {
     | InvalidParameterException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClustersRequest,
@@ -5889,8 +5881,8 @@ export const listClusters: {
     | InvalidParameterException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClustersRequest,
@@ -5900,8 +5892,8 @@ export const listClusters: {
     | InvalidParameterException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
@@ -5931,8 +5923,8 @@ export const listEksAnywhereSubscriptions: {
     | InvalidParameterException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEksAnywhereSubscriptionsRequest,
@@ -5942,8 +5934,8 @@ export const listEksAnywhereSubscriptions: {
     | InvalidParameterException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEksAnywhereSubscriptionsRequest,
@@ -5953,8 +5945,8 @@ export const listEksAnywhereSubscriptions: {
     | InvalidParameterException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEksAnywhereSubscriptionsRequest,
@@ -5985,8 +5977,8 @@ export const listIdentityProviderConfigs: {
     | ResourceNotFoundException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIdentityProviderConfigsRequest,
@@ -5997,8 +5989,8 @@ export const listIdentityProviderConfigs: {
     | ResourceNotFoundException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIdentityProviderConfigsRequest,
@@ -6009,8 +6001,8 @@ export const listIdentityProviderConfigs: {
     | ResourceNotFoundException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIdentityProviderConfigsRequest,
@@ -6043,8 +6035,8 @@ export const listNodegroups: {
     | ResourceNotFoundException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNodegroupsRequest,
@@ -6055,8 +6047,8 @@ export const listNodegroups: {
     | ResourceNotFoundException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNodegroupsRequest,
@@ -6067,8 +6059,8 @@ export const listNodegroups: {
     | ResourceNotFoundException
     | ServerException
     | ServiceUnavailableException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodegroupsRequest,
@@ -6102,8 +6094,8 @@ export const createEksAnywhereSubscription: (
   | ResourceLimitExceededException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEksAnywhereSubscriptionRequest,
   output: CreateEksAnywhereSubscriptionResponse,
@@ -6131,8 +6123,8 @@ export const deregisterCluster: (
   | ResourceNotFoundException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterClusterRequest,
   output: DeregisterClusterResponse,
@@ -6178,8 +6170,8 @@ export const createNodegroup: (
   | ResourceLimitExceededException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNodegroupRequest,
   output: CreateNodegroupResponse,
@@ -6216,8 +6208,8 @@ export const deleteCluster: (
   | ResourceNotFoundException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -6243,8 +6235,8 @@ export const deleteNodegroup: (
   | ResourceNotFoundException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNodegroupRequest,
   output: DeleteNodegroupResponse,
@@ -6269,8 +6261,8 @@ export const describeIdentityProviderConfig: (
   | ResourceNotFoundException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdentityProviderConfigRequest,
   output: DescribeIdentityProviderConfigResponse,
@@ -6342,8 +6334,8 @@ export const updateClusterConfig: (
   | ResourceNotFoundException
   | ServerException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterConfigRequest,
   output: UpdateClusterConfigResponse,
@@ -6375,8 +6367,8 @@ export const disassociateIdentityProviderConfig: (
   | ResourceNotFoundException
   | ServerException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateIdentityProviderConfigRequest,
   output: DisassociateIdentityProviderConfigResponse,
@@ -6408,8 +6400,8 @@ export const associateEncryptionConfig: (
   | ResourceNotFoundException
   | ServerException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateEncryptionConfigRequest,
   output: AssociateEncryptionConfigResponse,
@@ -6445,8 +6437,8 @@ export const associateIdentityProviderConfig: (
   | ResourceNotFoundException
   | ServerException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateIdentityProviderConfigRequest,
   output: AssociateIdentityProviderConfigResponse,
@@ -6502,8 +6494,8 @@ export const createFargateProfile: (
   | ResourceLimitExceededException
   | ServerException
   | UnsupportedAvailabilityZoneException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFargateProfileRequest,
   output: CreateFargateProfileResponse,
@@ -6548,8 +6540,8 @@ export const registerCluster: (
   | ResourcePropagationDelayException
   | ServerException
   | ServiceUnavailableException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterClusterRequest,
   output: RegisterClusterResponse,
@@ -6621,8 +6613,8 @@ export const createCluster: (
   | ServerException
   | ServiceUnavailableException
   | UnsupportedAvailabilityZoneException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -6656,8 +6648,8 @@ export const createCapability: (
   | ResourceLimitExceededException
   | ServerException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCapabilityRequest,
   output: CreateCapabilityResponse,
@@ -6685,8 +6677,8 @@ export const deleteCapability: (
   | ResourceInUseException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCapabilityRequest,
   output: DeleteCapabilityResponse,
@@ -6709,8 +6701,8 @@ export const describeInsight: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInsightRequest,
   output: DescribeInsightResponse,

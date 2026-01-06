@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "App Mesh", serviceShapeName: "AppMesh" });
 const auth = T.AwsAuthSigv4({ name: "appmesh" });
@@ -3472,52 +3470,46 @@ export const CreateVirtualNodeOutput = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { message: S.optional(S.String) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { message: S.optional(S.String) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceInUseException extends S.TaggedError<ResourceInUseException>()(
   "ResourceInUseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { message: S.optional(S.String) },
   T.Retryable({ throttling: true }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3533,8 +3525,8 @@ export const untagResource: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -3567,8 +3559,8 @@ export const createRoute: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteInput,
   output: CreateRouteOutput,
@@ -3600,8 +3592,8 @@ export const deleteMesh: (
   | ResourceInUseException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMeshInput,
   output: DeleteMeshOutput,
@@ -3637,8 +3629,8 @@ export const createMesh: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMeshInput,
   output: CreateMeshOutput,
@@ -3676,8 +3668,8 @@ export const createVirtualService: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVirtualServiceInput,
   output: CreateVirtualServiceOutput,
@@ -3705,8 +3697,8 @@ export const describeMesh: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMeshInput,
   output: DescribeMeshOutput,
@@ -3732,8 +3724,8 @@ export const describeVirtualGateway: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVirtualGatewayInput,
   output: DescribeVirtualGatewayOutput,
@@ -3759,8 +3751,8 @@ export const describeGatewayRoute: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGatewayRouteInput,
   output: DescribeGatewayRouteOutput,
@@ -3786,8 +3778,8 @@ export const describeVirtualNode: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVirtualNodeInput,
   output: DescribeVirtualNodeOutput,
@@ -3813,8 +3805,8 @@ export const describeVirtualRouter: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVirtualRouterInput,
   output: DescribeVirtualRouterOutput,
@@ -3840,8 +3832,8 @@ export const describeRoute: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRouteInput,
   output: DescribeRouteOutput,
@@ -3867,8 +3859,8 @@ export const describeVirtualService: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVirtualServiceInput,
   output: DescribeVirtualServiceOutput,
@@ -3895,8 +3887,8 @@ export const updateMesh: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMeshInput,
   output: UpdateMeshOutput,
@@ -3924,8 +3916,8 @@ export const listMeshes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMeshesInput,
@@ -3937,8 +3929,8 @@ export const listMeshes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMeshesInput,
@@ -3950,8 +3942,8 @@ export const listMeshes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMeshesInput,
@@ -3985,8 +3977,8 @@ export const listVirtualGateways: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVirtualGatewaysInput,
@@ -3998,8 +3990,8 @@ export const listVirtualGateways: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVirtualGatewaysInput,
@@ -4011,8 +4003,8 @@ export const listVirtualGateways: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVirtualGatewaysInput,
@@ -4047,8 +4039,8 @@ export const listGatewayRoutes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGatewayRoutesInput,
@@ -4060,8 +4052,8 @@ export const listGatewayRoutes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGatewayRoutesInput,
@@ -4073,8 +4065,8 @@ export const listGatewayRoutes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGatewayRoutesInput,
@@ -4108,8 +4100,8 @@ export const listVirtualNodes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVirtualNodesInput,
@@ -4121,8 +4113,8 @@ export const listVirtualNodes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVirtualNodesInput,
@@ -4134,8 +4126,8 @@ export const listVirtualNodes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVirtualNodesInput,
@@ -4169,8 +4161,8 @@ export const listVirtualRouters: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVirtualRoutersInput,
@@ -4182,8 +4174,8 @@ export const listVirtualRouters: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVirtualRoutersInput,
@@ -4195,8 +4187,8 @@ export const listVirtualRouters: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVirtualRoutersInput,
@@ -4230,8 +4222,8 @@ export const listRoutes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRoutesInput,
@@ -4243,8 +4235,8 @@ export const listRoutes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRoutesInput,
@@ -4256,8 +4248,8 @@ export const listRoutes: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoutesInput,
@@ -4291,8 +4283,8 @@ export const listVirtualServices: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVirtualServicesInput,
@@ -4304,8 +4296,8 @@ export const listVirtualServices: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVirtualServicesInput,
@@ -4317,8 +4309,8 @@ export const listVirtualServices: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVirtualServicesInput,
@@ -4352,8 +4344,8 @@ export const listTagsForResource: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceInput,
@@ -4365,8 +4357,8 @@ export const listTagsForResource: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceInput,
@@ -4378,8 +4370,8 @@ export const listTagsForResource: {
     | NotFoundException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceInput,
@@ -4422,8 +4414,8 @@ export const createVirtualRouter: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVirtualRouterInput,
   output: CreateVirtualRouterOutput,
@@ -4453,8 +4445,8 @@ export const updateVirtualGateway: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVirtualGatewayInput,
   output: UpdateVirtualGatewayOutput,
@@ -4485,8 +4477,8 @@ export const updateGatewayRoute: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGatewayRouteInput,
   output: UpdateGatewayRouteOutput,
@@ -4516,8 +4508,8 @@ export const updateVirtualNode: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVirtualNodeInput,
   output: UpdateVirtualNodeOutput,
@@ -4547,8 +4539,8 @@ export const updateVirtualRouter: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVirtualRouterInput,
   output: UpdateVirtualRouterOutput,
@@ -4578,8 +4570,8 @@ export const updateRoute: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRouteInput,
   output: UpdateRouteOutput,
@@ -4609,8 +4601,8 @@ export const updateVirtualService: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVirtualServiceInput,
   output: UpdateVirtualServiceOutput,
@@ -4640,8 +4632,8 @@ export const deleteVirtualGateway: (
   | ResourceInUseException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVirtualGatewayInput,
   output: DeleteVirtualGatewayOutput,
@@ -4669,8 +4661,8 @@ export const deleteGatewayRoute: (
   | ResourceInUseException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGatewayRouteInput,
   output: DeleteGatewayRouteOutput,
@@ -4701,8 +4693,8 @@ export const deleteVirtualNode: (
   | ResourceInUseException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVirtualNodeInput,
   output: DeleteVirtualNodeOutput,
@@ -4733,8 +4725,8 @@ export const deleteVirtualRouter: (
   | ResourceInUseException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVirtualRouterInput,
   output: DeleteVirtualRouterOutput,
@@ -4762,8 +4754,8 @@ export const deleteRoute: (
   | ResourceInUseException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteInput,
   output: DeleteRouteOutput,
@@ -4791,8 +4783,8 @@ export const deleteVirtualService: (
   | ResourceInUseException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVirtualServiceInput,
   output: DeleteVirtualServiceOutput,
@@ -4827,8 +4819,8 @@ export const createGatewayRoute: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGatewayRouteInput,
   output: CreateGatewayRouteOutput,
@@ -4860,8 +4852,8 @@ export const tagResource: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -4897,8 +4889,8 @@ export const createVirtualGateway: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVirtualGatewayInput,
   output: CreateVirtualGatewayOutput,
@@ -4954,8 +4946,8 @@ export const createVirtualNode: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVirtualNodeInput,
   output: CreateVirtualNodeOutput,

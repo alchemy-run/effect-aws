@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Lex Model Building Service",
@@ -2723,34 +2721,30 @@ export const ResourceReference = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalFailureException extends S.TaggedError<InternalFailureException>()(
   "InternalFailureException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   {
     retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
     message: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PreconditionFailedException extends S.TaggedError<PreconditionFailedException>()(
   "PreconditionFailedException",
   { message: S.optional(S.String) },
@@ -2761,7 +2755,7 @@ export class ResourceInUseException extends S.TaggedError<ResourceInUseException
     referenceType: S.optional(S.String),
     exampleReference: S.optional(ResourceReference),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2802,8 +2796,8 @@ export const getUtterancesView: (
   | BadRequestException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUtterancesViewRequest,
   output: GetUtterancesViewResponse,
@@ -2827,8 +2821,8 @@ export const getBotAliases: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetBotAliasesRequest,
@@ -2837,8 +2831,8 @@ export const getBotAliases: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetBotAliasesRequest,
@@ -2847,8 +2841,8 @@ export const getBotAliases: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetBotAliasesRequest,
@@ -2880,8 +2874,8 @@ export const getBotChannelAssociations: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetBotChannelAssociationsRequest,
@@ -2890,8 +2884,8 @@ export const getBotChannelAssociations: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetBotChannelAssociationsRequest,
@@ -2900,8 +2894,8 @@ export const getBotChannelAssociations: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetBotChannelAssociationsRequest,
@@ -2932,8 +2926,8 @@ export const getBuiltinIntents: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetBuiltinIntentsRequest,
@@ -2942,8 +2936,8 @@ export const getBuiltinIntents: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetBuiltinIntentsRequest,
@@ -2952,8 +2946,8 @@ export const getBuiltinIntents: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetBuiltinIntentsRequest,
@@ -2987,8 +2981,8 @@ export const getBuiltinSlotTypes: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetBuiltinSlotTypesRequest,
@@ -2997,8 +2991,8 @@ export const getBuiltinSlotTypes: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetBuiltinSlotTypesRequest,
@@ -3007,8 +3001,8 @@ export const getBuiltinSlotTypes: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetBuiltinSlotTypesRequest,
@@ -3035,8 +3029,8 @@ export const getMigrations: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetMigrationsRequest,
@@ -3045,8 +3039,8 @@ export const getMigrations: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetMigrationsRequest,
@@ -3055,8 +3049,8 @@ export const getMigrations: {
     | BadRequestException
     | InternalFailureException
     | LimitExceededException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetMigrationsRequest,
@@ -3082,8 +3076,8 @@ export const startImport: (
   | BadRequestException
   | InternalFailureException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartImportRequest,
   output: StartImportResponse,
@@ -3108,8 +3102,8 @@ export const getBot: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBotRequest,
   output: GetBotResponse,
@@ -3150,8 +3144,8 @@ export const putBot: (
   | InternalFailureException
   | LimitExceededException
   | PreconditionFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBotRequest,
   output: PutBotResponse,
@@ -3226,8 +3220,8 @@ export const putIntent: (
   | InternalFailureException
   | LimitExceededException
   | PreconditionFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutIntentRequest,
   output: PutIntentResponse,
@@ -3254,8 +3248,8 @@ export const getBotAlias: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBotAliasRequest,
   output: GetBotAliasResponse,
@@ -3281,8 +3275,8 @@ export const getBotChannelAssociation: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBotChannelAssociationRequest,
   output: GetBotChannelAssociationResponse,
@@ -3316,8 +3310,8 @@ export const getBots: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetBotsRequest,
@@ -3327,8 +3321,8 @@ export const getBots: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetBotsRequest,
@@ -3338,8 +3332,8 @@ export const getBots: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetBotsRequest,
@@ -3370,8 +3364,8 @@ export const getBuiltinIntent: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBuiltinIntentRequest,
   output: GetBuiltinIntentResponse,
@@ -3405,8 +3399,8 @@ export const getIntents: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetIntentsRequest,
@@ -3416,8 +3410,8 @@ export const getIntents: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetIntentsRequest,
@@ -3427,8 +3421,8 @@ export const getIntents: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIntentsRequest,
@@ -3458,8 +3452,8 @@ export const getMigration: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMigrationRequest,
   output: GetMigrationResponse,
@@ -3493,8 +3487,8 @@ export const getSlotTypes: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetSlotTypesRequest,
@@ -3504,8 +3498,8 @@ export const getSlotTypes: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetSlotTypesRequest,
@@ -3515,8 +3509,8 @@ export const getSlotTypes: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSlotTypesRequest,
@@ -3549,8 +3543,8 @@ export const startMigration: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMigrationRequest,
   output: StartMigrationResponse,
@@ -3578,8 +3572,8 @@ export const deleteBotChannelAssociation: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBotChannelAssociationRequest,
   output: DeleteBotChannelAssociationResponse,
@@ -3604,8 +3598,8 @@ export const tagResource: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3629,8 +3623,8 @@ export const untagResource: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -3668,8 +3662,8 @@ export const createBotVersion: (
   | LimitExceededException
   | NotFoundException
   | PreconditionFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBotVersionRequest,
   output: CreateBotVersionResponse,
@@ -3709,8 +3703,8 @@ export const createIntentVersion: (
   | LimitExceededException
   | NotFoundException
   | PreconditionFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIntentVersionRequest,
   output: CreateIntentVersionResponse,
@@ -3750,8 +3744,8 @@ export const createSlotTypeVersion: (
   | LimitExceededException
   | NotFoundException
   | PreconditionFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSlotTypeVersionRequest,
   output: CreateSlotTypeVersionResponse,
@@ -3789,8 +3783,8 @@ export const getBotVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetBotVersionsRequest,
@@ -3800,8 +3794,8 @@ export const getBotVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetBotVersionsRequest,
@@ -3811,8 +3805,8 @@ export const getBotVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetBotVersionsRequest,
@@ -3840,8 +3834,8 @@ export const getExport: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExportRequest,
   output: GetExportResponse,
@@ -3864,8 +3858,8 @@ export const getImport: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImportRequest,
   output: GetImportResponse,
@@ -3891,8 +3885,8 @@ export const getIntent: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIntentRequest,
   output: GetIntentResponse,
@@ -3928,8 +3922,8 @@ export const getIntentVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetIntentVersionsRequest,
@@ -3939,8 +3933,8 @@ export const getIntentVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetIntentVersionsRequest,
@@ -3950,8 +3944,8 @@ export const getIntentVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIntentVersionsRequest,
@@ -3984,8 +3978,8 @@ export const getSlotType: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSlotTypeRequest,
   output: GetSlotTypeResponse,
@@ -4021,8 +4015,8 @@ export const getSlotTypeVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetSlotTypeVersionsRequest,
@@ -4032,8 +4026,8 @@ export const getSlotTypeVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetSlotTypeVersionsRequest,
@@ -4043,8 +4037,8 @@ export const getSlotTypeVersions: {
     | InternalFailureException
     | LimitExceededException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSlotTypeVersionsRequest,
@@ -4073,8 +4067,8 @@ export const listTagsForResource: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4110,8 +4104,8 @@ export const deleteUtterances: (
   | InternalFailureException
   | LimitExceededException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUtterancesRequest,
   output: DeleteUtterancesResponse,
@@ -4140,8 +4134,8 @@ export const putBotAlias: (
   | InternalFailureException
   | LimitExceededException
   | PreconditionFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutBotAliasRequest,
   output: PutBotAliasResponse,
@@ -4182,8 +4176,8 @@ export const putSlotType: (
   | InternalFailureException
   | LimitExceededException
   | PreconditionFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSlotTypeRequest,
   output: PutSlotTypeResponse,
@@ -4217,8 +4211,8 @@ export const deleteBotAlias: (
   | LimitExceededException
   | NotFoundException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBotAliasRequest,
   output: DeleteBotAliasResponse,
@@ -4248,8 +4242,8 @@ export const deleteBotVersion: (
   | LimitExceededException
   | NotFoundException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBotVersionRequest,
   output: DeleteBotVersionResponse,
@@ -4292,8 +4286,8 @@ export const deleteIntent: (
   | LimitExceededException
   | NotFoundException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIntentRequest,
   output: DeleteIntentResponse,
@@ -4323,8 +4317,8 @@ export const deleteIntentVersion: (
   | LimitExceededException
   | NotFoundException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIntentVersionRequest,
   output: DeleteIntentVersionResponse,
@@ -4367,8 +4361,8 @@ export const deleteSlotType: (
   | LimitExceededException
   | NotFoundException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSlotTypeRequest,
   output: DeleteSlotTypeResponse,
@@ -4398,8 +4392,8 @@ export const deleteSlotTypeVersion: (
   | LimitExceededException
   | NotFoundException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSlotTypeVersionRequest,
   output: DeleteSlotTypeVersionResponse,
@@ -4443,8 +4437,8 @@ export const deleteBot: (
   | LimitExceededException
   | NotFoundException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBotRequest,
   output: DeleteBotResponse,

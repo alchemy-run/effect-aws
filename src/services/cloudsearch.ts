@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://cloudsearch.amazonaws.com/doc/2013-01-01/");
 const svc = T.AwsApiService({
@@ -1495,38 +1493,36 @@ export class InternalException extends S.TaggedError<InternalException>()(
   "InternalException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InternalException", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DisabledOperationException extends S.TaggedError<DisabledOperationException>()(
   "DisabledOperationException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
   T.AwsQueryError({ code: "DisabledAction", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidTypeException extends S.TaggedError<InvalidTypeException>()(
   "InvalidTypeException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidType", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceAlreadyExists", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -1536,8 +1532,8 @@ export const listDomainNames: (
   input: ListDomainNamesRequest,
 ) => Effect.Effect<
   ListDomainNamesResponse,
-  BaseException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDomainNamesRequest,
   output: ListDomainNamesResponse,
@@ -1551,8 +1547,8 @@ export const deleteDomain: (
   input: DeleteDomainRequest,
 ) => Effect.Effect<
   DeleteDomainResponse,
-  BaseException | InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -1567,8 +1563,8 @@ export const describeDomains: (
   input: DescribeDomainsRequest,
 ) => Effect.Effect<
   DescribeDomainsResponse,
-  BaseException | InternalException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainsRequest,
   output: DescribeDomainsResponse,
@@ -1581,11 +1577,8 @@ export const describeScalingParameters: (
   input: DescribeScalingParametersRequest,
 ) => Effect.Effect<
   DescribeScalingParametersResponse,
-  | BaseException
-  | InternalException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeScalingParametersRequest,
   output: DescribeScalingParametersResponse,
@@ -1599,11 +1592,8 @@ export const describeServiceAccessPolicies: (
   input: DescribeServiceAccessPoliciesRequest,
 ) => Effect.Effect<
   DescribeServiceAccessPoliciesResponse,
-  | BaseException
-  | InternalException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServiceAccessPoliciesRequest,
   output: DescribeServiceAccessPoliciesResponse,
@@ -1616,11 +1606,8 @@ export const describeAnalysisSchemes: (
   input: DescribeAnalysisSchemesRequest,
 ) => Effect.Effect<
   DescribeAnalysisSchemesResponse,
-  | BaseException
-  | InternalException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAnalysisSchemesRequest,
   output: DescribeAnalysisSchemesResponse,
@@ -1633,11 +1620,8 @@ export const describeExpressions: (
   input: DescribeExpressionsRequest,
 ) => Effect.Effect<
   DescribeExpressionsResponse,
-  | BaseException
-  | InternalException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeExpressionsRequest,
   output: DescribeExpressionsResponse,
@@ -1652,11 +1636,8 @@ export const describeIndexFields: (
   input: DescribeIndexFieldsRequest,
 ) => Effect.Effect<
   DescribeIndexFieldsResponse,
-  | BaseException
-  | InternalException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIndexFieldsRequest,
   output: DescribeIndexFieldsResponse,
@@ -1669,11 +1650,8 @@ export const describeSuggesters: (
   input: DescribeSuggestersRequest,
 ) => Effect.Effect<
   DescribeSuggestersResponse,
-  | BaseException
-  | InternalException
-  | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSuggestersRequest,
   output: DescribeSuggestersResponse,
@@ -1691,8 +1669,8 @@ export const describeDomainEndpointOptions: (
   | InternalException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainEndpointOptionsRequest,
   output: DescribeDomainEndpointOptionsResponse,
@@ -1717,8 +1695,8 @@ export const describeAvailabilityOptions: (
   | InvalidTypeException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAvailabilityOptionsRequest,
   output: DescribeAvailabilityOptionsResponse,
@@ -1742,8 +1720,8 @@ export const buildSuggesters: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BuildSuggestersRequest,
   output: BuildSuggestersResponse,
@@ -1767,8 +1745,8 @@ export const createDomain: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResponse,
@@ -1793,8 +1771,8 @@ export const defineAnalysisScheme: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DefineAnalysisSchemeRequest,
   output: DefineAnalysisSchemeResponse,
@@ -1818,8 +1796,8 @@ export const indexDocuments: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IndexDocumentsRequest,
   output: IndexDocumentsResponse,
@@ -1843,8 +1821,8 @@ export const defineIndexField: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DefineIndexFieldRequest,
   output: DefineIndexFieldResponse,
@@ -1870,8 +1848,8 @@ export const defineSuggester: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DefineSuggesterRequest,
   output: DefineSuggesterResponse,
@@ -1896,8 +1874,8 @@ export const deleteAnalysisScheme: (
   | InvalidTypeException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAnalysisSchemeRequest,
   output: DeleteAnalysisSchemeResponse,
@@ -1922,8 +1900,8 @@ export const defineExpression: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DefineExpressionRequest,
   output: DefineExpressionResponse,
@@ -1948,8 +1926,8 @@ export const deleteExpression: (
   | InvalidTypeException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteExpressionRequest,
   output: DeleteExpressionResponse,
@@ -1973,8 +1951,8 @@ export const deleteIndexField: (
   | InvalidTypeException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIndexFieldRequest,
   output: DeleteIndexFieldResponse,
@@ -1998,8 +1976,8 @@ export const deleteSuggester: (
   | InvalidTypeException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSuggesterRequest,
   output: DeleteSuggesterResponse,
@@ -2024,8 +2002,8 @@ export const updateScalingParameters: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateScalingParametersRequest,
   output: UpdateScalingParametersResponse,
@@ -2053,8 +2031,8 @@ export const updateServiceAccessPolicies: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceAccessPoliciesRequest,
   output: UpdateServiceAccessPoliciesResponse,
@@ -2081,8 +2059,8 @@ export const updateDomainEndpointOptions: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainEndpointOptionsRequest,
   output: UpdateDomainEndpointOptionsResponse,
@@ -2110,8 +2088,8 @@ export const updateAvailabilityOptions: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAvailabilityOptionsRequest,
   output: UpdateAvailabilityOptionsResponse,

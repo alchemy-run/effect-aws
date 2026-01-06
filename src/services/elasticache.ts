@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://elasticache.amazonaws.com/doc/2015-02-02/");
 const svc = T.AwsApiService({
@@ -4746,7 +4744,7 @@ export class InvalidParameterValueException extends S.TaggedError<InvalidParamet
   "InvalidParameterValueException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidParameterValue", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheParameterGroupNotFoundFault extends S.TaggedError<CacheParameterGroupNotFoundFault>()(
   "CacheParameterGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -4754,7 +4752,7 @@ export class CacheParameterGroupNotFoundFault extends S.TaggedError<CacheParamet
     code: "CacheParameterGroupNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheSecurityGroupNotFoundFault extends S.TaggedError<CacheSecurityGroupNotFoundFault>()(
   "CacheSecurityGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -4762,12 +4760,12 @@ export class CacheSecurityGroupNotFoundFault extends S.TaggedError<CacheSecurity
     code: "CacheSecurityGroupNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheSubnetGroupInUse extends S.TaggedError<CacheSubnetGroupInUse>()(
   "CacheSubnetGroupInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "CacheSubnetGroupInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterCombinationException extends S.TaggedError<InvalidParameterCombinationException>()(
   "InvalidParameterCombinationException",
   { message: S.optional(S.String) },
@@ -4775,17 +4773,17 @@ export class InvalidParameterCombinationException extends S.TaggedError<InvalidP
     code: "InvalidParameterCombination",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DefaultUserRequired extends S.TaggedError<DefaultUserRequired>()(
   "DefaultUserRequired",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DefaultUserRequired", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheClusterNotFoundFault extends S.TaggedError<CacheClusterNotFoundFault>()(
   "CacheClusterNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "CacheClusterNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUpdateNotFoundFault extends S.TaggedError<ServiceUpdateNotFoundFault>()(
   "ServiceUpdateNotFoundFault",
   { message: S.optional(S.String) },
@@ -4793,7 +4791,7 @@ export class ServiceUpdateNotFoundFault extends S.TaggedError<ServiceUpdateNotFo
     code: "ServiceUpdateNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheSecurityGroupAlreadyExistsFault extends S.TaggedError<CacheSecurityGroupAlreadyExistsFault>()(
   "CacheSecurityGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -4801,12 +4799,12 @@ export class CacheSecurityGroupAlreadyExistsFault extends S.TaggedError<CacheSec
     code: "CacheSecurityGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateUserNameFault extends S.TaggedError<DuplicateUserNameFault>()(
   "DuplicateUserNameFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DuplicateUserName", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class GlobalReplicationGroupNotFoundFault extends S.TaggedError<GlobalReplicationGroupNotFoundFault>()(
   "GlobalReplicationGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -4814,7 +4812,7 @@ export class GlobalReplicationGroupNotFoundFault extends S.TaggedError<GlobalRep
     code: "GlobalReplicationGroupNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCacheParameterGroupStateFault extends S.TaggedError<InvalidCacheParameterGroupStateFault>()(
   "InvalidCacheParameterGroupStateFault",
   { message: S.optional(S.String) },
@@ -4822,7 +4820,7 @@ export class InvalidCacheParameterGroupStateFault extends S.TaggedError<InvalidC
     code: "InvalidCacheParameterGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCacheSecurityGroupStateFault extends S.TaggedError<InvalidCacheSecurityGroupStateFault>()(
   "InvalidCacheSecurityGroupStateFault",
   { message: S.optional(S.String) },
@@ -4830,7 +4828,7 @@ export class InvalidCacheSecurityGroupStateFault extends S.TaggedError<InvalidCa
     code: "InvalidCacheSecurityGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheSubnetGroupNotFoundFault extends S.TaggedError<CacheSubnetGroupNotFoundFault>()(
   "CacheSubnetGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -4838,7 +4836,7 @@ export class CacheSubnetGroupNotFoundFault extends S.TaggedError<CacheSubnetGrou
     code: "CacheSubnetGroupNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidServerlessCacheSnapshotStateFault extends S.TaggedError<InvalidServerlessCacheSnapshotStateFault>()(
   "InvalidServerlessCacheSnapshotStateFault",
   { message: S.optional(S.String) },
@@ -4846,7 +4844,7 @@ export class InvalidServerlessCacheSnapshotStateFault extends S.TaggedError<Inva
     code: "InvalidServerlessCacheSnapshotStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterQuotaForCustomerExceededFault extends S.TaggedError<ClusterQuotaForCustomerExceededFault>()(
   "ClusterQuotaForCustomerExceededFault",
   { message: S.optional(S.String) },
@@ -4854,7 +4852,7 @@ export class ClusterQuotaForCustomerExceededFault extends S.TaggedError<ClusterQ
     code: "ClusterQuotaForCustomerExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCredentialsException extends S.TaggedError<InvalidCredentialsException>()(
   "InvalidCredentialsException",
   { message: S.optional(S.String) },
@@ -4862,12 +4860,12 @@ export class InvalidCredentialsException extends S.TaggedError<InvalidCredential
     code: "InvalidCredentialsException",
     httpResponseCode: 408,
   }),
-) {}
+).pipe(C.withTimeoutError) {}
 export class InvalidUserStateFault extends S.TaggedError<InvalidUserStateFault>()(
   "InvalidUserStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidUserState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedCacheNodeAlreadyExistsFault extends S.TaggedError<ReservedCacheNodeAlreadyExistsFault>()(
   "ReservedCacheNodeAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -4875,12 +4873,12 @@ export class ReservedCacheNodeAlreadyExistsFault extends S.TaggedError<ReservedC
     code: "ReservedCacheNodeAlreadyExists",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthorizationNotFoundFault extends S.TaggedError<AuthorizationNotFoundFault>()(
   "AuthorizationNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AuthorizationNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class APICallRateForCustomerExceededFault extends S.TaggedError<APICallRateForCustomerExceededFault>()(
   "APICallRateForCustomerExceededFault",
   { message: S.optional(S.String) },
@@ -4888,7 +4886,7 @@ export class APICallRateForCustomerExceededFault extends S.TaggedError<APICallRa
     code: "APICallRateForCustomerExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidReplicationGroupStateFault extends S.TaggedError<InvalidReplicationGroupStateFault>()(
   "InvalidReplicationGroupStateFault",
   { message: S.optional(S.String) },
@@ -4896,12 +4894,12 @@ export class InvalidReplicationGroupStateFault extends S.TaggedError<InvalidRepl
     code: "InvalidReplicationGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidUserGroupStateFault extends S.TaggedError<InvalidUserGroupStateFault>()(
   "InvalidUserGroupStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidUserGroupState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidServerlessCacheStateFault extends S.TaggedError<InvalidServerlessCacheStateFault>()(
   "InvalidServerlessCacheStateFault",
   { message: S.optional(S.String) },
@@ -4909,12 +4907,12 @@ export class InvalidServerlessCacheStateFault extends S.TaggedError<InvalidServe
     code: "InvalidServerlessCacheStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSnapshotStateFault extends S.TaggedError<InvalidSnapshotStateFault>()(
   "InvalidSnapshotStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSnapshotState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReplicationGroupNotFoundFault extends S.TaggedError<ReplicationGroupNotFoundFault>()(
   "ReplicationGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -4922,7 +4920,7 @@ export class ReplicationGroupNotFoundFault extends S.TaggedError<ReplicationGrou
     code: "ReplicationGroupNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerlessCacheNotFoundFault extends S.TaggedError<ServerlessCacheNotFoundFault>()(
   "ServerlessCacheNotFoundFault",
   { message: S.optional(S.String) },
@@ -4930,7 +4928,7 @@ export class ServerlessCacheNotFoundFault extends S.TaggedError<ServerlessCacheN
     code: "ServerlessCacheNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceLinkedRoleNotFoundFault extends S.TaggedError<ServiceLinkedRoleNotFoundFault>()(
   "ServiceLinkedRoleNotFoundFault",
   { message: S.optional(S.String) },
@@ -4938,17 +4936,17 @@ export class ServiceLinkedRoleNotFoundFault extends S.TaggedError<ServiceLinkedR
     code: "ServiceLinkedRoleNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCacheClusterStateFault extends S.TaggedError<InvalidCacheClusterStateFault>()(
   "InvalidCacheClusterStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidCacheClusterState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotNotFoundFault extends S.TaggedError<SnapshotNotFoundFault>()(
   "SnapshotNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SnapshotNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientCacheClusterCapacityFault extends S.TaggedError<InsufficientCacheClusterCapacityFault>()(
   "InsufficientCacheClusterCapacityFault",
   { message: S.optional(S.String) },
@@ -4956,7 +4954,7 @@ export class InsufficientCacheClusterCapacityFault extends S.TaggedError<Insuffi
     code: "InsufficientCacheClusterCapacity",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheParameterGroupAlreadyExistsFault extends S.TaggedError<CacheParameterGroupAlreadyExistsFault>()(
   "CacheParameterGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -4964,7 +4962,7 @@ export class CacheParameterGroupAlreadyExistsFault extends S.TaggedError<CachePa
     code: "CacheParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheSecurityGroupQuotaExceededFault extends S.TaggedError<CacheSecurityGroupQuotaExceededFault>()(
   "CacheSecurityGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -4972,7 +4970,7 @@ export class CacheSecurityGroupQuotaExceededFault extends S.TaggedError<CacheSec
     code: "QuotaExceeded.CacheSecurityGroup",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidGlobalReplicationGroupStateFault extends S.TaggedError<InvalidGlobalReplicationGroupStateFault>()(
   "InvalidGlobalReplicationGroupStateFault",
   { message: S.optional(S.String) },
@@ -4980,7 +4978,7 @@ export class InvalidGlobalReplicationGroupStateFault extends S.TaggedError<Inval
     code: "InvalidGlobalReplicationGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerlessCacheSnapshotNotFoundFault extends S.TaggedError<ServerlessCacheSnapshotNotFoundFault>()(
   "ServerlessCacheSnapshotNotFoundFault",
   { message: S.optional(S.String) },
@@ -4988,7 +4986,7 @@ export class ServerlessCacheSnapshotNotFoundFault extends S.TaggedError<Serverle
     code: "ServerlessCacheSnapshotNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DefaultUserAssociatedToUserGroupFault extends S.TaggedError<DefaultUserAssociatedToUserGroupFault>()(
   "DefaultUserAssociatedToUserGroupFault",
   { message: S.optional(S.String) },
@@ -4996,7 +4994,7 @@ export class DefaultUserAssociatedToUserGroupFault extends S.TaggedError<Default
     code: "DefaultUserAssociatedToUserGroup",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedCacheNodesOfferingNotFoundFault extends S.TaggedError<ReservedCacheNodesOfferingNotFoundFault>()(
   "ReservedCacheNodesOfferingNotFoundFault",
   { message: S.optional(S.String) },
@@ -5004,7 +5002,7 @@ export class ReservedCacheNodesOfferingNotFoundFault extends S.TaggedError<Reser
     code: "ReservedCacheNodesOfferingNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedCacheNodeQuotaExceededFault extends S.TaggedError<ReservedCacheNodeQuotaExceededFault>()(
   "ReservedCacheNodeQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5012,7 +5010,7 @@ export class ReservedCacheNodeQuotaExceededFault extends S.TaggedError<ReservedC
     code: "ReservedCacheNodeQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReplicationGroupAlreadyUnderMigrationFault extends S.TaggedError<ReplicationGroupAlreadyUnderMigrationFault>()(
   "ReplicationGroupAlreadyUnderMigrationFault",
   { message: S.optional(S.String) },
@@ -5020,7 +5018,7 @@ export class ReplicationGroupAlreadyUnderMigrationFault extends S.TaggedError<Re
     code: "ReplicationGroupAlreadyUnderMigrationFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheSubnetQuotaExceededFault extends S.TaggedError<CacheSubnetQuotaExceededFault>()(
   "CacheSubnetQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5028,17 +5026,17 @@ export class CacheSubnetQuotaExceededFault extends S.TaggedError<CacheSubnetQuot
     code: "CacheSubnetQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidARNFault extends S.TaggedError<InvalidARNFault>()(
   "InvalidARNFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidARN", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserGroupNotFoundFault extends S.TaggedError<UserGroupNotFoundFault>()(
   "UserGroupNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserGroupNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotAlreadyExistsFault extends S.TaggedError<SnapshotAlreadyExistsFault>()(
   "SnapshotAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5046,12 +5044,12 @@ export class SnapshotAlreadyExistsFault extends S.TaggedError<SnapshotAlreadyExi
     code: "SnapshotAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidKMSKeyFault extends S.TaggedError<InvalidKMSKeyFault>()(
   "InvalidKMSKeyFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidKMSKeyFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerlessCacheSnapshotAlreadyExistsFault extends S.TaggedError<ServerlessCacheSnapshotAlreadyExistsFault>()(
   "ServerlessCacheSnapshotAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5059,7 +5057,7 @@ export class ServerlessCacheSnapshotAlreadyExistsFault extends S.TaggedError<Ser
     code: "ServerlessCacheSnapshotAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagQuotaPerResourceExceeded extends S.TaggedError<TagQuotaPerResourceExceeded>()(
   "TagQuotaPerResourceExceeded",
   { message: S.optional(S.String) },
@@ -5067,12 +5065,12 @@ export class TagQuotaPerResourceExceeded extends S.TaggedError<TagQuotaPerResour
     code: "TagQuotaPerResourceExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserNotFoundFault extends S.TaggedError<UserNotFoundFault>()(
   "UserNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetworkStateFault>()(
   "InvalidVPCNetworkStateFault",
   { message: S.optional(S.String) },
@@ -5080,7 +5078,7 @@ export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetwork
     code: "InvalidVPCNetworkStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthorizationAlreadyExistsFault extends S.TaggedError<AuthorizationAlreadyExistsFault>()(
   "AuthorizationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5088,7 +5086,7 @@ export class AuthorizationAlreadyExistsFault extends S.TaggedError<Authorization
     code: "AuthorizationAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheParameterGroupQuotaExceededFault extends S.TaggedError<CacheParameterGroupQuotaExceededFault>()(
   "CacheParameterGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5096,7 +5094,7 @@ export class CacheParameterGroupQuotaExceededFault extends S.TaggedError<CachePa
     code: "CacheParameterGroupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class GlobalReplicationGroupAlreadyExistsFault extends S.TaggedError<GlobalReplicationGroupAlreadyExistsFault>()(
   "GlobalReplicationGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5104,7 +5102,7 @@ export class GlobalReplicationGroupAlreadyExistsFault extends S.TaggedError<Glob
     code: "GlobalReplicationGroupAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerlessCacheAlreadyExistsFault extends S.TaggedError<ServerlessCacheAlreadyExistsFault>()(
   "ServerlessCacheAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5112,17 +5110,17 @@ export class ServerlessCacheAlreadyExistsFault extends S.TaggedError<ServerlessC
     code: "ServerlessCacheAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedCacheNodeNotFoundFault extends S.TaggedError<ReservedCacheNodeNotFoundFault>()(
   "ReservedCacheNodeNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedCacheNodeNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSubnet extends S.TaggedError<InvalidSubnet>()(
   "InvalidSubnet",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotFeatureNotSupportedFault extends S.TaggedError<SnapshotFeatureNotSupportedFault>()(
   "SnapshotFeatureNotSupportedFault",
   { message: S.optional(S.String) },
@@ -5130,12 +5128,12 @@ export class SnapshotFeatureNotSupportedFault extends S.TaggedError<SnapshotFeat
     code: "SnapshotFeatureNotSupportedFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserAlreadyExistsFault extends S.TaggedError<UserAlreadyExistsFault>()(
   "UserAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotQuotaExceededFault extends S.TaggedError<SnapshotQuotaExceededFault>()(
   "SnapshotQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5143,7 +5141,7 @@ export class SnapshotQuotaExceededFault extends S.TaggedError<SnapshotQuotaExcee
     code: "SnapshotQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NodeQuotaForClusterExceededFault extends S.TaggedError<NodeQuotaForClusterExceededFault>()(
   "NodeQuotaForClusterExceededFault",
   { message: S.optional(S.String) },
@@ -5151,12 +5149,12 @@ export class NodeQuotaForClusterExceededFault extends S.TaggedError<NodeQuotaFor
     code: "NodeQuotaForClusterExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NodeGroupNotFoundFault extends S.TaggedError<NodeGroupNotFoundFault>()(
   "NodeGroupNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "NodeGroupNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NodeGroupsPerReplicationGroupQuotaExceededFault extends S.TaggedError<NodeGroupsPerReplicationGroupQuotaExceededFault>()(
   "NodeGroupsPerReplicationGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5164,7 +5162,7 @@ export class NodeGroupsPerReplicationGroupQuotaExceededFault extends S.TaggedErr
     code: "NodeGroupsPerReplicationGroupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerlessCacheSnapshotQuotaExceededFault extends S.TaggedError<ServerlessCacheSnapshotQuotaExceededFault>()(
   "ServerlessCacheSnapshotQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5172,17 +5170,17 @@ export class ServerlessCacheSnapshotQuotaExceededFault extends S.TaggedError<Ser
     code: "ServerlessCacheSnapshotQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserGroupAlreadyExistsFault extends S.TaggedError<UserGroupAlreadyExistsFault>()(
   "UserGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserGroupAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheClusterAlreadyExistsFault extends S.TaggedError<CacheClusterAlreadyExistsFault>()(
   "CacheClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "CacheClusterAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheSubnetGroupAlreadyExistsFault extends S.TaggedError<CacheSubnetGroupAlreadyExistsFault>()(
   "CacheSubnetGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5190,7 +5188,7 @@ export class CacheSubnetGroupAlreadyExistsFault extends S.TaggedError<CacheSubne
     code: "CacheSubnetGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServerlessCacheQuotaForCustomerExceededFault extends S.TaggedError<ServerlessCacheQuotaForCustomerExceededFault>()(
   "ServerlessCacheQuotaForCustomerExceededFault",
   { message: S.optional(S.String) },
@@ -5198,22 +5196,22 @@ export class ServerlessCacheQuotaForCustomerExceededFault extends S.TaggedError<
     code: "ServerlessCacheQuotaForCustomerExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetInUse extends S.TaggedError<SubnetInUse>()(
   "SubnetInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagNotFoundFault extends S.TaggedError<TagNotFoundFault>()(
   "TagNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TagNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserQuotaExceededFault extends S.TaggedError<UserQuotaExceededFault>()(
   "UserQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NodeQuotaForCustomerExceededFault extends S.TaggedError<NodeQuotaForCustomerExceededFault>()(
   "NodeQuotaForCustomerExceededFault",
   { message: S.optional(S.String) },
@@ -5221,7 +5219,7 @@ export class NodeQuotaForCustomerExceededFault extends S.TaggedError<NodeQuotaFo
     code: "NodeQuotaForCustomerExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TestFailoverNotAvailableFault extends S.TaggedError<TestFailoverNotAvailableFault>()(
   "TestFailoverNotAvailableFault",
   { message: S.optional(S.String) },
@@ -5229,12 +5227,12 @@ export class TestFailoverNotAvailableFault extends S.TaggedError<TestFailoverNot
     code: "TestFailoverNotAvailableFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserGroupQuotaExceededFault extends S.TaggedError<UserGroupQuotaExceededFault>()(
   "UserGroupQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserGroupQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReplicationGroupNotUnderMigrationFault extends S.TaggedError<ReplicationGroupNotUnderMigrationFault>()(
   "ReplicationGroupNotUnderMigrationFault",
   { message: S.optional(S.String) },
@@ -5242,7 +5240,7 @@ export class ReplicationGroupNotUnderMigrationFault extends S.TaggedError<Replic
     code: "ReplicationGroupNotUnderMigrationFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CacheSubnetGroupQuotaExceededFault extends S.TaggedError<CacheSubnetGroupQuotaExceededFault>()(
   "CacheSubnetGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -5250,17 +5248,17 @@ export class CacheSubnetGroupQuotaExceededFault extends S.TaggedError<CacheSubne
     code: "CacheSubnetGroupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetNotAllowedFault extends S.TaggedError<SubnetNotAllowedFault>()(
   "SubnetNotAllowedFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetNotAllowedFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoOperationFault extends S.TaggedError<NoOperationFault>()(
   "NoOperationFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "NoOperationFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReplicationGroupAlreadyExistsFault extends S.TaggedError<ReplicationGroupAlreadyExistsFault>()(
   "ReplicationGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -5268,7 +5266,7 @@ export class ReplicationGroupAlreadyExistsFault extends S.TaggedError<Replicatio
     code: "ReplicationGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -5283,8 +5281,8 @@ export const describeCacheParameterGroups: {
     | CacheParameterGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCacheParameterGroupsMessage,
@@ -5293,8 +5291,8 @@ export const describeCacheParameterGroups: {
     | CacheParameterGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCacheParameterGroupsMessage,
@@ -5303,8 +5301,8 @@ export const describeCacheParameterGroups: {
     | CacheParameterGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheParameterGroupsMessage,
@@ -5334,8 +5332,8 @@ export const describeCacheSecurityGroups: {
     | CacheSecurityGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCacheSecurityGroupsMessage,
@@ -5344,8 +5342,8 @@ export const describeCacheSecurityGroups: {
     | CacheSecurityGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCacheSecurityGroupsMessage,
@@ -5354,8 +5352,8 @@ export const describeCacheSecurityGroups: {
     | CacheSecurityGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheSecurityGroupsMessage,
@@ -5403,8 +5401,8 @@ export const describeCacheClusters: {
     | CacheClusterNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCacheClustersMessage,
@@ -5413,8 +5411,8 @@ export const describeCacheClusters: {
     | CacheClusterNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCacheClustersMessage,
@@ -5423,8 +5421,8 @@ export const describeCacheClusters: {
     | CacheClusterNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheClustersMessage,
@@ -5450,10 +5448,8 @@ export const batchStopUpdateAction: (
   input: BatchStopUpdateActionMessage,
 ) => Effect.Effect<
   UpdateActionResultsMessage,
-  | InvalidParameterValueException
-  | ServiceUpdateNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | ServiceUpdateNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchStopUpdateActionMessage,
   output: UpdateActionResultsMessage,
@@ -5472,8 +5468,8 @@ export const deleteCacheParameterGroup: (
   | InvalidCacheParameterGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCacheParameterGroupMessage,
   output: DeleteCacheParameterGroupResponse,
@@ -5498,8 +5494,8 @@ export const deleteCacheSecurityGroup: (
   | InvalidCacheSecurityGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCacheSecurityGroupMessage,
   output: DeleteCacheSecurityGroupResponse,
@@ -5520,8 +5516,8 @@ export const deleteCacheSubnetGroup: (
   input: DeleteCacheSubnetGroupMessage,
 ) => Effect.Effect<
   DeleteCacheSubnetGroupResponse,
-  CacheSubnetGroupInUse | CacheSubnetGroupNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CacheSubnetGroupInUse | CacheSubnetGroupNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCacheSubnetGroupMessage,
   output: DeleteCacheSubnetGroupResponse,
@@ -5535,22 +5531,22 @@ export const describeCacheEngineVersions: {
     input: DescribeCacheEngineVersionsMessage,
   ): Effect.Effect<
     CacheEngineVersionMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCacheEngineVersionsMessage,
   ) => Stream.Stream<
     CacheEngineVersionMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCacheEngineVersionsMessage,
   ) => Stream.Stream<
     CacheEngineVersion,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheEngineVersionsMessage,
@@ -5574,8 +5570,8 @@ export const describeEngineDefaultParameters: {
     DescribeEngineDefaultParametersResult,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEngineDefaultParametersMessage,
@@ -5583,8 +5579,8 @@ export const describeEngineDefaultParameters: {
     DescribeEngineDefaultParametersResult,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEngineDefaultParametersMessage,
@@ -5592,8 +5588,8 @@ export const describeEngineDefaultParameters: {
     unknown,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEngineDefaultParametersMessage,
@@ -5624,8 +5620,8 @@ export const describeEvents: {
     EventsMessage,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsMessage,
@@ -5633,8 +5629,8 @@ export const describeEvents: {
     EventsMessage,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsMessage,
@@ -5642,8 +5638,8 @@ export const describeEvents: {
     Event,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsMessage,
@@ -5670,8 +5666,8 @@ export const describeServiceUpdates: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceUpdateNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeServiceUpdatesMessage,
@@ -5680,8 +5676,8 @@ export const describeServiceUpdates: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceUpdateNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeServiceUpdatesMessage,
@@ -5690,8 +5686,8 @@ export const describeServiceUpdates: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceUpdateNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeServiceUpdatesMessage,
@@ -5721,8 +5717,8 @@ export const revokeCacheSecurityGroupIngress: (
   | InvalidCacheSecurityGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeCacheSecurityGroupIngressMessage,
   output: RevokeCacheSecurityGroupIngressResult,
@@ -5743,10 +5739,8 @@ export const batchApplyUpdateAction: (
   input: BatchApplyUpdateActionMessage,
 ) => Effect.Effect<
   UpdateActionResultsMessage,
-  | InvalidParameterValueException
-  | ServiceUpdateNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | ServiceUpdateNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchApplyUpdateActionMessage,
   output: UpdateActionResultsMessage,
@@ -5764,8 +5758,8 @@ export const describeGlobalReplicationGroups: {
     | GlobalReplicationGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeGlobalReplicationGroupsMessage,
@@ -5774,8 +5768,8 @@ export const describeGlobalReplicationGroups: {
     | GlobalReplicationGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeGlobalReplicationGroupsMessage,
@@ -5784,8 +5778,8 @@ export const describeGlobalReplicationGroups: {
     | GlobalReplicationGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeGlobalReplicationGroupsMessage,
@@ -5813,22 +5807,22 @@ export const describeCacheSubnetGroups: {
     input: DescribeCacheSubnetGroupsMessage,
   ): Effect.Effect<
     CacheSubnetGroupMessage,
-    CacheSubnetGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CacheSubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCacheSubnetGroupsMessage,
   ) => Stream.Stream<
     CacheSubnetGroupMessage,
-    CacheSubnetGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CacheSubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCacheSubnetGroupsMessage,
   ) => Stream.Stream<
     CacheSubnetGroup,
-    CacheSubnetGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CacheSubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheSubnetGroupsMessage,
@@ -5856,8 +5850,8 @@ export const describeReplicationGroups: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReplicationGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationGroupsMessage,
@@ -5866,8 +5860,8 @@ export const describeReplicationGroups: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReplicationGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationGroupsMessage,
@@ -5876,8 +5870,8 @@ export const describeReplicationGroups: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReplicationGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationGroupsMessage,
@@ -5907,8 +5901,8 @@ export const describeServerlessCaches: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServerlessCacheNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeServerlessCachesRequest,
@@ -5917,8 +5911,8 @@ export const describeServerlessCaches: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServerlessCacheNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeServerlessCachesRequest,
@@ -5927,8 +5921,8 @@ export const describeServerlessCaches: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServerlessCacheNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeServerlessCachesRequest,
@@ -5962,8 +5956,8 @@ export const describeSnapshots: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | SnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSnapshotsMessage,
@@ -5973,8 +5967,8 @@ export const describeSnapshots: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | SnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSnapshotsMessage,
@@ -5984,8 +5978,8 @@ export const describeSnapshots: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | SnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsMessage,
@@ -6020,8 +6014,8 @@ export const listAllowedNodeTypeModifications: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | ReplicationGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAllowedNodeTypeModificationsMessage,
   output: AllowedNodeTypeModificationsMessage,
@@ -6054,10 +6048,8 @@ export const rebootCacheCluster: (
   input: RebootCacheClusterMessage,
 ) => Effect.Effect<
   RebootCacheClusterResult,
-  | CacheClusterNotFoundFault
-  | InvalidCacheClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CacheClusterNotFoundFault | InvalidCacheClusterStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootCacheClusterMessage,
   output: RebootCacheClusterResult,
@@ -6078,8 +6070,8 @@ export const deleteSnapshot: (
   | InvalidParameterValueException
   | InvalidSnapshotStateFault
   | SnapshotNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSnapshotMessage,
   output: DeleteSnapshotResult,
@@ -6101,8 +6093,8 @@ export const decreaseNodeGroupsInGlobalReplicationGroup: (
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DecreaseNodeGroupsInGlobalReplicationGroupMessage,
   output: DecreaseNodeGroupsInGlobalReplicationGroupResult,
@@ -6124,8 +6116,8 @@ export const deleteServerlessCacheSnapshot: (
   | InvalidServerlessCacheSnapshotStateFault
   | ServerlessCacheSnapshotNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServerlessCacheSnapshotRequest,
   output: DeleteServerlessCacheSnapshotResponse,
@@ -6147,8 +6139,8 @@ export const describeCacheParameters: {
     | CacheParameterGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCacheParametersMessage,
@@ -6157,8 +6149,8 @@ export const describeCacheParameters: {
     | CacheParameterGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCacheParametersMessage,
@@ -6167,8 +6159,8 @@ export const describeCacheParameters: {
     | CacheParameterGroupNotFoundFault
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCacheParametersMessage,
@@ -6196,8 +6188,8 @@ export const describeReservedCacheNodesOfferings: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReservedCacheNodesOfferingNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedCacheNodesOfferingsMessage,
@@ -6206,8 +6198,8 @@ export const describeReservedCacheNodesOfferings: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReservedCacheNodesOfferingNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedCacheNodesOfferingsMessage,
@@ -6216,8 +6208,8 @@ export const describeReservedCacheNodesOfferings: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReservedCacheNodesOfferingNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedCacheNodesOfferingsMessage,
@@ -6245,8 +6237,8 @@ export const testMigration: (
   | InvalidReplicationGroupStateFault
   | ReplicationGroupAlreadyUnderMigrationFault
   | ReplicationGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestMigrationMessage,
   output: TestMigrationResponse,
@@ -6267,8 +6259,8 @@ export const increaseNodeGroupsInGlobalReplicationGroup: (
   | GlobalReplicationGroupNotFoundFault
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IncreaseNodeGroupsInGlobalReplicationGroupMessage,
   output: IncreaseNodeGroupsInGlobalReplicationGroupResult,
@@ -6306,8 +6298,8 @@ export const deleteGlobalReplicationGroup: (
   | GlobalReplicationGroupNotFoundFault
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGlobalReplicationGroupMessage,
   output: DeleteGlobalReplicationGroupResult,
@@ -6330,8 +6322,8 @@ export const disassociateGlobalReplicationGroup: (
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateGlobalReplicationGroupMessage,
   output: DisassociateGlobalReplicationGroupResult,
@@ -6354,8 +6346,8 @@ export const failoverGlobalReplicationGroup: (
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FailoverGlobalReplicationGroupMessage,
   output: FailoverGlobalReplicationGroupResult,
@@ -6376,8 +6368,8 @@ export const modifyGlobalReplicationGroup: (
   | GlobalReplicationGroupNotFoundFault
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyGlobalReplicationGroupMessage,
   output: ModifyGlobalReplicationGroupResult,
@@ -6398,8 +6390,8 @@ export const rebalanceSlotsInGlobalReplicationGroup: (
   | GlobalReplicationGroupNotFoundFault
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebalanceSlotsInGlobalReplicationGroupMessage,
   output: RebalanceSlotsInGlobalReplicationGroupResult,
@@ -6422,8 +6414,8 @@ export const modifyCacheParameterGroup: (
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCacheParameterGroupMessage,
   output: CacheParameterGroupNameMessage,
@@ -6450,8 +6442,8 @@ export const resetCacheParameterGroup: (
   | InvalidGlobalReplicationGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetCacheParameterGroupMessage,
   output: CacheParameterGroupNameMessage,
@@ -6474,8 +6466,8 @@ export const exportServerlessCacheSnapshot: (
   | InvalidServerlessCacheSnapshotStateFault
   | ServerlessCacheSnapshotNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportServerlessCacheSnapshotRequest,
   output: ExportServerlessCacheSnapshotResponse,
@@ -6501,8 +6493,8 @@ export const describeServerlessCacheSnapshots: {
     | InvalidParameterValueException
     | ServerlessCacheNotFoundFault
     | ServerlessCacheSnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeServerlessCacheSnapshotsRequest,
@@ -6512,8 +6504,8 @@ export const describeServerlessCacheSnapshots: {
     | InvalidParameterValueException
     | ServerlessCacheNotFoundFault
     | ServerlessCacheSnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeServerlessCacheSnapshotsRequest,
@@ -6523,8 +6515,8 @@ export const describeServerlessCacheSnapshots: {
     | InvalidParameterValueException
     | ServerlessCacheNotFoundFault
     | ServerlessCacheSnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeServerlessCacheSnapshotsRequest,
@@ -6553,8 +6545,8 @@ export const describeUserGroups: {
     | InvalidParameterCombinationException
     | ServiceLinkedRoleNotFoundFault
     | UserGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeUserGroupsMessage,
@@ -6563,8 +6555,8 @@ export const describeUserGroups: {
     | InvalidParameterCombinationException
     | ServiceLinkedRoleNotFoundFault
     | UserGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeUserGroupsMessage,
@@ -6573,8 +6565,8 @@ export const describeUserGroups: {
     | InvalidParameterCombinationException
     | ServiceLinkedRoleNotFoundFault
     | UserGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeUserGroupsMessage,
@@ -6602,8 +6594,8 @@ export const startMigration: (
   | InvalidReplicationGroupStateFault
   | ReplicationGroupAlreadyUnderMigrationFault
   | ReplicationGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMigrationMessage,
   output: StartMigrationResponse,
@@ -6631,8 +6623,8 @@ export const deleteServerlessCache: (
   | ServerlessCacheNotFoundFault
   | ServerlessCacheSnapshotAlreadyExistsFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServerlessCacheRequest,
   output: DeleteServerlessCacheResponse,
@@ -6657,8 +6649,8 @@ export const describeUsers: {
     | InvalidParameterCombinationException
     | ServiceLinkedRoleNotFoundFault
     | UserNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeUsersMessage,
@@ -6667,8 +6659,8 @@ export const describeUsers: {
     | InvalidParameterCombinationException
     | ServiceLinkedRoleNotFoundFault
     | UserNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeUsersMessage,
@@ -6677,8 +6669,8 @@ export const describeUsers: {
     | InvalidParameterCombinationException
     | ServiceLinkedRoleNotFoundFault
     | UserNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeUsersMessage,
@@ -6710,8 +6702,8 @@ export const modifyServerlessCache: (
   | ServerlessCacheNotFoundFault
   | ServiceLinkedRoleNotFoundFault
   | UserGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyServerlessCacheRequest,
   output: ModifyServerlessCacheResponse,
@@ -6739,8 +6731,8 @@ export const deleteUserGroup: (
   | InvalidUserGroupStateFault
   | ServiceLinkedRoleNotFoundFault
   | UserGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserGroupMessage,
   output: UserGroup,
@@ -6766,8 +6758,8 @@ export const modifyUserGroup: (
   | ServiceLinkedRoleNotFoundFault
   | UserGroupNotFoundFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyUserGroupMessage,
   output: UserGroup,
@@ -6799,8 +6791,8 @@ export const createCacheSecurityGroup: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCacheSecurityGroupMessage,
   output: CreateCacheSecurityGroupResult,
@@ -6826,8 +6818,8 @@ export const purchaseReservedCacheNodesOffering: (
   | ReservedCacheNodeQuotaExceededFault
   | ReservedCacheNodesOfferingNotFoundFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseReservedCacheNodesOfferingMessage,
   output: PurchaseReservedCacheNodesOfferingResult,
@@ -6852,8 +6844,8 @@ export const modifyUser: (
   | InvalidUserStateFault
   | ServiceLinkedRoleNotFoundFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyUserMessage,
   output: User,
@@ -6879,8 +6871,8 @@ export const deleteUser: (
   | InvalidUserStateFault
   | ServiceLinkedRoleNotFoundFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserMessage,
   output: User,
@@ -6909,8 +6901,8 @@ export const authorizeCacheSecurityGroupIngress: (
   | InvalidCacheSecurityGroupStateFault
   | InvalidParameterCombinationException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeCacheSecurityGroupIngressMessage,
   output: AuthorizeCacheSecurityGroupIngressResult,
@@ -6947,8 +6939,8 @@ export const createCacheParameterGroup: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCacheParameterGroupMessage,
   output: CreateCacheParameterGroupResult,
@@ -6984,8 +6976,8 @@ export const createGlobalReplicationGroup: (
   | InvalidReplicationGroupStateFault
   | ReplicationGroupNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGlobalReplicationGroupMessage,
   output: CreateGlobalReplicationGroupResult,
@@ -7009,8 +7001,8 @@ export const describeReservedCacheNodes: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReservedCacheNodeNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedCacheNodesMessage,
@@ -7019,8 +7011,8 @@ export const describeReservedCacheNodes: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReservedCacheNodeNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedCacheNodesMessage,
@@ -7029,8 +7021,8 @@ export const describeReservedCacheNodes: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ReservedCacheNodeNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedCacheNodesMessage,
@@ -7083,8 +7075,8 @@ export const addTagsToResource: (
   | TagQuotaPerResourceExceeded
   | UserGroupNotFoundFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToResourceMessage,
   output: TagListMessage,
@@ -7138,8 +7130,8 @@ export const listTagsForResource: (
   | SnapshotNotFoundFault
   | UserGroupNotFoundFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceMessage,
   output: TagListMessage,
@@ -7245,8 +7237,8 @@ export const copySnapshot: (
   | SnapshotNotFoundFault
   | SnapshotQuotaExceededFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopySnapshotMessage,
   output: CopySnapshotResult,
@@ -7287,8 +7279,8 @@ export const deleteReplicationGroup: (
   | SnapshotAlreadyExistsFault
   | SnapshotFeatureNotSupportedFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationGroupMessage,
   output: DeleteReplicationGroupResult,
@@ -7335,8 +7327,8 @@ export const deleteCacheCluster: (
   | SnapshotAlreadyExistsFault
   | SnapshotFeatureNotSupportedFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCacheClusterMessage,
   output: DeleteCacheClusterResult,
@@ -7365,8 +7357,8 @@ export const createServerlessCacheSnapshot: (
   | ServerlessCacheSnapshotQuotaExceededFault
   | ServiceLinkedRoleNotFoundFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateServerlessCacheSnapshotRequest,
   output: CreateServerlessCacheSnapshotResponse,
@@ -7401,8 +7393,8 @@ export const createSnapshot: (
   | SnapshotFeatureNotSupportedFault
   | SnapshotQuotaExceededFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotMessage,
   output: CreateSnapshotResult,
@@ -7434,8 +7426,8 @@ export const copyServerlessCacheSnapshot: (
   | ServerlessCacheSnapshotQuotaExceededFault
   | ServiceLinkedRoleNotFoundFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyServerlessCacheSnapshotRequest,
   output: CopyServerlessCacheSnapshotResponse,
@@ -7468,8 +7460,8 @@ export const createServerlessCache: (
   | ServiceLinkedRoleNotFoundFault
   | TagQuotaPerResourceExceeded
   | UserGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateServerlessCacheRequest,
   output: CreateServerlessCacheResponse,
@@ -7497,8 +7489,8 @@ export const describeUpdateActions: {
     UpdateActionsMessage,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeUpdateActionsMessage,
@@ -7506,8 +7498,8 @@ export const describeUpdateActions: {
     UpdateActionsMessage,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeUpdateActionsMessage,
@@ -7515,8 +7507,8 @@ export const describeUpdateActions: {
     UpdateAction,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeUpdateActionsMessage,
@@ -7559,8 +7551,8 @@ export const removeTagsFromResource: (
   | TagNotFoundFault
   | UserGroupNotFoundFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceMessage,
   output: TagListMessage,
@@ -7598,8 +7590,8 @@ export const createUser: (
   | TagQuotaPerResourceExceeded
   | UserAlreadyExistsFault
   | UserQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserMessage,
   output: User,
@@ -7632,8 +7624,8 @@ export const modifyCacheCluster: (
   | InvalidVPCNetworkStateFault
   | NodeQuotaForClusterExceededFault
   | NodeQuotaForCustomerExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCacheClusterMessage,
   output: ModifyCacheClusterResult,
@@ -7717,8 +7709,8 @@ export const testFailover: (
   | NodeGroupNotFoundFault
   | ReplicationGroupNotFoundFault
   | TestFailoverNotAvailableFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestFailoverMessage,
   output: TestFailoverResult,
@@ -7750,8 +7742,8 @@ export const createUserGroup: (
   | UserGroupAlreadyExistsFault
   | UserGroupQuotaExceededFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserGroupMessage,
   output: UserGroup,
@@ -7797,8 +7789,8 @@ export const modifyReplicationGroup: (
   | NodeQuotaForCustomerExceededFault
   | ReplicationGroupNotFoundFault
   | UserGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyReplicationGroupMessage,
   output: ModifyReplicationGroupResult,
@@ -7839,8 +7831,8 @@ export const modifyReplicationGroupShardConfiguration: (
   | NodeGroupsPerReplicationGroupQuotaExceededFault
   | NodeQuotaForCustomerExceededFault
   | ReplicationGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyReplicationGroupShardConfigurationMessage,
   output: ModifyReplicationGroupShardConfigurationResult,
@@ -7881,8 +7873,8 @@ export const createCacheCluster: (
   | NodeQuotaForCustomerExceededFault
   | ReplicationGroupNotFoundFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCacheClusterMessage,
   output: CreateCacheClusterResult,
@@ -7913,8 +7905,8 @@ export const completeMigration: (
   | InvalidReplicationGroupStateFault
   | ReplicationGroupNotFoundFault
   | ReplicationGroupNotUnderMigrationFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompleteMigrationMessage,
   output: CompleteMigrationResponse,
@@ -7936,8 +7928,8 @@ export const modifyCacheSubnetGroup: (
   | InvalidSubnet
   | SubnetInUse
   | SubnetNotAllowedFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCacheSubnetGroupMessage,
   output: ModifyCacheSubnetGroupResult,
@@ -7965,8 +7957,8 @@ export const createCacheSubnetGroup: (
   | InvalidSubnet
   | SubnetNotAllowedFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCacheSubnetGroupMessage,
   output: CreateCacheSubnetGroupResult,
@@ -8001,8 +7993,8 @@ export const increaseReplicaCount: (
   | NodeQuotaForCustomerExceededFault
   | NoOperationFault
   | ReplicationGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IncreaseReplicaCountMessage,
   output: IncreaseReplicaCountResult,
@@ -8081,8 +8073,8 @@ export const createReplicationGroup: (
   | ReplicationGroupAlreadyExistsFault
   | TagQuotaPerResourceExceeded
   | UserGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicationGroupMessage,
   output: CreateReplicationGroupResult,
@@ -8130,8 +8122,8 @@ export const decreaseReplicaCount: (
   | NoOperationFault
   | ReplicationGroupNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DecreaseReplicaCountMessage,
   output: DecreaseReplicaCountResult,

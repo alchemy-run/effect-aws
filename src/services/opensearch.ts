@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://es.amazonaws.com/doc/2021-01-01/");
 const svc = T.AwsApiService({
@@ -5519,17 +5517,15 @@ export class BaseException extends S.TaggedError<BaseException>()(
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalException extends S.TaggedError<InternalException>()(
   "InternalException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class DependencyFailureException extends S.TaggedError<DependencyFailureException>()(
   "DependencyFailureException",
   { message: S.optional(S.String) },
@@ -5537,41 +5533,39 @@ export class DependencyFailureException extends S.TaggedError<DependencyFailureE
 export class DisabledOperationException extends S.TaggedError<DisabledOperationException>()(
   "DisabledOperationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidTypeException extends S.TaggedError<InvalidTypeException>()(
   "InvalidTypeException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidPaginationTokenException extends S.TaggedError<InvalidPaginationTokenException>()(
   "InvalidPaginationTokenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceAlreadyExistsException extends S.TaggedError<ResourceAlreadyExistsException>()(
   "ResourceAlreadyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class SlotNotAvailableException extends S.TaggedError<SlotNotAvailableException>()(
   "SlotNotAvailableException",
   { SlotSuggestions: S.optional(SlotList), message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**
@@ -5581,11 +5575,8 @@ export const listVpcEndpoints: (
   input: ListVpcEndpointsRequest,
 ) => Effect.Effect<
   ListVpcEndpointsResponse,
-  | BaseException
-  | DisabledOperationException
-  | InternalException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | DisabledOperationException | InternalException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVpcEndpointsRequest,
   output: ListVpcEndpointsResponse,
@@ -5599,8 +5590,8 @@ export const deleteOutboundConnection: (
   input: DeleteOutboundConnectionRequest,
 ) => Effect.Effect<
   DeleteOutboundConnectionResponse,
-  DisabledOperationException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DisabledOperationException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOutboundConnectionRequest,
   output: DeleteOutboundConnectionResponse,
@@ -5615,28 +5606,22 @@ export const describeInboundConnections: {
     input: DescribeInboundConnectionsRequest,
   ): Effect.Effect<
     DescribeInboundConnectionsResponse,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInboundConnectionsRequest,
   ) => Stream.Stream<
     DescribeInboundConnectionsResponse,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInboundConnectionsRequest,
   ) => Stream.Stream<
     unknown,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInboundConnectionsRequest,
@@ -5659,8 +5644,8 @@ export const describeVpcEndpoints: (
   | DisabledOperationException
   | InternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcEndpointsRequest,
   output: DescribeVpcEndpointsResponse,
@@ -5685,8 +5670,8 @@ export const getUpgradeHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetUpgradeHistoryRequest,
@@ -5697,8 +5682,8 @@ export const getUpgradeHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetUpgradeHistoryRequest,
@@ -5709,8 +5694,8 @@ export const getUpgradeHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetUpgradeHistoryRequest,
@@ -5742,8 +5727,8 @@ export const upgradeDomain: (
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpgradeDomainRequest,
   output: UpgradeDomainResponse,
@@ -5771,8 +5756,8 @@ export const updatePackage: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePackageRequest,
   output: UpdatePackageResponse,
@@ -5798,8 +5783,8 @@ export const purchaseReservedInstanceOffering: (
   | ResourceAlreadyExistsException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseReservedInstanceOfferingRequest,
   output: PurchaseReservedInstanceOfferingResponse,
@@ -5826,8 +5811,8 @@ export const authorizeVpcEndpointAccess: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeVpcEndpointAccessRequest,
   output: AuthorizeVpcEndpointAccessResponse,
@@ -5851,8 +5836,8 @@ export const acceptInboundConnection: (
   | DisabledOperationException
   | LimitExceededException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptInboundConnectionRequest,
   output: AcceptInboundConnectionResponse,
@@ -5878,8 +5863,8 @@ export const addDataSource: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddDataSourceRequest,
   output: AddDataSourceResponse,
@@ -5907,8 +5892,8 @@ export const addDirectQueryDataSource: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddDirectQueryDataSourceRequest,
   output: AddDirectQueryDataSourceResponse,
@@ -5929,8 +5914,8 @@ export const deleteInboundConnection: (
   input: DeleteInboundConnectionRequest,
 ) => Effect.Effect<
   DeleteInboundConnectionResponse,
-  DisabledOperationException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DisabledOperationException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInboundConnectionRequest,
   output: DeleteInboundConnectionResponse,
@@ -5947,8 +5932,8 @@ export const deleteVpcEndpoint: (
   | DisabledOperationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEndpointRequest,
   output: DeleteVpcEndpointResponse,
@@ -5974,8 +5959,8 @@ export const describeDomainNodes: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainNodesRequest,
   output: DescribeDomainNodesResponse,
@@ -6003,8 +5988,8 @@ export const describePackages: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePackagesRequest,
@@ -6015,8 +6000,8 @@ export const describePackages: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribePackagesRequest,
@@ -6027,8 +6012,8 @@ export const describePackages: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePackagesRequest,
@@ -6060,8 +6045,8 @@ export const describeReservedInstances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedInstancesRequest,
@@ -6071,8 +6056,8 @@ export const describeReservedInstances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedInstancesRequest,
@@ -6082,8 +6067,8 @@ export const describeReservedInstances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedInstancesRequest,
@@ -6117,8 +6102,8 @@ export const dissociatePackage: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DissociatePackageRequest,
   output: DissociatePackageResponse,
@@ -6144,8 +6129,8 @@ export const getApplication: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationRequest,
   output: GetApplicationResponse,
@@ -6171,8 +6156,8 @@ export const getCompatibleVersions: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCompatibleVersionsRequest,
   output: GetCompatibleVersionsResponse,
@@ -6200,8 +6185,8 @@ export const getPackageVersionHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetPackageVersionHistoryRequest,
@@ -6212,8 +6197,8 @@ export const getPackageVersionHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetPackageVersionHistoryRequest,
@@ -6224,8 +6209,8 @@ export const getPackageVersionHistory: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetPackageVersionHistoryRequest,
@@ -6257,8 +6242,8 @@ export const listApplications: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationsRequest,
@@ -6270,8 +6255,8 @@ export const listApplications: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationsRequest,
@@ -6283,8 +6268,8 @@ export const listApplications: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
@@ -6319,8 +6304,8 @@ export const listDataSources: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDataSourcesRequest,
   output: ListDataSourcesResponse,
@@ -6346,8 +6331,8 @@ export const listDirectQueryDataSources: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDirectQueryDataSourcesRequest,
   output: ListDirectQueryDataSourcesResponse,
@@ -6372,8 +6357,8 @@ export const listDomainMaintenances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListDomainMaintenancesRequest,
@@ -6384,8 +6369,8 @@ export const listDomainMaintenances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListDomainMaintenancesRequest,
@@ -6396,8 +6381,8 @@ export const listDomainMaintenances: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDomainMaintenancesRequest,
@@ -6428,8 +6413,8 @@ export const listInstanceTypeDetails: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListInstanceTypeDetailsRequest,
@@ -6439,8 +6424,8 @@ export const listInstanceTypeDetails: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListInstanceTypeDetailsRequest,
@@ -6450,8 +6435,8 @@ export const listInstanceTypeDetails: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInstanceTypeDetailsRequest,
@@ -6480,8 +6465,8 @@ export const describeDomain: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainRequest,
   output: DescribeDomainResponse,
@@ -6507,8 +6492,8 @@ export const listDomainsForPackage: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListDomainsForPackageRequest,
@@ -6519,8 +6504,8 @@ export const listDomainsForPackage: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListDomainsForPackageRequest,
@@ -6531,8 +6516,8 @@ export const listDomainsForPackage: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDomainsForPackageRequest,
@@ -6565,8 +6550,8 @@ export const listPackagesForDomain: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPackagesForDomainRequest,
@@ -6577,8 +6562,8 @@ export const listPackagesForDomain: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPackagesForDomainRequest,
@@ -6589,8 +6574,8 @@ export const listPackagesForDomain: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPackagesForDomainRequest,
@@ -6620,8 +6605,8 @@ export const listTags: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -6645,8 +6630,8 @@ export const listVersions: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListVersionsRequest,
@@ -6656,8 +6641,8 @@ export const listVersions: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListVersionsRequest,
@@ -6667,8 +6652,8 @@ export const listVersions: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVersionsRequest,
@@ -6701,8 +6686,8 @@ export const putDefaultApplicationSetting: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDefaultApplicationSettingRequest,
   output: PutDefaultApplicationSettingResponse,
@@ -6726,8 +6711,8 @@ export const startServiceSoftwareUpdate: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartServiceSoftwareUpdateRequest,
   output: StartServiceSoftwareUpdateResponse,
@@ -6752,8 +6737,8 @@ export const getDefaultApplicationSetting: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDefaultApplicationSettingRequest,
   output: GetDefaultApplicationSettingResponse,
@@ -6777,8 +6762,8 @@ export const dissociatePackages: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DissociatePackagesRequest,
   output: DissociatePackagesResponse,
@@ -6805,8 +6790,8 @@ export const updateApplication: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -6833,8 +6818,8 @@ export const updateVpcEndpoint: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVpcEndpointRequest,
   output: UpdateVpcEndpointResponse,
@@ -6861,8 +6846,8 @@ export const associatePackages: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociatePackagesRequest,
   output: AssociatePackagesResponse,
@@ -6888,8 +6873,8 @@ export const getDataSource: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDataSourceRequest,
   output: GetDataSourceResponse,
@@ -6917,8 +6902,8 @@ export const updateDataSource: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataSourceRequest,
   output: UpdateDataSourceResponse,
@@ -6944,8 +6929,8 @@ export const getDirectQueryDataSource: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDirectQueryDataSourceRequest,
   output: GetDirectQueryDataSourceResponse,
@@ -6969,8 +6954,8 @@ export const getDomainMaintenanceStatus: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainMaintenanceStatusRequest,
   output: GetDomainMaintenanceStatusResponse,
@@ -6995,8 +6980,8 @@ export const getUpgradeStatus: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUpgradeStatusRequest,
   output: GetUpgradeStatusResponse,
@@ -7021,8 +7006,8 @@ export const listVpcEndpointAccess: (
   | DisabledOperationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVpcEndpointAccessRequest,
   output: ListVpcEndpointAccessResponse,
@@ -7045,8 +7030,8 @@ export const listVpcEndpointsForDomain: (
   | DisabledOperationException
   | InternalException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListVpcEndpointsForDomainRequest,
   output: ListVpcEndpointsForDomainResponse,
@@ -7065,8 +7050,8 @@ export const rejectInboundConnection: (
   input: RejectInboundConnectionRequest,
 ) => Effect.Effect<
   RejectInboundConnectionResponse,
-  DisabledOperationException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DisabledOperationException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectInboundConnectionRequest,
   output: RejectInboundConnectionResponse,
@@ -7086,8 +7071,8 @@ export const startDomainMaintenance: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDomainMaintenanceRequest,
   output: StartDomainMaintenanceResponse,
@@ -7112,8 +7097,8 @@ export const updateDirectQueryDataSource: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDirectQueryDataSourceRequest,
   output: UpdateDirectQueryDataSourceResponse,
@@ -7138,8 +7123,8 @@ export const updatePackageScope: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePackageScopeRequest,
   output: UpdatePackageScopeResponse,
@@ -7164,8 +7149,8 @@ export const deleteDirectQueryDataSource: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDirectQueryDataSourceRequest,
   output: DeleteDirectQueryDataSourceResponse,
@@ -7190,8 +7175,8 @@ export const revokeVpcEndpointAccess: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeVpcEndpointAccessRequest,
   output: RevokeVpcEndpointAccessResponse,
@@ -7215,8 +7200,8 @@ export const cancelDomainConfigChange: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelDomainConfigChangeRequest,
   output: CancelDomainConfigChangeResponse,
@@ -7242,8 +7227,8 @@ export const deleteApplication: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -7271,8 +7256,8 @@ export const deleteDataSource: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataSourceRequest,
   output: DeleteDataSourceResponse,
@@ -7300,8 +7285,8 @@ export const associatePackage: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociatePackageRequest,
   output: AssociatePackageResponse,
@@ -7328,8 +7313,8 @@ export const updateDomainConfig: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainConfigRequest,
   output: UpdateDomainConfigResponse,
@@ -7357,8 +7342,8 @@ export const listScheduledActions: {
     | InvalidPaginationTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListScheduledActionsRequest,
@@ -7369,8 +7354,8 @@ export const listScheduledActions: {
     | InvalidPaginationTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListScheduledActionsRequest,
@@ -7381,8 +7366,8 @@ export const listScheduledActions: {
     | InvalidPaginationTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListScheduledActionsRequest,
@@ -7409,28 +7394,22 @@ export const describeOutboundConnections: {
     input: DescribeOutboundConnectionsRequest,
   ): Effect.Effect<
     DescribeOutboundConnectionsResponse,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOutboundConnectionsRequest,
   ) => Stream.Stream<
     DescribeOutboundConnectionsResponse,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOutboundConnectionsRequest,
   ) => Stream.Stream<
     unknown,
-    | DisabledOperationException
-    | InvalidPaginationTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DisabledOperationException | InvalidPaginationTokenException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOutboundConnectionsRequest,
@@ -7450,8 +7429,8 @@ export const listDomainNames: (
   input: ListDomainNamesRequest,
 ) => Effect.Effect<
   ListDomainNamesResponse,
-  BaseException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | ValidationException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDomainNamesRequest,
   output: ListDomainNamesResponse,
@@ -7465,8 +7444,8 @@ export const describeDomains: (
   input: DescribeDomainsRequest,
 ) => Effect.Effect<
   DescribeDomainsResponse,
-  BaseException | InternalException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ValidationException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainsRequest,
   output: DescribeDomainsResponse,
@@ -7480,8 +7459,8 @@ export const removeTags: (
   input: RemoveTagsRequest,
 ) => Effect.Effect<
   RemoveTagsResponse,
-  BaseException | InternalException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BaseException | InternalException | ValidationException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsRequest,
   output: RemoveTagsResponse,
@@ -7500,8 +7479,8 @@ export const createApplication: (
   | DisabledOperationException
   | InternalException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -7529,8 +7508,8 @@ export const addTags: (
   | InternalException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsRequest,
   output: AddTagsResponse,
@@ -7556,8 +7535,8 @@ export const cancelServiceSoftwareUpdate: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelServiceSoftwareUpdateRequest,
   output: CancelServiceSoftwareUpdateResponse,
@@ -7581,8 +7560,8 @@ export const createVpcEndpoint: (
   | InternalException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointRequest,
   output: CreateVpcEndpointResponse,
@@ -7609,8 +7588,8 @@ export const deletePackage: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePackageRequest,
   output: DeletePackageResponse,
@@ -7635,8 +7614,8 @@ export const describeDomainChangeProgress: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainChangeProgressRequest,
   output: DescribeDomainChangeProgressResponse,
@@ -7660,8 +7639,8 @@ export const describeDomainHealth: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainHealthRequest,
   output: DescribeDomainHealthResponse,
@@ -7686,8 +7665,8 @@ export const describeDryRunProgress: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDryRunProgressRequest,
   output: DescribeDryRunProgressResponse,
@@ -7713,8 +7692,8 @@ export const describeReservedInstanceOfferings: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedInstanceOfferingsRequest,
@@ -7724,8 +7703,8 @@ export const describeReservedInstanceOfferings: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedInstanceOfferingsRequest,
@@ -7735,8 +7714,8 @@ export const describeReservedInstanceOfferings: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedInstanceOfferingsRequest,
@@ -7766,8 +7745,8 @@ export const createOutboundConnection: (
   | InternalException
   | LimitExceededException
   | ResourceAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOutboundConnectionRequest,
   output: CreateOutboundConnectionResponse,
@@ -7794,8 +7773,8 @@ export const createPackage: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePackageRequest,
   output: CreatePackageResponse,
@@ -7824,8 +7803,8 @@ export const createDomain: (
   | LimitExceededException
   | ResourceAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainRequest,
   output: CreateDomainResponse,
@@ -7851,8 +7830,8 @@ export const deleteDomain: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainRequest,
   output: DeleteDomainResponse,
@@ -7877,8 +7856,8 @@ export const describeDomainAutoTunes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDomainAutoTunesRequest,
@@ -7888,8 +7867,8 @@ export const describeDomainAutoTunes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDomainAutoTunesRequest,
@@ -7899,8 +7878,8 @@ export const describeDomainAutoTunes: {
     | InternalException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDomainAutoTunesRequest,
@@ -7928,8 +7907,8 @@ export const describeDomainConfig: (
   | InternalException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDomainConfigRequest,
   output: DescribeDomainConfigResponse,
@@ -7956,8 +7935,8 @@ export const updateScheduledAction: (
   | ResourceNotFoundException
   | SlotNotAvailableException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateScheduledActionRequest,
   output: UpdateScheduledActionResponse,
@@ -7985,8 +7964,8 @@ export const deleteIndex: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIndexRequest,
   output: DeleteIndexResponse,
@@ -8014,8 +7993,8 @@ export const getIndex: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIndexRequest,
   output: GetIndexResponse,
@@ -8043,8 +8022,8 @@ export const updateIndex: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIndexRequest,
   output: UpdateIndexResponse,
@@ -8073,8 +8052,8 @@ export const createIndex: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIndexRequest,
   output: CreateIndexResponse,
@@ -8103,8 +8082,8 @@ export const describeInstanceTypeLimits: (
   | LimitExceededException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeInstanceTypeLimitsRequest,
   output: DescribeInstanceTypeLimitsResponse,

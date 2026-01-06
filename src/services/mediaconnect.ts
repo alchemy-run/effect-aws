@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "MediaConnect",
@@ -6449,34 +6447,30 @@ export const CreateRouterOutputResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.String.pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { Message: S.String.pipe(T.JsonName("message")) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.String.pipe(T.JsonName("message")) },
   T.Retryable(),
-) {}
+).pipe(C.withConflictError, C.withRetryableError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Message: S.String.pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withAuthError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Message: S.String.pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Message: S.String.pipe(T.JsonName("message")) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class GrantFlowEntitlements420Exception extends S.TaggedError<GrantFlowEntitlements420Exception>()(
   "GrantFlowEntitlements420Exception",
   { Message: S.String.pipe(T.JsonName("message")) },
@@ -6493,9 +6487,7 @@ export class TooManyRequestsException extends S.TaggedError<TooManyRequestsExcep
   "TooManyRequestsException",
   { Message: S.String.pipe(T.JsonName("message")) },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class CreateFlow420Exception extends S.TaggedError<CreateFlow420Exception>()(
   "CreateFlow420Exception",
   { Message: S.String.pipe(T.JsonName("message")) },
@@ -6528,8 +6520,8 @@ export const tagResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6549,8 +6541,8 @@ export const untagGlobalResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagGlobalResourceRequest,
   output: UntagGlobalResourceResponse,
@@ -6570,8 +6562,8 @@ export const untagResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6591,8 +6583,8 @@ export const listTagsForGlobalResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForGlobalResourceRequest,
   output: ListTagsForGlobalResourceResponse,
@@ -6612,8 +6604,8 @@ export const listTagsForResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6633,8 +6625,8 @@ export const tagGlobalResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagGlobalResourceRequest,
   output: TagGlobalResourceResponse,
@@ -6657,8 +6649,8 @@ export const listBridges: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBridgesRequest,
@@ -6669,8 +6661,8 @@ export const listBridges: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBridgesRequest,
@@ -6681,8 +6673,8 @@ export const listBridges: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBridgesRequest,
@@ -6714,8 +6706,8 @@ export const addFlowMediaStreams: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddFlowMediaStreamsRequest,
   output: AddFlowMediaStreamsResponse,
@@ -6741,8 +6733,8 @@ export const addFlowSources: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddFlowSourcesRequest,
   output: AddFlowSourcesResponse,
@@ -6768,8 +6760,8 @@ export const updateFlowOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFlowOutputRequest,
   output: UpdateFlowOutputResponse,
@@ -6796,8 +6788,8 @@ export const getRouterOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouterOutputRequest,
   output: GetRouterOutputResponse,
@@ -6825,8 +6817,8 @@ export const addBridgeOutputs: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddBridgeOutputsRequest,
   output: AddBridgeOutputsResponse,
@@ -6854,8 +6846,8 @@ export const addBridgeSources: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddBridgeSourcesRequest,
   output: AddBridgeSourcesResponse,
@@ -6883,8 +6875,8 @@ export const updateBridgeSource: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBridgeSourceRequest,
   output: UpdateBridgeSourceResponse,
@@ -6911,8 +6903,8 @@ export const describeFlow: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFlowRequest,
   output: DescribeFlowResponse,
@@ -6939,8 +6931,8 @@ export const grantFlowEntitlements: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GrantFlowEntitlementsRequest,
   output: GrantFlowEntitlementsResponse,
@@ -6967,8 +6959,8 @@ export const updateFlowMediaStream: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFlowMediaStreamRequest,
   output: UpdateFlowMediaStreamResponse,
@@ -6994,8 +6986,8 @@ export const updateFlowSource: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFlowSourceRequest,
   output: UpdateFlowSourceResponse,
@@ -7022,8 +7014,8 @@ export const createGateway: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGatewayRequest,
   output: CreateGatewayResponse,
@@ -7049,8 +7041,8 @@ export const describeOffering: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeOfferingRequest,
   output: DescribeOfferingResponse,
@@ -7075,8 +7067,8 @@ export const listRouterInputs: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRouterInputsRequest,
@@ -7087,8 +7079,8 @@ export const listRouterInputs: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRouterInputsRequest,
@@ -7099,8 +7091,8 @@ export const listRouterInputs: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRouterInputsRequest,
@@ -7132,8 +7124,8 @@ export const getRouterInputSourceMetadata: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouterInputSourceMetadataRequest,
   output: GetRouterInputSourceMetadataResponse,
@@ -7160,8 +7152,8 @@ export const startRouterInput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRouterInputRequest,
   output: StartRouterInputResponse,
@@ -7188,8 +7180,8 @@ export const listRouterNetworkInterfaces: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRouterNetworkInterfacesRequest,
@@ -7200,8 +7192,8 @@ export const listRouterNetworkInterfaces: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRouterNetworkInterfacesRequest,
@@ -7212,8 +7204,8 @@ export const listRouterNetworkInterfaces: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRouterNetworkInterfacesRequest,
@@ -7245,8 +7237,8 @@ export const listRouterOutputs: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRouterOutputsRequest,
@@ -7257,8 +7249,8 @@ export const listRouterOutputs: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRouterOutputsRequest,
@@ -7269,8 +7261,8 @@ export const listRouterOutputs: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRouterOutputsRequest,
@@ -7302,8 +7294,8 @@ export const deleteFlow: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFlowRequest,
   output: DeleteFlowResponse,
@@ -7329,8 +7321,8 @@ export const addFlowVpcInterfaces: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddFlowVpcInterfacesRequest,
   output: AddFlowVpcInterfacesResponse,
@@ -7356,8 +7348,8 @@ export const describeFlowSourceThumbnail: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFlowSourceThumbnailRequest,
   output: DescribeFlowSourceThumbnailResponse,
@@ -7383,8 +7375,8 @@ export const updateFlowEntitlement: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFlowEntitlementRequest,
   output: UpdateFlowEntitlementResponse,
@@ -7411,8 +7403,8 @@ export const describeGatewayInstance: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGatewayInstanceRequest,
   output: DescribeGatewayInstanceResponse,
@@ -7440,8 +7432,8 @@ export const describeGateway: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGatewayRequest,
   output: DescribeGatewayResponse,
@@ -7468,8 +7460,8 @@ export const purchaseOffering: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseOfferingRequest,
   output: PurchaseOfferingResponse,
@@ -7495,8 +7487,8 @@ export const getRouterInputThumbnail: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouterInputThumbnailRequest,
   output: GetRouterInputThumbnailResponse,
@@ -7523,8 +7515,8 @@ export const getRouterNetworkInterface: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouterNetworkInterfaceRequest,
   output: GetRouterNetworkInterfaceResponse,
@@ -7550,8 +7542,8 @@ export const describeReservation: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReservationRequest,
   output: DescribeReservationResponse,
@@ -7577,8 +7569,8 @@ export const removeBridgeOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveBridgeOutputRequest,
   output: RemoveBridgeOutputResponse,
@@ -7606,8 +7598,8 @@ export const removeBridgeSource: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveBridgeSourceRequest,
   output: RemoveBridgeSourceResponse,
@@ -7635,8 +7627,8 @@ export const updateBridgeState: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBridgeStateRequest,
   output: UpdateBridgeStateResponse,
@@ -7664,8 +7656,8 @@ export const updateGatewayInstance: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGatewayInstanceRequest,
   output: UpdateGatewayInstanceResponse,
@@ -7693,8 +7685,8 @@ export const deregisterGatewayInstance: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterGatewayInstanceRequest,
   output: DeregisterGatewayInstanceResponse,
@@ -7722,8 +7714,8 @@ export const deleteGateway: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGatewayRequest,
   output: DeleteGatewayResponse,
@@ -7751,8 +7743,8 @@ export const updateRouterInput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRouterInputRequest,
   output: UpdateRouterInputResponse,
@@ -7780,8 +7772,8 @@ export const deleteRouterInput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouterInputRequest,
   output: DeleteRouterInputResponse,
@@ -7809,8 +7801,8 @@ export const restartRouterInput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestartRouterInputRequest,
   output: RestartRouterInputResponse,
@@ -7838,8 +7830,8 @@ export const stopRouterInput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopRouterInputRequest,
   output: StopRouterInputResponse,
@@ -7867,8 +7859,8 @@ export const deleteRouterNetworkInterface: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouterNetworkInterfaceRequest,
   output: DeleteRouterNetworkInterfaceResponse,
@@ -7896,8 +7888,8 @@ export const updateRouterOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRouterOutputRequest,
   output: UpdateRouterOutputResponse,
@@ -7925,8 +7917,8 @@ export const deleteRouterOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouterOutputRequest,
   output: DeleteRouterOutputResponse,
@@ -7954,8 +7946,8 @@ export const restartRouterOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestartRouterOutputRequest,
   output: RestartRouterOutputResponse,
@@ -7983,8 +7975,8 @@ export const startRouterOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRouterOutputRequest,
   output: StartRouterOutputResponse,
@@ -8012,8 +8004,8 @@ export const stopRouterOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopRouterOutputRequest,
   output: StopRouterOutputResponse,
@@ -8041,8 +8033,8 @@ export const takeRouterInput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TakeRouterInputRequest,
   output: TakeRouterInputResponse,
@@ -8070,8 +8062,8 @@ export const updateBridge: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBridgeRequest,
   output: UpdateBridgeResponse,
@@ -8098,8 +8090,8 @@ export const removeFlowMediaStream: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveFlowMediaStreamRequest,
   output: RemoveFlowMediaStreamResponse,
@@ -8125,8 +8117,8 @@ export const removeFlowOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveFlowOutputRequest,
   output: RemoveFlowOutputResponse,
@@ -8152,8 +8144,8 @@ export const removeFlowSource: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveFlowSourceRequest,
   output: RemoveFlowSourceResponse,
@@ -8179,8 +8171,8 @@ export const removeFlowVpcInterface: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveFlowVpcInterfaceRequest,
   output: RemoveFlowVpcInterfaceResponse,
@@ -8206,8 +8198,8 @@ export const revokeFlowEntitlement: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeFlowEntitlementRequest,
   output: RevokeFlowEntitlementResponse,
@@ -8233,8 +8225,8 @@ export const startFlow: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartFlowRequest,
   output: StartFlowResponse,
@@ -8260,8 +8252,8 @@ export const stopFlow: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopFlowRequest,
   output: StopFlowResponse,
@@ -8288,8 +8280,8 @@ export const deleteBridge: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBridgeRequest,
   output: DeleteBridgeResponse,
@@ -8317,8 +8309,8 @@ export const updateBridgeOutput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBridgeOutputRequest,
   output: UpdateBridgeOutputResponse,
@@ -8345,8 +8337,8 @@ export const updateFlow: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFlowRequest,
   output: UpdateFlowResponse,
@@ -8371,8 +8363,8 @@ export const listFlows: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFlowsRequest,
@@ -8382,8 +8374,8 @@ export const listFlows: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFlowsRequest,
@@ -8393,8 +8385,8 @@ export const listFlows: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowsRequest,
@@ -8425,8 +8417,8 @@ export const listGatewayInstances: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGatewayInstancesRequest,
@@ -8437,8 +8429,8 @@ export const listGatewayInstances: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGatewayInstancesRequest,
@@ -8449,8 +8441,8 @@ export const listGatewayInstances: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGatewayInstancesRequest,
@@ -8482,8 +8474,8 @@ export const listGateways: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGatewaysRequest,
@@ -8494,8 +8486,8 @@ export const listGateways: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGatewaysRequest,
@@ -8506,8 +8498,8 @@ export const listGateways: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGatewaysRequest,
@@ -8538,8 +8530,8 @@ export const batchGetRouterInput: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetRouterInputRequest,
   output: BatchGetRouterInputResponse,
@@ -8563,8 +8555,8 @@ export const batchGetRouterNetworkInterface: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetRouterNetworkInterfaceRequest,
   output: BatchGetRouterNetworkInterfaceResponse,
@@ -8588,8 +8580,8 @@ export const batchGetRouterOutput: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetRouterOutputRequest,
   output: BatchGetRouterOutputResponse,
@@ -8613,8 +8605,8 @@ export const listOfferings: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListOfferingsRequest,
@@ -8624,8 +8616,8 @@ export const listOfferings: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListOfferingsRequest,
@@ -8635,8 +8627,8 @@ export const listOfferings: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOfferingsRequest,
@@ -8666,8 +8658,8 @@ export const listReservations: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReservationsRequest,
@@ -8677,8 +8669,8 @@ export const listReservations: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReservationsRequest,
@@ -8688,8 +8680,8 @@ export const listReservations: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReservationsRequest,
@@ -8719,8 +8711,8 @@ export const listEntitlements: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListEntitlementsRequest,
@@ -8730,8 +8722,8 @@ export const listEntitlements: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListEntitlementsRequest,
@@ -8741,8 +8733,8 @@ export const listEntitlements: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEntitlementsRequest,
@@ -8773,8 +8765,8 @@ export const updateRouterNetworkInterface: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRouterNetworkInterfaceRequest,
   output: UpdateRouterNetworkInterfaceResponse,
@@ -8801,8 +8793,8 @@ export const describeBridge: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBridgeRequest,
   output: DescribeBridgeResponse,
@@ -8830,8 +8822,8 @@ export const createBridge: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBridgeRequest,
   output: CreateBridgeResponse,
@@ -8858,8 +8850,8 @@ export const createFlow: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFlowRequest,
   output: CreateFlowResponse,
@@ -8885,8 +8877,8 @@ export const describeFlowSourceMetadata: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFlowSourceMetadataRequest,
   output: DescribeFlowSourceMetadataResponse,
@@ -8913,8 +8905,8 @@ export const getRouterInput: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouterInputRequest,
   output: GetRouterInputResponse,
@@ -8942,8 +8934,8 @@ export const createRouterNetworkInterface: (
   | RouterNetworkInterfaceServiceQuotaExceededException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouterNetworkInterfaceRequest,
   output: CreateRouterNetworkInterfaceResponse,
@@ -8971,8 +8963,8 @@ export const addFlowOutputs: (
   | NotFoundException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddFlowOutputsRequest,
   output: AddFlowOutputsResponse,
@@ -9000,8 +8992,8 @@ export const createRouterInput: (
   | RouterInputServiceQuotaExceededException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouterInputRequest,
   output: CreateRouterInputResponse,
@@ -9029,8 +9021,8 @@ export const createRouterOutput: (
   | RouterOutputServiceQuotaExceededException
   | ServiceUnavailableException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouterOutputRequest,
   output: CreateRouterOutputResponse,

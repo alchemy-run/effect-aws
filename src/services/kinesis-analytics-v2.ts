@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://analytics.kinesis.amazonaws.com/doc/2018-05-23",
@@ -3238,7 +3236,7 @@ export class InvalidApplicationConfigurationException extends S.TaggedError<Inva
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidArgumentException extends S.TaggedError<InvalidArgumentException>()(
   "InvalidArgumentException",
   { Message: S.optional(S.String) },
@@ -3274,9 +3272,7 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class CodeValidationException extends S.TaggedError<CodeValidationException>()(
   "CodeValidationException",
   { Message: S.optional(S.String) },
@@ -3304,8 +3300,8 @@ export const startApplication: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartApplicationRequest,
   output: StartApplicationResponse,
@@ -3325,28 +3321,22 @@ export const listApplicationSnapshots: {
     input: ListApplicationSnapshotsRequest,
   ): Effect.Effect<
     ListApplicationSnapshotsResponse,
-    | InvalidArgumentException
-    | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidArgumentException | UnsupportedOperationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationSnapshotsRequest,
   ) => Stream.Stream<
     ListApplicationSnapshotsResponse,
-    | InvalidArgumentException
-    | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidArgumentException | UnsupportedOperationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationSnapshotsRequest,
   ) => Stream.Stream<
     SnapshotDetails,
-    | InvalidArgumentException
-    | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidArgumentException | UnsupportedOperationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationSnapshotsRequest,
@@ -3388,8 +3378,8 @@ export const updateApplicationMaintenanceConfiguration: (
   | ResourceInUseException
   | ResourceNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationMaintenanceConfigurationRequest,
   output: UpdateApplicationMaintenanceConfigurationResponse,
@@ -3413,8 +3403,8 @@ export const deleteApplicationVpcConfiguration: (
   | InvalidArgumentException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationVpcConfigurationRequest,
   output: DeleteApplicationVpcConfigurationResponse,
@@ -3446,8 +3436,8 @@ export const addApplicationVpcConfiguration: (
   | InvalidArgumentException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddApplicationVpcConfigurationRequest,
   output: AddApplicationVpcConfigurationResponse,
@@ -3472,22 +3462,22 @@ export const listApplications: {
     input: ListApplicationsRequest,
   ): Effect.Effect<
     ListApplicationsResponse,
-    InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationsRequest,
   ) => Stream.Stream<
     ListApplicationsResponse,
-    InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationsRequest,
   ) => Stream.Stream<
     ApplicationSummary,
-    InvalidRequestException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidRequestException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
@@ -3513,8 +3503,8 @@ export const deleteApplication: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -3539,8 +3529,8 @@ export const deleteApplicationInputProcessingConfiguration: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationInputProcessingConfigurationRequest,
   output: DeleteApplicationInputProcessingConfigurationResponse,
@@ -3566,8 +3556,8 @@ export const deleteApplicationOutput: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationOutputRequest,
   output: DeleteApplicationOutputResponse,
@@ -3594,8 +3584,8 @@ export const deleteApplicationReferenceDataSource: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationReferenceDataSourceRequest,
   output: DeleteApplicationReferenceDataSourceResponse,
@@ -3627,8 +3617,8 @@ export const rollbackApplication: (
   | ResourceInUseException
   | ResourceNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RollbackApplicationRequest,
   output: RollbackApplicationResponse,
@@ -3661,8 +3651,8 @@ export const stopApplication: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopApplicationRequest,
   output: StopApplicationResponse,
@@ -3688,8 +3678,8 @@ export const deleteApplicationSnapshot: (
   | ResourceInUseException
   | ResourceNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationSnapshotRequest,
   output: DeleteApplicationSnapshotResponse,
@@ -3715,8 +3705,8 @@ export const addApplicationCloudWatchLoggingOption: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddApplicationCloudWatchLoggingOptionRequest,
   output: AddApplicationCloudWatchLoggingOptionResponse,
@@ -3756,8 +3746,8 @@ export const addApplicationOutput: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddApplicationOutputRequest,
   output: AddApplicationOutputResponse,
@@ -3787,8 +3777,8 @@ export const addApplicationReferenceDataSource: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddApplicationReferenceDataSourceRequest,
   output: AddApplicationReferenceDataSourceResponse,
@@ -3816,8 +3806,8 @@ export const listApplicationVersions: {
     | InvalidArgumentException
     | ResourceNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationVersionsRequest,
@@ -3826,8 +3816,8 @@ export const listApplicationVersions: {
     | InvalidArgumentException
     | ResourceNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationVersionsRequest,
@@ -3836,8 +3826,8 @@ export const listApplicationVersions: {
     | InvalidArgumentException
     | ResourceNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationVersionsRequest,
@@ -3866,8 +3856,8 @@ export const describeApplicationVersion: (
   | InvalidArgumentException
   | ResourceNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationVersionRequest,
   output: DescribeApplicationVersionResponse,
@@ -3888,8 +3878,8 @@ export const listTagsForResource: (
   | ConcurrentModificationException
   | InvalidArgumentException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -3922,8 +3912,8 @@ export const createApplicationPresignedUrl: (
   | InvalidArgumentException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationPresignedUrlRequest,
   output: CreateApplicationPresignedUrlResponse,
@@ -3946,8 +3936,8 @@ export const deleteApplicationCloudWatchLoggingOption: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationCloudWatchLoggingOptionRequest,
   output: DeleteApplicationCloudWatchLoggingOptionResponse,
@@ -3970,8 +3960,8 @@ export const describeApplicationSnapshot: (
   | InvalidArgumentException
   | ResourceNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationSnapshotRequest,
   output: DescribeApplicationSnapshotResponse,
@@ -3997,8 +3987,8 @@ export const listApplicationOperations: {
     | InvalidArgumentException
     | ResourceNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationOperationsRequest,
@@ -4007,8 +3997,8 @@ export const listApplicationOperations: {
     | InvalidArgumentException
     | ResourceNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationOperationsRequest,
@@ -4017,8 +4007,8 @@ export const listApplicationOperations: {
     | InvalidArgumentException
     | ResourceNotFoundException
     | UnsupportedOperationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationOperationsRequest,
@@ -4047,8 +4037,8 @@ export const describeApplicationOperation: (
   | InvalidArgumentException
   | ResourceNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationOperationRequest,
   output: DescribeApplicationOperationResponse,
@@ -4072,8 +4062,8 @@ export const tagResource: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4099,8 +4089,8 @@ export const createApplicationSnapshot: (
   | ResourceInUseException
   | ResourceNotFoundException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationSnapshotRequest,
   output: CreateApplicationSnapshotResponse,
@@ -4127,8 +4117,8 @@ export const untagResource: (
   | ResourceInUseException
   | ResourceNotFoundException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4154,8 +4144,8 @@ export const addApplicationInputProcessingConfiguration: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddApplicationInputProcessingConfigurationRequest,
   output: AddApplicationInputProcessingConfigurationResponse,
@@ -4184,8 +4174,8 @@ export const createApplication: (
   | ResourceInUseException
   | TooManyTagsException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: CreateApplicationResponse,
@@ -4213,8 +4203,8 @@ export const describeApplication: (
   | InvalidArgumentException
   | InvalidRequestException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeApplicationRequest,
   output: DescribeApplicationResponse,
@@ -4243,8 +4233,8 @@ export const updateApplication: (
   | LimitExceededException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: UpdateApplicationResponse,
@@ -4280,8 +4270,8 @@ export const addApplicationInput: (
   | InvalidRequestException
   | ResourceInUseException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddApplicationInputRequest,
   output: AddApplicationInputResponse,
@@ -4314,8 +4304,8 @@ export const discoverInputSchema: (
   | ServiceUnavailableException
   | UnableToDetectSchemaException
   | UnsupportedOperationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DiscoverInputSchemaRequest,
   output: DiscoverInputSchemaResponse,

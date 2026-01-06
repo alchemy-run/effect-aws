@@ -2,10 +2,10 @@ import * as Context from "effect/Context";
 
 export class Region extends Context.Tag("distilled-aws/Region")<
   Region,
-  AWSRegion
+  RegionName
 >() {}
 
-export type AWSRegion =
+export type RegionName =
   | "us-east-1"
   | "us-east-2"
   | "us-west-1"

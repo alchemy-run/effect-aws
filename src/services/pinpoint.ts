@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Pinpoint",
@@ -8577,39 +8575,35 @@ export const PutEventsResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String), RequestID: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Message: S.optional(S.String), RequestID: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String), RequestID: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   { Message: S.optional(S.String), RequestID: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class MethodNotAllowedException extends S.TaggedError<MethodNotAllowedException>()(
   "MethodNotAllowedException",
   { Message: S.optional(S.String), RequestID: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Message: S.optional(S.String), RequestID: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String), RequestID: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class PayloadTooLargeException extends S.TaggedError<PayloadTooLargeException>()(
   "PayloadTooLargeException",
   { Message: S.optional(S.String), RequestID: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -8619,8 +8613,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -8633,8 +8627,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -8647,8 +8641,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -8666,8 +8660,8 @@ export const listTemplates: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTemplatesRequest,
   output: ListTemplatesResponse,
@@ -8691,8 +8685,8 @@ export const createVoiceTemplate: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVoiceTemplateRequest,
   output: CreateVoiceTemplateResponse,
@@ -8716,8 +8710,8 @@ export const createEmailTemplate: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEmailTemplateRequest,
   output: CreateEmailTemplateResponse,
@@ -8741,8 +8735,8 @@ export const createPushTemplate: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePushTemplateRequest,
   output: CreatePushTemplateResponse,
@@ -8766,8 +8760,8 @@ export const createSmsTemplate: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSmsTemplateRequest,
   output: CreateSmsTemplateResponse,
@@ -8791,8 +8785,8 @@ export const createInAppTemplate: (
   | InternalServerErrorException
   | MethodNotAllowedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInAppTemplateRequest,
   output: CreateInAppTemplateResponse,
@@ -8818,8 +8812,8 @@ export const deleteInAppTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInAppTemplateRequest,
   output: DeleteInAppTemplateResponse,
@@ -8847,8 +8841,8 @@ export const sendMessages: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendMessagesRequest,
   output: SendMessagesResponse,
@@ -8876,8 +8870,8 @@ export const getApplicationDateRangeKpi: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationDateRangeKpiRequest,
   output: GetApplicationDateRangeKpiResponse,
@@ -8905,8 +8899,8 @@ export const sendOTPMessage: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendOTPMessageRequest,
   output: SendOTPMessageResponse,
@@ -8934,8 +8928,8 @@ export const deleteSegment: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSegmentRequest,
   output: DeleteSegmentResponse,
@@ -8963,8 +8957,8 @@ export const getChannels: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetChannelsRequest,
   output: GetChannelsResponse,
@@ -8992,8 +8986,8 @@ export const getInAppMessages: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInAppMessagesRequest,
   output: GetInAppMessagesResponse,
@@ -9021,8 +9015,8 @@ export const sendUsersMessages: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SendUsersMessagesRequest,
   output: SendUsersMessagesResponse,
@@ -9050,8 +9044,8 @@ export const getCampaignActivities: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCampaignActivitiesRequest,
   output: GetCampaignActivitiesResponse,
@@ -9079,8 +9073,8 @@ export const getExportJob: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExportJobRequest,
   output: GetExportJobResponse,
@@ -9108,8 +9102,8 @@ export const getImportJob: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImportJobRequest,
   output: GetImportJobResponse,
@@ -9137,8 +9131,8 @@ export const getJourneyRuns: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJourneyRunsRequest,
   output: GetJourneyRunsResponse,
@@ -9166,8 +9160,8 @@ export const listTemplateVersions: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTemplateVersionsRequest,
   output: ListTemplateVersionsResponse,
@@ -9195,8 +9189,8 @@ export const phoneNumberValidate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PhoneNumberValidateRequest,
   output: PhoneNumberValidateResponse,
@@ -9224,8 +9218,8 @@ export const removeAttributes: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveAttributesRequest,
   output: RemoveAttributesResponse,
@@ -9253,8 +9247,8 @@ export const updateApplicationSettings: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationSettingsRequest,
   output: UpdateApplicationSettingsResponse,
@@ -9282,8 +9276,8 @@ export const updateEndpoint: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEndpointRequest,
   output: UpdateEndpointResponse,
@@ -9311,8 +9305,8 @@ export const updateEndpointsBatch: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEndpointsBatchRequest,
   output: UpdateEndpointsBatchResponse,
@@ -9340,8 +9334,8 @@ export const verifyOTPMessage: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifyOTPMessageRequest,
   output: VerifyOTPMessageResponse,
@@ -9370,8 +9364,8 @@ export const updateJourney: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateJourneyRequest,
   output: UpdateJourneyResponse,
@@ -9400,8 +9394,8 @@ export const deleteJourney: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteJourneyRequest,
   output: DeleteJourneyResponse,
@@ -9429,8 +9423,8 @@ export const deleteRecommenderConfiguration: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRecommenderConfigurationRequest,
   output: DeleteRecommenderConfigurationResponse,
@@ -9458,8 +9452,8 @@ export const deleteSmsChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSmsChannelRequest,
   output: DeleteSmsChannelResponse,
@@ -9487,8 +9481,8 @@ export const deleteUserEndpoints: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserEndpointsRequest,
   output: DeleteUserEndpointsResponse,
@@ -9516,8 +9510,8 @@ export const deleteVoiceChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceChannelRequest,
   output: DeleteVoiceChannelResponse,
@@ -9545,8 +9539,8 @@ export const getApplicationSettings: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApplicationSettingsRequest,
   output: GetApplicationSettingsResponse,
@@ -9574,8 +9568,8 @@ export const getApps: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAppsRequest,
   output: GetAppsResponse,
@@ -9603,8 +9597,8 @@ export const getCampaignDateRangeKpi: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCampaignDateRangeKpiRequest,
   output: GetCampaignDateRangeKpiResponse,
@@ -9632,8 +9626,8 @@ export const getCampaigns: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCampaignsRequest,
   output: GetCampaignsResponse,
@@ -9661,8 +9655,8 @@ export const getEmailTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEmailTemplateRequest,
   output: GetEmailTemplateResponse,
@@ -9690,8 +9684,8 @@ export const getExportJobs: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetExportJobsRequest,
   output: GetExportJobsResponse,
@@ -9719,8 +9713,8 @@ export const getImportJobs: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetImportJobsRequest,
   output: GetImportJobsResponse,
@@ -9748,8 +9742,8 @@ export const getInAppTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInAppTemplateRequest,
   output: GetInAppTemplateResponse,
@@ -9777,8 +9771,8 @@ export const getJourneyDateRangeKpi: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJourneyDateRangeKpiRequest,
   output: GetJourneyDateRangeKpiResponse,
@@ -9806,8 +9800,8 @@ export const getJourneyExecutionActivityMetrics: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJourneyExecutionActivityMetricsRequest,
   output: GetJourneyExecutionActivityMetricsResponse,
@@ -9835,8 +9829,8 @@ export const getJourneyExecutionMetrics: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJourneyExecutionMetricsRequest,
   output: GetJourneyExecutionMetricsResponse,
@@ -9864,8 +9858,8 @@ export const getJourneyRunExecutionActivityMetrics: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJourneyRunExecutionActivityMetricsRequest,
   output: GetJourneyRunExecutionActivityMetricsResponse,
@@ -9893,8 +9887,8 @@ export const getJourneyRunExecutionMetrics: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJourneyRunExecutionMetricsRequest,
   output: GetJourneyRunExecutionMetricsResponse,
@@ -9922,8 +9916,8 @@ export const getPushTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPushTemplateRequest,
   output: GetPushTemplateResponse,
@@ -9951,8 +9945,8 @@ export const getRecommenderConfigurations: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRecommenderConfigurationsRequest,
   output: GetRecommenderConfigurationsResponse,
@@ -9980,8 +9974,8 @@ export const getSegments: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSegmentsRequest,
   output: GetSegmentsResponse,
@@ -10009,8 +10003,8 @@ export const getSmsTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSmsTemplateRequest,
   output: GetSmsTemplateResponse,
@@ -10038,8 +10032,8 @@ export const getVoiceTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceTemplateRequest,
   output: GetVoiceTemplateResponse,
@@ -10067,8 +10061,8 @@ export const listJourneys: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListJourneysRequest,
   output: ListJourneysResponse,
@@ -10096,8 +10090,8 @@ export const putEventStream: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEventStreamRequest,
   output: PutEventStreamResponse,
@@ -10125,8 +10119,8 @@ export const updateAdmChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAdmChannelRequest,
   output: UpdateAdmChannelResponse,
@@ -10154,8 +10148,8 @@ export const updateApnsChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApnsChannelRequest,
   output: UpdateApnsChannelResponse,
@@ -10183,8 +10177,8 @@ export const updateApnsSandboxChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApnsSandboxChannelRequest,
   output: UpdateApnsSandboxChannelResponse,
@@ -10212,8 +10206,8 @@ export const updateApnsVoipChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApnsVoipChannelRequest,
   output: UpdateApnsVoipChannelResponse,
@@ -10241,8 +10235,8 @@ export const updateApnsVoipSandboxChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApnsVoipSandboxChannelRequest,
   output: UpdateApnsVoipSandboxChannelResponse,
@@ -10270,8 +10264,8 @@ export const updateBaiduChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBaiduChannelRequest,
   output: UpdateBaiduChannelResponse,
@@ -10299,8 +10293,8 @@ export const updateEmailChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEmailChannelRequest,
   output: UpdateEmailChannelResponse,
@@ -10328,8 +10322,8 @@ export const updateGcmChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGcmChannelRequest,
   output: UpdateGcmChannelResponse,
@@ -10357,8 +10351,8 @@ export const updateJourneyState: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateJourneyStateRequest,
   output: UpdateJourneyStateResponse,
@@ -10386,8 +10380,8 @@ export const updateRecommenderConfiguration: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRecommenderConfigurationRequest,
   output: UpdateRecommenderConfigurationResponse,
@@ -10415,8 +10409,8 @@ export const updateSmsChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSmsChannelRequest,
   output: UpdateSmsChannelResponse,
@@ -10444,8 +10438,8 @@ export const updateTemplateActiveVersion: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTemplateActiveVersionRequest,
   output: UpdateTemplateActiveVersionResponse,
@@ -10473,8 +10467,8 @@ export const updateVoiceChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVoiceChannelRequest,
   output: UpdateVoiceChannelResponse,
@@ -10502,8 +10496,8 @@ export const deletePushTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePushTemplateRequest,
   output: DeletePushTemplateResponse,
@@ -10531,8 +10525,8 @@ export const deleteSmsTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSmsTemplateRequest,
   output: DeleteSmsTemplateResponse,
@@ -10560,8 +10554,8 @@ export const deleteVoiceTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVoiceTemplateRequest,
   output: DeleteVoiceTemplateResponse,
@@ -10589,8 +10583,8 @@ export const getAdmChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAdmChannelRequest,
   output: GetAdmChannelResponse,
@@ -10618,8 +10612,8 @@ export const getApnsChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApnsChannelRequest,
   output: GetApnsChannelResponse,
@@ -10647,8 +10641,8 @@ export const getApnsSandboxChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApnsSandboxChannelRequest,
   output: GetApnsSandboxChannelResponse,
@@ -10676,8 +10670,8 @@ export const getApnsVoipChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApnsVoipChannelRequest,
   output: GetApnsVoipChannelResponse,
@@ -10705,8 +10699,8 @@ export const getApnsVoipSandboxChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApnsVoipSandboxChannelRequest,
   output: GetApnsVoipSandboxChannelResponse,
@@ -10734,8 +10728,8 @@ export const getApp: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAppRequest,
   output: GetAppResponse,
@@ -10763,8 +10757,8 @@ export const getBaiduChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBaiduChannelRequest,
   output: GetBaiduChannelResponse,
@@ -10792,8 +10786,8 @@ export const getCampaign: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCampaignRequest,
   output: GetCampaignResponse,
@@ -10821,8 +10815,8 @@ export const getCampaignVersion: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCampaignVersionRequest,
   output: GetCampaignVersionResponse,
@@ -10850,8 +10844,8 @@ export const getCampaignVersions: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCampaignVersionsRequest,
   output: GetCampaignVersionsResponse,
@@ -10879,8 +10873,8 @@ export const getEmailChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEmailChannelRequest,
   output: GetEmailChannelResponse,
@@ -10908,8 +10902,8 @@ export const getEndpoint: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEndpointRequest,
   output: GetEndpointResponse,
@@ -10937,8 +10931,8 @@ export const getEventStream: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetEventStreamRequest,
   output: GetEventStreamResponse,
@@ -10966,8 +10960,8 @@ export const getGcmChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGcmChannelRequest,
   output: GetGcmChannelResponse,
@@ -10995,8 +10989,8 @@ export const getJourney: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJourneyRequest,
   output: GetJourneyResponse,
@@ -11024,8 +11018,8 @@ export const getRecommenderConfiguration: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRecommenderConfigurationRequest,
   output: GetRecommenderConfigurationResponse,
@@ -11053,8 +11047,8 @@ export const getSegment: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSegmentRequest,
   output: GetSegmentResponse,
@@ -11082,8 +11076,8 @@ export const getSegmentExportJobs: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSegmentExportJobsRequest,
   output: GetSegmentExportJobsResponse,
@@ -11111,8 +11105,8 @@ export const getSegmentImportJobs: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSegmentImportJobsRequest,
   output: GetSegmentImportJobsResponse,
@@ -11140,8 +11134,8 @@ export const getSegmentVersion: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSegmentVersionRequest,
   output: GetSegmentVersionResponse,
@@ -11169,8 +11163,8 @@ export const getSegmentVersions: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSegmentVersionsRequest,
   output: GetSegmentVersionsResponse,
@@ -11198,8 +11192,8 @@ export const getSmsChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSmsChannelRequest,
   output: GetSmsChannelResponse,
@@ -11227,8 +11221,8 @@ export const getUserEndpoints: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserEndpointsRequest,
   output: GetUserEndpointsResponse,
@@ -11256,8 +11250,8 @@ export const getVoiceChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVoiceChannelRequest,
   output: GetVoiceChannelResponse,
@@ -11285,8 +11279,8 @@ export const updateCampaign: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCampaignRequest,
   output: UpdateCampaignResponse,
@@ -11314,8 +11308,8 @@ export const updateEmailTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateEmailTemplateRequest,
   output: UpdateEmailTemplateResponse,
@@ -11343,8 +11337,8 @@ export const updateInAppTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateInAppTemplateRequest,
   output: UpdateInAppTemplateResponse,
@@ -11372,8 +11366,8 @@ export const updatePushTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePushTemplateRequest,
   output: UpdatePushTemplateResponse,
@@ -11401,8 +11395,8 @@ export const updateSegment: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSegmentRequest,
   output: UpdateSegmentResponse,
@@ -11430,8 +11424,8 @@ export const updateSmsTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSmsTemplateRequest,
   output: UpdateSmsTemplateResponse,
@@ -11459,8 +11453,8 @@ export const updateVoiceTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVoiceTemplateRequest,
   output: UpdateVoiceTemplateResponse,
@@ -11488,8 +11482,8 @@ export const createExportJob: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExportJobRequest,
   output: CreateExportJobResponse,
@@ -11517,8 +11511,8 @@ export const createImportJob: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateImportJobRequest,
   output: CreateImportJobResponse,
@@ -11546,8 +11540,8 @@ export const createRecommenderConfiguration: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRecommenderConfigurationRequest,
   output: CreateRecommenderConfigurationResponse,
@@ -11575,8 +11569,8 @@ export const deleteAdmChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAdmChannelRequest,
   output: DeleteAdmChannelResponse,
@@ -11604,8 +11598,8 @@ export const deleteApnsChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApnsChannelRequest,
   output: DeleteApnsChannelResponse,
@@ -11633,8 +11627,8 @@ export const deleteApnsSandboxChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApnsSandboxChannelRequest,
   output: DeleteApnsSandboxChannelResponse,
@@ -11662,8 +11656,8 @@ export const deleteApnsVoipChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApnsVoipChannelRequest,
   output: DeleteApnsVoipChannelResponse,
@@ -11691,8 +11685,8 @@ export const deleteApnsVoipSandboxChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApnsVoipSandboxChannelRequest,
   output: DeleteApnsVoipSandboxChannelResponse,
@@ -11720,8 +11714,8 @@ export const deleteApp: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppRequest,
   output: DeleteAppResponse,
@@ -11749,8 +11743,8 @@ export const deleteBaiduChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBaiduChannelRequest,
   output: DeleteBaiduChannelResponse,
@@ -11778,8 +11772,8 @@ export const deleteEmailChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEmailChannelRequest,
   output: DeleteEmailChannelResponse,
@@ -11807,8 +11801,8 @@ export const deleteEmailTemplate: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEmailTemplateRequest,
   output: DeleteEmailTemplateResponse,
@@ -11836,8 +11830,8 @@ export const deleteEndpoint: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEndpointRequest,
   output: DeleteEndpointResponse,
@@ -11865,8 +11859,8 @@ export const deleteEventStream: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventStreamRequest,
   output: DeleteEventStreamResponse,
@@ -11894,8 +11888,8 @@ export const deleteGcmChannel: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGcmChannelRequest,
   output: DeleteGcmChannelResponse,
@@ -11923,8 +11917,8 @@ export const createApp: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppRequest,
   output: CreateAppResponse,
@@ -11952,8 +11946,8 @@ export const deleteCampaign: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCampaignRequest,
   output: DeleteCampaignResponse,
@@ -11981,8 +11975,8 @@ export const createCampaign: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCampaignRequest,
   output: CreateCampaignResponse,
@@ -12010,8 +12004,8 @@ export const createSegment: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSegmentRequest,
   output: CreateSegmentResponse,
@@ -12039,8 +12033,8 @@ export const createJourney: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateJourneyRequest,
   output: CreateJourneyResponse,
@@ -12068,8 +12062,8 @@ export const putEvents: (
   | NotFoundException
   | PayloadTooLargeException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEventsRequest,
   output: PutEventsResponse,

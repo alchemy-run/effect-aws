@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://rds.amazonaws.com/doc/2014-10-31/");
 const svc = T.AwsApiService({ sdkId: "RDS", serviceShapeName: "AmazonRDSv19" });
@@ -10441,12 +10439,12 @@ export class DBClusterNotFoundFault extends S.TaggedError<DBClusterNotFoundFault
   "DBClusterNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBClusterNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBInstanceNotFoundFault extends S.TaggedError<DBInstanceNotFoundFault>()(
   "DBInstanceNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBInstanceNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomDBEngineVersionNotFoundFault extends S.TaggedError<CustomDBEngineVersionNotFoundFault>()(
   "CustomDBEngineVersionNotFoundFault",
   { message: S.optional(S.String) },
@@ -10454,7 +10452,7 @@ export class CustomDBEngineVersionNotFoundFault extends S.TaggedError<CustomDBEn
     code: "CustomDBEngineVersionNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterEndpointNotFoundFault extends S.TaggedError<DBClusterEndpointNotFoundFault>()(
   "DBClusterEndpointNotFoundFault",
   { message: S.optional(S.String) },
@@ -10462,22 +10460,22 @@ export class DBClusterEndpointNotFoundFault extends S.TaggedError<DBClusterEndpo
     code: "DBClusterEndpointNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBParameterGroupNotFoundFault extends S.TaggedError<DBParameterGroupNotFoundFault>()(
   "DBParameterGroupNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBParameterGroupNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSecurityGroupNotFoundFault extends S.TaggedError<DBSecurityGroupNotFoundFault>()(
   "DBSecurityGroupNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBSecurityGroupNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBShardGroupNotFoundFault extends S.TaggedError<DBShardGroupNotFoundFault>()(
   "DBShardGroupNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBShardGroupNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSubnetGroupNotFoundFault extends S.TaggedError<DBSubnetGroupNotFoundFault>()(
   "DBSubnetGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -10485,7 +10483,7 @@ export class DBSubnetGroupNotFoundFault extends S.TaggedError<DBSubnetGroupNotFo
     code: "DBSubnetGroupNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidOptionGroupStateFault extends S.TaggedError<InvalidOptionGroupStateFault>()(
   "InvalidOptionGroupStateFault",
   { message: S.optional(S.String) },
@@ -10493,17 +10491,17 @@ export class InvalidOptionGroupStateFault extends S.TaggedError<InvalidOptionGro
     code: "InvalidOptionGroupStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyNotFoundFault extends S.TaggedError<DBProxyNotFoundFault>()(
   "DBProxyNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBProxyNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBShardGroupAlreadyExistsFault extends S.TaggedError<DBShardGroupAlreadyExistsFault>()(
   "DBShardGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBShardGroupAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationConflictOperationFault extends S.TaggedError<IntegrationConflictOperationFault>()(
   "IntegrationConflictOperationFault",
   { message: S.optional(S.String) },
@@ -10511,7 +10509,7 @@ export class IntegrationConflictOperationFault extends S.TaggedError<Integration
     code: "IntegrationConflictOperationFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BlueGreenDeploymentNotFoundFault extends S.TaggedError<BlueGreenDeploymentNotFoundFault>()(
   "BlueGreenDeploymentNotFoundFault",
   { message: S.optional(S.String) },
@@ -10519,7 +10517,7 @@ export class BlueGreenDeploymentNotFoundFault extends S.TaggedError<BlueGreenDep
     code: "BlueGreenDeploymentNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterRoleAlreadyExistsFault extends S.TaggedError<DBClusterRoleAlreadyExistsFault>()(
   "DBClusterRoleAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10527,7 +10525,7 @@ export class DBClusterRoleAlreadyExistsFault extends S.TaggedError<DBClusterRole
     code: "DBClusterRoleAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBInstanceRoleAlreadyExistsFault extends S.TaggedError<DBInstanceRoleAlreadyExistsFault>()(
   "DBInstanceRoleAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10535,7 +10533,7 @@ export class DBInstanceRoleAlreadyExistsFault extends S.TaggedError<DBInstanceRo
     code: "DBInstanceRoleAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBClusterStateFault extends S.TaggedError<InvalidDBClusterStateFault>()(
   "InvalidDBClusterStateFault",
   { message: S.optional(S.String) },
@@ -10543,12 +10541,12 @@ export class InvalidDBClusterStateFault extends S.TaggedError<InvalidDBClusterSt
     code: "InvalidDBClusterStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ExportTaskNotFoundFault extends S.TaggedError<ExportTaskNotFoundFault>()(
   "ExportTaskNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ExportTaskNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterEndpointAlreadyExistsFault extends S.TaggedError<DBClusterEndpointAlreadyExistsFault>()(
   "DBClusterEndpointAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10556,7 +10554,7 @@ export class DBClusterEndpointAlreadyExistsFault extends S.TaggedError<DBCluster
     code: "DBClusterEndpointAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBParameterGroupAlreadyExistsFault extends S.TaggedError<DBParameterGroupAlreadyExistsFault>()(
   "DBParameterGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10564,7 +10562,7 @@ export class DBParameterGroupAlreadyExistsFault extends S.TaggedError<DBParamete
     code: "DBParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterSnapshotAlreadyExistsFault extends S.TaggedError<DBClusterSnapshotAlreadyExistsFault>()(
   "DBClusterSnapshotAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10572,7 +10570,7 @@ export class DBClusterSnapshotAlreadyExistsFault extends S.TaggedError<DBCluster
     code: "DBClusterSnapshotAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSecurityGroupAlreadyExistsFault extends S.TaggedError<DBSecurityGroupAlreadyExistsFault>()(
   "DBSecurityGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10580,12 +10578,12 @@ export class DBSecurityGroupAlreadyExistsFault extends S.TaggedError<DBSecurityG
     code: "DBSecurityGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSnapshotAlreadyExistsFault extends S.TaggedError<DBSnapshotAlreadyExistsFault>()(
   "DBSnapshotAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBSnapshotAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class EventSubscriptionQuotaExceededFault extends S.TaggedError<EventSubscriptionQuotaExceededFault>()(
   "EventSubscriptionQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -10593,7 +10591,7 @@ export class EventSubscriptionQuotaExceededFault extends S.TaggedError<EventSubs
     code: "EventSubscriptionQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationAlreadyExistsFault extends S.TaggedError<IntegrationAlreadyExistsFault>()(
   "IntegrationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10601,7 +10599,7 @@ export class IntegrationAlreadyExistsFault extends S.TaggedError<IntegrationAlre
     code: "IntegrationAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OptionGroupAlreadyExistsFault extends S.TaggedError<OptionGroupAlreadyExistsFault>()(
   "OptionGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10609,7 +10607,7 @@ export class OptionGroupAlreadyExistsFault extends S.TaggedError<OptionGroupAlre
     code: "OptionGroupAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCustomDBEngineVersionStateFault extends S.TaggedError<InvalidCustomDBEngineVersionStateFault>()(
   "InvalidCustomDBEngineVersionStateFault",
   { message: S.optional(S.String) },
@@ -10617,7 +10615,7 @@ export class InvalidCustomDBEngineVersionStateFault extends S.TaggedError<Invali
     code: "InvalidCustomDBEngineVersionStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBClusterEndpointStateFault extends S.TaggedError<InvalidDBClusterEndpointStateFault>()(
   "InvalidDBClusterEndpointStateFault",
   { message: S.optional(S.String) },
@@ -10625,7 +10623,7 @@ export class InvalidDBClusterEndpointStateFault extends S.TaggedError<InvalidDBC
     code: "InvalidDBClusterEndpointStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBParameterGroupStateFault extends S.TaggedError<InvalidDBParameterGroupStateFault>()(
   "InvalidDBParameterGroupStateFault",
   { message: S.optional(S.String) },
@@ -10633,7 +10631,7 @@ export class InvalidDBParameterGroupStateFault extends S.TaggedError<InvalidDBPa
     code: "InvalidDBParameterGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterSnapshotNotFoundFault extends S.TaggedError<DBClusterSnapshotNotFoundFault>()(
   "DBClusterSnapshotNotFoundFault",
   { message: S.optional(S.String) },
@@ -10641,7 +10639,7 @@ export class DBClusterSnapshotNotFoundFault extends S.TaggedError<DBClusterSnaps
     code: "DBClusterSnapshotNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBInstanceAutomatedBackupQuotaExceededFault extends S.TaggedError<DBInstanceAutomatedBackupQuotaExceededFault>()(
   "DBInstanceAutomatedBackupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -10649,7 +10647,7 @@ export class DBInstanceAutomatedBackupQuotaExceededFault extends S.TaggedError<D
     code: "DBInstanceAutomatedBackupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyEndpointNotFoundFault extends S.TaggedError<DBProxyEndpointNotFoundFault>()(
   "DBProxyEndpointNotFoundFault",
   { message: S.optional(S.String) },
@@ -10657,7 +10655,7 @@ export class DBProxyEndpointNotFoundFault extends S.TaggedError<DBProxyEndpointN
     code: "DBProxyEndpointNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBSecurityGroupStateFault extends S.TaggedError<InvalidDBSecurityGroupStateFault>()(
   "InvalidDBSecurityGroupStateFault",
   { message: S.optional(S.String) },
@@ -10665,12 +10663,12 @@ export class InvalidDBSecurityGroupStateFault extends S.TaggedError<InvalidDBSec
     code: "InvalidDBSecurityGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSnapshotNotFoundFault extends S.TaggedError<DBSnapshotNotFoundFault>()(
   "DBSnapshotNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBSnapshotNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBSubnetGroupStateFault extends S.TaggedError<InvalidDBSubnetGroupStateFault>()(
   "InvalidDBSubnetGroupStateFault",
   { message: S.optional(S.String) },
@@ -10678,7 +10676,7 @@ export class InvalidDBSubnetGroupStateFault extends S.TaggedError<InvalidDBSubne
     code: "InvalidDBSubnetGroupStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidEventSubscriptionStateFault extends S.TaggedError<InvalidEventSubscriptionStateFault>()(
   "InvalidEventSubscriptionStateFault",
   { message: S.optional(S.String) },
@@ -10686,7 +10684,7 @@ export class InvalidEventSubscriptionStateFault extends S.TaggedError<InvalidEve
     code: "InvalidEventSubscriptionState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class GlobalClusterNotFoundFault extends S.TaggedError<GlobalClusterNotFoundFault>()(
   "GlobalClusterNotFoundFault",
   { message: S.optional(S.String) },
@@ -10694,12 +10692,12 @@ export class GlobalClusterNotFoundFault extends S.TaggedError<GlobalClusterNotFo
     code: "GlobalClusterNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OptionGroupNotFoundFault extends S.TaggedError<OptionGroupNotFoundFault>()(
   "OptionGroupNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "OptionGroupNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyTargetGroupNotFoundFault extends S.TaggedError<DBProxyTargetGroupNotFoundFault>()(
   "DBProxyTargetGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -10707,7 +10705,7 @@ export class DBProxyTargetGroupNotFoundFault extends S.TaggedError<DBProxyTarget
     code: "DBProxyTargetGroupNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterAutomatedBackupNotFoundFault extends S.TaggedError<DBClusterAutomatedBackupNotFoundFault>()(
   "DBClusterAutomatedBackupNotFoundFault",
   { message: S.optional(S.String) },
@@ -10715,7 +10713,7 @@ export class DBClusterAutomatedBackupNotFoundFault extends S.TaggedError<DBClust
     code: "DBClusterAutomatedBackupNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterBacktrackNotFoundFault extends S.TaggedError<DBClusterBacktrackNotFoundFault>()(
   "DBClusterBacktrackNotFoundFault",
   { message: S.optional(S.String) },
@@ -10723,7 +10721,7 @@ export class DBClusterBacktrackNotFoundFault extends S.TaggedError<DBClusterBack
     code: "DBClusterBacktrackNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBInstanceAutomatedBackupNotFoundFault extends S.TaggedError<DBInstanceAutomatedBackupNotFoundFault>()(
   "DBInstanceAutomatedBackupNotFoundFault",
   { message: S.optional(S.String) },
@@ -10731,42 +10729,42 @@ export class DBInstanceAutomatedBackupNotFoundFault extends S.TaggedError<DBInst
     code: "DBInstanceAutomatedBackupNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionNotFoundFault extends S.TaggedError<SubscriptionNotFoundFault>()(
   "SubscriptionNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubscriptionNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationNotFoundFault extends S.TaggedError<IntegrationNotFoundFault>()(
   "IntegrationNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "IntegrationNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundFault extends S.TaggedError<ResourceNotFoundFault>()(
   "ResourceNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidResourceStateFault extends S.TaggedError<InvalidResourceStateFault>()(
   "InvalidResourceStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidResourceStateFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBInstanceNotReadyFault extends S.TaggedError<DBInstanceNotReadyFault>()(
   "DBInstanceNotReadyFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBInstanceNotReady", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBInstanceStateFault extends S.TaggedError<InvalidDBInstanceStateFault>()(
   "InvalidDBInstanceStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDBInstanceState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CertificateNotFoundFault extends S.TaggedError<CertificateNotFoundFault>()(
   "CertificateNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "CertificateNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBClusterCapacityFault extends S.TaggedError<InvalidDBClusterCapacityFault>()(
   "InvalidDBClusterCapacityFault",
   { message: S.optional(S.String) },
@@ -10774,12 +10772,12 @@ export class InvalidDBClusterCapacityFault extends S.TaggedError<InvalidDBCluste
     code: "InvalidDBClusterCapacityFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyAlreadyExistsFault extends S.TaggedError<DBProxyAlreadyExistsFault>()(
   "DBProxyAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBProxyAlreadyExistsFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyEndpointAlreadyExistsFault extends S.TaggedError<DBProxyEndpointAlreadyExistsFault>()(
   "DBProxyEndpointAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10787,7 +10785,7 @@ export class DBProxyEndpointAlreadyExistsFault extends S.TaggedError<DBProxyEndp
     code: "DBProxyEndpointAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSubnetGroupDoesNotCoverEnoughAZs extends S.TaggedError<DBSubnetGroupDoesNotCoverEnoughAZs>()(
   "DBSubnetGroupDoesNotCoverEnoughAZs",
   { message: S.optional(S.String) },
@@ -10795,7 +10793,7 @@ export class DBSubnetGroupDoesNotCoverEnoughAZs extends S.TaggedError<DBSubnetGr
     code: "DBSubnetGroupDoesNotCoverEnoughAZs",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class GlobalClusterAlreadyExistsFault extends S.TaggedError<GlobalClusterAlreadyExistsFault>()(
   "GlobalClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10803,7 +10801,7 @@ export class GlobalClusterAlreadyExistsFault extends S.TaggedError<GlobalCluster
     code: "GlobalClusterAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedDBInstanceAlreadyExistsFault extends S.TaggedError<ReservedDBInstanceAlreadyExistsFault>()(
   "ReservedDBInstanceAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10811,7 +10809,7 @@ export class ReservedDBInstanceAlreadyExistsFault extends S.TaggedError<Reserved
     code: "ReservedDBInstanceAlreadyExists",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyTargetAlreadyRegisteredFault extends S.TaggedError<DBProxyTargetAlreadyRegisteredFault>()(
   "DBProxyTargetAlreadyRegisteredFault",
   { message: S.optional(S.String) },
@@ -10819,12 +10817,12 @@ export class DBProxyTargetAlreadyRegisteredFault extends S.TaggedError<DBProxyTa
     code: "DBProxyTargetAlreadyRegisteredFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SourceNotFoundFault extends S.TaggedError<SourceNotFoundFault>()(
   "SourceNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SourceNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterAlreadyExistsFault extends S.TaggedError<DBClusterAlreadyExistsFault>()(
   "DBClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -10832,12 +10830,12 @@ export class DBClusterAlreadyExistsFault extends S.TaggedError<DBClusterAlreadyE
     code: "DBClusterAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthorizationNotFoundFault extends S.TaggedError<AuthorizationNotFoundFault>()(
   "AuthorizationNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "AuthorizationNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidBlueGreenDeploymentStateFault extends S.TaggedError<InvalidBlueGreenDeploymentStateFault>()(
   "InvalidBlueGreenDeploymentStateFault",
   { message: S.optional(S.String) },
@@ -10845,22 +10843,22 @@ export class InvalidBlueGreenDeploymentStateFault extends S.TaggedError<InvalidB
     code: "InvalidBlueGreenDeploymentStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterRoleNotFoundFault extends S.TaggedError<DBClusterRoleNotFoundFault>()(
   "DBClusterRoleNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBClusterRoleNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBInstanceRoleNotFoundFault extends S.TaggedError<DBInstanceRoleNotFoundFault>()(
   "DBInstanceRoleNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBInstanceRoleNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBShardGroupStateFault extends S.TaggedError<InvalidDBShardGroupStateFault>()(
   "InvalidDBShardGroupStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDBShardGroupState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterRoleQuotaExceededFault extends S.TaggedError<DBClusterRoleQuotaExceededFault>()(
   "DBClusterRoleQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -10868,7 +10866,7 @@ export class DBClusterRoleQuotaExceededFault extends S.TaggedError<DBClusterRole
     code: "DBClusterRoleQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBInstanceRoleQuotaExceededFault extends S.TaggedError<DBInstanceRoleQuotaExceededFault>()(
   "DBInstanceRoleQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -10876,7 +10874,7 @@ export class DBInstanceRoleQuotaExceededFault extends S.TaggedError<DBInstanceRo
     code: "DBInstanceRoleQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidExportTaskStateFault extends S.TaggedError<InvalidExportTaskStateFault>()(
   "InvalidExportTaskStateFault",
   { message: S.optional(S.String) },
@@ -10884,7 +10882,7 @@ export class InvalidExportTaskStateFault extends S.TaggedError<InvalidExportTask
     code: "InvalidExportTaskStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomAvailabilityZoneNotFoundFault extends S.TaggedError<CustomAvailabilityZoneNotFoundFault>()(
   "CustomAvailabilityZoneNotFoundFault",
   { message: S.optional(S.String) },
@@ -10892,7 +10890,7 @@ export class CustomAvailabilityZoneNotFoundFault extends S.TaggedError<CustomAva
     code: "CustomAvailabilityZoneNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CreateCustomDBEngineVersionFault extends S.TaggedError<CreateCustomDBEngineVersionFault>()(
   "CreateCustomDBEngineVersionFault",
   { message: S.optional(S.String) },
@@ -10900,7 +10898,7 @@ export class CreateCustomDBEngineVersionFault extends S.TaggedError<CreateCustom
     code: "CreateCustomDBEngineVersionFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterEndpointQuotaExceededFault extends S.TaggedError<DBClusterEndpointQuotaExceededFault>()(
   "DBClusterEndpointQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -10908,7 +10906,7 @@ export class DBClusterEndpointQuotaExceededFault extends S.TaggedError<DBCluster
     code: "DBClusterEndpointQuotaExceededFault",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class DBParameterGroupQuotaExceededFault extends S.TaggedError<DBParameterGroupQuotaExceededFault>()(
   "DBParameterGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -10916,7 +10914,7 @@ export class DBParameterGroupQuotaExceededFault extends S.TaggedError<DBParamete
     code: "DBParameterGroupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBClusterSnapshotStateFault extends S.TaggedError<InvalidDBClusterSnapshotStateFault>()(
   "InvalidDBClusterSnapshotStateFault",
   { message: S.optional(S.String) },
@@ -10924,7 +10922,7 @@ export class InvalidDBClusterSnapshotStateFault extends S.TaggedError<InvalidDBC
     code: "InvalidDBClusterSnapshotStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSecurityGroupNotSupportedFault extends S.TaggedError<DBSecurityGroupNotSupportedFault>()(
   "DBSecurityGroupNotSupportedFault",
   { message: S.optional(S.String) },
@@ -10932,12 +10930,12 @@ export class DBSecurityGroupNotSupportedFault extends S.TaggedError<DBSecurityGr
     code: "DBSecurityGroupNotSupported",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SNSInvalidTopicFault extends S.TaggedError<SNSInvalidTopicFault>()(
   "SNSInvalidTopicFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SNSInvalidTopic", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IntegrationQuotaExceededFault extends S.TaggedError<IntegrationQuotaExceededFault>()(
   "IntegrationQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -10945,7 +10943,7 @@ export class IntegrationQuotaExceededFault extends S.TaggedError<IntegrationQuot
     code: "IntegrationQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OptionGroupQuotaExceededFault extends S.TaggedError<OptionGroupQuotaExceededFault>()(
   "OptionGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -10953,7 +10951,7 @@ export class OptionGroupQuotaExceededFault extends S.TaggedError<OptionGroupQuot
     code: "OptionGroupQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBProxyEndpointStateFault extends S.TaggedError<InvalidDBProxyEndpointStateFault>()(
   "InvalidDBProxyEndpointStateFault",
   { message: S.optional(S.String) },
@@ -10961,17 +10959,17 @@ export class InvalidDBProxyEndpointStateFault extends S.TaggedError<InvalidDBPro
     code: "InvalidDBProxyEndpointStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBSnapshotStateFault extends S.TaggedError<InvalidDBSnapshotStateFault>()(
   "InvalidDBSnapshotStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDBSnapshotState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBSubnetStateFault extends S.TaggedError<InvalidDBSubnetStateFault>()(
   "InvalidDBSubnetStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDBSubnetStateFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidGlobalClusterStateFault extends S.TaggedError<InvalidGlobalClusterStateFault>()(
   "InvalidGlobalClusterStateFault",
   { message: S.optional(S.String) },
@@ -10979,7 +10977,7 @@ export class InvalidGlobalClusterStateFault extends S.TaggedError<InvalidGlobalC
     code: "InvalidGlobalClusterStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyTargetNotFoundFault extends S.TaggedError<DBProxyTargetNotFoundFault>()(
   "DBProxyTargetNotFoundFault",
   { message: S.optional(S.String) },
@@ -10987,7 +10985,7 @@ export class DBProxyTargetNotFoundFault extends S.TaggedError<DBProxyTargetNotFo
     code: "DBProxyTargetNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedDBInstancesOfferingNotFoundFault extends S.TaggedError<ReservedDBInstancesOfferingNotFoundFault>()(
   "ReservedDBInstancesOfferingNotFoundFault",
   { message: S.optional(S.String) },
@@ -10995,17 +10993,17 @@ export class ReservedDBInstancesOfferingNotFoundFault extends S.TaggedError<Rese
     code: "ReservedDBInstancesOfferingNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBLogFileNotFoundFault extends S.TaggedError<DBLogFileNotFoundFault>()(
   "DBLogFileNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBLogFileNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBProxyStateFault extends S.TaggedError<InvalidDBProxyStateFault>()(
   "InvalidDBProxyStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDBProxyStateFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSubnetQuotaExceededFault extends S.TaggedError<DBSubnetQuotaExceededFault>()(
   "DBSubnetQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11013,7 +11011,7 @@ export class DBSubnetQuotaExceededFault extends S.TaggedError<DBSubnetQuotaExcee
     code: "DBSubnetQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedDBInstanceQuotaExceededFault extends S.TaggedError<ReservedDBInstanceQuotaExceededFault>()(
   "ReservedDBInstanceQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11021,7 +11019,7 @@ export class ReservedDBInstanceQuotaExceededFault extends S.TaggedError<Reserved
     code: "ReservedDBInstanceQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientAvailableIPsInSubnetFault extends S.TaggedError<InsufficientAvailableIPsInSubnetFault>()(
   "InsufficientAvailableIPsInSubnetFault",
   { message: S.optional(S.String) },
@@ -11029,7 +11027,7 @@ export class InsufficientAvailableIPsInSubnetFault extends S.TaggedError<Insuffi
     code: "InsufficientAvailableIPsInSubnetFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterParameterGroupNotFoundFault extends S.TaggedError<DBClusterParameterGroupNotFoundFault>()(
   "DBClusterParameterGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -11037,17 +11035,17 @@ export class DBClusterParameterGroupNotFoundFault extends S.TaggedError<DBCluste
     code: "DBClusterParameterGroupNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BackupPolicyNotFoundFault extends S.TaggedError<BackupPolicyNotFoundFault>()(
   "BackupPolicyNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "BackupPolicyNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class KMSKeyNotAccessibleFault extends S.TaggedError<KMSKeyNotAccessibleFault>()(
   "KMSKeyNotAccessibleFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "KMSKeyNotAccessibleFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetworkStateFault>()(
   "InvalidVPCNetworkStateFault",
   { message: S.optional(S.String) },
@@ -11055,22 +11053,22 @@ export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetwork
     code: "InvalidVPCNetworkStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TenantDatabaseNotFoundFault extends S.TaggedError<TenantDatabaseNotFoundFault>()(
   "TenantDatabaseNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TenantDatabaseNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotQuotaExceededFault extends S.TaggedError<SnapshotQuotaExceededFault>()(
   "SnapshotQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SnapshotQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ExportTaskAlreadyExistsFault extends S.TaggedError<ExportTaskAlreadyExistsFault>()(
   "ExportTaskAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ExportTaskAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBInstanceAutomatedBackupStateFault extends S.TaggedError<InvalidDBInstanceAutomatedBackupStateFault>()(
   "InvalidDBInstanceAutomatedBackupStateFault",
   { message: S.optional(S.String) },
@@ -11078,7 +11076,7 @@ export class InvalidDBInstanceAutomatedBackupStateFault extends S.TaggedError<In
     code: "InvalidDBInstanceAutomatedBackupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSnapshotTenantDatabaseNotFoundFault extends S.TaggedError<DBSnapshotTenantDatabaseNotFoundFault>()(
   "DBSnapshotTenantDatabaseNotFoundFault",
   { message: S.optional(S.String) },
@@ -11086,7 +11084,7 @@ export class DBSnapshotTenantDatabaseNotFoundFault extends S.TaggedError<DBSnaps
     code: "DBSnapshotTenantDatabaseNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidIntegrationStateFault extends S.TaggedError<InvalidIntegrationStateFault>()(
   "InvalidIntegrationStateFault",
   { message: S.optional(S.String) },
@@ -11094,12 +11092,12 @@ export class InvalidIntegrationStateFault extends S.TaggedError<InvalidIntegrati
     code: "InvalidIntegrationStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyQuotaExceededFault extends S.TaggedError<DBProxyQuotaExceededFault>()(
   "DBProxyQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBProxyQuotaExceededFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBProxyEndpointQuotaExceededFault extends S.TaggedError<DBProxyEndpointQuotaExceededFault>()(
   "DBProxyEndpointQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11107,7 +11105,7 @@ export class DBProxyEndpointQuotaExceededFault extends S.TaggedError<DBProxyEndp
     code: "DBProxyEndpointQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientDBInstanceCapacityFault extends S.TaggedError<InsufficientDBInstanceCapacityFault>()(
   "InsufficientDBInstanceCapacityFault",
   { message: S.optional(S.String) },
@@ -11115,7 +11113,7 @@ export class InsufficientDBInstanceCapacityFault extends S.TaggedError<Insuffici
     code: "InsufficientDBInstanceCapacity",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthorizationAlreadyExistsFault extends S.TaggedError<AuthorizationAlreadyExistsFault>()(
   "AuthorizationAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -11123,7 +11121,7 @@ export class AuthorizationAlreadyExistsFault extends S.TaggedError<Authorization
     code: "AuthorizationAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class BlueGreenDeploymentAlreadyExistsFault extends S.TaggedError<BlueGreenDeploymentAlreadyExistsFault>()(
   "BlueGreenDeploymentAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -11131,7 +11129,7 @@ export class BlueGreenDeploymentAlreadyExistsFault extends S.TaggedError<BlueGre
     code: "BlueGreenDeploymentAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomDBEngineVersionAlreadyExistsFault extends S.TaggedError<CustomDBEngineVersionAlreadyExistsFault>()(
   "CustomDBEngineVersionAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -11139,7 +11137,7 @@ export class CustomDBEngineVersionAlreadyExistsFault extends S.TaggedError<Custo
     code: "CustomDBEngineVersionAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSecurityGroupQuotaExceededFault extends S.TaggedError<DBSecurityGroupQuotaExceededFault>()(
   "DBSecurityGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11147,12 +11145,12 @@ export class DBSecurityGroupQuotaExceededFault extends S.TaggedError<DBSecurityG
     code: "QuotaExceeded.DBSecurityGroup",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SNSNoAuthorizationFault extends S.TaggedError<SNSNoAuthorizationFault>()(
   "SNSNoAuthorizationFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SNSNoAuthorization", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class GlobalClusterQuotaExceededFault extends S.TaggedError<GlobalClusterQuotaExceededFault>()(
   "GlobalClusterQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11160,7 +11158,7 @@ export class GlobalClusterQuotaExceededFault extends S.TaggedError<GlobalCluster
     code: "GlobalClusterQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterAutomatedBackupQuotaExceededFault extends S.TaggedError<DBClusterAutomatedBackupQuotaExceededFault>()(
   "DBClusterAutomatedBackupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11168,7 +11166,7 @@ export class DBClusterAutomatedBackupQuotaExceededFault extends S.TaggedError<DB
     code: "DBClusterAutomatedBackupQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBClusterAutomatedBackupStateFault extends S.TaggedError<InvalidDBClusterAutomatedBackupStateFault>()(
   "InvalidDBClusterAutomatedBackupStateFault",
   { message: S.optional(S.String) },
@@ -11176,7 +11174,7 @@ export class InvalidDBClusterAutomatedBackupStateFault extends S.TaggedError<Inv
     code: "InvalidDBClusterAutomatedBackupStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedDBInstanceNotFoundFault extends S.TaggedError<ReservedDBInstanceNotFoundFault>()(
   "ReservedDBInstanceNotFoundFault",
   { message: S.optional(S.String) },
@@ -11184,12 +11182,12 @@ export class ReservedDBInstanceNotFoundFault extends S.TaggedError<ReservedDBIns
     code: "ReservedDBInstanceNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSubnet extends S.TaggedError<InvalidSubnet>()(
   "InvalidSubnet",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBClusterQuotaExceededFault extends S.TaggedError<DBClusterQuotaExceededFault>()(
   "DBClusterQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11197,12 +11195,12 @@ export class DBClusterQuotaExceededFault extends S.TaggedError<DBClusterQuotaExc
     code: "DBClusterQuotaExceededFault",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class DBInstanceAlreadyExistsFault extends S.TaggedError<DBInstanceAlreadyExistsFault>()(
   "DBInstanceAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DBInstanceAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MaxDBShardGroupLimitReached extends S.TaggedError<MaxDBShardGroupLimitReached>()(
   "MaxDBShardGroupLimitReached",
   { message: S.optional(S.String) },
@@ -11210,7 +11208,7 @@ export class MaxDBShardGroupLimitReached extends S.TaggedError<MaxDBShardGroupLi
     code: "MaxDBShardGroupLimitReached",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SharedSnapshotQuotaExceededFault extends S.TaggedError<SharedSnapshotQuotaExceededFault>()(
   "SharedSnapshotQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11218,17 +11216,17 @@ export class SharedSnapshotQuotaExceededFault extends S.TaggedError<SharedSnapsh
     code: "SharedSnapshotQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IamRoleMissingPermissionsFault extends S.TaggedError<IamRoleMissingPermissionsFault>()(
   "IamRoleMissingPermissionsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "IamRoleMissingPermissions", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class StorageTypeNotSupportedFault extends S.TaggedError<StorageTypeNotSupportedFault>()(
   "StorageTypeNotSupportedFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "StorageTypeNotSupported", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TenantDatabaseAlreadyExistsFault extends S.TaggedError<TenantDatabaseAlreadyExistsFault>()(
   "TenantDatabaseAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -11236,7 +11234,7 @@ export class TenantDatabaseAlreadyExistsFault extends S.TaggedError<TenantDataba
     code: "TenantDatabaseAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class VpcEncryptionControlViolationException extends S.TaggedError<VpcEncryptionControlViolationException>()(
   "VpcEncryptionControlViolationException",
   { message: S.optional(S.String) },
@@ -11244,7 +11242,7 @@ export class VpcEncryptionControlViolationException extends S.TaggedError<VpcEnc
     code: "VpcEncryptionControlViolationException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AuthorizationQuotaExceededFault extends S.TaggedError<AuthorizationQuotaExceededFault>()(
   "AuthorizationQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11252,7 +11250,7 @@ export class AuthorizationQuotaExceededFault extends S.TaggedError<Authorization
     code: "AuthorizationQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomDBEngineVersionQuotaExceededFault extends S.TaggedError<CustomDBEngineVersionQuotaExceededFault>()(
   "CustomDBEngineVersionQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11260,7 +11258,7 @@ export class CustomDBEngineVersionQuotaExceededFault extends S.TaggedError<Custo
     code: "CustomDBEngineVersionQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSubnetGroupAlreadyExistsFault extends S.TaggedError<DBSubnetGroupAlreadyExistsFault>()(
   "DBSubnetGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -11268,37 +11266,37 @@ export class DBSubnetGroupAlreadyExistsFault extends S.TaggedError<DBSubnetGroup
     code: "DBSubnetGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SNSTopicArnNotFoundFault extends S.TaggedError<SNSTopicArnNotFoundFault>()(
   "SNSTopicArnNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SNSTopicArnNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetAlreadyInUse extends S.TaggedError<SubnetAlreadyInUse>()(
   "SubnetAlreadyInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetAlreadyInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DomainNotFoundFault extends S.TaggedError<DomainNotFoundFault>()(
   "DomainNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DomainNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NetworkTypeNotSupported extends S.TaggedError<NetworkTypeNotSupported>()(
   "NetworkTypeNotSupported",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "NetworkTypeNotSupported", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class IamRoleNotFoundFault extends S.TaggedError<IamRoleNotFoundFault>()(
   "IamRoleNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "IamRoleNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InstanceQuotaExceededFault extends S.TaggedError<InstanceQuotaExceededFault>()(
   "InstanceQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InstanceQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBUpgradeDependencyFailureFault extends S.TaggedError<DBUpgradeDependencyFailureFault>()(
   "DBUpgradeDependencyFailureFault",
   { message: S.optional(S.String) },
@@ -11306,7 +11304,7 @@ export class DBUpgradeDependencyFailureFault extends S.TaggedError<DBUpgradeDepe
     code: "DBUpgradeDependencyFailure",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSubnetGroupNotAllowedFault extends S.TaggedError<DBSubnetGroupNotAllowedFault>()(
   "DBSubnetGroupNotAllowedFault",
   { message: S.optional(S.String) },
@@ -11314,7 +11312,7 @@ export class DBSubnetGroupNotAllowedFault extends S.TaggedError<DBSubnetGroupNot
     code: "DBSubnetGroupNotAllowedFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TenantDatabaseQuotaExceededFault extends S.TaggedError<TenantDatabaseQuotaExceededFault>()(
   "TenantDatabaseQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11322,7 +11320,7 @@ export class TenantDatabaseQuotaExceededFault extends S.TaggedError<TenantDataba
     code: "TenantDatabaseQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class Ec2ImagePropertiesNotSupportedFault extends S.TaggedError<Ec2ImagePropertiesNotSupportedFault>()(
   "Ec2ImagePropertiesNotSupportedFault",
   { message: S.optional(S.String) },
@@ -11330,7 +11328,7 @@ export class Ec2ImagePropertiesNotSupportedFault extends S.TaggedError<Ec2ImageP
     code: "Ec2ImagePropertiesNotSupportedFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DBSubnetGroupQuotaExceededFault extends S.TaggedError<DBSubnetGroupQuotaExceededFault>()(
   "DBSubnetGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -11338,12 +11336,12 @@ export class DBSubnetGroupQuotaExceededFault extends S.TaggedError<DBSubnetGroup
     code: "DBSubnetGroupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionAlreadyExistFault extends S.TaggedError<SubscriptionAlreadyExistFault>()(
   "SubscriptionAlreadyExistFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubscriptionAlreadyExist", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientStorageClusterCapacityFault extends S.TaggedError<InsufficientStorageClusterCapacityFault>()(
   "InsufficientStorageClusterCapacityFault",
   { message: S.optional(S.String) },
@@ -11351,7 +11349,7 @@ export class InsufficientStorageClusterCapacityFault extends S.TaggedError<Insuf
     code: "InsufficientStorageClusterCapacity",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedDBEngineVersionFault extends S.TaggedError<UnsupportedDBEngineVersionFault>()(
   "UnsupportedDBEngineVersionFault",
   { message: S.optional(S.String) },
@@ -11359,7 +11357,7 @@ export class UnsupportedDBEngineVersionFault extends S.TaggedError<UnsupportedDB
     code: "UnsupportedDBEngineVersion",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubscriptionCategoryNotFoundFault extends S.TaggedError<SubscriptionCategoryNotFoundFault>()(
   "SubscriptionCategoryNotFoundFault",
   { message: S.optional(S.String) },
@@ -11367,12 +11365,12 @@ export class SubscriptionCategoryNotFoundFault extends S.TaggedError<Subscriptio
     code: "SubscriptionCategoryNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidExportOnlyFault extends S.TaggedError<InvalidExportOnlyFault>()(
   "InvalidExportOnlyFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidExportOnly", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SourceClusterNotSupportedFault extends S.TaggedError<SourceClusterNotSupportedFault>()(
   "SourceClusterNotSupportedFault",
   { message: S.optional(S.String) },
@@ -11380,12 +11378,12 @@ export class SourceClusterNotSupportedFault extends S.TaggedError<SourceClusterN
     code: "SourceClusterNotSupportedFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRestoreFault extends S.TaggedError<InvalidRestoreFault>()(
   "InvalidRestoreFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidRestoreFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientDBClusterCapacityFault extends S.TaggedError<InsufficientDBClusterCapacityFault>()(
   "InsufficientDBClusterCapacityFault",
   { message: S.optional(S.String) },
@@ -11393,12 +11391,12 @@ export class InsufficientDBClusterCapacityFault extends S.TaggedError<Insufficie
     code: "InsufficientDBClusterCapacityFault",
     httpResponseCode: 403,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class StorageQuotaExceededFault extends S.TaggedError<StorageQuotaExceededFault>()(
   "StorageQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "StorageQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ProvisionedIopsNotAvailableInAZFault extends S.TaggedError<ProvisionedIopsNotAvailableInAZFault>()(
   "ProvisionedIopsNotAvailableInAZFault",
   { message: S.optional(S.String) },
@@ -11406,22 +11404,22 @@ export class ProvisionedIopsNotAvailableInAZFault extends S.TaggedError<Provisio
     code: "ProvisionedIopsNotAvailableInAZFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidDBSubnetGroupFault extends S.TaggedError<InvalidDBSubnetGroupFault>()(
   "InvalidDBSubnetGroupFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidDBSubnetGroupFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidS3BucketFault extends S.TaggedError<InvalidS3BucketFault>()(
   "InvalidS3BucketFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidS3BucketFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidExportSourceStateFault extends S.TaggedError<InvalidExportSourceStateFault>()(
   "InvalidExportSourceStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidExportSourceState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SourceDatabaseNotSupportedFault extends S.TaggedError<SourceDatabaseNotSupportedFault>()(
   "SourceDatabaseNotSupportedFault",
   { message: S.optional(S.String) },
@@ -11429,7 +11427,7 @@ export class SourceDatabaseNotSupportedFault extends S.TaggedError<SourceDatabas
     code: "SourceDatabaseNotSupportedFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class StorageTypeNotAvailableFault extends S.TaggedError<StorageTypeNotAvailableFault>()(
   "StorageTypeNotAvailableFault",
   { message: S.optional(S.String) },
@@ -11437,7 +11435,7 @@ export class StorageTypeNotAvailableFault extends S.TaggedError<StorageTypeNotAv
     code: "StorageTypeNotAvailableFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PointInTimeRestoreNotEnabledFault extends S.TaggedError<PointInTimeRestoreNotEnabledFault>()(
   "PointInTimeRestoreNotEnabledFault",
   { message: S.optional(S.String) },
@@ -11445,7 +11443,7 @@ export class PointInTimeRestoreNotEnabledFault extends S.TaggedError<PointInTime
     code: "PointInTimeRestoreNotEnabled",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -11457,8 +11455,8 @@ export const describeAccountAttributes: (
   input: DescribeAccountAttributesMessage,
 ) => Effect.Effect<
   AccountAttributesMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountAttributesMessage,
   output: AccountAttributesMessage,
@@ -11474,22 +11472,22 @@ export const describeDBClusterEndpoints: {
     input: DescribeDBClusterEndpointsMessage,
   ): Effect.Effect<
     DBClusterEndpointMessage,
-    DBClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBClusterEndpointsMessage,
   ) => Stream.Stream<
     DBClusterEndpointMessage,
-    DBClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBClusterEndpointsMessage,
   ) => Stream.Stream<
     DBClusterEndpoint,
-    DBClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterEndpointsMessage,
@@ -11520,22 +11518,22 @@ export const describeDBClusterParameterGroups: {
     input: DescribeDBClusterParameterGroupsMessage,
   ): Effect.Effect<
     DBClusterParameterGroupsMessage,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBClusterParameterGroupsMessage,
   ) => Stream.Stream<
     DBClusterParameterGroupsMessage,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBClusterParameterGroupsMessage,
   ) => Stream.Stream<
     DBClusterParameterGroup,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterParameterGroupsMessage,
@@ -11564,22 +11562,22 @@ export const describeDBClusterParameters: {
     input: DescribeDBClusterParametersMessage,
   ): Effect.Effect<
     DBClusterParameterGroupDetails,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBClusterParametersMessage,
   ) => Stream.Stream<
     DBClusterParameterGroupDetails,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBClusterParametersMessage,
   ) => Stream.Stream<
     Parameter,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterParametersMessage,
@@ -11610,22 +11608,22 @@ export const describeDBClusters: {
     input: DescribeDBClustersMessage,
   ): Effect.Effect<
     DBClusterMessage,
-    DBClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBClustersMessage,
   ) => Stream.Stream<
     DBClusterMessage,
-    DBClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBClustersMessage,
   ) => Stream.Stream<
     DBCluster,
-    DBClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClustersMessage,
@@ -11646,22 +11644,22 @@ export const describeDBEngineVersions: {
     input: DescribeDBEngineVersionsMessage,
   ): Effect.Effect<
     DBEngineVersionMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBEngineVersionsMessage,
   ) => Stream.Stream<
     DBEngineVersionMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBEngineVersionsMessage,
   ) => Stream.Stream<
     DBEngineVersion,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBEngineVersionsMessage,
@@ -11684,22 +11682,22 @@ export const describeDBInstances: {
     input: DescribeDBInstancesMessage,
   ): Effect.Effect<
     DBInstanceMessage,
-    DBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBInstancesMessage,
   ) => Stream.Stream<
     DBInstanceMessage,
-    DBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBInstancesMessage,
   ) => Stream.Stream<
     DBInstance,
-    DBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBInstancesMessage,
@@ -11721,22 +11719,22 @@ export const describeDBParameterGroups: {
     input: DescribeDBParameterGroupsMessage,
   ): Effect.Effect<
     DBParameterGroupsMessage,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBParameterGroupsMessage,
   ) => Stream.Stream<
     DBParameterGroupsMessage,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBParameterGroupsMessage,
   ) => Stream.Stream<
     DBParameterGroup,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBParameterGroupsMessage,
@@ -11757,22 +11755,22 @@ export const describeDBParameters: {
     input: DescribeDBParametersMessage,
   ): Effect.Effect<
     DBParameterGroupDetails,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBParametersMessage,
   ) => Stream.Stream<
     DBParameterGroupDetails,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBParametersMessage,
   ) => Stream.Stream<
     Parameter,
-    DBParameterGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBParameterGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBParametersMessage,
@@ -11793,22 +11791,22 @@ export const describeDBProxies: {
     input: DescribeDBProxiesRequest,
   ): Effect.Effect<
     DescribeDBProxiesResponse,
-    DBProxyNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBProxyNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBProxiesRequest,
   ) => Stream.Stream<
     DescribeDBProxiesResponse,
-    DBProxyNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBProxyNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBProxiesRequest,
   ) => Stream.Stream<
     DBProxy,
-    DBProxyNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBProxyNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBProxiesRequest,
@@ -11836,22 +11834,22 @@ export const describeDBSecurityGroups: {
     input: DescribeDBSecurityGroupsMessage,
   ): Effect.Effect<
     DBSecurityGroupMessage,
-    DBSecurityGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSecurityGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBSecurityGroupsMessage,
   ) => Stream.Stream<
     DBSecurityGroupMessage,
-    DBSecurityGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSecurityGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBSecurityGroupsMessage,
   ) => Stream.Stream<
     DBSecurityGroup,
-    DBSecurityGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSecurityGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBSecurityGroupsMessage,
@@ -11871,8 +11869,8 @@ export const describeDBShardGroups: (
   input: DescribeDBShardGroupsMessage,
 ) => Effect.Effect<
   DescribeDBShardGroupsResponse,
-  DBClusterNotFoundFault | DBShardGroupNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBClusterNotFoundFault | DBShardGroupNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDBShardGroupsMessage,
   output: DescribeDBShardGroupsResponse,
@@ -11889,22 +11887,22 @@ export const describeDBSubnetGroups: {
     input: DescribeDBSubnetGroupsMessage,
   ): Effect.Effect<
     DBSubnetGroupMessage,
-    DBSubnetGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBSubnetGroupsMessage,
   ) => Stream.Stream<
     DBSubnetGroupMessage,
-    DBSubnetGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBSubnetGroupsMessage,
   ) => Stream.Stream<
     DBSubnetGroup,
-    DBSubnetGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBSubnetGroupsMessage,
@@ -11925,22 +11923,22 @@ export const describeEngineDefaultParameters: {
     input: DescribeEngineDefaultParametersMessage,
   ): Effect.Effect<
     DescribeEngineDefaultParametersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEngineDefaultParametersMessage,
   ) => Stream.Stream<
     DescribeEngineDefaultParametersResult,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEngineDefaultParametersMessage,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEngineDefaultParametersMessage,
@@ -11962,22 +11960,22 @@ export const describeTenantDatabases: {
     input: DescribeTenantDatabasesMessage,
   ): Effect.Effect<
     TenantDatabasesMessage,
-    DBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTenantDatabasesMessage,
   ) => Stream.Stream<
     TenantDatabasesMessage,
-    DBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTenantDatabasesMessage,
   ) => Stream.Stream<
     TenantDatabase,
-    DBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTenantDatabasesMessage,
@@ -12004,8 +12002,8 @@ export const backtrackDBCluster: (
   input: BacktrackDBClusterMessage,
 ) => Effect.Effect<
   DBClusterBacktrack,
-  DBClusterNotFoundFault | InvalidDBClusterStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBClusterNotFoundFault | InvalidDBClusterStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BacktrackDBClusterMessage,
   output: DBClusterBacktrack,
@@ -12037,8 +12035,8 @@ export const deleteCustomDBEngineVersion: (
   DBEngineVersion,
   | CustomDBEngineVersionNotFoundFault
   | InvalidCustomDBEngineVersionStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomDBEngineVersionMessage,
   output: DBEngineVersion,
@@ -12059,8 +12057,8 @@ export const deleteDBClusterEndpoint: (
   | DBClusterEndpointNotFoundFault
   | InvalidDBClusterEndpointStateFault
   | InvalidDBClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBClusterEndpointMessage,
   output: DBClusterEndpoint,
@@ -12087,8 +12085,8 @@ export const deleteDBClusterParameterGroup: (
   DeleteDBClusterParameterGroupResponse,
   | DBParameterGroupNotFoundFault
   | InvalidDBParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBClusterParameterGroupMessage,
   output: DeleteDBClusterParameterGroupResponse,
@@ -12111,8 +12109,8 @@ export const deleteDBSecurityGroup: (
   DeleteDBSecurityGroupResponse,
   | DBSecurityGroupNotFoundFault
   | InvalidDBSecurityGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBSecurityGroupMessage,
   output: DeleteDBSecurityGroupResponse,
@@ -12125,8 +12123,8 @@ export const deleteOptionGroup: (
   input: DeleteOptionGroupMessage,
 ) => Effect.Effect<
   DeleteOptionGroupResponse,
-  InvalidOptionGroupStateFault | OptionGroupNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidOptionGroupStateFault | OptionGroupNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOptionGroupMessage,
   output: DeleteOptionGroupResponse,
@@ -12146,22 +12144,22 @@ export const describeBlueGreenDeployments: {
     input: DescribeBlueGreenDeploymentsRequest,
   ): Effect.Effect<
     DescribeBlueGreenDeploymentsResponse,
-    BlueGreenDeploymentNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BlueGreenDeploymentNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeBlueGreenDeploymentsRequest,
   ) => Stream.Stream<
     DescribeBlueGreenDeploymentsResponse,
-    BlueGreenDeploymentNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BlueGreenDeploymentNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeBlueGreenDeploymentsRequest,
   ) => Stream.Stream<
     BlueGreenDeployment,
-    BlueGreenDeploymentNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    BlueGreenDeploymentNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeBlueGreenDeploymentsRequest,
@@ -12186,22 +12184,22 @@ export const describeDBClusterAutomatedBackups: {
     input: DescribeDBClusterAutomatedBackupsMessage,
   ): Effect.Effect<
     DBClusterAutomatedBackupMessage,
-    DBClusterAutomatedBackupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterAutomatedBackupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBClusterAutomatedBackupsMessage,
   ) => Stream.Stream<
     DBClusterAutomatedBackupMessage,
-    DBClusterAutomatedBackupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterAutomatedBackupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBClusterAutomatedBackupsMessage,
   ) => Stream.Stream<
     DBClusterAutomatedBackup,
-    DBClusterAutomatedBackupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterAutomatedBackupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterAutomatedBackupsMessage,
@@ -12228,28 +12226,22 @@ export const describeDBClusterBacktracks: {
     input: DescribeDBClusterBacktracksMessage,
   ): Effect.Effect<
     DBClusterBacktrackMessage,
-    | DBClusterBacktrackNotFoundFault
-    | DBClusterNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterBacktrackNotFoundFault | DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBClusterBacktracksMessage,
   ) => Stream.Stream<
     DBClusterBacktrackMessage,
-    | DBClusterBacktrackNotFoundFault
-    | DBClusterNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterBacktrackNotFoundFault | DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBClusterBacktracksMessage,
   ) => Stream.Stream<
     DBClusterBacktrack,
-    | DBClusterBacktrackNotFoundFault
-    | DBClusterNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterBacktrackNotFoundFault | DBClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterBacktracksMessage,
@@ -12277,22 +12269,22 @@ export const describeDBInstanceAutomatedBackups: {
     input: DescribeDBInstanceAutomatedBackupsMessage,
   ): Effect.Effect<
     DBInstanceAutomatedBackupMessage,
-    DBInstanceAutomatedBackupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceAutomatedBackupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBInstanceAutomatedBackupsMessage,
   ) => Stream.Stream<
     DBInstanceAutomatedBackupMessage,
-    DBInstanceAutomatedBackupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceAutomatedBackupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBInstanceAutomatedBackupsMessage,
   ) => Stream.Stream<
     DBInstanceAutomatedBackup,
-    DBInstanceAutomatedBackupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceAutomatedBackupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBInstanceAutomatedBackupsMessage,
@@ -12319,22 +12311,22 @@ export const describeDBSnapshotTenantDatabases: {
     input: DescribeDBSnapshotTenantDatabasesMessage,
   ): Effect.Effect<
     DBSnapshotTenantDatabasesMessage,
-    DBSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBSnapshotTenantDatabasesMessage,
   ) => Stream.Stream<
     DBSnapshotTenantDatabasesMessage,
-    DBSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBSnapshotTenantDatabasesMessage,
   ) => Stream.Stream<
     DBSnapshotTenantDatabase,
-    DBSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBSnapshotTenantDatabasesMessage,
@@ -12358,8 +12350,8 @@ export const describeEngineDefaultClusterParameters: (
   input: DescribeEngineDefaultClusterParametersMessage,
 ) => Effect.Effect<
   DescribeEngineDefaultClusterParametersResult,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEngineDefaultClusterParametersMessage,
   output: DescribeEngineDefaultClusterParametersResult,
@@ -12378,8 +12370,8 @@ export const describeEventCategories: (
   input: DescribeEventCategoriesMessage,
 ) => Effect.Effect<
   EventCategoriesMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventCategoriesMessage,
   output: EventCategoriesMessage,
@@ -12400,22 +12392,22 @@ export const describeEvents: {
     input: DescribeEventsMessage,
   ): Effect.Effect<
     EventsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsMessage,
   ) => Stream.Stream<
     EventsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsMessage,
   ) => Stream.Stream<
     Event,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsMessage,
@@ -12439,22 +12431,22 @@ export const describeEventSubscriptions: {
     input: DescribeEventSubscriptionsMessage,
   ): Effect.Effect<
     EventSubscriptionsMessage,
-    SubscriptionNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    SubscriptionNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventSubscriptionsMessage,
   ) => Stream.Stream<
     EventSubscriptionsMessage,
-    SubscriptionNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    SubscriptionNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventSubscriptionsMessage,
   ) => Stream.Stream<
     EventSubscription,
-    SubscriptionNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    SubscriptionNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventSubscriptionsMessage,
@@ -12475,22 +12467,22 @@ export const describeIntegrations: {
     input: DescribeIntegrationsMessage,
   ): Effect.Effect<
     DescribeIntegrationsResponse,
-    IntegrationNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IntegrationNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeIntegrationsMessage,
   ) => Stream.Stream<
     DescribeIntegrationsResponse,
-    IntegrationNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IntegrationNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeIntegrationsMessage,
   ) => Stream.Stream<
     Integration,
-    IntegrationNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    IntegrationNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeIntegrationsMessage,
@@ -12517,22 +12509,22 @@ export const describePendingMaintenanceActions: {
     input: DescribePendingMaintenanceActionsMessage,
   ): Effect.Effect<
     PendingMaintenanceActionsMessage,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePendingMaintenanceActionsMessage,
   ) => Stream.Stream<
     PendingMaintenanceActionsMessage,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribePendingMaintenanceActionsMessage,
   ) => Stream.Stream<
     ResourcePendingMaintenanceActions,
-    ResourceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePendingMaintenanceActionsMessage,
@@ -12562,22 +12554,22 @@ export const describeSourceRegions: {
     input: DescribeSourceRegionsMessage,
   ): Effect.Effect<
     SourceRegionMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSourceRegionsMessage,
   ) => Stream.Stream<
     SourceRegionMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSourceRegionsMessage,
   ) => Stream.Stream<
     SourceRegion,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSourceRegionsMessage,
@@ -12603,8 +12595,8 @@ export const disableHttpEndpoint: (
   input: DisableHttpEndpointRequest,
 ) => Effect.Effect<
   DisableHttpEndpointResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableHttpEndpointRequest,
   output: DisableHttpEndpointResponse,
@@ -12625,8 +12617,8 @@ export const modifyActivityStream: (
   | DBInstanceNotFoundFault
   | InvalidDBInstanceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyActivityStreamRequest,
   output: ModifyActivityStreamResponse,
@@ -12667,8 +12659,8 @@ export const modifyCertificates: (
   input: ModifyCertificatesMessage,
 ) => Effect.Effect<
   ModifyCertificatesResult,
-  CertificateNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CertificateNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCertificatesMessage,
   output: ModifyCertificatesResult,
@@ -12702,8 +12694,8 @@ export const modifyCurrentDBClusterCapacity: (
   | DBClusterNotFoundFault
   | InvalidDBClusterCapacityFault
   | InvalidDBClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCurrentDBClusterCapacityMessage,
   output: DBClusterCapacityInfo,
@@ -12720,8 +12712,8 @@ export const modifyDBRecommendation: (
   input: ModifyDBRecommendationMessage,
 ) => Effect.Effect<
   DBRecommendationMessage,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBRecommendationMessage,
   output: DBRecommendationMessage,
@@ -12734,8 +12726,8 @@ export const removeSourceIdentifierFromSubscription: (
   input: RemoveSourceIdentifierFromSubscriptionMessage,
 ) => Effect.Effect<
   RemoveSourceIdentifierFromSubscriptionResult,
-  SourceNotFoundFault | SubscriptionNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  SourceNotFoundFault | SubscriptionNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveSourceIdentifierFromSubscriptionMessage,
   output: RemoveSourceIdentifierFromSubscriptionResult,
@@ -12759,8 +12751,8 @@ export const switchoverBlueGreenDeployment: (
   SwitchoverBlueGreenDeploymentResponse,
   | BlueGreenDeploymentNotFoundFault
   | InvalidBlueGreenDeploymentStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SwitchoverBlueGreenDeploymentRequest,
   output: SwitchoverBlueGreenDeploymentResponse,
@@ -12788,8 +12780,8 @@ export const removeRoleFromDBCluster: (
   | DBClusterNotFoundFault
   | DBClusterRoleNotFoundFault
   | InvalidDBClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveRoleFromDBClusterMessage,
   output: RemoveRoleFromDBClusterResponse,
@@ -12809,8 +12801,8 @@ export const removeRoleFromDBInstance: (
   | DBInstanceNotFoundFault
   | DBInstanceRoleNotFoundFault
   | InvalidDBInstanceStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveRoleFromDBInstanceMessage,
   output: RemoveRoleFromDBInstanceResponse,
@@ -12854,8 +12846,8 @@ export const failoverDBCluster: (
   | DBClusterNotFoundFault
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FailoverDBClusterMessage,
   output: FailoverDBClusterResult,
@@ -12876,8 +12868,8 @@ export const modifyDBShardGroup: (
   | DBShardGroupAlreadyExistsFault
   | DBShardGroupNotFoundFault
   | InvalidDBClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBShardGroupMessage,
   output: DBShardGroup,
@@ -12894,8 +12886,8 @@ export const promoteReadReplicaDBCluster: (
   input: PromoteReadReplicaDBClusterMessage,
 ) => Effect.Effect<
   PromoteReadReplicaDBClusterResult,
-  DBClusterNotFoundFault | InvalidDBClusterStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBClusterNotFoundFault | InvalidDBClusterStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PromoteReadReplicaDBClusterMessage,
   output: PromoteReadReplicaDBClusterResult,
@@ -12923,8 +12915,8 @@ export const rebootDBCluster: (
   | DBClusterNotFoundFault
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootDBClusterMessage,
   output: RebootDBClusterResult,
@@ -12955,8 +12947,8 @@ export const stopActivityStream: (
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopActivityStreamRequest,
   output: StopActivityStreamResponse,
@@ -12977,22 +12969,22 @@ export const describeExportTasks: {
     input: DescribeExportTasksMessage,
   ): Effect.Effect<
     ExportTasksMessage,
-    ExportTaskNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ExportTaskNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeExportTasksMessage,
   ) => Stream.Stream<
     ExportTasksMessage,
-    ExportTaskNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ExportTaskNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeExportTasksMessage,
   ) => Stream.Stream<
     ExportTask,
-    ExportTaskNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ExportTaskNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeExportTasksMessage,
@@ -13024,8 +13016,8 @@ export const modifyCustomDBEngineVersion: (
   DBEngineVersion,
   | CustomDBEngineVersionNotFoundFault
   | InvalidCustomDBEngineVersionStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyCustomDBEngineVersionMessage,
   output: DBEngineVersion,
@@ -13048,8 +13040,8 @@ export const modifyDBClusterEndpoint: (
   | InvalidDBClusterEndpointStateFault
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBClusterEndpointMessage,
   output: DBClusterEndpoint,
@@ -13087,8 +13079,8 @@ export const modifyDBClusterParameterGroup: (
   DBClusterParameterGroupNameMessage,
   | DBParameterGroupNotFoundFault
   | InvalidDBParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBClusterParameterGroupMessage,
   output: DBClusterParameterGroupNameMessage,
@@ -13115,8 +13107,8 @@ export const modifyDBParameterGroup: (
   DBParameterGroupNameMessage,
   | DBParameterGroupNotFoundFault
   | InvalidDBParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBParameterGroupMessage,
   output: DBParameterGroupNameMessage,
@@ -13148,8 +13140,8 @@ export const resetDBClusterParameterGroup: (
   DBClusterParameterGroupNameMessage,
   | DBParameterGroupNotFoundFault
   | InvalidDBParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetDBClusterParameterGroupMessage,
   output: DBClusterParameterGroupNameMessage,
@@ -13164,8 +13156,8 @@ export const deleteDBParameterGroup: (
   DeleteDBParameterGroupResponse,
   | DBParameterGroupNotFoundFault
   | InvalidDBParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBParameterGroupMessage,
   output: DeleteDBParameterGroupResponse,
@@ -13187,8 +13179,8 @@ export const resetDBParameterGroup: (
   DBParameterGroupNameMessage,
   | DBParameterGroupNotFoundFault
   | InvalidDBParameterGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetDBParameterGroupMessage,
   output: DBParameterGroupNameMessage,
@@ -13210,22 +13202,22 @@ export const describeDBClusterSnapshots: {
     input: DescribeDBClusterSnapshotsMessage,
   ): Effect.Effect<
     DBClusterSnapshotMessage,
-    DBClusterSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBClusterSnapshotsMessage,
   ) => Stream.Stream<
     DBClusterSnapshotMessage,
-    DBClusterSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBClusterSnapshotsMessage,
   ) => Stream.Stream<
     DBClusterSnapshot,
-    DBClusterSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBClusterSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBClusterSnapshotsMessage,
@@ -13246,22 +13238,22 @@ export const describeDBProxyEndpoints: {
     input: DescribeDBProxyEndpointsRequest,
   ): Effect.Effect<
     DescribeDBProxyEndpointsResponse,
-    DBProxyEndpointNotFoundFault | DBProxyNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBProxyEndpointNotFoundFault | DBProxyNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBProxyEndpointsRequest,
   ) => Stream.Stream<
     DescribeDBProxyEndpointsResponse,
-    DBProxyEndpointNotFoundFault | DBProxyNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBProxyEndpointNotFoundFault | DBProxyNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBProxyEndpointsRequest,
   ) => Stream.Stream<
     DBProxyEndpoint,
-    DBProxyEndpointNotFoundFault | DBProxyNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBProxyEndpointNotFoundFault | DBProxyNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBProxyEndpointsRequest,
@@ -13284,10 +13276,8 @@ export const rebootDBShardGroup: (
   input: RebootDBShardGroupMessage,
 ) => Effect.Effect<
   DBShardGroup,
-  | DBShardGroupNotFoundFault
-  | InvalidDBShardGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBShardGroupNotFoundFault | InvalidDBShardGroupStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootDBShardGroupMessage,
   output: DBShardGroup,
@@ -13301,22 +13291,22 @@ export const describeDBSnapshots: {
     input: DescribeDBSnapshotsMessage,
   ): Effect.Effect<
     DBSnapshotMessage,
-    DBSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBSnapshotsMessage,
   ) => Stream.Stream<
     DBSnapshotMessage,
-    DBSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBSnapshotsMessage,
   ) => Stream.Stream<
     DBSnapshot,
-    DBSnapshotNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBSnapshotNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBSnapshotsMessage,
@@ -13342,22 +13332,22 @@ export const describeGlobalClusters: {
     input: DescribeGlobalClustersMessage,
   ): Effect.Effect<
     GlobalClustersMessage,
-    GlobalClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    GlobalClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeGlobalClustersMessage,
   ) => Stream.Stream<
     GlobalClustersMessage,
-    GlobalClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    GlobalClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeGlobalClustersMessage,
   ) => Stream.Stream<
     GlobalCluster,
-    GlobalClusterNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    GlobalClusterNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeGlobalClustersMessage,
@@ -13378,22 +13368,22 @@ export const describeOptionGroups: {
     input: DescribeOptionGroupsMessage,
   ): Effect.Effect<
     OptionGroups,
-    OptionGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OptionGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOptionGroupsMessage,
   ) => Stream.Stream<
     OptionGroups,
-    OptionGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OptionGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOptionGroupsMessage,
   ) => Stream.Stream<
     OptionGroup,
-    OptionGroupNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OptionGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOptionGroupsMessage,
@@ -13413,10 +13403,8 @@ export const deleteEventSubscription: (
   input: DeleteEventSubscriptionMessage,
 ) => Effect.Effect<
   DeleteEventSubscriptionResult,
-  | InvalidEventSubscriptionStateFault
-  | SubscriptionNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidEventSubscriptionStateFault | SubscriptionNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEventSubscriptionMessage,
   output: DeleteEventSubscriptionResult,
@@ -13440,8 +13428,8 @@ export const enableHttpEndpoint: (
   input: EnableHttpEndpointRequest,
 ) => Effect.Effect<
   EnableHttpEndpointResponse,
-  InvalidResourceStateFault | ResourceNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidResourceStateFault | ResourceNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableHttpEndpointRequest,
   output: EnableHttpEndpointResponse,
@@ -13457,22 +13445,22 @@ export const describeDBLogFiles: {
     input: DescribeDBLogFilesMessage,
   ): Effect.Effect<
     DescribeDBLogFilesResponse,
-    DBInstanceNotFoundFault | DBInstanceNotReadyFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | DBInstanceNotReadyFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBLogFilesMessage,
   ) => Stream.Stream<
     DescribeDBLogFilesResponse,
-    DBInstanceNotFoundFault | DBInstanceNotReadyFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | DBInstanceNotReadyFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBLogFilesMessage,
   ) => Stream.Stream<
     DescribeDBLogFilesDetails,
-    DBInstanceNotFoundFault | DBInstanceNotReadyFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    DBInstanceNotFoundFault | DBInstanceNotReadyFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBLogFilesMessage,
@@ -13503,8 +13491,8 @@ export const promoteReadReplica: (
   input: PromoteReadReplicaMessage,
 ) => Effect.Effect<
   PromoteReadReplicaResult,
-  DBInstanceNotFoundFault | InvalidDBInstanceStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBInstanceNotFoundFault | InvalidDBInstanceStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PromoteReadReplicaMessage,
   output: PromoteReadReplicaResult,
@@ -13522,8 +13510,8 @@ export const stopDBInstanceAutomatedBackupsReplication: (
   input: StopDBInstanceAutomatedBackupsReplicationMessage,
 ) => Effect.Effect<
   StopDBInstanceAutomatedBackupsReplicationResult,
-  DBInstanceNotFoundFault | InvalidDBInstanceStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBInstanceNotFoundFault | InvalidDBInstanceStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDBInstanceAutomatedBackupsReplicationMessage,
   output: StopDBInstanceAutomatedBackupsReplicationResult,
@@ -13537,8 +13525,8 @@ export const switchoverReadReplica: (
   input: SwitchoverReadReplicaMessage,
 ) => Effect.Effect<
   SwitchoverReadReplicaResult,
-  DBInstanceNotFoundFault | InvalidDBInstanceStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBInstanceNotFoundFault | InvalidDBInstanceStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SwitchoverReadReplicaMessage,
   output: SwitchoverReadReplicaResult,
@@ -13558,22 +13546,22 @@ export const describeCertificates: {
     input: DescribeCertificatesMessage,
   ): Effect.Effect<
     CertificateMessage,
-    CertificateNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CertificateNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCertificatesMessage,
   ) => Stream.Stream<
     CertificateMessage,
-    CertificateNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CertificateNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCertificatesMessage,
   ) => Stream.Stream<
     Certificate,
-    CertificateNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CertificateNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCertificatesMessage,
@@ -13593,8 +13581,8 @@ export const addSourceIdentifierToSubscription: (
   input: AddSourceIdentifierToSubscriptionMessage,
 ) => Effect.Effect<
   AddSourceIdentifierToSubscriptionResult,
-  SourceNotFoundFault | SubscriptionNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  SourceNotFoundFault | SubscriptionNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddSourceIdentifierToSubscriptionMessage,
   output: AddSourceIdentifierToSubscriptionResult,
@@ -13618,8 +13606,8 @@ export const revokeDBSecurityGroupIngress: (
   | AuthorizationNotFoundFault
   | DBSecurityGroupNotFoundFault
   | InvalidDBSecurityGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeDBSecurityGroupIngressMessage,
   output: RevokeDBSecurityGroupIngressResult,
@@ -13644,8 +13632,8 @@ export const deleteBlueGreenDeployment: (
   DeleteBlueGreenDeploymentResponse,
   | BlueGreenDeploymentNotFoundFault
   | InvalidBlueGreenDeploymentStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBlueGreenDeploymentRequest,
   output: DeleteBlueGreenDeploymentResponse,
@@ -13664,8 +13652,8 @@ export const deleteDBShardGroup: (
   | DBShardGroupNotFoundFault
   | InvalidDBClusterStateFault
   | InvalidDBShardGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBShardGroupMessage,
   output: DBShardGroup,
@@ -13694,8 +13682,8 @@ export const stopDBCluster: (
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
   | InvalidDBShardGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDBClusterMessage,
   output: StopDBClusterResult,
@@ -13717,8 +13705,8 @@ export const addRoleToDBCluster: (
   | DBClusterRoleAlreadyExistsFault
   | DBClusterRoleQuotaExceededFault
   | InvalidDBClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddRoleToDBClusterMessage,
   output: AddRoleToDBClusterResponse,
@@ -13744,8 +13732,8 @@ export const addRoleToDBInstance: (
   | DBInstanceRoleAlreadyExistsFault
   | DBInstanceRoleQuotaExceededFault
   | InvalidDBInstanceStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddRoleToDBInstanceMessage,
   output: AddRoleToDBInstanceResponse,
@@ -13766,8 +13754,8 @@ export const applyPendingMaintenanceAction: (
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ApplyPendingMaintenanceActionMessage,
   output: ApplyPendingMaintenanceActionResult,
@@ -13785,8 +13773,8 @@ export const cancelExportTask: (
   input: CancelExportTaskMessage,
 ) => Effect.Effect<
   ExportTask,
-  ExportTaskNotFoundFault | InvalidExportTaskStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ExportTaskNotFoundFault | InvalidExportTaskStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelExportTaskMessage,
   output: ExportTask,
@@ -13807,8 +13795,8 @@ export const createDBClusterEndpoint: (
   | DBInstanceNotFoundFault
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBClusterEndpointMessage,
   output: DBClusterEndpoint,
@@ -13864,8 +13852,8 @@ export const createDBClusterParameterGroup: (
   CreateDBClusterParameterGroupResult,
   | DBParameterGroupAlreadyExistsFault
   | DBParameterGroupQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBClusterParameterGroupMessage,
   output: CreateDBClusterParameterGroupResult,
@@ -13883,10 +13871,8 @@ export const createOptionGroup: (
   input: CreateOptionGroupMessage,
 ) => Effect.Effect<
   CreateOptionGroupResult,
-  | OptionGroupAlreadyExistsFault
-  | OptionGroupQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OptionGroupAlreadyExistsFault | OptionGroupQuotaExceededFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateOptionGroupMessage,
   output: CreateOptionGroupResult,
@@ -13903,8 +13889,8 @@ export const deleteDBProxyEndpoint: (
   DeleteDBProxyEndpointResponse,
   | DBProxyEndpointNotFoundFault
   | InvalidDBProxyEndpointStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBProxyEndpointRequest,
   output: DeleteDBProxyEndpointResponse,
@@ -13920,8 +13906,8 @@ export const deleteDBSnapshot: (
   input: DeleteDBSnapshotMessage,
 ) => Effect.Effect<
   DeleteDBSnapshotResult,
-  DBSnapshotNotFoundFault | InvalidDBSnapshotStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBSnapshotNotFoundFault | InvalidDBSnapshotStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBSnapshotMessage,
   output: DeleteDBSnapshotResult,
@@ -13939,8 +13925,8 @@ export const deleteDBSubnetGroup: (
   | DBSubnetGroupNotFoundFault
   | InvalidDBSubnetGroupStateFault
   | InvalidDBSubnetStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBSubnetGroupMessage,
   output: DeleteDBSubnetGroupResponse,
@@ -13960,10 +13946,8 @@ export const deleteGlobalCluster: (
   input: DeleteGlobalClusterMessage,
 ) => Effect.Effect<
   DeleteGlobalClusterResult,
-  | GlobalClusterNotFoundFault
-  | InvalidGlobalClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  GlobalClusterNotFoundFault | InvalidGlobalClusterStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGlobalClusterMessage,
   output: DeleteGlobalClusterResult,
@@ -13985,8 +13969,8 @@ export const describeDBClusterSnapshotAttributes: (
   input: DescribeDBClusterSnapshotAttributesMessage,
 ) => Effect.Effect<
   DescribeDBClusterSnapshotAttributesResult,
-  DBClusterSnapshotNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBClusterSnapshotNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDBClusterSnapshotAttributesMessage,
   output: DescribeDBClusterSnapshotAttributesResult,
@@ -14000,22 +13984,22 @@ export const describeDBMajorEngineVersions: {
     input: DescribeDBMajorEngineVersionsRequest,
   ): Effect.Effect<
     DescribeDBMajorEngineVersionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBMajorEngineVersionsRequest,
   ) => Stream.Stream<
     DescribeDBMajorEngineVersionsResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBMajorEngineVersionsRequest,
   ) => Stream.Stream<
     DBMajorEngineVersion,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBMajorEngineVersionsRequest,
@@ -14044,8 +14028,8 @@ export const describeDBSnapshotAttributes: (
   input: DescribeDBSnapshotAttributesMessage,
 ) => Effect.Effect<
   DescribeDBSnapshotAttributesResult,
-  DBSnapshotNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBSnapshotNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDBSnapshotAttributesMessage,
   output: DescribeDBSnapshotAttributesResult,
@@ -14059,22 +14043,22 @@ export const describeOrderableDBInstanceOptions: {
     input: DescribeOrderableDBInstanceOptionsMessage,
   ): Effect.Effect<
     OrderableDBInstanceOptionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOrderableDBInstanceOptionsMessage,
   ) => Stream.Stream<
     OrderableDBInstanceOptionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOrderableDBInstanceOptionsMessage,
   ) => Stream.Stream<
     OrderableDBInstanceOption,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrderableDBInstanceOptionsMessage,
@@ -14095,22 +14079,22 @@ export const describeReservedDBInstancesOfferings: {
     input: DescribeReservedDBInstancesOfferingsMessage,
   ): Effect.Effect<
     ReservedDBInstancesOfferingMessage,
-    ReservedDBInstancesOfferingNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ReservedDBInstancesOfferingNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedDBInstancesOfferingsMessage,
   ) => Stream.Stream<
     ReservedDBInstancesOfferingMessage,
-    ReservedDBInstancesOfferingNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ReservedDBInstancesOfferingNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedDBInstancesOfferingsMessage,
   ) => Stream.Stream<
     ReservedDBInstancesOffering,
-    ReservedDBInstancesOfferingNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ReservedDBInstancesOfferingNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedDBInstancesOfferingsMessage,
@@ -14140,8 +14124,8 @@ export const downloadDBLogFilePortion: {
     | DBInstanceNotFoundFault
     | DBInstanceNotReadyFault
     | DBLogFileNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DownloadDBLogFilePortionMessage,
@@ -14150,8 +14134,8 @@ export const downloadDBLogFilePortion: {
     | DBInstanceNotFoundFault
     | DBInstanceNotReadyFault
     | DBLogFileNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DownloadDBLogFilePortionMessage,
@@ -14160,8 +14144,8 @@ export const downloadDBLogFilePortion: {
     | DBInstanceNotFoundFault
     | DBInstanceNotReadyFault
     | DBLogFileNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DownloadDBLogFilePortionMessage,
@@ -14187,8 +14171,8 @@ export const modifyDBProxy: (
   | DBProxyAlreadyExistsFault
   | DBProxyNotFoundFault
   | InvalidDBProxyStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBProxyRequest,
   output: ModifyDBProxyResponse,
@@ -14205,8 +14189,8 @@ export const modifyOptionGroup: (
   input: ModifyOptionGroupMessage,
 ) => Effect.Effect<
   ModifyOptionGroupResult,
-  InvalidOptionGroupStateFault | OptionGroupNotFoundFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidOptionGroupStateFault | OptionGroupNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyOptionGroupMessage,
   output: ModifyOptionGroupResult,
@@ -14222,8 +14206,8 @@ export const purchaseReservedDBInstancesOffering: (
   | ReservedDBInstanceAlreadyExistsFault
   | ReservedDBInstanceQuotaExceededFault
   | ReservedDBInstancesOfferingNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseReservedDBInstancesOfferingMessage,
   output: PurchaseReservedDBInstancesOfferingResult,
@@ -14249,8 +14233,8 @@ export const registerDBProxyTargets: (
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
   | InvalidDBProxyStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterDBProxyTargetsRequest,
   output: RegisterDBProxyTargetsResponse,
@@ -14286,8 +14270,8 @@ export const startActivityStream: (
   | InvalidDBInstanceStateFault
   | KMSKeyNotAccessibleFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartActivityStreamRequest,
   output: StartActivityStreamResponse,
@@ -14319,8 +14303,8 @@ export const createDBParameterGroup: (
   CreateDBParameterGroupResult,
   | DBParameterGroupAlreadyExistsFault
   | DBParameterGroupQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBParameterGroupMessage,
   output: CreateDBParameterGroupResult,
@@ -14342,8 +14326,8 @@ export const copyDBClusterParameterGroup: (
   | DBParameterGroupAlreadyExistsFault
   | DBParameterGroupNotFoundFault
   | DBParameterGroupQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyDBClusterParameterGroupMessage,
   output: CopyDBClusterParameterGroupResult,
@@ -14366,8 +14350,8 @@ export const copyDBParameterGroup: (
   | DBParameterGroupAlreadyExistsFault
   | DBParameterGroupNotFoundFault
   | DBParameterGroupQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyDBParameterGroupMessage,
   output: CopyDBParameterGroupResult,
@@ -14397,8 +14381,8 @@ export const deleteDBClusterSnapshot: (
   DeleteDBClusterSnapshotResult,
   | DBClusterSnapshotNotFoundFault
   | InvalidDBClusterSnapshotStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBClusterSnapshotMessage,
   output: DeleteDBClusterSnapshotResult,
@@ -14419,8 +14403,8 @@ export const deleteTenantDatabase: (
   | DBSnapshotAlreadyExistsFault
   | InvalidDBInstanceStateFault
   | TenantDatabaseNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTenantDatabaseMessage,
   output: DeleteTenantDatabaseResult,
@@ -14454,8 +14438,8 @@ export const stopDBInstance: (
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopDBInstanceMessage,
   output: StopDBInstanceResult,
@@ -14477,8 +14461,8 @@ export const copyOptionGroup: (
   | OptionGroupAlreadyExistsFault
   | OptionGroupNotFoundFault
   | OptionGroupQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyOptionGroupMessage,
   output: CopyOptionGroupResult,
@@ -14513,8 +14497,8 @@ export const removeTagsFromResource: (
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
   | TenantDatabaseNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTagsFromResourceMessage,
   output: RemoveTagsFromResourceResponse,
@@ -14546,8 +14530,8 @@ export const modifyDBProxyEndpoint: (
   | DBProxyEndpointNotFoundFault
   | InvalidDBProxyEndpointStateFault
   | InvalidDBProxyStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBProxyEndpointRequest,
   output: ModifyDBProxyEndpointResponse,
@@ -14572,8 +14556,8 @@ export const modifyDBSnapshot: (
   | DBSnapshotNotFoundFault
   | InvalidDBSnapshotStateFault
   | KMSKeyNotAccessibleFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBSnapshotMessage,
   output: ModifyDBSnapshotResult,
@@ -14605,8 +14589,8 @@ export const copyDBSnapshot: (
   | InvalidDBSnapshotStateFault
   | KMSKeyNotAccessibleFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyDBSnapshotMessage,
   output: CopyDBSnapshotResult,
@@ -14636,8 +14620,8 @@ export const modifyGlobalCluster: (
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
   | InvalidGlobalClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyGlobalClusterMessage,
   output: ModifyGlobalClusterResult,
@@ -14687,8 +14671,8 @@ export const failoverGlobalCluster: (
   | GlobalClusterNotFoundFault
   | InvalidDBClusterStateFault
   | InvalidGlobalClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FailoverGlobalClusterMessage,
   output: FailoverGlobalClusterResult,
@@ -14714,8 +14698,8 @@ export const removeFromGlobalCluster: (
   | GlobalClusterNotFoundFault
   | InvalidDBClusterStateFault
   | InvalidGlobalClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveFromGlobalClusterMessage,
   output: RemoveFromGlobalClusterResult,
@@ -14747,8 +14731,8 @@ export const switchoverGlobalCluster: (
   | GlobalClusterNotFoundFault
   | InvalidDBClusterStateFault
   | InvalidGlobalClusterStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SwitchoverGlobalClusterMessage,
   output: SwitchoverGlobalClusterResult,
@@ -14769,8 +14753,8 @@ export const modifyIntegration: (
   | IntegrationConflictOperationFault
   | IntegrationNotFoundFault
   | InvalidIntegrationStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyIntegrationMessage,
   output: Integration,
@@ -14790,8 +14774,8 @@ export const modifyDBProxyTargetGroup: (
   | DBProxyNotFoundFault
   | DBProxyTargetGroupNotFoundFault
   | InvalidDBProxyStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBProxyTargetGroupRequest,
   output: ModifyDBProxyTargetGroupResponse,
@@ -14808,8 +14792,8 @@ export const deleteDBProxy: (
   input: DeleteDBProxyRequest,
 ) => Effect.Effect<
   DeleteDBProxyResponse,
-  DBProxyNotFoundFault | InvalidDBProxyStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBProxyNotFoundFault | InvalidDBProxyStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBProxyRequest,
   output: DeleteDBProxyResponse,
@@ -14826,8 +14810,8 @@ export const deregisterDBProxyTargets: (
   | DBProxyTargetGroupNotFoundFault
   | DBProxyTargetNotFoundFault
   | InvalidDBProxyStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterDBProxyTargetsRequest,
   output: DeregisterDBProxyTargetsResponse,
@@ -14849,8 +14833,8 @@ export const describeDBProxyTargetGroups: {
     | DBProxyNotFoundFault
     | DBProxyTargetGroupNotFoundFault
     | InvalidDBProxyStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBProxyTargetGroupsRequest,
@@ -14859,8 +14843,8 @@ export const describeDBProxyTargetGroups: {
     | DBProxyNotFoundFault
     | DBProxyTargetGroupNotFoundFault
     | InvalidDBProxyStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBProxyTargetGroupsRequest,
@@ -14869,8 +14853,8 @@ export const describeDBProxyTargetGroups: {
     | DBProxyNotFoundFault
     | DBProxyTargetGroupNotFoundFault
     | InvalidDBProxyStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBProxyTargetGroupsRequest,
@@ -14899,8 +14883,8 @@ export const describeDBProxyTargets: {
     | DBProxyTargetGroupNotFoundFault
     | DBProxyTargetNotFoundFault
     | InvalidDBProxyStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBProxyTargetsRequest,
@@ -14910,8 +14894,8 @@ export const describeDBProxyTargets: {
     | DBProxyTargetGroupNotFoundFault
     | DBProxyTargetNotFoundFault
     | InvalidDBProxyStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBProxyTargetsRequest,
@@ -14921,8 +14905,8 @@ export const describeDBProxyTargets: {
     | DBProxyTargetGroupNotFoundFault
     | DBProxyTargetNotFoundFault
     | InvalidDBProxyStateFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBProxyTargetsRequest,
@@ -14962,8 +14946,8 @@ export const rebootDBInstance: (
   | DBInstanceNotFoundFault
   | InvalidDBInstanceStateFault
   | KMSKeyNotAccessibleFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootDBInstanceMessage,
   output: RebootDBInstanceResult,
@@ -15008,8 +14992,8 @@ export const deleteDBInstance: (
   | InvalidDBInstanceStateFault
   | KMSKeyNotAccessibleFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBInstanceMessage,
   output: DeleteDBInstanceResult,
@@ -15036,8 +15020,8 @@ export const createIntegration: (
   | IntegrationConflictOperationFault
   | IntegrationQuotaExceededFault
   | KMSKeyNotAccessibleFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIntegrationMessage,
   output: Integration,
@@ -15062,8 +15046,8 @@ export const createDBSnapshot: (
   | DBSnapshotAlreadyExistsFault
   | InvalidDBInstanceStateFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBSnapshotMessage,
   output: CreateDBSnapshotResult,
@@ -15093,8 +15077,8 @@ export const createDBClusterSnapshot: (
   | InvalidDBClusterSnapshotStateFault
   | InvalidDBClusterStateFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBClusterSnapshotMessage,
   output: CreateDBClusterSnapshotResult,
@@ -15153,8 +15137,8 @@ export const copyDBClusterSnapshot: (
   | InvalidDBClusterStateFault
   | KMSKeyNotAccessibleFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopyDBClusterSnapshotMessage,
   output: CopyDBClusterSnapshotResult,
@@ -15176,8 +15160,8 @@ export const deleteDBInstanceAutomatedBackup: (
   DeleteDBInstanceAutomatedBackupResult,
   | DBInstanceAutomatedBackupNotFoundFault
   | InvalidDBInstanceAutomatedBackupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBInstanceAutomatedBackupMessage,
   output: DeleteDBInstanceAutomatedBackupResult,
@@ -15211,8 +15195,8 @@ export const addTagsToResource: (
   | InvalidDBClusterStateFault
   | InvalidDBInstanceStateFault
   | TenantDatabaseNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddTagsToResourceMessage,
   output: AddTagsToResourceResponse,
@@ -15255,8 +15239,8 @@ export const listTagsForResource: (
   | DBSnapshotTenantDatabaseNotFoundFault
   | IntegrationNotFoundFault
   | TenantDatabaseNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceMessage,
   output: TagListMessage,
@@ -15284,8 +15268,8 @@ export const deleteIntegration: (
   | IntegrationConflictOperationFault
   | IntegrationNotFoundFault
   | InvalidIntegrationStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIntegrationMessage,
   output: Integration,
@@ -15313,8 +15297,8 @@ export const createDBSecurityGroup: (
   | DBSecurityGroupAlreadyExistsFault
   | DBSecurityGroupNotSupportedFault
   | DBSecurityGroupQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBSecurityGroupMessage,
   output: CreateDBSecurityGroupResult,
@@ -15349,8 +15333,8 @@ export const createGlobalCluster: (
   | InvalidDBClusterStateFault
   | InvalidDBShardGroupStateFault
   | ResourceNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGlobalClusterMessage,
   output: CreateGlobalClusterResult,
@@ -15391,8 +15375,8 @@ export const deleteDBCluster: (
   | InvalidGlobalClusterStateFault
   | KMSKeyNotAccessibleFault
   | SnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBClusterMessage,
   output: DeleteDBClusterResult,
@@ -15417,8 +15401,8 @@ export const deleteDBClusterAutomatedBackup: (
   DeleteDBClusterAutomatedBackupResult,
   | DBClusterAutomatedBackupNotFoundFault
   | InvalidDBClusterAutomatedBackupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDBClusterAutomatedBackupMessage,
   output: DeleteDBClusterAutomatedBackupResult,
@@ -15435,22 +15419,22 @@ export const describeOptionGroupOptions: {
     input: DescribeOptionGroupOptionsMessage,
   ): Effect.Effect<
     OptionGroupOptionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOptionGroupOptionsMessage,
   ) => Stream.Stream<
     OptionGroupOptionsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOptionGroupOptionsMessage,
   ) => Stream.Stream<
     OptionGroupOption,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOptionGroupOptionsMessage,
@@ -15471,22 +15455,22 @@ export const describeReservedDBInstances: {
     input: DescribeReservedDBInstancesMessage,
   ): Effect.Effect<
     ReservedDBInstanceMessage,
-    ReservedDBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ReservedDBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedDBInstancesMessage,
   ) => Stream.Stream<
     ReservedDBInstanceMessage,
-    ReservedDBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ReservedDBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedDBInstancesMessage,
   ) => Stream.Stream<
     ReservedDBInstance,
-    ReservedDBInstanceNotFoundFault | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ReservedDBInstanceNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedDBInstancesMessage,
@@ -15509,8 +15493,8 @@ export const describeValidDBInstanceModifications: (
   input: DescribeValidDBInstanceModificationsMessage,
 ) => Effect.Effect<
   DescribeValidDBInstanceModificationsResult,
-  DBInstanceNotFoundFault | InvalidDBInstanceStateFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  DBInstanceNotFoundFault | InvalidDBInstanceStateFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeValidDBInstanceModificationsMessage,
   output: DescribeValidDBInstanceModificationsResult,
@@ -15546,8 +15530,8 @@ export const modifyDBClusterSnapshotAttribute: (
   | DBClusterSnapshotNotFoundFault
   | InvalidDBClusterSnapshotStateFault
   | SharedSnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBClusterSnapshotAttributeMessage,
   output: ModifyDBClusterSnapshotAttributeResult,
@@ -15575,8 +15559,8 @@ export const startDBInstanceAutomatedBackupsReplication: (
   | InvalidDBInstanceStateFault
   | KMSKeyNotAccessibleFault
   | StorageTypeNotSupportedFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDBInstanceAutomatedBackupsReplicationMessage,
   output: StartDBInstanceAutomatedBackupsReplicationResult,
@@ -15599,8 +15583,8 @@ export const createDBProxy: (
   | DBProxyAlreadyExistsFault
   | DBProxyQuotaExceededFault
   | InvalidSubnet
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBProxyRequest,
   output: CreateDBProxyResponse,
@@ -15620,8 +15604,8 @@ export const createDBProxyEndpoint: (
   | DBProxyNotFoundFault
   | InvalidDBProxyStateFault
   | InvalidSubnet
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBProxyEndpointRequest,
   output: CreateDBProxyEndpointResponse,
@@ -15647,8 +15631,8 @@ export const modifyTenantDatabase: (
   | KMSKeyNotAccessibleFault
   | TenantDatabaseAlreadyExistsFault
   | TenantDatabaseNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyTenantDatabaseMessage,
   output: ModifyTenantDatabaseResult,
@@ -15680,8 +15664,8 @@ export const startDBCluster: (
   | InvalidDBShardGroupStateFault
   | KMSKeyNotAccessibleFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDBClusterMessage,
   output: StartDBClusterResult,
@@ -15722,8 +15706,8 @@ export const modifyDBSnapshotAttribute: (
   | DBSnapshotNotFoundFault
   | InvalidDBSnapshotStateFault
   | SharedSnapshotQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBSnapshotAttributeMessage,
   output: ModifyDBSnapshotAttributeResult,
@@ -15760,8 +15744,8 @@ export const startDBInstance: (
   | InvalidVPCNetworkStateFault
   | KMSKeyNotAccessibleFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDBInstanceMessage,
   output: StartDBInstanceResult,
@@ -15807,8 +15791,8 @@ export const authorizeDBSecurityGroupIngress: (
   | AuthorizationQuotaExceededFault
   | DBSecurityGroupNotFoundFault
   | InvalidDBSecurityGroupStateFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeDBSecurityGroupIngressMessage,
   output: AuthorizeDBSecurityGroupIngressResult,
@@ -15832,8 +15816,8 @@ export const modifyDBSubnetGroup: (
   | InvalidDBSubnetGroupStateFault
   | InvalidSubnet
   | SubnetAlreadyInUse
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBSubnetGroupMessage,
   output: ModifyDBSubnetGroupResult,
@@ -15859,8 +15843,8 @@ export const createTenantDatabase: (
   | KMSKeyNotAccessibleFault
   | TenantDatabaseAlreadyExistsFault
   | TenantDatabaseQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTenantDatabaseMessage,
   output: CreateTenantDatabaseResult,
@@ -15886,8 +15870,8 @@ export const createCustomDBEngineVersion: (
   | Ec2ImagePropertiesNotSupportedFault
   | InvalidCustomDBEngineVersionStateFault
   | KMSKeyNotAccessibleFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomDBEngineVersionMessage,
   output: DBEngineVersion,
@@ -15913,8 +15897,8 @@ export const createDBSubnetGroup: (
   | DBSubnetGroupQuotaExceededFault
   | DBSubnetQuotaExceededFault
   | InvalidSubnet
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBSubnetGroupMessage,
   output: CreateDBSubnetGroupResult,
@@ -15942,8 +15926,8 @@ export const createDBShardGroup: (
   | MaxDBShardGroupLimitReached
   | NetworkTypeNotSupported
   | UnsupportedDBEngineVersionFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBShardGroupMessage,
   output: DBShardGroup,
@@ -15975,8 +15959,8 @@ export const modifyEventSubscription: (
   | SNSTopicArnNotFoundFault
   | SubscriptionCategoryNotFoundFault
   | SubscriptionNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyEventSubscriptionMessage,
   output: ModifyEventSubscriptionResult,
@@ -16030,8 +16014,8 @@ export const createDBInstance: (
   | StorageTypeNotSupportedFault
   | TenantDatabaseQuotaExceededFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBInstanceMessage,
   output: CreateDBInstanceResult,
@@ -16107,8 +16091,8 @@ export const createDBInstanceReadReplica: (
   | StorageTypeNotSupportedFault
   | TenantDatabaseQuotaExceededFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBInstanceReadReplicaMessage,
   output: CreateDBInstanceReadReplicaResult,
@@ -16181,8 +16165,8 @@ export const createEventSubscription: (
   | SourceNotFoundFault
   | SubscriptionAlreadyExistFault
   | SubscriptionCategoryNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEventSubscriptionMessage,
   output: CreateEventSubscriptionResult,
@@ -16231,8 +16215,8 @@ export const restoreDBInstanceFromS3: (
   | StorageQuotaExceededFault
   | StorageTypeNotSupportedFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreDBInstanceFromS3Message,
   output: RestoreDBInstanceFromS3Result,
@@ -16311,8 +16295,8 @@ export const restoreDBClusterToPointInTime: (
   | StorageQuotaExceededFault
   | StorageTypeNotSupportedFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreDBClusterToPointInTimeMessage,
   output: RestoreDBClusterToPointInTimeResult,
@@ -16391,8 +16375,8 @@ export const restoreDBClusterFromSnapshot: (
   | StorageQuotaExceededFault
   | StorageTypeNotSupportedFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreDBClusterFromSnapshotMessage,
   output: RestoreDBClusterFromSnapshotResult,
@@ -16455,8 +16439,8 @@ export const modifyDBInstance: (
   | StorageTypeNotSupportedFault
   | TenantDatabaseQuotaExceededFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBInstanceMessage,
   output: ModifyDBInstanceResult,
@@ -16535,8 +16519,8 @@ export const restoreDBInstanceFromDBSnapshot: (
   | StorageTypeNotSupportedFault
   | TenantDatabaseQuotaExceededFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreDBInstanceFromDBSnapshotMessage,
   output: RestoreDBInstanceFromDBSnapshotResult,
@@ -16615,8 +16599,8 @@ export const createDBCluster: (
   | StorageQuotaExceededFault
   | StorageTypeNotSupportedFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDBClusterMessage,
   output: CreateDBClusterResult,
@@ -16686,8 +16670,8 @@ export const restoreDBClusterFromS3: (
   | NetworkTypeNotSupported
   | StorageQuotaExceededFault
   | StorageTypeNotSupportedFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreDBClusterFromS3Message,
   output: RestoreDBClusterFromS3Result,
@@ -16742,8 +16726,8 @@ export const startExportTask: (
   | InvalidExportSourceStateFault
   | InvalidS3BucketFault
   | KMSKeyNotAccessibleFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartExportTaskMessage,
   output: ExportTask,
@@ -16796,8 +16780,8 @@ export const createBlueGreenDeployment: (
   | SourceClusterNotSupportedFault
   | SourceDatabaseNotSupportedFault
   | StorageQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBlueGreenDeploymentRequest,
   output: CreateBlueGreenDeploymentResponse,
@@ -16854,8 +16838,8 @@ export const modifyDBCluster: (
   | StorageTypeNotAvailableFault
   | StorageTypeNotSupportedFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ModifyDBClusterMessage,
   output: ModifyDBClusterResult,
@@ -16925,8 +16909,8 @@ export const restoreDBInstanceToPointInTime: (
   | StorageTypeNotSupportedFault
   | TenantDatabaseQuotaExceededFault
   | VpcEncryptionControlViolationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreDBInstanceToPointInTimeMessage,
   output: RestoreDBInstanceToPointInTimeResult,
@@ -16967,22 +16951,22 @@ export const describeDBRecommendations: {
     input: DescribeDBRecommendationsMessage,
   ): Effect.Effect<
     DBRecommendationsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeDBRecommendationsMessage,
   ) => Stream.Stream<
     DBRecommendationsMessage,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeDBRecommendationsMessage,
   ) => Stream.Stream<
     DBRecommendation,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeDBRecommendationsMessage,

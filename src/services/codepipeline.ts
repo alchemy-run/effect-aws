@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://codepipeline.amazonaws.com/doc/2015-07-09/");
 const svc = T.AwsApiService({
@@ -3559,7 +3557,7 @@ export class InvalidJobStateException extends S.TaggedError<InvalidJobStateExcep
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InvalidActionDeclarationException extends S.TaggedError<InvalidActionDeclarationException>()(
   "InvalidActionDeclarationException",
   { message: S.optional(S.String) },
@@ -3683,8 +3681,8 @@ export const deregisterWebhookWithThirdParty: (
   input: DeregisterWebhookWithThirdPartyInput,
 ) => Effect.Effect<
   DeregisterWebhookWithThirdPartyOutput,
-  ValidationException | WebhookNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ValidationException | WebhookNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterWebhookWithThirdPartyInput,
   output: DeregisterWebhookWithThirdPartyOutput,
@@ -3697,8 +3695,8 @@ export const deletePipeline: (
   input: DeletePipelineInput,
 ) => Effect.Effect<
   DeletePipelineResponse,
-  ConcurrentModificationException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConcurrentModificationException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePipelineInput,
   output: DeletePipelineResponse,
@@ -3714,8 +3712,8 @@ export const deleteWebhook: (
   input: DeleteWebhookInput,
 ) => Effect.Effect<
   DeleteWebhookOutput,
-  ConcurrentModificationException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConcurrentModificationException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWebhookInput,
   output: DeleteWebhookOutput,
@@ -3729,8 +3727,8 @@ export const registerWebhookWithThirdParty: (
   input: RegisterWebhookWithThirdPartyInput,
 ) => Effect.Effect<
   RegisterWebhookWithThirdPartyOutput,
-  ValidationException | WebhookNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ValidationException | WebhookNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterWebhookWithThirdPartyInput,
   output: RegisterWebhookWithThirdPartyOutput,
@@ -3750,8 +3748,8 @@ export const deleteCustomActionType: (
   input: DeleteCustomActionTypeInput,
 ) => Effect.Effect<
   DeleteCustomActionTypeResponse,
-  ConcurrentModificationException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConcurrentModificationException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomActionTypeInput,
   output: DeleteCustomActionTypeResponse,
@@ -3768,8 +3766,8 @@ export const disableStageTransition: (
   | PipelineNotFoundException
   | StageNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableStageTransitionInput,
   output: DisableStageTransitionResponse,
@@ -3788,8 +3786,8 @@ export const getActionType: (
   input: GetActionTypeInput,
 ) => Effect.Effect<
   GetActionTypeOutput,
-  ActionTypeNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ActionTypeNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetActionTypeInput,
   output: GetActionTypeOutput,
@@ -3807,8 +3805,8 @@ export const pollForThirdPartyJobs: (
   input: PollForThirdPartyJobsInput,
 ) => Effect.Effect<
   PollForThirdPartyJobsOutput,
-  ActionTypeNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ActionTypeNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PollForThirdPartyJobsInput,
   output: PollForThirdPartyJobsOutput,
@@ -3826,8 +3824,8 @@ export const startPipelineExecution: (
   | ConflictException
   | PipelineNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartPipelineExecutionInput,
   output: StartPipelineExecutionOutput,
@@ -3848,8 +3846,8 @@ export const enableStageTransition: (
   | PipelineNotFoundException
   | StageNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableStageTransitionInput,
   output: EnableStageTransitionResponse,
@@ -3870,8 +3868,8 @@ export const acknowledgeJob: (
   | InvalidNonceException
   | JobNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcknowledgeJobInput,
   output: AcknowledgeJobOutput,
@@ -3889,8 +3887,8 @@ export const getPipeline: (
   | PipelineNotFoundException
   | PipelineVersionNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPipelineInput,
   output: GetPipelineOutput,
@@ -3909,22 +3907,22 @@ export const listActionTypes: {
     input: ListActionTypesInput,
   ): Effect.Effect<
     ListActionTypesOutput,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListActionTypesInput,
   ) => Stream.Stream<
     ListActionTypesOutput,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListActionTypesInput,
   ) => Stream.Stream<
     ActionType,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActionTypesInput,
@@ -3945,8 +3943,8 @@ export const listRuleTypes: (
   input: ListRuleTypesInput,
 ) => Effect.Effect<
   ListRuleTypesOutput,
-  InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidNextTokenException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRuleTypesInput,
   output: ListRuleTypesOutput,
@@ -3967,8 +3965,8 @@ export const pollForJobs: (
   input: PollForJobsInput,
 ) => Effect.Effect<
   PollForJobsOutput,
-  ActionTypeNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ActionTypeNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PollForJobsInput,
   output: PollForJobsOutput,
@@ -3987,8 +3985,8 @@ export const putActionRevision: (
   | PipelineNotFoundException
   | StageNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutActionRevisionInput,
   output: PutActionRevisionOutput,
@@ -4011,8 +4009,8 @@ export const putJobFailureResult: (
   | InvalidJobStateException
   | JobNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutJobFailureResultInput,
   output: PutJobFailureResultResponse,
@@ -4030,8 +4028,8 @@ export const acknowledgeThirdPartyJob: (
   | InvalidNonceException
   | JobNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcknowledgeThirdPartyJobInput,
   output: AcknowledgeThirdPartyJobOutput,
@@ -4054,8 +4052,8 @@ export const putThirdPartyJobFailureResult: (
   | InvalidJobStateException
   | JobNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutThirdPartyJobFailureResultInput,
   output: PutThirdPartyJobFailureResultResponse,
@@ -4078,8 +4076,8 @@ export const putThirdPartyJobSuccessResult: (
   | InvalidJobStateException
   | JobNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutThirdPartyJobSuccessResultInput,
   output: PutThirdPartyJobSuccessResultResponse,
@@ -4098,22 +4096,22 @@ export const listPipelines: {
     input: ListPipelinesInput,
   ): Effect.Effect<
     ListPipelinesOutput,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPipelinesInput,
   ) => Stream.Stream<
     ListPipelinesOutput,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPipelinesInput,
   ) => Stream.Stream<
     PipelineSummary,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipelinesInput,
@@ -4138,22 +4136,22 @@ export const listWebhooks: {
     input: ListWebhooksInput,
   ): Effect.Effect<
     ListWebhooksOutput,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWebhooksInput,
   ) => Stream.Stream<
     ListWebhooksOutput,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWebhooksInput,
   ) => Stream.Stream<
     ListWebhookItem,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWebhooksInput,
@@ -4182,8 +4180,8 @@ export const overrideStageCondition: (
   | PipelineNotFoundException
   | StageNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: OverrideStageConditionInput,
   output: OverrideStageConditionResponse,
@@ -4209,8 +4207,8 @@ export const getPipelineExecution: (
   | PipelineExecutionNotFoundException
   | PipelineNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPipelineExecutionInput,
   output: GetPipelineExecutionOutput,
@@ -4237,8 +4235,8 @@ export const getThirdPartyJobDetails: (
   | InvalidJobException
   | JobNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetThirdPartyJobDetailsInput,
   output: GetThirdPartyJobDetailsOutput,
@@ -4270,8 +4268,8 @@ export const retryStageExecution: (
   | StageNotFoundException
   | StageNotRetryableException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetryStageExecutionInput,
   output: RetryStageExecutionOutput,
@@ -4297,8 +4295,8 @@ export const putJobSuccessResult: (
   | JobNotFoundException
   | OutputVariablesSizeExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutJobSuccessResultInput,
   output: PutJobSuccessResultResponse,
@@ -4326,8 +4324,8 @@ export const stopPipelineExecution: (
   | PipelineExecutionNotStoppableException
   | PipelineNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopPipelineExecutionInput,
   output: StopPipelineExecutionOutput,
@@ -4351,8 +4349,8 @@ export const untagResource: (
   | InvalidTagsException
   | ResourceNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -4377,8 +4375,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceInput,
@@ -4388,8 +4386,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceInput,
@@ -4399,8 +4397,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceInput,
@@ -4431,8 +4429,8 @@ export const createCustomActionType: (
   | LimitExceededException
   | TooManyTagsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomActionTypeInput,
   output: CreateCustomActionTypeOutput,
@@ -4459,8 +4457,8 @@ export const listPipelineExecutions: {
     | InvalidNextTokenException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPipelineExecutionsInput,
@@ -4469,8 +4467,8 @@ export const listPipelineExecutions: {
     | InvalidNextTokenException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPipelineExecutionsInput,
@@ -4479,8 +4477,8 @@ export const listPipelineExecutions: {
     | InvalidNextTokenException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipelineExecutionsInput,
@@ -4529,8 +4527,8 @@ export const putWebhook: (
   | PipelineNotFoundException
   | TooManyTagsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutWebhookInput,
   output: PutWebhookOutput,
@@ -4558,8 +4556,8 @@ export const updateActionType: (
   | ActionTypeNotFoundException
   | RequestFailedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateActionTypeInput,
   output: UpdateActionTypeResponse,
@@ -4585,8 +4583,8 @@ export const updatePipeline: (
   | InvalidStructureException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePipelineInput,
   output: UpdatePipelineOutput,
@@ -4613,8 +4611,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | TooManyTagsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -4641,8 +4639,8 @@ export const putApprovalResult: (
   | PipelineNotFoundException
   | StageNotFoundException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutApprovalResultInput,
   output: PutApprovalResultOutput,
@@ -4669,8 +4667,8 @@ export const rollbackStage: (
   | StageNotFoundException
   | UnableToRollbackStageException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RollbackStageInput,
   output: RollbackStageOutput,
@@ -4696,8 +4694,8 @@ export const getJobDetails: (
   input: GetJobDetailsInput,
 ) => Effect.Effect<
   GetJobDetailsOutput,
-  JobNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  JobNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetJobDetailsInput,
   output: GetJobDetailsOutput,
@@ -4715,8 +4713,8 @@ export const getPipelineState: (
   input: GetPipelineStateInput,
 ) => Effect.Effect<
   GetPipelineStateOutput,
-  PipelineNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  PipelineNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPipelineStateInput,
   output: GetPipelineStateOutput,
@@ -4734,8 +4732,8 @@ export const listActionExecutions: {
     | PipelineExecutionNotFoundException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListActionExecutionsInput,
@@ -4745,8 +4743,8 @@ export const listActionExecutions: {
     | PipelineExecutionNotFoundException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListActionExecutionsInput,
@@ -4756,8 +4754,8 @@ export const listActionExecutions: {
     | PipelineExecutionNotFoundException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActionExecutionsInput,
@@ -4787,8 +4785,8 @@ export const listDeployActionExecutionTargets: {
     | InvalidNextTokenException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDeployActionExecutionTargetsInput,
@@ -4798,8 +4796,8 @@ export const listDeployActionExecutionTargets: {
     | InvalidNextTokenException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDeployActionExecutionTargetsInput,
@@ -4809,8 +4807,8 @@ export const listDeployActionExecutionTargets: {
     | InvalidNextTokenException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDeployActionExecutionTargetsInput,
@@ -4841,8 +4839,8 @@ export const listRuleExecutions: {
     | PipelineExecutionNotFoundException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRuleExecutionsInput,
@@ -4852,8 +4850,8 @@ export const listRuleExecutions: {
     | PipelineExecutionNotFoundException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRuleExecutionsInput,
@@ -4863,8 +4861,8 @@ export const listRuleExecutions: {
     | PipelineExecutionNotFoundException
     | PipelineNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRuleExecutionsInput,
@@ -4904,8 +4902,8 @@ export const createPipeline: (
   | PipelineNameInUseException
   | TooManyTagsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePipelineInput,
   output: CreatePipelineOutput,

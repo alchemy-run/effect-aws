@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ApiGatewayV2",
@@ -6693,28 +6691,26 @@ export class NotFoundException extends S.TaggedError<NotFoundException>()(
     Message: S.optional(S.String).pipe(T.JsonName("message")),
     ResourceType: S.optional(S.String).pipe(T.JsonName("resourceType")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withAuthError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   {
     LimitType: S.optional(S.String).pipe(T.JsonName("limitType")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String).pipe(T.JsonName("message")) },
-) {}
+).pipe(C.withConflictError) {}
 
 //# Operations
 /**
@@ -6724,8 +6720,8 @@ export const deleteAccessLogSettings: (
   input: DeleteAccessLogSettingsRequest,
 ) => Effect.Effect<
   DeleteAccessLogSettingsResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccessLogSettingsRequest,
   output: DeleteAccessLogSettingsResponse,
@@ -6741,8 +6737,8 @@ export const getApiMappings: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApiMappingsRequest,
   output: GetApiMappingsResponse,
@@ -6758,8 +6754,8 @@ export const getApis: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApisRequest,
   output: GetApisResponse,
@@ -6775,8 +6771,8 @@ export const getAuthorizers: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAuthorizersRequest,
   output: GetAuthorizersResponse,
@@ -6792,8 +6788,8 @@ export const getDeployments: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentsRequest,
   output: GetDeploymentsResponse,
@@ -6806,8 +6802,8 @@ export const getDomainName: (
   input: GetDomainNameRequest,
 ) => Effect.Effect<
   GetDomainNameResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainNameRequest,
   output: GetDomainNameResponse,
@@ -6823,8 +6819,8 @@ export const getDomainNames: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDomainNamesRequest,
   output: GetDomainNamesResponse,
@@ -6837,8 +6833,8 @@ export const getIntegration: (
   input: GetIntegrationRequest,
 ) => Effect.Effect<
   GetIntegrationResult,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIntegrationRequest,
   output: GetIntegrationResult,
@@ -6854,8 +6850,8 @@ export const getIntegrationResponses: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIntegrationResponsesRequest,
   output: GetIntegrationResponsesResponse,
@@ -6871,8 +6867,8 @@ export const getIntegrations: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIntegrationsRequest,
   output: GetIntegrationsResponse,
@@ -6888,8 +6884,8 @@ export const getModels: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetModelsRequest,
   output: GetModelsResponse,
@@ -6906,8 +6902,8 @@ export const getPortal: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPortalRequest,
   output: GetPortalResponse,
@@ -6929,8 +6925,8 @@ export const getProductRestEndpointPage: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProductRestEndpointPageRequest,
   output: GetProductRestEndpointPageResponse,
@@ -6951,8 +6947,8 @@ export const getRouteResponses: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouteResponsesRequest,
   output: GetRouteResponsesResponse,
@@ -6968,8 +6964,8 @@ export const getRoutes: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRoutesRequest,
   output: GetRoutesResponse,
@@ -6985,8 +6981,8 @@ export const getStages: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStagesRequest,
   output: GetStagesResponse,
@@ -7003,8 +6999,8 @@ export const getTags: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTagsRequest,
   output: GetTagsResponse,
@@ -7022,8 +7018,8 @@ export const getVpcLinks: (
   input: GetVpcLinksRequest,
 ) => Effect.Effect<
   GetVpcLinksResponse,
-  BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVpcLinksRequest,
   output: GetVpcLinksResponse,
@@ -7039,8 +7035,8 @@ export const listPortalProducts: (
   | AccessDeniedException
   | BadRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListPortalProductsRequest,
   output: ListPortalProductsResponse,
@@ -7060,8 +7056,8 @@ export const listPortals: (
   | AccessDeniedException
   | BadRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListPortalsRequest,
   output: ListPortalsResponse,
@@ -7082,8 +7078,8 @@ export const listProductPages: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListProductPagesRequest,
   output: ListProductPagesResponse,
@@ -7105,8 +7101,8 @@ export const listProductRestEndpointPages: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListProductRestEndpointPagesRequest,
   output: ListProductRestEndpointPagesResponse,
@@ -7128,8 +7124,8 @@ export const listRoutingRules: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRoutingRulesRequest,
@@ -7138,8 +7134,8 @@ export const listRoutingRules: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRoutingRulesRequest,
@@ -7148,8 +7144,8 @@ export const listRoutingRules: {
     | BadRequestException
     | NotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoutingRulesRequest,
@@ -7172,8 +7168,8 @@ export const deleteApiMapping: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApiMappingRequest,
   output: DeleteApiMappingResponse,
@@ -7189,8 +7185,8 @@ export const deletePortal: (
   | AccessDeniedException
   | BadRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePortalRequest,
   output: DeletePortalResponse,
@@ -7210,8 +7206,8 @@ export const exportApi: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExportApiRequest,
   output: ExportApiResponse,
@@ -7224,8 +7220,8 @@ export const getApi: (
   input: GetApiRequest,
 ) => Effect.Effect<
   GetApiResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApiRequest,
   output: GetApiResponse,
@@ -7241,8 +7237,8 @@ export const getApiMapping: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetApiMappingRequest,
   output: GetApiMappingResponse,
@@ -7255,8 +7251,8 @@ export const getAuthorizer: (
   input: GetAuthorizerRequest,
 ) => Effect.Effect<
   GetAuthorizerResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAuthorizerRequest,
   output: GetAuthorizerResponse,
@@ -7269,8 +7265,8 @@ export const getDeployment: (
   input: GetDeploymentRequest,
 ) => Effect.Effect<
   GetDeploymentResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeploymentRequest,
   output: GetDeploymentResponse,
@@ -7283,8 +7279,8 @@ export const getIntegrationResponse: (
   input: GetIntegrationResponseRequest,
 ) => Effect.Effect<
   GetIntegrationResponseResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIntegrationResponseRequest,
   output: GetIntegrationResponseResponse,
@@ -7297,8 +7293,8 @@ export const getModel: (
   input: GetModelRequest,
 ) => Effect.Effect<
   GetModelResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetModelRequest,
   output: GetModelResponse,
@@ -7311,8 +7307,8 @@ export const getModelTemplate: (
   input: GetModelTemplateRequest,
 ) => Effect.Effect<
   GetModelTemplateResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetModelTemplateRequest,
   output: GetModelTemplateResponse,
@@ -7329,8 +7325,8 @@ export const getPortalProduct: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPortalProductRequest,
   output: GetPortalProductResponse,
@@ -7352,8 +7348,8 @@ export const getPortalProductSharingPolicy: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPortalProductSharingPolicyRequest,
   output: GetPortalProductSharingPolicyResponse,
@@ -7375,8 +7371,8 @@ export const getProductPage: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetProductPageRequest,
   output: GetProductPageResponse,
@@ -7394,8 +7390,8 @@ export const getRoute: (
   input: GetRouteRequest,
 ) => Effect.Effect<
   GetRouteResult,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouteRequest,
   output: GetRouteResult,
@@ -7408,8 +7404,8 @@ export const getRouteResponse: (
   input: GetRouteResponseRequest,
 ) => Effect.Effect<
   GetRouteResponseResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRouteResponseRequest,
   output: GetRouteResponseResponse,
@@ -7425,8 +7421,8 @@ export const getRoutingRule: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetRoutingRuleRequest,
   output: GetRoutingRuleResponse,
@@ -7439,8 +7435,8 @@ export const getStage: (
   input: GetStageRequest,
 ) => Effect.Effect<
   GetStageResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStageRequest,
   output: GetStageResponse,
@@ -7453,8 +7449,8 @@ export const getVpcLink: (
   input: GetVpcLinkRequest,
 ) => Effect.Effect<
   GetVpcLinkResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetVpcLinkRequest,
   output: GetVpcLinkResponse,
@@ -7471,8 +7467,8 @@ export const updateProductPage: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProductPageRequest,
   output: UpdateProductPageResponse,
@@ -7494,8 +7490,8 @@ export const updateProductRestEndpointPage: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateProductRestEndpointPageRequest,
   output: UpdateProductRestEndpointPageResponse,
@@ -7516,8 +7512,8 @@ export const updateVpcLink: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVpcLinkRequest,
   output: UpdateVpcLinkResponse,
@@ -7530,8 +7526,8 @@ export const deleteApi: (
   input: DeleteApiRequest,
 ) => Effect.Effect<
   DeleteApiResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApiRequest,
   output: DeleteApiResponse,
@@ -7544,8 +7540,8 @@ export const deleteAuthorizer: (
   input: DeleteAuthorizerRequest,
 ) => Effect.Effect<
   DeleteAuthorizerResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAuthorizerRequest,
   output: DeleteAuthorizerResponse,
@@ -7558,8 +7554,8 @@ export const deleteCorsConfiguration: (
   input: DeleteCorsConfigurationRequest,
 ) => Effect.Effect<
   DeleteCorsConfigurationResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCorsConfigurationRequest,
   output: DeleteCorsConfigurationResponse,
@@ -7572,8 +7568,8 @@ export const deleteDeployment: (
   input: DeleteDeploymentRequest,
 ) => Effect.Effect<
   DeleteDeploymentResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeploymentRequest,
   output: DeleteDeploymentResponse,
@@ -7586,8 +7582,8 @@ export const deleteDomainName: (
   input: DeleteDomainNameRequest,
 ) => Effect.Effect<
   DeleteDomainNameResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDomainNameRequest,
   output: DeleteDomainNameResponse,
@@ -7600,8 +7596,8 @@ export const deleteIntegration: (
   input: DeleteIntegrationRequest,
 ) => Effect.Effect<
   DeleteIntegrationResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIntegrationRequest,
   output: DeleteIntegrationResponse,
@@ -7614,8 +7610,8 @@ export const deleteIntegrationResponse: (
   input: DeleteIntegrationResponseRequest,
 ) => Effect.Effect<
   DeleteIntegrationResponseResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIntegrationResponseRequest,
   output: DeleteIntegrationResponseResponse,
@@ -7628,8 +7624,8 @@ export const deleteModel: (
   input: DeleteModelRequest,
 ) => Effect.Effect<
   DeleteModelResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteModelRequest,
   output: DeleteModelResponse,
@@ -7642,8 +7638,8 @@ export const deleteRoute: (
   input: DeleteRouteRequest,
 ) => Effect.Effect<
   DeleteRouteResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteRequest,
   output: DeleteRouteResponse,
@@ -7656,8 +7652,8 @@ export const deleteRouteRequestParameter: (
   input: DeleteRouteRequestParameterRequest,
 ) => Effect.Effect<
   DeleteRouteRequestParameterResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteRequestParameterRequest,
   output: DeleteRouteRequestParameterResponse,
@@ -7670,8 +7666,8 @@ export const deleteRouteResponse: (
   input: DeleteRouteResponseRequest,
 ) => Effect.Effect<
   DeleteRouteResponseResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteResponseRequest,
   output: DeleteRouteResponseResponse,
@@ -7684,8 +7680,8 @@ export const deleteRouteSettings: (
   input: DeleteRouteSettingsRequest,
 ) => Effect.Effect<
   DeleteRouteSettingsResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteSettingsRequest,
   output: DeleteRouteSettingsResponse,
@@ -7698,8 +7694,8 @@ export const deleteStage: (
   input: DeleteStageRequest,
 ) => Effect.Effect<
   DeleteStageResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStageRequest,
   output: DeleteStageResponse,
@@ -7712,8 +7708,8 @@ export const deleteVpcLink: (
   input: DeleteVpcLinkRequest,
 ) => Effect.Effect<
   DeleteVpcLinkResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcLinkRequest,
   output: DeleteVpcLinkResponse,
@@ -7726,8 +7722,8 @@ export const resetAuthorizersCache: (
   input: ResetAuthorizersCacheRequest,
 ) => Effect.Effect<
   ResetAuthorizersCacheResponse,
-  NotFoundException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NotFoundException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetAuthorizersCacheRequest,
   output: ResetAuthorizersCacheResponse,
@@ -7743,8 +7739,8 @@ export const deleteRoutingRule: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRoutingRuleRequest,
   output: DeleteRoutingRuleResponse,
@@ -7757,8 +7753,8 @@ export const createVpcLink: (
   input: CreateVpcLinkRequest,
 ) => Effect.Effect<
   CreateVpcLinkResponse,
-  BadRequestException | TooManyRequestsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  BadRequestException | TooManyRequestsException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcLinkRequest,
   output: CreateVpcLinkResponse,
@@ -7775,8 +7771,8 @@ export const deletePortalProduct: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePortalProductRequest,
   output: DeletePortalProductResponse,
@@ -7798,8 +7794,8 @@ export const deletePortalProductSharingPolicy: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePortalProductSharingPolicyRequest,
   output: DeletePortalProductSharingPolicyResponse,
@@ -7821,8 +7817,8 @@ export const deleteProductPage: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProductPageRequest,
   output: DeleteProductPageResponse,
@@ -7844,8 +7840,8 @@ export const deleteProductRestEndpointPage: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteProductRestEndpointPageRequest,
   output: DeleteProductRestEndpointPageResponse,
@@ -7867,8 +7863,8 @@ export const putPortalProductSharingPolicy: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutPortalProductSharingPolicyRequest,
   output: PutPortalProductSharingPolicyResponse,
@@ -7889,8 +7885,8 @@ export const createPortalProduct: (
   | AccessDeniedException
   | BadRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePortalProductRequest,
   output: CreatePortalProductResponse,
@@ -7911,8 +7907,8 @@ export const createProductPage: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProductPageRequest,
   output: CreateProductPageResponse,
@@ -7934,8 +7930,8 @@ export const importApi: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportApiRequest,
   output: ImportApiResponse,
@@ -7957,8 +7953,8 @@ export const putRoutingRule: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRoutingRuleRequest,
   output: PutRoutingRuleResponse,
@@ -7980,8 +7976,8 @@ export const reimportApi: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReimportApiRequest,
   output: ReimportApiResponse,
@@ -8003,8 +7999,8 @@ export const updateApi: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApiRequest,
   output: UpdateApiResponse,
@@ -8026,8 +8022,8 @@ export const updateApiMapping: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApiMappingRequest,
   output: UpdateApiMappingResponse,
@@ -8049,8 +8045,8 @@ export const updateAuthorizer: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAuthorizerRequest,
   output: UpdateAuthorizerResponse,
@@ -8072,8 +8068,8 @@ export const updateDeployment: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeploymentRequest,
   output: UpdateDeploymentResponse,
@@ -8095,8 +8091,8 @@ export const updateDomainName: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDomainNameRequest,
   output: UpdateDomainNameResponse,
@@ -8118,8 +8114,8 @@ export const updateIntegration: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIntegrationRequest,
   output: UpdateIntegrationResult,
@@ -8141,8 +8137,8 @@ export const updateIntegrationResponse: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIntegrationResponseRequest,
   output: UpdateIntegrationResponseResponse,
@@ -8164,8 +8160,8 @@ export const updateModel: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateModelRequest,
   output: UpdateModelResponse,
@@ -8188,8 +8184,8 @@ export const updatePortal: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePortalRequest,
   output: UpdatePortalResponse,
@@ -8212,8 +8208,8 @@ export const updateRoute: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRouteRequest,
   output: UpdateRouteResult,
@@ -8235,8 +8231,8 @@ export const updateRouteResponse: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRouteResponseRequest,
   output: UpdateRouteResponseResponse,
@@ -8258,8 +8254,8 @@ export const updateStage: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStageRequest,
   output: UpdateStageResponse,
@@ -8281,8 +8277,8 @@ export const tagResource: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -8304,8 +8300,8 @@ export const untagResource: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -8327,8 +8323,8 @@ export const createApiMapping: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApiMappingRequest,
   output: CreateApiMappingResponse,
@@ -8350,8 +8346,8 @@ export const createDeployment: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDeploymentRequest,
   output: CreateDeploymentResponse,
@@ -8373,8 +8369,8 @@ export const createIntegrationResponse: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIntegrationResponseRequest,
   output: CreateIntegrationResponseResponse,
@@ -8396,8 +8392,8 @@ export const createModel: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateModelRequest,
   output: CreateModelResponse,
@@ -8419,8 +8415,8 @@ export const createRouteResponse: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteResponseRequest,
   output: CreateRouteResponseResponse,
@@ -8443,8 +8439,8 @@ export const disablePortal: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisablePortalRequest,
   output: DisablePortalResponse,
@@ -8468,8 +8464,8 @@ export const previewPortal: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PreviewPortalRequest,
   output: PreviewPortalResponse,
@@ -8493,8 +8489,8 @@ export const publishPortal: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PublishPortalRequest,
   output: PublishPortalResponse,
@@ -8517,8 +8513,8 @@ export const createApi: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApiRequest,
   output: CreateApiResponse,
@@ -8540,8 +8536,8 @@ export const createAuthorizer: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAuthorizerRequest,
   output: CreateAuthorizerResponse,
@@ -8564,8 +8560,8 @@ export const createDomainName: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDomainNameRequest,
   output: CreateDomainNameResponse,
@@ -8588,8 +8584,8 @@ export const createIntegration: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIntegrationRequest,
   output: CreateIntegrationResult,
@@ -8611,8 +8607,8 @@ export const createStage: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStageRequest,
   output: CreateStageResponse,
@@ -8634,8 +8630,8 @@ export const createProductRestEndpointPage: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateProductRestEndpointPageRequest,
   output: CreateProductRestEndpointPageResponse,
@@ -8657,8 +8653,8 @@ export const createRoute: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteRequest,
   output: CreateRouteResult,
@@ -8680,8 +8676,8 @@ export const updatePortalProduct: (
   | BadRequestException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePortalProductRequest,
   output: UpdatePortalProductResponse,
@@ -8702,8 +8698,8 @@ export const createPortal: (
   | AccessDeniedException
   | BadRequestException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePortalRequest,
   output: CreatePortalResponse,
@@ -8724,8 +8720,8 @@ export const createRoutingRule: (
   | ConflictException
   | NotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRoutingRuleRequest,
   output: CreateRoutingRuleResponse,

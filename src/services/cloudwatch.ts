@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://monitoring.amazonaws.com/doc/2010-08-01/");
 const svc = T.AwsApiService({
@@ -2541,33 +2539,31 @@ export class ResourceNotFound extends S.TaggedError<ResourceNotFound>()(
   "ResourceNotFound",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServiceFault extends S.TaggedError<InternalServiceFault>()(
   "InternalServiceFault",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InternalServiceError", httpResponseCode: 500 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidParameterValue", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededFault extends S.TaggedError<LimitExceededFault>()(
   "LimitExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidFormatFault extends S.TaggedError<InvalidFormatFault>()(
   "InvalidFormatFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidFormat", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
@@ -2575,14 +2571,12 @@ export class ConcurrentModificationException extends S.TaggedError<ConcurrentMod
     code: "ConcurrentModificationException",
     httpResponseCode: 429,
   }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class DashboardNotFoundError extends S.TaggedError<DashboardNotFoundError>()(
   "DashboardNotFoundError",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterCombinationException extends S.TaggedError<InvalidParameterCombinationException>()(
   "InvalidParameterCombinationException",
   { message: S.optional(S.String) },
@@ -2590,12 +2584,12 @@ export class InvalidParameterCombinationException extends S.TaggedError<InvalidP
     code: "InvalidParameterCombination",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceededException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -2604,17 +2598,17 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     Message: S.optional(S.String),
   },
   T.AwsQueryError({ code: "ResourceNotFoundException", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MissingRequiredParameterException extends S.TaggedError<MissingRequiredParameterException>()(
   "MissingRequiredParameterException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "MissingParameter", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextToken extends S.TaggedError<InvalidNextToken>()(
   "InvalidNextToken",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidNextToken", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DashboardInvalidInputError extends S.TaggedError<DashboardInvalidInputError>()(
   "DashboardInvalidInputError",
   {
@@ -2622,7 +2616,7 @@ export class DashboardInvalidInputError extends S.TaggedError<DashboardInvalidIn
     dashboardValidationMessages: S.optional(DashboardValidationMessages),
   },
   T.AwsQueryError({ code: "InvalidParameterInput", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2633,8 +2627,8 @@ export const disableAlarmActions: (
   input: DisableAlarmActionsInput,
 ) => Effect.Effect<
   DisableAlarmActionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableAlarmActionsInput,
   output: DisableAlarmActionsResponse,
@@ -2647,8 +2641,8 @@ export const enableAlarmActions: (
   input: EnableAlarmActionsInput,
 ) => Effect.Effect<
   EnableAlarmActionsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableAlarmActionsInput,
   output: EnableAlarmActionsResponse,
@@ -2682,8 +2676,8 @@ export const deleteAlarms: (
   input: DeleteAlarmsInput,
 ) => Effect.Effect<
   DeleteAlarmsResponse,
-  ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAlarmsInput,
   output: DeleteAlarmsResponse,
@@ -2701,8 +2695,8 @@ export const describeAlarmsForMetric: (
   input: DescribeAlarmsForMetricInput,
 ) => Effect.Effect<
   DescribeAlarmsForMetricOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAlarmsForMetricInput,
   output: DescribeAlarmsForMetricOutput,
@@ -2729,8 +2723,8 @@ export const getMetricWidgetImage: (
   input: GetMetricWidgetImageInput,
 ) => Effect.Effect<
   GetMetricWidgetImageOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMetricWidgetImageInput,
   output: GetMetricWidgetImageOutput,
@@ -2790,8 +2784,8 @@ export const putMetricAlarm: (
   input: PutMetricAlarmInput,
 ) => Effect.Effect<
   PutMetricAlarmResponse,
-  LimitExceededFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMetricAlarmInput,
   output: PutMetricAlarmResponse,
@@ -2822,8 +2816,8 @@ export const setAlarmState: (
   input: SetAlarmStateInput,
 ) => Effect.Effect<
   SetAlarmStateResponse,
-  InvalidFormatFault | ResourceNotFound | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidFormatFault | ResourceNotFound | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetAlarmStateInput,
   output: SetAlarmStateResponse,
@@ -2891,8 +2885,8 @@ export const putCompositeAlarm: (
   input: PutCompositeAlarmInput,
 ) => Effect.Effect<
   PutCompositeAlarmResponse,
-  LimitExceededFault | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  LimitExceededFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutCompositeAlarmInput,
   output: PutCompositeAlarmResponse,
@@ -2910,8 +2904,8 @@ export const deleteDashboards: (
   | DashboardNotFoundError
   | InternalServiceFault
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDashboardsInput,
   output: DeleteDashboardsOutput,
@@ -2937,22 +2931,22 @@ export const listDashboards: {
     input: ListDashboardsInput,
   ): Effect.Effect<
     ListDashboardsOutput,
-    InternalServiceFault | InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceFault | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDashboardsInput,
   ) => Stream.Stream<
     ListDashboardsOutput,
-    InternalServiceFault | InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceFault | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDashboardsInput,
   ) => Stream.Stream<
     DashboardEntry,
-    InternalServiceFault | InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceFault | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDashboardsInput,
@@ -2985,22 +2979,22 @@ export const listMetrics: {
     input: ListMetricsInput,
   ): Effect.Effect<
     ListMetricsOutput,
-    InternalServiceFault | InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceFault | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMetricsInput,
   ) => Stream.Stream<
     ListMetricsOutput,
-    InternalServiceFault | InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceFault | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMetricsInput,
   ) => Stream.Stream<
     unknown,
-    InternalServiceFault | InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InternalServiceFault | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMetricsInput,
@@ -3037,8 +3031,8 @@ export const tagResource: (
   | InternalServiceFault
   | InvalidParameterValueException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -3064,8 +3058,8 @@ export const getDashboard: (
   | DashboardNotFoundError
   | InternalServiceFault
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDashboardInput,
   output: GetDashboardOutput,
@@ -3085,8 +3079,8 @@ export const startMetricStreams: (
   | InternalServiceFault
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartMetricStreamsInput,
   output: StartMetricStreamsOutput,
@@ -3110,8 +3104,8 @@ export const deleteAnomalyDetector: (
   | InvalidParameterValueException
   | MissingRequiredParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAnomalyDetectorInput,
   output: DeleteAnomalyDetectorOutput,
@@ -3134,8 +3128,8 @@ export const enableInsightRules: (
   | InvalidParameterValueException
   | LimitExceededException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableInsightRulesInput,
   output: EnableInsightRulesOutput,
@@ -3165,8 +3159,8 @@ export const putAnomalyDetector: (
   | InvalidParameterValueException
   | LimitExceededException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAnomalyDetectorInput,
   output: PutAnomalyDetectorOutput,
@@ -3189,8 +3183,8 @@ export const listTagsForResource: (
   | InternalServiceFault
   | InvalidParameterValueException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -3212,8 +3206,8 @@ export const untagResource: (
   | InternalServiceFault
   | InvalidParameterValueException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -3235,8 +3229,8 @@ export const stopMetricStreams: (
   | InternalServiceFault
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopMetricStreamsInput,
   output: StopMetricStreamsOutput,
@@ -3256,8 +3250,8 @@ export const deleteMetricStream: (
   | InternalServiceFault
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMetricStreamInput,
   output: DeleteMetricStreamOutput,
@@ -3277,8 +3271,8 @@ export const disableInsightRules: (
   DisableInsightRulesOutput,
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableInsightRulesInput,
   output: DisableInsightRulesOutput,
@@ -3296,8 +3290,8 @@ export const deleteInsightRules: (
   DeleteInsightRulesOutput,
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInsightRulesInput,
   output: DeleteInsightRulesOutput,
@@ -3315,8 +3309,8 @@ export const getMetricStream: (
   | InvalidParameterValueException
   | MissingRequiredParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMetricStreamInput,
   output: GetMetricStreamOutput,
@@ -3344,8 +3338,8 @@ export const putInsightRule: (
   | InvalidParameterValueException
   | LimitExceededException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutInsightRuleInput,
   output: PutInsightRuleOutput,
@@ -3371,8 +3365,8 @@ export const putManagedInsightRules: (
   PutManagedInsightRulesOutput,
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutManagedInsightRulesInput,
   output: PutManagedInsightRulesOutput,
@@ -3395,22 +3389,22 @@ export const describeAlarmHistory: {
     input: DescribeAlarmHistoryInput,
   ): Effect.Effect<
     DescribeAlarmHistoryOutput,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAlarmHistoryInput,
   ) => Stream.Stream<
     DescribeAlarmHistoryOutput,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAlarmHistoryInput,
   ) => Stream.Stream<
     AlarmHistoryItem,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAlarmHistoryInput,
@@ -3464,8 +3458,8 @@ export const getInsightRuleReport: (
   | InvalidParameterValueException
   | MissingRequiredParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetInsightRuleReportInput,
   output: GetInsightRuleReportOutput,
@@ -3540,8 +3534,8 @@ export const getMetricStatistics: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetMetricStatisticsInput,
   output: GetMetricStatisticsOutput,
@@ -3564,8 +3558,8 @@ export const listManagedInsightRules: {
     | InvalidNextToken
     | InvalidParameterValueException
     | MissingRequiredParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListManagedInsightRulesInput,
@@ -3574,8 +3568,8 @@ export const listManagedInsightRules: {
     | InvalidNextToken
     | InvalidParameterValueException
     | MissingRequiredParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListManagedInsightRulesInput,
@@ -3584,8 +3578,8 @@ export const listManagedInsightRules: {
     | InvalidNextToken
     | InvalidParameterValueException
     | MissingRequiredParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListManagedInsightRulesInput,
@@ -3629,8 +3623,8 @@ export const putDashboard: (
   | ConflictException
   | DashboardInvalidInputError
   | InternalServiceFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDashboardInput,
   output: PutDashboardOutput,
@@ -3699,8 +3693,8 @@ export const putMetricData: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMetricDataInput,
   output: PutMetricDataResponse,
@@ -3757,8 +3751,8 @@ export const putMetricStream: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | MissingRequiredParameterException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutMetricStreamInput,
   output: PutMetricStreamOutput,
@@ -3784,22 +3778,22 @@ export const describeAlarms: {
     input: DescribeAlarmsInput,
   ): Effect.Effect<
     DescribeAlarmsOutput,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAlarmsInput,
   ) => Stream.Stream<
     DescribeAlarmsOutput,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAlarmsInput,
   ) => Stream.Stream<
     unknown,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAlarmsInput,
@@ -3828,8 +3822,8 @@ export const describeAnomalyDetectors: {
     | InvalidNextToken
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAnomalyDetectorsInput,
@@ -3839,8 +3833,8 @@ export const describeAnomalyDetectors: {
     | InvalidNextToken
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAnomalyDetectorsInput,
@@ -3850,8 +3844,8 @@ export const describeAnomalyDetectors: {
     | InvalidNextToken
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAnomalyDetectorsInput,
@@ -3880,22 +3874,22 @@ export const describeInsightRules: {
     input: DescribeInsightRulesInput,
   ): Effect.Effect<
     DescribeInsightRulesOutput,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeInsightRulesInput,
   ) => Stream.Stream<
     DescribeInsightRulesOutput,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeInsightRulesInput,
   ) => Stream.Stream<
     unknown,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeInsightRulesInput,
@@ -3919,8 +3913,8 @@ export const listMetricStreams: {
     | InvalidNextToken
     | InvalidParameterValueException
     | MissingRequiredParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListMetricStreamsInput,
@@ -3930,8 +3924,8 @@ export const listMetricStreams: {
     | InvalidNextToken
     | InvalidParameterValueException
     | MissingRequiredParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListMetricStreamsInput,
@@ -3941,8 +3935,8 @@ export const listMetricStreams: {
     | InvalidNextToken
     | InvalidParameterValueException
     | MissingRequiredParameterException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMetricStreamsInput,
@@ -3966,8 +3960,8 @@ export const describeAlarmContributors: (
   input: DescribeAlarmContributorsInput,
 ) => Effect.Effect<
   DescribeAlarmContributorsOutput,
-  InvalidNextToken | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidNextToken | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAlarmContributorsInput,
   output: DescribeAlarmContributorsOutput,
@@ -4044,22 +4038,22 @@ export const getMetricData: {
     input: GetMetricDataInput,
   ): Effect.Effect<
     GetMetricDataOutput,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetMetricDataInput,
   ) => Stream.Stream<
     GetMetricDataOutput,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetMetricDataInput,
   ) => Stream.Stream<
     unknown,
-    InvalidNextToken | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextToken | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetMetricDataInput,

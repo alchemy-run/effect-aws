@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CloudDirectory",
@@ -3899,117 +3897,115 @@ export const BatchReadResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class DirectoryNotEnabledException extends S.TaggedError<DirectoryNotEnabledException>()(
   "DirectoryNotEnabledException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DirectoryAlreadyExistsException extends S.TaggedError<DirectoryAlreadyExistsException>()(
   "DirectoryAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServiceException extends S.TaggedError<InternalServiceException>()(
   "InternalServiceException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DirectoryDeletedException extends S.TaggedError<DirectoryDeletedException>()(
   "DirectoryDeletedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FacetNotFoundException extends S.TaggedError<FacetNotFoundException>()(
   "FacetNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IncompatibleSchemaException extends S.TaggedError<IncompatibleSchemaException>()(
   "IncompatibleSchemaException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FacetInUseException extends S.TaggedError<FacetInUseException>()(
   "FacetInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FacetValidationException extends S.TaggedError<FacetValidationException>()(
   "FacetValidationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidArnException extends S.TaggedError<InvalidArnException>()(
   "InvalidArnException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FacetAlreadyExistsException extends S.TaggedError<FacetAlreadyExistsException>()(
   "FacetAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DirectoryNotDisabledException extends S.TaggedError<DirectoryNotDisabledException>()(
   "DirectoryNotDisabledException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CannotListParentOfRootException extends S.TaggedError<CannotListParentOfRootException>()(
   "CannotListParentOfRootException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IndexedAttributeMissingException extends S.TaggedError<IndexedAttributeMissingException>()(
   "IndexedAttributeMissingException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRuleException extends S.TaggedError<InvalidRuleException>()(
   "InvalidRuleException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidAttachmentException extends S.TaggedError<InvalidAttachmentException>()(
   "InvalidAttachmentException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidFacetUpdateException extends S.TaggedError<InvalidFacetUpdateException>()(
   "InvalidFacetUpdateException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidTaggingRequestException extends S.TaggedError<InvalidTaggingRequestException>()(
   "InvalidTaggingRequestException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RetryableConflictException extends S.TaggedError<RetryableConflictException>()(
   "RetryableConflictException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LinkNameAlreadyInUseException extends S.TaggedError<LinkNameAlreadyInUseException>()(
   "LinkNameAlreadyInUseException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotIndexException extends S.TaggedError<NotIndexException>()(
   "NotIndexException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotNodeException extends S.TaggedError<NotNodeException>()(
   "NotNodeException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ObjectNotDetachedException extends S.TaggedError<ObjectNotDetachedException>()(
   "ObjectNotDetachedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotPolicyException extends S.TaggedError<NotPolicyException>()(
   "NotPolicyException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSchemaDocException extends S.TaggedError<InvalidSchemaDocException>()(
   "InvalidSchemaDocException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class BatchWriteException extends S.TaggedError<BatchWriteException>()(
   "BatchWriteException",
   {
@@ -4021,27 +4017,27 @@ export class BatchWriteException extends S.TaggedError<BatchWriteException>()(
 export class SchemaAlreadyExistsException extends S.TaggedError<SchemaAlreadyExistsException>()(
   "SchemaAlreadyExistsException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ObjectAlreadyDetachedException extends S.TaggedError<ObjectAlreadyDetachedException>()(
   "ObjectAlreadyDetachedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class StillContainsLinksException extends S.TaggedError<StillContainsLinksException>()(
   "StillContainsLinksException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SchemaAlreadyPublishedException extends S.TaggedError<SchemaAlreadyPublishedException>()(
   "SchemaAlreadyPublishedException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedIndexTypeException extends S.TaggedError<UnsupportedIndexTypeException>()(
   "UnsupportedIndexTypeException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -4061,8 +4057,8 @@ export const createTypedLinkFacet: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTypedLinkFacetRequest,
   output: CreateTypedLinkFacetResponse,
@@ -4096,8 +4092,8 @@ export const detachFromIndex: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachFromIndexRequest,
   output: DetachFromIndexResponse,
@@ -4130,8 +4126,8 @@ export const upgradeAppliedSchema: (
   | RetryableConflictException
   | SchemaAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpgradeAppliedSchemaRequest,
   output: UpgradeAppliedSchemaResponse,
@@ -4164,8 +4160,8 @@ export const applySchema: (
   | RetryableConflictException
   | SchemaAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ApplySchemaRequest,
   output: ApplySchemaResponse,
@@ -4196,8 +4192,8 @@ export const deleteSchema: (
   | RetryableConflictException
   | StillContainsLinksException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSchemaRequest,
   output: DeleteSchemaResponse,
@@ -4227,8 +4223,8 @@ export const publishSchema: (
   | RetryableConflictException
   | SchemaAlreadyPublishedException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PublishSchemaRequest,
   output: PublishSchemaResponse,
@@ -4260,8 +4256,8 @@ export const detachObject: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachObjectRequest,
   output: DetachObjectResponse,
@@ -4294,8 +4290,8 @@ export const deleteObject: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteObjectRequest,
   output: DeleteObjectResponse,
@@ -4327,8 +4323,8 @@ export const detachPolicy: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachPolicyRequest,
   output: DetachPolicyResponse,
@@ -4357,8 +4353,8 @@ export const getDirectory: (
   | LimitExceededException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDirectoryRequest,
   output: GetDirectoryResponse,
@@ -4386,8 +4382,8 @@ export const listDirectories: {
     | LimitExceededException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDirectoriesRequest,
@@ -4400,8 +4396,8 @@ export const listDirectories: {
     | LimitExceededException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDirectoriesRequest,
@@ -4414,8 +4410,8 @@ export const listDirectories: {
     | LimitExceededException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDirectoriesRequest,
@@ -4450,8 +4446,8 @@ export const putSchemaFromJson: (
   | LimitExceededException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSchemaFromJsonRequest,
   output: PutSchemaFromJsonResponse,
@@ -4485,8 +4481,8 @@ export const listIncomingTypedLinks: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListIncomingTypedLinksRequest,
   output: ListIncomingTypedLinksResponse,
@@ -4527,8 +4523,8 @@ export const updateFacet: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFacetRequest,
   output: UpdateFacetResponse,
@@ -4564,8 +4560,8 @@ export const listTagsForResource: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -4579,8 +4575,8 @@ export const listTagsForResource: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -4594,8 +4590,8 @@ export const listTagsForResource: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -4634,8 +4630,8 @@ export const deleteDirectory: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDirectoryRequest,
   output: DeleteDirectoryResponse,
@@ -4667,8 +4663,8 @@ export const updateLinkAttributes: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLinkAttributesRequest,
   output: UpdateLinkAttributesResponse,
@@ -4700,8 +4696,8 @@ export const detachTypedLink: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetachTypedLinkRequest,
   output: DetachTypedLinkResponse,
@@ -4733,8 +4729,8 @@ export const getLinkAttributes: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLinkAttributesRequest,
   output: GetLinkAttributesResponse,
@@ -4766,8 +4762,8 @@ export const getObjectAttributes: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectAttributesRequest,
   output: GetObjectAttributesResponse,
@@ -4799,8 +4795,8 @@ export const removeFacetFromObject: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveFacetFromObjectRequest,
   output: RemoveFacetFromObjectResponse,
@@ -4832,8 +4828,8 @@ export const addFacetToObject: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddFacetToObjectRequest,
   output: AddFacetToObjectResponse,
@@ -4865,8 +4861,8 @@ export const listAttachedIndices: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAttachedIndicesRequest,
@@ -4880,8 +4876,8 @@ export const listAttachedIndices: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAttachedIndicesRequest,
@@ -4895,8 +4891,8 @@ export const listAttachedIndices: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAttachedIndicesRequest,
@@ -4935,8 +4931,8 @@ export const deleteFacet: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFacetRequest,
   output: DeleteFacetResponse,
@@ -4967,8 +4963,8 @@ export const getObjectInformation: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetObjectInformationRequest,
   output: GetObjectInformationResponse,
@@ -4997,8 +4993,8 @@ export const getAppliedSchemaVersion: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAppliedSchemaVersionRequest,
   output: GetAppliedSchemaVersionResponse,
@@ -5026,8 +5022,8 @@ export const getSchemaAsJson: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSchemaAsJsonRequest,
   output: GetSchemaAsJsonResponse,
@@ -5056,8 +5052,8 @@ export const updateSchema: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSchemaRequest,
   output: UpdateSchemaResponse,
@@ -5090,8 +5086,8 @@ export const createDirectory: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDirectoryRequest,
   output: CreateDirectoryResponse,
@@ -5122,8 +5118,8 @@ export const disableDirectory: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableDirectoryRequest,
   output: DisableDirectoryResponse,
@@ -5154,8 +5150,8 @@ export const enableDirectory: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableDirectoryRequest,
   output: EnableDirectoryResponse,
@@ -5185,8 +5181,8 @@ export const deleteTypedLinkFacet: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTypedLinkFacetRequest,
   output: DeleteTypedLinkFacetResponse,
@@ -5217,8 +5213,8 @@ export const getFacet: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFacetRequest,
   output: GetFacetResponse,
@@ -5252,8 +5248,8 @@ export const listObjectParents: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListObjectParentsRequest,
@@ -5269,8 +5265,8 @@ export const listObjectParents: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListObjectParentsRequest,
@@ -5286,8 +5282,8 @@ export const listObjectParents: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListObjectParentsRequest,
@@ -5332,8 +5328,8 @@ export const lookupPolicy: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: LookupPolicyRequest,
@@ -5348,8 +5344,8 @@ export const lookupPolicy: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: LookupPolicyRequest,
@@ -5364,8 +5360,8 @@ export const lookupPolicy: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: LookupPolicyRequest,
@@ -5405,8 +5401,8 @@ export const listObjectAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListObjectAttributesRequest,
@@ -5422,8 +5418,8 @@ export const listObjectAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListObjectAttributesRequest,
@@ -5439,8 +5435,8 @@ export const listObjectAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListObjectAttributesRequest,
@@ -5482,8 +5478,8 @@ export const listOutgoingTypedLinks: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListOutgoingTypedLinksRequest,
   output: ListOutgoingTypedLinksResponse,
@@ -5516,8 +5512,8 @@ export const getTypedLinkFacetInformation: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTypedLinkFacetInformationRequest,
   output: GetTypedLinkFacetInformationResponse,
@@ -5558,8 +5554,8 @@ export const listObjectParentPaths: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListObjectParentPathsRequest,
@@ -5574,8 +5570,8 @@ export const listObjectParentPaths: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListObjectParentPathsRequest,
@@ -5590,8 +5586,8 @@ export const listObjectParentPaths: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListObjectParentPathsRequest,
@@ -5630,8 +5626,8 @@ export const listObjectPolicies: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListObjectPoliciesRequest,
@@ -5646,8 +5642,8 @@ export const listObjectPolicies: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListObjectPoliciesRequest,
@@ -5662,8 +5658,8 @@ export const listObjectPolicies: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListObjectPoliciesRequest,
@@ -5701,8 +5697,8 @@ export const listAppliedSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppliedSchemaArnsRequest,
@@ -5716,8 +5712,8 @@ export const listAppliedSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppliedSchemaArnsRequest,
@@ -5731,8 +5727,8 @@ export const listAppliedSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppliedSchemaArnsRequest,
@@ -5770,8 +5766,8 @@ export const listDevelopmentSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDevelopmentSchemaArnsRequest,
@@ -5785,8 +5781,8 @@ export const listDevelopmentSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDevelopmentSchemaArnsRequest,
@@ -5800,8 +5796,8 @@ export const listDevelopmentSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDevelopmentSchemaArnsRequest,
@@ -5838,8 +5834,8 @@ export const listFacetNames: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFacetNamesRequest,
@@ -5853,8 +5849,8 @@ export const listFacetNames: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFacetNamesRequest,
@@ -5868,8 +5864,8 @@ export const listFacetNames: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFacetNamesRequest,
@@ -5904,8 +5900,8 @@ export const listManagedSchemaArns: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListManagedSchemaArnsRequest,
@@ -5917,8 +5913,8 @@ export const listManagedSchemaArns: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListManagedSchemaArnsRequest,
@@ -5930,8 +5926,8 @@ export const listManagedSchemaArns: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListManagedSchemaArnsRequest,
@@ -5966,8 +5962,8 @@ export const listPublishedSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPublishedSchemaArnsRequest,
@@ -5981,8 +5977,8 @@ export const listPublishedSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPublishedSchemaArnsRequest,
@@ -5996,8 +5992,8 @@ export const listPublishedSchemaArns: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPublishedSchemaArnsRequest,
@@ -6035,8 +6031,8 @@ export const listTypedLinkFacetNames: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTypedLinkFacetNamesRequest,
@@ -6050,8 +6046,8 @@ export const listTypedLinkFacetNames: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTypedLinkFacetNamesRequest,
@@ -6065,8 +6061,8 @@ export const listTypedLinkFacetNames: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypedLinkFacetNamesRequest,
@@ -6104,8 +6100,8 @@ export const listFacetAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFacetAttributesRequest,
@@ -6120,8 +6116,8 @@ export const listFacetAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFacetAttributesRequest,
@@ -6136,8 +6132,8 @@ export const listFacetAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFacetAttributesRequest,
@@ -6176,8 +6172,8 @@ export const listTypedLinkFacetAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTypedLinkFacetAttributesRequest,
@@ -6192,8 +6188,8 @@ export const listTypedLinkFacetAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTypedLinkFacetAttributesRequest,
@@ -6208,8 +6204,8 @@ export const listTypedLinkFacetAttributes: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypedLinkFacetAttributesRequest,
@@ -6247,8 +6243,8 @@ export const upgradePublishedSchema: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpgradePublishedSchemaRequest,
   output: UpgradePublishedSchemaResponse,
@@ -6281,8 +6277,8 @@ export const attachTypedLink: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachTypedLinkRequest,
   output: AttachTypedLinkResponse,
@@ -6317,8 +6313,8 @@ export const updateTypedLinkFacet: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTypedLinkFacetRequest,
   output: UpdateTypedLinkFacetResponse,
@@ -6351,8 +6347,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6382,8 +6378,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6416,8 +6412,8 @@ export const createFacet: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFacetRequest,
   output: CreateFacetResponse,
@@ -6451,8 +6447,8 @@ export const updateObjectAttributes: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateObjectAttributesRequest,
   output: UpdateObjectAttributesResponse,
@@ -6492,8 +6488,8 @@ export const attachObject: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachObjectRequest,
   output: AttachObjectResponse,
@@ -6530,8 +6526,8 @@ export const listIndex: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIndexRequest,
@@ -6548,8 +6544,8 @@ export const listIndex: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIndexRequest,
@@ -6566,8 +6562,8 @@ export const listIndex: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIndexRequest,
@@ -6610,8 +6606,8 @@ export const attachToIndex: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachToIndexRequest,
   output: AttachToIndexResponse,
@@ -6649,8 +6645,8 @@ export const listObjectChildren: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListObjectChildrenRequest,
@@ -6666,8 +6662,8 @@ export const listObjectChildren: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListObjectChildrenRequest,
@@ -6683,8 +6679,8 @@ export const listObjectChildren: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListObjectChildrenRequest,
@@ -6724,8 +6720,8 @@ export const attachPolicy: (
   | ResourceNotFoundException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachPolicyRequest,
   output: AttachPolicyResponse,
@@ -6759,8 +6755,8 @@ export const listPolicyAttachments: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPolicyAttachmentsRequest,
@@ -6776,8 +6772,8 @@ export const listPolicyAttachments: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPolicyAttachmentsRequest,
@@ -6793,8 +6789,8 @@ export const listPolicyAttachments: {
     | ResourceNotFoundException
     | RetryableConflictException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPolicyAttachmentsRequest,
@@ -6831,8 +6827,8 @@ export const batchRead: (
   | LimitExceededException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchReadRequest,
   output: BatchReadResponse,
@@ -6862,8 +6858,8 @@ export const batchWrite: (
   | LimitExceededException
   | RetryableConflictException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchWriteRequest,
   output: BatchWriteResponse,
@@ -6904,8 +6900,8 @@ export const createSchema: (
   | RetryableConflictException
   | SchemaAlreadyExistsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSchemaRequest,
   output: CreateSchemaResponse,
@@ -6937,8 +6933,8 @@ export const createIndex: (
   | RetryableConflictException
   | UnsupportedIndexTypeException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIndexRequest,
   output: CreateIndexResponse,
@@ -6977,8 +6973,8 @@ export const createObject: (
   | RetryableConflictException
   | UnsupportedIndexTypeException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateObjectRequest,
   output: CreateObjectResponse,

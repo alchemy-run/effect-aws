@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Chime SDK Identity",
@@ -1551,45 +1549,39 @@ export const CreateAppInstanceBotResponse = S.suspend(() =>
 export class BadRequestException extends S.TaggedError<BadRequestException>()(
   "BadRequestException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceLimitExceededException extends S.TaggedError<ResourceLimitExceededException>()(
   "ResourceLimitExceededException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceFailureException extends S.TaggedError<ServiceFailureException>()(
   "ServiceFailureException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ThrottledClientException extends S.TaggedError<ThrottledClientException>()(
   "ThrottledClientException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class UnauthorizedClientException extends S.TaggedError<UnauthorizedClientException>()(
   "UnauthorizedClientException",
   { Code: S.optional(S.String), Message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -1605,8 +1597,8 @@ export const describeAppInstance: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppInstanceRequest,
   output: DescribeAppInstanceResponse,
@@ -1633,8 +1625,8 @@ export const describeAppInstanceBot: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppInstanceBotRequest,
   output: DescribeAppInstanceBotResponse,
@@ -1661,8 +1653,8 @@ export const describeAppInstanceUserEndpoint: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppInstanceUserEndpointRequest,
   output: DescribeAppInstanceUserEndpointResponse,
@@ -1689,8 +1681,8 @@ export const putAppInstanceRetentionSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAppInstanceRetentionSettingsRequest,
   output: PutAppInstanceRetentionSettingsResponse,
@@ -1718,8 +1710,8 @@ export const listAppInstanceAdmins: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppInstanceAdminsRequest,
@@ -1732,8 +1724,8 @@ export const listAppInstanceAdmins: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppInstanceAdminsRequest,
@@ -1746,8 +1738,8 @@ export const listAppInstanceAdmins: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppInstanceAdminsRequest,
@@ -1782,8 +1774,8 @@ export const listAppInstanceBots: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppInstanceBotsRequest,
@@ -1796,8 +1788,8 @@ export const listAppInstanceBots: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppInstanceBotsRequest,
@@ -1810,8 +1802,8 @@ export const listAppInstanceBots: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppInstanceBotsRequest,
@@ -1846,8 +1838,8 @@ export const registerAppInstanceUserEndpoint: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterAppInstanceUserEndpointRequest,
   output: RegisterAppInstanceUserEndpointResponse,
@@ -1876,8 +1868,8 @@ export const tagResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1906,8 +1898,8 @@ export const updateAppInstanceBot: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAppInstanceBotRequest,
   output: UpdateAppInstanceBotResponse,
@@ -1938,8 +1930,8 @@ export const updateAppInstanceUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAppInstanceUserRequest,
   output: UpdateAppInstanceUserResponse,
@@ -1971,8 +1963,8 @@ export const deleteAppInstanceAdmin: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppInstanceAdminRequest,
   output: DeleteAppInstanceAdminResponse,
@@ -2002,8 +1994,8 @@ export const deleteAppInstanceBot: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppInstanceBotRequest,
   output: DeleteAppInstanceBotResponse,
@@ -2033,8 +2025,8 @@ export const deleteAppInstanceUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppInstanceUserRequest,
   output: DeleteAppInstanceUserResponse,
@@ -2068,8 +2060,8 @@ export const createAppInstance: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppInstanceRequest,
   output: CreateAppInstanceResponse,
@@ -2109,8 +2101,8 @@ export const createAppInstanceAdmin: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppInstanceAdminRequest,
   output: CreateAppInstanceAdminResponse,
@@ -2141,8 +2133,8 @@ export const createAppInstanceUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppInstanceUserRequest,
   output: CreateAppInstanceUserResponse,
@@ -2170,8 +2162,8 @@ export const describeAppInstanceAdmin: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppInstanceAdminRequest,
   output: DescribeAppInstanceAdminResponse,
@@ -2197,8 +2189,8 @@ export const describeAppInstanceUser: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAppInstanceUserRequest,
   output: DescribeAppInstanceUserResponse,
@@ -2226,8 +2218,8 @@ export const listAppInstances: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppInstancesRequest,
@@ -2239,8 +2231,8 @@ export const listAppInstances: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppInstancesRequest,
@@ -2252,8 +2244,8 @@ export const listAppInstances: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppInstancesRequest,
@@ -2286,8 +2278,8 @@ export const listAppInstanceUserEndpoints: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppInstanceUserEndpointsRequest,
@@ -2299,8 +2291,8 @@ export const listAppInstanceUserEndpoints: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppInstanceUserEndpointsRequest,
@@ -2312,8 +2304,8 @@ export const listAppInstanceUserEndpoints: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppInstanceUserEndpointsRequest,
@@ -2347,8 +2339,8 @@ export const listAppInstanceUsers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAppInstanceUsersRequest,
@@ -2360,8 +2352,8 @@ export const listAppInstanceUsers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAppInstanceUsersRequest,
@@ -2373,8 +2365,8 @@ export const listAppInstanceUsers: {
     | ServiceUnavailableException
     | ThrottledClientException
     | UnauthorizedClientException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppInstanceUsersRequest,
@@ -2413,8 +2405,8 @@ export const putAppInstanceUserExpirationSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAppInstanceUserExpirationSettingsRequest,
   output: PutAppInstanceUserExpirationSettingsResponse,
@@ -2441,8 +2433,8 @@ export const getAppInstanceRetentionSettings: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAppInstanceRetentionSettingsRequest,
   output: GetAppInstanceRetentionSettingsResponse,
@@ -2468,8 +2460,8 @@ export const listTagsForResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2495,8 +2487,8 @@ export const deregisterAppInstanceUserEndpoint: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterAppInstanceUserEndpointRequest,
   output: DeregisterAppInstanceUserEndpointResponse,
@@ -2522,8 +2514,8 @@ export const untagResource: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2550,8 +2542,8 @@ export const updateAppInstance: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAppInstanceRequest,
   output: UpdateAppInstanceResponse,
@@ -2579,8 +2571,8 @@ export const updateAppInstanceUserEndpoint: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAppInstanceUserEndpointRequest,
   output: UpdateAppInstanceUserEndpointResponse,
@@ -2608,8 +2600,8 @@ export const deleteAppInstance: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAppInstanceRequest,
   output: DeleteAppInstanceResponse,
@@ -2639,8 +2631,8 @@ export const createAppInstanceBot: (
   | ServiceUnavailableException
   | ThrottledClientException
   | UnauthorizedClientException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAppInstanceBotRequest,
   output: CreateAppInstanceBotResponse,

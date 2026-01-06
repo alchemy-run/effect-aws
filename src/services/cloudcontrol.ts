@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "CloudControl",
@@ -588,7 +586,7 @@ export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException
   "AlreadyExistsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExistsException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { Message: S.optional(S.String) },
@@ -596,9 +594,7 @@ export class ConcurrentModificationException extends S.TaggedError<ConcurrentMod
     code: "ConcurrentModificationException",
     httpResponseCode: 500,
   }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ClientTokenConflictException extends S.TaggedError<ClientTokenConflictException>()(
   "ClientTokenConflictException",
   { Message: S.optional(S.String) },
@@ -606,12 +602,12 @@ export class ClientTokenConflictException extends S.TaggedError<ClientTokenConfl
     code: "ClientTokenConflictException",
     httpResponseCode: 409,
   }),
-) {}
+).pipe(C.withConflictError) {}
 export class GeneralServiceException extends S.TaggedError<GeneralServiceException>()(
   "GeneralServiceException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "GeneralServiceException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class RequestTokenNotFoundException extends S.TaggedError<RequestTokenNotFoundException>()(
   "RequestTokenNotFoundException",
   { Message: S.optional(S.String) },
@@ -619,7 +615,7 @@ export class RequestTokenNotFoundException extends S.TaggedError<RequestTokenNot
     code: "RequestTokenNotFoundException",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentOperationException extends S.TaggedError<ConcurrentOperationException>()(
   "ConcurrentOperationException",
   { Message: S.optional(S.String) },
@@ -627,14 +623,12 @@ export class ConcurrentOperationException extends S.TaggedError<ConcurrentOperat
     code: "ConcurrentOperationException",
     httpResponseCode: 409,
   }),
-) {}
+).pipe(C.withConflictError) {}
 export class HandlerFailureException extends S.TaggedError<HandlerFailureException>()(
   "HandlerFailureException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "HandlerFailureException", httpResponseCode: 502 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class HandlerInternalFailureException extends S.TaggedError<HandlerInternalFailureException>()(
   "HandlerInternalFailureException",
   { Message: S.optional(S.String) },
@@ -642,9 +636,7 @@ export class HandlerInternalFailureException extends S.TaggedError<HandlerIntern
     code: "HandlerInternalFailureException",
     httpResponseCode: 502,
   }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidCredentialsException extends S.TaggedError<InvalidCredentialsException>()(
   "InvalidCredentialsException",
   { Message: S.optional(S.String) },
@@ -652,44 +644,42 @@ export class InvalidCredentialsException extends S.TaggedError<InvalidCredential
     code: "InvalidCredentialsException",
     httpResponseCode: 401,
   }),
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidRequestException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NetworkFailureException extends S.TaggedError<NetworkFailureException>()(
   "NetworkFailureException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "NetworkFailureException", httpResponseCode: 502 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NotStabilizedException extends S.TaggedError<NotStabilizedException>()(
   "NotStabilizedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "NotStabilizedException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotUpdatableException extends S.TaggedError<NotUpdatableException>()(
   "NotUpdatableException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "NotUpdatableException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class PrivateTypeException extends S.TaggedError<PrivateTypeException>()(
   "PrivateTypeException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "PrivateTypeException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceConflictException extends S.TaggedError<ResourceConflictException>()(
   "ResourceConflictException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceConflictException", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceNotFoundException", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceInternalErrorException extends S.TaggedError<ServiceInternalErrorException>()(
   "ServiceInternalErrorException",
   { Message: S.optional(S.String) },
@@ -697,9 +687,7 @@ export class ServiceInternalErrorException extends S.TaggedError<ServiceInternal
     code: "ServiceInternalErrorException",
     httpResponseCode: 502,
   }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ServiceLimitExceededException extends S.TaggedError<ServiceLimitExceededException>()(
   "ServiceLimitExceededException",
   { Message: S.optional(S.String) },
@@ -707,19 +695,17 @@ export class ServiceLimitExceededException extends S.TaggedError<ServiceLimitExc
     code: "ServiceLimitExceededException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ThrottlingException", httpResponseCode: 429 }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class TypeNotFoundException extends S.TaggedError<TypeNotFoundException>()(
   "TypeNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TypeNotFoundException", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedActionException extends S.TaggedError<UnsupportedActionException>()(
   "UnsupportedActionException",
   { Message: S.optional(S.String) },
@@ -727,7 +713,7 @@ export class UnsupportedActionException extends S.TaggedError<UnsupportedActionE
     code: "UnsupportedActionException",
     httpResponseCode: 405,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -742,22 +728,22 @@ export const listResourceRequests: {
     input: ListResourceRequestsInput,
   ): Effect.Effect<
     ListResourceRequestsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceRequestsInput,
   ) => Stream.Stream<
     ListResourceRequestsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceRequestsInput,
   ) => Stream.Stream<
     ProgressEvent,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceRequestsInput,
@@ -779,8 +765,8 @@ export const getResourceRequestStatus: (
   input: GetResourceRequestStatusInput,
 ) => Effect.Effect<
   GetResourceRequestStatusOutput,
-  RequestTokenNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  RequestTokenNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceRequestStatusInput,
   output: GetResourceRequestStatusOutput,
@@ -799,8 +785,8 @@ export const cancelResourceRequest: (
   CancelResourceRequestOutput,
   | ConcurrentModificationException
   | RequestTokenNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelResourceRequestInput,
   output: CancelResourceRequestOutput,
@@ -834,8 +820,8 @@ export const getResource: (
   | ThrottlingException
   | TypeNotFoundException
   | UnsupportedActionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceInput,
   output: GetResourceOutput,
@@ -890,8 +876,8 @@ export const deleteResource: (
   | ThrottlingException
   | TypeNotFoundException
   | UnsupportedActionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceInput,
   output: DeleteResourceOutput,
@@ -958,8 +944,8 @@ export const updateResource: (
   | ThrottlingException
   | TypeNotFoundException
   | UnsupportedActionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResourceInput,
   output: UpdateResourceOutput,
@@ -1013,8 +999,8 @@ export const listResources: {
     | ThrottlingException
     | TypeNotFoundException
     | UnsupportedActionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourcesInput,
@@ -1037,8 +1023,8 @@ export const listResources: {
     | ThrottlingException
     | TypeNotFoundException
     | UnsupportedActionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourcesInput,
@@ -1061,8 +1047,8 @@ export const listResources: {
     | ThrottlingException
     | TypeNotFoundException
     | UnsupportedActionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourcesInput,
@@ -1124,8 +1110,8 @@ export const createResource: (
   | ThrottlingException
   | TypeNotFoundException
   | UnsupportedActionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceInput,
   output: CreateResourceOutput,

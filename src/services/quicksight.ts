@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "QuickSight",
@@ -25868,27 +25866,23 @@ export const CreateAnalysisResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalFailureException extends S.TaggedError<InternalFailureException>()(
   "InternalFailureException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConcurrentUpdatingException extends S.TaggedError<ConcurrentUpdatingException>()(
   "ConcurrentUpdatingException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -25896,33 +25890,31 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     ResourceType: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNextTokenException extends S.TaggedError<InvalidNextTokenException>()(
   "InvalidNextTokenException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { Message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class DomainNotWhitelistedException extends S.TaggedError<DomainNotWhitelistedException>()(
   "DomainNotWhitelistedException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidDataSetParameterValueException extends S.TaggedError<InvalidDataSetParameterValueException>()(
   "InvalidDataSetParameterValueException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CustomerManagedKeyUnavailableException extends S.TaggedError<CustomerManagedKeyUnavailableException>()(
   "CustomerManagedKeyUnavailableException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   {
@@ -25930,13 +25922,11 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
     ResourceType: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceExistsException extends S.TaggedError<ResourceExistsException>()(
   "ResourceExistsException",
   {
@@ -25944,7 +25934,7 @@ export class ResourceExistsException extends S.TaggedError<ResourceExistsExcepti
     ResourceType: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceUnavailableException extends S.TaggedError<ResourceUnavailableException>()(
   "ResourceUnavailableException",
   {
@@ -25952,37 +25942,35 @@ export class ResourceUnavailableException extends S.TaggedError<ResourceUnavaila
     ResourceType: S.optional(S.String),
     RequestId: S.optional(S.String),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class PreconditionNotMetException extends S.TaggedError<PreconditionNotMetException>()(
   "PreconditionNotMetException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidRequestException extends S.TaggedError<InvalidRequestException>()(
   "InvalidRequestException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IdentityTypeNotSupportedException extends S.TaggedError<IdentityTypeNotSupportedException>()(
   "IdentityTypeNotSupportedException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class QuickSightUserNotFoundException extends S.TaggedError<QuickSightUserNotFoundException>()(
   "QuickSightUserNotFoundException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedUserEditionException extends S.TaggedError<UnsupportedUserEditionException>()(
   "UnsupportedUserEditionException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class SessionLifetimeInMinutesInvalidException extends S.TaggedError<SessionLifetimeInMinutesInvalidException>()(
   "SessionLifetimeInMinutesInvalidException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedPricingPlanException extends S.TaggedError<UnsupportedPricingPlanException>()(
   "UnsupportedPricingPlanException",
   { Message: S.optional(S.String), RequestId: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 
 //# Operations
 /**
@@ -25998,8 +25986,8 @@ export const describeIngestion: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIngestionRequest,
   output: DescribeIngestionResponse,
@@ -26025,8 +26013,8 @@ export const describeNamespace: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeNamespaceRequest,
   output: DescribeNamespaceResponse,
@@ -26054,8 +26042,8 @@ export const describeSelfUpgradeConfiguration: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeSelfUpgradeConfigurationRequest,
   output: DescribeSelfUpgradeConfigurationResponse,
@@ -26082,8 +26070,8 @@ export const listBrands: {
     | InternalServerException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListBrandsRequest,
@@ -26093,8 +26081,8 @@ export const listBrands: {
     | InternalServerException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListBrandsRequest,
@@ -26104,8 +26092,8 @@ export const listBrands: {
     | InternalServerException
     | InvalidRequestException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBrandsRequest,
@@ -26136,8 +26124,8 @@ export const describeDataSet: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDataSetRequest,
   output: DescribeDataSetResponse,
@@ -26161,8 +26149,8 @@ export const describeDataSource: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDataSourceRequest,
   output: DescribeDataSourceResponse,
@@ -26188,8 +26176,8 @@ export const describeIAMPolicyAssignment: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIAMPolicyAssignmentRequest,
   output: DescribeIAMPolicyAssignmentResponse,
@@ -26219,8 +26207,8 @@ export const listDataSets: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDataSetsRequest,
@@ -26231,8 +26219,8 @@ export const listDataSets: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDataSetsRequest,
@@ -26243,8 +26231,8 @@ export const listDataSets: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDataSetsRequest,
@@ -26278,8 +26266,8 @@ export const predictQAResults: (
   | InternalFailureException
   | InvalidParameterValueException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PredictQAResultsRequest,
   output: PredictQAResultsResponse,
@@ -26305,8 +26293,8 @@ export const searchDataSources: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchDataSourcesRequest,
@@ -26318,8 +26306,8 @@ export const searchDataSources: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchDataSourcesRequest,
@@ -26331,8 +26319,8 @@ export const searchDataSources: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchDataSourcesRequest,
@@ -26363,8 +26351,8 @@ export const updateKeyRegistration: (
   | InternalFailureException
   | InvalidParameterValueException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateKeyRegistrationRequest,
   output: UpdateKeyRegistrationResponse,
@@ -26389,8 +26377,8 @@ export const updateDataSource: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataSourceRequest,
   output: UpdateDataSourceResponse,
@@ -26415,8 +26403,8 @@ export const describeKeyRegistration: (
   | InternalFailureException
   | InvalidParameterValueException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeKeyRegistrationRequest,
   output: DescribeKeyRegistrationResponse,
@@ -26439,8 +26427,8 @@ export const describeTopicRefresh: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTopicRefreshRequest,
   output: DescribeTopicRefreshResponse,
@@ -26464,8 +26452,8 @@ export const listFlows: {
     | InternalFailureException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFlowsInput,
@@ -26475,8 +26463,8 @@ export const listFlows: {
     | InternalFailureException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFlowsInput,
@@ -26486,8 +26474,8 @@ export const listFlows: {
     | InternalFailureException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowsInput,
@@ -26519,8 +26507,8 @@ export const listIdentityPropagationConfigs: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListIdentityPropagationConfigsRequest,
   output: ListIdentityPropagationConfigsResponse,
@@ -26544,8 +26532,8 @@ export const listTopicReviewedAnswers: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTopicReviewedAnswersRequest,
   output: ListTopicReviewedAnswersResponse,
@@ -26569,8 +26557,8 @@ export const searchFlows: {
     | InternalFailureException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchFlowsInput,
@@ -26580,8 +26568,8 @@ export const searchFlows: {
     | InternalFailureException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchFlowsInput,
@@ -26591,8 +26579,8 @@ export const searchFlows: {
     | InternalFailureException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchFlowsInput,
@@ -26621,8 +26609,8 @@ export const updateFlowPermissions: (
   | InternalFailureException
   | InvalidParameterValueException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFlowPermissionsInput,
   output: UpdateFlowPermissionsOutput,
@@ -26646,8 +26634,8 @@ export const updateIpRestriction: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIpRestrictionRequest,
   output: UpdateIpRestrictionResponse,
@@ -26672,8 +26660,8 @@ export const deleteAccountCustomPermission: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccountCustomPermissionRequest,
   output: DeleteAccountCustomPermissionResponse,
@@ -26697,8 +26685,8 @@ export const deleteActionConnector: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteActionConnectorRequest,
   output: DeleteActionConnectorResponse,
@@ -26722,8 +26710,8 @@ export const deleteDataSet: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataSetRequest,
   output: DeleteDataSetResponse,
@@ -26749,8 +26737,8 @@ export const deleteDataSetRefreshProperties: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataSetRefreshPropertiesRequest,
   output: DeleteDataSetRefreshPropertiesResponse,
@@ -26777,8 +26765,8 @@ export const deleteDataSource: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDataSourceRequest,
   output: DeleteDataSourceResponse,
@@ -26804,8 +26792,8 @@ export const deleteIdentityPropagationConfig: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentityPropagationConfigRequest,
   output: DeleteIdentityPropagationConfigResponse,
@@ -26830,8 +26818,8 @@ export const deleteRefreshSchedule: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRefreshScheduleRequest,
   output: DeleteRefreshScheduleResponse,
@@ -26857,8 +26845,8 @@ export const deleteTopic: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTopicRequest,
   output: DeleteTopicResponse,
@@ -26883,8 +26871,8 @@ export const describeAccountCustomPermission: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountCustomPermissionRequest,
   output: DescribeAccountCustomPermissionResponse,
@@ -26908,8 +26896,8 @@ export const describeActionConnectorPermissions: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeActionConnectorPermissionsRequest,
   output: DescribeActionConnectorPermissionsResponse,
@@ -26934,8 +26922,8 @@ export const describeDashboardsQAConfiguration: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDashboardsQAConfigurationRequest,
   output: DescribeDashboardsQAConfigurationResponse,
@@ -26963,8 +26951,8 @@ export const describeDataSetPermissions: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDataSetPermissionsRequest,
   output: DescribeDataSetPermissionsResponse,
@@ -26988,8 +26976,8 @@ export const describeDataSourcePermissions: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDataSourcePermissionsRequest,
   output: DescribeDataSourcePermissionsResponse,
@@ -27013,8 +27001,8 @@ export const describeDefaultQBusinessApplication: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDefaultQBusinessApplicationRequest,
   output: DescribeDefaultQBusinessApplicationResponse,
@@ -27038,8 +27026,8 @@ export const describeIpRestriction: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIpRestrictionRequest,
   output: DescribeIpRestrictionResponse,
@@ -27064,8 +27052,8 @@ export const describeQPersonalizationConfiguration: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeQPersonalizationConfigurationRequest,
   output: DescribeQPersonalizationConfigurationResponse,
@@ -27091,8 +27079,8 @@ export const describeQuickSightQSearchConfiguration: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeQuickSightQSearchConfigurationRequest,
   output: DescribeQuickSightQSearchConfigurationResponse,
@@ -27118,8 +27106,8 @@ export const describeRefreshSchedule: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRefreshScheduleRequest,
   output: DescribeRefreshScheduleResponse,
@@ -27144,8 +27132,8 @@ export const describeTopic: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTopicRequest,
   output: DescribeTopicResponse,
@@ -27169,8 +27157,8 @@ export const describeTopicPermissions: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTopicPermissionsRequest,
   output: DescribeTopicPermissionsResponse,
@@ -27193,8 +27181,8 @@ export const getFlowMetadata: (
   | InternalFailureException
   | InvalidParameterValueException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFlowMetadataInput,
   output: GetFlowMetadataOutput,
@@ -27216,8 +27204,8 @@ export const getFlowPermissions: (
   | InternalFailureException
   | InvalidParameterValueException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetFlowPermissionsInput,
   output: GetFlowPermissionsOutput,
@@ -27241,8 +27229,8 @@ export const listRefreshSchedules: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListRefreshSchedulesRequest,
   output: ListRefreshSchedulesResponse,
@@ -27267,8 +27255,8 @@ export const listTagsForResource: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -27313,8 +27301,8 @@ export const tagResource: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -27339,8 +27327,8 @@ export const untagResource: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -27364,8 +27352,8 @@ export const updateAccountCustomPermission: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountCustomPermissionRequest,
   output: UpdateAccountCustomPermissionResponse,
@@ -27392,8 +27380,8 @@ export const updateActionConnector: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateActionConnectorRequest,
   output: UpdateActionConnectorResponse,
@@ -27419,8 +27407,8 @@ export const updateDashboardsQAConfiguration: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDashboardsQAConfigurationRequest,
   output: UpdateDashboardsQAConfigurationResponse,
@@ -27449,8 +27437,8 @@ export const updateDataSetPermissions: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataSetPermissionsRequest,
   output: UpdateDataSetPermissionsResponse,
@@ -27476,8 +27464,8 @@ export const updateDataSourcePermissions: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataSourcePermissionsRequest,
   output: UpdateDataSourcePermissionsResponse,
@@ -27503,8 +27491,8 @@ export const updateDefaultQBusinessApplication: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDefaultQBusinessApplicationRequest,
   output: UpdateDefaultQBusinessApplicationResponse,
@@ -27531,8 +27519,8 @@ export const updateIdentityPropagationConfig: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIdentityPropagationConfigRequest,
   output: UpdateIdentityPropagationConfigResponse,
@@ -27557,8 +27545,8 @@ export const updateQuickSightQSearchConfiguration: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateQuickSightQSearchConfigurationRequest,
   output: UpdateQuickSightQSearchConfigurationResponse,
@@ -27583,8 +27571,8 @@ export const updateSPICECapacityConfiguration: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSPICECapacityConfigurationRequest,
   output: UpdateSPICECapacityConfigurationResponse,
@@ -27609,8 +27597,8 @@ export const batchDeleteTopicReviewedAnswer: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDeleteTopicReviewedAnswerRequest,
   output: BatchDeleteTopicReviewedAnswerResponse,
@@ -27635,8 +27623,8 @@ export const deleteDefaultQBusinessApplication: (
   | InternalFailureException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDefaultQBusinessApplicationRequest,
   output: DeleteDefaultQBusinessApplicationResponse,
@@ -27661,8 +27649,8 @@ export const listActionConnectors: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListActionConnectorsRequest,
@@ -27673,8 +27661,8 @@ export const listActionConnectors: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListActionConnectorsRequest,
@@ -27685,8 +27673,8 @@ export const listActionConnectors: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActionConnectorsRequest,
@@ -27721,8 +27709,8 @@ export const listIAMPolicyAssignments: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIAMPolicyAssignmentsRequest,
@@ -27734,8 +27722,8 @@ export const listIAMPolicyAssignments: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIAMPolicyAssignmentsRequest,
@@ -27747,8 +27735,8 @@ export const listIAMPolicyAssignments: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIAMPolicyAssignmentsRequest,
@@ -27781,8 +27769,8 @@ export const listTopics: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTopicsRequest,
@@ -27793,8 +27781,8 @@ export const listTopics: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTopicsRequest,
@@ -27805,8 +27793,8 @@ export const listTopics: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsRequest,
@@ -27836,8 +27824,8 @@ export const searchActionConnectors: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchActionConnectorsRequest,
@@ -27847,8 +27835,8 @@ export const searchActionConnectors: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchActionConnectorsRequest,
@@ -27858,8 +27846,8 @@ export const searchActionConnectors: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchActionConnectorsRequest,
@@ -27892,8 +27880,8 @@ export const searchDataSets: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchDataSetsRequest,
@@ -27905,8 +27893,8 @@ export const searchDataSets: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchDataSetsRequest,
@@ -27918,8 +27906,8 @@ export const searchDataSets: {
     | InvalidParameterValueException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchDataSetsRequest,
@@ -27952,8 +27940,8 @@ export const listDataSources: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDataSourcesRequest,
@@ -27964,8 +27952,8 @@ export const listDataSources: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDataSourcesRequest,
@@ -27976,8 +27964,8 @@ export const listDataSources: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDataSourcesRequest,
@@ -28017,8 +28005,8 @@ export const listIAMPolicyAssignmentsForUser: {
     | ResourceExistsException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIAMPolicyAssignmentsForUserRequest,
@@ -28031,8 +28019,8 @@ export const listIAMPolicyAssignmentsForUser: {
     | ResourceExistsException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIAMPolicyAssignmentsForUserRequest,
@@ -28045,8 +28033,8 @@ export const listIAMPolicyAssignmentsForUser: {
     | ResourceExistsException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIAMPolicyAssignmentsForUserRequest,
@@ -28081,8 +28069,8 @@ export const deleteIAMPolicyAssignment: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIAMPolicyAssignmentRequest,
   output: DeleteIAMPolicyAssignmentResponse,
@@ -28112,8 +28100,8 @@ export const updateIAMPolicyAssignment: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIAMPolicyAssignmentRequest,
   output: UpdateIAMPolicyAssignmentResponse,
@@ -28142,8 +28130,8 @@ export const listTopicRefreshSchedules: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTopicRefreshSchedulesRequest,
   output: ListTopicRefreshSchedulesResponse,
@@ -28179,8 +28167,8 @@ export const createIngestion: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIngestionRequest,
   output: CreateIngestionResponse,
@@ -28209,8 +28197,8 @@ export const deleteTopicRefreshSchedule: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTopicRefreshScheduleRequest,
   output: DeleteTopicRefreshScheduleResponse,
@@ -28240,8 +28228,8 @@ export const describeTopicRefreshSchedule: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTopicRefreshScheduleRequest,
   output: DescribeTopicRefreshScheduleResponse,
@@ -28271,8 +28259,8 @@ export const updateTopic: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTopicRequest,
   output: UpdateTopicResponse,
@@ -28302,8 +28290,8 @@ export const updateTopicRefreshSchedule: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTopicRefreshScheduleRequest,
   output: UpdateTopicRefreshScheduleResponse,
@@ -28356,8 +28344,8 @@ export const createAccountCustomization: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccountCustomizationRequest,
   output: CreateAccountCustomizationResponse,
@@ -28387,8 +28375,8 @@ export const createTopicRefreshSchedule: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTopicRefreshScheduleRequest,
   output: CreateTopicRefreshScheduleResponse,
@@ -28416,8 +28404,8 @@ export const cancelIngestion: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelIngestionRequest,
   output: CancelIngestionResponse,
@@ -28448,8 +28436,8 @@ export const createIAMPolicyAssignment: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIAMPolicyAssignmentRequest,
   output: CreateIAMPolicyAssignmentResponse,
@@ -28478,8 +28466,8 @@ export const listIngestions: {
     | ResourceExistsException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIngestionsRequest,
@@ -28492,8 +28480,8 @@ export const listIngestions: {
     | ResourceExistsException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIngestionsRequest,
@@ -28506,8 +28494,8 @@ export const listIngestions: {
     | ResourceExistsException
     | ResourceNotFoundException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIngestionsRequest,
@@ -28544,8 +28532,8 @@ export const createDataSource: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataSourceRequest,
   output: CreateDataSourceResponse,
@@ -28613,8 +28601,8 @@ export const describeAccountCustomization: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountCustomizationRequest,
   output: DescribeAccountCustomizationResponse,
@@ -28646,8 +28634,8 @@ export const updateAccountCustomization: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountCustomizationRequest,
   output: UpdateAccountCustomizationResponse,
@@ -28674,8 +28662,8 @@ export const updateAccountSettings: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAccountSettingsRequest,
   output: UpdateAccountSettingsResponse,
@@ -28702,8 +28690,8 @@ export const updateQPersonalizationConfiguration: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateQPersonalizationConfigurationRequest,
   output: UpdateQPersonalizationConfigurationResponse,
@@ -28731,8 +28719,8 @@ export const describeAccountSettings: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountSettingsRequest,
   output: DescribeAccountSettingsResponse,
@@ -28758,8 +28746,8 @@ export const describeAccountSubscription: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAccountSubscriptionRequest,
   output: DescribeAccountSubscriptionResponse,
@@ -28786,8 +28774,8 @@ export const describeCustomPermissions: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCustomPermissionsRequest,
   output: DescribeCustomPermissionsResponse,
@@ -28815,8 +28803,8 @@ export const describeUser: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserRequest,
   output: DescribeUserResponse,
@@ -28869,8 +28857,8 @@ export const getIdentityContext: (
   | PreconditionNotMetException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityContextRequest,
   output: GetIdentityContextResponse,
@@ -28908,8 +28896,8 @@ export const createNamespace: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNamespaceRequest,
   output: CreateNamespaceResponse,
@@ -28940,8 +28928,8 @@ export const createRoleMembership: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRoleMembershipRequest,
   output: CreateRoleMembershipResponse,
@@ -28981,8 +28969,8 @@ export const deleteAccountCustomization: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccountCustomizationRequest,
   output: DeleteAccountCustomizationResponse,
@@ -29028,8 +29016,8 @@ export const deleteAccountSubscription: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccountSubscriptionRequest,
   output: DeleteAccountSubscriptionResponse,
@@ -29059,8 +29047,8 @@ export const deleteCustomPermissions: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomPermissionsRequest,
   output: DeleteCustomPermissionsResponse,
@@ -29090,8 +29078,8 @@ export const deleteGroup: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResponse,
@@ -29119,8 +29107,8 @@ export const deleteGroupMembership: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupMembershipRequest,
   output: DeleteGroupMembershipResponse,
@@ -29150,8 +29138,8 @@ export const deleteNamespace: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNamespaceRequest,
   output: DeleteNamespaceResponse,
@@ -29179,8 +29167,8 @@ export const deleteRoleCustomPermission: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRoleCustomPermissionRequest,
   output: DeleteRoleCustomPermissionResponse,
@@ -29208,8 +29196,8 @@ export const deleteRoleMembership: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRoleMembershipRequest,
   output: DeleteRoleMembershipResponse,
@@ -29239,8 +29227,8 @@ export const deleteUser: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -29268,8 +29256,8 @@ export const deleteUserByPrincipalId: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserByPrincipalIdRequest,
   output: DeleteUserByPrincipalIdResponse,
@@ -29298,8 +29286,8 @@ export const deleteUserCustomPermission: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserCustomPermissionRequest,
   output: DeleteUserCustomPermissionResponse,
@@ -29328,8 +29316,8 @@ export const describeDataSetRefreshProperties: (
   | PreconditionNotMetException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDataSetRefreshPropertiesRequest,
   output: DescribeDataSetRefreshPropertiesResponse,
@@ -29357,8 +29345,8 @@ export const describeGroup: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGroupRequest,
   output: DescribeGroupResponse,
@@ -29388,8 +29376,8 @@ export const describeGroupMembership: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGroupMembershipRequest,
   output: DescribeGroupMembershipResponse,
@@ -29417,8 +29405,8 @@ export const describeRoleCustomPermission: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRoleCustomPermissionRequest,
   output: DescribeRoleCustomPermissionResponse,
@@ -29447,8 +29435,8 @@ export const listCustomPermissions: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListCustomPermissionsRequest,
@@ -29461,8 +29449,8 @@ export const listCustomPermissions: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListCustomPermissionsRequest,
@@ -29475,8 +29463,8 @@ export const listCustomPermissions: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCustomPermissionsRequest,
@@ -29512,8 +29500,8 @@ export const listUserGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUserGroupsRequest,
@@ -29526,8 +29514,8 @@ export const listUserGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUserGroupsRequest,
@@ -29540,8 +29528,8 @@ export const listUserGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUserGroupsRequest,
@@ -29578,8 +29566,8 @@ export const registerUser: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterUserRequest,
   output: RegisterUserResponse,
@@ -29610,8 +29598,8 @@ export const updateCustomPermissions: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCustomPermissionsRequest,
   output: UpdateCustomPermissionsResponse,
@@ -29640,8 +29628,8 @@ export const updateGroup: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupRequest,
   output: UpdateGroupResponse,
@@ -29669,8 +29657,8 @@ export const updateRefreshSchedule: (
   | PreconditionNotMetException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRefreshScheduleRequest,
   output: UpdateRefreshScheduleResponse,
@@ -29698,8 +29686,8 @@ export const updateRoleCustomPermission: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRoleCustomPermissionRequest,
   output: UpdateRoleCustomPermissionResponse,
@@ -29727,8 +29715,8 @@ export const updateUser: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,
@@ -29757,8 +29745,8 @@ export const updateUserCustomPermission: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserCustomPermissionRequest,
   output: UpdateUserCustomPermissionResponse,
@@ -29815,8 +29803,8 @@ export const createAccountSubscription: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAccountSubscriptionRequest,
   output: CreateAccountSubscriptionResponse,
@@ -29849,8 +29837,8 @@ export const createCustomPermissions: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCustomPermissionsRequest,
   output: CreateCustomPermissionsResponse,
@@ -29889,8 +29877,8 @@ export const createGroup: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResponse,
@@ -29920,8 +29908,8 @@ export const createGroupMembership: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupMembershipRequest,
   output: CreateGroupMembershipResponse,
@@ -29951,8 +29939,8 @@ export const listSelfUpgrades: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListSelfUpgradesRequest,
   output: ListSelfUpgradesResponse,
@@ -29984,8 +29972,8 @@ export const searchGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchGroupsRequest,
@@ -29999,8 +29987,8 @@ export const searchGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchGroupsRequest,
@@ -30014,8 +30002,8 @@ export const searchGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchGroupsRequest,
@@ -30053,8 +30041,8 @@ export const listGroupMemberships: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupMembershipsRequest,
@@ -30068,8 +30056,8 @@ export const listGroupMemberships: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupMembershipsRequest,
@@ -30083,8 +30071,8 @@ export const listGroupMemberships: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupMembershipsRequest,
@@ -30122,8 +30110,8 @@ export const listGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupsRequest,
@@ -30137,8 +30125,8 @@ export const listGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupsRequest,
@@ -30152,8 +30140,8 @@ export const listGroups: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
@@ -30191,8 +30179,8 @@ export const listNamespaces: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNamespacesRequest,
@@ -30206,8 +30194,8 @@ export const listNamespaces: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNamespacesRequest,
@@ -30221,8 +30209,8 @@ export const listNamespaces: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNamespacesRequest,
@@ -30261,8 +30249,8 @@ export const listRoleMemberships: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListRoleMembershipsRequest,
@@ -30277,8 +30265,8 @@ export const listRoleMemberships: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListRoleMembershipsRequest,
@@ -30293,8 +30281,8 @@ export const listRoleMemberships: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoleMembershipsRequest,
@@ -30333,8 +30321,8 @@ export const listUsers: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUsersRequest,
@@ -30348,8 +30336,8 @@ export const listUsers: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUsersRequest,
@@ -30363,8 +30351,8 @@ export const listUsers: {
     | ResourceNotFoundException
     | ResourceUnavailableException
     | ThrottlingException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
@@ -30402,8 +30390,8 @@ export const updateSelfUpgrade: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSelfUpgradeRequest,
   output: UpdateSelfUpgradeResponse,
@@ -30434,8 +30422,8 @@ export const updateSelfUpgradeConfiguration: (
   | ResourceNotFoundException
   | ResourceUnavailableException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSelfUpgradeConfigurationRequest,
   output: UpdateSelfUpgradeConfigurationResponse,
@@ -30465,8 +30453,8 @@ export const createRefreshSchedule: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRefreshScheduleRequest,
   output: CreateRefreshScheduleResponse,
@@ -30495,8 +30483,8 @@ export const updateApplicationWithTokenExchangeGrant: (
   | LimitExceededException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationWithTokenExchangeGrantRequest,
   output: UpdateApplicationWithTokenExchangeGrantResponse,
@@ -30533,8 +30521,8 @@ export const deleteBrand: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBrandRequest,
   output: DeleteBrandResponse,
@@ -30560,8 +30548,8 @@ export const deleteBrandAssignment: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteBrandAssignmentRequest,
   output: DeleteBrandAssignmentResponse,
@@ -30587,8 +30575,8 @@ export const describeBrandAssignment: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBrandAssignmentRequest,
   output: DescribeBrandAssignmentResponse,
@@ -30614,8 +30602,8 @@ export const describeBrandPublishedVersion: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBrandPublishedVersionRequest,
   output: DescribeBrandPublishedVersionResponse,
@@ -30641,8 +30629,8 @@ export const updateBrand: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBrandRequest,
   output: UpdateBrandResponse,
@@ -30668,8 +30656,8 @@ export const updateBrandAssignment: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBrandAssignmentRequest,
   output: UpdateBrandAssignmentResponse,
@@ -30695,8 +30683,8 @@ export const updateBrandPublishedVersion: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBrandPublishedVersionRequest,
   output: UpdateBrandPublishedVersionResponse,
@@ -30726,8 +30714,8 @@ export const describeAssetBundleExportJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAssetBundleExportJobRequest,
   output: DescribeAssetBundleExportJobResponse,
@@ -30752,8 +30740,8 @@ export const putDataSetRefreshProperties: (
   | PreconditionNotMetException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDataSetRefreshPropertiesRequest,
   output: PutDataSetRefreshPropertiesResponse,
@@ -30793,8 +30781,8 @@ export const startAssetBundleImportJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAssetBundleImportJobRequest,
   output: StartAssetBundleImportJobResponse,
@@ -30842,8 +30830,8 @@ export const updatePublicSharingSettings: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedPricingPlanException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePublicSharingSettingsRequest,
   output: UpdatePublicSharingSettingsResponse,
@@ -30870,8 +30858,8 @@ export const describeTheme: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeThemeRequest,
   output: DescribeThemeResponse,
@@ -30898,8 +30886,8 @@ export const describeDashboard: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDashboardRequest,
   output: DescribeDashboardResponse,
@@ -30940,8 +30928,8 @@ export const describeDashboardSnapshotJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDashboardSnapshotJobRequest,
   output: DescribeDashboardSnapshotJobResponse,
@@ -30966,8 +30954,8 @@ export const describeVPCConnection: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVPCConnectionRequest,
   output: DescribeVPCConnectionResponse,
@@ -30993,8 +30981,8 @@ export const describeFolder: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeFolderRequest,
   output: DescribeFolderResponse,
@@ -31020,8 +31008,8 @@ export const deleteFolderMembership: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFolderMembershipRequest,
   output: DeleteFolderMembershipResponse,
@@ -31048,8 +31036,8 @@ export const deleteTheme: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteThemeRequest,
   output: DeleteThemeResponse,
@@ -31077,8 +31065,8 @@ export const deleteVPCConnection: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVPCConnectionRequest,
   output: DeleteVPCConnectionResponse,
@@ -31105,8 +31093,8 @@ export const describeThemePermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeThemePermissionsRequest,
   output: DescribeThemePermissionsResponse,
@@ -31137,8 +31125,8 @@ export const startDashboardSnapshotJobSchedule: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDashboardSnapshotJobScheduleRequest,
   output: StartDashboardSnapshotJobScheduleResponse,
@@ -31167,8 +31155,8 @@ export const updateActionConnectorPermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateActionConnectorPermissionsRequest,
   output: UpdateActionConnectorPermissionsResponse,
@@ -31197,8 +31185,8 @@ export const updateDashboardLinks: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDashboardLinksRequest,
   output: UpdateDashboardLinksResponse,
@@ -31226,8 +31214,8 @@ export const updateFolderPermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFolderPermissionsRequest,
   output: UpdateFolderPermissionsResponse,
@@ -31295,8 +31283,8 @@ export const updateThemePermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateThemePermissionsRequest,
   output: UpdateThemePermissionsResponse,
@@ -31325,8 +31313,8 @@ export const updateTopicPermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTopicPermissionsRequest,
   output: UpdateTopicPermissionsResponse,
@@ -31356,8 +31344,8 @@ export const updateVPCConnection: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateVPCConnectionRequest,
   output: UpdateVPCConnectionResponse,
@@ -31385,8 +31373,8 @@ export const deleteDashboard: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDashboardRequest,
   output: DeleteDashboardResponse,
@@ -31413,8 +31401,8 @@ export const deleteTemplate: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTemplateRequest,
   output: DeleteTemplateResponse,
@@ -31443,8 +31431,8 @@ export const deleteThemeAlias: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteThemeAliasRequest,
   output: DeleteThemeAliasResponse,
@@ -31470,8 +31458,8 @@ export const describeTemplatePermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTemplatePermissionsRequest,
   output: DescribeTemplatePermissionsResponse,
@@ -31497,8 +31485,8 @@ export const describeThemeAlias: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeThemeAliasRequest,
   output: DescribeThemeAliasResponse,
@@ -31525,8 +31513,8 @@ export const updateAnalysisPermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAnalysisPermissionsRequest,
   output: UpdateAnalysisPermissionsResponse,
@@ -31560,8 +31548,8 @@ export const updateDashboard: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDashboardRequest,
   output: UpdateDashboardResponse,
@@ -31589,8 +31577,8 @@ export const updateDashboardPermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDashboardPermissionsRequest,
   output: UpdateDashboardPermissionsResponse,
@@ -31617,8 +31605,8 @@ export const updateDashboardPublishedVersion: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDashboardPublishedVersionRequest,
   output: UpdateDashboardPublishedVersionResponse,
@@ -31645,8 +31633,8 @@ export const updateTemplatePermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTemplatePermissionsRequest,
   output: UpdateTemplatePermissionsResponse,
@@ -31672,8 +31660,8 @@ export const describeDashboardPermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDashboardPermissionsRequest,
   output: DescribeDashboardPermissionsResponse,
@@ -31711,8 +31699,8 @@ export const deleteAnalysis: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAnalysisRequest,
   output: DeleteAnalysisResponse,
@@ -31738,8 +31726,8 @@ export const describeAnalysis: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAnalysisRequest,
   output: DescribeAnalysisResponse,
@@ -31765,8 +31753,8 @@ export const describeAssetBundleImportJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAssetBundleImportJobRequest,
   output: DescribeAssetBundleImportJobResponse,
@@ -31789,8 +31777,8 @@ export const deleteTemplateAlias: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTemplateAliasRequest,
   output: DeleteTemplateAliasResponse,
@@ -31814,8 +31802,8 @@ export const updateTemplateAlias: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTemplateAliasRequest,
   output: UpdateTemplateAliasResponse,
@@ -31838,8 +31826,8 @@ export const describeTemplateAlias: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTemplateAliasRequest,
   output: DescribeTemplateAliasResponse,
@@ -31862,8 +31850,8 @@ export const describeAnalysisPermissions: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAnalysisPermissionsRequest,
   output: DescribeAnalysisPermissionsResponse,
@@ -31887,8 +31875,8 @@ export const listAnalyses: {
     | InvalidNextTokenException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAnalysesRequest,
@@ -31898,8 +31886,8 @@ export const listAnalyses: {
     | InvalidNextTokenException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAnalysesRequest,
@@ -31909,8 +31897,8 @@ export const listAnalyses: {
     | InvalidNextTokenException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAnalysesRequest,
@@ -31944,8 +31932,8 @@ export const listAssetBundleExportJobs: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssetBundleExportJobsRequest,
@@ -31956,8 +31944,8 @@ export const listAssetBundleExportJobs: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssetBundleExportJobsRequest,
@@ -31968,8 +31956,8 @@ export const listAssetBundleExportJobs: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssetBundleExportJobsRequest,
@@ -32004,8 +31992,8 @@ export const listAssetBundleImportJobs: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAssetBundleImportJobsRequest,
@@ -32016,8 +32004,8 @@ export const listAssetBundleImportJobs: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAssetBundleImportJobsRequest,
@@ -32028,8 +32016,8 @@ export const listAssetBundleImportJobs: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssetBundleImportJobsRequest,
@@ -32060,8 +32048,8 @@ export const listDashboards: {
     | InvalidNextTokenException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDashboardsRequest,
@@ -32071,8 +32059,8 @@ export const listDashboards: {
     | InvalidNextTokenException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDashboardsRequest,
@@ -32082,8 +32070,8 @@ export const listDashboards: {
     | InvalidNextTokenException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDashboardsRequest,
@@ -32115,8 +32103,8 @@ export const listDashboardVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDashboardVersionsRequest,
@@ -32128,8 +32116,8 @@ export const listDashboardVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDashboardVersionsRequest,
@@ -32141,8 +32129,8 @@ export const listDashboardVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDashboardVersionsRequest,
@@ -32177,8 +32165,8 @@ export const listFolderMembers: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFolderMembersRequest,
@@ -32191,8 +32179,8 @@ export const listFolderMembers: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFolderMembersRequest,
@@ -32205,8 +32193,8 @@ export const listFolderMembers: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFolderMembersRequest,
@@ -32242,8 +32230,8 @@ export const listFolders: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFoldersRequest,
@@ -32256,8 +32244,8 @@ export const listFolders: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFoldersRequest,
@@ -32270,8 +32258,8 @@ export const listFolders: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFoldersRequest,
@@ -32306,8 +32294,8 @@ export const listTemplates: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTemplatesRequest,
@@ -32319,8 +32307,8 @@ export const listTemplates: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTemplatesRequest,
@@ -32332,8 +32320,8 @@ export const listTemplates: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTemplatesRequest,
@@ -32367,8 +32355,8 @@ export const listTemplateVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTemplateVersionsRequest,
@@ -32380,8 +32368,8 @@ export const listTemplateVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTemplateVersionsRequest,
@@ -32393,8 +32381,8 @@ export const listTemplateVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTemplateVersionsRequest,
@@ -32429,8 +32417,8 @@ export const listThemes: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListThemesRequest,
@@ -32443,8 +32431,8 @@ export const listThemes: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListThemesRequest,
@@ -32457,8 +32445,8 @@ export const listThemes: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThemesRequest,
@@ -32494,8 +32482,8 @@ export const listThemeVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListThemeVersionsRequest,
@@ -32508,8 +32496,8 @@ export const listThemeVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListThemeVersionsRequest,
@@ -32522,8 +32510,8 @@ export const listThemeVersions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThemeVersionsRequest,
@@ -32559,8 +32547,8 @@ export const listVPCConnections: {
     | InvalidParameterValueException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVPCConnectionsRequest,
@@ -32572,8 +32560,8 @@ export const listVPCConnections: {
     | InvalidParameterValueException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVPCConnectionsRequest,
@@ -32585,8 +32573,8 @@ export const listVPCConnections: {
     | InvalidParameterValueException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVPCConnectionsRequest,
@@ -32621,8 +32609,8 @@ export const searchAnalyses: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchAnalysesRequest,
@@ -32634,8 +32622,8 @@ export const searchAnalyses: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchAnalysesRequest,
@@ -32647,8 +32635,8 @@ export const searchAnalyses: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchAnalysesRequest,
@@ -32685,8 +32673,8 @@ export const searchDashboards: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchDashboardsRequest,
@@ -32698,8 +32686,8 @@ export const searchDashboards: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchDashboardsRequest,
@@ -32711,8 +32699,8 @@ export const searchDashboards: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchDashboardsRequest,
@@ -32746,8 +32734,8 @@ export const searchTopics: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchTopicsRequest,
@@ -32759,8 +32747,8 @@ export const searchTopics: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchTopicsRequest,
@@ -32772,8 +32760,8 @@ export const searchTopics: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchTopicsRequest,
@@ -32808,8 +32796,8 @@ export const describeFolderPermissions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFolderPermissionsRequest,
@@ -32822,8 +32810,8 @@ export const describeFolderPermissions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFolderPermissionsRequest,
@@ -32836,8 +32824,8 @@ export const describeFolderPermissions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFolderPermissionsRequest,
@@ -32873,8 +32861,8 @@ export const describeFolderResolvedPermissions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeFolderResolvedPermissionsRequest,
@@ -32887,8 +32875,8 @@ export const describeFolderResolvedPermissions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeFolderResolvedPermissionsRequest,
@@ -32901,8 +32889,8 @@ export const describeFolderResolvedPermissions: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeFolderResolvedPermissionsRequest,
@@ -32938,8 +32926,8 @@ export const listFoldersForResource: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListFoldersForResourceRequest,
@@ -32952,8 +32940,8 @@ export const listFoldersForResource: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListFoldersForResourceRequest,
@@ -32966,8 +32954,8 @@ export const listFoldersForResource: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFoldersForResourceRequest,
@@ -33002,8 +32990,8 @@ export const listThemeAliases: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListThemeAliasesRequest,
   output: ListThemeAliasesResponse,
@@ -33030,8 +33018,8 @@ export const listTemplateAliases: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTemplateAliasesRequest,
@@ -33042,8 +33030,8 @@ export const listTemplateAliases: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTemplateAliasesRequest,
@@ -33054,8 +33042,8 @@ export const listTemplateAliases: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTemplateAliasesRequest,
@@ -33099,8 +33087,8 @@ export const startAssetBundleExportJob: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartAssetBundleExportJobRequest,
   output: StartAssetBundleExportJobResponse,
@@ -33131,8 +33119,8 @@ export const updateDataSet: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDataSetRequest,
   output: UpdateDataSetResponse,
@@ -33163,8 +33151,8 @@ export const describeTemplate: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTemplateRequest,
   output: DescribeTemplateResponse,
@@ -33193,8 +33181,8 @@ export const createTemplateAlias: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTemplateAliasRequest,
   output: CreateTemplateAliasResponse,
@@ -33229,8 +33217,8 @@ export const describeDashboardDefinition: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDashboardDefinitionRequest,
   output: DescribeDashboardDefinitionResponse,
@@ -33266,8 +33254,8 @@ export const describeTemplateDefinition: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTemplateDefinitionRequest,
   output: DescribeTemplateDefinitionResponse,
@@ -33298,8 +33286,8 @@ export const createFolder: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFolderRequest,
   output: CreateFolderResponse,
@@ -33330,8 +33318,8 @@ export const createVPCConnection: (
   | ResourceExistsException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVPCConnectionRequest,
   output: CreateVPCConnectionResponse,
@@ -33361,8 +33349,8 @@ export const updateFolder: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateFolderRequest,
   output: UpdateFolderResponse,
@@ -33392,8 +33380,8 @@ export const updateTheme: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateThemeRequest,
   output: UpdateThemeResponse,
@@ -33422,8 +33410,8 @@ export const updateAnalysis: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAnalysisRequest,
   output: UpdateAnalysisResponse,
@@ -33452,8 +33440,8 @@ export const updateTemplate: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTemplateRequest,
   output: UpdateTemplateResponse,
@@ -33482,8 +33470,8 @@ export const updateThemeAlias: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateThemeAliasRequest,
   output: UpdateThemeAliasResponse,
@@ -33512,8 +33500,8 @@ export const createThemeAlias: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateThemeAliasRequest,
   output: CreateThemeAliasResponse,
@@ -33543,8 +33531,8 @@ export const createFolderMembership: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFolderMembershipRequest,
   output: CreateFolderMembershipResponse,
@@ -33580,8 +33568,8 @@ export const describeAnalysisDefinition: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeAnalysisDefinitionRequest,
   output: DescribeAnalysisDefinitionResponse,
@@ -33620,8 +33608,8 @@ export const createDashboard: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDashboardRequest,
   output: CreateDashboardResponse,
@@ -33651,8 +33639,8 @@ export const deleteFolder: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteFolderRequest,
   output: DeleteFolderResponse,
@@ -33682,8 +33670,8 @@ export const restoreAnalysis: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreAnalysisRequest,
   output: RestoreAnalysisResponse,
@@ -33714,8 +33702,8 @@ export const searchFolders: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SearchFoldersRequest,
@@ -33729,8 +33717,8 @@ export const searchFolders: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SearchFoldersRequest,
@@ -33744,8 +33732,8 @@ export const searchFolders: {
     | ResourceNotFoundException
     | ThrottlingException
     | UnsupportedUserEditionException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchFoldersRequest,
@@ -33791,8 +33779,8 @@ export const createTemplate: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTemplateRequest,
   output: CreateTemplateResponse,
@@ -33827,8 +33815,8 @@ export const createTheme: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateThemeRequest,
   output: CreateThemeResponse,
@@ -33876,8 +33864,8 @@ export const getSessionEmbedUrl: (
   | SessionLifetimeInMinutesInvalidException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSessionEmbedUrlRequest,
   output: GetSessionEmbedUrlResponse,
@@ -33938,8 +33926,8 @@ export const getDashboardEmbedUrl: (
   | ThrottlingException
   | UnsupportedPricingPlanException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDashboardEmbedUrlRequest,
   output: GetDashboardEmbedUrlResponse,
@@ -33996,8 +33984,8 @@ export const generateEmbedUrlForAnonymousUser: (
   | ThrottlingException
   | UnsupportedPricingPlanException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GenerateEmbedUrlForAnonymousUserRequest,
   output: GenerateEmbedUrlForAnonymousUserResponse,
@@ -34112,8 +34100,8 @@ export const startDashboardSnapshotJob: (
   | ThrottlingException
   | UnsupportedPricingPlanException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartDashboardSnapshotJobRequest,
   output: StartDashboardSnapshotJobResponse,
@@ -34156,8 +34144,8 @@ export const generateEmbedUrlForRegisteredUserWithIdentity: (
   | ThrottlingException
   | UnsupportedPricingPlanException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GenerateEmbedUrlForRegisteredUserWithIdentityRequest,
   output: GenerateEmbedUrlForRegisteredUserWithIdentityResponse,
@@ -34185,8 +34173,8 @@ export const batchCreateTopicReviewedAnswer: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchCreateTopicReviewedAnswerRequest,
   output: BatchCreateTopicReviewedAnswerResponse,
@@ -34213,8 +34201,8 @@ export const createActionConnector: (
   | InvalidParameterValueException
   | ResourceExistsException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateActionConnectorRequest,
   output: CreateActionConnectorResponse,
@@ -34240,8 +34228,8 @@ export const describeBrand: (
   | InvalidRequestException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeBrandRequest,
   output: DescribeBrandResponse,
@@ -34302,8 +34290,8 @@ export const describeDashboardSnapshotJobResult: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDashboardSnapshotJobResultRequest,
   output: DescribeDashboardSnapshotJobResultResponse,
@@ -34357,8 +34345,8 @@ export const generateEmbedUrlForRegisteredUser: (
   | ThrottlingException
   | UnsupportedPricingPlanException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GenerateEmbedUrlForRegisteredUserRequest,
   output: GenerateEmbedUrlForRegisteredUserResponse,
@@ -34387,8 +34375,8 @@ export const createBrand: (
   | InvalidRequestException
   | LimitExceededException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateBrandRequest,
   output: CreateBrandResponse,
@@ -34416,8 +34404,8 @@ export const createTopic: (
   | ResourceExistsException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTopicRequest,
   output: CreateTopicResponse,
@@ -34444,8 +34432,8 @@ export const describeActionConnector: (
   | InvalidParameterValueException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeActionConnectorRequest,
   output: DescribeActionConnectorResponse,
@@ -34475,8 +34463,8 @@ export const createDataSet: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDataSetRequest,
   output: CreateDataSetResponse,
@@ -34508,8 +34496,8 @@ export const createAnalysis: (
   | ResourceNotFoundException
   | ThrottlingException
   | UnsupportedUserEditionException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateAnalysisRequest,
   output: CreateAnalysisResponse,

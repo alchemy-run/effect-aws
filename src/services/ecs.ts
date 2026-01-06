@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://ecs.amazonaws.com/doc/2014-11-13/");
 const svc = T.AwsApiService({
@@ -5807,8 +5805,8 @@ export const discoverPollEndpoint: (
   input: DiscoverPollEndpointRequest,
 ) => Effect.Effect<
   DiscoverPollEndpointResponse,
-  ClientException | ServerException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DiscoverPollEndpointRequest,
   output: DiscoverPollEndpointResponse,
@@ -5824,11 +5822,8 @@ export const describeClusters: (
   input: DescribeClustersRequest,
 ) => Effect.Effect<
   DescribeClustersResponse,
-  | ClientException
-  | InvalidParameterException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClustersRequest,
   output: DescribeClustersResponse,
@@ -5847,11 +5842,8 @@ export const describeTaskDefinition: (
   input: DescribeTaskDefinitionRequest,
 ) => Effect.Effect<
   DescribeTaskDefinitionResponse,
-  | ClientException
-  | InvalidParameterException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTaskDefinitionRequest,
   output: DescribeTaskDefinitionResponse,
@@ -5868,8 +5860,8 @@ export const listAccountSettings: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAccountSettingsRequest,
@@ -5878,8 +5870,8 @@ export const listAccountSettings: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAccountSettingsRequest,
@@ -5888,8 +5880,8 @@ export const listAccountSettings: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAccountSettingsRequest,
@@ -5913,8 +5905,8 @@ export const listClusters: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClustersRequest,
@@ -5923,8 +5915,8 @@ export const listClusters: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClustersRequest,
@@ -5933,8 +5925,8 @@ export const listClusters: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
@@ -5965,8 +5957,8 @@ export const listTaskDefinitionFamilies: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTaskDefinitionFamiliesRequest,
@@ -5975,8 +5967,8 @@ export const listTaskDefinitionFamilies: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTaskDefinitionFamiliesRequest,
@@ -5985,8 +5977,8 @@ export const listTaskDefinitionFamilies: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTaskDefinitionFamiliesRequest,
@@ -6012,8 +6004,8 @@ export const listTaskDefinitions: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTaskDefinitionsRequest,
@@ -6022,8 +6014,8 @@ export const listTaskDefinitions: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTaskDefinitionsRequest,
@@ -6032,8 +6024,8 @@ export const listTaskDefinitions: {
     | ClientException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTaskDefinitionsRequest,
@@ -6059,11 +6051,8 @@ export const putAccountSetting: (
   input: PutAccountSettingRequest,
 ) => Effect.Effect<
   PutAccountSettingResponse,
-  | ClientException
-  | InvalidParameterException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccountSettingRequest,
   output: PutAccountSettingResponse,
@@ -6077,11 +6066,8 @@ export const putAccountSettingDefault: (
   input: PutAccountSettingDefaultRequest,
 ) => Effect.Effect<
   PutAccountSettingDefaultResponse,
-  | ClientException
-  | InvalidParameterException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAccountSettingDefaultRequest,
   output: PutAccountSettingDefaultResponse,
@@ -6095,11 +6081,8 @@ export const deleteAccountSetting: (
   input: DeleteAccountSettingRequest,
 ) => Effect.Effect<
   DeleteAccountSettingResponse,
-  | ClientException
-  | InvalidParameterException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAccountSettingRequest,
   output: DeleteAccountSettingResponse,
@@ -6119,22 +6102,22 @@ export const listAttributes: {
     input: ListAttributesRequest,
   ): Effect.Effect<
     ListAttributesResponse,
-    ClusterNotFoundException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAttributesRequest,
   ) => Stream.Stream<
     ListAttributesResponse,
-    ClusterNotFoundException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAttributesRequest,
   ) => Stream.Stream<
     Attribute,
-    ClusterNotFoundException | InvalidParameterException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ClusterNotFoundException | InvalidParameterException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAttributesRequest,
@@ -6158,11 +6141,8 @@ export const registerContainerInstance: (
   input: RegisterContainerInstanceRequest,
 ) => Effect.Effect<
   RegisterContainerInstanceResponse,
-  | ClientException
-  | InvalidParameterException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterContainerInstanceRequest,
   output: RegisterContainerInstanceResponse,
@@ -6182,8 +6162,8 @@ export const submitAttachmentStateChanges: (
   | ClientException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubmitAttachmentStateChangesRequest,
   output: SubmitAttachmentStateChangesResponse,
@@ -6208,8 +6188,8 @@ export const submitTaskStateChange: (
   | ClientException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubmitTaskStateChangeRequest,
   output: SubmitTaskStateChangeResponse,
@@ -6255,8 +6235,8 @@ export const deleteTaskDefinitions: (
   | ClientException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTaskDefinitionsRequest,
   output: DeleteTaskDefinitionsResponse,
@@ -6278,8 +6258,8 @@ export const updateClusterSettings: (
   | ClusterNotFoundException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterSettingsRequest,
   output: UpdateClusterSettingsResponse,
@@ -6350,8 +6330,8 @@ export const updateContainerInstancesState: (
   | ClusterNotFoundException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateContainerInstancesStateRequest,
   output: UpdateContainerInstancesStateResponse,
@@ -6374,8 +6354,8 @@ export const describeContainerInstances: (
   | ClusterNotFoundException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeContainerInstancesRequest,
   output: DescribeContainerInstancesResponse,
@@ -6397,8 +6377,8 @@ export const describeServices: (
   | ClusterNotFoundException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServicesRequest,
   output: DescribeServicesResponse,
@@ -6424,8 +6404,8 @@ export const listContainerInstances: {
     | ClusterNotFoundException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListContainerInstancesRequest,
@@ -6435,8 +6415,8 @@ export const listContainerInstances: {
     | ClusterNotFoundException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListContainerInstancesRequest,
@@ -6446,8 +6426,8 @@ export const listContainerInstances: {
     | ClusterNotFoundException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListContainerInstancesRequest,
@@ -6478,8 +6458,8 @@ export const listServices: {
     | ClusterNotFoundException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServicesRequest,
@@ -6489,8 +6469,8 @@ export const listServices: {
     | ClusterNotFoundException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServicesRequest,
@@ -6500,8 +6480,8 @@ export const listServices: {
     | ClusterNotFoundException
     | InvalidParameterException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServicesRequest,
@@ -6530,8 +6510,8 @@ export const listTagsForResource: (
   | ClusterNotFoundException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -6571,8 +6551,8 @@ export const stopTask: (
   | ClusterNotFoundException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTaskRequest,
   output: StopTaskResponse,
@@ -6593,11 +6573,8 @@ export const submitContainerStateChange: (
   input: SubmitContainerStateChangeRequest,
 ) => Effect.Effect<
   SubmitContainerStateChangeResponse,
-  | AccessDeniedException
-  | ClientException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ClientException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SubmitContainerStateChangeRequest,
   output: SubmitContainerStateChangeResponse,
@@ -6628,11 +6605,8 @@ export const deregisterTaskDefinition: (
   input: DeregisterTaskDefinitionRequest,
 ) => Effect.Effect<
   DeregisterTaskDefinitionResponse,
-  | ClientException
-  | InvalidParameterException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterTaskDefinitionRequest,
   output: DeregisterTaskDefinitionResponse,
@@ -6655,8 +6629,8 @@ export const listServicesByNamespace: {
     | InvalidParameterException
     | NamespaceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListServicesByNamespaceRequest,
@@ -6666,8 +6640,8 @@ export const listServicesByNamespace: {
     | InvalidParameterException
     | NamespaceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListServicesByNamespaceRequest,
@@ -6677,8 +6651,8 @@ export const listServicesByNamespace: {
     | InvalidParameterException
     | NamespaceNotFoundException
     | ServerException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListServicesByNamespaceRequest,
@@ -6710,8 +6684,8 @@ export const putAttributes: (
   | ClusterNotFoundException
   | InvalidParameterException
   | TargetNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAttributesRequest,
   output: PutAttributesResponse,
@@ -6734,8 +6708,8 @@ export const describeCapacityProviders: (
   | InvalidParameterException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeCapacityProvidersRequest,
   output: DescribeCapacityProvidersResponse,
@@ -6764,8 +6738,8 @@ export const listTasks: {
     | InvalidParameterException
     | ServerException
     | ServiceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTasksRequest,
@@ -6776,8 +6750,8 @@ export const listTasks: {
     | InvalidParameterException
     | ServerException
     | ServiceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTasksRequest,
@@ -6788,8 +6762,8 @@ export const listTasks: {
     | InvalidParameterException
     | ServerException
     | ServiceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTasksRequest,
@@ -6830,8 +6804,8 @@ export const executeCommand: (
   | InvalidParameterException
   | ServerException
   | TargetNotConnectedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteCommandRequest,
   output: ExecuteCommandResponse,
@@ -6856,8 +6830,8 @@ export const updateCluster: (
   | InvalidParameterException
   | NamespaceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResponse,
@@ -6879,8 +6853,8 @@ export const deleteAttributes: (
   | ClusterNotFoundException
   | InvalidParameterException
   | TargetNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAttributesRequest,
   output: DeleteAttributesResponse,
@@ -6909,8 +6883,8 @@ export const describeTaskSets: (
   | ServiceNotActiveException
   | ServiceNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTaskSetsRequest,
   output: DescribeTaskSetsResponse,
@@ -6940,8 +6914,8 @@ export const tagResource: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6965,8 +6939,8 @@ export const untagResource: (
   | InvalidParameterException
   | ResourceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7000,8 +6974,8 @@ export const describeExpressGatewayService: (
   | ResourceNotFoundException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeExpressGatewayServiceRequest,
   output: DescribeExpressGatewayServiceResponse,
@@ -7029,8 +7003,8 @@ export const getTaskProtection: (
   | ResourceNotFoundException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTaskProtectionRequest,
   output: GetTaskProtectionResponse,
@@ -7071,8 +7045,8 @@ export const startTask: (
   | InvalidParameterException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTaskRequest,
   output: StartTaskResponse,
@@ -7109,8 +7083,8 @@ export const deleteCapacityProvider: (
   | InvalidParameterException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCapacityProviderRequest,
   output: DeleteCapacityProviderResponse,
@@ -7137,8 +7111,8 @@ export const updateCapacityProvider: (
   | InvalidParameterException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCapacityProviderRequest,
   output: UpdateCapacityProviderResponse,
@@ -7192,8 +7166,8 @@ export const updateTaskProtection: (
   | ResourceNotFoundException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTaskProtectionRequest,
   output: UpdateTaskProtectionResponse,
@@ -7225,8 +7199,8 @@ export const describeServiceDeployments: (
   | ServerException
   | ServiceNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServiceDeploymentsRequest,
   output: DescribeServiceDeploymentsResponse,
@@ -7260,8 +7234,8 @@ export const listServiceDeployments: (
   | ServerException
   | ServiceNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListServiceDeploymentsRequest,
   output: ListServiceDeploymentsResponse,
@@ -7298,8 +7272,8 @@ export const updateExpressGatewayService: (
   | ServiceNotActiveException
   | ServiceNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateExpressGatewayServiceRequest,
   output: UpdateExpressGatewayServiceResponse,
@@ -7336,8 +7310,8 @@ export const createCluster: (
   | InvalidParameterException
   | NamespaceNotFoundException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -7372,8 +7346,8 @@ export const deleteExpressGatewayService: (
   | ServiceNotActiveException
   | ServiceNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteExpressGatewayServiceRequest,
   output: DeleteExpressGatewayServiceResponse,
@@ -7418,8 +7392,8 @@ export const deleteService: (
   | InvalidParameterException
   | ServerException
   | ServiceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceRequest,
   output: DeleteServiceResponse,
@@ -7456,8 +7430,8 @@ export const deregisterContainerInstance: (
   | ClusterNotFoundException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterContainerInstanceRequest,
   output: DeregisterContainerInstanceResponse,
@@ -7485,8 +7459,8 @@ export const describeTasks: (
   | ClusterNotFoundException
   | InvalidParameterException
   | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTasksRequest,
   output: DescribeTasksResponse,
@@ -7524,11 +7498,8 @@ export const registerTaskDefinition: (
   input: RegisterTaskDefinitionRequest,
 ) => Effect.Effect<
   RegisterTaskDefinitionResponse,
-  | ClientException
-  | InvalidParameterException
-  | ServerException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ClientException | InvalidParameterException | ServerException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterTaskDefinitionRequest,
   output: RegisterTaskDefinitionResponse,
@@ -7560,8 +7531,8 @@ export const stopServiceDeployment: (
   | ServerException
   | ServiceDeploymentNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopServiceDeploymentRequest,
   output: StopServiceDeploymentResponse,
@@ -7607,8 +7578,8 @@ export const putClusterCapacityProviders: (
   | ResourceInUseException
   | ServerException
   | UpdateInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutClusterCapacityProvidersRequest,
   output: PutClusterCapacityProvidersResponse,
@@ -7642,8 +7613,8 @@ export const updateServicePrimaryTaskSet: (
   | ServiceNotFoundException
   | TaskSetNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServicePrimaryTaskSetRequest,
   output: UpdateServicePrimaryTaskSetResponse,
@@ -7693,8 +7664,8 @@ export const updateContainerAgent: (
   | NoUpdateAvailableException
   | ServerException
   | UpdateInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateContainerAgentRequest,
   output: UpdateContainerAgentResponse,
@@ -7727,8 +7698,8 @@ export const updateTaskSet: (
   | ServiceNotFoundException
   | TaskSetNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTaskSetRequest,
   output: UpdateTaskSetResponse,
@@ -7762,8 +7733,8 @@ export const deleteTaskSet: (
   | ServiceNotFoundException
   | TaskSetNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTaskSetRequest,
   output: DeleteTaskSetResponse,
@@ -7804,8 +7775,8 @@ export const createExpressGatewayService: (
   | PlatformUnknownException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateExpressGatewayServiceRequest,
   output: CreateExpressGatewayServiceResponse,
@@ -7840,8 +7811,8 @@ export const describeServiceRevisions: (
   | ServerException
   | ServiceNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeServiceRevisionsRequest,
   output: DescribeServiceRevisionsResponse,
@@ -7929,8 +7900,8 @@ export const runTask: (
   | PlatformUnknownException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RunTaskRequest,
   output: RunTaskResponse,
@@ -8082,8 +8053,8 @@ export const updateService: (
   | ServiceNotActiveException
   | ServiceNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateServiceRequest,
   output: UpdateServiceResponse,
@@ -8130,8 +8101,8 @@ export const createTaskSet: (
   | ServiceNotActiveException
   | ServiceNotFoundException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTaskSetRequest,
   output: CreateTaskSetResponse,
@@ -8166,8 +8137,8 @@ export const createCapacityProvider: (
   | ServerException
   | UnsupportedFeatureException
   | UpdateInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCapacityProviderRequest,
   output: CreateCapacityProviderResponse,
@@ -8386,8 +8357,8 @@ export const createService: (
   | PlatformUnknownException
   | ServerException
   | UnsupportedFeatureException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateServiceRequest,
   output: CreateServiceResponse,
@@ -8425,8 +8396,8 @@ export const deleteCluster: (
   | InvalidParameterException
   | ServerException
   | UpdateInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,

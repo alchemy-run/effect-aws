@@ -1,157 +1,96 @@
-import * as Data from "effect/Data";
 import * as S from "effect/Schema";
-import {
-  ERROR_CATEGORIES,
-  withCategory,
-  withRetryable,
-} from "../error-category.ts";
+import * as Category from "./category.ts";
 
 //==== Common AWS Errors ====
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withAuthError) {}
 
 export class ExpiredTokenException extends S.TaggedError<ExpiredTokenException>()(
   "ExpiredTokenException",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withAuthError) {}
 
 export class IncompleteSignature extends S.TaggedError<IncompleteSignature>()(
   "IncompleteSignature",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withAuthError) {}
 
 export class InternalFailure extends S.TaggedError<InternalFailure>()(
   "InternalFailure",
   {},
-).pipe(
-  withCategory(
-    ERROR_CATEGORIES.AWS_ERROR,
-    ERROR_CATEGORIES.COMMON_ERROR,
-    ERROR_CATEGORIES.SERVER_ERROR,
-  ),
-  withRetryable(),
-) {}
+).pipe(Category.withServerError) {}
 
 export class MalformedHttpRequestException extends S.TaggedError<MalformedHttpRequestException>()(
   "MalformedHttpRequestException",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withBadRequestError) {}
 
 export class NotAuthorized extends S.TaggedError<NotAuthorized>()(
   "NotAuthorized",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withAuthError) {}
 
 export class OptInRequired extends S.TaggedError<OptInRequired>()(
   "OptInRequired",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withAuthError) {}
 
 export class RequestAbortedException extends S.TaggedError<RequestAbortedException>()(
   "RequestAbortedException",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withAbortedError) {}
 
 export class RequestEntityTooLargeException extends S.TaggedError<RequestEntityTooLargeException>()(
   "RequestEntityTooLargeException",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withBadRequestError) {}
 
 export class RequestExpired extends S.TaggedError<RequestExpired>()(
   "RequestExpired",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withBadRequestError, Category.withTimeoutError) {}
 
 export class RequestTimeoutException extends S.TaggedError<RequestTimeoutException>()(
   "RequestTimeoutException",
   {},
-).pipe(
-  withCategory(
-    ERROR_CATEGORIES.AWS_ERROR,
-    ERROR_CATEGORIES.COMMON_ERROR,
-    ERROR_CATEGORIES.SERVER_ERROR,
-  ),
-  withRetryable(),
-) {}
+).pipe(Category.withTimeoutError) {}
 
 export class ServiceUnavailable extends S.TaggedError<ServiceUnavailable>()(
   "ServiceUnavailable",
   {},
-).pipe(
-  withCategory(
-    ERROR_CATEGORIES.AWS_ERROR,
-    ERROR_CATEGORIES.COMMON_ERROR,
-    ERROR_CATEGORIES.SERVER_ERROR,
-  ),
-  withRetryable(),
-) {}
+).pipe(Category.withServerError) {}
 
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {},
-).pipe(
-  withCategory(
-    ERROR_CATEGORIES.AWS_ERROR,
-    ERROR_CATEGORIES.COMMON_ERROR,
-    ERROR_CATEGORIES.THROTTLING_ERROR,
-  ),
-  withRetryable({ throttling: true }),
-) {}
+).pipe(Category.withThrottlingError) {}
 
 export class UnrecognizedClientException extends S.TaggedError<UnrecognizedClientException>()(
   "UnrecognizedClientException",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withAuthError) {}
 
 export class UnknownOperationException extends S.TaggedError<UnknownOperationException>()(
   "UnknownOperationException",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withBadRequestError) {}
 
 export class ValidationError extends S.TaggedError<ValidationError>()(
   "ValidationError",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withBadRequestError) {}
 
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withBadRequestError) {}
 
 export class OperationAborted extends S.TaggedError<OperationAborted>()(
   "OperationAborted",
   {},
-).pipe(
-  withCategory(ERROR_CATEGORIES.AWS_ERROR, ERROR_CATEGORIES.COMMON_ERROR),
-) {}
+).pipe(Category.withAbortedError) {}
 
 export class UnknownAwsError extends S.TaggedError<UnknownAwsError>()(
   "UnknownAwsError",
@@ -159,7 +98,7 @@ export class UnknownAwsError extends S.TaggedError<UnknownAwsError>()(
     errorTag: S.String,
     errorData: S.Any,
   },
-).pipe(withCategory(ERROR_CATEGORIES.AWS_ERROR)) {}
+) {}
 
 /**
  * Check if an error is a transient network error that should be retried.
@@ -195,29 +134,26 @@ export class TransientFetchError extends S.TaggedError<TransientFetchError>()(
     message: S.String,
     cause: S.Any,
   },
-).pipe(withCategory(ERROR_CATEGORIES.NETWORK_ERROR), withRetryable()) {}
+).pipe(Category.withNetworkError) {}
 
 export class InternalError extends S.TaggedError<InternalError>()(
   "InternalError",
   {},
-).pipe(
-  withCategory(
-    ERROR_CATEGORIES.AWS_ERROR,
-    ERROR_CATEGORIES.COMMON_ERROR,
-    ERROR_CATEGORIES.SERVER_ERROR,
-  ),
-  withRetryable(),
-) {}
+).pipe(Category.withServerError) {}
 
 /** Error when endpoint resolution fails due to a rule error */
-export class EndpointError extends Data.TaggedError("EndpointError")<{
-  message: string;
-}> {}
+export class EndpointError extends S.TaggedError<EndpointError>()(
+  "EndpointError",
+  { message: S.String },
+).pipe(Category.withServerError) {}
 
 /** Error when no rule matches in the ruleset */
-export class NoMatchingRuleError extends Data.TaggedError(
+export class NoMatchingRuleError extends S.TaggedError<NoMatchingRuleError>()(
   "NoMatchingRuleError",
-)<{}> {}
+  {},
+) {}
+
+export class ParseError extends S.TaggedError<ParseError>()("ParseError", {}) {}
 
 export const COMMON_ERRORS = [
   AccessDeniedException,

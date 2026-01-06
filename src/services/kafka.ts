@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({ sdkId: "Kafka", serviceShapeName: "Kafka" });
 const auth = T.AwsAuthSigv4({ name: "kafka" });
@@ -4148,62 +4146,56 @@ export class BadRequestException extends S.TaggedError<BadRequestException>()(
     InvalidParameter: S.optional(S.String).pipe(T.JsonName("invalidParameter")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   {
     InvalidParameter: S.optional(S.String).pipe(T.JsonName("invalidParameter")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
     InvalidParameter: S.optional(S.String).pipe(T.JsonName("invalidParameter")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class InternalServerErrorException extends S.TaggedError<InternalServerErrorException>()(
   "InternalServerErrorException",
   {
     InvalidParameter: S.optional(S.String).pipe(T.JsonName("invalidParameter")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class NotFoundException extends S.TaggedError<NotFoundException>()(
   "NotFoundException",
   {
     InvalidParameter: S.optional(S.String).pipe(T.JsonName("invalidParameter")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUnavailableException extends S.TaggedError<ServiceUnavailableException>()(
   "ServiceUnavailableException",
   {
     InvalidParameter: S.optional(S.String).pipe(T.JsonName("invalidParameter")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   {
     InvalidParameter: S.optional(S.String).pipe(T.JsonName("invalidParameter")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-) {}
+).pipe(C.withAuthError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   {
     InvalidParameter: S.optional(S.String).pipe(T.JsonName("invalidParameter")),
     Message: S.optional(S.String).pipe(T.JsonName("message")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**
@@ -4216,8 +4208,8 @@ export const putClusterPolicy: (
   | BadRequestException
   | ForbiddenException
   | InternalServerErrorException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutClusterPolicyRequest,
   output: PutClusterPolicyResponse,
@@ -4237,8 +4229,8 @@ export const listTagsForResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4260,8 +4252,8 @@ export const listClusterOperations: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClusterOperationsRequest,
@@ -4271,8 +4263,8 @@ export const listClusterOperations: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClusterOperationsRequest,
@@ -4282,8 +4274,8 @@ export const listClusterOperations: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClusterOperationsRequest,
@@ -4312,8 +4304,8 @@ export const deleteConfiguration: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationRequest,
   output: DeleteConfigurationResponse,
@@ -4335,8 +4327,8 @@ export const deleteVpcConnection: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcConnectionRequest,
   output: DeleteVpcConnectionResponse,
@@ -4360,8 +4352,8 @@ export const describeConfiguration: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRequest,
   output: DescribeConfigurationResponse,
@@ -4387,8 +4379,8 @@ export const describeConfigurationRevision: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRevisionRequest,
   output: DescribeConfigurationRevisionResponse,
@@ -4413,8 +4405,8 @@ export const describeTopic: (
   | InternalServerErrorException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTopicRequest,
   output: DescribeTopicResponse,
@@ -4439,8 +4431,8 @@ export const describeVpcConnection: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcConnectionRequest,
   output: DescribeVpcConnectionResponse,
@@ -4464,8 +4456,8 @@ export const getClusterPolicy: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetClusterPolicyRequest,
   output: GetClusterPolicyResponse,
@@ -4490,8 +4482,8 @@ export const listConfigurationRevisions: {
     | NotFoundException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConfigurationRevisionsRequest,
@@ -4503,8 +4495,8 @@ export const listConfigurationRevisions: {
     | NotFoundException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConfigurationRevisionsRequest,
@@ -4516,8 +4508,8 @@ export const listConfigurationRevisions: {
     | NotFoundException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationRevisionsRequest,
@@ -4550,8 +4542,8 @@ export const updateClusterConfiguration: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterConfigurationRequest,
   output: UpdateClusterConfigurationResponse,
@@ -4577,8 +4569,8 @@ export const updateConfiguration: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConfigurationRequest,
   output: UpdateConfigurationResponse,
@@ -4602,8 +4594,8 @@ export const deleteCluster: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -4624,8 +4616,8 @@ export const tagResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -4645,8 +4637,8 @@ export const untagResource: (
   | BadRequestException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4667,8 +4659,8 @@ export const deleteClusterPolicy: (
   | ForbiddenException
   | InternalServerErrorException
   | NotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterPolicyRequest,
   output: DeleteClusterPolicyResponse,
@@ -4692,8 +4684,8 @@ export const describeTopicPartitions: {
     | InternalServerErrorException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeTopicPartitionsRequest,
@@ -4704,8 +4696,8 @@ export const describeTopicPartitions: {
     | InternalServerErrorException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeTopicPartitionsRequest,
@@ -4716,8 +4708,8 @@ export const describeTopicPartitions: {
     | InternalServerErrorException
     | NotFoundException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeTopicPartitionsRequest,
@@ -4748,8 +4740,8 @@ export const describeClusterV2: (
   | InternalServerErrorException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterV2Request,
   output: DescribeClusterV2Response,
@@ -4773,8 +4765,8 @@ export const listNodes: {
     | ForbiddenException
     | InternalServerErrorException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListNodesRequest,
@@ -4784,8 +4776,8 @@ export const listNodes: {
     | ForbiddenException
     | InternalServerErrorException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListNodesRequest,
@@ -4795,8 +4787,8 @@ export const listNodes: {
     | ForbiddenException
     | InternalServerErrorException
     | NotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
@@ -4827,8 +4819,8 @@ export const listVpcConnections: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListVpcConnectionsRequest,
@@ -4839,8 +4831,8 @@ export const listVpcConnections: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListVpcConnectionsRequest,
@@ -4851,8 +4843,8 @@ export const listVpcConnections: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVpcConnectionsRequest,
@@ -4883,8 +4875,8 @@ export const updateBrokerStorage: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBrokerStorageRequest,
   output: UpdateBrokerStorageResponse,
@@ -4908,8 +4900,8 @@ export const updateBrokerCount: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBrokerCountRequest,
   output: UpdateBrokerCountResponse,
@@ -4933,8 +4925,8 @@ export const updateMonitoring: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMonitoringRequest,
   output: UpdateMonitoringResponse,
@@ -4958,8 +4950,8 @@ export const rejectClientVpcConnection: (
   | InternalServerErrorException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectClientVpcConnectionRequest,
   output: RejectClientVpcConnectionResponse,
@@ -4984,8 +4976,8 @@ export const listClientVpcConnections: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClientVpcConnectionsRequest,
@@ -4996,8 +4988,8 @@ export const listClientVpcConnections: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClientVpcConnectionsRequest,
@@ -5008,8 +5000,8 @@ export const listClientVpcConnections: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClientVpcConnectionsRequest,
@@ -5041,8 +5033,8 @@ export const listConfigurations: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConfigurationsRequest,
@@ -5053,8 +5045,8 @@ export const listConfigurations: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConfigurationsRequest,
@@ -5065,8 +5057,8 @@ export const listConfigurations: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationsRequest,
@@ -5097,8 +5089,8 @@ export const listClusters: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClustersRequest,
@@ -5108,8 +5100,8 @@ export const listClusters: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClustersRequest,
@@ -5119,8 +5111,8 @@ export const listClusters: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClustersRequest,
@@ -5150,8 +5142,8 @@ export const listClustersV2: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClustersV2Request,
@@ -5161,8 +5153,8 @@ export const listClustersV2: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClustersV2Request,
@@ -5172,8 +5164,8 @@ export const listClustersV2: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClustersV2Request,
@@ -5203,8 +5195,8 @@ export const getBootstrapBrokers: (
   | ForbiddenException
   | InternalServerErrorException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetBootstrapBrokersRequest,
   output: GetBootstrapBrokersResponse,
@@ -5228,8 +5220,8 @@ export const listKafkaVersions: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListKafkaVersionsRequest,
@@ -5239,8 +5231,8 @@ export const listKafkaVersions: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListKafkaVersionsRequest,
@@ -5250,8 +5242,8 @@ export const listKafkaVersions: {
     | ForbiddenException
     | InternalServerErrorException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListKafkaVersionsRequest,
@@ -5282,8 +5274,8 @@ export const listTopics: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTopicsRequest,
@@ -5294,8 +5286,8 @@ export const listTopics: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTopicsRequest,
@@ -5306,8 +5298,8 @@ export const listTopics: {
     | InternalServerErrorException
     | ServiceUnavailableException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsRequest,
@@ -5338,8 +5330,8 @@ export const describeClusterOperation: (
   | InternalServerErrorException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterOperationRequest,
   output: DescribeClusterOperationResponse,
@@ -5365,8 +5357,8 @@ export const updateReplicationInfo: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReplicationInfoRequest,
   output: UpdateReplicationInfoResponse,
@@ -5394,8 +5386,8 @@ export const updateStorage: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStorageRequest,
   output: UpdateStorageResponse,
@@ -5423,8 +5415,8 @@ export const deleteReplicator: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicatorRequest,
   output: DeleteReplicatorResponse,
@@ -5453,8 +5445,8 @@ export const listScramSecrets: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListScramSecretsRequest,
@@ -5467,8 +5459,8 @@ export const listScramSecrets: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListScramSecretsRequest,
@@ -5481,8 +5473,8 @@ export const listScramSecrets: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListScramSecretsRequest,
@@ -5517,8 +5509,8 @@ export const rebootBroker: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RebootBrokerRequest,
   output: RebootBrokerResponse,
@@ -5546,8 +5538,8 @@ export const updateBrokerType: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateBrokerTypeRequest,
   output: UpdateBrokerTypeResponse,
@@ -5575,8 +5567,8 @@ export const updateClusterKafkaVersion: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterKafkaVersionRequest,
   output: UpdateClusterKafkaVersionResponse,
@@ -5604,8 +5596,8 @@ export const updateRebalancing: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateRebalancingRequest,
   output: UpdateRebalancingResponse,
@@ -5633,8 +5625,8 @@ export const updateSecurity: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSecurityRequest,
   output: UpdateSecurityResponse,
@@ -5662,8 +5654,8 @@ export const batchDisassociateScramSecret: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDisassociateScramSecretRequest,
   output: BatchDisassociateScramSecretResponse,
@@ -5691,8 +5683,8 @@ export const batchAssociateScramSecret: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchAssociateScramSecretRequest,
   output: BatchAssociateScramSecretResponse,
@@ -5720,8 +5712,8 @@ export const describeReplicator: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeReplicatorRequest,
   output: DescribeReplicatorResponse,
@@ -5749,8 +5741,8 @@ export const getCompatibleKafkaVersions: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCompatibleKafkaVersionsRequest,
   output: GetCompatibleKafkaVersionsResponse,
@@ -5779,8 +5771,8 @@ export const listClusterOperationsV2: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListClusterOperationsV2Request,
@@ -5793,8 +5785,8 @@ export const listClusterOperationsV2: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListClusterOperationsV2Request,
@@ -5807,8 +5799,8 @@ export const listClusterOperationsV2: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListClusterOperationsV2Request,
@@ -5844,8 +5836,8 @@ export const listReplicators: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListReplicatorsRequest,
@@ -5858,8 +5850,8 @@ export const listReplicators: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListReplicatorsRequest,
@@ -5872,8 +5864,8 @@ export const listReplicators: {
     | ServiceUnavailableException
     | TooManyRequestsException
     | UnauthorizedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListReplicatorsRequest,
@@ -5907,8 +5899,8 @@ export const createVpcConnection: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcConnectionRequest,
   output: CreateVpcConnectionResponse,
@@ -5935,8 +5927,8 @@ export const createConfiguration: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConfigurationRequest,
   output: CreateConfigurationResponse,
@@ -5964,8 +5956,8 @@ export const createCluster: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -5993,8 +5985,8 @@ export const createClusterV2: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterV2Request,
   output: CreateClusterV2Response,
@@ -6023,8 +6015,8 @@ export const createReplicator: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicatorRequest,
   output: CreateReplicatorResponse,
@@ -6053,8 +6045,8 @@ export const describeClusterOperationV2: (
   | ServiceUnavailableException
   | TooManyRequestsException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterOperationV2Request,
   output: DescribeClusterOperationV2Response,
@@ -6080,8 +6072,8 @@ export const describeCluster: (
   | InternalServerErrorException
   | NotFoundException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeClusterRequest,
   output: DescribeClusterResponse,
@@ -6106,8 +6098,8 @@ export const updateConnectivity: (
   | NotFoundException
   | ServiceUnavailableException
   | UnauthorizedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectivityRequest,
   output: UpdateConnectivityResponse,

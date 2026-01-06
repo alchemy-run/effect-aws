@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "VerifiedPermissions",
@@ -2167,26 +2165,24 @@ export const ListIdentitySourcesOutput = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidStateException extends S.TaggedError<InvalidStateException>()(
   "InvalidStateException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.String },
   T.Retryable(),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError, C.withRetryableError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.String, resourceId: S.String, resourceType: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   { message: S.String, resources: ResourceConflictList },
-) {}
+).pipe(C.withConflictError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {
@@ -2195,9 +2191,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     quotaCode: S.optional(S.String),
   },
   T.Retryable({ throttling: true }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError, C.withRetryableError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -2207,11 +2201,11 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     serviceCode: S.optional(S.String),
     quotaCode: S.optional(S.String),
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
   "TooManyTagsException",
   { message: S.optional(S.String), resourceName: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2223,8 +2217,8 @@ export const deletePolicyStore: (
   input: DeletePolicyStoreInput,
 ) => Effect.Effect<
   DeletePolicyStoreOutput,
-  InvalidStateException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidStateException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePolicyStoreInput,
   output: DeletePolicyStoreOutput,
@@ -2237,8 +2231,8 @@ export const getPolicyStore: (
   input: GetPolicyStoreInput,
 ) => Effect.Effect<
   GetPolicyStoreOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPolicyStoreInput,
   output: GetPolicyStoreOutput,
@@ -2252,22 +2246,22 @@ export const listPolicyStores: {
     input: ListPolicyStoresInput,
   ): Effect.Effect<
     ListPolicyStoresOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPolicyStoresInput,
   ) => Stream.Stream<
     ListPolicyStoresOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPolicyStoresInput,
   ) => Stream.Stream<
     PolicyStoreItem,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPolicyStoresInput,
@@ -2291,8 +2285,8 @@ export const isAuthorizedWithToken: (
   input: IsAuthorizedWithTokenInput,
 ) => Effect.Effect<
   IsAuthorizedWithTokenOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IsAuthorizedWithTokenInput,
   output: IsAuthorizedWithTokenOutput,
@@ -2305,8 +2299,8 @@ export const deleteIdentitySource: (
   input: DeleteIdentitySourceInput,
 ) => Effect.Effect<
   DeleteIdentitySourceOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentitySourceInput,
   output: DeleteIdentitySourceOutput,
@@ -2320,22 +2314,22 @@ export const listPolicyTemplates: {
     input: ListPolicyTemplatesInput,
   ): Effect.Effect<
     ListPolicyTemplatesOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPolicyTemplatesInput,
   ) => Stream.Stream<
     ListPolicyTemplatesOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPolicyTemplatesInput,
   ) => Stream.Stream<
     PolicyTemplateItem,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPolicyTemplatesInput,
@@ -2355,8 +2349,8 @@ export const getSchema: (
   input: GetSchemaInput,
 ) => Effect.Effect<
   GetSchemaOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSchemaInput,
   output: GetSchemaOutput,
@@ -2369,8 +2363,8 @@ export const getPolicyTemplate: (
   input: GetPolicyTemplateInput,
 ) => Effect.Effect<
   GetPolicyTemplateOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPolicyTemplateInput,
   output: GetPolicyTemplateOutput,
@@ -2385,8 +2379,8 @@ export const deletePolicy: (
   input: DeletePolicyInput,
 ) => Effect.Effect<
   DeletePolicyOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePolicyInput,
   output: DeletePolicyOutput,
@@ -2401,8 +2395,8 @@ export const deletePolicyTemplate: (
   input: DeletePolicyTemplateInput,
 ) => Effect.Effect<
   DeletePolicyTemplateOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePolicyTemplateInput,
   output: DeletePolicyTemplateOutput,
@@ -2417,8 +2411,8 @@ export const updatePolicyStore: (
   input: UpdatePolicyStoreInput,
 ) => Effect.Effect<
   UpdatePolicyStoreOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePolicyStoreInput,
   output: UpdatePolicyStoreOutput,
@@ -2435,8 +2429,8 @@ export const updatePolicyTemplate: (
   input: UpdatePolicyTemplateInput,
 ) => Effect.Effect<
   UpdatePolicyTemplateOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePolicyTemplateInput,
   output: UpdatePolicyTemplateOutput,
@@ -2455,8 +2449,8 @@ export const batchIsAuthorizedWithToken: (
   input: BatchIsAuthorizedWithTokenInput,
 ) => Effect.Effect<
   BatchIsAuthorizedWithTokenOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchIsAuthorizedWithTokenInput,
   output: BatchIsAuthorizedWithTokenOutput,
@@ -2471,8 +2465,8 @@ export const batchGetPolicy: (
   input: BatchGetPolicyInput,
 ) => Effect.Effect<
   BatchGetPolicyOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetPolicyInput,
   output: BatchGetPolicyOutput,
@@ -2485,8 +2479,8 @@ export const getPolicy: (
   input: GetPolicyInput,
 ) => Effect.Effect<
   GetPolicyOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPolicyInput,
   output: GetPolicyOutput,
@@ -2503,8 +2497,8 @@ export const listTagsForResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -2527,8 +2521,8 @@ export const createPolicyTemplate: (
   | ConflictException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePolicyTemplateInput,
   output: CreatePolicyTemplateOutput,
@@ -2549,8 +2543,8 @@ export const untagResource: (
   | InternalServerException
   | ResourceNotFoundException
   | ThrottlingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceOutput,
@@ -2572,8 +2566,8 @@ export const createPolicyStore: (
   input: CreatePolicyStoreInput,
 ) => Effect.Effect<
   CreatePolicyStoreOutput,
-  ConflictException | ServiceQuotaExceededException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ServiceQuotaExceededException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePolicyStoreInput,
   output: CreatePolicyStoreOutput,
@@ -2591,8 +2585,8 @@ export const putSchema: (
   | ConflictException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSchemaInput,
   output: PutSchemaOutput,
@@ -2620,8 +2614,8 @@ export const createPolicy: (
   | ConflictException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePolicyInput,
   output: CreatePolicyOutput,
@@ -2663,8 +2657,8 @@ export const updatePolicy: (
   | ConflictException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePolicyInput,
   output: UpdatePolicyOutput,
@@ -2692,8 +2686,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | TooManyTagsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceOutput,
@@ -2712,8 +2706,8 @@ export const isAuthorized: (
   input: IsAuthorizedInput,
 ) => Effect.Effect<
   IsAuthorizedOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: IsAuthorizedInput,
   output: IsAuthorizedOutput,
@@ -2741,8 +2735,8 @@ export const createIdentitySource: (
   | ConflictException
   | ResourceNotFoundException
   | ServiceQuotaExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIdentitySourceInput,
   output: CreateIdentitySourceOutput,
@@ -2759,8 +2753,8 @@ export const getIdentitySource: (
   input: GetIdentitySourceInput,
 ) => Effect.Effect<
   GetIdentitySourceOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentitySourceInput,
   output: GetIdentitySourceOutput,
@@ -2775,8 +2769,8 @@ export const updateIdentitySource: (
   input: UpdateIdentitySourceInput,
 ) => Effect.Effect<
   UpdateIdentitySourceOutput,
-  ConflictException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ConflictException | ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIdentitySourceInput,
   output: UpdateIdentitySourceOutput,
@@ -2790,22 +2784,22 @@ export const listPolicies: {
     input: ListPoliciesInput,
   ): Effect.Effect<
     ListPoliciesOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListPoliciesInput,
   ) => Stream.Stream<
     ListPoliciesOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListPoliciesInput,
   ) => Stream.Stream<
     PolicyItem,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPoliciesInput,
@@ -2831,8 +2825,8 @@ export const batchIsAuthorized: (
   input: BatchIsAuthorizedInput,
 ) => Effect.Effect<
   BatchIsAuthorizedOutput,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchIsAuthorizedInput,
   output: BatchIsAuthorizedOutput,
@@ -2846,22 +2840,22 @@ export const listIdentitySources: {
     input: ListIdentitySourcesInput,
   ): Effect.Effect<
     ListIdentitySourcesOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIdentitySourcesInput,
   ) => Stream.Stream<
     ListIdentitySourcesOutput,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIdentitySourcesInput,
   ) => Stream.Stream<
     IdentitySourceItem,
-    ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIdentitySourcesInput,

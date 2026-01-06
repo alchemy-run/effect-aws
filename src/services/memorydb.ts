@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://memorydb.amazonaws.com/doc/2021-01-01/");
 const svc = T.AwsApiService({
@@ -2697,12 +2695,12 @@ export class ACLNotFoundFault extends S.TaggedError<ACLNotFoundFault>()(
   "ACLNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ACLNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterNotFoundFault extends S.TaggedError<ClusterNotFoundFault>()(
   "ClusterNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidMultiRegionClusterStateFault extends S.TaggedError<InvalidMultiRegionClusterStateFault>()(
   "InvalidMultiRegionClusterStateFault",
   { message: S.optional(S.String) },
@@ -2710,7 +2708,7 @@ export class InvalidMultiRegionClusterStateFault extends S.TaggedError<InvalidMu
     code: "InvalidMultiRegionClusterState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterCombinationException extends S.TaggedError<InvalidParameterCombinationException>()(
   "InvalidParameterCombinationException",
   { message: S.optional(S.String) },
@@ -2718,7 +2716,7 @@ export class InvalidParameterCombinationException extends S.TaggedError<InvalidP
     code: "InvalidParameterCombination",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceLinkedRoleNotFoundFault extends S.TaggedError<ServiceLinkedRoleNotFoundFault>()(
   "ServiceLinkedRoleNotFoundFault",
   { message: S.optional(S.String) },
@@ -2726,7 +2724,7 @@ export class ServiceLinkedRoleNotFoundFault extends S.TaggedError<ServiceLinkedR
     code: "ServiceLinkedRoleNotFoundFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class APICallRateForCustomerExceededFault extends S.TaggedError<APICallRateForCustomerExceededFault>()(
   "APICallRateForCustomerExceededFault",
   { message: S.optional(S.String) },
@@ -2734,32 +2732,32 @@ export class APICallRateForCustomerExceededFault extends S.TaggedError<APICallRa
     code: "APICallRateForCustomerExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSubnet extends S.TaggedError<InvalidSubnet>()(
   "InvalidSubnet",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSubnet", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateUserNameFault extends S.TaggedError<DuplicateUserNameFault>()(
   "DuplicateUserNameFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DuplicateUserName", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidACLStateFault extends S.TaggedError<InvalidACLStateFault>()(
   "InvalidACLStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidACLState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidClusterStateFault extends S.TaggedError<InvalidClusterStateFault>()(
   "InvalidClusterStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidClusterState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterValueException extends S.TaggedError<InvalidParameterValueException>()(
   "InvalidParameterValueException",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidParameterValue", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterGroupStateFault extends S.TaggedError<InvalidParameterGroupStateFault>()(
   "InvalidParameterGroupStateFault",
   { message: S.optional(S.String) },
@@ -2767,17 +2765,17 @@ export class InvalidParameterGroupStateFault extends S.TaggedError<InvalidParame
     code: "InvalidParameterGroupState",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetGroupInUseFault extends S.TaggedError<SubnetGroupInUseFault>()(
   "SubnetGroupInUseFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetGroupInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserNotFoundFault extends S.TaggedError<UserNotFoundFault>()(
   "UserNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterQuotaForCustomerExceededFault extends S.TaggedError<ClusterQuotaForCustomerExceededFault>()(
   "ClusterQuotaForCustomerExceededFault",
   { message: S.optional(S.String) },
@@ -2785,27 +2783,27 @@ export class ClusterQuotaForCustomerExceededFault extends S.TaggedError<ClusterQ
     code: "ClusterQuotaForCustomerExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetGroupNotFoundFault extends S.TaggedError<SubnetGroupNotFoundFault>()(
   "SubnetGroupNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetGroupNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidARNFault extends S.TaggedError<InvalidARNFault>()(
   "InvalidARNFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidARN", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class DefaultUserRequired extends S.TaggedError<DefaultUserRequired>()(
   "DefaultUserRequired",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "DefaultUserRequired", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ACLAlreadyExistsFault extends S.TaggedError<ACLAlreadyExistsFault>()(
   "ACLAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ACLAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MultiRegionClusterNotFoundFault extends S.TaggedError<MultiRegionClusterNotFoundFault>()(
   "MultiRegionClusterNotFoundFault",
   { message: S.optional(S.String) },
@@ -2813,32 +2811,32 @@ export class MultiRegionClusterNotFoundFault extends S.TaggedError<MultiRegionCl
     code: "MultiRegionClusterNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ParameterGroupNotFoundFault extends S.TaggedError<ParameterGroupNotFoundFault>()(
   "ParameterGroupNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ParameterGroupNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidUserStateFault extends S.TaggedError<InvalidUserStateFault>()(
   "InvalidUserStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidUserState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeNotFoundFault extends S.TaggedError<ReservedNodeNotFoundFault>()(
   "ReservedNodeNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedNodeNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidKMSKeyFault extends S.TaggedError<InvalidKMSKeyFault>()(
   "InvalidKMSKeyFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidKMSKeyFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetInUse extends S.TaggedError<SubnetInUse>()(
   "SubnetInUse",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetInUse", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MultiRegionParameterGroupNotFoundFault extends S.TaggedError<MultiRegionParameterGroupNotFoundFault>()(
   "MultiRegionParameterGroupNotFoundFault",
   { message: S.optional(S.String) },
@@ -2846,7 +2844,7 @@ export class MultiRegionParameterGroupNotFoundFault extends S.TaggedError<MultiR
     code: "MultiRegionParameterGroupNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodesOfferingNotFoundFault extends S.TaggedError<ReservedNodesOfferingNotFoundFault>()(
   "ReservedNodesOfferingNotFoundFault",
   { message: S.optional(S.String) },
@@ -2854,22 +2852,22 @@ export class ReservedNodesOfferingNotFoundFault extends S.TaggedError<ReservedNo
     code: "ReservedNodesOfferingNotFound",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSnapshotStateFault extends S.TaggedError<InvalidSnapshotStateFault>()(
   "InvalidSnapshotStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidSnapshotState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotNotFoundFault extends S.TaggedError<SnapshotNotFoundFault>()(
   "SnapshotNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SnapshotNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeAlreadyExistsFault extends S.TaggedError<ReservedNodeAlreadyExistsFault>()(
   "ReservedNodeAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedNodeAlreadyExists", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceUpdateNotFoundFault extends S.TaggedError<ServiceUpdateNotFoundFault>()(
   "ServiceUpdateNotFoundFault",
   { message: S.optional(S.String) },
@@ -2877,7 +2875,7 @@ export class ServiceUpdateNotFoundFault extends S.TaggedError<ServiceUpdateNotFo
     code: "ServiceUpdateNotFoundFault",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagQuotaPerResourceExceeded extends S.TaggedError<TagQuotaPerResourceExceeded>()(
   "TagQuotaPerResourceExceeded",
   { message: S.optional(S.String) },
@@ -2885,7 +2883,7 @@ export class TagQuotaPerResourceExceeded extends S.TaggedError<TagQuotaPerResour
     code: "TagQuotaPerResourceExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotAlreadyExistsFault extends S.TaggedError<SnapshotAlreadyExistsFault>()(
   "SnapshotAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -2893,7 +2891,7 @@ export class SnapshotAlreadyExistsFault extends S.TaggedError<SnapshotAlreadyExi
     code: "SnapshotAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ParameterGroupAlreadyExistsFault extends S.TaggedError<ParameterGroupAlreadyExistsFault>()(
   "ParameterGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -2901,7 +2899,7 @@ export class ParameterGroupAlreadyExistsFault extends S.TaggedError<ParameterGro
     code: "ParameterGroupAlreadyExists",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class MultiRegionClusterAlreadyExistsFault extends S.TaggedError<MultiRegionClusterAlreadyExistsFault>()(
   "MultiRegionClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
@@ -2909,42 +2907,42 @@ export class MultiRegionClusterAlreadyExistsFault extends S.TaggedError<MultiReg
     code: "MultiRegionClusterAlreadyExistsFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ACLQuotaExceededFault extends S.TaggedError<ACLQuotaExceededFault>()(
   "ACLQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ACLQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetGroupAlreadyExistsFault extends S.TaggedError<SubnetGroupAlreadyExistsFault>()(
   "SubnetGroupAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetGroupAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidNodeStateFault extends S.TaggedError<InvalidNodeStateFault>()(
   "InvalidNodeStateFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidNodeState", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetNotAllowedFault extends S.TaggedError<SubnetNotAllowedFault>()(
   "SubnetNotAllowedFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetNotAllowedFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ReservedNodeQuotaExceededFault extends S.TaggedError<ReservedNodeQuotaExceededFault>()(
   "ReservedNodeQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ReservedNodeQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserAlreadyExistsFault extends S.TaggedError<UserAlreadyExistsFault>()(
   "UserAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TagNotFoundFault extends S.TaggedError<TagNotFoundFault>()(
   "TagNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "TagNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ParameterGroupQuotaExceededFault extends S.TaggedError<ParameterGroupQuotaExceededFault>()(
   "ParameterGroupQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -2952,12 +2950,12 @@ export class ParameterGroupQuotaExceededFault extends S.TaggedError<ParameterGro
     code: "ParameterGroupQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ShardNotFoundFault extends S.TaggedError<ShardNotFoundFault>()(
   "ShardNotFoundFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ShardNotFoundFault", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SnapshotQuotaExceededFault extends S.TaggedError<SnapshotQuotaExceededFault>()(
   "SnapshotQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -2965,17 +2963,17 @@ export class SnapshotQuotaExceededFault extends S.TaggedError<SnapshotQuotaExcee
     code: "SnapshotQuotaExceededFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ClusterAlreadyExistsFault extends S.TaggedError<ClusterAlreadyExistsFault>()(
   "ClusterAlreadyExistsFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "ClusterAlreadyExists", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetGroupQuotaExceededFault extends S.TaggedError<SubnetGroupQuotaExceededFault>()(
   "SubnetGroupQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetGroupQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetworkStateFault>()(
   "InvalidVPCNetworkStateFault",
   { message: S.optional(S.String) },
@@ -2983,17 +2981,17 @@ export class InvalidVPCNetworkStateFault extends S.TaggedError<InvalidVPCNetwork
     code: "InvalidVPCNetworkStateFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class SubnetQuotaExceededFault extends S.TaggedError<SubnetQuotaExceededFault>()(
   "SubnetQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "SubnetQuotaExceededFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserQuotaExceededFault extends S.TaggedError<UserQuotaExceededFault>()(
   "UserQuotaExceededFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "UserQuotaExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TestFailoverNotAvailableFault extends S.TaggedError<TestFailoverNotAvailableFault>()(
   "TestFailoverNotAvailableFault",
   { message: S.optional(S.String) },
@@ -3001,7 +2999,7 @@ export class TestFailoverNotAvailableFault extends S.TaggedError<TestFailoverNot
     code: "TestFailoverNotAvailableFault",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientClusterCapacityFault extends S.TaggedError<InsufficientClusterCapacityFault>()(
   "InsufficientClusterCapacityFault",
   { message: S.optional(S.String) },
@@ -3009,7 +3007,7 @@ export class InsufficientClusterCapacityFault extends S.TaggedError<Insufficient
     code: "InsufficientClusterCapacity",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NodeQuotaForClusterExceededFault extends S.TaggedError<NodeQuotaForClusterExceededFault>()(
   "NodeQuotaForClusterExceededFault",
   { message: S.optional(S.String) },
@@ -3017,7 +3015,7 @@ export class NodeQuotaForClusterExceededFault extends S.TaggedError<NodeQuotaFor
     code: "NodeQuotaForClusterExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidCredentialsException extends S.TaggedError<InvalidCredentialsException>()(
   "InvalidCredentialsException",
   { message: S.optional(S.String) },
@@ -3025,7 +3023,7 @@ export class InvalidCredentialsException extends S.TaggedError<InvalidCredential
     code: "InvalidCredentialsException",
     httpResponseCode: 408,
   }),
-) {}
+).pipe(C.withTimeoutError) {}
 export class NodeQuotaForCustomerExceededFault extends S.TaggedError<NodeQuotaForCustomerExceededFault>()(
   "NodeQuotaForCustomerExceededFault",
   { message: S.optional(S.String) },
@@ -3033,12 +3031,12 @@ export class NodeQuotaForCustomerExceededFault extends S.TaggedError<NodeQuotaFo
     code: "NodeQuotaForCustomerExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoOperationFault extends S.TaggedError<NoOperationFault>()(
   "NoOperationFault",
   { message: S.optional(S.String) },
   T.AwsQueryError({ code: "NoOperationFault", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ShardsPerClusterQuotaExceededFault extends S.TaggedError<ShardsPerClusterQuotaExceededFault>()(
   "ShardsPerClusterQuotaExceededFault",
   { message: S.optional(S.String) },
@@ -3046,7 +3044,7 @@ export class ShardsPerClusterQuotaExceededFault extends S.TaggedError<ShardsPerC
     code: "ShardsPerClusterQuotaExceeded",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -3057,28 +3055,22 @@ export const describeACLs: {
     input: DescribeACLsRequest,
   ): Effect.Effect<
     DescribeACLsResponse,
-    | ACLNotFoundFault
-    | InvalidParameterCombinationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ACLNotFoundFault | InvalidParameterCombinationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeACLsRequest,
   ) => Stream.Stream<
     DescribeACLsResponse,
-    | ACLNotFoundFault
-    | InvalidParameterCombinationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ACLNotFoundFault | InvalidParameterCombinationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeACLsRequest,
   ) => Stream.Stream<
     ACL,
-    | ACLNotFoundFault
-    | InvalidParameterCombinationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ACLNotFoundFault | InvalidParameterCombinationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeACLsRequest,
@@ -3099,28 +3091,22 @@ export const describeUsers: {
     input: DescribeUsersRequest,
   ): Effect.Effect<
     DescribeUsersResponse,
-    | InvalidParameterCombinationException
-    | UserNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterCombinationException | UserNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeUsersRequest,
   ) => Stream.Stream<
     DescribeUsersResponse,
-    | InvalidParameterCombinationException
-    | UserNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterCombinationException | UserNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeUsersRequest,
   ) => Stream.Stream<
     User,
-    | InvalidParameterCombinationException
-    | UserNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterCombinationException | UserNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeUsersRequest,
@@ -3147,8 +3133,8 @@ export const updateACL: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateACLRequest,
   output: UpdateACLResponse,
@@ -3173,8 +3159,8 @@ export const describeEngineVersions: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEngineVersionsRequest,
@@ -3183,8 +3169,8 @@ export const describeEngineVersions: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEngineVersionsRequest,
@@ -3193,8 +3179,8 @@ export const describeEngineVersions: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEngineVersionsRequest,
@@ -3224,8 +3210,8 @@ export const describeEvents: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsRequest,
@@ -3234,8 +3220,8 @@ export const describeEvents: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsRequest,
@@ -3244,8 +3230,8 @@ export const describeEvents: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsRequest,
@@ -3272,8 +3258,8 @@ export const describeServiceUpdates: {
     DescribeServiceUpdatesResponse,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeServiceUpdatesRequest,
@@ -3281,8 +3267,8 @@ export const describeServiceUpdates: {
     DescribeServiceUpdatesResponse,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeServiceUpdatesRequest,
@@ -3290,8 +3276,8 @@ export const describeServiceUpdates: {
     ServiceUpdate,
     | InvalidParameterCombinationException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeServiceUpdatesRequest,
@@ -3319,8 +3305,8 @@ export const describeClusters: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeClustersRequest,
@@ -3330,8 +3316,8 @@ export const describeClusters: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeClustersRequest,
@@ -3341,8 +3327,8 @@ export const describeClusters: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeClustersRequest,
@@ -3373,8 +3359,8 @@ export const listAllowedNodeTypeUpdates: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAllowedNodeTypeUpdatesRequest,
   output: ListAllowedNodeTypeUpdatesResponse,
@@ -3395,8 +3381,8 @@ export const deleteACL: (
   | ACLNotFoundFault
   | InvalidACLStateFault
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteACLRequest,
   output: DeleteACLResponse,
@@ -3414,28 +3400,22 @@ export const describeSubnetGroups: {
     input: DescribeSubnetGroupsRequest,
   ): Effect.Effect<
     DescribeSubnetGroupsResponse,
-    | ServiceLinkedRoleNotFoundFault
-    | SubnetGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServiceLinkedRoleNotFoundFault | SubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSubnetGroupsRequest,
   ) => Stream.Stream<
     DescribeSubnetGroupsResponse,
-    | ServiceLinkedRoleNotFoundFault
-    | SubnetGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServiceLinkedRoleNotFoundFault | SubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSubnetGroupsRequest,
   ) => Stream.Stream<
     SubnetGroup,
-    | ServiceLinkedRoleNotFoundFault
-    | SubnetGroupNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ServiceLinkedRoleNotFoundFault | SubnetGroupNotFoundFault | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSubnetGroupsRequest,
@@ -3458,8 +3438,8 @@ export const deleteSubnetGroup: (
   | ServiceLinkedRoleNotFoundFault
   | SubnetGroupInUseFault
   | SubnetGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSubnetGroupRequest,
   output: DeleteSubnetGroupResponse,
@@ -3479,8 +3459,8 @@ export const deleteMultiRegionCluster: (
   | InvalidMultiRegionClusterStateFault
   | InvalidParameterValueException
   | MultiRegionClusterNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteMultiRegionClusterRequest,
   output: DeleteMultiRegionClusterResponse,
@@ -3503,8 +3483,8 @@ export const deleteParameterGroup: (
   | InvalidParameterValueException
   | ParameterGroupNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteParameterGroupRequest,
   output: DeleteParameterGroupResponse,
@@ -3526,8 +3506,8 @@ export const deleteUser: (
   | InvalidParameterValueException
   | InvalidUserStateFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -3549,8 +3529,8 @@ export const describeReservedNodes: {
     | InvalidParameterValueException
     | ReservedNodeNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedNodesRequest,
@@ -3560,8 +3540,8 @@ export const describeReservedNodes: {
     | InvalidParameterValueException
     | ReservedNodeNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedNodesRequest,
@@ -3571,8 +3551,8 @@ export const describeReservedNodes: {
     | InvalidParameterValueException
     | ReservedNodeNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedNodesRequest,
@@ -3601,8 +3581,8 @@ export const describeMultiRegionParameterGroups: (
   | InvalidParameterValueException
   | MultiRegionParameterGroupNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMultiRegionParameterGroupsRequest,
   output: DescribeMultiRegionParameterGroupsResponse,
@@ -3625,8 +3605,8 @@ export const describeReservedNodesOfferings: {
     | InvalidParameterValueException
     | ReservedNodesOfferingNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReservedNodesOfferingsRequest,
@@ -3636,8 +3616,8 @@ export const describeReservedNodesOfferings: {
     | InvalidParameterValueException
     | ReservedNodesOfferingNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReservedNodesOfferingsRequest,
@@ -3647,8 +3627,8 @@ export const describeReservedNodesOfferings: {
     | InvalidParameterValueException
     | ReservedNodesOfferingNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReservedNodesOfferingsRequest,
@@ -3679,8 +3659,8 @@ export const describeSnapshots: {
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
     | SnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSnapshotsRequest,
@@ -3690,8 +3670,8 @@ export const describeSnapshots: {
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
     | SnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSnapshotsRequest,
@@ -3701,8 +3681,8 @@ export const describeSnapshots: {
     | InvalidParameterValueException
     | ServiceLinkedRoleNotFoundFault
     | SnapshotNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSnapshotsRequest,
@@ -3727,10 +3707,8 @@ export const batchUpdateCluster: (
   input: BatchUpdateClusterRequest,
 ) => Effect.Effect<
   BatchUpdateClusterResponse,
-  | InvalidParameterValueException
-  | ServiceUpdateNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | ServiceUpdateNotFoundFault | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchUpdateClusterRequest,
   output: BatchUpdateClusterResponse,
@@ -3752,8 +3730,8 @@ export const deleteCluster: (
   | InvalidParameterValueException
   | ServiceLinkedRoleNotFoundFault
   | SnapshotAlreadyExistsFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClusterRequest,
   output: DeleteClusterResponse,
@@ -3786,8 +3764,8 @@ export const listTags: (
   | SnapshotNotFoundFault
   | SubnetGroupNotFoundFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
@@ -3817,8 +3795,8 @@ export const describeMultiRegionClusters: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | MultiRegionClusterNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeMultiRegionClustersRequest,
@@ -3828,8 +3806,8 @@ export const describeMultiRegionClusters: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | MultiRegionClusterNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeMultiRegionClustersRequest,
@@ -3839,8 +3817,8 @@ export const describeMultiRegionClusters: {
     | InvalidParameterCombinationException
     | InvalidParameterValueException
     | MultiRegionClusterNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeMultiRegionClustersRequest,
@@ -3870,8 +3848,8 @@ export const updateMultiRegionCluster: (
   | InvalidParameterValueException
   | MultiRegionClusterNotFoundFault
   | MultiRegionParameterGroupNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateMultiRegionClusterRequest,
   output: UpdateMultiRegionClusterResponse,
@@ -3893,8 +3871,8 @@ export const listAllowedMultiRegionClusterUpdates: (
   | InvalidParameterCombinationException
   | InvalidParameterValueException
   | MultiRegionClusterNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListAllowedMultiRegionClusterUpdatesRequest,
   output: ListAllowedMultiRegionClusterUpdatesResponse,
@@ -3932,8 +3910,8 @@ export const tagResource: (
   | SubnetGroupNotFoundFault
   | TagQuotaPerResourceExceeded
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -3965,8 +3943,8 @@ export const describeParameters: {
     | InvalidParameterValueException
     | ParameterGroupNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeParametersRequest,
@@ -3976,8 +3954,8 @@ export const describeParameters: {
     | InvalidParameterValueException
     | ParameterGroupNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeParametersRequest,
@@ -3987,8 +3965,8 @@ export const describeParameters: {
     | InvalidParameterValueException
     | ParameterGroupNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeParametersRequest,
@@ -4018,8 +3996,8 @@ export const describeParameterGroups: {
     | InvalidParameterValueException
     | ParameterGroupNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeParameterGroupsRequest,
@@ -4029,8 +4007,8 @@ export const describeParameterGroups: {
     | InvalidParameterValueException
     | ParameterGroupNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeParameterGroupsRequest,
@@ -4040,8 +4018,8 @@ export const describeParameterGroups: {
     | InvalidParameterValueException
     | ParameterGroupNotFoundFault
     | ServiceLinkedRoleNotFoundFault
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeParameterGroupsRequest,
@@ -4071,8 +4049,8 @@ export const updateParameterGroup: (
   | InvalidParameterValueException
   | ParameterGroupNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateParameterGroupRequest,
   output: UpdateParameterGroupResponse,
@@ -4096,8 +4074,8 @@ export const resetParameterGroup: (
   | InvalidParameterValueException
   | ParameterGroupNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResetParameterGroupRequest,
   output: ResetParameterGroupResponse,
@@ -4120,8 +4098,8 @@ export const updateUser: (
   | InvalidParameterValueException
   | InvalidUserStateFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserRequest,
   output: UpdateUserResponse,
@@ -4145,8 +4123,8 @@ export const createMultiRegionCluster: (
   | MultiRegionClusterAlreadyExistsFault
   | MultiRegionParameterGroupNotFoundFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateMultiRegionClusterRequest,
   output: CreateMultiRegionClusterResponse,
@@ -4170,8 +4148,8 @@ export const describeMultiRegionParameters: (
   | InvalidParameterValueException
   | MultiRegionParameterGroupNotFoundFault
   | ServiceLinkedRoleNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeMultiRegionParametersRequest,
   output: DescribeMultiRegionParametersResponse,
@@ -4194,8 +4172,8 @@ export const deleteSnapshot: (
   | InvalidSnapshotStateFault
   | ServiceLinkedRoleNotFoundFault
   | SnapshotNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSnapshotRequest,
   output: DeleteSnapshotResponse,
@@ -4221,8 +4199,8 @@ export const createACL: (
   | InvalidParameterValueException
   | TagQuotaPerResourceExceeded
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateACLRequest,
   output: CreateACLResponse,
@@ -4250,8 +4228,8 @@ export const purchaseReservedNodesOffering: (
   | ReservedNodesOfferingNotFoundFault
   | ServiceLinkedRoleNotFoundFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PurchaseReservedNodesOfferingRequest,
   output: PurchaseReservedNodesOfferingResponse,
@@ -4293,8 +4271,8 @@ export const untagResource: (
   | SubnetGroupNotFoundFault
   | TagNotFoundFault
   | UserNotFoundFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -4329,8 +4307,8 @@ export const createParameterGroup: (
   | ParameterGroupQuotaExceededFault
   | ServiceLinkedRoleNotFoundFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateParameterGroupRequest,
   output: CreateParameterGroupResponse,
@@ -4359,8 +4337,8 @@ export const copySnapshot: (
   | SnapshotNotFoundFault
   | SnapshotQuotaExceededFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CopySnapshotRequest,
   output: CopySnapshotResponse,
@@ -4390,8 +4368,8 @@ export const createSnapshot: (
   | SnapshotAlreadyExistsFault
   | SnapshotQuotaExceededFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSnapshotRequest,
   output: CreateSnapshotResponse,
@@ -4419,8 +4397,8 @@ export const updateSubnetGroup: (
   | SubnetInUse
   | SubnetNotAllowedFault
   | SubnetQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSubnetGroupRequest,
   output: UpdateSubnetGroupResponse,
@@ -4446,8 +4424,8 @@ export const createUser: (
   | TagQuotaPerResourceExceeded
   | UserAlreadyExistsFault
   | UserQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserRequest,
   output: CreateUserResponse,
@@ -4476,8 +4454,8 @@ export const failoverShard: (
   | InvalidParameterValueException
   | ShardNotFoundFault
   | TestFailoverNotAvailableFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FailoverShardRequest,
   output: FailoverShardResponse,
@@ -4509,8 +4487,8 @@ export const createSubnetGroup: (
   | SubnetNotAllowedFault
   | SubnetQuotaExceededFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSubnetGroupRequest,
   output: CreateSubnetGroupResponse,
@@ -4549,8 +4527,8 @@ export const createCluster: (
   | ShardsPerClusterQuotaExceededFault
   | SubnetGroupNotFoundFault
   | TagQuotaPerResourceExceeded
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClusterRequest,
   output: CreateClusterResponse,
@@ -4598,8 +4576,8 @@ export const updateCluster: (
   | ParameterGroupNotFoundFault
   | ServiceLinkedRoleNotFoundFault
   | ShardsPerClusterQuotaExceededFault
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateClusterRequest,
   output: UpdateClusterResponse,

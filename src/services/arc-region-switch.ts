@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ARC Region switch",
@@ -1732,25 +1730,23 @@ export const CreatePlanResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.String },
-) {}
+).pipe(C.withAuthError) {}
 export class IllegalStateException extends S.TaggedError<IllegalStateException>()(
   "IllegalStateException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   { message: S.String },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 export class IllegalArgumentException extends S.TaggedError<IllegalArgumentException>()(
   "IllegalArgumentException",
   { message: S.String },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -1761,22 +1757,22 @@ export const listPlans: {
     input: ListPlansRequest,
   ): Effect.Effect<
     ListPlansResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlansRequest,
   ) => Stream.Stream<
     ListPlansResponse,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPlansRequest,
   ) => Stream.Stream<
     AbbreviatedPlan,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlansRequest,
@@ -1798,8 +1794,8 @@ export const approvePlanExecutionStep: (
   input: ApprovePlanExecutionStepRequest,
 ) => Effect.Effect<
   ApprovePlanExecutionStepResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ApprovePlanExecutionStepRequest,
   output: ApprovePlanExecutionStepResponse,
@@ -1813,22 +1809,22 @@ export const listPlanExecutionEvents: {
     input: ListPlanExecutionEventsRequest,
   ): Effect.Effect<
     ListPlanExecutionEventsResponse,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlanExecutionEventsRequest,
   ) => Stream.Stream<
     ListPlanExecutionEventsResponse,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPlanExecutionEventsRequest,
   ) => Stream.Stream<
     ExecutionEvent,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlanExecutionEventsRequest,
@@ -1849,22 +1845,22 @@ export const listPlanExecutions: {
     input: ListPlanExecutionsRequest,
   ): Effect.Effect<
     ListPlanExecutionsResponse,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlanExecutionsRequest,
   ) => Stream.Stream<
     ListPlanExecutionsResponse,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPlanExecutionsRequest,
   ) => Stream.Stream<
     AbbreviatedExecution,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlanExecutionsRequest,
@@ -1885,22 +1881,22 @@ export const listPlansInRegion: {
     input: ListPlansInRegionRequest,
   ): Effect.Effect<
     ListPlansInRegionResponse,
-    AccessDeniedException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListPlansInRegionRequest,
   ) => Stream.Stream<
     ListPlansInRegionResponse,
-    AccessDeniedException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListPlansInRegionRequest,
   ) => Stream.Stream<
     AbbreviatedPlan,
-    AccessDeniedException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlansInRegionRequest,
@@ -1924,8 +1920,8 @@ export const listRoute53HealthChecks: {
     | AccessDeniedException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRoute53HealthChecksRequest,
@@ -1934,8 +1930,8 @@ export const listRoute53HealthChecks: {
     | AccessDeniedException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRoute53HealthChecksRequest,
@@ -1944,8 +1940,8 @@ export const listRoute53HealthChecks: {
     | AccessDeniedException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoute53HealthChecksRequest,
@@ -1974,8 +1970,8 @@ export const listRoute53HealthChecksInRegion: {
     | IllegalArgumentException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListRoute53HealthChecksInRegionRequest,
@@ -1985,8 +1981,8 @@ export const listRoute53HealthChecksInRegion: {
     | IllegalArgumentException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListRoute53HealthChecksInRegionRequest,
@@ -1996,8 +1992,8 @@ export const listRoute53HealthChecksInRegion: {
     | IllegalArgumentException
     | InternalServerException
     | ResourceNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoute53HealthChecksInRegionRequest,
@@ -2022,8 +2018,8 @@ export const getPlanInRegion: (
   input: GetPlanInRegionRequest,
 ) => Effect.Effect<
   GetPlanInRegionResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPlanInRegionRequest,
   output: GetPlanInRegionResponse,
@@ -2036,8 +2032,8 @@ export const getPlan: (
   input: GetPlanRequest,
 ) => Effect.Effect<
   GetPlanResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetPlanRequest,
   output: GetPlanResponse,
@@ -2050,8 +2046,8 @@ export const updatePlan: (
   input: UpdatePlanRequest,
 ) => Effect.Effect<
   UpdatePlanResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePlanRequest,
   output: UpdatePlanResponse,
@@ -2066,8 +2062,8 @@ export const deletePlan: (
   input: DeletePlanRequest,
 ) => Effect.Effect<
   DeletePlanResponse,
-  IllegalStateException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  IllegalStateException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePlanRequest,
   output: DeletePlanResponse,
@@ -2080,8 +2076,8 @@ export const tagResource: (
   input: TagResourceRequest,
 ) => Effect.Effect<
   TagResourceResponse,
-  InternalServerException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -2096,8 +2092,8 @@ export const cancelPlanExecution: (
   input: CancelPlanExecutionRequest,
 ) => Effect.Effect<
   CancelPlanExecutionResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelPlanExecutionRequest,
   output: CancelPlanExecutionResponse,
@@ -2113,8 +2109,8 @@ export const updatePlanExecution: (
   | AccessDeniedException
   | IllegalStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePlanExecutionRequest,
   output: UpdatePlanExecutionResponse,
@@ -2131,8 +2127,8 @@ export const updatePlanExecutionStep: (
   input: UpdatePlanExecutionStepRequest,
 ) => Effect.Effect<
   UpdatePlanExecutionStepResponse,
-  AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdatePlanExecutionStepRequest,
   output: UpdatePlanExecutionStepResponse,
@@ -2145,8 +2141,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  InternalServerException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -2159,8 +2155,8 @@ export const listTagsForResource: (
   input: ListTagsForResourceRequest,
 ) => Effect.Effect<
   ListTagsForResourceResponse,
-  InternalServerException | ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InternalServerException | ResourceNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -2179,8 +2175,8 @@ export const startPlanExecution: (
   | IllegalArgumentException
   | IllegalStateException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartPlanExecutionRequest,
   output: StartPlanExecutionResponse,
@@ -2199,22 +2195,22 @@ export const getPlanEvaluationStatus: {
     input: GetPlanEvaluationStatusRequest,
   ): Effect.Effect<
     GetPlanEvaluationStatusResponse,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetPlanEvaluationStatusRequest,
   ) => Stream.Stream<
     GetPlanEvaluationStatusResponse,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetPlanEvaluationStatusRequest,
   ) => Stream.Stream<
     ResourceWarning,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetPlanEvaluationStatusRequest,
@@ -2235,22 +2231,22 @@ export const getPlanExecution: {
     input: GetPlanExecutionRequest,
   ): Effect.Effect<
     GetPlanExecutionResponse,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: GetPlanExecutionRequest,
   ) => Stream.Stream<
     GetPlanExecutionResponse,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: GetPlanExecutionRequest,
   ) => Stream.Stream<
     StepState,
-    AccessDeniedException | ResourceNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    AccessDeniedException | ResourceNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetPlanExecutionRequest,
@@ -2272,8 +2268,8 @@ export const createPlan: (
   input: CreatePlanRequest,
 ) => Effect.Effect<
   CreatePlanResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreatePlanRequest,
   output: CreatePlanResponse,

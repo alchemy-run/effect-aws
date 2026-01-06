@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace(
   "http://cloudformation.amazonaws.com/doc/2010-05-15/",
@@ -5688,7 +5686,7 @@ export class InvalidOperationException extends S.TaggedError<InvalidOperationExc
   "InvalidOperationException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidOperationException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OperationNotFoundException extends S.TaggedError<OperationNotFoundException>()(
   "OperationNotFoundException",
   { Message: S.optional(S.String) },
@@ -5696,7 +5694,7 @@ export class OperationNotFoundException extends S.TaggedError<OperationNotFoundE
     code: "OperationNotFoundException",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TokenAlreadyExistsException extends S.TaggedError<TokenAlreadyExistsException>()(
   "TokenAlreadyExistsException",
   { Message: S.optional(S.String) },
@@ -5704,17 +5702,17 @@ export class TokenAlreadyExistsException extends S.TaggedError<TokenAlreadyExist
     code: "TokenAlreadyExistsException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CFNRegistryException extends S.TaggedError<CFNRegistryException>()(
   "CFNRegistryException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "CFNRegistryException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidChangeSetStatusException extends S.TaggedError<InvalidChangeSetStatusException>()(
   "InvalidChangeSetStatusException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidChangeSetStatus", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConcurrentResourcesLimitExceededException extends S.TaggedError<ConcurrentResourcesLimitExceededException>()(
   "ConcurrentResourcesLimitExceededException",
   { Message: S.optional(S.String) },
@@ -5722,9 +5720,7 @@ export class ConcurrentResourcesLimitExceededException extends S.TaggedError<Con
     code: "ConcurrentResourcesLimitExceeded",
     httpResponseCode: 429,
   }),
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class OperationInProgressException extends S.TaggedError<OperationInProgressException>()(
   "OperationInProgressException",
   { Message: S.optional(S.String) },
@@ -5732,32 +5728,32 @@ export class OperationInProgressException extends S.TaggedError<OperationInProgr
     code: "OperationInProgressException",
     httpResponseCode: 409,
   }),
-) {}
+).pipe(C.withConflictError) {}
 export class ChangeSetNotFoundException extends S.TaggedError<ChangeSetNotFoundException>()(
   "ChangeSetNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ChangeSetNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidStateTransitionException extends S.TaggedError<InvalidStateTransitionException>()(
   "InvalidStateTransitionException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "InvalidStateTransition", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class AlreadyExistsException extends S.TaggedError<AlreadyExistsException>()(
   "AlreadyExistsException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "AlreadyExistsException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class TypeNotFoundException extends S.TaggedError<TypeNotFoundException>()(
   "TypeNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "TypeNotFoundException", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class GeneratedTemplateNotFoundException extends S.TaggedError<GeneratedTemplateNotFoundException>()(
   "GeneratedTemplateNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "GeneratedTemplateNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OperationIdAlreadyExistsException extends S.TaggedError<OperationIdAlreadyExistsException>()(
   "OperationIdAlreadyExistsException",
   { Message: S.optional(S.String) },
@@ -5765,17 +5761,17 @@ export class OperationIdAlreadyExistsException extends S.TaggedError<OperationId
     code: "OperationIdAlreadyExistsException",
     httpResponseCode: 409,
   }),
-) {}
+).pipe(C.withConflictError) {}
 export class StackSetNotEmptyException extends S.TaggedError<StackSetNotEmptyException>()(
   "StackSetNotEmptyException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "StackSetNotEmptyException", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceScanNotFoundException extends S.TaggedError<ResourceScanNotFoundException>()(
   "ResourceScanNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceScanNotFound", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class StackRefactorNotFoundException extends S.TaggedError<StackRefactorNotFoundException>()(
   "StackRefactorNotFoundException",
   { Message: S.optional(S.String) },
@@ -5783,12 +5779,12 @@ export class StackRefactorNotFoundException extends S.TaggedError<StackRefactorN
     code: "StackRefactorNotFoundException",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class StackSetNotFoundException extends S.TaggedError<StackSetNotFoundException>()(
   "StackSetNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "StackSetNotFoundException", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class InsufficientCapabilitiesException extends S.TaggedError<InsufficientCapabilitiesException>()(
   "InsufficientCapabilitiesException",
   { Message: S.optional(S.String) },
@@ -5796,17 +5792,17 @@ export class InsufficientCapabilitiesException extends S.TaggedError<Insufficien
     code: "InsufficientCapabilitiesException",
     httpResponseCode: 400,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "LimitExceededException", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class OperationStatusCheckFailedException extends S.TaggedError<OperationStatusCheckFailedException>()(
   "OperationStatusCheckFailedException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ConditionalCheckFailed", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class CreatedButModifiedException extends S.TaggedError<CreatedButModifiedException>()(
   "CreatedButModifiedException",
   { Message: S.optional(S.String) },
@@ -5814,22 +5810,22 @@ export class CreatedButModifiedException extends S.TaggedError<CreatedButModifie
     code: "CreatedButModifiedException",
     httpResponseCode: 409,
   }),
-) {}
+).pipe(C.withConflictError) {}
 export class HookResultNotFoundException extends S.TaggedError<HookResultNotFoundException>()(
   "HookResultNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "HookResultNotFound", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class StackNotFoundException extends S.TaggedError<StackNotFoundException>()(
   "StackNotFoundException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "StackNotFoundException", httpResponseCode: 404 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceScanInProgressException extends S.TaggedError<ResourceScanInProgressException>()(
   "ResourceScanInProgressException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceScanInProgress", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class StackInstanceNotFoundException extends S.TaggedError<StackInstanceNotFoundException>()(
   "StackInstanceNotFoundException",
   { Message: S.optional(S.String) },
@@ -5837,12 +5833,12 @@ export class StackInstanceNotFoundException extends S.TaggedError<StackInstanceN
     code: "StackInstanceNotFoundException",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class StaleRequestException extends S.TaggedError<StaleRequestException>()(
   "StaleRequestException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "StaleRequestException", httpResponseCode: 409 }),
-) {}
+).pipe(C.withConflictError) {}
 export class TypeConfigurationNotFoundException extends S.TaggedError<TypeConfigurationNotFoundException>()(
   "TypeConfigurationNotFoundException",
   { Message: S.optional(S.String) },
@@ -5850,7 +5846,7 @@ export class TypeConfigurationNotFoundException extends S.TaggedError<TypeConfig
     code: "TypeConfigurationNotFoundException",
     httpResponseCode: 404,
   }),
-) {}
+).pipe(C.withBadRequestError) {}
 export class NameAlreadyExistsException extends S.TaggedError<NameAlreadyExistsException>()(
   "NameAlreadyExistsException",
   { Message: S.optional(S.String) },
@@ -5858,12 +5854,12 @@ export class NameAlreadyExistsException extends S.TaggedError<NameAlreadyExistsE
     code: "NameAlreadyExistsException",
     httpResponseCode: 409,
   }),
-) {}
+).pipe(C.withConflictError) {}
 export class ResourceScanLimitExceededException extends S.TaggedError<ResourceScanLimitExceededException>()(
   "ResourceScanLimitExceededException",
   { Message: S.optional(S.String) },
   T.AwsQueryError({ code: "ResourceScanLimitExceeded", httpResponseCode: 400 }),
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -5873,8 +5869,8 @@ export const executeStackRefactor: (
   input: ExecuteStackRefactorInput,
 ) => Effect.Effect<
   ExecuteStackRefactorResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteStackRefactorInput,
   output: ExecuteStackRefactorResponse,
@@ -5887,8 +5883,8 @@ export const setStackPolicy: (
   input: SetStackPolicyInput,
 ) => Effect.Effect<
   SetStackPolicyResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetStackPolicyInput,
   output: SetStackPolicyResponse,
@@ -5906,8 +5902,8 @@ export const signalResource: (
   input: SignalResourceInput,
 ) => Effect.Effect<
   SignalResourceResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SignalResourceInput,
   output: SignalResourceResponse,
@@ -5922,8 +5918,8 @@ export const activateOrganizationsAccess: (
   input: ActivateOrganizationsAccessInput,
 ) => Effect.Effect<
   ActivateOrganizationsAccessOutput,
-  InvalidOperationException | OperationNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidOperationException | OperationNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ActivateOrganizationsAccessInput,
   output: ActivateOrganizationsAccessOutput,
@@ -5939,8 +5935,8 @@ export const cancelUpdateStack: (
   input: CancelUpdateStackInput,
 ) => Effect.Effect<
   CancelUpdateStackResponse,
-  TokenAlreadyExistsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TokenAlreadyExistsException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CancelUpdateStackInput,
   output: CancelUpdateStackResponse,
@@ -5961,8 +5957,8 @@ export const deleteChangeSet: (
   input: DeleteChangeSetInput,
 ) => Effect.Effect<
   DeleteChangeSetOutput,
-  InvalidChangeSetStatusException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidChangeSetStatusException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteChangeSetInput,
   output: DeleteChangeSetOutput,
@@ -5978,8 +5974,8 @@ export const describeOrganizationsAccess: (
   input: DescribeOrganizationsAccessInput,
 ) => Effect.Effect<
   DescribeOrganizationsAccessOutput,
-  InvalidOperationException | OperationNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidOperationException | OperationNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeOrganizationsAccessInput,
   output: DescribeOrganizationsAccessOutput,
@@ -6004,8 +6000,8 @@ export const describePublisher: (
   input: DescribePublisherInput,
 ) => Effect.Effect<
   DescribePublisherOutput,
-  CFNRegistryException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribePublisherInput,
   output: DescribePublisherOutput,
@@ -6030,8 +6026,8 @@ export const describeStackDriftDetectionStatus: (
   input: DescribeStackDriftDetectionStatusInput,
 ) => Effect.Effect<
   DescribeStackDriftDetectionStatusOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStackDriftDetectionStatusInput,
   output: DescribeStackDriftDetectionStatusOutput,
@@ -6052,8 +6048,8 @@ export const describeTypeRegistration: (
   input: DescribeTypeRegistrationInput,
 ) => Effect.Effect<
   DescribeTypeRegistrationOutput,
-  CFNRegistryException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTypeRegistrationInput,
   output: DescribeTypeRegistrationOutput,
@@ -6090,8 +6086,8 @@ export const detectStackDrift: (
   input: DetectStackDriftInput,
 ) => Effect.Effect<
   DetectStackDriftOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectStackDriftInput,
   output: DetectStackDriftOutput,
@@ -6118,8 +6114,8 @@ export const detectStackResourceDrift: (
   input: DetectStackResourceDriftInput,
 ) => Effect.Effect<
   DetectStackResourceDriftOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectStackResourceDriftInput,
   output: DetectStackResourceDriftOutput,
@@ -6134,8 +6130,8 @@ export const estimateTemplateCost: (
   input: EstimateTemplateCostInput,
 ) => Effect.Effect<
   EstimateTemplateCostOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EstimateTemplateCostInput,
   output: EstimateTemplateCostOutput,
@@ -6149,8 +6145,8 @@ export const getStackPolicy: (
   input: GetStackPolicyInput,
 ) => Effect.Effect<
   GetStackPolicyOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStackPolicyInput,
   output: GetStackPolicyOutput,
@@ -6169,8 +6165,8 @@ export const getTemplate: (
   input: GetTemplateInput,
 ) => Effect.Effect<
   GetTemplateOutput,
-  ChangeSetNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ChangeSetNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTemplateInput,
   output: GetTemplateOutput,
@@ -6188,22 +6184,22 @@ export const listImports: {
     input: ListImportsInput,
   ): Effect.Effect<
     ListImportsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListImportsInput,
   ) => Stream.Stream<
     ListImportsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListImportsInput,
   ) => Stream.Stream<
     StackName,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImportsInput,
@@ -6223,22 +6219,22 @@ export const listTypeRegistrations: {
     input: ListTypeRegistrationsInput,
   ): Effect.Effect<
     ListTypeRegistrationsOutput,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTypeRegistrationsInput,
   ) => Stream.Stream<
     ListTypeRegistrationsOutput,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTypeRegistrationsInput,
   ) => Stream.Stream<
     unknown,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypeRegistrationsInput,
@@ -6263,8 +6259,8 @@ export const registerPublisher: (
   input: RegisterPublisherInput,
 ) => Effect.Effect<
   RegisterPublisherOutput,
-  CFNRegistryException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterPublisherInput,
   output: RegisterPublisherOutput,
@@ -6301,8 +6297,8 @@ export const registerType: (
   input: RegisterTypeInput,
 ) => Effect.Effect<
   RegisterTypeOutput,
-  CFNRegistryException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RegisterTypeInput,
   output: RegisterTypeOutput,
@@ -6334,8 +6330,8 @@ export const rollbackStack: (
   input: RollbackStackInput,
 ) => Effect.Effect<
   RollbackStackOutput,
-  TokenAlreadyExistsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TokenAlreadyExistsException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RollbackStackInput,
   output: RollbackStackOutput,
@@ -6355,8 +6351,8 @@ export const updateTerminationProtection: (
   input: UpdateTerminationProtectionInput,
 ) => Effect.Effect<
   UpdateTerminationProtectionOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTerminationProtectionInput,
   output: UpdateTerminationProtectionOutput,
@@ -6371,8 +6367,8 @@ export const deactivateOrganizationsAccess: (
   input: DeactivateOrganizationsAccessInput,
 ) => Effect.Effect<
   DeactivateOrganizationsAccessOutput,
-  InvalidOperationException | OperationNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidOperationException | OperationNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeactivateOrganizationsAccessInput,
   output: DeactivateOrganizationsAccessOutput,
@@ -6398,8 +6394,8 @@ export const continueUpdateRollback: (
   input: ContinueUpdateRollbackInput,
 ) => Effect.Effect<
   ContinueUpdateRollbackOutput,
-  TokenAlreadyExistsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TokenAlreadyExistsException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ContinueUpdateRollbackInput,
   output: ContinueUpdateRollbackOutput,
@@ -6417,8 +6413,8 @@ export const deleteStack: (
   input: DeleteStackInput,
 ) => Effect.Effect<
   DeleteStackResponse,
-  TokenAlreadyExistsException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  TokenAlreadyExistsException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStackInput,
   output: DeleteStackResponse,
@@ -6442,8 +6438,8 @@ export const deactivateType: (
   input: DeactivateTypeInput,
 ) => Effect.Effect<
   DeactivateTypeOutput,
-  CFNRegistryException | TypeNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeactivateTypeInput,
   output: DeactivateTypeOutput,
@@ -6458,8 +6454,8 @@ export const deleteGeneratedTemplate: (
   DeleteGeneratedTemplateResponse,
   | ConcurrentResourcesLimitExceededException
   | GeneratedTemplateNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGeneratedTemplateInput,
   output: DeleteGeneratedTemplateResponse,
@@ -6476,10 +6472,8 @@ export const deleteStackSet: (
   input: DeleteStackSetInput,
 ) => Effect.Effect<
   DeleteStackSetOutput,
-  | OperationInProgressException
-  | StackSetNotEmptyException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationInProgressException | StackSetNotEmptyException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStackSetInput,
   output: DeleteStackSetOutput,
@@ -6494,22 +6488,22 @@ export const describeAccountLimits: {
     input: DescribeAccountLimitsInput,
   ): Effect.Effect<
     DescribeAccountLimitsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAccountLimitsInput,
   ) => Stream.Stream<
     DescribeAccountLimitsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAccountLimitsInput,
   ) => Stream.Stream<
     AccountLimit,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAccountLimitsInput,
@@ -6528,8 +6522,8 @@ export const describeResourceScan: (
   input: DescribeResourceScanInput,
 ) => Effect.Effect<
   DescribeResourceScanOutput,
-  ResourceScanNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceScanNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResourceScanInput,
   output: DescribeResourceScanOutput,
@@ -6548,22 +6542,22 @@ export const describeStackEvents: {
     input: DescribeStackEventsInput,
   ): Effect.Effect<
     DescribeStackEventsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeStackEventsInput,
   ) => Stream.Stream<
     DescribeStackEventsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeStackEventsInput,
   ) => Stream.Stream<
     StackEvent,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeStackEventsInput,
@@ -6582,8 +6576,8 @@ export const describeStackRefactor: (
   input: DescribeStackRefactorInput,
 ) => Effect.Effect<
   DescribeStackRefactorOutput,
-  StackRefactorNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  StackRefactorNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStackRefactorInput,
   output: DescribeStackRefactorOutput,
@@ -6613,8 +6607,8 @@ export const describeStackResources: (
   input: DescribeStackResourcesInput,
 ) => Effect.Effect<
   DescribeStackResourcesOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStackResourcesInput,
   output: DescribeStackResourcesOutput,
@@ -6636,8 +6630,8 @@ export const describeType: (
   input: DescribeTypeInput,
 ) => Effect.Effect<
   DescribeTypeOutput,
-  CFNRegistryException | TypeNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTypeInput,
   output: DescribeTypeOutput,
@@ -6682,8 +6676,8 @@ export const detectStackSetDrift: (
   | InvalidOperationException
   | OperationInProgressException
   | StackSetNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DetectStackSetDriftInput,
   output: DetectStackSetDriftOutput,
@@ -6715,8 +6709,8 @@ export const executeChangeSet: (
   | InsufficientCapabilitiesException
   | InvalidChangeSetStatusException
   | TokenAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ExecuteChangeSetInput,
   output: ExecuteChangeSetOutput,
@@ -6737,22 +6731,22 @@ export const listChangeSets: {
     input: ListChangeSetsInput,
   ): Effect.Effect<
     ListChangeSetsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListChangeSetsInput,
   ) => Stream.Stream<
     ListChangeSetsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListChangeSetsInput,
   ) => Stream.Stream<
     ChangeSetSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChangeSetsInput,
@@ -6777,22 +6771,22 @@ export const listExports: {
     input: ListExportsInput,
   ): Effect.Effect<
     ListExportsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListExportsInput,
   ) => Stream.Stream<
     ListExportsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListExportsInput,
   ) => Stream.Stream<
     Export,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExportsInput,
@@ -6812,22 +6806,22 @@ export const listGeneratedTemplates: {
     input: ListGeneratedTemplatesInput,
   ): Effect.Effect<
     ListGeneratedTemplatesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListGeneratedTemplatesInput,
   ) => Stream.Stream<
     ListGeneratedTemplatesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListGeneratedTemplatesInput,
   ) => Stream.Stream<
     TemplateSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGeneratedTemplatesInput,
@@ -6849,22 +6843,22 @@ export const listResourceScans: {
     input: ListResourceScansInput,
   ): Effect.Effect<
     ListResourceScansOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceScansInput,
   ) => Stream.Stream<
     ListResourceScansOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceScansInput,
   ) => Stream.Stream<
     ResourceScanSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceScansInput,
@@ -6885,22 +6879,22 @@ export const listStackRefactorActions: {
     input: ListStackRefactorActionsInput,
   ): Effect.Effect<
     ListStackRefactorActionsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStackRefactorActionsInput,
   ) => Stream.Stream<
     ListStackRefactorActionsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStackRefactorActionsInput,
   ) => Stream.Stream<
     StackRefactorAction,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStackRefactorActionsInput,
@@ -6921,22 +6915,22 @@ export const listStackRefactors: {
     input: ListStackRefactorsInput,
   ): Effect.Effect<
     ListStackRefactorsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStackRefactorsInput,
   ) => Stream.Stream<
     ListStackRefactorsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStackRefactorsInput,
   ) => Stream.Stream<
     StackRefactorSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStackRefactorsInput,
@@ -6956,8 +6950,8 @@ export const listStackSetAutoDeploymentTargets: (
   input: ListStackSetAutoDeploymentTargetsInput,
 ) => Effect.Effect<
   ListStackSetAutoDeploymentTargetsOutput,
-  StackSetNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  StackSetNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListStackSetAutoDeploymentTargetsInput,
   output: ListStackSetAutoDeploymentTargetsOutput,
@@ -6974,22 +6968,22 @@ export const listStackSetOperations: {
     input: ListStackSetOperationsInput,
   ): Effect.Effect<
     ListStackSetOperationsOutput,
-    StackSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStackSetOperationsInput,
   ) => Stream.Stream<
     ListStackSetOperationsOutput,
-    StackSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStackSetOperationsInput,
   ) => Stream.Stream<
     StackSetOperationSummary,
-    StackSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStackSetOperationsInput,
@@ -7026,22 +7020,22 @@ export const listStackSets: {
     input: ListStackSetsInput,
   ): Effect.Effect<
     ListStackSetsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStackSetsInput,
   ) => Stream.Stream<
     ListStackSetsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStackSetsInput,
   ) => Stream.Stream<
     StackSetSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStackSetsInput,
@@ -7062,22 +7056,22 @@ export const listTypeVersions: {
     input: ListTypeVersionsInput,
   ): Effect.Effect<
     ListTypeVersionsOutput,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTypeVersionsInput,
   ) => Stream.Stream<
     ListTypeVersionsOutput,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTypeVersionsInput,
   ) => Stream.Stream<
     unknown,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypeVersionsInput,
@@ -7101,8 +7095,8 @@ export const recordHandlerProgress: (
   RecordHandlerProgressOutput,
   | InvalidStateTransitionException
   | OperationStatusCheckFailedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RecordHandlerProgressInput,
   output: RecordHandlerProgressOutput,
@@ -7120,8 +7114,8 @@ export const validateTemplate: (
   input: ValidateTemplateInput,
 ) => Effect.Effect<
   ValidateTemplateOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidateTemplateInput,
   output: ValidateTemplateOutput,
@@ -7140,8 +7134,8 @@ export const updateGeneratedTemplate: (
   | AlreadyExistsException
   | GeneratedTemplateNotFoundException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGeneratedTemplateInput,
   output: UpdateGeneratedTemplateOutput,
@@ -7163,8 +7157,8 @@ export const createGeneratedTemplate: (
   | AlreadyExistsException
   | ConcurrentResourcesLimitExceededException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGeneratedTemplateInput,
   output: CreateGeneratedTemplateOutput,
@@ -7188,8 +7182,8 @@ export const publishType: (
   input: PublishTypeInput,
 ) => Effect.Effect<
   PublishTypeOutput,
-  CFNRegistryException | TypeNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PublishTypeInput,
   output: PublishTypeOutput,
@@ -7218,8 +7212,8 @@ export const setTypeConfiguration: (
   input: SetTypeConfigurationInput,
 ) => Effect.Effect<
   SetTypeConfigurationOutput,
-  CFNRegistryException | TypeNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetTypeConfigurationInput,
   output: SetTypeConfigurationOutput,
@@ -7257,8 +7251,8 @@ export const testType: (
   input: TestTypeInput,
 ) => Effect.Effect<
   TestTypeOutput,
-  CFNRegistryException | TypeNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestTypeInput,
   output: TestTypeOutput,
@@ -7288,8 +7282,8 @@ export const deregisterType: (
   input: DeregisterTypeInput,
 ) => Effect.Effect<
   DeregisterTypeOutput,
-  CFNRegistryException | TypeNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeregisterTypeInput,
   output: DeregisterTypeOutput,
@@ -7303,8 +7297,8 @@ export const setTypeDefaultVersion: (
   input: SetTypeDefaultVersionInput,
 ) => Effect.Effect<
   SetTypeDefaultVersionOutput,
-  CFNRegistryException | TypeNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetTypeDefaultVersionInput,
   output: SetTypeDefaultVersionOutput,
@@ -7330,8 +7324,8 @@ export const activateType: (
   input: ActivateTypeInput,
 ) => Effect.Effect<
   ActivateTypeOutput,
-  CFNRegistryException | TypeNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ActivateTypeInput,
   output: ActivateTypeOutput,
@@ -7347,8 +7341,8 @@ export const getGeneratedTemplate: (
   input: GetGeneratedTemplateInput,
 ) => Effect.Effect<
   GetGeneratedTemplateOutput,
-  GeneratedTemplateNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  GeneratedTemplateNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGeneratedTemplateInput,
   output: GetGeneratedTemplateOutput,
@@ -7366,8 +7360,8 @@ export const stopStackSetOperation: (
   | InvalidOperationException
   | OperationNotFoundException
   | StackSetNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopStackSetOperationInput,
   output: StopStackSetOperationOutput,
@@ -7394,8 +7388,8 @@ export const updateStack: (
   UpdateStackOutput,
   | InsufficientCapabilitiesException
   | TokenAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStackInput,
   output: UpdateStackOutput,
@@ -7417,8 +7411,8 @@ export const createStack: (
   | InsufficientCapabilitiesException
   | LimitExceededException
   | TokenAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStackInput,
   output: CreateStackOutput,
@@ -7460,8 +7454,8 @@ export const createChangeSet: (
   | AlreadyExistsException
   | InsufficientCapabilitiesException
   | LimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateChangeSetInput,
   output: CreateChangeSetOutput,
@@ -7479,8 +7473,8 @@ export const createStackRefactor: (
   input: CreateStackRefactorInput,
 ) => Effect.Effect<
   CreateStackRefactorOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStackRefactorInput,
   output: CreateStackRefactorOutput,
@@ -7517,22 +7511,22 @@ export const describeEvents: {
     input: DescribeEventsInput,
   ): Effect.Effect<
     DescribeEventsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsInput,
   ) => Stream.Stream<
     DescribeEventsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsInput,
   ) => Stream.Stream<
     OperationEvent,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsInput,
@@ -7554,8 +7548,8 @@ export const describeStackResource: (
   input: DescribeStackResourceInput,
 ) => Effect.Effect<
   DescribeStackResourceOutput,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStackResourceInput,
   output: DescribeStackResourceOutput,
@@ -7581,22 +7575,22 @@ export const describeStackResourceDrifts: {
     input: DescribeStackResourceDriftsInput,
   ): Effect.Effect<
     DescribeStackResourceDriftsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeStackResourceDriftsInput,
   ) => Stream.Stream<
     DescribeStackResourceDriftsOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeStackResourceDriftsInput,
   ) => Stream.Stream<
     unknown,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeStackResourceDriftsInput,
@@ -7621,22 +7615,22 @@ export const describeStacks: {
     input: DescribeStacksInput,
   ): Effect.Effect<
     DescribeStacksOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeStacksInput,
   ) => Stream.Stream<
     DescribeStacksOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeStacksInput,
   ) => Stream.Stream<
     Stack,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeStacksInput,
@@ -7658,8 +7652,8 @@ export const describeStackSet: (
   input: DescribeStackSetInput,
 ) => Effect.Effect<
   DescribeStackSetOutput,
-  StackSetNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  StackSetNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStackSetInput,
   output: DescribeStackSetOutput,
@@ -7675,8 +7669,8 @@ export const describeStackSetOperation: (
   input: DescribeStackSetOperationInput,
 ) => Effect.Effect<
   DescribeStackSetOperationOutput,
-  OperationNotFoundException | StackSetNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  OperationNotFoundException | StackSetNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStackSetOperationInput,
   output: DescribeStackSetOperationOutput,
@@ -7696,8 +7690,8 @@ export const getHookResult: (
   input: GetHookResultInput,
 ) => Effect.Effect<
   GetHookResultOutput,
-  HookResultNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  HookResultNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetHookResultInput,
   output: GetHookResultOutput,
@@ -7716,8 +7710,8 @@ export const listResourceScanResources: {
     ListResourceScanResourcesOutput,
     | ResourceScanInProgressException
     | ResourceScanNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceScanResourcesInput,
@@ -7725,8 +7719,8 @@ export const listResourceScanResources: {
     ListResourceScanResourcesOutput,
     | ResourceScanInProgressException
     | ResourceScanNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceScanResourcesInput,
@@ -7734,8 +7728,8 @@ export const listResourceScanResources: {
     ScannedResource,
     | ResourceScanInProgressException
     | ResourceScanNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceScanResourcesInput,
@@ -7762,8 +7756,8 @@ export const listStackInstanceResourceDrifts: (
   | OperationNotFoundException
   | StackInstanceNotFoundException
   | StackSetNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListStackInstanceResourceDriftsInput,
   output: ListStackInstanceResourceDriftsOutput,
@@ -7783,22 +7777,22 @@ export const listStackInstances: {
     input: ListStackInstancesInput,
   ): Effect.Effect<
     ListStackInstancesOutput,
-    StackSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStackInstancesInput,
   ) => Stream.Stream<
     ListStackInstancesOutput,
-    StackSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStackInstancesInput,
   ) => Stream.Stream<
     StackInstanceSummary,
-    StackSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStackInstancesInput,
@@ -7822,22 +7816,22 @@ export const listStackResources: {
     input: ListStackResourcesInput,
   ): Effect.Effect<
     ListStackResourcesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStackResourcesInput,
   ) => Stream.Stream<
     ListStackResourcesOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStackResourcesInput,
   ) => Stream.Stream<
     StackResourceSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStackResourcesInput,
@@ -7861,22 +7855,22 @@ export const listStacks: {
     input: ListStacksInput,
   ): Effect.Effect<
     ListStacksOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStacksInput,
   ) => Stream.Stream<
     ListStacksOutput,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStacksInput,
   ) => Stream.Stream<
     StackSummary,
-    Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStacksInput,
@@ -7898,22 +7892,22 @@ export const listTypes: {
     input: ListTypesInput,
   ): Effect.Effect<
     ListTypesOutput,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTypesInput,
   ) => Stream.Stream<
     ListTypesOutput,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTypesInput,
   ) => Stream.Stream<
     TypeSummary,
-    CFNRegistryException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    CFNRegistryException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypesInput,
@@ -7950,8 +7944,8 @@ export const deleteStackInstances: (
   | OperationInProgressException
   | StackSetNotFoundException
   | StaleRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStackInstancesInput,
   output: DeleteStackInstancesOutput,
@@ -7983,8 +7977,8 @@ export const listHookResults: (
   input: ListHookResultsInput,
 ) => Effect.Effect<
   ListHookResultsOutput,
-  HookResultNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  HookResultNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListHookResultsInput,
   output: ListHookResultsOutput,
@@ -8001,8 +7995,8 @@ export const listResourceScanRelatedResources: {
     ListResourceScanRelatedResourcesOutput,
     | ResourceScanInProgressException
     | ResourceScanNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceScanRelatedResourcesInput,
@@ -8010,8 +8004,8 @@ export const listResourceScanRelatedResources: {
     ListResourceScanRelatedResourcesOutput,
     | ResourceScanInProgressException
     | ResourceScanNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceScanRelatedResourcesInput,
@@ -8019,8 +8013,8 @@ export const listResourceScanRelatedResources: {
     ScannedResource,
     | ResourceScanInProgressException
     | ResourceScanNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceScanRelatedResourcesInput,
@@ -8074,8 +8068,8 @@ export const updateStackInstances: (
   | StackInstanceNotFoundException
   | StackSetNotFoundException
   | StaleRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStackInstancesInput,
   output: UpdateStackInstancesOutput,
@@ -8119,8 +8113,8 @@ export const updateStackSet: (
   | StackInstanceNotFoundException
   | StackSetNotFoundException
   | StaleRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateStackSetInput,
   output: UpdateStackSetOutput,
@@ -8143,10 +8137,8 @@ export const describeStackInstance: (
   input: DescribeStackInstanceInput,
 ) => Effect.Effect<
   DescribeStackInstanceOutput,
-  | StackInstanceNotFoundException
-  | StackSetNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  StackInstanceNotFoundException | StackSetNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeStackInstanceInput,
   output: DescribeStackInstanceOutput,
@@ -8180,8 +8172,8 @@ export const createStackInstances: (
   | OperationInProgressException
   | StackSetNotFoundException
   | StaleRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStackInstancesInput,
   output: CreateStackInstancesOutput,
@@ -8211,8 +8203,8 @@ export const importStacksToStackSet: (
   | StackNotFoundException
   | StackSetNotFoundException
   | StaleRequestException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ImportStacksToStackSetInput,
   output: ImportStacksToStackSetOutput,
@@ -8238,10 +8230,8 @@ export const batchDescribeTypeConfigurations: (
   input: BatchDescribeTypeConfigurationsInput,
 ) => Effect.Effect<
   BatchDescribeTypeConfigurationsOutput,
-  | CFNRegistryException
-  | TypeConfigurationNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CFNRegistryException | TypeConfigurationNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchDescribeTypeConfigurationsInput,
   output: BatchDescribeTypeConfigurationsOutput,
@@ -8257,8 +8247,8 @@ export const createStackSet: (
   | CreatedButModifiedException
   | LimitExceededException
   | NameAlreadyExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateStackSetInput,
   output: CreateStackSetOutput,
@@ -8276,8 +8266,8 @@ export const describeChangeSetHooks: (
   input: DescribeChangeSetHooksInput,
 ) => Effect.Effect<
   DescribeChangeSetHooksOutput,
-  ChangeSetNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ChangeSetNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeChangeSetHooksInput,
   output: DescribeChangeSetHooksOutput,
@@ -8293,8 +8283,8 @@ export const describeGeneratedTemplate: (
   input: DescribeGeneratedTemplateInput,
 ) => Effect.Effect<
   DescribeGeneratedTemplateOutput,
-  GeneratedTemplateNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  GeneratedTemplateNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeGeneratedTemplateInput,
   output: DescribeGeneratedTemplateOutput,
@@ -8316,8 +8306,8 @@ export const getTemplateSummary: (
   input: GetTemplateSummaryInput,
 ) => Effect.Effect<
   GetTemplateSummaryOutput,
-  StackSetNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  StackSetNotFoundException | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTemplateSummaryInput,
   output: GetTemplateSummaryOutput,
@@ -8334,28 +8324,22 @@ export const listStackSetOperationResults: {
     input: ListStackSetOperationResultsInput,
   ): Effect.Effect<
     ListStackSetOperationResultsOutput,
-    | OperationNotFoundException
-    | StackSetNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotFoundException | StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListStackSetOperationResultsInput,
   ) => Stream.Stream<
     ListStackSetOperationResultsOutput,
-    | OperationNotFoundException
-    | StackSetNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotFoundException | StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListStackSetOperationResultsInput,
   ) => Stream.Stream<
     StackSetOperationResultSummary,
-    | OperationNotFoundException
-    | StackSetNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    OperationNotFoundException | StackSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStackSetOperationResultsInput,
@@ -8378,8 +8362,8 @@ export const startResourceScan: (
   StartResourceScanOutput,
   | ResourceScanInProgressException
   | ResourceScanLimitExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartResourceScanInput,
   output: StartResourceScanOutput,
@@ -8396,22 +8380,22 @@ export const describeChangeSet: {
     input: DescribeChangeSetInput,
   ): Effect.Effect<
     DescribeChangeSetOutput,
-    ChangeSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ChangeSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeChangeSetInput,
   ) => Stream.Stream<
     DescribeChangeSetOutput,
-    ChangeSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ChangeSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeChangeSetInput,
   ) => Stream.Stream<
     Change,
-    ChangeSetNotFoundException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ChangeSetNotFoundException | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeChangeSetInput,

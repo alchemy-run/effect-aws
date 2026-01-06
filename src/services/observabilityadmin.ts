@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "ObservabilityAdmin",
@@ -2013,7 +2011,7 @@ export class AccessDeniedException extends S.TaggedError<AccessDeniedException>(
     Message: S.optional(S.String),
     amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   {
@@ -2021,9 +2019,7 @@ export class InternalServerException extends S.TaggedError<InternalServerExcepti
     amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
     retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
@@ -2031,13 +2027,11 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     ResourceId: S.optional(S.String),
     ResourceType: S.optional(S.String),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { Message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -2045,7 +2039,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     ResourceId: S.optional(S.String),
     ResourceType: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -2056,15 +2050,15 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     QuotaCode: S.optional(S.String),
     amznErrorType: S.optional(S.String).pipe(T.HttpHeader("x-amzn-ErrorType")),
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class InvalidStateException extends S.TaggedError<InvalidStateException>()(
   "InvalidStateException",
   { Message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   { Message: S.optional(S.String), Errors: S.optional(ValidationErrors) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -2078,8 +2072,8 @@ export const stopTelemetryEnrichment: (
   | ConflictException
   | InternalServerException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTelemetryEnrichmentRequest,
   output: StopTelemetryEnrichmentOutput,
@@ -2100,8 +2094,8 @@ export const getTelemetryEvaluationStatus: (
   | AccessDeniedException
   | InternalServerException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTelemetryEvaluationStatusRequest,
   output: GetTelemetryEvaluationStatusOutput,
@@ -2122,8 +2116,8 @@ export const startTelemetryEnrichment: (
   | ConflictException
   | InternalServerException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTelemetryEnrichmentRequest,
   output: StartTelemetryEnrichmentOutput,
@@ -2145,8 +2139,8 @@ export const getTelemetryEnrichmentStatus: (
   | InternalServerException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTelemetryEnrichmentStatusRequest,
   output: GetTelemetryEnrichmentStatusOutput,
@@ -2168,8 +2162,8 @@ export const startTelemetryEvaluation: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTelemetryEvaluationRequest,
   output: StartTelemetryEvaluationResponse,
@@ -2191,8 +2185,8 @@ export const validateTelemetryPipelineConfiguration: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ValidateTelemetryPipelineConfigurationInput,
   output: ValidateTelemetryPipelineConfigurationOutput,
@@ -2215,8 +2209,8 @@ export const getTelemetryPipeline: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTelemetryPipelineInput,
   output: GetTelemetryPipelineOutput,
@@ -2241,8 +2235,8 @@ export const createTelemetryPipeline: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTelemetryPipelineInput,
   output: CreateTelemetryPipelineOutput,
@@ -2268,8 +2262,8 @@ export const deleteS3TableIntegration: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteS3TableIntegrationInput,
   output: DeleteS3TableIntegrationResponse,
@@ -2293,8 +2287,8 @@ export const startTelemetryEvaluationForOrganization: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTelemetryEvaluationForOrganizationRequest,
   output: StartTelemetryEvaluationForOrganizationResponse,
@@ -2316,8 +2310,8 @@ export const stopTelemetryEvaluation: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTelemetryEvaluationRequest,
   output: StopTelemetryEvaluationResponse,
@@ -2339,8 +2333,8 @@ export const stopTelemetryEvaluationForOrganization: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopTelemetryEvaluationForOrganizationRequest,
   output: StopTelemetryEvaluationForOrganizationResponse,
@@ -2362,8 +2356,8 @@ export const getTelemetryEvaluationStatusForOrganization: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTelemetryEvaluationStatusForOrganizationRequest,
   output: GetTelemetryEvaluationStatusForOrganizationOutput,
@@ -2386,8 +2380,8 @@ export const listTelemetryRulesForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTelemetryRulesForOrganizationInput,
@@ -2397,8 +2391,8 @@ export const listTelemetryRulesForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTelemetryRulesForOrganizationInput,
@@ -2408,8 +2402,8 @@ export const listTelemetryRulesForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTelemetryRulesForOrganizationInput,
@@ -2439,8 +2433,8 @@ export const listCentralizationRulesForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListCentralizationRulesForOrganizationInput,
@@ -2450,8 +2444,8 @@ export const listCentralizationRulesForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListCentralizationRulesForOrganizationInput,
@@ -2461,8 +2455,8 @@ export const listCentralizationRulesForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCentralizationRulesForOrganizationInput,
@@ -2492,8 +2486,8 @@ export const listResourceTelemetry: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceTelemetryInput,
@@ -2503,8 +2497,8 @@ export const listResourceTelemetry: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceTelemetryInput,
@@ -2514,8 +2508,8 @@ export const listResourceTelemetry: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceTelemetryInput,
@@ -2545,8 +2539,8 @@ export const listResourceTelemetryForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceTelemetryForOrganizationInput,
@@ -2556,8 +2550,8 @@ export const listResourceTelemetryForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceTelemetryForOrganizationInput,
@@ -2567,8 +2561,8 @@ export const listResourceTelemetryForOrganization: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceTelemetryForOrganizationInput,
@@ -2598,8 +2592,8 @@ export const listS3TableIntegrations: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListS3TableIntegrationsInput,
@@ -2609,8 +2603,8 @@ export const listS3TableIntegrations: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListS3TableIntegrationsInput,
@@ -2620,8 +2614,8 @@ export const listS3TableIntegrations: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListS3TableIntegrationsInput,
@@ -2651,8 +2645,8 @@ export const listTelemetryRules: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTelemetryRulesInput,
@@ -2662,8 +2656,8 @@ export const listTelemetryRules: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTelemetryRulesInput,
@@ -2673,8 +2667,8 @@ export const listTelemetryRules: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTelemetryRulesInput,
@@ -2706,8 +2700,8 @@ export const updateTelemetryRule: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTelemetryRuleInput,
   output: UpdateTelemetryRuleOutput,
@@ -2734,8 +2728,8 @@ export const updateTelemetryRuleForOrganization: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTelemetryRuleForOrganizationInput,
   output: UpdateTelemetryRuleForOrganizationOutput,
@@ -2761,8 +2755,8 @@ export const tagResource: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceInput,
   output: TagResourceResponse,
@@ -2787,8 +2781,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceInput,
   output: UntagResourceResponse,
@@ -2860,8 +2854,8 @@ export const updateTelemetryPipeline: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTelemetryPipelineInput,
   output: UpdateTelemetryPipelineOutput,
@@ -2885,8 +2879,8 @@ export const deleteCentralizationRuleForOrganization: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCentralizationRuleForOrganizationInput,
   output: DeleteCentralizationRuleForOrganizationResponse,
@@ -2910,8 +2904,8 @@ export const deleteTelemetryRule: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTelemetryRuleInput,
   output: DeleteTelemetryRuleResponse,
@@ -2935,8 +2929,8 @@ export const deleteTelemetryRuleForOrganization: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTelemetryRuleForOrganizationInput,
   output: DeleteTelemetryRuleForOrganizationResponse,
@@ -2960,8 +2954,8 @@ export const getCentralizationRuleForOrganization: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCentralizationRuleForOrganizationInput,
   output: GetCentralizationRuleForOrganizationOutput,
@@ -2985,8 +2979,8 @@ export const getS3TableIntegration: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetS3TableIntegrationInput,
   output: GetS3TableIntegrationOutput,
@@ -3010,8 +3004,8 @@ export const getTelemetryRule: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTelemetryRuleInput,
   output: GetTelemetryRuleOutput,
@@ -3035,8 +3029,8 @@ export const getTelemetryRuleForOrganization: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTelemetryRuleForOrganizationInput,
   output: GetTelemetryRuleForOrganizationOutput,
@@ -3061,8 +3055,8 @@ export const deleteTelemetryPipeline: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTelemetryPipelineInput,
   output: DeleteTelemetryPipelineOutput,
@@ -3087,8 +3081,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceInput,
   output: ListTagsForResourceOutput,
@@ -3113,8 +3107,8 @@ export const createTelemetryRuleForOrganization: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTelemetryRuleForOrganizationInput,
   output: CreateTelemetryRuleForOrganizationOutput,
@@ -3140,8 +3134,8 @@ export const createS3TableIntegration: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateS3TableIntegrationInput,
   output: CreateS3TableIntegrationOutput,
@@ -3167,8 +3161,8 @@ export const updateCentralizationRuleForOrganization: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateCentralizationRuleForOrganizationInput,
   output: UpdateCentralizationRuleForOrganizationOutput,
@@ -3192,8 +3186,8 @@ export const testTelemetryPipeline: (
   | InternalServerException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TestTelemetryPipelineInput,
   output: TestTelemetryPipelineOutput,
@@ -3216,8 +3210,8 @@ export const listTelemetryPipelines: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTelemetryPipelinesInput,
@@ -3227,8 +3221,8 @@ export const listTelemetryPipelines: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTelemetryPipelinesInput,
@@ -3238,8 +3232,8 @@ export const listTelemetryPipelines: {
     | InternalServerException
     | TooManyRequestsException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTelemetryPipelinesInput,
@@ -3270,8 +3264,8 @@ export const createCentralizationRuleForOrganization: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCentralizationRuleForOrganizationInput,
   output: CreateCentralizationRuleForOrganizationOutput,
@@ -3297,8 +3291,8 @@ export const createTelemetryRule: (
   | ServiceQuotaExceededException
   | TooManyRequestsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTelemetryRuleInput,
   output: CreateTelemetryRuleOutput,

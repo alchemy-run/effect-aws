@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://cognito-idp.amazonaws.com/doc/2016-04-18/");
 const svc = T.AwsApiService({
@@ -5931,221 +5929,219 @@ export class InternalErrorException extends S.TaggedError<InternalErrorException
 export class AliasExistsException extends S.TaggedError<AliasExistsException>()(
   "AliasExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ForbiddenException extends S.TaggedError<ForbiddenException>()(
   "ForbiddenException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class ConcurrentModificationException extends S.TaggedError<ConcurrentModificationException>()(
   "ConcurrentModificationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidParameterException extends S.TaggedError<InvalidParameterException>()(
   "InvalidParameterException",
   { message: S.optional(S.String), reasonCode: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidLambdaResponseException extends S.TaggedError<InvalidLambdaResponseException>()(
   "InvalidLambdaResponseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CodeMismatchException extends S.TaggedError<CodeMismatchException>()(
   "CodeMismatchException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class GroupExistsException extends S.TaggedError<GroupExistsException>()(
   "GroupExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class CodeDeliveryFailureException extends S.TaggedError<CodeDeliveryFailureException>()(
   "CodeDeliveryFailureException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class FeatureUnavailableInTierException extends S.TaggedError<FeatureUnavailableInTierException>()(
   "FeatureUnavailableInTierException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InvalidEmailRoleAccessPolicyException extends S.TaggedError<InvalidEmailRoleAccessPolicyException>()(
   "InvalidEmailRoleAccessPolicyException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NotAuthorizedException extends S.TaggedError<NotAuthorizedException>()(
   "NotAuthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class LimitExceededException extends S.TaggedError<LimitExceededException>()(
   "LimitExceededException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidUserPoolConfigurationException extends S.TaggedError<InvalidUserPoolConfigurationException>()(
   "InvalidUserPoolConfigurationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DeviceKeyExistsException extends S.TaggedError<DeviceKeyExistsException>()(
   "DeviceKeyExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ExpiredCodeException extends S.TaggedError<ExpiredCodeException>()(
   "ExpiredCodeException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class DuplicateProviderException extends S.TaggedError<DuplicateProviderException>()(
   "DuplicateProviderException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidOAuthFlowException extends S.TaggedError<InvalidOAuthFlowException>()(
   "InvalidOAuthFlowException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSmsRoleAccessPolicyException extends S.TaggedError<InvalidSmsRoleAccessPolicyException>()(
   "InvalidSmsRoleAccessPolicyException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidPasswordException extends S.TaggedError<InvalidPasswordException>()(
   "InvalidPasswordException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyRequestsException extends S.TaggedError<TooManyRequestsException>()(
   "TooManyRequestsException",
   { message: S.optional(S.String) },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 export class EnableSoftwareTokenMFAException extends S.TaggedError<EnableSoftwareTokenMFAException>()(
   "EnableSoftwareTokenMFAException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class RefreshTokenReuseException extends S.TaggedError<RefreshTokenReuseException>()(
   "RefreshTokenReuseException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class InvalidSmsRoleTrustRelationshipException extends S.TaggedError<InvalidSmsRoleTrustRelationshipException>()(
   "InvalidSmsRoleTrustRelationshipException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PasswordHistoryPolicyViolationException extends S.TaggedError<PasswordHistoryPolicyViolationException>()(
   "PasswordHistoryPolicyViolationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnauthorizedException extends S.TaggedError<UnauthorizedException>()(
   "UnauthorizedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class UserNotFoundException extends S.TaggedError<UserNotFoundException>()(
   "UserNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserPoolAddOnNotEnabledException extends S.TaggedError<UserPoolAddOnNotEnabledException>()(
   "UserPoolAddOnNotEnabledException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserPoolTaggingException extends S.TaggedError<UserPoolTaggingException>()(
   "UserPoolTaggingException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PasswordResetRequiredException extends S.TaggedError<PasswordResetRequiredException>()(
   "PasswordResetRequiredException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedIdentityProviderException extends S.TaggedError<UnsupportedIdentityProviderException>()(
   "UnsupportedIdentityProviderException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class PreconditionNotMetException extends S.TaggedError<PreconditionNotMetException>()(
   "PreconditionNotMetException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TermsExistsException extends S.TaggedError<TermsExistsException>()(
   "TermsExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserImportInProgressException extends S.TaggedError<UserImportInProgressException>()(
   "UserImportInProgressException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class SoftwareTokenMFANotFoundException extends S.TaggedError<SoftwareTokenMFANotFoundException>()(
   "SoftwareTokenMFANotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ManagedLoginBrandingExistsException extends S.TaggedError<ManagedLoginBrandingExistsException>()(
   "ManagedLoginBrandingExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class WebAuthnConfigurationMissingException extends S.TaggedError<WebAuthnConfigurationMissingException>()(
   "WebAuthnConfigurationMissingException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class WebAuthnChallengeNotFoundException extends S.TaggedError<WebAuthnChallengeNotFoundException>()(
   "WebAuthnChallengeNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TooManyFailedAttemptsException extends S.TaggedError<TooManyFailedAttemptsException>()(
   "TooManyFailedAttemptsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ScopeDoesNotExistException extends S.TaggedError<ScopeDoesNotExistException>()(
   "ScopeDoesNotExistException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnexpectedLambdaException extends S.TaggedError<UnexpectedLambdaException>()(
   "UnexpectedLambdaException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedOperationException extends S.TaggedError<UnsupportedOperationException>()(
   "UnsupportedOperationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserNotConfirmedException extends S.TaggedError<UserNotConfirmedException>()(
   "UserNotConfirmedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class WebAuthnNotEnabledException extends S.TaggedError<WebAuthnNotEnabledException>()(
   "WebAuthnNotEnabledException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class WebAuthnClientMismatchException extends S.TaggedError<WebAuthnClientMismatchException>()(
   "WebAuthnClientMismatchException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class MFAMethodNotFoundException extends S.TaggedError<MFAMethodNotFoundException>()(
   "MFAMethodNotFoundException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class TierChangeNotAllowedException extends S.TaggedError<TierChangeNotAllowedException>()(
   "TierChangeNotAllowedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class UsernameExistsException extends S.TaggedError<UsernameExistsException>()(
   "UsernameExistsException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UserLambdaValidationException extends S.TaggedError<UserLambdaValidationException>()(
   "UserLambdaValidationException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedTokenTypeException extends S.TaggedError<UnsupportedTokenTypeException>()(
   "UnsupportedTokenTypeException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class WebAuthnCredentialNotSupportedException extends S.TaggedError<WebAuthnCredentialNotSupportedException>()(
   "WebAuthnCredentialNotSupportedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class UnsupportedUserStateException extends S.TaggedError<UnsupportedUserStateException>()(
   "UnsupportedUserStateException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class WebAuthnOriginNotAllowedException extends S.TaggedError<WebAuthnOriginNotAllowedException>()(
   "WebAuthnOriginNotAllowedException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class WebAuthnRelyingPartyMismatchException extends S.TaggedError<WebAuthnRelyingPartyMismatchException>()(
   "WebAuthnRelyingPartyMismatchException",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 
 //# Operations
 /**
@@ -6175,8 +6171,8 @@ export const getSigningCertificate: (
   | InternalErrorException
   | InvalidParameterException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetSigningCertificateRequest,
   output: GetSigningCertificateResponse,
@@ -6199,8 +6195,8 @@ export const describeIdentityProvider: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeIdentityProviderRequest,
   output: DescribeIdentityProviderResponse,
@@ -6225,8 +6221,8 @@ export const describeManagedLoginBranding: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeManagedLoginBrandingRequest,
   output: DescribeManagedLoginBrandingResponse,
@@ -6250,8 +6246,8 @@ export const describeResourceServer: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeResourceServerRequest,
   output: DescribeResourceServerResponse,
@@ -6285,8 +6281,8 @@ export const describeTerms: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeTermsRequest,
   output: DescribeTermsResponse,
@@ -6322,8 +6318,8 @@ export const describeUserPoolClient: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserPoolClientRequest,
   output: DescribeUserPoolClientResponse,
@@ -6357,8 +6353,8 @@ export const describeUserPoolDomain: (
   | InvalidParameterException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserPoolDomainRequest,
   output: DescribeUserPoolDomainResponse,
@@ -6392,8 +6388,8 @@ export const getLogDeliveryConfiguration: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLogDeliveryConfigurationRequest,
   output: GetLogDeliveryConfigurationResponse,
@@ -6421,8 +6417,8 @@ export const getUICustomization: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUICustomizationRequest,
   output: GetUICustomizationResponse,
@@ -6458,8 +6454,8 @@ export const listIdentityProviders: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListIdentityProvidersRequest,
@@ -6470,8 +6466,8 @@ export const listIdentityProviders: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListIdentityProvidersRequest,
@@ -6482,8 +6478,8 @@ export const listIdentityProviders: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIdentityProvidersRequest,
@@ -6524,8 +6520,8 @@ export const listTerms: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTermsRequest,
   output: ListTermsResponse,
@@ -6561,8 +6557,8 @@ export const listUserPoolClients: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUserPoolClientsRequest,
@@ -6573,8 +6569,8 @@ export const listUserPoolClients: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUserPoolClientsRequest,
@@ -6585,8 +6581,8 @@ export const listUserPoolClients: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUserPoolClientsRequest,
@@ -6627,8 +6623,8 @@ export const listUserPools: {
     | InvalidParameterException
     | NotAuthorizedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUserPoolsRequest,
@@ -6638,8 +6634,8 @@ export const listUserPools: {
     | InvalidParameterException
     | NotAuthorizedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUserPoolsRequest,
@@ -6649,8 +6645,8 @@ export const listUserPools: {
     | InvalidParameterException
     | NotAuthorizedException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUserPoolsRequest,
@@ -6692,8 +6688,8 @@ export const listUsers: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUsersRequest,
@@ -6704,8 +6700,8 @@ export const listUsers: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUsersRequest,
@@ -6716,8 +6712,8 @@ export const listUsers: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
@@ -6749,8 +6745,8 @@ export const describeManagedLoginBrandingByClient: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeManagedLoginBrandingByClientRequest,
   output: DescribeManagedLoginBrandingByClientResponse,
@@ -6774,8 +6770,8 @@ export const describeUserImportJob: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserImportJobRequest,
   output: DescribeUserImportJobResponse,
@@ -6814,8 +6810,8 @@ export const getCSVHeader: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCSVHeaderRequest,
   output: GetCSVHeaderResponse,
@@ -6852,8 +6848,8 @@ export const getGroup: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetGroupRequest,
   output: GetGroupResponse,
@@ -6879,8 +6875,8 @@ export const getIdentityProviderByIdentifier: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetIdentityProviderByIdentifierRequest,
   output: GetIdentityProviderByIdentifierResponse,
@@ -6926,8 +6922,8 @@ export const getUserPoolMfaConfig: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserPoolMfaConfigRequest,
   output: GetUserPoolMfaConfigResponse,
@@ -6962,8 +6958,8 @@ export const listGroups: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListGroupsRequest,
@@ -6974,8 +6970,8 @@ export const listGroups: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListGroupsRequest,
@@ -6986,8 +6982,8 @@ export const listGroups: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
@@ -7030,8 +7026,8 @@ export const listResourceServers: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceServersRequest,
@@ -7042,8 +7038,8 @@ export const listResourceServers: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceServersRequest,
@@ -7054,8 +7050,8 @@ export const listResourceServers: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceServersRequest,
@@ -7088,8 +7084,8 @@ export const listTagsForResource: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -7125,8 +7121,8 @@ export const listUserImportJobs: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListUserImportJobsRequest,
   output: ListUserImportJobsResponse,
@@ -7162,8 +7158,8 @@ export const listUsersInGroup: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListUsersInGroupRequest,
@@ -7174,8 +7170,8 @@ export const listUsersInGroup: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListUsersInGroupRequest,
@@ -7186,8 +7182,8 @@ export const listUsersInGroup: {
     | NotAuthorizedException
     | ResourceNotFoundException
     | TooManyRequestsException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersInGroupRequest,
@@ -7234,8 +7230,8 @@ export const setUICustomization: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetUICustomizationRequest,
   output: SetUICustomizationResponse,
@@ -7270,8 +7266,8 @@ export const updateGroup: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateGroupRequest,
   output: UpdateGroupResponse,
@@ -7316,8 +7312,8 @@ export const updateManagedLoginBranding: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateManagedLoginBrandingRequest,
   output: UpdateManagedLoginBrandingResponse,
@@ -7356,8 +7352,8 @@ export const updateResourceServer: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateResourceServerRequest,
   output: UpdateResourceServerResponse,
@@ -7395,8 +7391,8 @@ export const deleteGroup: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteGroupRequest,
   output: DeleteGroupResponse,
@@ -7434,8 +7430,8 @@ export const deleteResourceServer: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceServerRequest,
   output: DeleteResourceServerResponse,
@@ -7475,8 +7471,8 @@ export const tagResource: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -7500,8 +7496,8 @@ export const untagResource: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -7539,8 +7535,8 @@ export const deleteManagedLoginBranding: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteManagedLoginBrandingRequest,
   output: DeleteManagedLoginBrandingResponse,
@@ -7576,8 +7572,8 @@ export const deleteTerms: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTermsRequest,
   output: DeleteTermsResponse,
@@ -7604,8 +7600,8 @@ export const deleteUserPoolClient: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserPoolClientRequest,
   output: DeleteUserPoolClientResponse,
@@ -7632,8 +7628,8 @@ export const deleteUserPoolDomain: (
   | InvalidParameterException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserPoolDomainRequest,
   output: DeleteUserPoolDomainResponse,
@@ -7690,8 +7686,8 @@ export const updateUserPoolDomain: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserPoolDomainRequest,
   output: UpdateUserPoolDomainResponse,
@@ -7730,8 +7726,8 @@ export const createGroup: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateGroupRequest,
   output: CreateGroupResponse,
@@ -7770,8 +7766,8 @@ export const createResourceServer: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateResourceServerRequest,
   output: CreateResourceServerResponse,
@@ -7805,8 +7801,8 @@ export const listWebAuthnCredentials: (
   | LimitExceededException
   | NotAuthorizedException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListWebAuthnCredentialsRequest,
   output: ListWebAuthnCredentialsResponse,
@@ -7841,8 +7837,8 @@ export const deleteWebAuthnCredential: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWebAuthnCredentialRequest,
   output: DeleteWebAuthnCredentialResponse,
@@ -7891,8 +7887,8 @@ export const createUserPoolDomain: (
   | LimitExceededException
   | NotAuthorizedException
   | ResourceNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserPoolDomainRequest,
   output: CreateUserPoolDomainResponse,
@@ -7932,8 +7928,8 @@ export const adminListDevices: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminListDevicesRequest,
   output: AdminListDevicesResponse,
@@ -7970,8 +7966,8 @@ export const adminGetDevice: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminGetDeviceRequest,
   output: AdminGetDeviceResponse,
@@ -8010,8 +8006,8 @@ export const createIdentityProvider: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIdentityProviderRequest,
   output: CreateIdentityProviderResponse,
@@ -8041,8 +8037,8 @@ export const setLogDeliveryConfiguration: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetLogDeliveryConfigurationRequest,
   output: SetLogDeliveryConfigurationResponse,
@@ -8081,8 +8077,8 @@ export const adminListGroupsForUser: {
     | ResourceNotFoundException
     | TooManyRequestsException
     | UserNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: AdminListGroupsForUserRequest,
@@ -8094,8 +8090,8 @@ export const adminListGroupsForUser: {
     | ResourceNotFoundException
     | TooManyRequestsException
     | UserNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: AdminListGroupsForUserRequest,
@@ -8107,8 +8103,8 @@ export const adminListGroupsForUser: {
     | ResourceNotFoundException
     | TooManyRequestsException
     | UserNotFoundException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: AdminListGroupsForUserRequest,
@@ -8144,8 +8140,8 @@ export const describeRiskConfiguration: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserPoolAddOnNotEnabledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRiskConfigurationRequest,
   output: DescribeRiskConfigurationResponse,
@@ -8183,8 +8179,8 @@ export const describeUserPool: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserPoolTaggingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeUserPoolRequest,
   output: DescribeUserPoolResponse,
@@ -8223,8 +8219,8 @@ export const deleteIdentityProvider: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UnsupportedIdentityProviderException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIdentityProviderRequest,
   output: DeleteIdentityProviderResponse,
@@ -8253,8 +8249,8 @@ export const startUserImportJob: (
   | PreconditionNotMetException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartUserImportJobRequest,
   output: StartUserImportJobResponse,
@@ -8304,8 +8300,8 @@ export const updateTerms: (
   | ResourceNotFoundException
   | TermsExistsException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTermsRequest,
   output: UpdateTermsResponse,
@@ -8342,8 +8338,8 @@ export const deleteUserPool: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserImportInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserPoolRequest,
   output: DeleteUserPoolResponse,
@@ -8381,8 +8377,8 @@ export const associateSoftwareToken: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | SoftwareTokenMFANotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSoftwareTokenRequest,
   output: AssociateSoftwareTokenResponse,
@@ -8436,8 +8432,8 @@ export const createManagedLoginBranding: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateManagedLoginBrandingRequest,
   output: CreateManagedLoginBrandingResponse,
@@ -8485,8 +8481,8 @@ export const createUserPoolClient: (
   | ResourceNotFoundException
   | ScopeDoesNotExistException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserPoolClientRequest,
   output: CreateUserPoolClientResponse,
@@ -8536,8 +8532,8 @@ export const setUserPoolMfaConfig: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetUserPoolMfaConfigRequest,
   output: SetUserPoolMfaConfigResponse,
@@ -8606,8 +8602,8 @@ export const adminSetUserPassword: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminSetUserPasswordRequest,
   output: AdminSetUserPasswordResponse,
@@ -8649,8 +8645,8 @@ export const adminGetUser: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminGetUserRequest,
   output: AdminGetUserResponse,
@@ -8687,8 +8683,8 @@ export const adminSetUserSettings: (
   | NotAuthorizedException
   | ResourceNotFoundException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminSetUserSettingsRequest,
   output: AdminSetUserSettingsResponse,
@@ -8723,8 +8719,8 @@ export const adminDeleteUser: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminDeleteUserRequest,
   output: AdminDeleteUserResponse,
@@ -8762,8 +8758,8 @@ export const adminDeleteUserAttributes: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminDeleteUserAttributesRequest,
   output: AdminDeleteUserAttributesResponse,
@@ -8801,8 +8797,8 @@ export const adminDisableUser: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminDisableUserRequest,
   output: AdminDisableUserResponse,
@@ -8839,8 +8835,8 @@ export const adminEnableUser: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminEnableUserRequest,
   output: AdminEnableUserResponse,
@@ -8878,8 +8874,8 @@ export const adminRemoveUserFromGroup: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminRemoveUserFromGroupRequest,
   output: AdminRemoveUserFromGroupResponse,
@@ -8926,8 +8922,8 @@ export const adminUpdateAuthEventFeedback: (
   | TooManyRequestsException
   | UserNotFoundException
   | UserPoolAddOnNotEnabledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminUpdateAuthEventFeedbackRequest,
   output: AdminUpdateAuthEventFeedbackResponse,
@@ -8987,8 +8983,8 @@ export const adminUserGlobalSignOut: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminUserGlobalSignOutRequest,
   output: AdminUserGlobalSignOutResponse,
@@ -9033,8 +9029,8 @@ export const updateAuthEventFeedback: (
   | TooManyRequestsException
   | UserNotFoundException
   | UserPoolAddOnNotEnabledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateAuthEventFeedbackRequest,
   output: UpdateAuthEventFeedbackResponse,
@@ -9098,8 +9094,8 @@ export const adminDisableProviderForUser: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminDisableProviderForUserRequest,
   output: AdminDisableProviderForUserResponse,
@@ -9152,8 +9148,8 @@ export const adminLinkProviderForUser: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminLinkProviderForUserRequest,
   output: AdminLinkProviderForUserResponse,
@@ -9194,8 +9190,8 @@ export const adminForgetDevice: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminForgetDeviceRequest,
   output: AdminForgetDeviceResponse,
@@ -9238,8 +9234,8 @@ export const adminUpdateDeviceStatus: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminUpdateDeviceStatusRequest,
   output: AdminUpdateDeviceStatusResponse,
@@ -9278,8 +9274,8 @@ export const adminAddUserToGroup: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminAddUserToGroupRequest,
   output: AdminAddUserToGroupResponse,
@@ -9318,8 +9314,8 @@ export const adminListUserAuthEvents: {
     | TooManyRequestsException
     | UserNotFoundException
     | UserPoolAddOnNotEnabledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: AdminListUserAuthEventsRequest,
@@ -9332,8 +9328,8 @@ export const adminListUserAuthEvents: {
     | TooManyRequestsException
     | UserNotFoundException
     | UserPoolAddOnNotEnabledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: AdminListUserAuthEventsRequest,
@@ -9346,8 +9342,8 @@ export const adminListUserAuthEvents: {
     | TooManyRequestsException
     | UserNotFoundException
     | UserPoolAddOnNotEnabledException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: AdminListUserAuthEventsRequest,
@@ -9401,8 +9397,8 @@ export const setRiskConfiguration: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserPoolAddOnNotEnabledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetRiskConfigurationRequest,
   output: SetRiskConfigurationResponse,
@@ -9444,8 +9440,8 @@ export const updateIdentityProvider: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UnsupportedIdentityProviderException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateIdentityProviderRequest,
   output: UpdateIdentityProviderResponse,
@@ -9474,8 +9470,8 @@ export const stopUserImportJob: (
   | PreconditionNotMetException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopUserImportJobRequest,
   output: StopUserImportJobResponse,
@@ -9513,8 +9509,8 @@ export const createUserImportJob: (
   | PreconditionNotMetException
   | ResourceNotFoundException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserImportJobRequest,
   output: CreateUserImportJobResponse,
@@ -9566,8 +9562,8 @@ export const createTerms: (
   | ResourceNotFoundException
   | TermsExistsException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTermsRequest,
   output: CreateTermsResponse,
@@ -9607,8 +9603,8 @@ export const addCustomAttributes: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserImportInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AddCustomAttributesRequest,
   output: AddCustomAttributesResponse,
@@ -9656,8 +9652,8 @@ export const updateUserPoolClient: (
   | ResourceNotFoundException
   | ScopeDoesNotExistException
   | TooManyRequestsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserPoolClientRequest,
   output: UpdateUserPoolClientResponse,
@@ -9701,8 +9697,8 @@ export const adminSetUserMFAPreference: (
   | ResourceNotFoundException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminSetUserMFAPreferenceRequest,
   output: AdminSetUserMFAPreferenceResponse,
@@ -9736,8 +9732,8 @@ export const startWebAuthnRegistration: (
   | TooManyRequestsException
   | WebAuthnConfigurationMissingException
   | WebAuthnNotEnabledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartWebAuthnRegistrationRequest,
   output: StartWebAuthnRegistrationResponse,
@@ -9803,8 +9799,8 @@ export const updateUserPool: (
   | TooManyRequestsException
   | UserImportInProgressException
   | UserPoolTaggingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserPoolRequest,
   output: UpdateUserPoolResponse,
@@ -9855,8 +9851,8 @@ export const confirmDevice: (
   | UsernameExistsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmDeviceRequest,
   output: ConfirmDeviceResponse,
@@ -9900,8 +9896,8 @@ export const getUser: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserRequest,
   output: GetUserResponse,
@@ -9946,8 +9942,8 @@ export const getUserAuthFactors: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserAuthFactorsRequest,
   output: GetUserAuthFactorsResponse,
@@ -9987,8 +9983,8 @@ export const deleteUser: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserRequest,
   output: DeleteUserResponse,
@@ -10029,8 +10025,8 @@ export const deleteUserAttributes: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteUserAttributesRequest,
   output: DeleteUserAttributesResponse,
@@ -10091,8 +10087,8 @@ export const globalSignOut: (
   | ResourceNotFoundException
   | TooManyRequestsException
   | UserNotConfirmedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GlobalSignOutRequest,
   output: GlobalSignOutResponse,
@@ -10137,8 +10133,8 @@ export const setUserMFAPreference: (
   | ResourceNotFoundException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetUserMFAPreferenceRequest,
   output: SetUserMFAPreferenceResponse,
@@ -10177,8 +10173,8 @@ export const setUserSettings: (
   | ResourceNotFoundException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SetUserSettingsRequest,
   output: SetUserSettingsResponse,
@@ -10218,8 +10214,8 @@ export const getDevice: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetDeviceRequest,
   output: GetDeviceResponse,
@@ -10261,8 +10257,8 @@ export const listDevices: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListDevicesRequest,
   output: ListDevicesResponse,
@@ -10304,8 +10300,8 @@ export const forgetDevice: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ForgetDeviceRequest,
   output: ForgetDeviceResponse,
@@ -10351,8 +10347,8 @@ export const updateDeviceStatus: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateDeviceStatusRequest,
   output: UpdateDeviceStatusResponse,
@@ -10397,8 +10393,8 @@ export const verifySoftwareToken: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifySoftwareTokenRequest,
   output: VerifySoftwareTokenResponse,
@@ -10451,8 +10447,8 @@ export const verifyUserAttribute: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: VerifyUserAttributeRequest,
   output: VerifyUserAttributeResponse,
@@ -10498,8 +10494,8 @@ export const changePassword: (
   | TooManyRequestsException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ChangePasswordRequest,
   output: ChangePasswordResponse,
@@ -10566,8 +10562,8 @@ export const createUserPool: (
   | TierChangeNotAllowedException
   | TooManyRequestsException
   | UserPoolTaggingException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateUserPoolRequest,
   output: CreateUserPoolResponse,
@@ -10607,8 +10603,8 @@ export const getTokensFromRefreshToken: (
   | UnexpectedLambdaException
   | UserLambdaValidationException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTokensFromRefreshTokenRequest,
   output: GetTokensFromRefreshTokenResponse,
@@ -10647,8 +10643,8 @@ export const revokeToken: (
   | UnauthorizedException
   | UnsupportedOperationException
   | UnsupportedTokenTypeException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeTokenRequest,
   output: RevokeTokenResponse,
@@ -10730,8 +10726,8 @@ export const adminCreateUser: (
   | UserLambdaValidationException
   | UsernameExistsException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminCreateUserRequest,
   output: AdminCreateUserResponse,
@@ -10809,8 +10805,8 @@ export const adminResetUserPassword: (
   | UnexpectedLambdaException
   | UserLambdaValidationException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminResetUserPasswordRequest,
   output: AdminResetUserPasswordResponse,
@@ -10866,8 +10862,8 @@ export const confirmSignUp: (
   | UnexpectedLambdaException
   | UserLambdaValidationException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmSignUpRequest,
   output: ConfirmSignUpResponse,
@@ -10943,8 +10939,8 @@ export const updateUserAttributes: (
   | UserLambdaValidationException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateUserAttributesRequest,
   output: UpdateUserAttributesResponse,
@@ -11018,8 +11014,8 @@ export const resendConfirmationCode: (
   | UnexpectedLambdaException
   | UserLambdaValidationException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResendConfirmationCodeRequest,
   output: ResendConfirmationCodeResponse,
@@ -11096,8 +11092,8 @@ export const forgotPassword: (
   | UnexpectedLambdaException
   | UserLambdaValidationException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ForgotPasswordRequest,
   output: ForgotPasswordResponse,
@@ -11175,8 +11171,8 @@ export const adminUpdateUserAttributes: (
   | UnexpectedLambdaException
   | UserLambdaValidationException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminUpdateUserAttributesRequest,
   output: AdminUpdateUserAttributesResponse,
@@ -11245,8 +11241,8 @@ export const getUserAttributeVerificationCode: (
   | UserLambdaValidationException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetUserAttributeVerificationCodeRequest,
   output: GetUserAttributeVerificationCodeResponse,
@@ -11320,8 +11316,8 @@ export const initiateAuth: (
   | UserLambdaValidationException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitiateAuthRequest,
   output: InitiateAuthResponse,
@@ -11397,8 +11393,8 @@ export const signUp: (
   | UnexpectedLambdaException
   | UserLambdaValidationException
   | UsernameExistsException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: SignUpRequest,
   output: SignUpResponse,
@@ -11451,8 +11447,8 @@ export const confirmForgotPassword: (
   | UserLambdaValidationException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ConfirmForgotPasswordRequest,
   output: ConfirmForgotPasswordResponse,
@@ -11512,8 +11508,8 @@ export const adminConfirmSignUp: (
   | UnexpectedLambdaException
   | UserLambdaValidationException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminConfirmSignUpRequest,
   output: AdminConfirmSignUpResponse,
@@ -11590,8 +11586,8 @@ export const respondToAuthChallenge: (
   | UserLambdaValidationException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RespondToAuthChallengeRequest,
   output: RespondToAuthChallengeResponse,
@@ -11684,8 +11680,8 @@ export const adminRespondToAuthChallenge: (
   | UserLambdaValidationException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminRespondToAuthChallengeRequest,
   output: AdminRespondToAuthChallengeResponse,
@@ -11769,8 +11765,8 @@ export const adminInitiateAuth: (
   | UserLambdaValidationException
   | UserNotConfirmedException
   | UserNotFoundException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AdminInitiateAuthRequest,
   output: AdminInitiateAuthResponse,
@@ -11816,8 +11812,8 @@ export const completeWebAuthnRegistration: (
   | WebAuthnNotEnabledException
   | WebAuthnOriginNotAllowedException
   | WebAuthnRelyingPartyMismatchException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CompleteWebAuthnRegistrationRequest,
   output: CompleteWebAuthnRegistrationResponse,

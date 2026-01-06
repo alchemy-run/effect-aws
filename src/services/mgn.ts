@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "mgn",
@@ -3715,16 +3713,14 @@ export const StartCutoverResponse = S.suspend(() =>
 export class AccessDeniedException extends S.TaggedError<AccessDeniedException>()(
   "AccessDeniedException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withAuthError) {}
 export class InternalServerException extends S.TaggedError<InternalServerException>()(
   "InternalServerException",
   {
     message: S.String,
     retryAfterSeconds: S.optional(S.Number).pipe(T.HttpHeader("Retry-After")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.SERVER_ERROR),
-) {}
+).pipe(C.withServerError) {}
 export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
   "ResourceNotFoundException",
   {
@@ -3733,7 +3729,7 @@ export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundExc
     resourceId: S.optional(S.String),
     resourceType: S.optional(S.String),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ValidationException extends S.TaggedError<ValidationException>()(
   "ValidationException",
   {
@@ -3742,7 +3738,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
     reason: S.optional(S.String),
     fieldList: S.optional(ValidationExceptionFieldList),
   },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ConflictException extends S.TaggedError<ConflictException>()(
   "ConflictException",
   {
@@ -3752,7 +3748,7 @@ export class ConflictException extends S.TaggedError<ConflictException>()(
     resourceType: S.optional(S.String),
     errors: S.optional(ConflictExceptionErrors),
   },
-) {}
+).pipe(C.withConflictError) {}
 export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExceededException>()(
   "ServiceQuotaExceededException",
   {
@@ -3764,11 +3760,11 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
     quotaCode: S.optional(S.String),
     quotaValue: S.optional(S.Number),
   },
-) {}
+).pipe(C.withQuotaError) {}
 export class UninitializedAccountException extends S.TaggedError<UninitializedAccountException>()(
   "UninitializedAccountException",
   { message: S.optional(S.String), code: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
   "ThrottlingException",
   {
@@ -3777,9 +3773,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
     quotaCode: S.optional(S.String),
     retryAfterSeconds: S.optional(S.String).pipe(T.HttpHeader("Retry-After")),
   },
-).pipe(
-  ErrorCategory.withCategory(ErrorCategory.ERROR_CATEGORIES.THROTTLING_ERROR),
-) {}
+).pipe(C.withThrottlingError) {}
 
 //# Operations
 /**
@@ -3789,8 +3783,8 @@ export const initializeService: (
   input: InitializeServiceRequest,
 ) => Effect.Effect<
   InitializeServiceResponse,
-  AccessDeniedException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  AccessDeniedException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: InitializeServiceRequest,
   output: InitializeServiceResponse,
@@ -3803,8 +3797,8 @@ export const createConnector: (
   input: CreateConnectorRequest,
 ) => Effect.Effect<
   Connector,
-  UninitializedAccountException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  UninitializedAccountException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateConnectorRequest,
   output: Connector,
@@ -3818,22 +3812,22 @@ export const listConnectors: {
     input: ListConnectorsRequest,
   ): Effect.Effect<
     ListConnectorsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConnectorsRequest,
   ) => Stream.Stream<
     ListConnectorsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConnectorsRequest,
   ) => Stream.Stream<
     Connector,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConnectorsRequest,
@@ -3854,22 +3848,22 @@ export const listExports: {
     input: ListExportsRequest,
   ): Effect.Effect<
     ListExportsResponse,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExportsRequest,
   ) => Stream.Stream<
     ListExportsResponse,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExportsRequest,
   ) => Stream.Stream<
     ExportTask,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExportsRequest,
@@ -3890,22 +3884,22 @@ export const listImports: {
     input: ListImportsRequest,
   ): Effect.Effect<
     ListImportsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImportsRequest,
   ) => Stream.Stream<
     ListImportsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImportsRequest,
   ) => Stream.Stream<
     ImportTask,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImportsRequest,
@@ -3926,22 +3920,22 @@ export const describeJobs: {
     input: DescribeJobsRequest,
   ): Effect.Effect<
     DescribeJobsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeJobsRequest,
   ) => Stream.Stream<
     DescribeJobsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeJobsRequest,
   ) => Stream.Stream<
     Job,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeJobsRequest,
@@ -3964,8 +3958,8 @@ export const createLaunchConfigurationTemplate: (
   | AccessDeniedException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLaunchConfigurationTemplateRequest,
   output: LaunchConfigurationTemplate,
@@ -3986,8 +3980,8 @@ export const putTemplateAction: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutTemplateActionRequest,
   output: TemplateActionDocument,
@@ -4006,22 +4000,22 @@ export const describeSourceServers: {
     input: DescribeSourceServersRequest,
   ): Effect.Effect<
     DescribeSourceServersResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSourceServersRequest,
   ) => Stream.Stream<
     DescribeSourceServersResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSourceServersRequest,
   ) => Stream.Stream<
     SourceServer,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSourceServersRequest,
@@ -4042,28 +4036,22 @@ export const listSourceServerActions: {
     input: ListSourceServerActionsRequest,
   ): Effect.Effect<
     ListSourceServerActionsResponse,
-    | ResourceNotFoundException
-    | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListSourceServerActionsRequest,
   ) => Stream.Stream<
     ListSourceServerActionsResponse,
-    | ResourceNotFoundException
-    | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListSourceServerActionsRequest,
   ) => Stream.Stream<
     SourceServerActionDocument,
-    | ResourceNotFoundException
-    | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSourceServerActionsRequest,
@@ -4087,8 +4075,8 @@ export const describeVcenterClients: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVcenterClientsRequest,
@@ -4097,8 +4085,8 @@ export const describeVcenterClients: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVcenterClientsRequest,
@@ -4107,8 +4095,8 @@ export const describeVcenterClients: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVcenterClientsRequest,
@@ -4135,8 +4123,8 @@ export const createWave: (
   | ConflictException
   | ServiceQuotaExceededException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateWaveRequest,
   output: Wave,
@@ -4154,22 +4142,22 @@ export const listWaves: {
     input: ListWavesRequest,
   ): Effect.Effect<
     ListWavesResponse,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListWavesRequest,
   ) => Stream.Stream<
     ListWavesResponse,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListWavesRequest,
   ) => Stream.Stream<
     Wave,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWavesRequest,
@@ -4194,8 +4182,8 @@ export const listTagsForResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ListTagsForResourceRequest,
   output: ListTagsForResourceResponse,
@@ -4218,8 +4206,8 @@ export const archiveApplication: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ArchiveApplicationRequest,
   output: Application,
@@ -4241,8 +4229,8 @@ export const associateSourceServers: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateSourceServersRequest,
   output: AssociateSourceServersResponse,
@@ -4263,8 +4251,8 @@ export const disassociateSourceServers: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateSourceServersRequest,
   output: DisassociateSourceServersResponse,
@@ -4284,8 +4272,8 @@ export const updateApplication: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateApplicationRequest,
   output: Application,
@@ -4305,8 +4293,8 @@ export const deleteJob: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteJobRequest,
   output: DeleteJobResponse,
@@ -4326,8 +4314,8 @@ export const deleteLaunchConfigurationTemplate: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteLaunchConfigurationTemplateRequest,
   output: DeleteLaunchConfigurationTemplateResponse,
@@ -4347,8 +4335,8 @@ export const deleteReplicationConfigurationTemplate: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteReplicationConfigurationTemplateRequest,
   output: DeleteReplicationConfigurationTemplateResponse,
@@ -4368,8 +4356,8 @@ export const deleteSourceServer: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSourceServerRequest,
   output: DeleteSourceServerResponse,
@@ -4390,8 +4378,8 @@ export const finalizeCutover: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: FinalizeCutoverRequest,
   output: SourceServer,
@@ -4412,8 +4400,8 @@ export const markAsArchived: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: MarkAsArchivedRequest,
   output: SourceServer,
@@ -4435,8 +4423,8 @@ export const pauseReplication: (
   | ServiceQuotaExceededException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PauseReplicationRequest,
   output: SourceServer,
@@ -4460,8 +4448,8 @@ export const resumeReplication: (
   | ServiceQuotaExceededException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ResumeReplicationRequest,
   output: SourceServer,
@@ -4485,8 +4473,8 @@ export const startReplication: (
   | ServiceQuotaExceededException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartReplicationRequest,
   output: SourceServer,
@@ -4510,8 +4498,8 @@ export const stopReplication: (
   | ServiceQuotaExceededException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopReplicationRequest,
   output: SourceServer,
@@ -4536,8 +4524,8 @@ export const updateLaunchConfiguration: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLaunchConfigurationRequest,
   output: LaunchConfiguration,
@@ -4561,8 +4549,8 @@ export const updateSourceServerReplicationType: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSourceServerReplicationTypeRequest,
   output: SourceServer,
@@ -4583,8 +4571,8 @@ export const deleteWave: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteWaveRequest,
   output: DeleteWaveResponse,
@@ -4605,8 +4593,8 @@ export const archiveWave: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ArchiveWaveRequest,
   output: Wave,
@@ -4628,8 +4616,8 @@ export const associateApplications: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateApplicationsRequest,
   output: AssociateApplicationsResponse,
@@ -4650,8 +4638,8 @@ export const disassociateApplications: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateApplicationsRequest,
   output: DisassociateApplicationsResponse,
@@ -4671,8 +4659,8 @@ export const updateWave: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateWaveRequest,
   output: Wave,
@@ -4692,8 +4680,8 @@ export const updateSourceServer: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateSourceServerRequest,
   output: SourceServer,
@@ -4714,8 +4702,8 @@ export const changeServerLifeCycleState: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ChangeServerLifeCycleStateRequest,
   output: SourceServer,
@@ -4737,8 +4725,8 @@ export const putSourceServerAction: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutSourceServerActionRequest,
   output: SourceServerActionDocument,
@@ -4761,8 +4749,8 @@ export const updateReplicationConfiguration: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReplicationConfigurationRequest,
   output: ReplicationConfiguration,
@@ -4784,8 +4772,8 @@ export const startTest: (
   | ConflictException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartTestRequest,
   output: StartTestResponse,
@@ -4805,8 +4793,8 @@ export const terminateTargetInstances: (
   | ConflictException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TerminateTargetInstancesRequest,
   output: TerminateTargetInstancesResponse,
@@ -4826,8 +4814,8 @@ export const createApplication: (
   | ConflictException
   | ServiceQuotaExceededException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateApplicationRequest,
   output: Application,
@@ -4847,8 +4835,8 @@ export const unarchiveWave: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnarchiveWaveRequest,
   output: Wave,
@@ -4868,8 +4856,8 @@ export const updateConnector: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateConnectorRequest,
   output: Connector,
@@ -4890,8 +4878,8 @@ export const updateLaunchConfigurationTemplate: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateLaunchConfigurationTemplateRequest,
   output: LaunchConfigurationTemplate,
@@ -4913,8 +4901,8 @@ export const describeLaunchConfigurationTemplates: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeLaunchConfigurationTemplatesRequest,
@@ -4923,8 +4911,8 @@ export const describeLaunchConfigurationTemplates: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeLaunchConfigurationTemplatesRequest,
@@ -4933,8 +4921,8 @@ export const describeLaunchConfigurationTemplates: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeLaunchConfigurationTemplatesRequest,
@@ -4961,8 +4949,8 @@ export const createReplicationConfigurationTemplate: (
   | AccessDeniedException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateReplicationConfigurationTemplateRequest,
   output: ReplicationConfigurationTemplate,
@@ -4983,8 +4971,8 @@ export const describeReplicationConfigurationTemplates: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeReplicationConfigurationTemplatesRequest,
@@ -4993,8 +4981,8 @@ export const describeReplicationConfigurationTemplates: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeReplicationConfigurationTemplatesRequest,
@@ -5003,8 +4991,8 @@ export const describeReplicationConfigurationTemplates: {
     | ResourceNotFoundException
     | UninitializedAccountException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeReplicationConfigurationTemplatesRequest,
@@ -5028,10 +5016,8 @@ export const getLaunchConfiguration: (
   input: GetLaunchConfigurationRequest,
 ) => Effect.Effect<
   LaunchConfiguration,
-  | ResourceNotFoundException
-  | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | UninitializedAccountException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetLaunchConfigurationRequest,
   output: LaunchConfiguration,
@@ -5044,10 +5030,8 @@ export const getReplicationConfiguration: (
   input: GetReplicationConfigurationRequest,
 ) => Effect.Effect<
   ReplicationConfiguration,
-  | ResourceNotFoundException
-  | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | UninitializedAccountException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetReplicationConfigurationRequest,
   output: ReplicationConfiguration,
@@ -5063,8 +5047,8 @@ export const deleteConnector: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConnectorRequest,
   output: DeleteConnectorResponse,
@@ -5084,8 +5068,8 @@ export const removeTemplateAction: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveTemplateActionRequest,
   output: RemoveTemplateActionResponse,
@@ -5106,8 +5090,8 @@ export const updateReplicationConfigurationTemplate: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateReplicationConfigurationTemplateRequest,
   output: ReplicationConfigurationTemplate,
@@ -5128,8 +5112,8 @@ export const removeSourceServerAction: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RemoveSourceServerActionRequest,
   output: RemoveSourceServerActionResponse,
@@ -5149,8 +5133,8 @@ export const retryDataReplication: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RetryDataReplicationRequest,
   output: SourceServer,
@@ -5170,8 +5154,8 @@ export const deleteVcenterClient: (
   | ResourceNotFoundException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVcenterClientRequest,
   output: DeleteVcenterClientResponse,
@@ -5189,22 +5173,22 @@ export const listManagedAccounts: {
     input: ListManagedAccountsRequest,
   ): Effect.Effect<
     ListManagedAccountsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListManagedAccountsRequest,
   ) => Stream.Stream<
     ListManagedAccountsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListManagedAccountsRequest,
   ) => Stream.Stream<
     ManagedAccount,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListManagedAccountsRequest,
@@ -5227,8 +5211,8 @@ export const deleteApplication: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteApplicationRequest,
   output: DeleteApplicationResponse,
@@ -5246,22 +5230,22 @@ export const listApplications: {
     input: ListApplicationsRequest,
   ): Effect.Effect<
     ListApplicationsResponse,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListApplicationsRequest,
   ) => Stream.Stream<
     ListApplicationsResponse,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListApplicationsRequest,
   ) => Stream.Stream<
     Application,
-    UninitializedAccountException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApplicationsRequest,
@@ -5284,8 +5268,8 @@ export const unarchiveApplication: (
   | ResourceNotFoundException
   | ServiceQuotaExceededException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UnarchiveApplicationRequest,
   output: Application,
@@ -5307,8 +5291,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -5332,8 +5316,8 @@ export const untagResource: (
   | ResourceNotFoundException
   | ThrottlingException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -5355,8 +5339,8 @@ export const startExport: (
   | ServiceQuotaExceededException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartExportRequest,
   output: StartExportResponse,
@@ -5374,22 +5358,22 @@ export const listExportErrors: {
     input: ListExportErrorsRequest,
   ): Effect.Effect<
     ListExportErrorsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListExportErrorsRequest,
   ) => Stream.Stream<
     ListExportErrorsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListExportErrorsRequest,
   ) => Stream.Stream<
     ExportTaskError,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListExportErrorsRequest,
@@ -5410,22 +5394,22 @@ export const listImportErrors: {
     input: ListImportErrorsRequest,
   ): Effect.Effect<
     ListImportErrorsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListImportErrorsRequest,
   ) => Stream.Stream<
     ListImportErrorsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListImportErrorsRequest,
   ) => Stream.Stream<
     ImportTaskError,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImportErrorsRequest,
@@ -5446,22 +5430,22 @@ export const describeJobLogItems: {
     input: DescribeJobLogItemsRequest,
   ): Effect.Effect<
     DescribeJobLogItemsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeJobLogItemsRequest,
   ) => Stream.Stream<
     DescribeJobLogItemsResponse,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeJobLogItemsRequest,
   ) => Stream.Stream<
     JobLog,
-    UninitializedAccountException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    UninitializedAccountException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeJobLogItemsRequest,
@@ -5482,28 +5466,22 @@ export const listTemplateActions: {
     input: ListTemplateActionsRequest,
   ): Effect.Effect<
     ListTemplateActionsResponse,
-    | ResourceNotFoundException
-    | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTemplateActionsRequest,
   ) => Stream.Stream<
     ListTemplateActionsResponse,
-    | ResourceNotFoundException
-    | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTemplateActionsRequest,
   ) => Stream.Stream<
     TemplateActionDocument,
-    | ResourceNotFoundException
-    | UninitializedAccountException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ResourceNotFoundException | UninitializedAccountException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTemplateActionsRequest,
@@ -5526,8 +5504,8 @@ export const disconnectFromService: (
   | ConflictException
   | ResourceNotFoundException
   | UninitializedAccountException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisconnectFromServiceRequest,
   output: SourceServer,
@@ -5549,8 +5527,8 @@ export const startImport: (
   | ServiceQuotaExceededException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartImportRequest,
   output: StartImportResponse,
@@ -5572,8 +5550,8 @@ export const startCutover: (
   | ConflictException
   | UninitializedAccountException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartCutoverRequest,
   output: StartCutoverResponse,

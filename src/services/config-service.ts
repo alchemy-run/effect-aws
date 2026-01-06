@@ -3,14 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
 import * as S from "effect/Schema";
 import * as Stream from "effect/Stream";
-import * as API from "../api.ts";
-import {
-  Credentials,
-  Region,
-  Traits as T,
-  ErrorCategory,
-  Errors,
-} from "../index.ts";
+import * as API from "../client/api.ts";
+import * as T from "../traits.ts";
+import * as C from "../category.ts";
+import type { Credentials } from "../credentials.ts";
+import type { CommonErrors } from "../errors.ts";
+import type { Region } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const ns = T.XmlNamespace("http://config.amazonaws.com/doc/2014-11-12/");
 const svc = T.AwsApiService({
@@ -5776,7 +5774,7 @@ export class ResourceConcurrentModificationException extends S.TaggedError<Resou
 export class IdempotentParameterMismatch extends S.TaggedError<IdempotentParameterMismatch>()(
   "IdempotentParameterMismatch",
   { message: S.optional(S.String) },
-) {}
+).pipe(C.withBadRequestError) {}
 export class NoSuchRemediationExceptionException extends S.TaggedError<NoSuchRemediationExceptionException>()(
   "NoSuchRemediationExceptionException",
   { message: S.optional(S.String) },
@@ -5863,8 +5861,8 @@ export const deleteAggregationAuthorization: (
   input: DeleteAggregationAuthorizationRequest,
 ) => Effect.Effect<
   DeleteAggregationAuthorizationResponse,
-  InvalidParameterValueException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteAggregationAuthorizationRequest,
   output: DeleteAggregationAuthorizationResponse,
@@ -5878,8 +5876,8 @@ export const deleteConfigurationAggregator: (
   input: DeleteConfigurationAggregatorRequest,
 ) => Effect.Effect<
   DeleteConfigurationAggregatorResponse,
-  NoSuchConfigurationAggregatorException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchConfigurationAggregatorException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationAggregatorRequest,
   output: DeleteConfigurationAggregatorResponse,
@@ -5892,8 +5890,8 @@ export const describeRemediationConfigurations: (
   input: DescribeRemediationConfigurationsRequest,
 ) => Effect.Effect<
   DescribeRemediationConfigurationsResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeRemediationConfigurationsRequest,
   output: DescribeRemediationConfigurationsResponse,
@@ -5910,22 +5908,22 @@ export const getComplianceDetailsByResource: {
     input: GetComplianceDetailsByResourceRequest,
   ): Effect.Effect<
     GetComplianceDetailsByResourceResponse,
-    InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetComplianceDetailsByResourceRequest,
   ) => Stream.Stream<
     GetComplianceDetailsByResourceResponse,
-    InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetComplianceDetailsByResourceRequest,
   ) => Stream.Stream<
     EvaluationResult,
-    InvalidParameterValueException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetComplianceDetailsByResourceRequest,
@@ -5944,8 +5942,8 @@ export const getCustomRulePolicy: (
   input: GetCustomRulePolicyRequest,
 ) => Effect.Effect<
   GetCustomRulePolicyResponse,
-  NoSuchConfigRuleException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchConfigRuleException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetCustomRulePolicyRequest,
   output: GetCustomRulePolicyResponse,
@@ -5959,10 +5957,8 @@ export const putExternalEvaluation: (
   input: PutExternalEvaluationRequest,
 ) => Effect.Effect<
   PutExternalEvaluationResponse,
-  | InvalidParameterValueException
-  | NoSuchConfigRuleException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | NoSuchConfigRuleException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutExternalEvaluationRequest,
   output: PutExternalEvaluationResponse,
@@ -5976,8 +5972,8 @@ export const deletePendingAggregationRequest: (
   input: DeletePendingAggregationRequestRequest,
 ) => Effect.Effect<
   DeletePendingAggregationRequestResponse,
-  InvalidParameterValueException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePendingAggregationRequestRequest,
   output: DeletePendingAggregationRequestResponse,
@@ -6012,8 +6008,8 @@ export const deleteConfigRule: (
   input: DeleteConfigRuleRequest,
 ) => Effect.Effect<
   DeleteConfigRuleResponse,
-  NoSuchConfigRuleException | ResourceInUseException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchConfigRuleException | ResourceInUseException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigRuleRequest,
   output: DeleteConfigRuleResponse,
@@ -6035,8 +6031,8 @@ export const deleteConfigurationRecorder: (
   DeleteConfigurationRecorderResponse,
   | NoSuchConfigurationRecorderException
   | UnmodifiableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConfigurationRecorderRequest,
   output: DeleteConfigurationRecorderResponse,
@@ -6053,8 +6049,8 @@ export const deleteDeliveryChannel: (
   DeleteDeliveryChannelResponse,
   | LastDeliveryChannelDeleteFailedException
   | NoSuchDeliveryChannelException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDeliveryChannelRequest,
   output: DeleteDeliveryChannelResponse,
@@ -6092,8 +6088,8 @@ export const deleteOrganizationConfigRule: (
   | NoSuchOrganizationConfigRuleException
   | OrganizationAccessDeniedException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOrganizationConfigRuleRequest,
   output: DeleteOrganizationConfigRuleResponse,
@@ -6110,10 +6106,8 @@ export const deleteResourceConfig: (
   input: DeleteResourceConfigRequest,
 ) => Effect.Effect<
   DeleteResourceConfigResponse,
-  | NoRunningConfigurationRecorderException
-  | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoRunningConfigurationRecorderException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteResourceConfigRequest,
   output: DeleteResourceConfigResponse,
@@ -6140,8 +6134,8 @@ export const deliverConfigSnapshot: (
   | NoAvailableConfigurationRecorderException
   | NoRunningConfigurationRecorderException
   | NoSuchDeliveryChannelException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeliverConfigSnapshotRequest,
   output: DeliverConfigSnapshotResponse,
@@ -6166,10 +6160,8 @@ export const describeConfigurationRecorderStatus: (
   input: DescribeConfigurationRecorderStatusRequest,
 ) => Effect.Effect<
   DescribeConfigurationRecorderStatusResponse,
-  | NoSuchConfigurationRecorderException
-  | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchConfigurationRecorderException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRecorderStatusRequest,
   output: DescribeConfigurationRecorderStatusResponse,
@@ -6183,8 +6175,8 @@ export const getComplianceSummaryByConfigRule: (
   input: GetComplianceSummaryByConfigRuleRequest,
 ) => Effect.Effect<
   GetComplianceSummaryByConfigRuleResponse,
-  Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComplianceSummaryByConfigRuleRequest,
   output: GetComplianceSummaryByConfigRuleResponse,
@@ -6200,8 +6192,8 @@ export const getComplianceSummaryByResourceType: (
   input: GetComplianceSummaryByResourceTypeRequest,
 ) => Effect.Effect<
   GetComplianceSummaryByResourceTypeResponse,
-  InvalidParameterValueException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetComplianceSummaryByResourceTypeRequest,
   output: GetComplianceSummaryByResourceTypeResponse,
@@ -6219,8 +6211,8 @@ export const getResourceEvaluationSummary: (
   input: GetResourceEvaluationSummaryRequest,
 ) => Effect.Effect<
   GetResourceEvaluationSummaryResponse,
-  ResourceNotFoundException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetResourceEvaluationSummaryRequest,
   output: GetResourceEvaluationSummaryResponse,
@@ -6241,8 +6233,8 @@ export const putAggregationAuthorization: (
   input: PutAggregationAuthorizationRequest,
 ) => Effect.Effect<
   PutAggregationAuthorizationResponse,
-  InvalidParameterValueException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  InvalidParameterValueException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutAggregationAuthorizationRequest,
   output: PutAggregationAuthorizationResponse,
@@ -6290,8 +6282,8 @@ export const putRemediationExceptions: (
   PutRemediationExceptionsResponse,
   | InsufficientPermissionsException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRemediationExceptionsRequest,
   output: PutRemediationExceptionsResponse,
@@ -6317,8 +6309,8 @@ export const putResourceConfig: (
   | MaxActiveResourcesExceededException
   | NoRunningConfigurationRecorderException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutResourceConfigRequest,
   output: PutResourceConfigResponse,
@@ -6347,8 +6339,8 @@ export const putRetentionConfiguration: (
   PutRetentionConfigurationResponse,
   | InvalidParameterValueException
   | MaxNumberOfRetentionConfigurationsExceededException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRetentionConfigurationRequest,
   output: PutRetentionConfigurationResponse,
@@ -6377,8 +6369,8 @@ export const deleteServiceLinkedConfigurationRecorder: (
   | ConflictException
   | NoSuchConfigurationRecorderException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteServiceLinkedConfigurationRecorderRequest,
   output: DeleteServiceLinkedConfigurationRecorderResponse,
@@ -6400,8 +6392,8 @@ export const disassociateResourceTypes: (
   | ConflictException
   | NoSuchConfigurationRecorderException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateResourceTypesRequest,
   output: DisassociateResourceTypesResponse,
@@ -6420,8 +6412,8 @@ export const deleteRetentionConfiguration: (
   DeleteRetentionConfigurationResponse,
   | InvalidParameterValueException
   | NoSuchRetentionConfigurationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRetentionConfigurationRequest,
   output: DeleteRetentionConfigurationResponse,
@@ -6480,8 +6472,8 @@ export const startConfigRulesEvaluation: (
   | LimitExceededException
   | NoSuchConfigRuleException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartConfigRulesEvaluationRequest,
   output: StartConfigRulesEvaluationResponse,
@@ -6515,8 +6507,8 @@ export const deleteConformancePack: (
   input: DeleteConformancePackRequest,
 ) => Effect.Effect<
   DeleteConformancePackResponse,
-  NoSuchConformancePackException | ResourceInUseException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchConformancePackException | ResourceInUseException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteConformancePackRequest,
   output: DeleteConformancePackResponse,
@@ -6532,8 +6524,8 @@ export const deleteEvaluationResults: (
   input: DeleteEvaluationResultsRequest,
 ) => Effect.Effect<
   DeleteEvaluationResultsResponse,
-  NoSuchConfigRuleException | ResourceInUseException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchConfigRuleException | ResourceInUseException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEvaluationResultsRequest,
   output: DeleteEvaluationResultsResponse,
@@ -6552,8 +6544,8 @@ export const startConfigurationRecorder: (
   | NoAvailableDeliveryChannelException
   | NoSuchConfigurationRecorderException
   | UnmodifiableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartConfigurationRecorderRequest,
   output: StartConfigurationRecorderResponse,
@@ -6572,8 +6564,8 @@ export const stopConfigurationRecorder: (
   StopConfigurationRecorderResponse,
   | NoSuchConfigurationRecorderException
   | UnmodifiableEntityException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StopConfigurationRecorderRequest,
   output: StopConfigurationRecorderResponse,
@@ -6591,8 +6583,8 @@ export const describeDeliveryChannels: (
   input: DescribeDeliveryChannelsRequest,
 ) => Effect.Effect<
   DescribeDeliveryChannelsResponse,
-  NoSuchDeliveryChannelException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchDeliveryChannelException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDeliveryChannelsRequest,
   output: DescribeDeliveryChannelsResponse,
@@ -6628,8 +6620,8 @@ export const deleteOrganizationConformancePack: (
   | NoSuchOrganizationConformancePackException
   | OrganizationAccessDeniedException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteOrganizationConformancePackRequest,
   output: DeleteOrganizationConformancePackResponse,
@@ -6648,8 +6640,8 @@ export const getOrganizationCustomRulePolicy: (
   GetOrganizationCustomRulePolicyResponse,
   | NoSuchOrganizationConfigRuleException
   | OrganizationAccessDeniedException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetOrganizationCustomRulePolicyRequest,
   output: GetOrganizationCustomRulePolicyResponse,
@@ -6670,8 +6662,8 @@ export const startRemediationExecution: (
   | InsufficientPermissionsException
   | InvalidParameterValueException
   | NoSuchRemediationConfigurationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartRemediationExecutionRequest,
   output: StartRemediationExecutionResponse,
@@ -6688,8 +6680,8 @@ export const deleteStoredQuery: (
   input: DeleteStoredQueryRequest,
 ) => Effect.Effect<
   DeleteStoredQueryResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteStoredQueryRequest,
   output: DeleteStoredQueryResponse,
@@ -6707,10 +6699,8 @@ export const describeConfigurationRecorders: (
   input: DescribeConfigurationRecordersRequest,
 ) => Effect.Effect<
   DescribeConfigurationRecordersResponse,
-  | NoSuchConfigurationRecorderException
-  | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchConfigurationRecorderException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeConfigurationRecordersRequest,
   output: DescribeConfigurationRecordersResponse,
@@ -6723,8 +6713,8 @@ export const getStoredQuery: (
   input: GetStoredQueryRequest,
 ) => Effect.Effect<
   GetStoredQueryResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetStoredQueryRequest,
   output: GetStoredQueryResponse,
@@ -6737,8 +6727,8 @@ export const untagResource: (
   input: UntagResourceRequest,
 ) => Effect.Effect<
   UntagResourceResponse,
-  ResourceNotFoundException | ValidationException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  ResourceNotFoundException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -6756,8 +6746,8 @@ export const associateResourceTypes: (
   | ConflictException
   | NoSuchConfigurationRecorderException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateResourceTypesRequest,
   output: AssociateResourceTypesResponse,
@@ -6778,8 +6768,8 @@ export const tagResource: (
   | ResourceNotFoundException
   | TooManyTagsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -6810,8 +6800,8 @@ export const batchGetResourceConfig: (
   BatchGetResourceConfigResponse,
   | NoAvailableConfigurationRecorderException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetResourceConfigRequest,
   output: BatchGetResourceConfigResponse,
@@ -6844,8 +6834,8 @@ export const putServiceLinkedConfigurationRecorder: (
   | InsufficientPermissionsException
   | LimitExceededException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutServiceLinkedConfigurationRecorderRequest,
   output: PutServiceLinkedConfigurationRecorderResponse,
@@ -6868,10 +6858,8 @@ export const batchGetAggregateResourceConfig: (
   input: BatchGetAggregateResourceConfigRequest,
 ) => Effect.Effect<
   BatchGetAggregateResourceConfigResponse,
-  | NoSuchConfigurationAggregatorException
-  | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchConfigurationAggregatorException | ValidationException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: BatchGetAggregateResourceConfigRequest,
   output: BatchGetAggregateResourceConfigResponse,
@@ -6888,8 +6876,8 @@ export const deleteRemediationConfiguration: (
   | InvalidParameterValueException
   | NoSuchRemediationConfigurationException
   | RemediationInProgressException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRemediationConfigurationRequest,
   output: DeleteRemediationConfigurationResponse,
@@ -6937,28 +6925,22 @@ export const describeComplianceByResource: {
     input: DescribeComplianceByResourceRequest,
   ): Effect.Effect<
     DescribeComplianceByResourceResponse,
-    | InvalidNextTokenException
-    | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeComplianceByResourceRequest,
   ) => Stream.Stream<
     DescribeComplianceByResourceResponse,
-    | InvalidNextTokenException
-    | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeComplianceByResourceRequest,
   ) => Stream.Stream<
     ComplianceByResource,
-    | InvalidNextTokenException
-    | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeComplianceByResourceRequest,
@@ -6984,8 +6966,8 @@ export const describeDeliveryChannelStatus: (
   input: DescribeDeliveryChannelStatusRequest,
 ) => Effect.Effect<
   DescribeDeliveryChannelStatusResponse,
-  NoSuchDeliveryChannelException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchDeliveryChannelException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeDeliveryChannelStatusRequest,
   output: DescribeDeliveryChannelStatusResponse,
@@ -7021,8 +7003,8 @@ export const describeOrganizationConfigRules: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOrganizationConfigRulesRequest,
@@ -7032,8 +7014,8 @@ export const describeOrganizationConfigRules: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOrganizationConfigRulesRequest,
@@ -7043,8 +7025,8 @@ export const describeOrganizationConfigRules: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConfigRulesRequest,
@@ -7074,8 +7056,8 @@ export const describeRemediationExecutionStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchRemediationConfigurationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRemediationExecutionStatusRequest,
@@ -7084,8 +7066,8 @@ export const describeRemediationExecutionStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchRemediationConfigurationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRemediationExecutionStatusRequest,
@@ -7094,8 +7076,8 @@ export const describeRemediationExecutionStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchRemediationConfigurationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRemediationExecutionStatusRequest,
@@ -7129,8 +7111,8 @@ export const getAggregateConfigRuleComplianceSummary: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetAggregateConfigRuleComplianceSummaryRequest,
@@ -7140,8 +7122,8 @@ export const getAggregateConfigRuleComplianceSummary: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetAggregateConfigRuleComplianceSummaryRequest,
@@ -7151,8 +7133,8 @@ export const getAggregateConfigRuleComplianceSummary: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAggregateConfigRuleComplianceSummaryRequest,
@@ -7184,8 +7166,8 @@ export const getAggregateDiscoveredResourceCounts: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetAggregateDiscoveredResourceCountsRequest,
@@ -7195,8 +7177,8 @@ export const getAggregateDiscoveredResourceCounts: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetAggregateDiscoveredResourceCountsRequest,
@@ -7206,8 +7188,8 @@ export const getAggregateDiscoveredResourceCounts: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAggregateDiscoveredResourceCountsRequest,
@@ -7236,8 +7218,8 @@ export const getOrganizationConfigRuleDetailedStatus: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetOrganizationConfigRuleDetailedStatusRequest,
@@ -7247,8 +7229,8 @@ export const getOrganizationConfigRuleDetailedStatus: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetOrganizationConfigRuleDetailedStatusRequest,
@@ -7258,8 +7240,8 @@ export const getOrganizationConfigRuleDetailedStatus: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetOrganizationConfigRuleDetailedStatusRequest,
@@ -7289,8 +7271,8 @@ export const getOrganizationConformancePackDetailedStatus: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetOrganizationConformancePackDetailedStatusRequest,
@@ -7300,8 +7282,8 @@ export const getOrganizationConformancePackDetailedStatus: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetOrganizationConformancePackDetailedStatusRequest,
@@ -7311,8 +7293,8 @@ export const getOrganizationConformancePackDetailedStatus: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetOrganizationConformancePackDetailedStatusRequest,
@@ -7338,22 +7320,22 @@ export const listConfigurationRecorders: {
     input: ListConfigurationRecordersRequest,
   ): Effect.Effect<
     ListConfigurationRecordersResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConfigurationRecordersRequest,
   ) => Stream.Stream<
     ListConfigurationRecordersResponse,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConfigurationRecordersRequest,
   ) => Stream.Stream<
     ConfigurationRecorderSummary,
-    ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConfigurationRecordersRequest,
@@ -7382,8 +7364,8 @@ export const listConformancePackComplianceScores: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListConformancePackComplianceScoresRequest,
@@ -7392,8 +7374,8 @@ export const listConformancePackComplianceScores: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListConformancePackComplianceScoresRequest,
@@ -7402,8 +7384,8 @@ export const listConformancePackComplianceScores: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListConformancePackComplianceScoresRequest,
@@ -7431,8 +7413,8 @@ export const putEvaluations: (
   | InvalidParameterValueException
   | InvalidResultTokenException
   | NoSuchConfigRuleException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutEvaluationsRequest,
   output: PutEvaluationsResponse,
@@ -7458,8 +7440,8 @@ export const putStoredQuery: (
   | ResourceConcurrentModificationException
   | TooManyTagsException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutStoredQueryRequest,
   output: PutStoredQueryResponse,
@@ -7493,8 +7475,8 @@ export const selectAggregateResourceConfig: {
     | InvalidLimitException
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SelectAggregateResourceConfigRequest,
@@ -7504,8 +7486,8 @@ export const selectAggregateResourceConfig: {
     | InvalidLimitException
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SelectAggregateResourceConfigRequest,
@@ -7515,8 +7497,8 @@ export const selectAggregateResourceConfig: {
     | InvalidLimitException
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SelectAggregateResourceConfigRequest,
@@ -7552,10 +7534,8 @@ export const startResourceEvaluation: (
   input: StartResourceEvaluationRequest,
 ) => Effect.Effect<
   StartResourceEvaluationResponse,
-  | IdempotentParameterMismatch
-  | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  IdempotentParameterMismatch | InvalidParameterValueException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: StartResourceEvaluationRequest,
   output: StartResourceEvaluationResponse,
@@ -7573,8 +7553,8 @@ export const describeConfigRuleEvaluationStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeConfigRuleEvaluationStatusRequest,
@@ -7583,8 +7563,8 @@ export const describeConfigRuleEvaluationStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeConfigRuleEvaluationStatusRequest,
@@ -7593,8 +7573,8 @@ export const describeConfigRuleEvaluationStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeConfigRuleEvaluationStatusRequest,
@@ -7622,8 +7602,8 @@ export const describeConfigRules: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeConfigRulesRequest,
@@ -7632,8 +7612,8 @@ export const describeConfigRules: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeConfigRulesRequest,
@@ -7642,8 +7622,8 @@ export const describeConfigRules: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeConfigRulesRequest,
@@ -7675,28 +7655,22 @@ export const describeRemediationExceptions: {
     input: DescribeRemediationExceptionsRequest,
   ): Effect.Effect<
     DescribeRemediationExceptionsResponse,
-    | InvalidNextTokenException
-    | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRemediationExceptionsRequest,
   ) => Stream.Stream<
     DescribeRemediationExceptionsResponse,
-    | InvalidNextTokenException
-    | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRemediationExceptionsRequest,
   ) => Stream.Stream<
     unknown,
-    | InvalidNextTokenException
-    | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | InvalidParameterValueException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRemediationExceptionsRequest,
@@ -7725,8 +7699,8 @@ export const describeRetentionConfigurations: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchRetentionConfigurationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeRetentionConfigurationsRequest,
@@ -7735,8 +7709,8 @@ export const describeRetentionConfigurations: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchRetentionConfigurationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeRetentionConfigurationsRequest,
@@ -7745,8 +7719,8 @@ export const describeRetentionConfigurations: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchRetentionConfigurationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeRetentionConfigurationsRequest,
@@ -7776,8 +7750,8 @@ export const getComplianceDetailsByConfigRule: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetComplianceDetailsByConfigRuleRequest,
@@ -7786,8 +7760,8 @@ export const getComplianceDetailsByConfigRule: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetComplianceDetailsByConfigRuleRequest,
@@ -7796,8 +7770,8 @@ export const getComplianceDetailsByConfigRule: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetComplianceDetailsByConfigRuleRequest,
@@ -7830,8 +7804,8 @@ export const listAggregateDiscoveredResources: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListAggregateDiscoveredResourcesRequest,
@@ -7841,8 +7815,8 @@ export const listAggregateDiscoveredResources: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListAggregateDiscoveredResourcesRequest,
@@ -7852,8 +7826,8 @@ export const listAggregateDiscoveredResources: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAggregateDiscoveredResourcesRequest,
@@ -7916,8 +7890,8 @@ export const listDiscoveredResources: {
     | InvalidNextTokenException
     | NoAvailableConfigurationRecorderException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListDiscoveredResourcesRequest,
@@ -7927,8 +7901,8 @@ export const listDiscoveredResources: {
     | InvalidNextTokenException
     | NoAvailableConfigurationRecorderException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListDiscoveredResourcesRequest,
@@ -7938,8 +7912,8 @@ export const listDiscoveredResources: {
     | InvalidNextTokenException
     | NoAvailableConfigurationRecorderException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListDiscoveredResourcesRequest,
@@ -7965,22 +7939,22 @@ export const listStoredQueries: {
     input: ListStoredQueriesRequest,
   ): Effect.Effect<
     ListStoredQueriesResponse,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListStoredQueriesRequest,
   ) => Stream.Stream<
     ListStoredQueriesResponse,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListStoredQueriesRequest,
   ) => Stream.Stream<
     unknown,
-    InvalidNextTokenException | ValidationException | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    InvalidNextTokenException | ValidationException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStoredQueriesRequest,
@@ -8008,8 +7982,8 @@ export const selectResourceConfig: {
     | InvalidExpressionException
     | InvalidLimitException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: SelectResourceConfigRequest,
@@ -8018,8 +7992,8 @@ export const selectResourceConfig: {
     | InvalidExpressionException
     | InvalidLimitException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: SelectResourceConfigRequest,
@@ -8028,8 +8002,8 @@ export const selectResourceConfig: {
     | InvalidExpressionException
     | InvalidLimitException
     | InvalidNextTokenException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SelectResourceConfigRequest,
@@ -8058,8 +8032,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -8069,8 +8043,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -8080,8 +8054,8 @@ export const listTagsForResource: {
     | InvalidNextTokenException
     | ResourceNotFoundException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -8111,8 +8085,8 @@ export const describeAggregationAuthorizations: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAggregationAuthorizationsRequest,
@@ -8121,8 +8095,8 @@ export const describeAggregationAuthorizations: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAggregationAuthorizationsRequest,
@@ -8131,8 +8105,8 @@ export const describeAggregationAuthorizations: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAggregationAuthorizationsRequest,
@@ -8164,8 +8138,8 @@ export const describeConfigurationAggregators: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeConfigurationAggregatorsRequest,
@@ -8175,8 +8149,8 @@ export const describeConfigurationAggregators: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeConfigurationAggregatorsRequest,
@@ -8186,8 +8160,8 @@ export const describeConfigurationAggregators: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeConfigurationAggregatorsRequest,
@@ -8218,8 +8192,8 @@ export const describeConfigurationAggregatorSourcesStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeConfigurationAggregatorSourcesStatusRequest,
@@ -8229,8 +8203,8 @@ export const describeConfigurationAggregatorSourcesStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeConfigurationAggregatorSourcesStatusRequest,
@@ -8240,8 +8214,8 @@ export const describeConfigurationAggregatorSourcesStatus: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigurationAggregatorException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeConfigurationAggregatorSourcesStatusRequest,
@@ -8271,8 +8245,8 @@ export const describeConformancePacks: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeConformancePacksRequest,
@@ -8282,8 +8256,8 @@ export const describeConformancePacks: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeConformancePacksRequest,
@@ -8293,8 +8267,8 @@ export const describeConformancePacks: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeConformancePacksRequest,
@@ -8325,8 +8299,8 @@ export const describeConformancePackStatus: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeConformancePackStatusRequest,
@@ -8335,8 +8309,8 @@ export const describeConformancePackStatus: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeConformancePackStatusRequest,
@@ -8345,8 +8319,8 @@ export const describeConformancePackStatus: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeConformancePackStatusRequest,
@@ -8382,8 +8356,8 @@ export const describeOrganizationConfigRuleStatuses: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOrganizationConfigRuleStatusesRequest,
@@ -8393,8 +8367,8 @@ export const describeOrganizationConfigRuleStatuses: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOrganizationConfigRuleStatusesRequest,
@@ -8404,8 +8378,8 @@ export const describeOrganizationConfigRuleStatuses: {
     | InvalidNextTokenException
     | NoSuchOrganizationConfigRuleException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConfigRuleStatusesRequest,
@@ -8453,8 +8427,8 @@ export const describeOrganizationConformancePacks: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOrganizationConformancePacksRequest,
@@ -8464,8 +8438,8 @@ export const describeOrganizationConformancePacks: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOrganizationConformancePacksRequest,
@@ -8475,8 +8449,8 @@ export const describeOrganizationConformancePacks: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConformancePacksRequest,
@@ -8513,8 +8487,8 @@ export const describeOrganizationConformancePackStatuses: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeOrganizationConformancePackStatusesRequest,
@@ -8524,8 +8498,8 @@ export const describeOrganizationConformancePackStatuses: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeOrganizationConformancePackStatusesRequest,
@@ -8535,8 +8509,8 @@ export const describeOrganizationConformancePackStatuses: {
     | InvalidNextTokenException
     | NoSuchOrganizationConformancePackException
     | OrganizationAccessDeniedException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeOrganizationConformancePackStatusesRequest,
@@ -8565,8 +8539,8 @@ export const describePendingAggregationRequests: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribePendingAggregationRequestsRequest,
@@ -8575,8 +8549,8 @@ export const describePendingAggregationRequests: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribePendingAggregationRequestsRequest,
@@ -8585,8 +8559,8 @@ export const describePendingAggregationRequests: {
     | InvalidLimitException
     | InvalidNextTokenException
     | InvalidParameterValueException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribePendingAggregationRequestsRequest,
@@ -8614,8 +8588,8 @@ export const getConformancePackComplianceSummary: {
     | InvalidLimitException
     | InvalidNextTokenException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetConformancePackComplianceSummaryRequest,
@@ -8624,8 +8598,8 @@ export const getConformancePackComplianceSummary: {
     | InvalidLimitException
     | InvalidNextTokenException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetConformancePackComplianceSummaryRequest,
@@ -8634,8 +8608,8 @@ export const getConformancePackComplianceSummary: {
     | InvalidLimitException
     | InvalidNextTokenException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetConformancePackComplianceSummaryRequest,
@@ -8705,8 +8679,8 @@ export const getDiscoveredResourceCounts: {
     | InvalidLimitException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetDiscoveredResourceCountsRequest,
@@ -8715,8 +8689,8 @@ export const getDiscoveredResourceCounts: {
     | InvalidLimitException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetDiscoveredResourceCountsRequest,
@@ -8725,8 +8699,8 @@ export const getDiscoveredResourceCounts: {
     | InvalidLimitException
     | InvalidNextTokenException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetDiscoveredResourceCountsRequest,
@@ -8759,8 +8733,8 @@ export const describeAggregateComplianceByConfigRules: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAggregateComplianceByConfigRulesRequest,
@@ -8770,8 +8744,8 @@ export const describeAggregateComplianceByConfigRules: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAggregateComplianceByConfigRulesRequest,
@@ -8781,8 +8755,8 @@ export const describeAggregateComplianceByConfigRules: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAggregateComplianceByConfigRulesRequest,
@@ -8839,8 +8813,8 @@ export const describeComplianceByConfigRule: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeComplianceByConfigRuleRequest,
@@ -8849,8 +8823,8 @@ export const describeComplianceByConfigRule: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeComplianceByConfigRuleRequest,
@@ -8859,8 +8833,8 @@ export const describeComplianceByConfigRule: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | NoSuchConfigRuleException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeComplianceByConfigRuleRequest,
@@ -8886,8 +8860,8 @@ export const deleteRemediationExceptions: (
   input: DeleteRemediationExceptionsRequest,
 ) => Effect.Effect<
   DeleteRemediationExceptionsResponse,
-  NoSuchRemediationExceptionException | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  NoSuchRemediationExceptionException | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRemediationExceptionsRequest,
   output: DeleteRemediationExceptionsResponse,
@@ -8908,8 +8882,8 @@ export const describeAggregateComplianceByConformancePacks: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAggregateComplianceByConformancePacksRequest,
@@ -8919,8 +8893,8 @@ export const describeAggregateComplianceByConformancePacks: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAggregateComplianceByConformancePacksRequest,
@@ -8930,8 +8904,8 @@ export const describeAggregateComplianceByConformancePacks: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAggregateComplianceByConformancePacksRequest,
@@ -8964,8 +8938,8 @@ export const describeConformancePackCompliance: {
     | InvalidParameterValueException
     | NoSuchConfigRuleInConformancePackException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeConformancePackComplianceRequest,
@@ -8976,8 +8950,8 @@ export const describeConformancePackCompliance: {
     | InvalidParameterValueException
     | NoSuchConfigRuleInConformancePackException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: DescribeConformancePackComplianceRequest,
@@ -8988,8 +8962,8 @@ export const describeConformancePackCompliance: {
     | InvalidParameterValueException
     | NoSuchConfigRuleInConformancePackException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeConformancePackComplianceRequest,
@@ -9026,8 +9000,8 @@ export const getAggregateComplianceDetailsByConfigRule: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetAggregateComplianceDetailsByConfigRuleRequest,
@@ -9037,8 +9011,8 @@ export const getAggregateComplianceDetailsByConfigRule: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetAggregateComplianceDetailsByConfigRuleRequest,
@@ -9048,8 +9022,8 @@ export const getAggregateComplianceDetailsByConfigRule: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAggregateComplianceDetailsByConfigRuleRequest,
@@ -9081,8 +9055,8 @@ export const getAggregateConformancePackComplianceSummary: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetAggregateConformancePackComplianceSummaryRequest,
@@ -9092,8 +9066,8 @@ export const getAggregateConformancePackComplianceSummary: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetAggregateConformancePackComplianceSummaryRequest,
@@ -9103,8 +9077,8 @@ export const getAggregateConformancePackComplianceSummary: {
     | InvalidNextTokenException
     | NoSuchConfigurationAggregatorException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetAggregateConformancePackComplianceSummaryRequest,
@@ -9184,8 +9158,8 @@ export const putConfigRule: (
   | MaxNumberOfConfigRulesExceededException
   | NoAvailableConfigurationRecorderException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConfigRuleRequest,
   output: PutConfigRuleResponse,
@@ -9229,8 +9203,8 @@ export const putConformancePack: (
   | InvalidParameterValueException
   | MaxNumberOfConformancePacksExceededException
   | ResourceInUseException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConformancePackRequest,
   output: PutConformancePackResponse,
@@ -9255,8 +9229,8 @@ export const getConformancePackComplianceDetails: {
     | InvalidParameterValueException
     | NoSuchConfigRuleInConformancePackException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetConformancePackComplianceDetailsRequest,
@@ -9267,8 +9241,8 @@ export const getConformancePackComplianceDetails: {
     | InvalidParameterValueException
     | NoSuchConfigRuleInConformancePackException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetConformancePackComplianceDetailsRequest,
@@ -9279,8 +9253,8 @@ export const getConformancePackComplianceDetails: {
     | InvalidParameterValueException
     | NoSuchConfigRuleInConformancePackException
     | NoSuchConformancePackException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetConformancePackComplianceDetailsRequest,
@@ -9354,8 +9328,8 @@ export const putOrganizationConfigRule: (
   | OrganizationAllFeaturesNotEnabledException
   | ResourceInUseException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutOrganizationConfigRuleRequest,
   output: PutOrganizationConfigRuleResponse,
@@ -9404,8 +9378,8 @@ export const putConfigurationAggregator: (
   | NoAvailableOrganizationException
   | OrganizationAccessDeniedException
   | OrganizationAllFeaturesNotEnabledException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConfigurationAggregatorRequest,
   output: PutConfigurationAggregatorResponse,
@@ -9429,8 +9403,8 @@ export const listResourceEvaluations: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | InvalidTimeRangeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: ListResourceEvaluationsRequest,
@@ -9439,8 +9413,8 @@ export const listResourceEvaluations: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | InvalidTimeRangeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: ListResourceEvaluationsRequest,
@@ -9449,8 +9423,8 @@ export const listResourceEvaluations: {
     | InvalidNextTokenException
     | InvalidParameterValueException
     | InvalidTimeRangeException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListResourceEvaluationsRequest,
@@ -9480,8 +9454,8 @@ export const getAggregateResourceConfig: (
   | OversizedConfigurationItemException
   | ResourceNotDiscoveredException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetAggregateResourceConfigRequest,
   output: GetAggregateResourceConfigResponse,
@@ -9541,8 +9515,8 @@ export const putOrganizationConformancePack: (
   | OrganizationConformancePackTemplateValidationException
   | ResourceInUseException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutOrganizationConformancePackRequest,
   output: PutOrganizationConformancePackResponse,
@@ -9599,8 +9573,8 @@ export const getResourceConfigHistory: {
     | NoAvailableConfigurationRecorderException
     | ResourceNotDiscoveredException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   pages: (
     input: GetResourceConfigHistoryRequest,
@@ -9612,8 +9586,8 @@ export const getResourceConfigHistory: {
     | NoAvailableConfigurationRecorderException
     | ResourceNotDiscoveredException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
   items: (
     input: GetResourceConfigHistoryRequest,
@@ -9625,8 +9599,8 @@ export const getResourceConfigHistory: {
     | NoAvailableConfigurationRecorderException
     | ResourceNotDiscoveredException
     | ValidationException
-    | Errors.CommonErrors,
-    Credentials.Credentials | Region.Region | HttpClient.HttpClient
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetResourceConfigHistoryRequest,
@@ -9684,8 +9658,8 @@ export const putConfigurationRecorder: (
   | MaxNumberOfConfigurationRecordersExceededException
   | UnmodifiableEntityException
   | ValidationException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutConfigurationRecorderRequest,
   output: PutConfigurationRecorderResponse,
@@ -9734,8 +9708,8 @@ export const putRemediationConfigurations: (
   PutRemediationConfigurationsResponse,
   | InsufficientPermissionsException
   | InvalidParameterValueException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutRemediationConfigurationsRequest,
   output: PutRemediationConfigurationsResponse,
@@ -9768,8 +9742,8 @@ export const putDeliveryChannel: (
   | MaxNumberOfDeliveryChannelsExceededException
   | NoAvailableConfigurationRecorderException
   | NoSuchBucketException
-  | Errors.CommonErrors,
-  Credentials.Credentials | Region.Region | HttpClient.HttpClient
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: PutDeliveryChannelRequest,
   output: PutDeliveryChannelResponse,
