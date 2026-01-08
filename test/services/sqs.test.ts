@@ -42,6 +42,14 @@ const cleanupQueueByName = (queueName: string) =>
 // Idempotent Test Helpers
 // ============================================================================
 
+// Retry policy for QueueDoesNotExist (eventual consistency after create)
+const retryQueueNotExist = {
+  while: (err: { _tag: string }) => err._tag === "QueueDoesNotExist",
+  schedule: Schedule.spaced("1 second").pipe(
+    Schedule.intersect(Schedule.recurs(10)),
+  ),
+};
+
 // Helper to ensure cleanup happens even on failure - cleans up before AND after
 const withQueue = <A, E, R>(
   queueName: string,
@@ -61,6 +69,7 @@ const withQueue = <A, E, R>(
       }),
     );
     const queueUrl = createResult.QueueUrl!;
+
     return yield* testFn(queueUrl).pipe(
       Effect.ensuring(cleanupQueueByUrl(queueUrl)),
     );
@@ -95,6 +104,7 @@ const withFifoQueue = <A, E, R>(
       }),
     );
     const queueUrl = createResult.QueueUrl!;
+
     return yield* testFn(queueUrl).pipe(
       Effect.ensuring(cleanupQueueByUrl(queueUrl)),
     );
@@ -111,10 +121,10 @@ test(
       // Verify queue URL is returned
       expect(queueUrl).toBeDefined();
 
-      // Get queue URL by name
+      // Get queue URL by name (retry for eventual consistency after create)
       const getUrlResult = yield* getQueueUrl({
         QueueName: "itty-sqs-lifecycle",
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
       expect(getUrlResult.QueueUrl).toEqual(queueUrl);
 
       // List queues and verify our queue is in the list
@@ -137,7 +147,7 @@ test(
   "set and get queue attributes",
   withQueue("itty-sqs-attributes", (queueUrl) =>
     Effect.gen(function* () {
-      // Set queue attributes
+      // Set queue attributes (retry for eventual consistency after create)
       yield* setQueueAttributes({
         QueueUrl: queueUrl,
         Attributes: {
@@ -145,7 +155,7 @@ test(
           MessageRetentionPeriod: "86400", // 1 day
           DelaySeconds: "5",
         },
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Get queue attributes with retry for eventual consistency
       yield* Effect.gen(function* () {
@@ -188,7 +198,7 @@ test(
   "tag queue, list tags, and untag queue",
   withQueue("itty-sqs-tagging", (queueUrl) =>
     Effect.gen(function* () {
-      // Add tags to queue
+      // Add tags to queue (retry for eventual consistency after create)
       yield* tagQueue({
         QueueUrl: queueUrl,
         Tags: {
@@ -196,7 +206,7 @@ test(
           Project: "itty-aws",
           Team: "Platform",
         },
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // List tags
       const tagsResult = yield* listQueueTags({ QueueUrl: queueUrl });
@@ -239,11 +249,11 @@ test(
     Effect.gen(function* () {
       const messageBody = "Hello, SQS!";
 
-      // Send message
+      // Send message (retry for eventual consistency after create)
       const sendResult = yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: messageBody,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       expect(sendResult.MessageId).toBeDefined();
       expect(sendResult.MD5OfMessageBody).toBeDefined();
@@ -289,12 +299,12 @@ test(
     Effect.gen(function* () {
       const messageBody = "Delayed message";
 
-      // Send message with delay
+      // Send message with delay (retry for eventual consistency after create)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: messageBody,
         DelaySeconds: 1,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Immediately try to receive - should be empty due to delay
       const immediateReceive = yield* receiveMessage({
@@ -333,7 +343,7 @@ test(
     Effect.gen(function* () {
       const messageBody = "Message with attributes";
 
-      // Send message with attributes
+      // Send message with attributes (retry for eventual consistency after create)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: messageBody,
@@ -347,7 +357,7 @@ test(
             StringValue: "42",
           },
         },
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Receive message with attributes
       const receiveResult = yield* receiveMessage({
@@ -379,11 +389,11 @@ test(
     Effect.gen(function* () {
       const messageBody = "Visibility test";
 
-      // Send message
+      // Send message (retry for eventual consistency after create)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: messageBody,
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Receive message
       const receiveResult = yield* receiveMessage({
@@ -431,11 +441,11 @@ test(
   "send multiple messages and delete them individually",
   withQueue("itty-sqs-batch", (queueUrl) =>
     Effect.gen(function* () {
-      // Send multiple messages individually
+      // Send multiple messages individually (first one retries for eventual consistency)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: "Message 1",
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: "Message 2",
@@ -503,11 +513,11 @@ test(
   "purge queue",
   withQueue("itty-sqs-purge", (queueUrl) =>
     Effect.gen(function* () {
-      // Send multiple messages individually
+      // Send multiple messages individually (first one retries for eventual consistency)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: "Purge me 1",
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: "Purge me 2",
@@ -547,11 +557,12 @@ test(
   withFifoQueue("itty-sqs-fifo", (queueUrl) =>
     Effect.gen(function* () {
       // Send messages to same message group - they should be received in order
+      // (first one retries for eventual consistency)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: "FIFO Message 1",
         MessageGroupId: "group1",
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       yield* sendMessage({
         QueueUrl: queueUrl,
@@ -601,12 +612,12 @@ test(
   "FIFO queue: different message groups processed independently",
   withFifoQueue("itty-sqs-fifo-groups", (queueUrl) =>
     Effect.gen(function* () {
-      // Send messages to different groups
+      // Send messages to different groups (first one retries for eventual consistency)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: "Group A - Message 1",
         MessageGroupId: "groupA",
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       yield* sendMessage({
         QueueUrl: queueUrl,
@@ -652,11 +663,11 @@ test(
   "long polling with WaitTimeSeconds",
   withQueue("itty-sqs-long-poll-test", (queueUrl) =>
     Effect.gen(function* () {
-      // Send a message first
+      // Send a message first (retry for eventual consistency after create)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: "Long poll test",
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Long poll should find the message
       const receiveResult = yield* receiveMessage({
@@ -698,11 +709,11 @@ test(
   "receive message with system attributes",
   withQueue("itty-sqs-sysattrs", (queueUrl) =>
     Effect.gen(function* () {
-      // Send a message
+      // Send a message (retry for eventual consistency after create)
       yield* sendMessage({
         QueueUrl: queueUrl,
         MessageBody: "System attributes test",
-      });
+      }).pipe(Effect.retry(retryQueueNotExist));
 
       // Receive with all system attributes
       const receiveResult = yield* receiveMessage({
