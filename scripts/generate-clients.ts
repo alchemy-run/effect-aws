@@ -2221,6 +2221,7 @@ const convertShapeToSchema: (
 const addError = Effect.fn(function* (error: {
   name: string;
   shapeId: string;
+  tag?: string; // Original AWS error code (may contain dots)
 }) {
   const sdkFile = yield* SdkFile;
   const existingErrors = yield* Ref.get(sdkFile.errors);
@@ -2303,11 +2304,14 @@ const addError = Effect.fn(function* (error: {
     const categoryPipe =
       categories.length > 0 ? `.pipe(${categories.join(", ")})` : "";
 
+    // Use original tag (with dots) if provided, otherwise use sanitized name
+    const tag = error.tag ?? error.name;
+
     yield* Ref.update(sdkFile.errors, (errors) => [
       ...errors,
       {
         name: error.name,
-        definition: `export class ${error.name} extends S.TaggedError<${error.name}>()("${error.name}", ${fields}${annotationsArg})${categoryPipe} {}`,
+        definition: `export class ${error.name} extends S.TaggedError<${error.name}>()("${tag}", ${fields}${annotationsArg})${categoryPipe} {}`,
       },
     ]);
   }
@@ -2517,12 +2521,14 @@ const generateClient = Effect.fn(function* (
           // Process patched errors (these are just error names, not shape IDs)
           // They will be generated as simple TaggedErrors
           // Sanitize names to remove dots (e.g., "InvalidVpcID.NotFound" -> "InvalidVpcIDNotFound")
+          // but preserve the original name as the tag for correct AWS error matching
           const patchErrors = yield* Effect.forEach(
             patchedErrors,
             (errorName) =>
               addError({
                 name: sanitizeErrorName(errorName),
                 shapeId: `patched#${errorName}`, // Synthetic shape ID for patched errors
+                tag: errorName, // Preserve original AWS error code with dots
               }),
           );
 

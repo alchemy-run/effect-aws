@@ -71648,31 +71648,31 @@ export const ModifySpotFleetRequestResponse = S.suspend(() =>
 
 //# Errors
 export class InvalidVpcIDNotFound extends S.TaggedError<InvalidVpcIDNotFound>()(
-  "InvalidVpcIDNotFound",
+  "InvalidVpcID.NotFound",
   {},
 ) {}
 export class InvalidInternetGatewayIDNotFound extends S.TaggedError<InvalidInternetGatewayIDNotFound>()(
-  "InvalidInternetGatewayIDNotFound",
+  "InvalidInternetGatewayID.NotFound",
   {},
 ) {}
 export class InvalidCustomerGatewayIDNotFound extends S.TaggedError<InvalidCustomerGatewayIDNotFound>()(
-  "InvalidCustomerGatewayIDNotFound",
+  "InvalidCustomerGatewayID.NotFound",
   {},
 ) {}
 export class InvalidDhcpOptionIDNotFound extends S.TaggedError<InvalidDhcpOptionIDNotFound>()(
-  "InvalidDhcpOptionIDNotFound",
+  "InvalidDhcpOptionID.NotFound",
   {},
 ) {}
 export class InvalidNetworkAclIDNotFound extends S.TaggedError<InvalidNetworkAclIDNotFound>()(
-  "InvalidNetworkAclIDNotFound",
+  "InvalidNetworkAclID.NotFound",
   {},
 ) {}
 export class InvalidNetworkInterfaceIDNotFound extends S.TaggedError<InvalidNetworkInterfaceIDNotFound>()(
-  "InvalidNetworkInterfaceIDNotFound",
+  "InvalidNetworkInterfaceID.NotFound",
   {},
 ) {}
 export class InvalidRouteTableIDNotFound extends S.TaggedError<InvalidRouteTableIDNotFound>()(
-  "InvalidRouteTableIDNotFound",
+  "InvalidRouteTableID.NotFound",
   {},
 ) {}
 export class DependencyViolation extends S.TaggedError<DependencyViolation>()(
@@ -71680,52 +71680,52 @@ export class DependencyViolation extends S.TaggedError<DependencyViolation>()(
   {},
 ) {}
 export class InvalidSnapshotNotFound extends S.TaggedError<InvalidSnapshotNotFound>()(
-  "InvalidSnapshotNotFound",
+  "InvalidSnapshot.NotFound",
   {},
 ) {}
 export class InvalidSubnetIDNotFound extends S.TaggedError<InvalidSubnetIDNotFound>()(
-  "InvalidSubnetIDNotFound",
+  "InvalidSubnetID.NotFound",
   {},
 ) {}
 export class InvalidID extends S.TaggedError<InvalidID>()("InvalidID", {}) {}
 export class InvalidVolumeNotFound extends S.TaggedError<InvalidVolumeNotFound>()(
-  "InvalidVolumeNotFound",
+  "InvalidVolume.NotFound",
   {},
 ) {}
 export class InvalidVpnConnectionIDNotFound extends S.TaggedError<InvalidVpnConnectionIDNotFound>()(
-  "InvalidVpnConnectionIDNotFound",
+  "InvalidVpnConnectionID.NotFound",
   {},
 ) {}
 export class InvalidVpnGatewayIDNotFound extends S.TaggedError<InvalidVpnGatewayIDNotFound>()(
-  "InvalidVpnGatewayIDNotFound",
+  "InvalidVpnGatewayID.NotFound",
   {},
 ) {}
 export class InvalidAttachmentIDNotFound extends S.TaggedError<InvalidAttachmentIDNotFound>()(
-  "InvalidAttachmentIDNotFound",
+  "InvalidAttachmentID.NotFound",
   {},
 ) {}
 export class InvalidAssociationIDNotFound extends S.TaggedError<InvalidAssociationIDNotFound>()(
-  "InvalidAssociationIDNotFound",
+  "InvalidAssociationID.NotFound",
   {},
 ) {}
 export class InvalidInstanceIDNotFound extends S.TaggedError<InvalidInstanceIDNotFound>()(
-  "InvalidInstanceIDNotFound",
+  "InvalidInstanceID.NotFound",
   {},
 ) {}
 export class InvalidAllocationIDNotFound extends S.TaggedError<InvalidAllocationIDNotFound>()(
-  "InvalidAllocationIDNotFound",
+  "InvalidAllocationID.NotFound",
   {},
 ) {}
 export class InvalidAMIIDNotFound extends S.TaggedError<InvalidAMIIDNotFound>()(
-  "InvalidAMIIDNotFound",
+  "InvalidAMIID.NotFound",
   {},
 ) {}
 export class InvalidKeyPairDuplicate extends S.TaggedError<InvalidKeyPairDuplicate>()(
-  "InvalidKeyPairDuplicate",
+  "InvalidKeyPair.Duplicate",
   {},
 ) {}
 export class InvalidGroupDuplicate extends S.TaggedError<InvalidGroupDuplicate>()(
-  "InvalidGroupDuplicate",
+  "InvalidGroup.Duplicate",
   {},
 ) {}
 export class MissingParameter extends S.TaggedError<MissingParameter>()(
@@ -71734,43 +71734,43 @@ export class MissingParameter extends S.TaggedError<MissingParameter>()(
 ) {}
 export class ParseError extends S.TaggedError<ParseError>()("ParseError", {}) {}
 export class InvalidCarrierGatewayIDNotFound extends S.TaggedError<InvalidCarrierGatewayIDNotFound>()(
-  "InvalidCarrierGatewayIDNotFound",
+  "InvalidCarrierGatewayID.NotFound",
   {},
 ) {}
 export class InvalidGatewayIDNotFound extends S.TaggedError<InvalidGatewayIDNotFound>()(
-  "InvalidGatewayIDNotFound",
+  "InvalidGatewayID.NotFound",
   {},
 ) {}
 export class InvalidFlowLogIdNotFound extends S.TaggedError<InvalidFlowLogIdNotFound>()(
-  "InvalidFlowLogIdNotFound",
+  "InvalidFlowLogId.NotFound",
   {},
 ) {}
 export class InvalidGroupNotFound extends S.TaggedError<InvalidGroupNotFound>()(
-  "InvalidGroupNotFound",
+  "InvalidGroup.NotFound",
   {},
 ) {}
 export class InvalidVpcPeeringConnectionIdNotFound extends S.TaggedError<InvalidVpcPeeringConnectionIdNotFound>()(
-  "InvalidVpcPeeringConnectionIdNotFound",
+  "InvalidVpcPeeringConnectionId.NotFound",
   {},
 ) {}
 export class InvalidSecurityGroupRuleIdNotFound extends S.TaggedError<InvalidSecurityGroupRuleIdNotFound>()(
-  "InvalidSecurityGroupRuleIdNotFound",
+  "InvalidSecurityGroupRuleId.NotFound",
   {},
 ) {}
 export class InvalidVpcEndpointServiceIdNotFound extends S.TaggedError<InvalidVpcEndpointServiceIdNotFound>()(
-  "InvalidVpcEndpointServiceIdNotFound",
+  "InvalidVpcEndpointServiceId.NotFound",
   {},
 ) {}
 export class InvalidSubnetCidrBlockAssociationIDNotFound extends S.TaggedError<InvalidSubnetCidrBlockAssociationIDNotFound>()(
-  "InvalidSubnetCidrBlockAssociationIDNotFound",
+  "InvalidSubnetCidrBlockAssociationID.NotFound",
   {},
 ) {}
 export class InvalidVpcCidrBlockAssociationIdErrorNotFound extends S.TaggedError<InvalidVpcCidrBlockAssociationIdErrorNotFound>()(
-  "InvalidVpcCidrBlockAssociationIdErrorNotFound",
+  "InvalidVpcCidrBlockAssociationIdError.NotFound",
   {},
 ) {}
 export class InvalidVpcEndpointIdNotFound extends S.TaggedError<InvalidVpcEndpointIdNotFound>()(
-  "InvalidVpcEndpointIdNotFound",
+  "InvalidVpcEndpointId.NotFound",
   {},
 ) {}
 export class DefaultVpcAlreadyExists extends S.TaggedError<DefaultVpcAlreadyExists>()(
@@ -71778,7 +71778,7 @@ export class DefaultVpcAlreadyExists extends S.TaggedError<DefaultVpcAlreadyExis
   {},
 ) {}
 export class InvalidTransitGatewayIDNotFound extends S.TaggedError<InvalidTransitGatewayIDNotFound>()(
-  "InvalidTransitGatewayIDNotFound",
+  "InvalidTransitGatewayID.NotFound",
   {},
 ) {}
 export class InvalidParameterValue extends S.TaggedError<InvalidParameterValue>()(
@@ -71786,11 +71786,11 @@ export class InvalidParameterValue extends S.TaggedError<InvalidParameterValue>(
   {},
 ) {}
 export class InvalidLaunchTemplateNameNotFoundException extends S.TaggedError<InvalidLaunchTemplateNameNotFoundException>()(
-  "InvalidLaunchTemplateNameNotFoundException",
+  "InvalidLaunchTemplateName.NotFoundException",
   {},
 ) {}
 export class InvalidKeyPairNotFound extends S.TaggedError<InvalidKeyPairNotFound>()(
-  "InvalidKeyPairNotFound",
+  "InvalidKeyPair.NotFound",
   {},
 ) {}
 export class DefaultSubnetAlreadyExistsInAvailabilityZone extends S.TaggedError<DefaultSubnetAlreadyExistsInAvailabilityZone>()(
