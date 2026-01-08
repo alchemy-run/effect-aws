@@ -96,6 +96,9 @@ export type DatasetType = string;
 export type KmsKeyArn = string;
 export type FilterExpression = string | redacted.Redacted<string>;
 export type AvroSchema = string;
+export type PerformAutoML = boolean;
+export type PerformAutoTraining = boolean;
+export type PerformIncrementalUpdate = boolean;
 export type EventType = string;
 export type NextToken = string;
 export type MaxResults = number;
@@ -119,6 +122,7 @@ export type Status = string;
 export type AccountId = string;
 export type Description = string;
 export type RecipeType = string;
+export type PerformHPO = boolean;
 export type TrainingHours = number;
 export type MetricValue = number;
 export type HPOObjectiveType = string;
@@ -132,6 +136,7 @@ export type IntegerMaxValue = number;
 export type ContinuousMinValue = number;
 export type ContinuousMaxValue = number;
 export type CategoricalValue = string;
+export type Tunable = boolean;
 
 //# Schemas
 export type BatchInferenceJobMode = "BATCH_INFERENCE" | "THEME_GENERATION";

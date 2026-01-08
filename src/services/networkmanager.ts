@@ -477,7 +477,7 @@ export const CreateCoreNetworkRequest = S.suspend(() =>
     Description: S.optional(S.String),
     Tags: S.optional(TagList),
     PolicyDocument: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/core-networks" }),
@@ -502,7 +502,7 @@ export const CreateCoreNetworkPrefixListAssociationRequest = S.suspend(() =>
     CoreNetworkId: S.String,
     PrefixListArn: S.String,
     PrefixListAlias: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/prefix-list" }),
@@ -531,7 +531,7 @@ export const CreateDirectConnectGatewayAttachmentRequest = S.suspend(() =>
     RoutingPolicyLabel: S.optional(S.String),
     EdgeLocations: ExternalRegionCodeList,
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/direct-connect-gateway-attachments" }),
@@ -619,7 +619,7 @@ export const CreateSiteToSiteVpnAttachmentRequest = S.suspend(() =>
     VpnConnectionArn: S.String,
     RoutingPolicyLabel: S.optional(S.String),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/site-to-site-vpn-attachments" }),
@@ -644,7 +644,7 @@ export const CreateTransitGatewayPeeringRequest = S.suspend(() =>
     CoreNetworkId: S.String,
     TransitGatewayArn: S.String,
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/transit-gateway-peerings" }),
@@ -671,7 +671,7 @@ export const CreateTransitGatewayRouteTableAttachmentRequest = S.suspend(() =>
     TransitGatewayRouteTableArn: S.String,
     RoutingPolicyLabel: S.optional(S.String),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -2094,7 +2094,7 @@ export const PutAttachmentRoutingPolicyLabelRequest = S.suspend(() =>
     CoreNetworkId: S.String,
     AttachmentId: S.String,
     RoutingPolicyLabel: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/routing-policy-label" }),
@@ -2121,7 +2121,7 @@ export const PutCoreNetworkPolicyRequest = S.suspend(() =>
     PolicyDocument: S.String,
     Description: S.optional(S.String),
     LatestVersionId: S.optional(S.Number),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3166,7 +3166,7 @@ export const CreateConnectAttachmentRequest = S.suspend(() =>
     RoutingPolicyLabel: S.optional(S.String),
     Options: ConnectAttachmentOptions,
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/connect-attachments" }),
@@ -3198,7 +3198,7 @@ export const CreateConnectPeerRequest = S.suspend(() =>
     BgpOptions: S.optional(BgpOptions),
     InsideCidrBlocks: S.optional(ConstrainedStringList),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SubnetArn: S.optional(S.String),
   }).pipe(
     T.all(
@@ -3318,7 +3318,7 @@ export const CreateVpcAttachmentRequest = S.suspend(() =>
     Options: S.optional(VpcOptions),
     RoutingPolicyLabel: S.optional(S.String),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/vpc-attachments" }),

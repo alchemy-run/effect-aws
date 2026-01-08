@@ -92,8 +92,11 @@ export type CheckpointToken = string;
 export type ClientToken = string;
 export type NamespacedFunctionName = string;
 export type NumericLatestPublishedOrAliasQualifier = string;
+export type IncludeExecutionData = boolean;
 export type ItemCount = number;
+export type ReverseOrder = boolean;
 export type DurableExecutionName = string;
+export type ExecutionTimestamp = Date;
 export type MaxFunctionEventInvokeConfigListItems = number;
 export type TaggableResource = string;
 export type MaximumRetryAttempts = number;
@@ -107,10 +110,12 @@ export type Description = string;
 export type MaxListItems = number;
 export type CodeSigningConfigArn = string;
 export type Arn = string;
+export type Enabled = boolean;
 export type BatchSize = number;
 export type MaximumBatchingWindowInSeconds = number;
 export type ParallelizationFactor = number;
 export type MaximumRecordAgeInSeconds = number;
+export type BisectBatchOnFunctionError = boolean;
 export type MaximumRetryAttemptsEventSourceMapping = number;
 export type TumblingWindowInSeconds = number;
 export type Topic = string;
@@ -149,6 +154,7 @@ export type Principal = string;
 export type SourceOwner = string;
 export type EventSourceToken = string;
 export type PrincipalOrgID = string;
+export type InvokedViaFunctionUrl = boolean;
 export type NamespacedStatementId = string;
 export type Qualifier = string;
 export type PositiveInteger = number;
@@ -181,6 +187,7 @@ export type EphemeralStorageSize = number;
 export type LogGroup = string;
 export type RetentionPeriodInDays = number;
 export type ExecutionTimeout = number;
+export type AllowCredentials = boolean;
 export type Header = string;
 export type Method = string;
 export type Origin = string;
@@ -199,6 +206,7 @@ export type LastUpdateStatusReason = string;
 export type HttpStatus = number;
 export type LayerArn = string;
 export type NonNegativeInteger = number;
+export type ReplayChildren = boolean;
 export type DurationSeconds = number;
 export type DestinationArn = string;
 export type MetricTargetValue = number;
@@ -221,6 +229,7 @@ export type TagsErrorCode = string;
 export type TagsErrorMessage = string;
 export type AttemptCount = number;
 export type SensitiveString = string | redacted.Redacted<string>;
+export type Truncated = boolean;
 
 //# Schemas
 export interface GetAccountSettingsRequest {}
@@ -4550,7 +4559,7 @@ export const CheckpointDurableExecutionRequest = S.suspend(() =>
     DurableExecutionArn: S.String.pipe(T.HttpLabel("DurableExecutionArn")),
     CheckpointToken: S.String,
     Updates: S.optional(OperationUpdates),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({

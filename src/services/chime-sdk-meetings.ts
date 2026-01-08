@@ -267,7 +267,7 @@ export interface CreateMeetingWithAttendeesRequest {
 }
 export const CreateMeetingWithAttendeesRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: SensitiveString,
+    ClientRequestToken: SensitiveString.pipe(T.IdempotencyToken()),
     MediaRegion: S.String,
     MeetingHostId: S.optional(SensitiveString),
     ExternalMeetingId: SensitiveString,
@@ -933,7 +933,7 @@ export interface CreateMeetingRequest {
 }
 export const CreateMeetingRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: SensitiveString,
+    ClientRequestToken: SensitiveString.pipe(T.IdempotencyToken()),
     MediaRegion: S.String,
     MeetingHostId: S.optional(SensitiveString),
     ExternalMeetingId: SensitiveString,

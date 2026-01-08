@@ -158,7 +158,7 @@ export const CreateWatchlistRequest = S.suspend(() =>
     DomainId: S.String,
     Name: SensitiveString,
     Description: S.optional(SensitiveString),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -651,7 +651,7 @@ export interface StartFraudsterRegistrationJobRequest {
 }
 export const StartFraudsterRegistrationJobRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     JobName: S.optional(SensitiveString),
     DomainId: S.String,
     DataAccessRoleArn: S.String,
@@ -699,7 +699,7 @@ export const CreateDomainRequest = S.suspend(() =>
     Name: SensitiveString,
     Description: S.optional(SensitiveString),
     ServerSideEncryptionConfiguration: ServerSideEncryptionConfiguration,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1142,7 +1142,7 @@ export interface StartSpeakerEnrollmentJobRequest {
 }
 export const StartSpeakerEnrollmentJobRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     JobName: S.optional(SensitiveString),
     DomainId: S.String,
     DataAccessRoleArn: S.String,

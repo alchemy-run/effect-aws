@@ -186,7 +186,7 @@ export interface CompleteAttachmentUploadRequest {
 export const CompleteAttachmentUploadRequest = S.suspend(() =>
   S.Struct({
     AttachmentIds: AttachmentIdList,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     ConnectionToken: S.String.pipe(T.HttpHeader("X-Amz-Bearer")),
   }).pipe(
     T.all(
@@ -260,7 +260,7 @@ export interface DisconnectParticipantRequest {
 }
 export const DisconnectParticipantRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ConnectionToken: S.String.pipe(T.HttpHeader("X-Amz-Bearer")),
   }).pipe(
     T.all(
@@ -337,7 +337,7 @@ export const SendEventRequest = S.suspend(() =>
   S.Struct({
     ContentType: S.String,
     Content: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ConnectionToken: S.String.pipe(T.HttpHeader("X-Amz-Bearer")),
   }).pipe(
     T.all(
@@ -362,7 +362,7 @@ export const SendMessageRequest = S.suspend(() =>
   S.Struct({
     ContentType: S.String,
     Content: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ConnectionToken: S.String.pipe(T.HttpHeader("X-Amz-Bearer")),
   }).pipe(
     T.all(
@@ -389,7 +389,7 @@ export const StartAttachmentUploadRequest = S.suspend(() =>
     ContentType: S.String,
     AttachmentSizeInBytes: S.Number,
     AttachmentName: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     ConnectionToken: S.String.pipe(T.HttpHeader("X-Amz-Bearer")),
   }).pipe(
     T.all(

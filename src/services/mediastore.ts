@@ -103,6 +103,7 @@ export type ErrorMessage = string;
 export type ObjectGroup = string;
 export type ObjectGroupName = string;
 export type Endpoint = string;
+export type ContainerAccessLoggingEnabled = boolean;
 
 //# Schemas
 export type TagKeyList = string[];

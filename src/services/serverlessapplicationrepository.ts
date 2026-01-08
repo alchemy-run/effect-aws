@@ -90,9 +90,7 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type MaxItems = number;
-export type __integer = number;
 
 //# Schemas
 export type __listOf__string = string[];
@@ -591,7 +589,18 @@ export interface GetApplicationResponse {
   ReadmeUrl?: string;
   SpdxLicenseId?: string;
   VerifiedAuthorUrl?: string;
-  Version?: Version;
+  Version?: Version & {
+    ApplicationId: string;
+    CreationTime: string;
+    ParameterDefinitions: (ParameterDefinition & {
+      Name: string;
+      ReferencedByResources: __listOf__string;
+    })[];
+    RequiredCapabilities: __listOfCapability;
+    ResourcesSupported: boolean;
+    SemanticVersion: string;
+    TemplateUrl: string;
+  };
 }
 export const GetApplicationResponse = S.suspend(() =>
   S.Struct({
@@ -619,7 +628,10 @@ export const GetApplicationResponse = S.suspend(() =>
   identifier: "GetApplicationResponse",
 }) as any as S.Schema<GetApplicationResponse>;
 export interface GetApplicationPolicyResponse {
-  Statements?: ApplicationPolicyStatement[];
+  Statements?: (ApplicationPolicyStatement & {
+    Actions: __listOf__string;
+    Principals: __listOf__string;
+  })[];
 }
 export const GetApplicationPolicyResponse = S.suspend(() =>
   S.Struct({
@@ -688,7 +700,18 @@ export interface UpdateApplicationResponse {
   ReadmeUrl?: string;
   SpdxLicenseId?: string;
   VerifiedAuthorUrl?: string;
-  Version?: Version;
+  Version?: Version & {
+    ApplicationId: string;
+    CreationTime: string;
+    ParameterDefinitions: (ParameterDefinition & {
+      Name: string;
+      ReferencedByResources: __listOf__string;
+    })[];
+    RequiredCapabilities: __listOfCapability;
+    ResourcesSupported: boolean;
+    SemanticVersion: string;
+    TemplateUrl: string;
+  };
 }
 export const UpdateApplicationResponse = S.suspend(() =>
   S.Struct({
@@ -819,7 +842,18 @@ export interface CreateApplicationResponse {
   ReadmeUrl?: string;
   SpdxLicenseId?: string;
   VerifiedAuthorUrl?: string;
-  Version?: Version;
+  Version?: Version & {
+    ApplicationId: string;
+    CreationTime: string;
+    ParameterDefinitions: (ParameterDefinition & {
+      Name: string;
+      ReferencedByResources: __listOf__string;
+    })[];
+    RequiredCapabilities: __listOfCapability;
+    ResourcesSupported: boolean;
+    SemanticVersion: string;
+    TemplateUrl: string;
+  };
 }
 export const CreateApplicationResponse = S.suspend(() =>
   S.Struct({
@@ -849,7 +883,10 @@ export const CreateApplicationResponse = S.suspend(() =>
 export interface CreateApplicationVersionResponse {
   ApplicationId?: string;
   CreationTime?: string;
-  ParameterDefinitions?: ParameterDefinition[];
+  ParameterDefinitions?: (ParameterDefinition & {
+    Name: string;
+    ReferencedByResources: __listOf__string;
+  })[];
   RequiredCapabilities?: Capability[];
   ResourcesSupported?: boolean;
   SemanticVersion?: string;
@@ -935,7 +972,10 @@ export const CreateCloudFormationChangeSetRequest = S.suspend(() =>
   identifier: "CreateCloudFormationChangeSetRequest",
 }) as any as S.Schema<CreateCloudFormationChangeSetRequest>;
 export interface ListApplicationDependenciesResponse {
-  Dependencies?: ApplicationDependencySummary[];
+  Dependencies?: (ApplicationDependencySummary & {
+    ApplicationId: string;
+    SemanticVersion: string;
+  })[];
   NextToken?: string;
 }
 export const ListApplicationDependenciesResponse = S.suspend(() =>
@@ -949,7 +989,12 @@ export const ListApplicationDependenciesResponse = S.suspend(() =>
   identifier: "ListApplicationDependenciesResponse",
 }) as any as S.Schema<ListApplicationDependenciesResponse>;
 export interface ListApplicationsResponse {
-  Applications?: ApplicationSummary[];
+  Applications?: (ApplicationSummary & {
+    ApplicationId: string;
+    Author: string;
+    Description: string;
+    Name: string;
+  })[];
   NextToken?: string;
 }
 export const ListApplicationsResponse = S.suspend(() =>
@@ -964,7 +1009,11 @@ export const ListApplicationsResponse = S.suspend(() =>
 }) as any as S.Schema<ListApplicationsResponse>;
 export interface ListApplicationVersionsResponse {
   NextToken?: string;
-  Versions?: VersionSummary[];
+  Versions?: (VersionSummary & {
+    ApplicationId: string;
+    CreationTime: string;
+    SemanticVersion: string;
+  })[];
 }
 export const ListApplicationVersionsResponse = S.suspend(() =>
   S.Struct({
@@ -975,7 +1024,10 @@ export const ListApplicationVersionsResponse = S.suspend(() =>
   identifier: "ListApplicationVersionsResponse",
 }) as any as S.Schema<ListApplicationVersionsResponse>;
 export interface PutApplicationPolicyResponse {
-  Statements?: ApplicationPolicyStatement[];
+  Statements?: (ApplicationPolicyStatement & {
+    Actions: __listOf__string;
+    Principals: __listOf__string;
+  })[];
 }
 export const PutApplicationPolicyResponse = S.suspend(() =>
   S.Struct({

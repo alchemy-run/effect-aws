@@ -124,6 +124,7 @@ export type PhoneNumber = string;
 export type ContactNotes = string;
 export type TagValue = string;
 export type DurationInSeconds = number;
+export type AttackTimestamp = Date;
 export type HealthCheckId = string;
 export type LimitType = string;
 export type LimitNumber = number;

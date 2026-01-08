@@ -449,7 +449,7 @@ export interface StartSimulationInput {
 }
 export const StartSimulationInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(SensitiveString),
+    ClientToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     Name: S.String,
     Description: S.optional(S.String),
     RoleArn: S.String,
@@ -502,7 +502,7 @@ export interface StartAppInput {
 }
 export const StartAppInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(SensitiveString),
+    ClientToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     Simulation: S.String,
     Domain: S.String,
     Name: S.String,

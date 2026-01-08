@@ -109,6 +109,7 @@ export type DistinguishedName = string | redacted.Redacted<string>;
 export type UserPrincipalName = string | redacted.Redacted<string>;
 export type StringAttributeValue = string | redacted.Redacted<string>;
 export type NumberAttributeValue = number;
+export type BooleanAttributeValue = boolean;
 
 //# Schemas
 export type GroupType = "Distribution" | "Security";
@@ -141,7 +142,7 @@ export const AddGroupMemberRequest = S.suspend(() =>
     GroupName: S.String,
     MemberName: S.String,
     MemberRealm: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -194,7 +195,7 @@ export const CreateUserRequest = S.suspend(() =>
     GivenName: S.optional(SensitiveString),
     Surname: S.optional(SensitiveString),
     OtherAttributes: S.optional(Attributes),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -218,7 +219,7 @@ export const DeleteGroupRequest = S.suspend(() =>
   S.Struct({
     DirectoryId: S.String.pipe(T.HttpQuery("DirectoryId")),
     SAMAccountName: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -248,7 +249,7 @@ export const DeleteUserRequest = S.suspend(() =>
   S.Struct({
     DirectoryId: S.String.pipe(T.HttpQuery("DirectoryId")),
     SAMAccountName: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -330,7 +331,7 @@ export const DisableUserRequest = S.suspend(() =>
   S.Struct({
     DirectoryId: S.String.pipe(T.HttpQuery("DirectoryId")),
     SAMAccountName: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -476,7 +477,7 @@ export const RemoveGroupMemberRequest = S.suspend(() =>
     GroupName: S.String,
     MemberName: S.String,
     MemberRealm: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -574,7 +575,7 @@ export const UpdateGroupRequest = S.suspend(() =>
     GroupScope: S.optional(GroupScope),
     OtherAttributes: S.optional(Attributes),
     UpdateType: S.optional(UpdateType),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -614,7 +615,7 @@ export const UpdateUserRequest = S.suspend(() =>
     Surname: S.optional(SensitiveString),
     OtherAttributes: S.optional(Attributes),
     UpdateType: S.optional(UpdateType),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -850,7 +851,7 @@ export const CreateGroupRequest = S.suspend(() =>
     GroupType: S.optional(GroupType),
     GroupScope: S.optional(GroupScope),
     OtherAttributes: S.optional(Attributes),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,

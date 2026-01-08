@@ -171,6 +171,8 @@ export type Smithy = string;
 export type ErrorMessage = string;
 export type CreatedBy = string;
 export type UpdatedBy = string;
+export type CreatedAt = Date;
+export type UpdatedAt = Date;
 export type GroupProfileName = string | redacted.Redacted<string>;
 export type EnvironmentName = string | redacted.Redacted<string>;
 export type EnvironmentActionId = string;
@@ -827,7 +829,7 @@ export const CreateGroupProfileInput = S.suspend(() =>
   S.Struct({
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     groupIdentifier: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -859,7 +861,7 @@ export const CreateListingChangeSetInput = S.suspend(() =>
     entityType: EntityType,
     entityRevision: S.optional(S.String),
     action: ChangeAction,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -887,7 +889,7 @@ export const CreateUserProfileInput = S.suspend(() =>
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     userIdentifier: S.String,
     userType: S.optional(UserType),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1310,7 +1312,10 @@ export const DeleteTimeSeriesDataPointsInput = S.suspend(() =>
     entityIdentifier: S.String.pipe(T.HttpLabel("entityIdentifier")),
     entityType: TimeSeriesEntityType.pipe(T.HttpLabel("entityType")),
     formName: S.String.pipe(T.HttpQuery("formName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -2860,7 +2865,10 @@ export const PostLineageEventInput = S.suspend(() =>
   S.Struct({
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     event: T.StreamingInput.pipe(T.HttpPayload()),
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -2939,7 +2947,7 @@ export const RemoveEntityOwnerInput = S.suspend(() =>
     entityType: DataZoneEntityType.pipe(T.HttpLabel("entityType")),
     entityIdentifier: S.String.pipe(T.HttpLabel("entityIdentifier")),
     owner: OwnerProperties,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3074,7 +3082,7 @@ export const RemovePolicyGrantInput = S.suspend(() =>
     policyType: ManagedPolicyType,
     principal: PolicyGrantPrincipal,
     grantIdentifier: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3933,7 +3941,7 @@ export const UpdateRootDomainUnitOwnerInput = S.suspend(() =>
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     currentOwner: S.String,
     newOwner: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -4152,7 +4160,7 @@ export const CreateAssetRevisionInput = S.suspend(() =>
     glossaryTerms: S.optional(GlossaryTerms),
     formsInput: S.optional(FormInputList),
     predictionConfiguration: S.optional(PredictionConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -4320,7 +4328,7 @@ export const CreateDataProductRevisionInput = S.suspend(() =>
     glossaryTerms: S.optional(GlossaryTerms),
     items: S.optional(DataProductItems),
     formsInput: S.optional(FormInputList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -4681,7 +4689,10 @@ export const DeleteDataSourceInput = S.suspend(() =>
   S.Struct({
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     identifier: S.String.pipe(T.HttpLabel("identifier")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     retainPermissionsOnRevokeFailure: S.optional(S.Boolean).pipe(
       T.HttpQuery("retainPermissionsOnRevokeFailure"),
     ),
@@ -4752,7 +4763,7 @@ export const StartDataSourceRunInput = S.suspend(() =>
   S.Struct({
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     dataSourceIdentifier: S.String.pipe(T.HttpLabel("dataSourceIdentifier")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -4873,7 +4884,10 @@ export const UpdateDomainInput = S.suspend(() =>
     domainExecutionRole: S.optional(S.String),
     serviceRole: S.optional(S.String),
     name: S.optional(S.String),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/v2/domains/{identifier}" }),
@@ -4895,7 +4909,10 @@ export interface DeleteDomainInput {
 export const DeleteDomainInput = S.suspend(() =>
   S.Struct({
     identifier: S.String.pipe(T.HttpLabel("identifier")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     skipDeletionCheck: S.optional(S.Boolean).pipe(
       T.HttpQuery("skipDeletionCheck"),
     ),
@@ -4948,7 +4965,7 @@ export const CreateDomainUnitInput = S.suspend(() =>
     name: SensitiveString,
     parentDomainUnitIdentifier: S.String,
     description: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -5230,7 +5247,7 @@ export const CreateGlossaryInput = S.suspend(() =>
     description: S.optional(SensitiveString),
     status: S.optional(GlossaryStatus),
     usageRestrictions: S.optional(GlossaryUsageRestrictions),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -5286,7 +5303,7 @@ export const UpdateGlossaryInput = S.suspend(() =>
     name: S.optional(SensitiveString),
     description: S.optional(SensitiveString),
     status: S.optional(GlossaryStatus),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -6271,7 +6288,7 @@ export const AcceptPredictionsInput = S.suspend(() =>
     revision: S.optional(S.String).pipe(T.HttpQuery("revision")),
     acceptRule: S.optional(AcceptRule),
     acceptChoices: S.optional(AcceptChoices),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -6300,7 +6317,7 @@ export const BatchPutAttributesMetadataInput = S.suspend(() =>
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     entityType: AttributeEntityType.pipe(T.HttpLabel("entityType")),
     entityIdentifier: S.String.pipe(T.HttpLabel("entityIdentifier")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     attributes: Attributes,
   }).pipe(
     T.all(
@@ -6481,7 +6498,7 @@ export const CreateSubscriptionTargetInput = S.suspend(() =>
     manageAccessRole: S.String,
     applicableAssetTypes: ApplicableAssetTypes,
     provider: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -7020,7 +7037,7 @@ export const PostTimeSeriesDataPointsInput = S.suspend(() =>
     entityIdentifier: S.String.pipe(T.HttpLabel("entityIdentifier")),
     entityType: TimeSeriesEntityType.pipe(T.HttpLabel("entityType")),
     forms: TimeSeriesDataPointFormInputList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -7048,7 +7065,7 @@ export const PutDataExportConfigurationInput = S.suspend(() =>
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     enableExport: S.Boolean,
     encryptionConfiguration: S.optional(EncryptionConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -7086,7 +7103,7 @@ export const RejectPredictionsInput = S.suspend(() =>
     revision: S.optional(S.String).pipe(T.HttpQuery("revision")),
     rejectRule: S.optional(RejectRule),
     rejectChoices: S.optional(RejectChoices),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -7769,7 +7786,7 @@ export const CreateDataProductInput = S.suspend(() =>
     glossaryTerms: S.optional(GlossaryTerms),
     formsInput: S.optional(FormInputList),
     items: S.optional(DataProductItems),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -8141,7 +8158,7 @@ export const CreateDomainInput = S.suspend(() =>
     tags: S.optional(Tags),
     domainVersion: S.optional(DomainVersion),
     serviceRole: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/v2/domains" }),
@@ -8486,7 +8503,7 @@ export const CreateGlossaryTermInput = S.suspend(() =>
     shortDescription: S.optional(SensitiveString),
     longDescription: S.optional(SensitiveString),
     termRelations: S.optional(TermRelations),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -8577,7 +8594,7 @@ export const StartMetadataGenerationRunInput = S.suspend(() =>
     type: S.optional(MetadataGenerationRunType),
     types: S.optional(MetadataGenerationRunTypes),
     target: MetadataGenerationRunTarget,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     owningProjectIdentifier: S.String,
   }).pipe(
     T.all(
@@ -10613,7 +10630,7 @@ export const AddEntityOwnerInput = S.suspend(() =>
     entityType: DataZoneEntityType.pipe(T.HttpLabel("entityType")),
     entityIdentifier: S.String.pipe(T.HttpLabel("entityIdentifier")),
     owner: OwnerProperties,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -10839,7 +10856,7 @@ export const CreateSubscriptionGrantInput = S.suspend(() =>
     subscriptionTargetIdentifier: S.optional(S.String),
     grantedEntity: GrantedEntityInput,
     assetTargetNames: S.optional(AssetTargetNames),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -10872,7 +10889,7 @@ export const CreateSubscriptionRequestInput = S.suspend(() =>
     subscribedPrincipals: SubscribedPrincipalInputs,
     subscribedListings: SubscribedListingInputs,
     requestReason: SensitiveString,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     metadataForms: S.optional(MetadataFormInputs),
     assetPermissions: S.optional(AssetPermissions),
     assetScopes: S.optional(AcceptedAssetScopes),
@@ -11375,7 +11392,7 @@ export const CreateAssetInput = S.suspend(() =>
     formsInput: S.optional(FormInputList),
     owningProjectIdentifier: S.String,
     predictionConfiguration: S.optional(PredictionConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/v2/domains/{domainIdentifier}/assets" }),
@@ -12898,7 +12915,7 @@ export const CreateRuleInput = S.suspend(() =>
     scope: RuleScope,
     detail: RuleDetail,
     description: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/v2/domains/{domainIdentifier}/rules" }),
@@ -13215,7 +13232,7 @@ export const AddPolicyGrantInput = S.suspend(() =>
     policyType: ManagedPolicyType,
     principal: PolicyGrantPrincipal,
     detail: PolicyGrantDetail,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -13452,7 +13469,7 @@ export const CreateDataSourceInput = S.suspend(() =>
     schedule: S.optional(ScheduleConfiguration),
     publishOnImport: S.optional(S.Boolean),
     assetFormsInput: S.optional(FormInputList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -13796,7 +13813,7 @@ export const CreateAssetFilterInput = S.suspend(() =>
     name: SensitiveString,
     description: S.optional(SensitiveString),
     configuration: AssetFilterConfiguration,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -14129,7 +14146,7 @@ export interface CreateConnectionInput {
 export const CreateConnectionInput = S.suspend(() =>
   S.Struct({
     awsLocation: S.optional(AwsLocation),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     description: S.optional(SensitiveString),
     domainIdentifier: S.String.pipe(T.HttpLabel("domainIdentifier")),
     environmentIdentifier: S.optional(S.String),

@@ -190,6 +190,7 @@ export type RedirectUri = string;
 export type CustomAuthenticationType = string;
 export type SAPODataMaxParallelism = number;
 export type SAPODataMaxPageSize = number;
+export type JavaBoolean = boolean;
 export type FieldType = string;
 export type Value = string;
 export type ExecutionMessage = string;
@@ -589,7 +590,10 @@ export interface StartFlowRequest {
   clientToken?: string;
 }
 export const StartFlowRequest = S.suspend(() =>
-  S.Struct({ flowName: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    flowName: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/start-flow" }),
       svc,
@@ -1411,7 +1415,7 @@ export const UpdateConnectorProfileRequest = S.suspend(() =>
     connectorProfileName: S.String,
     connectionMode: ConnectionMode,
     connectorProfileConfig: ConnectorProfileConfig,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/update-connector-profile" }),
@@ -1452,7 +1456,7 @@ export const UpdateConnectorRegistrationRequest = S.suspend(() =>
     connectorLabel: S.String,
     description: S.optional(S.String),
     connectorProvisioningConfig: S.optional(ConnectorProvisioningConfig),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/update-connector-registration" }),
@@ -2883,7 +2887,7 @@ export const UpdateFlowRequest = S.suspend(() =>
     destinationFlowConfigList: DestinationFlowConfigList,
     tasks: Tasks,
     metadataCatalogConfig: S.optional(MetadataCatalogConfig),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/update-flow" }),
@@ -3611,7 +3615,7 @@ export const RegisterConnectorRequest = S.suspend(() =>
     description: S.optional(S.String),
     connectorProvisioningType: S.optional(ConnectorProvisioningType),
     connectorProvisioningConfig: S.optional(ConnectorProvisioningConfig),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/register-connector" }),
@@ -3998,7 +4002,7 @@ export const CreateConnectorProfileRequest = S.suspend(() =>
     connectorLabel: S.optional(S.String),
     connectionMode: ConnectionMode,
     connectorProfileConfig: ConnectorProfileConfig,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/create-connector-profile" }),
@@ -4035,7 +4039,7 @@ export const CreateFlowRequest = S.suspend(() =>
     tasks: Tasks,
     tags: S.optional(TagMap),
     metadataCatalogConfig: S.optional(MetadataCatalogConfig),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/create-flow" }),

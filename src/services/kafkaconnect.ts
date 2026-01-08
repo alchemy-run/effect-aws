@@ -107,7 +107,6 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type __stringMax1024 = string;
 export type __stringMin1Max128 = string;
-export type __string = string;
 export type NetworkType = string;
 export type CustomPluginContentType = string;
 export type __sensitiveString = string | redacted.Redacted<string>;
@@ -117,14 +116,13 @@ export type KafkaClusterClientAuthenticationType = string;
 export type KafkaClusterEncryptionInTransitType = string;
 export type __longMin1 = number;
 export type TagValue = string;
+export type __timestampIso8601 = Date;
 export type WorkerConfigurationState = string;
 export type ConnectorState = string;
 export type CustomPluginState = string;
 export type ConnectorOperationState = string;
 export type ConnectorOperationType = string;
-export type __integer = number;
 export type __integerMin1Max8 = number;
-export type __long = number;
 export type ConnectorOperationStepType = string;
 export type ConnectorOperationStepState = string;
 export type __integerMin1Max100 = number;

@@ -112,6 +112,7 @@ export type MaxResults = number;
 export type Token = string;
 export type AccountId = string;
 export type TaggableResourceArn = string;
+export type AssignmentRequired = boolean;
 export type PermissionSetPolicyDocument = string;
 export type TagKey = string;
 export type Scope = string;
@@ -129,6 +130,7 @@ export type AccessControlAttributeKey = string;
 export type TrustedTokenIssuerUrl = string;
 export type ClaimAttributePath = string;
 export type JMESPath = string;
+export type ActorPolicyDocument = unknown;
 export type URI = string;
 export type Name = string;
 export type IconUrl = string;
@@ -268,7 +270,7 @@ export interface CreateInstanceRequest {
 export const CreateInstanceRequest = S.suspend(() =>
   S.Struct({
     Name: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -2238,7 +2240,7 @@ export const CreateApplicationRequest = S.suspend(() =>
     PortalOptions: S.optional(PortalOptions),
     Tags: S.optional(TagList),
     Status: S.optional(ApplicationStatus),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -2267,7 +2269,7 @@ export const CreateTrustedTokenIssuerRequest = S.suspend(() =>
     Name: S.String,
     TrustedTokenIssuerType: TrustedTokenIssuerType,
     TrustedTokenIssuerConfiguration: TrustedTokenIssuerConfiguration,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

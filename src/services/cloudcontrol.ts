@@ -131,7 +131,7 @@ export const CreateResourceInput = S.suspend(() =>
     TypeName: S.String,
     TypeVersionId: S.optional(S.String),
     RoleArn: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DesiredState: SensitiveString,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -151,7 +151,7 @@ export const DeleteResourceInput = S.suspend(() =>
     TypeName: S.String,
     TypeVersionId: S.optional(S.String),
     RoleArn: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Identifier: S.String,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -222,7 +222,7 @@ export const UpdateResourceInput = S.suspend(() =>
     TypeName: S.String,
     TypeVersionId: S.optional(S.String),
     RoleArn: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Identifier: S.String,
     PatchDocument: SensitiveString,
   }).pipe(

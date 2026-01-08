@@ -121,14 +121,18 @@ export type CustomRequestValueType = string | redacted.Redacted<string>;
 export type MaxLenString = string;
 export type ViewPortWidth = number;
 export type ViewPortHeight = number;
+export type Span = unknown;
 export type SpanId = string;
 export type TraceId = string;
 export type RequestIdentifier = string;
+export type Document = unknown;
 export type BranchName = string;
 export type MetadataKey = string;
 export type SensitiveString = string | redacted.Redacted<string>;
 export type ApiKeyType = string | redacted.Redacted<string>;
+export type AgentCard = unknown;
 export type HttpResponseCode = number;
+export type Body = Uint8Array | redacted.Redacted<Uint8Array>;
 export type NonBlankString = string;
 export type AuthorizationUrlType = string | redacted.Redacted<string>;
 export type AccessTokenType = string | redacted.Redacted<string>;
@@ -258,6 +262,7 @@ export const GetAgentCardRequest = S.suspend(() =>
   S.Struct({
     runtimeSessionId: S.optional(S.String).pipe(
       T.HttpHeader("X-Amzn-Bedrock-AgentCore-Runtime-Session-Id"),
+      T.IdempotencyToken(),
     ),
     agentRuntimeArn: S.String.pipe(T.HttpLabel("agentRuntimeArn")),
     qualifier: S.optional(S.String).pipe(T.HttpQuery("qualifier")),
@@ -300,6 +305,7 @@ export const InvokeAgentRuntimeRequest = S.suspend(() =>
     mcpSessionId: S.optional(S.String).pipe(T.HttpHeader("Mcp-Session-Id")),
     runtimeSessionId: S.optional(S.String).pipe(
       T.HttpHeader("X-Amzn-Bedrock-AgentCore-Runtime-Session-Id"),
+      T.IdempotencyToken(),
     ),
     mcpProtocolVersion: S.optional(S.String).pipe(
       T.HttpHeader("Mcp-Protocol-Version"),
@@ -344,7 +350,7 @@ export const StopRuntimeSessionRequest = S.suspend(() =>
     ),
     agentRuntimeArn: S.String.pipe(T.HttpLabel("agentRuntimeArn")),
     qualifier: S.optional(S.String).pipe(T.HttpQuery("qualifier")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -426,7 +432,7 @@ export const StopBrowserSessionRequest = S.suspend(() =>
     traceParent: S.optional(S.String).pipe(T.HttpHeader("traceparent")),
     browserIdentifier: S.String.pipe(T.HttpLabel("browserIdentifier")),
     sessionId: S.String.pipe(T.HttpQuery("sessionId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -516,7 +522,7 @@ export const StartCodeInterpreterSessionRequest = S.suspend(() =>
     ),
     name: S.optional(S.String),
     sessionTimeoutSeconds: S.optional(S.Number),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -548,7 +554,7 @@ export const StopCodeInterpreterSessionRequest = S.suspend(() =>
       T.HttpLabel("codeInterpreterIdentifier"),
     ),
     sessionId: S.String.pipe(T.HttpQuery("sessionId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1032,7 +1038,7 @@ export const StartBrowserSessionRequest = S.suspend(() =>
     name: S.optional(S.String),
     sessionTimeoutSeconds: S.optional(S.Number),
     viewPort: S.optional(ViewPort),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1232,7 +1238,7 @@ export const StartMemoryExtractionJobInput = S.suspend(() =>
   S.Struct({
     memoryId: S.String.pipe(T.HttpLabel("memoryId")),
     extractionJob: ExtractionJob,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1643,7 +1649,7 @@ export const UpdateBrowserStreamRequest = S.suspend(() =>
     browserIdentifier: S.String.pipe(T.HttpLabel("browserIdentifier")),
     sessionId: S.String.pipe(T.HttpQuery("sessionId")),
     streamUpdate: StreamUpdate,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1681,7 +1687,7 @@ export const BatchCreateMemoryRecordsInput = S.suspend(() =>
   S.Struct({
     memoryId: S.String.pipe(T.HttpLabel("memoryId")),
     records: MemoryRecordsCreateInputList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1931,7 +1937,7 @@ export const CreateEventInput = S.suspend(() =>
     eventTimestamp: S.Date.pipe(T.TimestampFormat("epoch-seconds")),
     payload: PayloadTypeList,
     branch: S.optional(Branch),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     metadata: S.optional(MetadataMap),
   }).pipe(
     T.all(

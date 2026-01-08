@@ -87,6 +87,7 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
+export type AcknowledgementFormDataBody = Uint8Array;
 export type AutomatedReasoningPolicyName = string | redacted.Redacted<string>;
 export type AutomatedReasoningPolicyDescription =
   | string
@@ -107,6 +108,7 @@ export type AutomatedReasoningCheckTranslationConfidence = number;
 export type AutomatedReasoningPolicyHash = string;
 export type AutomatedReasoningPolicyTestCaseId = string;
 export type ModelSourceIdentifier = string;
+export type AcceptEula = boolean;
 export type EndpointName = string;
 export type Arn = string;
 export type ModelDeploymentName = string;
@@ -188,6 +190,7 @@ export type InferenceProfileArn = string;
 export type InferenceProfileId = string;
 export type ImportedModelArn = string;
 export type ModelImportJobArn = string;
+export type InstructSupported = boolean;
 export type ModelInvocationJobArn = string;
 export type Message = string | redacted.Redacted<string>;
 export type ProvisionedModelArn = string;
@@ -230,6 +233,7 @@ export type GuardrailTopicExample = string | redacted.Redacted<string>;
 export type LogGroupName = string;
 export type BucketName = string;
 export type KeyPrefix = string;
+export type UsePromptResponse = boolean;
 export type AutomatedReasoningPolicyScenarioAlternateExpression =
   | string
   | redacted.Redacted<string>;
@@ -249,6 +253,9 @@ export type AutomatedReasoningPolicyDefinitionTypeValueName = string;
 export type AutomatedReasoningPolicyDefinitionTypeValueDescription =
   | string
   | redacted.Redacted<string>;
+export type AutomatedReasoningPolicyBuildDocumentBlob =
+  | Uint8Array
+  | redacted.Redacted<Uint8Array>;
 export type EvaluationMetricName = string | redacted.Redacted<string>;
 export type SageMakerFlowDefinitionArn = string;
 export type HumanTaskInstructions = string | redacted.Redacted<string>;
@@ -279,10 +286,13 @@ export type AutomatedReasoningNaturalLanguageStatementContent =
   | redacted.Redacted<string>;
 export type TextPromptTemplate = string | redacted.Redacted<string>;
 export type AdditionalModelRequestFieldsKey = string;
+export type AdditionalModelRequestFieldsValue = unknown;
 export type kBS3Uri = string;
 export type Identifier = string | redacted.Redacted<string>;
 export type ContentType = string;
+export type ByteContentBlob = Uint8Array | redacted.Redacted<Uint8Array>;
 export type FilterKey = string;
+export type FilterValue = unknown;
 export type Temperature = number;
 export type TopP = number;
 export type MaxTokens = number;
@@ -775,7 +785,7 @@ export const CreateAutomatedReasoningPolicyTestCaseRequest = S.suspend(() =>
     guardContent: SensitiveString,
     queryContent: S.optional(SensitiveString),
     expectedAggregatedFindingsResult: AutomatedReasoningCheckResult,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     confidenceThreshold: S.optional(S.Number),
   }).pipe(
     T.all(
@@ -811,7 +821,7 @@ export interface CreateAutomatedReasoningPolicyVersionRequest {
 export const CreateAutomatedReasoningPolicyVersionRequest = S.suspend(() =>
   S.Struct({
     policyArn: S.String.pipe(T.HttpLabel("policyArn")),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     lastUpdatedDefinitionHash: S.String,
     tags: S.optional(TagList),
   }).pipe(
@@ -1161,7 +1171,7 @@ export const StartAutomatedReasoningPolicyTestWorkflowRequest = S.suspend(() =>
     policyArn: S.String.pipe(T.HttpLabel("policyArn")),
     buildWorkflowId: S.String.pipe(T.HttpLabel("buildWorkflowId")),
     testCaseIds: S.optional(AutomatedReasoningPolicyTestCaseIdList),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1197,7 +1207,7 @@ export const UpdateAutomatedReasoningPolicyTestCaseRequest = S.suspend(() =>
     lastUpdatedAt: S.Date.pipe(T.TimestampFormat("date-time")),
     expectedAggregatedFindingsResult: AutomatedReasoningCheckResult,
     confidenceThreshold: S.optional(S.Number),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1377,7 +1387,7 @@ export const UpdateMarketplaceModelEndpointRequest = S.suspend(() =>
   S.Struct({
     endpointArn: S.String.pipe(T.HttpLabel("endpointArn")),
     endpointConfig: EndpointConfig,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1407,7 +1417,7 @@ export const CreateCustomModelDeploymentRequest = S.suspend(() =>
     modelArn: S.String,
     description: S.optional(S.String),
     tags: S.optional(TagList),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -2307,7 +2317,7 @@ export const CreateGuardrailVersionRequest = S.suspend(() =>
   S.Struct({
     guardrailIdentifier: S.String.pipe(T.HttpLabel("guardrailIdentifier")),
     description: S.optional(SensitiveString),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/guardrails/{guardrailIdentifier}" }),
@@ -2477,7 +2487,7 @@ export const CreateModelCopyJobRequest = S.suspend(() =>
     targetModelName: S.String,
     modelKmsKeyId: S.optional(S.String),
     targetModelTags: S.optional(TagList),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/model-copy-jobs" }),
@@ -2901,7 +2911,7 @@ export interface CreateProvisionedModelThroughputRequest {
 }
 export const CreateProvisionedModelThroughputRequest = S.suspend(() =>
   S.Struct({
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     modelUnits: S.Number,
     provisionedModelName: S.String,
     modelId: S.String,
@@ -4970,7 +4980,7 @@ export const CreateInferenceProfileRequest = S.suspend(() =>
   S.Struct({
     inferenceProfileName: S.String,
     description: S.optional(SensitiveString),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     modelSource: InferenceProfileModelSource,
     tags: S.optional(TagList),
   }).pipe(
@@ -5192,7 +5202,7 @@ export interface CreatePromptRouterRequest {
 }
 export const CreatePromptRouterRequest = S.suspend(() =>
   S.Struct({
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     promptRouterName: S.String,
     models: PromptRouterTargetModels,
     description: S.optional(SensitiveString),
@@ -5219,8 +5229,12 @@ export interface GetPromptRouterResponse {
   createdAt?: Date;
   updatedAt?: Date;
   promptRouterArn: string;
-  models: PromptRouterTargetModel[];
-  fallbackModel: PromptRouterTargetModel;
+  models: (PromptRouterTargetModel & {
+    modelArn: PromptRouterTargetModelArn;
+  })[];
+  fallbackModel: PromptRouterTargetModel & {
+    modelArn: PromptRouterTargetModelArn;
+  };
   status: PromptRouterStatus;
   type: PromptRouterType;
 }
@@ -6176,7 +6190,7 @@ export const CreateMarketplaceModelEndpointRequest = S.suspend(() =>
     endpointConfig: EndpointConfig,
     acceptEula: S.optional(S.Boolean),
     endpointName: S.String,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -6264,7 +6278,7 @@ export const CreateCustomModelRequest = S.suspend(() =>
     modelKmsKeyArn: S.optional(S.String),
     roleArn: S.optional(S.String),
     modelTags: S.optional(TagList),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/custom-models/create-custom-model" }),
@@ -6497,7 +6511,7 @@ export const CreateGuardrailRequest = S.suspend(() =>
     blockedOutputsMessaging: SensitiveString,
     kmsKeyId: S.optional(S.String),
     tags: S.optional(TagList),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/guardrails" }),
@@ -6665,7 +6679,7 @@ export const CreateModelInvocationJobRequest = S.suspend(() =>
   S.Struct({
     jobName: S.String,
     roleArn: S.String,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     modelId: S.String,
     inputDataConfig: ModelInvocationJobInputDataConfig,
     outputDataConfig: ModelInvocationJobOutputDataConfig,
@@ -6714,7 +6728,14 @@ export const CreatePromptRouterResponse = S.suspend(() =>
   identifier: "CreatePromptRouterResponse",
 }) as any as S.Schema<CreatePromptRouterResponse>;
 export interface ListPromptRoutersResponse {
-  promptRouterSummaries?: PromptRouterSummary[];
+  promptRouterSummaries?: (PromptRouterSummary & {
+    models: (PromptRouterTargetModel & {
+      modelArn: PromptRouterTargetModelArn;
+    })[];
+    fallbackModel: PromptRouterTargetModel & {
+      modelArn: PromptRouterTargetModelArn;
+    };
+  })[];
   nextToken?: string;
 }
 export const ListPromptRoutersResponse = S.suspend(() =>
@@ -7179,7 +7200,7 @@ export const CreateAutomatedReasoningPolicyRequest = S.suspend(() =>
   S.Struct({
     name: SensitiveString,
     description: S.optional(SensitiveString),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     policyDefinition: S.optional(AutomatedReasoningPolicyDefinition),
     kmsKeyId: S.optional(S.String),
     tags: S.optional(TagList),
@@ -7210,6 +7231,7 @@ export const StartAutomatedReasoningPolicyBuildWorkflowRequest = S.suspend(() =>
     ),
     clientRequestToken: S.optional(S.String).pipe(
       T.HttpHeader("x-amz-client-token"),
+      T.IdempotencyToken(),
     ),
     sourceContent: AutomatedReasoningPolicyBuildWorkflowSource.pipe(
       T.HttpPayload(),
@@ -7630,7 +7652,7 @@ export const CreateModelCustomizationJobRequest = S.suspend(() =>
     jobName: S.String,
     customModelName: S.String,
     roleArn: S.String,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     baseModelIdentifier: S.String,
     customizationType: S.optional(CustomizationType),
     customModelKmsKeyId: S.optional(S.String),
@@ -7916,7 +7938,7 @@ export const CreateEvaluationJobRequest = S.suspend(() =>
   S.Struct({
     jobName: S.String,
     jobDescription: S.optional(SensitiveString),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     roleArn: S.String,
     customerEncryptionKeyId: S.optional(S.String),
     jobTags: S.optional(TagList),

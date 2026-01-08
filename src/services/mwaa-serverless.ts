@@ -62,13 +62,14 @@ export type NameString = string;
 export type IdempotencyTokenString = string;
 export type RoleARN = string;
 export type DescriptionString = string;
-export type GenericString = string;
 export type WorkflowVersion = string;
 export type VersionId = string;
 export type TagValue = string;
 export type SecurityGroupString = string;
 export type SubnetString = string;
 export type ErrorMessage = string;
+export type TimestampValue = Date;
+export type IsLatestVersion = boolean;
 
 //# Schemas
 export type TagKeys = string[];
@@ -521,7 +522,7 @@ export interface CreateWorkflowRequest {
 export const CreateWorkflowRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DefinitionS3Location: DefinitionS3Location,
     RoleArn: S.String,
     Description: S.optional(S.String),
@@ -578,7 +579,7 @@ export interface StartWorkflowRunRequest {
 export const StartWorkflowRunRequest = S.suspend(() =>
   S.Struct({
     WorkflowArn: S.String.pipe(T.HttpLabel("WorkflowArn")),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     OverrideParameters: S.optional(ObjectMap),
     WorkflowVersion: S.optional(S.String),
   }).pipe(

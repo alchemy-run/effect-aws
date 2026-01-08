@@ -144,8 +144,12 @@ export type IdleDisconnectTimeoutInSeconds = number;
 export type MaxUserDurationInSeconds = number;
 export type DescribeWorkspaceDirectoriesFilterValue = string;
 export type DescribeWorkspacesPoolsFilterValue = string;
+export type DefaultLogo = Uint8Array;
 export type ClientEmail = string;
 export type ClientUrl = string;
+export type IosLogo = Uint8Array;
+export type Ios2XLogo = Uint8Array;
+export type Ios3XLogo = Uint8Array;
 export type Ec2ImportTaskId = string;
 export type ImageBuildVersionArn = string;
 export type CertificateAuthorityArn = string;
@@ -160,6 +164,8 @@ export type SecretsManagerArn = string;
 export type DomainName = string;
 export type ConnectionIdentifier = string;
 export type ExceptionMessage = string;
+export type WorkflowStateMessage = string;
+export type Percentage = number;
 export type ClientLocale = string;
 export type ClientLoginMessage = string;
 export type MaximumLength = number;
@@ -2238,11 +2244,31 @@ export const ConnectionAliasPermissions = S.Array(ConnectionAliasPermission);
 export type CustomWorkspaceImageImportState =
   | "PENDING"
   | "IN_PROGRESS"
+  | "PROCESSING_SOURCE_IMAGE"
+  | "IMAGE_TESTING_START"
+  | "UPDATING_OPERATING_SYSTEM"
+  | "IMAGE_COMPATIBILITY_CHECKING"
+  | "IMAGE_TESTING_GENERALIZATION"
+  | "CREATING_TEST_INSTANCE"
+  | "INSTALLING_COMPONENTS"
+  | "GENERALIZING"
+  | "VALIDATING"
+  | "PUBLISHING"
   | "COMPLETED"
   | "ERROR";
 export const CustomWorkspaceImageImportState = S.Literal(
   "PENDING",
   "IN_PROGRESS",
+  "PROCESSING_SOURCE_IMAGE",
+  "IMAGE_TESTING_START",
+  "UPDATING_OPERATING_SYSTEM",
+  "IMAGE_COMPATIBILITY_CHECKING",
+  "IMAGE_TESTING_GENERALIZATION",
+  "CREATING_TEST_INSTANCE",
+  "INSTALLING_COMPONENTS",
+  "GENERALIZING",
+  "VALIDATING",
+  "PUBLISHING",
   "COMPLETED",
   "ERROR",
 );
@@ -2272,13 +2298,15 @@ export type AssociationErrorCode =
   | "ValidationError.InsufficientMemory"
   | "ValidationError.UnsupportedOperatingSystem"
   | "DeploymentError.InternalServerError"
-  | "DeploymentError.WorkspaceUnreachable";
+  | "DeploymentError.WorkspaceUnreachable"
+  | "ValidationError.ApplicationOldVersionExists";
 export const AssociationErrorCode = S.Literal(
   "ValidationError.InsufficientDiskSpace",
   "ValidationError.InsufficientMemory",
   "ValidationError.UnsupportedOperatingSystem",
   "DeploymentError.InternalServerError",
   "DeploymentError.WorkspaceUnreachable",
+  "ValidationError.ApplicationOldVersionExists",
 );
 export interface AssociationStateReason {
   ErrorCode?: AssociationErrorCode;
@@ -4298,6 +4326,8 @@ export interface DescribeCustomWorkspaceImageImportResult {
   ImageId?: string;
   InfrastructureConfigurationArn?: string;
   State?: CustomWorkspaceImageImportState;
+  StateMessage?: string;
+  ProgressPercentage?: number;
   Created?: Date;
   LastUpdatedTime?: Date;
   ImageSource?: ImageSourceIdentifier;
@@ -4309,6 +4339,8 @@ export const DescribeCustomWorkspaceImageImportResult = S.suspend(() =>
     ImageId: S.optional(S.String),
     InfrastructureConfigurationArn: S.optional(S.String),
     State: S.optional(CustomWorkspaceImageImportState),
+    StateMessage: S.optional(S.String),
+    ProgressPercentage: S.optional(S.Number),
     Created: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
     LastUpdatedTime: S.optional(
       S.Date.pipe(T.TimestampFormat("epoch-seconds")),
@@ -5559,7 +5591,7 @@ export const stopWorkspaces: (
  * Terminates the specified WorkSpaces.
  *
  * Terminating a WorkSpace is a permanent action and cannot be undone. The user's data
- * is destroyed. If you need to archive any user data, contact Amazon Web ServicesSupport before
+ * is destroyed. If you need to archive any user data, contact Amazon Web Services Support before
  * terminating the WorkSpace.
  *
  * You can terminate a WorkSpace that is in any state except `SUSPENDED`.
@@ -7412,7 +7444,7 @@ export const updateWorkspaceBundle: (
  *
  * In the China (Ningxia) Region, you can copy images only within the same Region.
  *
- * In Amazon Web Services GovCloud (US), to copy images to and from other Regions, contact Amazon Web ServicesSupport.
+ * In Amazon Web Services GovCloud (US), to copy images to and from other Regions, contact Amazon Web Services Support.
  *
  * For more information about sharing images, see Share or Unshare a Custom
  * WorkSpaces Image.
@@ -7422,7 +7454,7 @@ export const updateWorkspaceBundle: (
  *
  * - Sharing Bring Your Own License (BYOL) images across Amazon Web Services accounts
  * isn't supported at this time in Amazon Web Services GovCloud (US). To share BYOL images
- * across accounts in Amazon Web Services GovCloud (US), contact Amazon Web ServicesSupport.
+ * across accounts in Amazon Web Services GovCloud (US), contact Amazon Web Services Support.
  */
 export const updateWorkspaceImagePermission: (
   input: UpdateWorkspaceImagePermissionRequest,
@@ -7453,7 +7485,7 @@ export const updateWorkspaceImagePermission: (
  *
  * In the China (Ningxia) Region, you can copy images only within the same Region.
  *
- * In Amazon Web Services GovCloud (US), to copy images to and from other Regions, contact Amazon Web ServicesSupport.
+ * In Amazon Web Services GovCloud (US), to copy images to and from other Regions, contact Amazon Web Services Support.
  *
  * Before copying a shared image, be sure to verify that it has been shared from the
  * correct Amazon Web Services account. To determine if an image has been shared and to see

@@ -117,7 +117,6 @@ export type PolicyDocument = string;
 export type TagKey = string;
 export type TagValue = string;
 export type String255 = string;
-export type LongOptional = number;
 export type ErrorMessage = string;
 export type HashValue = string;
 export type RetryAfterSeconds = number;

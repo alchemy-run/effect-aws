@@ -174,7 +174,10 @@ export interface CreateChannelGroupRequest {
 export const CreateChannelGroupRequest = S.suspend(() =>
   S.Struct({
     ChannelGroupName: S.String,
-    ClientToken: S.optional(S.String).pipe(T.HttpHeader("x-amzn-client-token")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpHeader("x-amzn-client-token"),
+      T.IdempotencyToken(),
+    ),
     Description: S.optional(S.String),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
   }).pipe(
@@ -1672,7 +1675,10 @@ export const CreateChannelRequest = S.suspend(() =>
   S.Struct({
     ChannelGroupName: S.String.pipe(T.HttpLabel("ChannelGroupName")),
     ChannelName: S.String,
-    ClientToken: S.optional(S.String).pipe(T.HttpHeader("x-amzn-client-token")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpHeader("x-amzn-client-token"),
+      T.IdempotencyToken(),
+    ),
     InputType: S.optional(InputType),
     Description: S.optional(S.String),
     InputSwitchConfiguration: S.optional(InputSwitchConfiguration),
@@ -2352,7 +2358,10 @@ export const CreateHarvestJobRequest = S.suspend(() =>
     HarvestedManifests: HarvestedManifests,
     ScheduleConfiguration: HarvesterScheduleConfiguration,
     Destination: Destination,
-    ClientToken: S.optional(S.String).pipe(T.HttpHeader("x-amzn-client-token")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpHeader("x-amzn-client-token"),
+      T.IdempotencyToken(),
+    ),
     HarvestJobName: S.optional(S.String),
     Tags: S.optional(TagMap),
   }).pipe(
@@ -2562,7 +2571,10 @@ export const CreateOriginEndpointRequest = S.suspend(() =>
     OriginEndpointName: S.String,
     ContainerType: ContainerType,
     Segment: S.optional(Segment),
-    ClientToken: S.optional(S.String).pipe(T.HttpHeader("x-amzn-client-token")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpHeader("x-amzn-client-token"),
+      T.IdempotencyToken(),
+    ),
     Description: S.optional(S.String),
     StartoverWindowSeconds: S.optional(S.Number),
     HlsManifests: S.optional(CreateHlsManifests),

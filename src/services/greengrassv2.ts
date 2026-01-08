@@ -125,6 +125,7 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type IoTThingName = string;
 export type NonEmptyString = string;
+export type RecipeBlob = Uint8Array;
 export type ClientTokenString = string;
 export type TargetARN = string;
 export type DeploymentNameString = string;
@@ -149,7 +150,9 @@ export type CoreDevicePlatformString = string;
 export type CoreDeviceArchitectureString = string;
 export type NullableString = string;
 export type IoTJobARN = string;
+export type IsLatestForTarget = boolean;
 export type OptionalInteger = number;
+export type OptionalBoolean = boolean;
 export type LambdaExecArg = string;
 export type IoTJobMaxExecutionsPerMin = number;
 export type IoTJobInProgressTimeoutInMinutes = number;
@@ -159,6 +162,7 @@ export type IoTJobId = string;
 export type Description = string;
 export type Reason = string;
 export type LifecycleStateDetails = string;
+export type IsRoot = boolean;
 export type InstalledComponentLifecycleStatusCode = string;
 export type TopicString = string;
 export type ComponentConfigurationString = string;
@@ -1904,7 +1908,7 @@ export const CreateDeploymentRequest = S.suspend(() =>
     deploymentPolicies: S.optional(DeploymentPolicies),
     parentTargetArn: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/greengrass/v2/deployments" }),
@@ -1989,7 +1993,7 @@ export const CreateComponentVersionRequest = S.suspend(() =>
     inlineRecipe: S.optional(T.Blob),
     lambdaFunction: S.optional(LambdaFunctionRecipeSource),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/greengrass/v2/createComponentVersion" }),

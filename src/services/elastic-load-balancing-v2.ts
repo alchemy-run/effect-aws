@@ -109,6 +109,7 @@ export type TargetGroupName = string;
 export type ProtocolVersion = string;
 export type VpcId = string;
 export type HealthCheckPort = string;
+export type HealthCheckEnabled = boolean;
 export type Path = string;
 export type HealthCheckIntervalSeconds = number;
 export type HealthCheckTimeoutSeconds = number;
@@ -123,11 +124,15 @@ export type TargetGroupArn = string;
 export type Marker = string;
 export type PageSize = number;
 export type RevocationId = number;
+export type ResetCapacityReservation = boolean;
+export type ResetTransforms = boolean;
 export type TagKey = string;
 export type CertificateArn = string;
+export type Default = boolean;
 export type TagValue = string;
 export type ActionOrder = number;
 export type Mode = string;
+export type IgnoreClientCertificateExpiry = boolean;
 export type AllocationId = string;
 export type PrivateIPv4Address = string;
 export type IPv6Address = string;
@@ -148,6 +153,7 @@ export type LoadBalancerAttributeValue = string;
 export type TargetGroupAttributeKey = string;
 export type TargetGroupAttributeValue = string;
 export type ErrorDescription = string;
+export type LastModifiedTime = Date;
 export type DecreaseRequestsRemaining = number;
 export type Policy = string;
 export type Location = string;
@@ -160,6 +166,7 @@ export type AuthenticateOidcActionClientSecret = string;
 export type AuthenticateOidcActionSessionCookieName = string;
 export type AuthenticateOidcActionScope = string;
 export type AuthenticateOidcActionSessionTimeout = number;
+export type AuthenticateOidcActionUseExistingClientSecret = boolean;
 export type AuthenticateCognitoActionUserPoolArn = string;
 export type AuthenticateCognitoActionUserPoolClientId = string;
 export type AuthenticateCognitoActionUserPoolDomain = string;
@@ -184,7 +191,9 @@ export type Max = string;
 export type CapacityUnitsDouble = number;
 export type DNSName = string;
 export type CanonicalHostedZoneId = string;
+export type CreatedTime = Date;
 export type EnforceSecurityGroupInboundRulesOnPrivateLinkTraffic = string;
+export type IsDefault = boolean;
 export type SslProtocol = string;
 export type TrustStoreAssociationResourceArn = string;
 export type NumberOfRevokedEntries = number;
@@ -194,6 +203,7 @@ export type AuthenticateOidcActionAuthenticationRequestParamValue = string;
 export type AuthenticateCognitoActionAuthenticationRequestParamName = string;
 export type AuthenticateCognitoActionAuthenticationRequestParamValue = string;
 export type TargetGroupWeight = number;
+export type TargetGroupStickinessEnabled = boolean;
 export type TargetGroupStickinessDurationSeconds = number;
 export type JwtValidationActionAdditionalClaimName = string;
 export type JwtValidationActionAdditionalClaimValue = string;
@@ -2148,7 +2158,38 @@ export const Listener = S.suspend(() =>
 export type Listeners = Listener[];
 export const Listeners = S.Array(Listener);
 export interface ModifyListenerOutput {
-  Listeners?: Listener[];
+  Listeners?: (Listener & {
+    DefaultActions: (Action & {
+      Type: ActionTypeEnum;
+      AuthenticateOidcConfig: AuthenticateOidcActionConfig & {
+        Issuer: AuthenticateOidcActionIssuer;
+        AuthorizationEndpoint: AuthenticateOidcActionAuthorizationEndpoint;
+        TokenEndpoint: AuthenticateOidcActionTokenEndpoint;
+        UserInfoEndpoint: AuthenticateOidcActionUserInfoEndpoint;
+        ClientId: AuthenticateOidcActionClientId;
+      };
+      AuthenticateCognitoConfig: AuthenticateCognitoActionConfig & {
+        UserPoolArn: AuthenticateCognitoActionUserPoolArn;
+        UserPoolClientId: AuthenticateCognitoActionUserPoolClientId;
+        UserPoolDomain: AuthenticateCognitoActionUserPoolDomain;
+      };
+      RedirectConfig: RedirectActionConfig & {
+        StatusCode: RedirectActionStatusCodeEnum;
+      };
+      FixedResponseConfig: FixedResponseActionConfig & {
+        StatusCode: FixedResponseActionStatusCode;
+      };
+      JwtValidationConfig: JwtValidationActionConfig & {
+        JwksEndpoint: JwtValidationActionJwksEndpoint;
+        Issuer: JwtValidationActionIssuer;
+        AdditionalClaims: (JwtValidationActionAdditionalClaim & {
+          Format: JwtValidationActionAdditionalClaimFormatEnum;
+          Name: JwtValidationActionAdditionalClaimName;
+          Values: JwtValidationActionAdditionalClaimValues;
+        })[];
+      };
+    })[];
+  })[];
 }
 export const ModifyListenerOutput = S.suspend(() =>
   S.Struct({ Listeners: S.optional(Listeners) }).pipe(ns),
@@ -2220,7 +2261,53 @@ export const Rule = S.suspend(() =>
 export type Rules = Rule[];
 export const Rules = S.Array(Rule);
 export interface ModifyRuleOutput {
-  Rules?: Rule[];
+  Rules?: (Rule & {
+    Actions: (Action & {
+      Type: ActionTypeEnum;
+      AuthenticateOidcConfig: AuthenticateOidcActionConfig & {
+        Issuer: AuthenticateOidcActionIssuer;
+        AuthorizationEndpoint: AuthenticateOidcActionAuthorizationEndpoint;
+        TokenEndpoint: AuthenticateOidcActionTokenEndpoint;
+        UserInfoEndpoint: AuthenticateOidcActionUserInfoEndpoint;
+        ClientId: AuthenticateOidcActionClientId;
+      };
+      AuthenticateCognitoConfig: AuthenticateCognitoActionConfig & {
+        UserPoolArn: AuthenticateCognitoActionUserPoolArn;
+        UserPoolClientId: AuthenticateCognitoActionUserPoolClientId;
+        UserPoolDomain: AuthenticateCognitoActionUserPoolDomain;
+      };
+      RedirectConfig: RedirectActionConfig & {
+        StatusCode: RedirectActionStatusCodeEnum;
+      };
+      FixedResponseConfig: FixedResponseActionConfig & {
+        StatusCode: FixedResponseActionStatusCode;
+      };
+      JwtValidationConfig: JwtValidationActionConfig & {
+        JwksEndpoint: JwtValidationActionJwksEndpoint;
+        Issuer: JwtValidationActionIssuer;
+        AdditionalClaims: (JwtValidationActionAdditionalClaim & {
+          Format: JwtValidationActionAdditionalClaimFormatEnum;
+          Name: JwtValidationActionAdditionalClaimName;
+          Values: JwtValidationActionAdditionalClaimValues;
+        })[];
+      };
+    })[];
+    Transforms: (RuleTransform & {
+      Type: TransformTypeEnum;
+      HostHeaderRewriteConfig: HostHeaderRewriteConfig & {
+        Rewrites: (RewriteConfig & {
+          Regex: StringValue;
+          Replace: StringValue;
+        })[];
+      };
+      UrlRewriteConfig: UrlRewriteConfig & {
+        Rewrites: (RewriteConfig & {
+          Regex: StringValue;
+          Replace: StringValue;
+        })[];
+      };
+    })[];
+  })[];
 }
 export const ModifyRuleOutput = S.suspend(() =>
   S.Struct({ Rules: S.optional(Rules) }).pipe(ns),
@@ -2633,7 +2720,38 @@ export const DescribeAccountLimitsOutput = S.suspend(() =>
   identifier: "DescribeAccountLimitsOutput",
 }) as any as S.Schema<DescribeAccountLimitsOutput>;
 export interface DescribeListenersOutput {
-  Listeners?: Listener[];
+  Listeners?: (Listener & {
+    DefaultActions: (Action & {
+      Type: ActionTypeEnum;
+      AuthenticateOidcConfig: AuthenticateOidcActionConfig & {
+        Issuer: AuthenticateOidcActionIssuer;
+        AuthorizationEndpoint: AuthenticateOidcActionAuthorizationEndpoint;
+        TokenEndpoint: AuthenticateOidcActionTokenEndpoint;
+        UserInfoEndpoint: AuthenticateOidcActionUserInfoEndpoint;
+        ClientId: AuthenticateOidcActionClientId;
+      };
+      AuthenticateCognitoConfig: AuthenticateCognitoActionConfig & {
+        UserPoolArn: AuthenticateCognitoActionUserPoolArn;
+        UserPoolClientId: AuthenticateCognitoActionUserPoolClientId;
+        UserPoolDomain: AuthenticateCognitoActionUserPoolDomain;
+      };
+      RedirectConfig: RedirectActionConfig & {
+        StatusCode: RedirectActionStatusCodeEnum;
+      };
+      FixedResponseConfig: FixedResponseActionConfig & {
+        StatusCode: FixedResponseActionStatusCode;
+      };
+      JwtValidationConfig: JwtValidationActionConfig & {
+        JwksEndpoint: JwtValidationActionJwksEndpoint;
+        Issuer: JwtValidationActionIssuer;
+        AdditionalClaims: (JwtValidationActionAdditionalClaim & {
+          Format: JwtValidationActionAdditionalClaimFormatEnum;
+          Name: JwtValidationActionAdditionalClaimName;
+          Values: JwtValidationActionAdditionalClaimValues;
+        })[];
+      };
+    })[];
+  })[];
   NextMarker?: string;
 }
 export const DescribeListenersOutput = S.suspend(() =>
@@ -2645,7 +2763,53 @@ export const DescribeListenersOutput = S.suspend(() =>
   identifier: "DescribeListenersOutput",
 }) as any as S.Schema<DescribeListenersOutput>;
 export interface DescribeRulesOutput {
-  Rules?: Rule[];
+  Rules?: (Rule & {
+    Actions: (Action & {
+      Type: ActionTypeEnum;
+      AuthenticateOidcConfig: AuthenticateOidcActionConfig & {
+        Issuer: AuthenticateOidcActionIssuer;
+        AuthorizationEndpoint: AuthenticateOidcActionAuthorizationEndpoint;
+        TokenEndpoint: AuthenticateOidcActionTokenEndpoint;
+        UserInfoEndpoint: AuthenticateOidcActionUserInfoEndpoint;
+        ClientId: AuthenticateOidcActionClientId;
+      };
+      AuthenticateCognitoConfig: AuthenticateCognitoActionConfig & {
+        UserPoolArn: AuthenticateCognitoActionUserPoolArn;
+        UserPoolClientId: AuthenticateCognitoActionUserPoolClientId;
+        UserPoolDomain: AuthenticateCognitoActionUserPoolDomain;
+      };
+      RedirectConfig: RedirectActionConfig & {
+        StatusCode: RedirectActionStatusCodeEnum;
+      };
+      FixedResponseConfig: FixedResponseActionConfig & {
+        StatusCode: FixedResponseActionStatusCode;
+      };
+      JwtValidationConfig: JwtValidationActionConfig & {
+        JwksEndpoint: JwtValidationActionJwksEndpoint;
+        Issuer: JwtValidationActionIssuer;
+        AdditionalClaims: (JwtValidationActionAdditionalClaim & {
+          Format: JwtValidationActionAdditionalClaimFormatEnum;
+          Name: JwtValidationActionAdditionalClaimName;
+          Values: JwtValidationActionAdditionalClaimValues;
+        })[];
+      };
+    })[];
+    Transforms: (RuleTransform & {
+      Type: TransformTypeEnum;
+      HostHeaderRewriteConfig: HostHeaderRewriteConfig & {
+        Rewrites: (RewriteConfig & {
+          Regex: StringValue;
+          Replace: StringValue;
+        })[];
+      };
+      UrlRewriteConfig: UrlRewriteConfig & {
+        Rewrites: (RewriteConfig & {
+          Regex: StringValue;
+          Replace: StringValue;
+        })[];
+      };
+    })[];
+  })[];
   NextMarker?: string;
 }
 export const DescribeRulesOutput = S.suspend(() =>
@@ -2656,7 +2820,7 @@ export const DescribeRulesOutput = S.suspend(() =>
   identifier: "DescribeRulesOutput",
 }) as any as S.Schema<DescribeRulesOutput>;
 export interface DescribeTagsOutput {
-  TagDescriptions?: TagDescription[];
+  TagDescriptions?: (TagDescription & { Tags: (Tag & { Key: TagKey })[] })[];
 }
 export const DescribeTagsOutput = S.suspend(() =>
   S.Struct({ TagDescriptions: S.optional(TagDescriptions) }).pipe(ns),
@@ -2770,7 +2934,53 @@ export const ModifyTargetGroupAttributesOutput = S.suspend(() =>
   identifier: "ModifyTargetGroupAttributesOutput",
 }) as any as S.Schema<ModifyTargetGroupAttributesOutput>;
 export interface SetRulePrioritiesOutput {
-  Rules?: Rule[];
+  Rules?: (Rule & {
+    Actions: (Action & {
+      Type: ActionTypeEnum;
+      AuthenticateOidcConfig: AuthenticateOidcActionConfig & {
+        Issuer: AuthenticateOidcActionIssuer;
+        AuthorizationEndpoint: AuthenticateOidcActionAuthorizationEndpoint;
+        TokenEndpoint: AuthenticateOidcActionTokenEndpoint;
+        UserInfoEndpoint: AuthenticateOidcActionUserInfoEndpoint;
+        ClientId: AuthenticateOidcActionClientId;
+      };
+      AuthenticateCognitoConfig: AuthenticateCognitoActionConfig & {
+        UserPoolArn: AuthenticateCognitoActionUserPoolArn;
+        UserPoolClientId: AuthenticateCognitoActionUserPoolClientId;
+        UserPoolDomain: AuthenticateCognitoActionUserPoolDomain;
+      };
+      RedirectConfig: RedirectActionConfig & {
+        StatusCode: RedirectActionStatusCodeEnum;
+      };
+      FixedResponseConfig: FixedResponseActionConfig & {
+        StatusCode: FixedResponseActionStatusCode;
+      };
+      JwtValidationConfig: JwtValidationActionConfig & {
+        JwksEndpoint: JwtValidationActionJwksEndpoint;
+        Issuer: JwtValidationActionIssuer;
+        AdditionalClaims: (JwtValidationActionAdditionalClaim & {
+          Format: JwtValidationActionAdditionalClaimFormatEnum;
+          Name: JwtValidationActionAdditionalClaimName;
+          Values: JwtValidationActionAdditionalClaimValues;
+        })[];
+      };
+    })[];
+    Transforms: (RuleTransform & {
+      Type: TransformTypeEnum;
+      HostHeaderRewriteConfig: HostHeaderRewriteConfig & {
+        Rewrites: (RewriteConfig & {
+          Regex: StringValue;
+          Replace: StringValue;
+        })[];
+      };
+      UrlRewriteConfig: UrlRewriteConfig & {
+        Rewrites: (RewriteConfig & {
+          Regex: StringValue;
+          Replace: StringValue;
+        })[];
+      };
+    })[];
+  })[];
 }
 export const SetRulePrioritiesOutput = S.suspend(() =>
   S.Struct({ Rules: S.optional(Rules) }).pipe(ns),
@@ -2995,7 +3205,9 @@ export const DescribeSSLPoliciesOutput = S.suspend(() =>
   identifier: "DescribeSSLPoliciesOutput",
 }) as any as S.Schema<DescribeSSLPoliciesOutput>;
 export interface DescribeTargetHealthOutput {
-  TargetHealthDescriptions?: TargetHealthDescription[];
+  TargetHealthDescriptions?: (TargetHealthDescription & {
+    Target: TargetDescription & { Id: TargetId };
+  })[];
 }
 export const DescribeTargetHealthOutput = S.suspend(() =>
   S.Struct({
@@ -3019,7 +3231,38 @@ export const SetSubnetsOutput = S.suspend(() =>
   identifier: "SetSubnetsOutput",
 }) as any as S.Schema<SetSubnetsOutput>;
 export interface CreateListenerOutput {
-  Listeners?: Listener[];
+  Listeners?: (Listener & {
+    DefaultActions: (Action & {
+      Type: ActionTypeEnum;
+      AuthenticateOidcConfig: AuthenticateOidcActionConfig & {
+        Issuer: AuthenticateOidcActionIssuer;
+        AuthorizationEndpoint: AuthenticateOidcActionAuthorizationEndpoint;
+        TokenEndpoint: AuthenticateOidcActionTokenEndpoint;
+        UserInfoEndpoint: AuthenticateOidcActionUserInfoEndpoint;
+        ClientId: AuthenticateOidcActionClientId;
+      };
+      AuthenticateCognitoConfig: AuthenticateCognitoActionConfig & {
+        UserPoolArn: AuthenticateCognitoActionUserPoolArn;
+        UserPoolClientId: AuthenticateCognitoActionUserPoolClientId;
+        UserPoolDomain: AuthenticateCognitoActionUserPoolDomain;
+      };
+      RedirectConfig: RedirectActionConfig & {
+        StatusCode: RedirectActionStatusCodeEnum;
+      };
+      FixedResponseConfig: FixedResponseActionConfig & {
+        StatusCode: FixedResponseActionStatusCode;
+      };
+      JwtValidationConfig: JwtValidationActionConfig & {
+        JwksEndpoint: JwtValidationActionJwksEndpoint;
+        Issuer: JwtValidationActionIssuer;
+        AdditionalClaims: (JwtValidationActionAdditionalClaim & {
+          Format: JwtValidationActionAdditionalClaimFormatEnum;
+          Name: JwtValidationActionAdditionalClaimName;
+          Values: JwtValidationActionAdditionalClaimValues;
+        })[];
+      };
+    })[];
+  })[];
 }
 export const CreateListenerOutput = S.suspend(() =>
   S.Struct({ Listeners: S.optional(Listeners) }).pipe(ns),
@@ -3027,7 +3270,53 @@ export const CreateListenerOutput = S.suspend(() =>
   identifier: "CreateListenerOutput",
 }) as any as S.Schema<CreateListenerOutput>;
 export interface CreateRuleOutput {
-  Rules?: Rule[];
+  Rules?: (Rule & {
+    Actions: (Action & {
+      Type: ActionTypeEnum;
+      AuthenticateOidcConfig: AuthenticateOidcActionConfig & {
+        Issuer: AuthenticateOidcActionIssuer;
+        AuthorizationEndpoint: AuthenticateOidcActionAuthorizationEndpoint;
+        TokenEndpoint: AuthenticateOidcActionTokenEndpoint;
+        UserInfoEndpoint: AuthenticateOidcActionUserInfoEndpoint;
+        ClientId: AuthenticateOidcActionClientId;
+      };
+      AuthenticateCognitoConfig: AuthenticateCognitoActionConfig & {
+        UserPoolArn: AuthenticateCognitoActionUserPoolArn;
+        UserPoolClientId: AuthenticateCognitoActionUserPoolClientId;
+        UserPoolDomain: AuthenticateCognitoActionUserPoolDomain;
+      };
+      RedirectConfig: RedirectActionConfig & {
+        StatusCode: RedirectActionStatusCodeEnum;
+      };
+      FixedResponseConfig: FixedResponseActionConfig & {
+        StatusCode: FixedResponseActionStatusCode;
+      };
+      JwtValidationConfig: JwtValidationActionConfig & {
+        JwksEndpoint: JwtValidationActionJwksEndpoint;
+        Issuer: JwtValidationActionIssuer;
+        AdditionalClaims: (JwtValidationActionAdditionalClaim & {
+          Format: JwtValidationActionAdditionalClaimFormatEnum;
+          Name: JwtValidationActionAdditionalClaimName;
+          Values: JwtValidationActionAdditionalClaimValues;
+        })[];
+      };
+    })[];
+    Transforms: (RuleTransform & {
+      Type: TransformTypeEnum;
+      HostHeaderRewriteConfig: HostHeaderRewriteConfig & {
+        Rewrites: (RewriteConfig & {
+          Regex: StringValue;
+          Replace: StringValue;
+        })[];
+      };
+      UrlRewriteConfig: UrlRewriteConfig & {
+        Rewrites: (RewriteConfig & {
+          Regex: StringValue;
+          Replace: StringValue;
+        })[];
+      };
+    })[];
+  })[];
 }
 export const CreateRuleOutput = S.suspend(() =>
   S.Struct({ Rules: S.optional(Rules) }).pipe(ns),

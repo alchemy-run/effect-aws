@@ -1012,7 +1012,7 @@ export interface CreateBatchLoadTaskRequest {
 }
 export const CreateBatchLoadTaskRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(SensitiveString),
+    ClientToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     DataModelConfiguration: S.optional(DataModelConfiguration),
     DataSourceConfiguration: DataSourceConfiguration,
     ReportConfiguration: ReportConfiguration,

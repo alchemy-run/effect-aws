@@ -1985,8 +1985,8 @@ export const CreatePersistentAppUIInput = S.suspend(() =>
   identifier: "CreatePersistentAppUIInput",
 }) as any as S.Schema<CreatePersistentAppUIInput>;
 export interface CreateSecurityConfigurationOutput {
-  Name?: string;
-  CreationDateTime?: Date;
+  Name: string;
+  CreationDateTime: Date;
 }
 export const CreateSecurityConfigurationOutput = S.suspend(() =>
   S.Struct({
@@ -2068,7 +2068,13 @@ export const ManagedScalingPolicy = S.suspend(() =>
   identifier: "ManagedScalingPolicy",
 }) as any as S.Schema<ManagedScalingPolicy>;
 export interface GetManagedScalingPolicyOutput {
-  ManagedScalingPolicy?: ManagedScalingPolicy;
+  ManagedScalingPolicy?: ManagedScalingPolicy & {
+    ComputeLimits: ComputeLimits & {
+      UnitType: ComputeLimitsUnitType;
+      MinimumCapacityUnits: number;
+      MaximumCapacityUnits: number;
+    };
+  };
 }
 export const GetManagedScalingPolicyOutput = S.suspend(() =>
   S.Struct({ ManagedScalingPolicy: S.optional(ManagedScalingPolicy) }).pipe(ns),
@@ -3163,8 +3169,14 @@ export const DescribeStudioOutput = S.suspend(() =>
   identifier: "DescribeStudioOutput",
 }) as any as S.Schema<DescribeStudioOutput>;
 export interface GetBlockPublicAccessConfigurationOutput {
-  BlockPublicAccessConfiguration?: BlockPublicAccessConfiguration;
-  BlockPublicAccessConfigurationMetadata?: BlockPublicAccessConfigurationMetadata;
+  BlockPublicAccessConfiguration: BlockPublicAccessConfiguration & {
+    BlockPublicSecurityGroupRules: boolean;
+    PermittedPublicSecurityGroupRuleRanges: (PortRange & { MinRange: Port })[];
+  };
+  BlockPublicAccessConfigurationMetadata: BlockPublicAccessConfigurationMetadata & {
+    CreationDateTime: Date;
+    CreatedByArn: ArnType;
+  };
 }
 export const GetBlockPublicAccessConfigurationOutput = S.suspend(() =>
   S.Struct({
@@ -3845,7 +3857,9 @@ export const AddJobFlowStepsInput = S.suspend(() =>
   identifier: "AddJobFlowStepsInput",
 }) as any as S.Schema<AddJobFlowStepsInput>;
 export interface DescribeNotebookExecutionOutput {
-  NotebookExecution?: NotebookExecution;
+  NotebookExecution?: NotebookExecution & {
+    ExecutionEngine: ExecutionEngineConfig & { Id: XmlStringMaxLen256 };
+  };
 }
 export const DescribeNotebookExecutionOutput = S.suspend(() =>
   S.Struct({ NotebookExecution: S.optional(NotebookExecution) }).pipe(ns),
@@ -4358,7 +4372,20 @@ export const AddJobFlowStepsOutput = S.suspend(() =>
   identifier: "AddJobFlowStepsOutput",
 }) as any as S.Schema<AddJobFlowStepsOutput>;
 export interface DescribeClusterOutput {
-  Cluster?: Cluster;
+  Cluster?: Cluster & {
+    KerberosAttributes: KerberosAttributes & {
+      Realm: XmlStringMaxLen256;
+      KdcAdminPassword: XmlStringMaxLen256;
+    };
+    PlacementGroups: (PlacementGroupConfig & {
+      InstanceRole: InstanceRoleType;
+    })[];
+    MonitoringConfiguration: MonitoringConfiguration & {
+      CloudWatchLogConfiguration: CloudWatchLogConfiguration & {
+        Enabled: boolean;
+      };
+    };
+  };
 }
 export const DescribeClusterOutput = S.suspend(() =>
   S.Struct({ Cluster: S.optional(Cluster) }).pipe(ns),
@@ -4366,7 +4393,46 @@ export const DescribeClusterOutput = S.suspend(() =>
   identifier: "DescribeClusterOutput",
 }) as any as S.Schema<DescribeClusterOutput>;
 export interface DescribeJobFlowsOutput {
-  JobFlows?: JobFlowDetail[];
+  JobFlows?: (JobFlowDetail & {
+    JobFlowId: XmlStringMaxLen256;
+    Name: XmlStringMaxLen256;
+    ExecutionStatusDetail: JobFlowExecutionStatusDetail & {
+      State: JobFlowExecutionState;
+      CreationDateTime: Date;
+    };
+    Instances: JobFlowInstancesDetail & {
+      MasterInstanceType: InstanceType;
+      SlaveInstanceType: InstanceType;
+      InstanceCount: number;
+      InstanceGroups: (InstanceGroupDetail & {
+        Market: MarketType;
+        InstanceRole: InstanceRoleType;
+        InstanceType: InstanceType;
+        InstanceRequestCount: number;
+        InstanceRunningCount: number;
+        State: InstanceGroupState;
+        CreationDateTime: Date;
+      })[];
+    };
+    Steps: (StepDetail & {
+      StepConfig: StepConfig & {
+        Name: XmlStringMaxLen256;
+        HadoopJarStep: HadoopJarStepConfig & { Jar: XmlString };
+      };
+      ExecutionStatusDetail: StepExecutionStatusDetail & {
+        State: StepExecutionState;
+        CreationDateTime: Date;
+      };
+    })[];
+    BootstrapActions: (BootstrapActionDetail & {
+      BootstrapActionConfig: BootstrapActionConfig & {
+        Name: XmlStringMaxLen256;
+        ScriptBootstrapAction: ScriptBootstrapActionConfig & {
+          Path: XmlString;
+        };
+      };
+    })[];
+  })[];
 }
 export const DescribeJobFlowsOutput = S.suspend(() =>
   S.Struct({ JobFlows: S.optional(JobFlowDetailList) }).pipe(ns),
@@ -4382,7 +4448,25 @@ export const DescribeStepOutput = S.suspend(() =>
   identifier: "DescribeStepOutput",
 }) as any as S.Schema<DescribeStepOutput>;
 export interface ListInstanceFleetsOutput {
-  InstanceFleets?: InstanceFleet[];
+  InstanceFleets?: (InstanceFleet & {
+    InstanceTypeSpecifications: (InstanceTypeSpecification & {
+      EbsBlockDevices: (EbsBlockDevice & {
+        VolumeSpecification: VolumeSpecification & {
+          VolumeType: string;
+          SizeInGB: number;
+        };
+      })[];
+    })[];
+    LaunchSpecifications: InstanceFleetProvisioningSpecifications & {
+      SpotSpecification: SpotProvisioningSpecification & {
+        TimeoutDurationMinutes: WholeNumber;
+        TimeoutAction: SpotProvisioningTimeoutAction;
+      };
+      OnDemandSpecification: OnDemandProvisioningSpecification & {
+        AllocationStrategy: OnDemandProvisioningAllocationStrategy;
+      };
+    };
+  })[];
   Marker?: string;
 }
 export const ListInstanceFleetsOutput = S.suspend(() =>
@@ -4508,7 +4592,36 @@ export const AddInstanceGroupsOutput = S.suspend(() =>
   identifier: "AddInstanceGroupsOutput",
 }) as any as S.Schema<AddInstanceGroupsOutput>;
 export interface ListInstanceGroupsOutput {
-  InstanceGroups?: InstanceGroup[];
+  InstanceGroups?: (InstanceGroup & {
+    EbsBlockDevices: (EbsBlockDevice & {
+      VolumeSpecification: VolumeSpecification & {
+        VolumeType: string;
+        SizeInGB: number;
+      };
+    })[];
+    AutoScalingPolicy: AutoScalingPolicyDescription & {
+      Constraints: ScalingConstraints & {
+        MinCapacity: number;
+        MaxCapacity: number;
+      };
+      Rules: (ScalingRule & {
+        Name: string;
+        Action: ScalingAction & {
+          SimpleScalingPolicyConfiguration: SimpleScalingPolicyConfiguration & {
+            ScalingAdjustment: number;
+          };
+        };
+        Trigger: ScalingTrigger & {
+          CloudWatchAlarmDefinition: CloudWatchAlarmDefinition & {
+            ComparisonOperator: ComparisonOperator;
+            MetricName: string;
+            Period: number;
+            Threshold: NonNegativeDouble;
+          };
+        };
+      })[];
+    };
+  })[];
   Marker?: string;
 }
 export const ListInstanceGroupsOutput = S.suspend(() =>
@@ -4546,7 +4659,28 @@ export const PutAutoScalingPolicyInput = S.suspend(() =>
 export interface PutAutoScalingPolicyOutput {
   ClusterId?: string;
   InstanceGroupId?: string;
-  AutoScalingPolicy?: AutoScalingPolicyDescription;
+  AutoScalingPolicy?: AutoScalingPolicyDescription & {
+    Constraints: ScalingConstraints & {
+      MinCapacity: number;
+      MaxCapacity: number;
+    };
+    Rules: (ScalingRule & {
+      Name: string;
+      Action: ScalingAction & {
+        SimpleScalingPolicyConfiguration: SimpleScalingPolicyConfiguration & {
+          ScalingAdjustment: number;
+        };
+      };
+      Trigger: ScalingTrigger & {
+        CloudWatchAlarmDefinition: CloudWatchAlarmDefinition & {
+          ComparisonOperator: ComparisonOperator;
+          MetricName: string;
+          Period: number;
+          Threshold: NonNegativeDouble;
+        };
+      };
+    })[];
+  };
   ClusterArn?: string;
 }
 export const PutAutoScalingPolicyOutput = S.suspend(() =>

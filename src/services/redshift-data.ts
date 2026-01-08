@@ -102,6 +102,7 @@ export type StatusString = string;
 export type ParameterName = string;
 export type ParameterValue = string;
 export type StatementStatusString = string;
+export type BoxedBoolean = boolean;
 export type BoxedLong = number;
 export type BoxedDouble = number;
 
@@ -132,7 +133,7 @@ export const BatchExecuteStatementInput = S.suspend(() =>
     WithEvent: S.optional(S.Boolean),
     StatementName: S.optional(S.String),
     WorkgroupName: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ResultFormat: S.optional(S.String),
     SessionKeepAliveSeconds: S.optional(S.Number),
     SessionId: S.optional(S.String),
@@ -433,7 +434,7 @@ export const ExecuteStatementInput = S.suspend(() =>
     StatementName: S.optional(S.String),
     Parameters: S.optional(SqlParametersList),
     WorkgroupName: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ResultFormat: S.optional(S.String),
     SessionKeepAliveSeconds: S.optional(S.Number),
     SessionId: S.optional(S.String),
@@ -960,7 +961,7 @@ export const listDatabases: {
   items: (
     input: ListDatabasesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | DatabaseConnectionException
     | InternalServerException
     | QueryTimeoutException
@@ -1029,7 +1030,7 @@ export const listSchemas: {
   items: (
     input: ListSchemasRequest,
   ) => stream.Stream<
-    String,
+    string,
     | DatabaseConnectionException
     | InternalServerException
     | QueryTimeoutException

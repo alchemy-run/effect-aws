@@ -95,6 +95,7 @@ export type ContactAlias = string;
 export type ContactName = string;
 export type IdempotencyToken = string;
 export type ChannelName = string;
+export type DeferActivation = boolean;
 export type RotationName = string;
 export type TimeZoneId = string;
 export type Uuid = string;
@@ -122,6 +123,7 @@ export type MinuteOfHour = number;
 export type StageIndex = number;
 export type RetryAfterSeconds = number;
 export type RetryIntervalInMinutes = number;
+export type IsEssential = boolean;
 
 //# Schemas
 export type AcceptType = "DELIVERED" | "READ";
@@ -564,7 +566,7 @@ export const StartEngagementRequest = S.suspend(() =>
     PublicSubject: S.optional(S.String),
     PublicContent: S.optional(S.String),
     IncidentId: S.optional(S.String),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -872,7 +874,7 @@ export const CreateContactChannelRequest = S.suspend(() =>
     Type: ChannelType,
     DeliveryAddress: ContactChannelAddress,
     DeferActivation: S.optional(S.Boolean),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1480,7 +1482,7 @@ export const CreateContactRequest = S.suspend(() =>
     Type: ContactType,
     Plan: Plan,
     Tags: S.optional(TagsList),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

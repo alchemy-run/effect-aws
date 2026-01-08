@@ -1458,7 +1458,10 @@ export const UpdateComponentRequest = S.suspend(() =>
     appId: S.String.pipe(T.HttpLabel("appId")),
     environmentName: S.String.pipe(T.HttpLabel("environmentName")),
     id: S.String.pipe(T.HttpLabel("id")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     updatedComponent: UpdateComponentData.pipe(T.HttpPayload()).annotations({
       identifier: "UpdateComponentData",
     }),
@@ -1499,7 +1502,10 @@ export const UpdateFormRequest = S.suspend(() =>
     appId: S.String.pipe(T.HttpLabel("appId")),
     environmentName: S.String.pipe(T.HttpLabel("environmentName")),
     id: S.String.pipe(T.HttpLabel("id")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     updatedForm: UpdateFormData.pipe(T.HttpPayload()).annotations({
       identifier: "UpdateFormData",
     }),
@@ -1540,7 +1546,10 @@ export const UpdateThemeRequest = S.suspend(() =>
     appId: S.String.pipe(T.HttpLabel("appId")),
     environmentName: S.String.pipe(T.HttpLabel("environmentName")),
     id: S.String.pipe(T.HttpLabel("id")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     updatedTheme: UpdateThemeData.pipe(T.HttpPayload()).annotations({
       identifier: "UpdateThemeData",
     }),
@@ -2237,7 +2246,10 @@ export const CreateThemeRequest = S.suspend(() =>
   S.Struct({
     appId: S.String.pipe(T.HttpLabel("appId")),
     environmentName: S.String.pipe(T.HttpLabel("environmentName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     themeToCreate: CreateThemeData.pipe(T.HttpPayload()).annotations({
       identifier: "CreateThemeData",
     }),
@@ -2317,7 +2329,10 @@ export const CreateComponentRequest = S.suspend(() =>
   S.Struct({
     appId: S.String.pipe(T.HttpLabel("appId")),
     environmentName: S.String.pipe(T.HttpLabel("environmentName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     componentToCreate: CreateComponentData.pipe(T.HttpPayload()).annotations({
       identifier: "CreateComponentData",
     }),
@@ -2377,7 +2392,10 @@ export const StartCodegenJobRequest = S.suspend(() =>
   S.Struct({
     appId: S.String.pipe(T.HttpLabel("appId")),
     environmentName: S.String.pipe(T.HttpLabel("environmentName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     codegenJobToCreate: StartCodegenJobData.pipe(T.HttpPayload()).annotations({
       identifier: "StartCodegenJobData",
     }),
@@ -2447,7 +2465,10 @@ export const CreateFormRequest = S.suspend(() =>
   S.Struct({
     appId: S.String.pipe(T.HttpLabel("appId")),
     environmentName: S.String.pipe(T.HttpLabel("environmentName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     formToCreate: CreateFormData.pipe(T.HttpPayload()).annotations({
       identifier: "CreateFormData",
     }),

@@ -110,8 +110,11 @@ export type S3Key = string;
 export type TagValue = string;
 export type ErrorMessage = string;
 export type ResourceArn = string;
+export type CreatedDate = Date;
+export type ModifiedDate = Date;
 export type TradingPartnerId = string;
 export type LogGroupName = string;
+export type X12ValidateEdi = boolean;
 export type LineLength = number;
 export type ElementId = string;
 export type ElementPosition = string;
@@ -227,7 +230,7 @@ export const StartTransformerJobRequest = S.suspend(() =>
     inputFile: S3Location,
     outputLocation: S3Location,
     transformerId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/transformer-jobs" }),
@@ -1396,7 +1399,7 @@ export const CreateProfileRequest = S.suspend(() =>
     phone: SensitiveString,
     businessName: S.String,
     logging: Logging,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -2294,7 +2297,7 @@ export const CreateCapabilityRequest = S.suspend(() =>
     type: CapabilityType,
     configuration: CapabilityConfiguration,
     instructionsDocuments: S.optional(InstructionsDocuments),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -2352,7 +2355,7 @@ export interface CreateTransformerRequest {
 export const CreateTransformerRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
     fileFormat: S.optional(FileFormat),
     mappingTemplate: S.optional(S.String),
@@ -2505,7 +2508,7 @@ export const CreatePartnershipRequest = S.suspend(() =>
     phone: S.optional(SensitiveString),
     capabilities: PartnershipCapabilities,
     capabilityOptions: S.optional(CapabilityOptions),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(

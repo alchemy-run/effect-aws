@@ -348,7 +348,7 @@ export const StartICD10CMInferenceJobRequest = S.suspend(() =>
     OutputDataConfig: OutputDataConfig,
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     KMSKey: S.optional(S.String),
     LanguageCode: LanguageCode,
   }).pipe(
@@ -372,7 +372,7 @@ export const StartPHIDetectionJobRequest = S.suspend(() =>
     OutputDataConfig: OutputDataConfig,
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     KMSKey: S.optional(S.String),
     LanguageCode: LanguageCode,
   }).pipe(
@@ -396,7 +396,7 @@ export const StartRxNormInferenceJobRequest = S.suspend(() =>
     OutputDataConfig: OutputDataConfig,
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     KMSKey: S.optional(S.String),
     LanguageCode: LanguageCode,
   }).pipe(
@@ -420,7 +420,7 @@ export const StartSNOMEDCTInferenceJobRequest = S.suspend(() =>
     OutputDataConfig: OutputDataConfig,
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     KMSKey: S.optional(S.String),
     LanguageCode: LanguageCode,
   }).pipe(
@@ -937,7 +937,7 @@ export const StartEntitiesDetectionV2JobRequest = S.suspend(() =>
     OutputDataConfig: OutputDataConfig,
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     KMSKey: S.optional(S.String),
     LanguageCode: LanguageCode,
   }).pipe(

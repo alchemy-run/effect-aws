@@ -102,9 +102,8 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
-export type __integer = number;
-export type __double = number;
+export type __timestampIso8601 = Date;
+export type __blob = Uint8Array;
 
 //# Schemas
 export type ListOf__string = string[];
@@ -4379,7 +4378,7 @@ export const MessageBody = S.suspend(() =>
   S.Struct({ Message: S.optional(S.String), RequestID: S.optional(S.String) }),
 ).annotations({ identifier: "MessageBody" }) as any as S.Schema<MessageBody>;
 export interface DeleteInAppTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const DeleteInAppTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -4391,7 +4390,7 @@ export const DeleteInAppTemplateResponse = S.suspend(() =>
   identifier: "DeleteInAppTemplateResponse",
 }) as any as S.Schema<DeleteInAppTemplateResponse>;
 export interface DeletePushTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const DeletePushTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -4403,7 +4402,7 @@ export const DeletePushTemplateResponse = S.suspend(() =>
   identifier: "DeletePushTemplateResponse",
 }) as any as S.Schema<DeletePushTemplateResponse>;
 export interface DeleteSmsTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const DeleteSmsTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -4415,7 +4414,7 @@ export const DeleteSmsTemplateResponse = S.suspend(() =>
   identifier: "DeleteSmsTemplateResponse",
 }) as any as S.Schema<DeleteSmsTemplateResponse>;
 export interface DeleteVoiceTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const DeleteVoiceTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -4455,7 +4454,7 @@ export const ADMChannelResponse = S.suspend(() =>
   identifier: "ADMChannelResponse",
 }) as any as S.Schema<ADMChannelResponse>;
 export interface GetAdmChannelResponse {
-  ADMChannelResponse?: ADMChannelResponse;
+  ADMChannelResponse: ADMChannelResponse & { Platform: string };
 }
 export const GetAdmChannelResponse = S.suspend(() =>
   S.Struct({
@@ -4499,7 +4498,7 @@ export const APNSChannelResponse = S.suspend(() =>
   identifier: "APNSChannelResponse",
 }) as any as S.Schema<APNSChannelResponse>;
 export interface GetApnsChannelResponse {
-  APNSChannelResponse?: APNSChannelResponse;
+  APNSChannelResponse: APNSChannelResponse & { Platform: string };
 }
 export const GetApnsChannelResponse = S.suspend(() =>
   S.Struct({
@@ -4543,7 +4542,7 @@ export const APNSSandboxChannelResponse = S.suspend(() =>
   identifier: "APNSSandboxChannelResponse",
 }) as any as S.Schema<APNSSandboxChannelResponse>;
 export interface GetApnsSandboxChannelResponse {
-  APNSSandboxChannelResponse?: APNSSandboxChannelResponse;
+  APNSSandboxChannelResponse: APNSSandboxChannelResponse & { Platform: string };
 }
 export const GetApnsSandboxChannelResponse = S.suspend(() =>
   S.Struct({
@@ -4587,7 +4586,7 @@ export const APNSVoipChannelResponse = S.suspend(() =>
   identifier: "APNSVoipChannelResponse",
 }) as any as S.Schema<APNSVoipChannelResponse>;
 export interface GetApnsVoipChannelResponse {
-  APNSVoipChannelResponse?: APNSVoipChannelResponse;
+  APNSVoipChannelResponse: APNSVoipChannelResponse & { Platform: string };
 }
 export const GetApnsVoipChannelResponse = S.suspend(() =>
   S.Struct({
@@ -4631,7 +4630,9 @@ export const APNSVoipSandboxChannelResponse = S.suspend(() =>
   identifier: "APNSVoipSandboxChannelResponse",
 }) as any as S.Schema<APNSVoipSandboxChannelResponse>;
 export interface GetApnsVoipSandboxChannelResponse {
-  APNSVoipSandboxChannelResponse?: APNSVoipSandboxChannelResponse;
+  APNSVoipSandboxChannelResponse: APNSVoipSandboxChannelResponse & {
+    Platform: string;
+  };
 }
 export const GetApnsVoipSandboxChannelResponse = S.suspend(() =>
   S.Struct({
@@ -4661,7 +4662,11 @@ export const ApplicationResponse = S.suspend(() =>
   identifier: "ApplicationResponse",
 }) as any as S.Schema<ApplicationResponse>;
 export interface GetAppResponse {
-  ApplicationResponse?: ApplicationResponse;
+  ApplicationResponse: ApplicationResponse & {
+    Arn: string;
+    Id: string;
+    Name: string;
+  };
 }
 export const GetAppResponse = S.suspend(() =>
   S.Struct({
@@ -4703,7 +4708,10 @@ export const BaiduChannelResponse = S.suspend(() =>
   identifier: "BaiduChannelResponse",
 }) as any as S.Schema<BaiduChannelResponse>;
 export interface GetBaiduChannelResponse {
-  BaiduChannelResponse?: BaiduChannelResponse;
+  BaiduChannelResponse: BaiduChannelResponse & {
+    Credential: string;
+    Platform: string;
+  };
 }
 export const GetBaiduChannelResponse = S.suspend(() =>
   S.Struct({
@@ -4826,7 +4834,137 @@ export const CampaignResponse = S.suspend(() =>
   identifier: "CampaignResponse",
 }) as any as S.Schema<CampaignResponse>;
 export interface GetCampaignResponse {
-  CampaignResponse?: CampaignResponse;
+  CampaignResponse: CampaignResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    SegmentId: string;
+    SegmentVersion: number;
+    AdditionalTreatments: (TreatmentResource & {
+      Id: string;
+      SizePercent: number;
+      CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+        DeliveryUri: string;
+      };
+      MessageConfiguration: MessageConfiguration & {
+        InAppMessage: CampaignInAppMessage & {
+          Content: (InAppMessageContent & {
+            BodyConfig: InAppMessageBodyConfig & {
+              Alignment: Alignment;
+              Body: string;
+              TextColor: string;
+            };
+            HeaderConfig: InAppMessageHeaderConfig & {
+              Alignment: Alignment;
+              Header: string;
+              TextColor: string;
+            };
+            PrimaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+            SecondaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+          })[];
+        };
+      };
+      Schedule: Schedule & {
+        StartTime: string;
+        EventFilter: CampaignEventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+    })[];
+    CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+      DeliveryUri: string;
+    };
+    MessageConfiguration: MessageConfiguration & {
+      InAppMessage: CampaignInAppMessage & {
+        Content: (InAppMessageContent & {
+          BodyConfig: InAppMessageBodyConfig & {
+            Alignment: Alignment;
+            Body: string;
+            TextColor: string;
+          };
+          HeaderConfig: InAppMessageHeaderConfig & {
+            Alignment: Alignment;
+            Header: string;
+            TextColor: string;
+          };
+          PrimaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+          SecondaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+        })[];
+      };
+    };
+    Schedule: Schedule & {
+      StartTime: string;
+      EventFilter: CampaignEventFilter & {
+        Dimensions: EventDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          EventType: SetDimension & { Values: ListOf__string };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+        };
+        FilterType: FilterType;
+      };
+    };
+  };
 }
 export const GetCampaignResponse = S.suspend(() =>
   S.Struct({
@@ -4838,7 +4976,137 @@ export const GetCampaignResponse = S.suspend(() =>
   identifier: "GetCampaignResponse",
 }) as any as S.Schema<GetCampaignResponse>;
 export interface GetCampaignVersionResponse {
-  CampaignResponse?: CampaignResponse;
+  CampaignResponse: CampaignResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    SegmentId: string;
+    SegmentVersion: number;
+    AdditionalTreatments: (TreatmentResource & {
+      Id: string;
+      SizePercent: number;
+      CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+        DeliveryUri: string;
+      };
+      MessageConfiguration: MessageConfiguration & {
+        InAppMessage: CampaignInAppMessage & {
+          Content: (InAppMessageContent & {
+            BodyConfig: InAppMessageBodyConfig & {
+              Alignment: Alignment;
+              Body: string;
+              TextColor: string;
+            };
+            HeaderConfig: InAppMessageHeaderConfig & {
+              Alignment: Alignment;
+              Header: string;
+              TextColor: string;
+            };
+            PrimaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+            SecondaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+          })[];
+        };
+      };
+      Schedule: Schedule & {
+        StartTime: string;
+        EventFilter: CampaignEventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+    })[];
+    CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+      DeliveryUri: string;
+    };
+    MessageConfiguration: MessageConfiguration & {
+      InAppMessage: CampaignInAppMessage & {
+        Content: (InAppMessageContent & {
+          BodyConfig: InAppMessageBodyConfig & {
+            Alignment: Alignment;
+            Body: string;
+            TextColor: string;
+          };
+          HeaderConfig: InAppMessageHeaderConfig & {
+            Alignment: Alignment;
+            Header: string;
+            TextColor: string;
+          };
+          PrimaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+          SecondaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+        })[];
+      };
+    };
+    Schedule: Schedule & {
+      StartTime: string;
+      EventFilter: CampaignEventFilter & {
+        Dimensions: EventDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          EventType: SetDimension & { Values: ListOf__string };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+        };
+        FilterType: FilterType;
+      };
+    };
+  };
 }
 export const GetCampaignVersionResponse = S.suspend(() =>
   S.Struct({
@@ -4864,7 +5132,147 @@ export const CampaignsResponse = S.suspend(() =>
   identifier: "CampaignsResponse",
 }) as any as S.Schema<CampaignsResponse>;
 export interface GetCampaignVersionsResponse {
-  CampaignsResponse?: CampaignsResponse;
+  CampaignsResponse: CampaignsResponse & {
+    Item: (CampaignResponse & {
+      ApplicationId: string;
+      Arn: string;
+      CreationDate: string;
+      Id: string;
+      LastModifiedDate: string;
+      SegmentId: string;
+      SegmentVersion: number;
+      AdditionalTreatments: (TreatmentResource & {
+        Id: string;
+        SizePercent: number;
+        CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+          DeliveryUri: string;
+        };
+        MessageConfiguration: MessageConfiguration & {
+          InAppMessage: CampaignInAppMessage & {
+            Content: (InAppMessageContent & {
+              BodyConfig: InAppMessageBodyConfig & {
+                Alignment: Alignment;
+                Body: string;
+                TextColor: string;
+              };
+              HeaderConfig: InAppMessageHeaderConfig & {
+                Alignment: Alignment;
+                Header: string;
+                TextColor: string;
+              };
+              PrimaryBtn: InAppMessageButton & {
+                Android: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+                DefaultConfig: DefaultButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                  Text: string;
+                };
+                IOS: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+                Web: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+              };
+              SecondaryBtn: InAppMessageButton & {
+                Android: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+                DefaultConfig: DefaultButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                  Text: string;
+                };
+                IOS: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+                Web: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+              };
+            })[];
+          };
+        };
+        Schedule: Schedule & {
+          StartTime: string;
+          EventFilter: CampaignEventFilter & {
+            Dimensions: EventDimensions & {
+              Attributes: {
+                [key: string]: AttributeDimension & { Values: ListOf__string };
+              };
+              EventType: SetDimension & { Values: ListOf__string };
+              Metrics: {
+                [key: string]: MetricDimension & {
+                  ComparisonOperator: string;
+                  Value: number;
+                };
+              };
+            };
+            FilterType: FilterType;
+          };
+        };
+      })[];
+      CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+        DeliveryUri: string;
+      };
+      MessageConfiguration: MessageConfiguration & {
+        InAppMessage: CampaignInAppMessage & {
+          Content: (InAppMessageContent & {
+            BodyConfig: InAppMessageBodyConfig & {
+              Alignment: Alignment;
+              Body: string;
+              TextColor: string;
+            };
+            HeaderConfig: InAppMessageHeaderConfig & {
+              Alignment: Alignment;
+              Header: string;
+              TextColor: string;
+            };
+            PrimaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+            SecondaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+          })[];
+        };
+      };
+      Schedule: Schedule & {
+        StartTime: string;
+        EventFilter: CampaignEventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+    })[];
+  };
 }
 export const GetCampaignVersionsResponse = S.suspend(() =>
   S.Struct({
@@ -4916,7 +5324,7 @@ export const EmailChannelResponse = S.suspend(() =>
   identifier: "EmailChannelResponse",
 }) as any as S.Schema<EmailChannelResponse>;
 export interface GetEmailChannelResponse {
-  EmailChannelResponse?: EmailChannelResponse;
+  EmailChannelResponse: EmailChannelResponse & { Platform: string };
 }
 export const GetEmailChannelResponse = S.suspend(() =>
   S.Struct({
@@ -5022,7 +5430,7 @@ export const EndpointResponse = S.suspend(() =>
   identifier: "EndpointResponse",
 }) as any as S.Schema<EndpointResponse>;
 export interface GetEndpointResponse {
-  EndpointResponse?: EndpointResponse;
+  EndpointResponse: EndpointResponse;
 }
 export const GetEndpointResponse = S.suspend(() =>
   S.Struct({
@@ -5052,7 +5460,11 @@ export const EventStream = S.suspend(() =>
   }),
 ).annotations({ identifier: "EventStream" }) as any as S.Schema<EventStream>;
 export interface GetEventStreamResponse {
-  EventStream?: EventStream;
+  EventStream: EventStream & {
+    ApplicationId: string;
+    DestinationStreamArn: string;
+    RoleArn: string;
+  };
 }
 export const GetEventStreamResponse = S.suspend(() =>
   S.Struct({
@@ -5098,7 +5510,7 @@ export const GCMChannelResponse = S.suspend(() =>
   identifier: "GCMChannelResponse",
 }) as any as S.Schema<GCMChannelResponse>;
 export interface GetGcmChannelResponse {
-  GCMChannelResponse?: GCMChannelResponse;
+  GCMChannelResponse: GCMChannelResponse & { Platform: string };
 }
 export const GetGcmChannelResponse = S.suspend(() =>
   S.Struct({
@@ -5164,7 +5576,164 @@ export const JourneyResponse = S.suspend(() =>
   identifier: "JourneyResponse",
 }) as any as S.Schema<JourneyResponse>;
 export interface GetJourneyResponse {
-  JourneyResponse?: JourneyResponse;
+  JourneyResponse: JourneyResponse & {
+    ApplicationId: string;
+    Id: string;
+    Name: string;
+    Activities: {
+      [key: string]: Activity & {
+        ConditionalSplit: ConditionalSplitActivity & {
+          Condition: Condition & {
+            Conditions: (SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            })[];
+          };
+        };
+        Holdout: HoldoutActivity & { Percentage: number };
+        MultiCondition: MultiConditionalSplitActivity & {
+          Branches: (MultiConditionalBranch & {
+            Condition: SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            };
+          })[];
+        };
+      };
+    };
+    StartCondition: StartCondition & {
+      EventStartCondition: EventStartCondition & {
+        EventFilter: EventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+      SegmentStartCondition: SegmentCondition & { SegmentId: string };
+    };
+  };
 }
 export const GetJourneyResponse = S.suspend(() =>
   S.Struct({
@@ -5208,7 +5777,13 @@ export const RecommenderConfigurationResponse = S.suspend(() =>
   identifier: "RecommenderConfigurationResponse",
 }) as any as S.Schema<RecommenderConfigurationResponse>;
 export interface GetRecommenderConfigurationResponse {
-  RecommenderConfigurationResponse?: RecommenderConfigurationResponse;
+  RecommenderConfigurationResponse: RecommenderConfigurationResponse & {
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    RecommendationProviderRoleArn: string;
+    RecommendationProviderUri: string;
+  };
 }
 export const GetRecommenderConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -5278,7 +5853,96 @@ export const SegmentResponse = S.suspend(() =>
   identifier: "SegmentResponse",
 }) as any as S.Schema<SegmentResponse>;
 export interface GetSegmentResponse {
-  SegmentResponse?: SegmentResponse;
+  SegmentResponse: SegmentResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    SegmentType: SegmentType;
+    Dimensions: SegmentDimensions & {
+      Attributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+      Behavior: SegmentBehaviors & {
+        Recency: RecencyDimension & {
+          Duration: Duration;
+          RecencyType: RecencyType;
+        };
+      };
+      Demographic: SegmentDemographics & {
+        AppVersion: SetDimension & { Values: ListOf__string };
+        Channel: SetDimension & { Values: ListOf__string };
+        DeviceType: SetDimension & { Values: ListOf__string };
+        Make: SetDimension & { Values: ListOf__string };
+        Model: SetDimension & { Values: ListOf__string };
+        Platform: SetDimension & { Values: ListOf__string };
+      };
+      Location: SegmentLocation & {
+        Country: SetDimension & { Values: ListOf__string };
+        GPSPoint: GPSPointDimension & {
+          Coordinates: GPSCoordinates & { Latitude: number; Longitude: number };
+        };
+      };
+      Metrics: {
+        [key: string]: MetricDimension & {
+          ComparisonOperator: string;
+          Value: number;
+        };
+      };
+      UserAttributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+    };
+    ImportDefinition: SegmentImportResource & {
+      ExternalId: string;
+      Format: Format;
+      RoleArn: string;
+      S3Url: string;
+      Size: number;
+    };
+    SegmentGroups: SegmentGroupList & {
+      Groups: (SegmentGroup & {
+        Dimensions: (SegmentDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          Behavior: SegmentBehaviors & {
+            Recency: RecencyDimension & {
+              Duration: Duration;
+              RecencyType: RecencyType;
+            };
+          };
+          Demographic: SegmentDemographics & {
+            AppVersion: SetDimension & { Values: ListOf__string };
+            Channel: SetDimension & { Values: ListOf__string };
+            DeviceType: SetDimension & { Values: ListOf__string };
+            Make: SetDimension & { Values: ListOf__string };
+            Model: SetDimension & { Values: ListOf__string };
+            Platform: SetDimension & { Values: ListOf__string };
+          };
+          Location: SegmentLocation & {
+            Country: SetDimension & { Values: ListOf__string };
+            GPSPoint: GPSPointDimension & {
+              Coordinates: GPSCoordinates & {
+                Latitude: number;
+                Longitude: number;
+              };
+            };
+          };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+          UserAttributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+        })[];
+        SourceSegments: (SegmentReference & { Id: string })[];
+      })[];
+    };
+  };
 }
 export const GetSegmentResponse = S.suspend(() =>
   S.Struct({
@@ -5375,7 +6039,16 @@ export const ExportJobsResponse = S.suspend(() =>
   identifier: "ExportJobsResponse",
 }) as any as S.Schema<ExportJobsResponse>;
 export interface GetSegmentExportJobsResponse {
-  ExportJobsResponse?: ExportJobsResponse;
+  ExportJobsResponse: ExportJobsResponse & {
+    Item: (ExportJobResponse & {
+      ApplicationId: string;
+      CreationDate: string;
+      Definition: ExportJobResource & { RoleArn: string; S3UrlPrefix: string };
+      Id: string;
+      JobStatus: JobStatus;
+      Type: string;
+    })[];
+  };
 }
 export const GetSegmentExportJobsResponse = S.suspend(() =>
   S.Struct({
@@ -5459,7 +6132,20 @@ export const ImportJobsResponse = S.suspend(() =>
   identifier: "ImportJobsResponse",
 }) as any as S.Schema<ImportJobsResponse>;
 export interface GetSegmentImportJobsResponse {
-  ImportJobsResponse?: ImportJobsResponse;
+  ImportJobsResponse: ImportJobsResponse & {
+    Item: (ImportJobResponse & {
+      ApplicationId: string;
+      CreationDate: string;
+      Definition: ImportJobResource & {
+        Format: Format;
+        RoleArn: string;
+        S3Url: string;
+      };
+      Id: string;
+      JobStatus: JobStatus;
+      Type: string;
+    })[];
+  };
 }
 export const GetSegmentImportJobsResponse = S.suspend(() =>
   S.Struct({
@@ -5471,7 +6157,96 @@ export const GetSegmentImportJobsResponse = S.suspend(() =>
   identifier: "GetSegmentImportJobsResponse",
 }) as any as S.Schema<GetSegmentImportJobsResponse>;
 export interface GetSegmentVersionResponse {
-  SegmentResponse?: SegmentResponse;
+  SegmentResponse: SegmentResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    SegmentType: SegmentType;
+    Dimensions: SegmentDimensions & {
+      Attributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+      Behavior: SegmentBehaviors & {
+        Recency: RecencyDimension & {
+          Duration: Duration;
+          RecencyType: RecencyType;
+        };
+      };
+      Demographic: SegmentDemographics & {
+        AppVersion: SetDimension & { Values: ListOf__string };
+        Channel: SetDimension & { Values: ListOf__string };
+        DeviceType: SetDimension & { Values: ListOf__string };
+        Make: SetDimension & { Values: ListOf__string };
+        Model: SetDimension & { Values: ListOf__string };
+        Platform: SetDimension & { Values: ListOf__string };
+      };
+      Location: SegmentLocation & {
+        Country: SetDimension & { Values: ListOf__string };
+        GPSPoint: GPSPointDimension & {
+          Coordinates: GPSCoordinates & { Latitude: number; Longitude: number };
+        };
+      };
+      Metrics: {
+        [key: string]: MetricDimension & {
+          ComparisonOperator: string;
+          Value: number;
+        };
+      };
+      UserAttributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+    };
+    ImportDefinition: SegmentImportResource & {
+      ExternalId: string;
+      Format: Format;
+      RoleArn: string;
+      S3Url: string;
+      Size: number;
+    };
+    SegmentGroups: SegmentGroupList & {
+      Groups: (SegmentGroup & {
+        Dimensions: (SegmentDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          Behavior: SegmentBehaviors & {
+            Recency: RecencyDimension & {
+              Duration: Duration;
+              RecencyType: RecencyType;
+            };
+          };
+          Demographic: SegmentDemographics & {
+            AppVersion: SetDimension & { Values: ListOf__string };
+            Channel: SetDimension & { Values: ListOf__string };
+            DeviceType: SetDimension & { Values: ListOf__string };
+            Make: SetDimension & { Values: ListOf__string };
+            Model: SetDimension & { Values: ListOf__string };
+            Platform: SetDimension & { Values: ListOf__string };
+          };
+          Location: SegmentLocation & {
+            Country: SetDimension & { Values: ListOf__string };
+            GPSPoint: GPSPointDimension & {
+              Coordinates: GPSCoordinates & {
+                Latitude: number;
+                Longitude: number;
+              };
+            };
+          };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+          UserAttributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+        })[];
+        SourceSegments: (SegmentReference & { Id: string })[];
+      })[];
+    };
+  };
 }
 export const GetSegmentVersionResponse = S.suspend(() =>
   S.Struct({
@@ -5497,7 +6272,101 @@ export const SegmentsResponse = S.suspend(() =>
   identifier: "SegmentsResponse",
 }) as any as S.Schema<SegmentsResponse>;
 export interface GetSegmentVersionsResponse {
-  SegmentsResponse?: SegmentsResponse;
+  SegmentsResponse: SegmentsResponse & {
+    Item: (SegmentResponse & {
+      ApplicationId: string;
+      Arn: string;
+      CreationDate: string;
+      Id: string;
+      SegmentType: SegmentType;
+      Dimensions: SegmentDimensions & {
+        Attributes: {
+          [key: string]: AttributeDimension & { Values: ListOf__string };
+        };
+        Behavior: SegmentBehaviors & {
+          Recency: RecencyDimension & {
+            Duration: Duration;
+            RecencyType: RecencyType;
+          };
+        };
+        Demographic: SegmentDemographics & {
+          AppVersion: SetDimension & { Values: ListOf__string };
+          Channel: SetDimension & { Values: ListOf__string };
+          DeviceType: SetDimension & { Values: ListOf__string };
+          Make: SetDimension & { Values: ListOf__string };
+          Model: SetDimension & { Values: ListOf__string };
+          Platform: SetDimension & { Values: ListOf__string };
+        };
+        Location: SegmentLocation & {
+          Country: SetDimension & { Values: ListOf__string };
+          GPSPoint: GPSPointDimension & {
+            Coordinates: GPSCoordinates & {
+              Latitude: number;
+              Longitude: number;
+            };
+          };
+        };
+        Metrics: {
+          [key: string]: MetricDimension & {
+            ComparisonOperator: string;
+            Value: number;
+          };
+        };
+        UserAttributes: {
+          [key: string]: AttributeDimension & { Values: ListOf__string };
+        };
+      };
+      ImportDefinition: SegmentImportResource & {
+        ExternalId: string;
+        Format: Format;
+        RoleArn: string;
+        S3Url: string;
+        Size: number;
+      };
+      SegmentGroups: SegmentGroupList & {
+        Groups: (SegmentGroup & {
+          Dimensions: (SegmentDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            Behavior: SegmentBehaviors & {
+              Recency: RecencyDimension & {
+                Duration: Duration;
+                RecencyType: RecencyType;
+              };
+            };
+            Demographic: SegmentDemographics & {
+              AppVersion: SetDimension & { Values: ListOf__string };
+              Channel: SetDimension & { Values: ListOf__string };
+              DeviceType: SetDimension & { Values: ListOf__string };
+              Make: SetDimension & { Values: ListOf__string };
+              Model: SetDimension & { Values: ListOf__string };
+              Platform: SetDimension & { Values: ListOf__string };
+            };
+            Location: SegmentLocation & {
+              Country: SetDimension & { Values: ListOf__string };
+              GPSPoint: GPSPointDimension & {
+                Coordinates: GPSCoordinates & {
+                  Latitude: number;
+                  Longitude: number;
+                };
+              };
+            };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+            UserAttributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+          })[];
+          SourceSegments: (SegmentReference & { Id: string })[];
+        })[];
+      };
+    })[];
+  };
 }
 export const GetSegmentVersionsResponse = S.suspend(() =>
   S.Struct({
@@ -5545,7 +6414,7 @@ export const SMSChannelResponse = S.suspend(() =>
   identifier: "SMSChannelResponse",
 }) as any as S.Schema<SMSChannelResponse>;
 export interface GetSmsChannelResponse {
-  SMSChannelResponse?: SMSChannelResponse;
+  SMSChannelResponse: SMSChannelResponse & { Platform: string };
 }
 export const GetSmsChannelResponse = S.suspend(() =>
   S.Struct({
@@ -5567,7 +6436,7 @@ export const EndpointsResponse = S.suspend(() =>
   identifier: "EndpointsResponse",
 }) as any as S.Schema<EndpointsResponse>;
 export interface GetUserEndpointsResponse {
-  EndpointsResponse?: EndpointsResponse;
+  EndpointsResponse: EndpointsResponse & { Item: ListOfEndpointResponse };
 }
 export const GetUserEndpointsResponse = S.suspend(() =>
   S.Struct({
@@ -5607,7 +6476,7 @@ export const VoiceChannelResponse = S.suspend(() =>
   identifier: "VoiceChannelResponse",
 }) as any as S.Schema<VoiceChannelResponse>;
 export interface GetVoiceChannelResponse {
-  VoiceChannelResponse?: VoiceChannelResponse;
+  VoiceChannelResponse: VoiceChannelResponse & { Platform: string };
 }
 export const GetVoiceChannelResponse = S.suspend(() =>
   S.Struct({
@@ -5619,7 +6488,7 @@ export const GetVoiceChannelResponse = S.suspend(() =>
   identifier: "GetVoiceChannelResponse",
 }) as any as S.Schema<GetVoiceChannelResponse>;
 export interface ListTagsForResourceResponse {
-  TagsModel?: TagsModel;
+  TagsModel: TagsModel & { tags: MapOf__string };
 }
 export const ListTagsForResourceResponse = S.suspend(() =>
   S.Struct({
@@ -5926,7 +6795,137 @@ export const UpdateBaiduChannelRequest = S.suspend(() =>
   identifier: "UpdateBaiduChannelRequest",
 }) as any as S.Schema<UpdateBaiduChannelRequest>;
 export interface UpdateCampaignResponse {
-  CampaignResponse?: CampaignResponse;
+  CampaignResponse: CampaignResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    SegmentId: string;
+    SegmentVersion: number;
+    AdditionalTreatments: (TreatmentResource & {
+      Id: string;
+      SizePercent: number;
+      CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+        DeliveryUri: string;
+      };
+      MessageConfiguration: MessageConfiguration & {
+        InAppMessage: CampaignInAppMessage & {
+          Content: (InAppMessageContent & {
+            BodyConfig: InAppMessageBodyConfig & {
+              Alignment: Alignment;
+              Body: string;
+              TextColor: string;
+            };
+            HeaderConfig: InAppMessageHeaderConfig & {
+              Alignment: Alignment;
+              Header: string;
+              TextColor: string;
+            };
+            PrimaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+            SecondaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+          })[];
+        };
+      };
+      Schedule: Schedule & {
+        StartTime: string;
+        EventFilter: CampaignEventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+    })[];
+    CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+      DeliveryUri: string;
+    };
+    MessageConfiguration: MessageConfiguration & {
+      InAppMessage: CampaignInAppMessage & {
+        Content: (InAppMessageContent & {
+          BodyConfig: InAppMessageBodyConfig & {
+            Alignment: Alignment;
+            Body: string;
+            TextColor: string;
+          };
+          HeaderConfig: InAppMessageHeaderConfig & {
+            Alignment: Alignment;
+            Header: string;
+            TextColor: string;
+          };
+          PrimaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+          SecondaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+        })[];
+      };
+    };
+    Schedule: Schedule & {
+      StartTime: string;
+      EventFilter: CampaignEventFilter & {
+        Dimensions: EventDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          EventType: SetDimension & { Values: ListOf__string };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+        };
+        FilterType: FilterType;
+      };
+    };
+  };
 }
 export const UpdateCampaignResponse = S.suspend(() =>
   S.Struct({
@@ -5961,7 +6960,7 @@ export const UpdateEmailChannelRequest = S.suspend(() =>
   identifier: "UpdateEmailChannelRequest",
 }) as any as S.Schema<UpdateEmailChannelRequest>;
 export interface UpdateEmailTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const UpdateEmailTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -5996,7 +6995,7 @@ export const UpdateGcmChannelRequest = S.suspend(() =>
   identifier: "UpdateGcmChannelRequest",
 }) as any as S.Schema<UpdateGcmChannelRequest>;
 export interface UpdateInAppTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const UpdateInAppTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -6008,7 +7007,164 @@ export const UpdateInAppTemplateResponse = S.suspend(() =>
   identifier: "UpdateInAppTemplateResponse",
 }) as any as S.Schema<UpdateInAppTemplateResponse>;
 export interface UpdateJourneyResponse {
-  JourneyResponse?: JourneyResponse;
+  JourneyResponse: JourneyResponse & {
+    ApplicationId: string;
+    Id: string;
+    Name: string;
+    Activities: {
+      [key: string]: Activity & {
+        ConditionalSplit: ConditionalSplitActivity & {
+          Condition: Condition & {
+            Conditions: (SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            })[];
+          };
+        };
+        Holdout: HoldoutActivity & { Percentage: number };
+        MultiCondition: MultiConditionalSplitActivity & {
+          Branches: (MultiConditionalBranch & {
+            Condition: SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            };
+          })[];
+        };
+      };
+    };
+    StartCondition: StartCondition & {
+      EventStartCondition: EventStartCondition & {
+        EventFilter: EventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+      SegmentStartCondition: SegmentCondition & { SegmentId: string };
+    };
+  };
 }
 export const UpdateJourneyResponse = S.suspend(() =>
   S.Struct({
@@ -6048,7 +7204,7 @@ export const UpdateJourneyStateRequest = S.suspend(() =>
   identifier: "UpdateJourneyStateRequest",
 }) as any as S.Schema<UpdateJourneyStateRequest>;
 export interface UpdatePushTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const UpdatePushTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -6085,7 +7241,96 @@ export const UpdateRecommenderConfigurationRequest = S.suspend(() =>
   identifier: "UpdateRecommenderConfigurationRequest",
 }) as any as S.Schema<UpdateRecommenderConfigurationRequest>;
 export interface UpdateSegmentResponse {
-  SegmentResponse?: SegmentResponse;
+  SegmentResponse: SegmentResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    SegmentType: SegmentType;
+    Dimensions: SegmentDimensions & {
+      Attributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+      Behavior: SegmentBehaviors & {
+        Recency: RecencyDimension & {
+          Duration: Duration;
+          RecencyType: RecencyType;
+        };
+      };
+      Demographic: SegmentDemographics & {
+        AppVersion: SetDimension & { Values: ListOf__string };
+        Channel: SetDimension & { Values: ListOf__string };
+        DeviceType: SetDimension & { Values: ListOf__string };
+        Make: SetDimension & { Values: ListOf__string };
+        Model: SetDimension & { Values: ListOf__string };
+        Platform: SetDimension & { Values: ListOf__string };
+      };
+      Location: SegmentLocation & {
+        Country: SetDimension & { Values: ListOf__string };
+        GPSPoint: GPSPointDimension & {
+          Coordinates: GPSCoordinates & { Latitude: number; Longitude: number };
+        };
+      };
+      Metrics: {
+        [key: string]: MetricDimension & {
+          ComparisonOperator: string;
+          Value: number;
+        };
+      };
+      UserAttributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+    };
+    ImportDefinition: SegmentImportResource & {
+      ExternalId: string;
+      Format: Format;
+      RoleArn: string;
+      S3Url: string;
+      Size: number;
+    };
+    SegmentGroups: SegmentGroupList & {
+      Groups: (SegmentGroup & {
+        Dimensions: (SegmentDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          Behavior: SegmentBehaviors & {
+            Recency: RecencyDimension & {
+              Duration: Duration;
+              RecencyType: RecencyType;
+            };
+          };
+          Demographic: SegmentDemographics & {
+            AppVersion: SetDimension & { Values: ListOf__string };
+            Channel: SetDimension & { Values: ListOf__string };
+            DeviceType: SetDimension & { Values: ListOf__string };
+            Make: SetDimension & { Values: ListOf__string };
+            Model: SetDimension & { Values: ListOf__string };
+            Platform: SetDimension & { Values: ListOf__string };
+          };
+          Location: SegmentLocation & {
+            Country: SetDimension & { Values: ListOf__string };
+            GPSPoint: GPSPointDimension & {
+              Coordinates: GPSCoordinates & {
+                Latitude: number;
+                Longitude: number;
+              };
+            };
+          };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+          UserAttributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+        })[];
+        SourceSegments: (SegmentReference & { Id: string })[];
+      })[];
+    };
+  };
 }
 export const UpdateSegmentResponse = S.suspend(() =>
   S.Struct({
@@ -6120,7 +7365,7 @@ export const UpdateSmsChannelRequest = S.suspend(() =>
   identifier: "UpdateSmsChannelRequest",
 }) as any as S.Schema<UpdateSmsChannelRequest>;
 export interface UpdateSmsTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const UpdateSmsTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -6183,7 +7428,7 @@ export const UpdateVoiceChannelRequest = S.suspend(() =>
   identifier: "UpdateVoiceChannelRequest",
 }) as any as S.Schema<UpdateVoiceChannelRequest>;
 export interface UpdateVoiceTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const UpdateVoiceTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -6802,7 +8047,14 @@ export const CreateEmailTemplateRequest = S.suspend(() =>
   identifier: "CreateEmailTemplateRequest",
 }) as any as S.Schema<CreateEmailTemplateRequest>;
 export interface CreateExportJobResponse {
-  ExportJobResponse?: ExportJobResponse;
+  ExportJobResponse: ExportJobResponse & {
+    ApplicationId: string;
+    CreationDate: string;
+    Definition: ExportJobResource & { RoleArn: string; S3UrlPrefix: string };
+    Id: string;
+    JobStatus: JobStatus;
+    Type: string;
+  };
 }
 export const CreateExportJobResponse = S.suspend(() =>
   S.Struct({
@@ -6814,7 +8066,18 @@ export const CreateExportJobResponse = S.suspend(() =>
   identifier: "CreateExportJobResponse",
 }) as any as S.Schema<CreateExportJobResponse>;
 export interface CreateImportJobResponse {
-  ImportJobResponse?: ImportJobResponse;
+  ImportJobResponse: ImportJobResponse & {
+    ApplicationId: string;
+    CreationDate: string;
+    Definition: ImportJobResource & {
+      Format: Format;
+      RoleArn: string;
+      S3Url: string;
+    };
+    Id: string;
+    JobStatus: JobStatus;
+    Type: string;
+  };
 }
 export const CreateImportJobResponse = S.suspend(() =>
   S.Struct({
@@ -6849,7 +8112,13 @@ export const CreatePushTemplateRequest = S.suspend(() =>
   identifier: "CreatePushTemplateRequest",
 }) as any as S.Schema<CreatePushTemplateRequest>;
 export interface CreateRecommenderConfigurationResponse {
-  RecommenderConfigurationResponse?: RecommenderConfigurationResponse;
+  RecommenderConfigurationResponse: RecommenderConfigurationResponse & {
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    RecommendationProviderRoleArn: string;
+    RecommendationProviderUri: string;
+  };
 }
 export const CreateRecommenderConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -6877,7 +8146,7 @@ export const CreateTemplateMessageBody = S.suspend(() =>
   identifier: "CreateTemplateMessageBody",
 }) as any as S.Schema<CreateTemplateMessageBody>;
 export interface CreateVoiceTemplateResponse {
-  CreateTemplateMessageBody?: CreateTemplateMessageBody;
+  CreateTemplateMessageBody: CreateTemplateMessageBody;
 }
 export const CreateVoiceTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -6889,7 +8158,7 @@ export const CreateVoiceTemplateResponse = S.suspend(() =>
   identifier: "CreateVoiceTemplateResponse",
 }) as any as S.Schema<CreateVoiceTemplateResponse>;
 export interface DeleteAdmChannelResponse {
-  ADMChannelResponse?: ADMChannelResponse;
+  ADMChannelResponse: ADMChannelResponse & { Platform: string };
 }
 export const DeleteAdmChannelResponse = S.suspend(() =>
   S.Struct({
@@ -6901,7 +8170,7 @@ export const DeleteAdmChannelResponse = S.suspend(() =>
   identifier: "DeleteAdmChannelResponse",
 }) as any as S.Schema<DeleteAdmChannelResponse>;
 export interface DeleteApnsChannelResponse {
-  APNSChannelResponse?: APNSChannelResponse;
+  APNSChannelResponse: APNSChannelResponse & { Platform: string };
 }
 export const DeleteApnsChannelResponse = S.suspend(() =>
   S.Struct({
@@ -6913,7 +8182,7 @@ export const DeleteApnsChannelResponse = S.suspend(() =>
   identifier: "DeleteApnsChannelResponse",
 }) as any as S.Schema<DeleteApnsChannelResponse>;
 export interface DeleteApnsSandboxChannelResponse {
-  APNSSandboxChannelResponse?: APNSSandboxChannelResponse;
+  APNSSandboxChannelResponse: APNSSandboxChannelResponse & { Platform: string };
 }
 export const DeleteApnsSandboxChannelResponse = S.suspend(() =>
   S.Struct({
@@ -6925,7 +8194,7 @@ export const DeleteApnsSandboxChannelResponse = S.suspend(() =>
   identifier: "DeleteApnsSandboxChannelResponse",
 }) as any as S.Schema<DeleteApnsSandboxChannelResponse>;
 export interface DeleteApnsVoipChannelResponse {
-  APNSVoipChannelResponse?: APNSVoipChannelResponse;
+  APNSVoipChannelResponse: APNSVoipChannelResponse & { Platform: string };
 }
 export const DeleteApnsVoipChannelResponse = S.suspend(() =>
   S.Struct({
@@ -6937,7 +8206,9 @@ export const DeleteApnsVoipChannelResponse = S.suspend(() =>
   identifier: "DeleteApnsVoipChannelResponse",
 }) as any as S.Schema<DeleteApnsVoipChannelResponse>;
 export interface DeleteApnsVoipSandboxChannelResponse {
-  APNSVoipSandboxChannelResponse?: APNSVoipSandboxChannelResponse;
+  APNSVoipSandboxChannelResponse: APNSVoipSandboxChannelResponse & {
+    Platform: string;
+  };
 }
 export const DeleteApnsVoipSandboxChannelResponse = S.suspend(() =>
   S.Struct({
@@ -6949,7 +8220,11 @@ export const DeleteApnsVoipSandboxChannelResponse = S.suspend(() =>
   identifier: "DeleteApnsVoipSandboxChannelResponse",
 }) as any as S.Schema<DeleteApnsVoipSandboxChannelResponse>;
 export interface DeleteAppResponse {
-  ApplicationResponse?: ApplicationResponse;
+  ApplicationResponse: ApplicationResponse & {
+    Arn: string;
+    Id: string;
+    Name: string;
+  };
 }
 export const DeleteAppResponse = S.suspend(() =>
   S.Struct({
@@ -6961,7 +8236,10 @@ export const DeleteAppResponse = S.suspend(() =>
   identifier: "DeleteAppResponse",
 }) as any as S.Schema<DeleteAppResponse>;
 export interface DeleteBaiduChannelResponse {
-  BaiduChannelResponse?: BaiduChannelResponse;
+  BaiduChannelResponse: BaiduChannelResponse & {
+    Credential: string;
+    Platform: string;
+  };
 }
 export const DeleteBaiduChannelResponse = S.suspend(() =>
   S.Struct({
@@ -6973,7 +8251,7 @@ export const DeleteBaiduChannelResponse = S.suspend(() =>
   identifier: "DeleteBaiduChannelResponse",
 }) as any as S.Schema<DeleteBaiduChannelResponse>;
 export interface DeleteEmailChannelResponse {
-  EmailChannelResponse?: EmailChannelResponse;
+  EmailChannelResponse: EmailChannelResponse & { Platform: string };
 }
 export const DeleteEmailChannelResponse = S.suspend(() =>
   S.Struct({
@@ -6985,7 +8263,7 @@ export const DeleteEmailChannelResponse = S.suspend(() =>
   identifier: "DeleteEmailChannelResponse",
 }) as any as S.Schema<DeleteEmailChannelResponse>;
 export interface DeleteEmailTemplateResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const DeleteEmailTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -6997,7 +8275,7 @@ export const DeleteEmailTemplateResponse = S.suspend(() =>
   identifier: "DeleteEmailTemplateResponse",
 }) as any as S.Schema<DeleteEmailTemplateResponse>;
 export interface DeleteEndpointResponse {
-  EndpointResponse?: EndpointResponse;
+  EndpointResponse: EndpointResponse;
 }
 export const DeleteEndpointResponse = S.suspend(() =>
   S.Struct({
@@ -7009,7 +8287,11 @@ export const DeleteEndpointResponse = S.suspend(() =>
   identifier: "DeleteEndpointResponse",
 }) as any as S.Schema<DeleteEndpointResponse>;
 export interface DeleteEventStreamResponse {
-  EventStream?: EventStream;
+  EventStream: EventStream & {
+    ApplicationId: string;
+    DestinationStreamArn: string;
+    RoleArn: string;
+  };
 }
 export const DeleteEventStreamResponse = S.suspend(() =>
   S.Struct({
@@ -7021,7 +8303,7 @@ export const DeleteEventStreamResponse = S.suspend(() =>
   identifier: "DeleteEventStreamResponse",
 }) as any as S.Schema<DeleteEventStreamResponse>;
 export interface DeleteGcmChannelResponse {
-  GCMChannelResponse?: GCMChannelResponse;
+  GCMChannelResponse: GCMChannelResponse & { Platform: string };
 }
 export const DeleteGcmChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7033,7 +8315,164 @@ export const DeleteGcmChannelResponse = S.suspend(() =>
   identifier: "DeleteGcmChannelResponse",
 }) as any as S.Schema<DeleteGcmChannelResponse>;
 export interface DeleteJourneyResponse {
-  JourneyResponse?: JourneyResponse;
+  JourneyResponse: JourneyResponse & {
+    ApplicationId: string;
+    Id: string;
+    Name: string;
+    Activities: {
+      [key: string]: Activity & {
+        ConditionalSplit: ConditionalSplitActivity & {
+          Condition: Condition & {
+            Conditions: (SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            })[];
+          };
+        };
+        Holdout: HoldoutActivity & { Percentage: number };
+        MultiCondition: MultiConditionalSplitActivity & {
+          Branches: (MultiConditionalBranch & {
+            Condition: SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            };
+          })[];
+        };
+      };
+    };
+    StartCondition: StartCondition & {
+      EventStartCondition: EventStartCondition & {
+        EventFilter: EventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+      SegmentStartCondition: SegmentCondition & { SegmentId: string };
+    };
+  };
 }
 export const DeleteJourneyResponse = S.suspend(() =>
   S.Struct({
@@ -7045,7 +8484,13 @@ export const DeleteJourneyResponse = S.suspend(() =>
   identifier: "DeleteJourneyResponse",
 }) as any as S.Schema<DeleteJourneyResponse>;
 export interface DeleteRecommenderConfigurationResponse {
-  RecommenderConfigurationResponse?: RecommenderConfigurationResponse;
+  RecommenderConfigurationResponse: RecommenderConfigurationResponse & {
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    RecommendationProviderRoleArn: string;
+    RecommendationProviderUri: string;
+  };
 }
 export const DeleteRecommenderConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -7059,7 +8504,7 @@ export const DeleteRecommenderConfigurationResponse = S.suspend(() =>
   identifier: "DeleteRecommenderConfigurationResponse",
 }) as any as S.Schema<DeleteRecommenderConfigurationResponse>;
 export interface DeleteSmsChannelResponse {
-  SMSChannelResponse?: SMSChannelResponse;
+  SMSChannelResponse: SMSChannelResponse & { Platform: string };
 }
 export const DeleteSmsChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7071,7 +8516,7 @@ export const DeleteSmsChannelResponse = S.suspend(() =>
   identifier: "DeleteSmsChannelResponse",
 }) as any as S.Schema<DeleteSmsChannelResponse>;
 export interface DeleteUserEndpointsResponse {
-  EndpointsResponse?: EndpointsResponse;
+  EndpointsResponse: EndpointsResponse & { Item: ListOfEndpointResponse };
 }
 export const DeleteUserEndpointsResponse = S.suspend(() =>
   S.Struct({
@@ -7083,7 +8528,7 @@ export const DeleteUserEndpointsResponse = S.suspend(() =>
   identifier: "DeleteUserEndpointsResponse",
 }) as any as S.Schema<DeleteUserEndpointsResponse>;
 export interface DeleteVoiceChannelResponse {
-  VoiceChannelResponse?: VoiceChannelResponse;
+  VoiceChannelResponse: VoiceChannelResponse & { Platform: string };
 }
 export const DeleteVoiceChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7095,7 +8540,9 @@ export const DeleteVoiceChannelResponse = S.suspend(() =>
   identifier: "DeleteVoiceChannelResponse",
 }) as any as S.Schema<DeleteVoiceChannelResponse>;
 export interface GetApplicationSettingsResponse {
-  ApplicationSettingsResource?: ApplicationSettingsResource;
+  ApplicationSettingsResource: ApplicationSettingsResource & {
+    ApplicationId: string;
+  };
 }
 export const GetApplicationSettingsResponse = S.suspend(() =>
   S.Struct({
@@ -7107,7 +8554,9 @@ export const GetApplicationSettingsResponse = S.suspend(() =>
   identifier: "GetApplicationSettingsResponse",
 }) as any as S.Schema<GetApplicationSettingsResponse>;
 export interface GetAppsResponse {
-  ApplicationsResponse?: ApplicationsResponse;
+  ApplicationsResponse: ApplicationsResponse & {
+    Item: (ApplicationResponse & { Arn: string; Id: string; Name: string })[];
+  };
 }
 export const GetAppsResponse = S.suspend(() =>
   S.Struct({
@@ -7119,7 +8568,27 @@ export const GetAppsResponse = S.suspend(() =>
   identifier: "GetAppsResponse",
 }) as any as S.Schema<GetAppsResponse>;
 export interface GetCampaignDateRangeKpiResponse {
-  CampaignDateRangeKpiResponse?: CampaignDateRangeKpiResponse;
+  CampaignDateRangeKpiResponse: CampaignDateRangeKpiResponse & {
+    ApplicationId: string;
+    CampaignId: string;
+    EndTime: __timestampIso8601;
+    KpiName: string;
+    KpiResult: BaseKpiResult & {
+      Rows: (ResultRow & {
+        GroupedBys: (ResultRowValue & {
+          Key: string;
+          Type: string;
+          Value: string;
+        })[];
+        Values: (ResultRowValue & {
+          Key: string;
+          Type: string;
+          Value: string;
+        })[];
+      })[];
+    };
+    StartTime: __timestampIso8601;
+  };
 }
 export const GetCampaignDateRangeKpiResponse = S.suspend(() =>
   S.Struct({
@@ -7131,7 +8600,147 @@ export const GetCampaignDateRangeKpiResponse = S.suspend(() =>
   identifier: "GetCampaignDateRangeKpiResponse",
 }) as any as S.Schema<GetCampaignDateRangeKpiResponse>;
 export interface GetCampaignsResponse {
-  CampaignsResponse?: CampaignsResponse;
+  CampaignsResponse: CampaignsResponse & {
+    Item: (CampaignResponse & {
+      ApplicationId: string;
+      Arn: string;
+      CreationDate: string;
+      Id: string;
+      LastModifiedDate: string;
+      SegmentId: string;
+      SegmentVersion: number;
+      AdditionalTreatments: (TreatmentResource & {
+        Id: string;
+        SizePercent: number;
+        CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+          DeliveryUri: string;
+        };
+        MessageConfiguration: MessageConfiguration & {
+          InAppMessage: CampaignInAppMessage & {
+            Content: (InAppMessageContent & {
+              BodyConfig: InAppMessageBodyConfig & {
+                Alignment: Alignment;
+                Body: string;
+                TextColor: string;
+              };
+              HeaderConfig: InAppMessageHeaderConfig & {
+                Alignment: Alignment;
+                Header: string;
+                TextColor: string;
+              };
+              PrimaryBtn: InAppMessageButton & {
+                Android: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+                DefaultConfig: DefaultButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                  Text: string;
+                };
+                IOS: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+                Web: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+              };
+              SecondaryBtn: InAppMessageButton & {
+                Android: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+                DefaultConfig: DefaultButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                  Text: string;
+                };
+                IOS: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+                Web: OverrideButtonConfiguration & {
+                  ButtonAction: ButtonAction;
+                };
+              };
+            })[];
+          };
+        };
+        Schedule: Schedule & {
+          StartTime: string;
+          EventFilter: CampaignEventFilter & {
+            Dimensions: EventDimensions & {
+              Attributes: {
+                [key: string]: AttributeDimension & { Values: ListOf__string };
+              };
+              EventType: SetDimension & { Values: ListOf__string };
+              Metrics: {
+                [key: string]: MetricDimension & {
+                  ComparisonOperator: string;
+                  Value: number;
+                };
+              };
+            };
+            FilterType: FilterType;
+          };
+        };
+      })[];
+      CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+        DeliveryUri: string;
+      };
+      MessageConfiguration: MessageConfiguration & {
+        InAppMessage: CampaignInAppMessage & {
+          Content: (InAppMessageContent & {
+            BodyConfig: InAppMessageBodyConfig & {
+              Alignment: Alignment;
+              Body: string;
+              TextColor: string;
+            };
+            HeaderConfig: InAppMessageHeaderConfig & {
+              Alignment: Alignment;
+              Header: string;
+              TextColor: string;
+            };
+            PrimaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+            SecondaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+          })[];
+        };
+      };
+      Schedule: Schedule & {
+        StartTime: string;
+        EventFilter: CampaignEventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+    })[];
+  };
 }
 export const GetCampaignsResponse = S.suspend(() =>
   S.Struct({
@@ -7143,7 +8752,12 @@ export const GetCampaignsResponse = S.suspend(() =>
   identifier: "GetCampaignsResponse",
 }) as any as S.Schema<GetCampaignsResponse>;
 export interface GetEmailTemplateResponse {
-  EmailTemplateResponse?: EmailTemplateResponse;
+  EmailTemplateResponse: EmailTemplateResponse & {
+    CreationDate: string;
+    LastModifiedDate: string;
+    TemplateName: string;
+    TemplateType: TemplateType;
+  };
 }
 export const GetEmailTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -7155,7 +8769,16 @@ export const GetEmailTemplateResponse = S.suspend(() =>
   identifier: "GetEmailTemplateResponse",
 }) as any as S.Schema<GetEmailTemplateResponse>;
 export interface GetExportJobsResponse {
-  ExportJobsResponse?: ExportJobsResponse;
+  ExportJobsResponse: ExportJobsResponse & {
+    Item: (ExportJobResponse & {
+      ApplicationId: string;
+      CreationDate: string;
+      Definition: ExportJobResource & { RoleArn: string; S3UrlPrefix: string };
+      Id: string;
+      JobStatus: JobStatus;
+      Type: string;
+    })[];
+  };
 }
 export const GetExportJobsResponse = S.suspend(() =>
   S.Struct({
@@ -7167,7 +8790,20 @@ export const GetExportJobsResponse = S.suspend(() =>
   identifier: "GetExportJobsResponse",
 }) as any as S.Schema<GetExportJobsResponse>;
 export interface GetImportJobsResponse {
-  ImportJobsResponse?: ImportJobsResponse;
+  ImportJobsResponse: ImportJobsResponse & {
+    Item: (ImportJobResponse & {
+      ApplicationId: string;
+      CreationDate: string;
+      Definition: ImportJobResource & {
+        Format: Format;
+        RoleArn: string;
+        S3Url: string;
+      };
+      Id: string;
+      JobStatus: JobStatus;
+      Type: string;
+    })[];
+  };
 }
 export const GetImportJobsResponse = S.suspend(() =>
   S.Struct({
@@ -7179,7 +8815,42 @@ export const GetImportJobsResponse = S.suspend(() =>
   identifier: "GetImportJobsResponse",
 }) as any as S.Schema<GetImportJobsResponse>;
 export interface GetInAppTemplateResponse {
-  InAppTemplateResponse?: InAppTemplateResponse;
+  InAppTemplateResponse: InAppTemplateResponse & {
+    CreationDate: string;
+    LastModifiedDate: string;
+    TemplateName: string;
+    TemplateType: TemplateType;
+    Content: (InAppMessageContent & {
+      BodyConfig: InAppMessageBodyConfig & {
+        Alignment: Alignment;
+        Body: string;
+        TextColor: string;
+      };
+      HeaderConfig: InAppMessageHeaderConfig & {
+        Alignment: Alignment;
+        Header: string;
+        TextColor: string;
+      };
+      PrimaryBtn: InAppMessageButton & {
+        Android: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+        DefaultConfig: DefaultButtonConfiguration & {
+          ButtonAction: ButtonAction;
+          Text: string;
+        };
+        IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+        Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+      };
+      SecondaryBtn: InAppMessageButton & {
+        Android: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+        DefaultConfig: DefaultButtonConfiguration & {
+          ButtonAction: ButtonAction;
+          Text: string;
+        };
+        IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+        Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+      };
+    })[];
+  };
 }
 export const GetInAppTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -7191,7 +8862,27 @@ export const GetInAppTemplateResponse = S.suspend(() =>
   identifier: "GetInAppTemplateResponse",
 }) as any as S.Schema<GetInAppTemplateResponse>;
 export interface GetJourneyDateRangeKpiResponse {
-  JourneyDateRangeKpiResponse?: JourneyDateRangeKpiResponse;
+  JourneyDateRangeKpiResponse: JourneyDateRangeKpiResponse & {
+    ApplicationId: string;
+    EndTime: __timestampIso8601;
+    JourneyId: string;
+    KpiName: string;
+    KpiResult: BaseKpiResult & {
+      Rows: (ResultRow & {
+        GroupedBys: (ResultRowValue & {
+          Key: string;
+          Type: string;
+          Value: string;
+        })[];
+        Values: (ResultRowValue & {
+          Key: string;
+          Type: string;
+          Value: string;
+        })[];
+      })[];
+    };
+    StartTime: __timestampIso8601;
+  };
 }
 export const GetJourneyDateRangeKpiResponse = S.suspend(() =>
   S.Struct({
@@ -7203,7 +8894,14 @@ export const GetJourneyDateRangeKpiResponse = S.suspend(() =>
   identifier: "GetJourneyDateRangeKpiResponse",
 }) as any as S.Schema<GetJourneyDateRangeKpiResponse>;
 export interface GetJourneyExecutionActivityMetricsResponse {
-  JourneyExecutionActivityMetricsResponse?: JourneyExecutionActivityMetricsResponse;
+  JourneyExecutionActivityMetricsResponse: JourneyExecutionActivityMetricsResponse & {
+    ActivityType: string;
+    ApplicationId: string;
+    JourneyActivityId: string;
+    JourneyId: string;
+    LastEvaluatedTime: string;
+    Metrics: MapOf__string;
+  };
 }
 export const GetJourneyExecutionActivityMetricsResponse = S.suspend(() =>
   S.Struct({
@@ -7217,7 +8915,12 @@ export const GetJourneyExecutionActivityMetricsResponse = S.suspend(() =>
   identifier: "GetJourneyExecutionActivityMetricsResponse",
 }) as any as S.Schema<GetJourneyExecutionActivityMetricsResponse>;
 export interface GetJourneyExecutionMetricsResponse {
-  JourneyExecutionMetricsResponse?: JourneyExecutionMetricsResponse;
+  JourneyExecutionMetricsResponse: JourneyExecutionMetricsResponse & {
+    ApplicationId: string;
+    JourneyId: string;
+    LastEvaluatedTime: string;
+    Metrics: MapOf__string;
+  };
 }
 export const GetJourneyExecutionMetricsResponse = S.suspend(() =>
   S.Struct({
@@ -7229,7 +8932,15 @@ export const GetJourneyExecutionMetricsResponse = S.suspend(() =>
   identifier: "GetJourneyExecutionMetricsResponse",
 }) as any as S.Schema<GetJourneyExecutionMetricsResponse>;
 export interface GetJourneyRunExecutionActivityMetricsResponse {
-  JourneyRunExecutionActivityMetricsResponse?: JourneyRunExecutionActivityMetricsResponse;
+  JourneyRunExecutionActivityMetricsResponse: JourneyRunExecutionActivityMetricsResponse & {
+    ActivityType: string;
+    ApplicationId: string;
+    JourneyActivityId: string;
+    JourneyId: string;
+    LastEvaluatedTime: string;
+    Metrics: MapOf__string;
+    RunId: string;
+  };
 }
 export const GetJourneyRunExecutionActivityMetricsResponse = S.suspend(() =>
   S.Struct({
@@ -7245,7 +8956,13 @@ export const GetJourneyRunExecutionActivityMetricsResponse = S.suspend(() =>
   identifier: "GetJourneyRunExecutionActivityMetricsResponse",
 }) as any as S.Schema<GetJourneyRunExecutionActivityMetricsResponse>;
 export interface GetJourneyRunExecutionMetricsResponse {
-  JourneyRunExecutionMetricsResponse?: JourneyRunExecutionMetricsResponse;
+  JourneyRunExecutionMetricsResponse: JourneyRunExecutionMetricsResponse & {
+    ApplicationId: string;
+    JourneyId: string;
+    LastEvaluatedTime: string;
+    Metrics: MapOf__string;
+    RunId: string;
+  };
 }
 export const GetJourneyRunExecutionMetricsResponse = S.suspend(() =>
   S.Struct({
@@ -7259,7 +8976,12 @@ export const GetJourneyRunExecutionMetricsResponse = S.suspend(() =>
   identifier: "GetJourneyRunExecutionMetricsResponse",
 }) as any as S.Schema<GetJourneyRunExecutionMetricsResponse>;
 export interface GetPushTemplateResponse {
-  PushNotificationTemplateResponse?: PushNotificationTemplateResponse;
+  PushNotificationTemplateResponse: PushNotificationTemplateResponse & {
+    CreationDate: string;
+    LastModifiedDate: string;
+    TemplateName: string;
+    TemplateType: TemplateType;
+  };
 }
 export const GetPushTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -7273,7 +8995,15 @@ export const GetPushTemplateResponse = S.suspend(() =>
   identifier: "GetPushTemplateResponse",
 }) as any as S.Schema<GetPushTemplateResponse>;
 export interface GetRecommenderConfigurationsResponse {
-  ListRecommenderConfigurationsResponse?: ListRecommenderConfigurationsResponse;
+  ListRecommenderConfigurationsResponse: ListRecommenderConfigurationsResponse & {
+    Item: (RecommenderConfigurationResponse & {
+      CreationDate: string;
+      Id: string;
+      LastModifiedDate: string;
+      RecommendationProviderRoleArn: string;
+      RecommendationProviderUri: string;
+    })[];
+  };
 }
 export const GetRecommenderConfigurationsResponse = S.suspend(() =>
   S.Struct({
@@ -7287,7 +9017,101 @@ export const GetRecommenderConfigurationsResponse = S.suspend(() =>
   identifier: "GetRecommenderConfigurationsResponse",
 }) as any as S.Schema<GetRecommenderConfigurationsResponse>;
 export interface GetSegmentsResponse {
-  SegmentsResponse?: SegmentsResponse;
+  SegmentsResponse: SegmentsResponse & {
+    Item: (SegmentResponse & {
+      ApplicationId: string;
+      Arn: string;
+      CreationDate: string;
+      Id: string;
+      SegmentType: SegmentType;
+      Dimensions: SegmentDimensions & {
+        Attributes: {
+          [key: string]: AttributeDimension & { Values: ListOf__string };
+        };
+        Behavior: SegmentBehaviors & {
+          Recency: RecencyDimension & {
+            Duration: Duration;
+            RecencyType: RecencyType;
+          };
+        };
+        Demographic: SegmentDemographics & {
+          AppVersion: SetDimension & { Values: ListOf__string };
+          Channel: SetDimension & { Values: ListOf__string };
+          DeviceType: SetDimension & { Values: ListOf__string };
+          Make: SetDimension & { Values: ListOf__string };
+          Model: SetDimension & { Values: ListOf__string };
+          Platform: SetDimension & { Values: ListOf__string };
+        };
+        Location: SegmentLocation & {
+          Country: SetDimension & { Values: ListOf__string };
+          GPSPoint: GPSPointDimension & {
+            Coordinates: GPSCoordinates & {
+              Latitude: number;
+              Longitude: number;
+            };
+          };
+        };
+        Metrics: {
+          [key: string]: MetricDimension & {
+            ComparisonOperator: string;
+            Value: number;
+          };
+        };
+        UserAttributes: {
+          [key: string]: AttributeDimension & { Values: ListOf__string };
+        };
+      };
+      ImportDefinition: SegmentImportResource & {
+        ExternalId: string;
+        Format: Format;
+        RoleArn: string;
+        S3Url: string;
+        Size: number;
+      };
+      SegmentGroups: SegmentGroupList & {
+        Groups: (SegmentGroup & {
+          Dimensions: (SegmentDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            Behavior: SegmentBehaviors & {
+              Recency: RecencyDimension & {
+                Duration: Duration;
+                RecencyType: RecencyType;
+              };
+            };
+            Demographic: SegmentDemographics & {
+              AppVersion: SetDimension & { Values: ListOf__string };
+              Channel: SetDimension & { Values: ListOf__string };
+              DeviceType: SetDimension & { Values: ListOf__string };
+              Make: SetDimension & { Values: ListOf__string };
+              Model: SetDimension & { Values: ListOf__string };
+              Platform: SetDimension & { Values: ListOf__string };
+            };
+            Location: SegmentLocation & {
+              Country: SetDimension & { Values: ListOf__string };
+              GPSPoint: GPSPointDimension & {
+                Coordinates: GPSCoordinates & {
+                  Latitude: number;
+                  Longitude: number;
+                };
+              };
+            };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+            UserAttributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+          })[];
+          SourceSegments: (SegmentReference & { Id: string })[];
+        })[];
+      };
+    })[];
+  };
 }
 export const GetSegmentsResponse = S.suspend(() =>
   S.Struct({
@@ -7299,7 +9123,12 @@ export const GetSegmentsResponse = S.suspend(() =>
   identifier: "GetSegmentsResponse",
 }) as any as S.Schema<GetSegmentsResponse>;
 export interface GetSmsTemplateResponse {
-  SMSTemplateResponse?: SMSTemplateResponse;
+  SMSTemplateResponse: SMSTemplateResponse & {
+    CreationDate: string;
+    LastModifiedDate: string;
+    TemplateName: string;
+    TemplateType: TemplateType;
+  };
 }
 export const GetSmsTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -7311,7 +9140,12 @@ export const GetSmsTemplateResponse = S.suspend(() =>
   identifier: "GetSmsTemplateResponse",
 }) as any as S.Schema<GetSmsTemplateResponse>;
 export interface GetVoiceTemplateResponse {
-  VoiceTemplateResponse?: VoiceTemplateResponse;
+  VoiceTemplateResponse: VoiceTemplateResponse & {
+    CreationDate: string;
+    LastModifiedDate: string;
+    TemplateName: string;
+    TemplateType: TemplateType;
+  };
 }
 export const GetVoiceTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -7323,7 +9157,166 @@ export const GetVoiceTemplateResponse = S.suspend(() =>
   identifier: "GetVoiceTemplateResponse",
 }) as any as S.Schema<GetVoiceTemplateResponse>;
 export interface ListJourneysResponse {
-  JourneysResponse?: JourneysResponse;
+  JourneysResponse: JourneysResponse & {
+    Item: (JourneyResponse & {
+      ApplicationId: string;
+      Id: string;
+      Name: string;
+      Activities: {
+        [key: string]: Activity & {
+          ConditionalSplit: ConditionalSplitActivity & {
+            Condition: Condition & {
+              Conditions: (SimpleCondition & {
+                EventCondition: EventCondition & {
+                  Dimensions: EventDimensions & {
+                    Attributes: {
+                      [key: string]: AttributeDimension & {
+                        Values: ListOf__string;
+                      };
+                    };
+                    EventType: SetDimension & { Values: ListOf__string };
+                    Metrics: {
+                      [key: string]: MetricDimension & {
+                        ComparisonOperator: string;
+                        Value: number;
+                      };
+                    };
+                  };
+                };
+                SegmentCondition: SegmentCondition & { SegmentId: string };
+                SegmentDimensions: SegmentDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  Behavior: SegmentBehaviors & {
+                    Recency: RecencyDimension & {
+                      Duration: Duration;
+                      RecencyType: RecencyType;
+                    };
+                  };
+                  Demographic: SegmentDemographics & {
+                    AppVersion: SetDimension & { Values: ListOf__string };
+                    Channel: SetDimension & { Values: ListOf__string };
+                    DeviceType: SetDimension & { Values: ListOf__string };
+                    Make: SetDimension & { Values: ListOf__string };
+                    Model: SetDimension & { Values: ListOf__string };
+                    Platform: SetDimension & { Values: ListOf__string };
+                  };
+                  Location: SegmentLocation & {
+                    Country: SetDimension & { Values: ListOf__string };
+                    GPSPoint: GPSPointDimension & {
+                      Coordinates: GPSCoordinates & {
+                        Latitude: number;
+                        Longitude: number;
+                      };
+                    };
+                  };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                  UserAttributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                };
+              })[];
+            };
+          };
+          Holdout: HoldoutActivity & { Percentage: number };
+          MultiCondition: MultiConditionalSplitActivity & {
+            Branches: (MultiConditionalBranch & {
+              Condition: SimpleCondition & {
+                EventCondition: EventCondition & {
+                  Dimensions: EventDimensions & {
+                    Attributes: {
+                      [key: string]: AttributeDimension & {
+                        Values: ListOf__string;
+                      };
+                    };
+                    EventType: SetDimension & { Values: ListOf__string };
+                    Metrics: {
+                      [key: string]: MetricDimension & {
+                        ComparisonOperator: string;
+                        Value: number;
+                      };
+                    };
+                  };
+                };
+                SegmentCondition: SegmentCondition & { SegmentId: string };
+                SegmentDimensions: SegmentDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  Behavior: SegmentBehaviors & {
+                    Recency: RecencyDimension & {
+                      Duration: Duration;
+                      RecencyType: RecencyType;
+                    };
+                  };
+                  Demographic: SegmentDemographics & {
+                    AppVersion: SetDimension & { Values: ListOf__string };
+                    Channel: SetDimension & { Values: ListOf__string };
+                    DeviceType: SetDimension & { Values: ListOf__string };
+                    Make: SetDimension & { Values: ListOf__string };
+                    Model: SetDimension & { Values: ListOf__string };
+                    Platform: SetDimension & { Values: ListOf__string };
+                  };
+                  Location: SegmentLocation & {
+                    Country: SetDimension & { Values: ListOf__string };
+                    GPSPoint: GPSPointDimension & {
+                      Coordinates: GPSCoordinates & {
+                        Latitude: number;
+                        Longitude: number;
+                      };
+                    };
+                  };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                  UserAttributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                };
+              };
+            })[];
+          };
+        };
+      };
+      StartCondition: StartCondition & {
+        EventStartCondition: EventStartCondition & {
+          EventFilter: EventFilter & {
+            Dimensions: EventDimensions & {
+              Attributes: {
+                [key: string]: AttributeDimension & { Values: ListOf__string };
+              };
+              EventType: SetDimension & { Values: ListOf__string };
+              Metrics: {
+                [key: string]: MetricDimension & {
+                  ComparisonOperator: string;
+                  Value: number;
+                };
+              };
+            };
+            FilterType: FilterType;
+          };
+        };
+        SegmentStartCondition: SegmentCondition & { SegmentId: string };
+      };
+    })[];
+  };
 }
 export const ListJourneysResponse = S.suspend(() =>
   S.Struct({
@@ -7335,7 +9328,11 @@ export const ListJourneysResponse = S.suspend(() =>
   identifier: "ListJourneysResponse",
 }) as any as S.Schema<ListJourneysResponse>;
 export interface PutEventStreamResponse {
-  EventStream?: EventStream;
+  EventStream: EventStream & {
+    ApplicationId: string;
+    DestinationStreamArn: string;
+    RoleArn: string;
+  };
 }
 export const PutEventStreamResponse = S.suspend(() =>
   S.Struct({
@@ -7347,7 +9344,7 @@ export const PutEventStreamResponse = S.suspend(() =>
   identifier: "PutEventStreamResponse",
 }) as any as S.Schema<PutEventStreamResponse>;
 export interface UpdateAdmChannelResponse {
-  ADMChannelResponse?: ADMChannelResponse;
+  ADMChannelResponse: ADMChannelResponse & { Platform: string };
 }
 export const UpdateAdmChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7359,7 +9356,7 @@ export const UpdateAdmChannelResponse = S.suspend(() =>
   identifier: "UpdateAdmChannelResponse",
 }) as any as S.Schema<UpdateAdmChannelResponse>;
 export interface UpdateApnsChannelResponse {
-  APNSChannelResponse?: APNSChannelResponse;
+  APNSChannelResponse: APNSChannelResponse & { Platform: string };
 }
 export const UpdateApnsChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7371,7 +9368,7 @@ export const UpdateApnsChannelResponse = S.suspend(() =>
   identifier: "UpdateApnsChannelResponse",
 }) as any as S.Schema<UpdateApnsChannelResponse>;
 export interface UpdateApnsSandboxChannelResponse {
-  APNSSandboxChannelResponse?: APNSSandboxChannelResponse;
+  APNSSandboxChannelResponse: APNSSandboxChannelResponse & { Platform: string };
 }
 export const UpdateApnsSandboxChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7383,7 +9380,7 @@ export const UpdateApnsSandboxChannelResponse = S.suspend(() =>
   identifier: "UpdateApnsSandboxChannelResponse",
 }) as any as S.Schema<UpdateApnsSandboxChannelResponse>;
 export interface UpdateApnsVoipChannelResponse {
-  APNSVoipChannelResponse?: APNSVoipChannelResponse;
+  APNSVoipChannelResponse: APNSVoipChannelResponse & { Platform: string };
 }
 export const UpdateApnsVoipChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7395,7 +9392,9 @@ export const UpdateApnsVoipChannelResponse = S.suspend(() =>
   identifier: "UpdateApnsVoipChannelResponse",
 }) as any as S.Schema<UpdateApnsVoipChannelResponse>;
 export interface UpdateApnsVoipSandboxChannelResponse {
-  APNSVoipSandboxChannelResponse?: APNSVoipSandboxChannelResponse;
+  APNSVoipSandboxChannelResponse: APNSVoipSandboxChannelResponse & {
+    Platform: string;
+  };
 }
 export const UpdateApnsVoipSandboxChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7430,7 +9429,10 @@ export const UpdateApplicationSettingsRequest = S.suspend(() =>
   identifier: "UpdateApplicationSettingsRequest",
 }) as any as S.Schema<UpdateApplicationSettingsRequest>;
 export interface UpdateBaiduChannelResponse {
-  BaiduChannelResponse?: BaiduChannelResponse;
+  BaiduChannelResponse: BaiduChannelResponse & {
+    Credential: string;
+    Platform: string;
+  };
 }
 export const UpdateBaiduChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7442,7 +9444,7 @@ export const UpdateBaiduChannelResponse = S.suspend(() =>
   identifier: "UpdateBaiduChannelResponse",
 }) as any as S.Schema<UpdateBaiduChannelResponse>;
 export interface UpdateEmailChannelResponse {
-  EmailChannelResponse?: EmailChannelResponse;
+  EmailChannelResponse: EmailChannelResponse & { Platform: string };
 }
 export const UpdateEmailChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7505,7 +9507,7 @@ export const UpdateEndpointsBatchRequest = S.suspend(() =>
   identifier: "UpdateEndpointsBatchRequest",
 }) as any as S.Schema<UpdateEndpointsBatchRequest>;
 export interface UpdateGcmChannelResponse {
-  GCMChannelResponse?: GCMChannelResponse;
+  GCMChannelResponse: GCMChannelResponse & { Platform: string };
 }
 export const UpdateGcmChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7517,7 +9519,164 @@ export const UpdateGcmChannelResponse = S.suspend(() =>
   identifier: "UpdateGcmChannelResponse",
 }) as any as S.Schema<UpdateGcmChannelResponse>;
 export interface UpdateJourneyStateResponse {
-  JourneyResponse?: JourneyResponse;
+  JourneyResponse: JourneyResponse & {
+    ApplicationId: string;
+    Id: string;
+    Name: string;
+    Activities: {
+      [key: string]: Activity & {
+        ConditionalSplit: ConditionalSplitActivity & {
+          Condition: Condition & {
+            Conditions: (SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            })[];
+          };
+        };
+        Holdout: HoldoutActivity & { Percentage: number };
+        MultiCondition: MultiConditionalSplitActivity & {
+          Branches: (MultiConditionalBranch & {
+            Condition: SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            };
+          })[];
+        };
+      };
+    };
+    StartCondition: StartCondition & {
+      EventStartCondition: EventStartCondition & {
+        EventFilter: EventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+      SegmentStartCondition: SegmentCondition & { SegmentId: string };
+    };
+  };
 }
 export const UpdateJourneyStateResponse = S.suspend(() =>
   S.Struct({
@@ -7529,7 +9688,13 @@ export const UpdateJourneyStateResponse = S.suspend(() =>
   identifier: "UpdateJourneyStateResponse",
 }) as any as S.Schema<UpdateJourneyStateResponse>;
 export interface UpdateRecommenderConfigurationResponse {
-  RecommenderConfigurationResponse?: RecommenderConfigurationResponse;
+  RecommenderConfigurationResponse: RecommenderConfigurationResponse & {
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    RecommendationProviderRoleArn: string;
+    RecommendationProviderUri: string;
+  };
 }
 export const UpdateRecommenderConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -7543,7 +9708,7 @@ export const UpdateRecommenderConfigurationResponse = S.suspend(() =>
   identifier: "UpdateRecommenderConfigurationResponse",
 }) as any as S.Schema<UpdateRecommenderConfigurationResponse>;
 export interface UpdateSmsChannelResponse {
-  SMSChannelResponse?: SMSChannelResponse;
+  SMSChannelResponse: SMSChannelResponse & { Platform: string };
 }
 export const UpdateSmsChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7555,7 +9720,7 @@ export const UpdateSmsChannelResponse = S.suspend(() =>
   identifier: "UpdateSmsChannelResponse",
 }) as any as S.Schema<UpdateSmsChannelResponse>;
 export interface UpdateTemplateActiveVersionResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const UpdateTemplateActiveVersionResponse = S.suspend(() =>
   S.Struct({
@@ -7567,7 +9732,7 @@ export const UpdateTemplateActiveVersionResponse = S.suspend(() =>
   identifier: "UpdateTemplateActiveVersionResponse",
 }) as any as S.Schema<UpdateTemplateActiveVersionResponse>;
 export interface UpdateVoiceChannelResponse {
-  VoiceChannelResponse?: VoiceChannelResponse;
+  VoiceChannelResponse: VoiceChannelResponse & { Platform: string };
 }
 export const UpdateVoiceChannelResponse = S.suspend(() =>
   S.Struct({
@@ -7884,7 +10049,11 @@ export const InAppCampaignSchedule = S.suspend(() =>
   identifier: "InAppCampaignSchedule",
 }) as any as S.Schema<InAppCampaignSchedule>;
 export interface CreateAppResponse {
-  ApplicationResponse?: ApplicationResponse;
+  ApplicationResponse: ApplicationResponse & {
+    Arn: string;
+    Id: string;
+    Name: string;
+  };
 }
 export const CreateAppResponse = S.suspend(() =>
   S.Struct({
@@ -7896,7 +10065,7 @@ export const CreateAppResponse = S.suspend(() =>
   identifier: "CreateAppResponse",
 }) as any as S.Schema<CreateAppResponse>;
 export interface CreateEmailTemplateResponse {
-  CreateTemplateMessageBody?: CreateTemplateMessageBody;
+  CreateTemplateMessageBody: CreateTemplateMessageBody;
 }
 export const CreateEmailTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -7908,7 +10077,7 @@ export const CreateEmailTemplateResponse = S.suspend(() =>
   identifier: "CreateEmailTemplateResponse",
 }) as any as S.Schema<CreateEmailTemplateResponse>;
 export interface CreatePushTemplateResponse {
-  CreateTemplateMessageBody?: CreateTemplateMessageBody;
+  CreateTemplateMessageBody: CreateTemplateMessageBody;
 }
 export const CreatePushTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -7920,7 +10089,7 @@ export const CreatePushTemplateResponse = S.suspend(() =>
   identifier: "CreatePushTemplateResponse",
 }) as any as S.Schema<CreatePushTemplateResponse>;
 export interface CreateSmsTemplateResponse {
-  CreateTemplateMessageBody?: CreateTemplateMessageBody;
+  CreateTemplateMessageBody: CreateTemplateMessageBody;
 }
 export const CreateSmsTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -7932,7 +10101,137 @@ export const CreateSmsTemplateResponse = S.suspend(() =>
   identifier: "CreateSmsTemplateResponse",
 }) as any as S.Schema<CreateSmsTemplateResponse>;
 export interface DeleteCampaignResponse {
-  CampaignResponse?: CampaignResponse;
+  CampaignResponse: CampaignResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    SegmentId: string;
+    SegmentVersion: number;
+    AdditionalTreatments: (TreatmentResource & {
+      Id: string;
+      SizePercent: number;
+      CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+        DeliveryUri: string;
+      };
+      MessageConfiguration: MessageConfiguration & {
+        InAppMessage: CampaignInAppMessage & {
+          Content: (InAppMessageContent & {
+            BodyConfig: InAppMessageBodyConfig & {
+              Alignment: Alignment;
+              Body: string;
+              TextColor: string;
+            };
+            HeaderConfig: InAppMessageHeaderConfig & {
+              Alignment: Alignment;
+              Header: string;
+              TextColor: string;
+            };
+            PrimaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+            SecondaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+          })[];
+        };
+      };
+      Schedule: Schedule & {
+        StartTime: string;
+        EventFilter: CampaignEventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+    })[];
+    CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+      DeliveryUri: string;
+    };
+    MessageConfiguration: MessageConfiguration & {
+      InAppMessage: CampaignInAppMessage & {
+        Content: (InAppMessageContent & {
+          BodyConfig: InAppMessageBodyConfig & {
+            Alignment: Alignment;
+            Body: string;
+            TextColor: string;
+          };
+          HeaderConfig: InAppMessageHeaderConfig & {
+            Alignment: Alignment;
+            Header: string;
+            TextColor: string;
+          };
+          PrimaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+          SecondaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+        })[];
+      };
+    };
+    Schedule: Schedule & {
+      StartTime: string;
+      EventFilter: CampaignEventFilter & {
+        Dimensions: EventDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          EventType: SetDimension & { Values: ListOf__string };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+        };
+        FilterType: FilterType;
+      };
+    };
+  };
 }
 export const DeleteCampaignResponse = S.suspend(() =>
   S.Struct({
@@ -7944,7 +10243,13 @@ export const DeleteCampaignResponse = S.suspend(() =>
   identifier: "DeleteCampaignResponse",
 }) as any as S.Schema<DeleteCampaignResponse>;
 export interface GetCampaignActivitiesResponse {
-  ActivitiesResponse?: ActivitiesResponse;
+  ActivitiesResponse: ActivitiesResponse & {
+    Item: (ActivityResponse & {
+      ApplicationId: string;
+      CampaignId: string;
+      Id: string;
+    })[];
+  };
 }
 export const GetCampaignActivitiesResponse = S.suspend(() =>
   S.Struct({
@@ -7956,7 +10261,14 @@ export const GetCampaignActivitiesResponse = S.suspend(() =>
   identifier: "GetCampaignActivitiesResponse",
 }) as any as S.Schema<GetCampaignActivitiesResponse>;
 export interface GetExportJobResponse {
-  ExportJobResponse?: ExportJobResponse;
+  ExportJobResponse: ExportJobResponse & {
+    ApplicationId: string;
+    CreationDate: string;
+    Definition: ExportJobResource & { RoleArn: string; S3UrlPrefix: string };
+    Id: string;
+    JobStatus: JobStatus;
+    Type: string;
+  };
 }
 export const GetExportJobResponse = S.suspend(() =>
   S.Struct({
@@ -7968,7 +10280,18 @@ export const GetExportJobResponse = S.suspend(() =>
   identifier: "GetExportJobResponse",
 }) as any as S.Schema<GetExportJobResponse>;
 export interface GetImportJobResponse {
-  ImportJobResponse?: ImportJobResponse;
+  ImportJobResponse: ImportJobResponse & {
+    ApplicationId: string;
+    CreationDate: string;
+    Definition: ImportJobResource & {
+      Format: Format;
+      RoleArn: string;
+      S3Url: string;
+    };
+    Id: string;
+    JobStatus: JobStatus;
+    Type: string;
+  };
 }
 export const GetImportJobResponse = S.suspend(() =>
   S.Struct({
@@ -7980,7 +10303,14 @@ export const GetImportJobResponse = S.suspend(() =>
   identifier: "GetImportJobResponse",
 }) as any as S.Schema<GetImportJobResponse>;
 export interface GetJourneyRunsResponse {
-  JourneyRunsResponse?: JourneyRunsResponse;
+  JourneyRunsResponse: JourneyRunsResponse & {
+    Item: (JourneyRunResponse & {
+      CreationTime: string;
+      LastUpdateTime: string;
+      RunId: string;
+      Status: JourneyRunStatus;
+    })[];
+  };
 }
 export const GetJourneyRunsResponse = S.suspend(() =>
   S.Struct({
@@ -7992,7 +10322,14 @@ export const GetJourneyRunsResponse = S.suspend(() =>
   identifier: "GetJourneyRunsResponse",
 }) as any as S.Schema<GetJourneyRunsResponse>;
 export interface ListTemplatesResponse {
-  TemplatesResponse?: TemplatesResponse;
+  TemplatesResponse: TemplatesResponse & {
+    Item: (TemplateResponse & {
+      CreationDate: string;
+      LastModifiedDate: string;
+      TemplateName: string;
+      TemplateType: TemplateType;
+    })[];
+  };
 }
 export const ListTemplatesResponse = S.suspend(() =>
   S.Struct({
@@ -8004,7 +10341,14 @@ export const ListTemplatesResponse = S.suspend(() =>
   identifier: "ListTemplatesResponse",
 }) as any as S.Schema<ListTemplatesResponse>;
 export interface ListTemplateVersionsResponse {
-  TemplateVersionsResponse?: TemplateVersionsResponse;
+  TemplateVersionsResponse: TemplateVersionsResponse & {
+    Item: (TemplateVersionResponse & {
+      CreationDate: string;
+      LastModifiedDate: string;
+      TemplateName: string;
+      TemplateType: string;
+    })[];
+  };
 }
 export const ListTemplateVersionsResponse = S.suspend(() =>
   S.Struct({
@@ -8016,7 +10360,7 @@ export const ListTemplateVersionsResponse = S.suspend(() =>
   identifier: "ListTemplateVersionsResponse",
 }) as any as S.Schema<ListTemplateVersionsResponse>;
 export interface PhoneNumberValidateResponse {
-  NumberValidateResponse?: NumberValidateResponse;
+  NumberValidateResponse: NumberValidateResponse;
 }
 export const PhoneNumberValidateResponse = S.suspend(() =>
   S.Struct({
@@ -8028,7 +10372,10 @@ export const PhoneNumberValidateResponse = S.suspend(() =>
   identifier: "PhoneNumberValidateResponse",
 }) as any as S.Schema<PhoneNumberValidateResponse>;
 export interface RemoveAttributesResponse {
-  AttributesResource?: AttributesResource;
+  AttributesResource: AttributesResource & {
+    ApplicationId: string;
+    AttributeType: string;
+  };
 }
 export const RemoveAttributesResponse = S.suspend(() =>
   S.Struct({
@@ -8040,7 +10387,9 @@ export const RemoveAttributesResponse = S.suspend(() =>
   identifier: "RemoveAttributesResponse",
 }) as any as S.Schema<RemoveAttributesResponse>;
 export interface UpdateApplicationSettingsResponse {
-  ApplicationSettingsResource?: ApplicationSettingsResource;
+  ApplicationSettingsResource: ApplicationSettingsResource & {
+    ApplicationId: string;
+  };
 }
 export const UpdateApplicationSettingsResponse = S.suspend(() =>
   S.Struct({
@@ -8052,7 +10401,7 @@ export const UpdateApplicationSettingsResponse = S.suspend(() =>
   identifier: "UpdateApplicationSettingsResponse",
 }) as any as S.Schema<UpdateApplicationSettingsResponse>;
 export interface UpdateEndpointResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const UpdateEndpointResponse = S.suspend(() =>
   S.Struct({
@@ -8064,7 +10413,7 @@ export const UpdateEndpointResponse = S.suspend(() =>
   identifier: "UpdateEndpointResponse",
 }) as any as S.Schema<UpdateEndpointResponse>;
 export interface UpdateEndpointsBatchResponse {
-  MessageBody?: MessageBody;
+  MessageBody: MessageBody;
 }
 export const UpdateEndpointsBatchResponse = S.suspend(() =>
   S.Struct({
@@ -8076,7 +10425,7 @@ export const UpdateEndpointsBatchResponse = S.suspend(() =>
   identifier: "UpdateEndpointsBatchResponse",
 }) as any as S.Schema<UpdateEndpointsBatchResponse>;
 export interface VerifyOTPMessageResponse {
-  VerificationResponse?: VerificationResponse;
+  VerificationResponse: VerificationResponse;
 }
 export const VerifyOTPMessageResponse = S.suspend(() =>
   S.Struct({
@@ -8278,7 +10627,96 @@ export const CreateInAppTemplateRequest = S.suspend(() =>
   identifier: "CreateInAppTemplateRequest",
 }) as any as S.Schema<CreateInAppTemplateRequest>;
 export interface DeleteSegmentResponse {
-  SegmentResponse?: SegmentResponse;
+  SegmentResponse: SegmentResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    SegmentType: SegmentType;
+    Dimensions: SegmentDimensions & {
+      Attributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+      Behavior: SegmentBehaviors & {
+        Recency: RecencyDimension & {
+          Duration: Duration;
+          RecencyType: RecencyType;
+        };
+      };
+      Demographic: SegmentDemographics & {
+        AppVersion: SetDimension & { Values: ListOf__string };
+        Channel: SetDimension & { Values: ListOf__string };
+        DeviceType: SetDimension & { Values: ListOf__string };
+        Make: SetDimension & { Values: ListOf__string };
+        Model: SetDimension & { Values: ListOf__string };
+        Platform: SetDimension & { Values: ListOf__string };
+      };
+      Location: SegmentLocation & {
+        Country: SetDimension & { Values: ListOf__string };
+        GPSPoint: GPSPointDimension & {
+          Coordinates: GPSCoordinates & { Latitude: number; Longitude: number };
+        };
+      };
+      Metrics: {
+        [key: string]: MetricDimension & {
+          ComparisonOperator: string;
+          Value: number;
+        };
+      };
+      UserAttributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+    };
+    ImportDefinition: SegmentImportResource & {
+      ExternalId: string;
+      Format: Format;
+      RoleArn: string;
+      S3Url: string;
+      Size: number;
+    };
+    SegmentGroups: SegmentGroupList & {
+      Groups: (SegmentGroup & {
+        Dimensions: (SegmentDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          Behavior: SegmentBehaviors & {
+            Recency: RecencyDimension & {
+              Duration: Duration;
+              RecencyType: RecencyType;
+            };
+          };
+          Demographic: SegmentDemographics & {
+            AppVersion: SetDimension & { Values: ListOf__string };
+            Channel: SetDimension & { Values: ListOf__string };
+            DeviceType: SetDimension & { Values: ListOf__string };
+            Make: SetDimension & { Values: ListOf__string };
+            Model: SetDimension & { Values: ListOf__string };
+            Platform: SetDimension & { Values: ListOf__string };
+          };
+          Location: SegmentLocation & {
+            Country: SetDimension & { Values: ListOf__string };
+            GPSPoint: GPSPointDimension & {
+              Coordinates: GPSCoordinates & {
+                Latitude: number;
+                Longitude: number;
+              };
+            };
+          };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+          UserAttributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+        })[];
+        SourceSegments: (SegmentReference & { Id: string })[];
+      })[];
+    };
+  };
 }
 export const DeleteSegmentResponse = S.suspend(() =>
   S.Struct({
@@ -8290,7 +10728,7 @@ export const DeleteSegmentResponse = S.suspend(() =>
   identifier: "DeleteSegmentResponse",
 }) as any as S.Schema<DeleteSegmentResponse>;
 export interface GetChannelsResponse {
-  ChannelsResponse?: ChannelsResponse;
+  ChannelsResponse: ChannelsResponse & { Channels: MapOfChannelResponse };
 }
 export const GetChannelsResponse = S.suspend(() =>
   S.Struct({
@@ -8302,7 +10740,63 @@ export const GetChannelsResponse = S.suspend(() =>
   identifier: "GetChannelsResponse",
 }) as any as S.Schema<GetChannelsResponse>;
 export interface GetInAppMessagesResponse {
-  InAppMessagesResponse?: InAppMessagesResponse;
+  InAppMessagesResponse: InAppMessagesResponse & {
+    InAppMessageCampaigns: (InAppMessageCampaign & {
+      InAppMessage: InAppMessage & {
+        Content: (InAppMessageContent & {
+          BodyConfig: InAppMessageBodyConfig & {
+            Alignment: Alignment;
+            Body: string;
+            TextColor: string;
+          };
+          HeaderConfig: InAppMessageHeaderConfig & {
+            Alignment: Alignment;
+            Header: string;
+            TextColor: string;
+          };
+          PrimaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+          SecondaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+        })[];
+      };
+      Schedule: InAppCampaignSchedule & {
+        EventFilter: CampaignEventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+    })[];
+  };
 }
 export const GetInAppMessagesResponse = S.suspend(() =>
   S.Struct({
@@ -8340,7 +10834,17 @@ export const Event = S.suspend(() =>
   }),
 ).annotations({ identifier: "Event" }) as any as S.Schema<Event>;
 export interface SendUsersMessagesResponse {
-  SendUsersMessageResponse?: SendUsersMessageResponse;
+  SendUsersMessageResponse: SendUsersMessageResponse & {
+    ApplicationId: string;
+    Result: {
+      [key: string]: {
+        [key: string]: EndpointMessageResult & {
+          DeliveryStatus: DeliveryStatus;
+          StatusCode: number;
+        };
+      };
+    };
+  };
 }
 export const SendUsersMessagesResponse = S.suspend(() =>
   S.Struct({
@@ -8425,7 +10929,137 @@ export const EventsBatch = S.suspend(() =>
   }),
 ).annotations({ identifier: "EventsBatch" }) as any as S.Schema<EventsBatch>;
 export interface CreateCampaignResponse {
-  CampaignResponse?: CampaignResponse;
+  CampaignResponse: CampaignResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    LastModifiedDate: string;
+    SegmentId: string;
+    SegmentVersion: number;
+    AdditionalTreatments: (TreatmentResource & {
+      Id: string;
+      SizePercent: number;
+      CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+        DeliveryUri: string;
+      };
+      MessageConfiguration: MessageConfiguration & {
+        InAppMessage: CampaignInAppMessage & {
+          Content: (InAppMessageContent & {
+            BodyConfig: InAppMessageBodyConfig & {
+              Alignment: Alignment;
+              Body: string;
+              TextColor: string;
+            };
+            HeaderConfig: InAppMessageHeaderConfig & {
+              Alignment: Alignment;
+              Header: string;
+              TextColor: string;
+            };
+            PrimaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+            SecondaryBtn: InAppMessageButton & {
+              Android: OverrideButtonConfiguration & {
+                ButtonAction: ButtonAction;
+              };
+              DefaultConfig: DefaultButtonConfiguration & {
+                ButtonAction: ButtonAction;
+                Text: string;
+              };
+              IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+              Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            };
+          })[];
+        };
+      };
+      Schedule: Schedule & {
+        StartTime: string;
+        EventFilter: CampaignEventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+    })[];
+    CustomDeliveryConfiguration: CustomDeliveryConfiguration & {
+      DeliveryUri: string;
+    };
+    MessageConfiguration: MessageConfiguration & {
+      InAppMessage: CampaignInAppMessage & {
+        Content: (InAppMessageContent & {
+          BodyConfig: InAppMessageBodyConfig & {
+            Alignment: Alignment;
+            Body: string;
+            TextColor: string;
+          };
+          HeaderConfig: InAppMessageHeaderConfig & {
+            Alignment: Alignment;
+            Header: string;
+            TextColor: string;
+          };
+          PrimaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+          SecondaryBtn: InAppMessageButton & {
+            Android: OverrideButtonConfiguration & {
+              ButtonAction: ButtonAction;
+            };
+            DefaultConfig: DefaultButtonConfiguration & {
+              ButtonAction: ButtonAction;
+              Text: string;
+            };
+            IOS: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+            Web: OverrideButtonConfiguration & { ButtonAction: ButtonAction };
+          };
+        })[];
+      };
+    };
+    Schedule: Schedule & {
+      StartTime: string;
+      EventFilter: CampaignEventFilter & {
+        Dimensions: EventDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          EventType: SetDimension & { Values: ListOf__string };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+        };
+        FilterType: FilterType;
+      };
+    };
+  };
 }
 export const CreateCampaignResponse = S.suspend(() =>
   S.Struct({
@@ -8460,7 +11094,26 @@ export const CreateSegmentRequest = S.suspend(() =>
   identifier: "CreateSegmentRequest",
 }) as any as S.Schema<CreateSegmentRequest>;
 export interface GetApplicationDateRangeKpiResponse {
-  ApplicationDateRangeKpiResponse?: ApplicationDateRangeKpiResponse;
+  ApplicationDateRangeKpiResponse: ApplicationDateRangeKpiResponse & {
+    ApplicationId: string;
+    EndTime: __timestampIso8601;
+    KpiName: string;
+    KpiResult: BaseKpiResult & {
+      Rows: (ResultRow & {
+        GroupedBys: (ResultRowValue & {
+          Key: string;
+          Type: string;
+          Value: string;
+        })[];
+        Values: (ResultRowValue & {
+          Key: string;
+          Type: string;
+          Value: string;
+        })[];
+      })[];
+    };
+    StartTime: __timestampIso8601;
+  };
 }
 export const GetApplicationDateRangeKpiResponse = S.suspend(() =>
   S.Struct({
@@ -8495,7 +11148,21 @@ export const SendMessagesRequest = S.suspend(() =>
   identifier: "SendMessagesRequest",
 }) as any as S.Schema<SendMessagesRequest>;
 export interface SendOTPMessageResponse {
-  MessageResponse?: MessageResponse;
+  MessageResponse: MessageResponse & {
+    ApplicationId: string;
+    EndpointResult: {
+      [key: string]: EndpointMessageResult & {
+        DeliveryStatus: DeliveryStatus;
+        StatusCode: number;
+      };
+    };
+    Result: {
+      [key: string]: MessageResult & {
+        DeliveryStatus: DeliveryStatus;
+        StatusCode: number;
+      };
+    };
+  };
 }
 export const SendOTPMessageResponse = S.suspend(() =>
   S.Struct({
@@ -8531,7 +11198,7 @@ export const EventsRequest = S.suspend(() =>
   identifier: "EventsRequest",
 }) as any as S.Schema<EventsRequest>;
 export interface CreateInAppTemplateResponse {
-  TemplateCreateMessageBody?: TemplateCreateMessageBody;
+  TemplateCreateMessageBody: TemplateCreateMessageBody;
 }
 export const CreateInAppTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -8543,7 +11210,96 @@ export const CreateInAppTemplateResponse = S.suspend(() =>
   identifier: "CreateInAppTemplateResponse",
 }) as any as S.Schema<CreateInAppTemplateResponse>;
 export interface CreateSegmentResponse {
-  SegmentResponse?: SegmentResponse;
+  SegmentResponse: SegmentResponse & {
+    ApplicationId: string;
+    Arn: string;
+    CreationDate: string;
+    Id: string;
+    SegmentType: SegmentType;
+    Dimensions: SegmentDimensions & {
+      Attributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+      Behavior: SegmentBehaviors & {
+        Recency: RecencyDimension & {
+          Duration: Duration;
+          RecencyType: RecencyType;
+        };
+      };
+      Demographic: SegmentDemographics & {
+        AppVersion: SetDimension & { Values: ListOf__string };
+        Channel: SetDimension & { Values: ListOf__string };
+        DeviceType: SetDimension & { Values: ListOf__string };
+        Make: SetDimension & { Values: ListOf__string };
+        Model: SetDimension & { Values: ListOf__string };
+        Platform: SetDimension & { Values: ListOf__string };
+      };
+      Location: SegmentLocation & {
+        Country: SetDimension & { Values: ListOf__string };
+        GPSPoint: GPSPointDimension & {
+          Coordinates: GPSCoordinates & { Latitude: number; Longitude: number };
+        };
+      };
+      Metrics: {
+        [key: string]: MetricDimension & {
+          ComparisonOperator: string;
+          Value: number;
+        };
+      };
+      UserAttributes: {
+        [key: string]: AttributeDimension & { Values: ListOf__string };
+      };
+    };
+    ImportDefinition: SegmentImportResource & {
+      ExternalId: string;
+      Format: Format;
+      RoleArn: string;
+      S3Url: string;
+      Size: number;
+    };
+    SegmentGroups: SegmentGroupList & {
+      Groups: (SegmentGroup & {
+        Dimensions: (SegmentDimensions & {
+          Attributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+          Behavior: SegmentBehaviors & {
+            Recency: RecencyDimension & {
+              Duration: Duration;
+              RecencyType: RecencyType;
+            };
+          };
+          Demographic: SegmentDemographics & {
+            AppVersion: SetDimension & { Values: ListOf__string };
+            Channel: SetDimension & { Values: ListOf__string };
+            DeviceType: SetDimension & { Values: ListOf__string };
+            Make: SetDimension & { Values: ListOf__string };
+            Model: SetDimension & { Values: ListOf__string };
+            Platform: SetDimension & { Values: ListOf__string };
+          };
+          Location: SegmentLocation & {
+            Country: SetDimension & { Values: ListOf__string };
+            GPSPoint: GPSPointDimension & {
+              Coordinates: GPSCoordinates & {
+                Latitude: number;
+                Longitude: number;
+              };
+            };
+          };
+          Metrics: {
+            [key: string]: MetricDimension & {
+              ComparisonOperator: string;
+              Value: number;
+            };
+          };
+          UserAttributes: {
+            [key: string]: AttributeDimension & { Values: ListOf__string };
+          };
+        })[];
+        SourceSegments: (SegmentReference & { Id: string })[];
+      })[];
+    };
+  };
 }
 export const CreateSegmentResponse = S.suspend(() =>
   S.Struct({
@@ -8578,7 +11334,21 @@ export const PutEventsRequest = S.suspend(() =>
   identifier: "PutEventsRequest",
 }) as any as S.Schema<PutEventsRequest>;
 export interface SendMessagesResponse {
-  MessageResponse?: MessageResponse;
+  MessageResponse: MessageResponse & {
+    ApplicationId: string;
+    EndpointResult: {
+      [key: string]: EndpointMessageResult & {
+        DeliveryStatus: DeliveryStatus;
+        StatusCode: number;
+      };
+    };
+    Result: {
+      [key: string]: MessageResult & {
+        DeliveryStatus: DeliveryStatus;
+        StatusCode: number;
+      };
+    };
+  };
 }
 export const SendMessagesResponse = S.suspend(() =>
   S.Struct({
@@ -8613,7 +11383,164 @@ export const CreateJourneyRequest = S.suspend(() =>
   identifier: "CreateJourneyRequest",
 }) as any as S.Schema<CreateJourneyRequest>;
 export interface CreateJourneyResponse {
-  JourneyResponse?: JourneyResponse;
+  JourneyResponse: JourneyResponse & {
+    ApplicationId: string;
+    Id: string;
+    Name: string;
+    Activities: {
+      [key: string]: Activity & {
+        ConditionalSplit: ConditionalSplitActivity & {
+          Condition: Condition & {
+            Conditions: (SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            })[];
+          };
+        };
+        Holdout: HoldoutActivity & { Percentage: number };
+        MultiCondition: MultiConditionalSplitActivity & {
+          Branches: (MultiConditionalBranch & {
+            Condition: SimpleCondition & {
+              EventCondition: EventCondition & {
+                Dimensions: EventDimensions & {
+                  Attributes: {
+                    [key: string]: AttributeDimension & {
+                      Values: ListOf__string;
+                    };
+                  };
+                  EventType: SetDimension & { Values: ListOf__string };
+                  Metrics: {
+                    [key: string]: MetricDimension & {
+                      ComparisonOperator: string;
+                      Value: number;
+                    };
+                  };
+                };
+              };
+              SegmentCondition: SegmentCondition & { SegmentId: string };
+              SegmentDimensions: SegmentDimensions & {
+                Attributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+                Behavior: SegmentBehaviors & {
+                  Recency: RecencyDimension & {
+                    Duration: Duration;
+                    RecencyType: RecencyType;
+                  };
+                };
+                Demographic: SegmentDemographics & {
+                  AppVersion: SetDimension & { Values: ListOf__string };
+                  Channel: SetDimension & { Values: ListOf__string };
+                  DeviceType: SetDimension & { Values: ListOf__string };
+                  Make: SetDimension & { Values: ListOf__string };
+                  Model: SetDimension & { Values: ListOf__string };
+                  Platform: SetDimension & { Values: ListOf__string };
+                };
+                Location: SegmentLocation & {
+                  Country: SetDimension & { Values: ListOf__string };
+                  GPSPoint: GPSPointDimension & {
+                    Coordinates: GPSCoordinates & {
+                      Latitude: number;
+                      Longitude: number;
+                    };
+                  };
+                };
+                Metrics: {
+                  [key: string]: MetricDimension & {
+                    ComparisonOperator: string;
+                    Value: number;
+                  };
+                };
+                UserAttributes: {
+                  [key: string]: AttributeDimension & {
+                    Values: ListOf__string;
+                  };
+                };
+              };
+            };
+          })[];
+        };
+      };
+    };
+    StartCondition: StartCondition & {
+      EventStartCondition: EventStartCondition & {
+        EventFilter: EventFilter & {
+          Dimensions: EventDimensions & {
+            Attributes: {
+              [key: string]: AttributeDimension & { Values: ListOf__string };
+            };
+            EventType: SetDimension & { Values: ListOf__string };
+            Metrics: {
+              [key: string]: MetricDimension & {
+                ComparisonOperator: string;
+                Value: number;
+              };
+            };
+          };
+          FilterType: FilterType;
+        };
+      };
+      SegmentStartCondition: SegmentCondition & { SegmentId: string };
+    };
+  };
 }
 export const CreateJourneyResponse = S.suspend(() =>
   S.Struct({
@@ -8671,7 +11598,7 @@ export const EventsResponse = S.suspend(() =>
   identifier: "EventsResponse",
 }) as any as S.Schema<EventsResponse>;
 export interface PutEventsResponse {
-  EventsResponse?: EventsResponse;
+  EventsResponse: EventsResponse;
 }
 export const PutEventsResponse = S.suspend(() =>
   S.Struct({

@@ -87,9 +87,7 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type __integerMin1Max25 = number;
-export type __double = number;
 
 //# Schemas
 export interface ResourceConfig {}
@@ -1558,7 +1556,35 @@ export interface GetBackendAuthResponse {
   AppId?: string;
   BackendEnvironmentName?: string;
   Error?: string;
-  ResourceConfig?: CreateBackendAuthResourceConfig;
+  ResourceConfig?: CreateBackendAuthResourceConfig & {
+    AuthResources: AuthResources;
+    Service: Service;
+    UserPoolConfigs: CreateBackendAuthUserPoolConfig & {
+      RequiredSignUpAttributes: ListOfRequiredSignUpAttributesElement;
+      SignInMethod: SignInMethod;
+      UserPoolName: string;
+      ForgotPassword: CreateBackendAuthForgotPasswordConfig & {
+        DeliveryMethod: DeliveryMethod;
+      };
+      Mfa: CreateBackendAuthMFAConfig & { MFAMode: MFAMode };
+      OAuth: CreateBackendAuthOAuthConfig & {
+        OAuthGrantType: OAuthGrantType;
+        OAuthScopes: ListOfOAuthScopesElement;
+        RedirectSignInURIs: ListOf__string;
+        RedirectSignOutURIs: ListOf__string;
+      };
+      PasswordPolicy: CreateBackendAuthPasswordPolicyConfig & {
+        MinimumLength: number;
+      };
+      VerificationMessage: CreateBackendAuthVerificationMessageConfig & {
+        DeliveryMethod: DeliveryMethod;
+      };
+    };
+    IdentityPoolConfigs: CreateBackendAuthIdentityPoolConfig & {
+      IdentityPoolName: string;
+      UnauthenticatedLogin: boolean;
+    };
+  };
   ResourceName?: string;
 }
 export const GetBackendAuthResponse = S.suspend(() =>
@@ -2003,7 +2029,13 @@ export const CreateBackendStorageRequest = S.suspend(() =>
 export interface GetBackendStorageResponse {
   AppId?: string;
   BackendEnvironmentName?: string;
-  ResourceConfig?: GetBackendStorageResourceConfig;
+  ResourceConfig?: GetBackendStorageResourceConfig & {
+    Imported: boolean;
+    ServiceName: ServiceName;
+    Permissions: BackendStoragePermissions & {
+      Authenticated: ListOfAuthenticatedElement;
+    };
+  };
   ResourceName?: string;
 }
 export const GetBackendStorageResponse = S.suspend(() =>
@@ -2021,7 +2053,10 @@ export const GetBackendStorageResponse = S.suspend(() =>
   identifier: "GetBackendStorageResponse",
 }) as any as S.Schema<GetBackendStorageResponse>;
 export interface ListBackendJobsResponse {
-  Jobs?: BackendJobRespObj[];
+  Jobs?: (BackendJobRespObj & {
+    AppId: string;
+    BackendEnvironmentName: string;
+  })[];
   NextToken?: string;
 }
 export const ListBackendJobsResponse = S.suspend(() =>

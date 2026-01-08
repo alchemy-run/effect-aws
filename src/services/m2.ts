@@ -350,7 +350,7 @@ export const CreateDeploymentRequest = S.suspend(() =>
     environmentId: S.String,
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
     applicationVersion: S.Number,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -998,7 +998,7 @@ export const CreateApplicationRequest = S.suspend(() =>
     engineType: S.String,
     definition: Definition,
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     kmsKeyId: S.optional(S.String),
     roleArn: S.optional(S.String),
   }).pipe(
@@ -1734,7 +1734,7 @@ export const CreateEnvironmentRequest = S.suspend(() =>
     tags: S.optional(TagMap),
     preferredMaintenanceWindow: S.optional(S.String),
     networkType: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     kmsKeyId: S.optional(S.String),
   }).pipe(
     T.all(
@@ -1902,7 +1902,7 @@ export const CreateDataSetExportTaskRequest = S.suspend(() =>
   S.Struct({
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
     exportConfig: DataSetExportConfig,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     kmsKeyId: S.optional(S.String),
   }).pipe(
     T.all(
@@ -2213,7 +2213,7 @@ export const CreateDataSetImportTaskRequest = S.suspend(() =>
   S.Struct({
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
     importConfig: DataSetImportConfig,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({

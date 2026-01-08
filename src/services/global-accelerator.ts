@@ -87,7 +87,6 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type GenericString = string;
 export type IpAddress = string;
 export type PortNumber = number;
 export type IdempotencyToken = string;
@@ -197,7 +196,7 @@ export const CreateCustomRoutingAcceleratorRequest = S.suspend(() =>
     IpAddressType: S.optional(IpAddressType),
     IpAddresses: S.optional(IpAddresses),
     Enabled: S.optional(S.Boolean),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -227,7 +226,7 @@ export const CreateListenerRequest = S.suspend(() =>
     PortRanges: PortRanges,
     Protocol: Protocol,
     ClientAffinity: S.optional(ClientAffinity),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1331,7 +1330,7 @@ export const CreateAcceleratorRequest = S.suspend(() =>
     IpAddressType: S.optional(IpAddressType),
     IpAddresses: S.optional(IpAddresses),
     Enabled: S.optional(S.Boolean),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1351,7 +1350,7 @@ export const CreateCrossAccountAttachmentRequest = S.suspend(() =>
     Name: S.String,
     Principals: S.optional(Principals),
     Resources: S.optional(Resources),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1370,7 +1369,7 @@ export const CreateCustomRoutingEndpointGroupRequest = S.suspend(() =>
     ListenerArn: S.String,
     EndpointGroupRegion: S.String,
     DestinationConfigurations: CustomRoutingDestinationConfigurations,
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1386,7 +1385,7 @@ export const CreateCustomRoutingListenerRequest = S.suspend(() =>
   S.Struct({
     AcceleratorArn: S.String,
     PortRanges: PortRanges,
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1417,7 +1416,7 @@ export const CreateEndpointGroupRequest = S.suspend(() =>
     HealthCheckPath: S.optional(S.String),
     HealthCheckIntervalSeconds: S.optional(S.Number),
     ThresholdCount: S.optional(S.Number),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
     PortOverrides: S.optional(PortOverrides),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

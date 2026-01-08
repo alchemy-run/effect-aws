@@ -911,7 +911,7 @@ export interface CreateWorkspaceRequest {
 export const CreateWorkspaceRequest = S.suspend(() =>
   S.Struct({
     accountAccessType: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     organizationRoleName: S.optional(SensitiveString),
     permissionType: S.String,
     stackSetName: S.optional(S.String),

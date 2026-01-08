@@ -127,6 +127,7 @@ export type PaginationToken = string;
 export type ImageVersionArn = string;
 export type WorkflowWildcardVersionArn = string;
 export type ResourcePolicyDocument = string;
+export type DateTimeTimestamp = Date;
 export type TagKey = string;
 export type TagValue = string;
 export type LicenseConfigurationArn = string;
@@ -142,7 +143,6 @@ export type FilterName = string;
 export type FilterValue = string;
 export type WorkflowExecutionMessage = string;
 export type WorkflowStepCount = number;
-export type DateTime = string;
 export type WorkflowStepName = string;
 export type WorkflowStepDescription = string;
 export type WorkflowStepAction = string;
@@ -244,7 +244,10 @@ export interface CancelImageCreationRequest {
   clientToken: string;
 }
 export const CancelImageCreationRequest = S.suspend(() =>
-  S.Struct({ imageBuildVersionArn: S.String, clientToken: S.String }).pipe(
+  S.Struct({
+    imageBuildVersionArn: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/CancelImageCreation" }),
       svc,
@@ -262,7 +265,10 @@ export interface CancelLifecycleExecutionRequest {
   clientToken: string;
 }
 export const CancelLifecycleExecutionRequest = S.suspend(() =>
-  S.Struct({ lifecycleExecutionId: S.String, clientToken: S.String }).pipe(
+  S.Struct({
+    lifecycleExecutionId: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/CancelLifecycleExecution" }),
       svc,
@@ -300,7 +306,7 @@ export const CreateWorkflowRequest = S.suspend(() =>
     uri: S.optional(S.String),
     kmsKeyId: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     type: WorkflowType,
     dryRun: S.optional(S.Boolean),
   }).pipe(
@@ -517,7 +523,7 @@ export const DistributeImageRequest = S.suspend(() =>
     distributionConfigurationArn: S.String,
     executionRole: S.String,
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     loggingConfiguration: S.optional(ImageLoggingConfiguration),
   }).pipe(
     T.all(
@@ -890,7 +896,7 @@ export const ImportComponentRequest = S.suspend(() =>
     uri: S.optional(S.String),
     kmsKeyId: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/ImportComponent" }),
@@ -929,7 +935,7 @@ export const ImportDiskImageRequest = S.suspend(() =>
     uri: S.String,
     loggingConfiguration: S.optional(ImageLoggingConfiguration),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/ImportDiskImage" }),
@@ -964,7 +970,7 @@ export const ImportVmImageRequest = S.suspend(() =>
     vmImportTaskId: S.String,
     loggingConfiguration: S.optional(ImageLoggingConfiguration),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/ImportVmImage" }),
@@ -1536,7 +1542,10 @@ export interface RetryImageRequest {
   clientToken: string;
 }
 export const RetryImageRequest = S.suspend(() =>
-  S.Struct({ imageBuildVersionArn: S.String, clientToken: S.String }).pipe(
+  S.Struct({
+    imageBuildVersionArn: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/RetryImage" }),
       svc,
@@ -1562,7 +1571,7 @@ export const SendWorkflowStepActionRequest = S.suspend(() =>
     imageBuildVersionArn: S.String,
     action: WorkflowStepActionType,
     reason: S.optional(S.String),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/SendWorkflowStepAction" }),
@@ -1584,7 +1593,7 @@ export interface StartImagePipelineExecutionRequest {
 export const StartImagePipelineExecutionRequest = S.suspend(() =>
   S.Struct({
     imagePipelineArn: S.String,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -1853,7 +1862,7 @@ export const UpdateDistributionConfigurationRequest = S.suspend(() =>
     distributionConfigurationArn: S.String,
     description: S.optional(S.String),
     distributions: DistributionList,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/UpdateDistributionConfiguration" }),
@@ -2008,7 +2017,7 @@ export const UpdateImagePipelineRequest = S.suspend(() =>
     enhancedImageMetadataEnabled: S.optional(S.Boolean),
     schedule: S.optional(Schedule),
     status: S.optional(PipelineStatus),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     imageScanningConfiguration: S.optional(ImageScanningConfiguration),
     workflows: S.optional(WorkflowConfigurationList),
     loggingConfiguration: S.optional(PipelineLoggingConfiguration),
@@ -2103,7 +2112,7 @@ export const UpdateInfrastructureConfigurationRequest = S.suspend(() =>
     resourceTags: S.optional(ResourceTagMap),
     instanceMetadataOptions: S.optional(InstanceMetadataOptions),
     placement: S.optional(Placement),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/UpdateInfrastructureConfiguration" }),
@@ -2279,7 +2288,7 @@ export const UpdateLifecyclePolicyRequest = S.suspend(() =>
     resourceType: LifecyclePolicyResourceType,
     policyDetails: LifecyclePolicyDetails,
     resourceSelection: LifecyclePolicyResourceSelection,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/UpdateLifecyclePolicy" }),
@@ -2650,7 +2659,7 @@ export const CreateComponentRequest = S.suspend(() =>
     uri: S.optional(S.String),
     kmsKeyId: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     dryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -4019,7 +4028,7 @@ export const CreateContainerRecipeRequest = S.suspend(() =>
     workingDirectory: S.optional(S.String),
     targetRepository: TargetContainerRepository,
     kmsKeyId: S.optional(S.String),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/CreateContainerRecipe" }),
@@ -4056,7 +4065,7 @@ export const CreateImageRequest = S.suspend(() =>
     imageTestsConfiguration: S.optional(ImageTestsConfiguration),
     enhancedImageMetadataEnabled: S.optional(S.Boolean),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     imageScanningConfiguration: S.optional(ImageScanningConfiguration),
     workflows: S.optional(WorkflowConfigurationList),
     executionRole: S.optional(S.String),
@@ -4105,7 +4114,7 @@ export const CreateImagePipelineRequest = S.suspend(() =>
     schedule: S.optional(Schedule),
     status: S.optional(PipelineStatus),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     imageScanningConfiguration: S.optional(ImageScanningConfiguration),
     workflows: S.optional(WorkflowConfigurationList),
     executionRole: S.optional(S.String),
@@ -4150,7 +4159,7 @@ export const CreateImageRecipeRequest = S.suspend(() =>
       AdditionalInstanceConfiguration,
     ),
     amiTags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/CreateImageRecipe" }),
@@ -4197,7 +4206,7 @@ export const CreateInfrastructureConfigurationRequest = S.suspend(() =>
     instanceMetadataOptions: S.optional(InstanceMetadataOptions),
     tags: S.optional(TagMap),
     placement: S.optional(Placement),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/CreateInfrastructureConfiguration" }),
@@ -4832,7 +4841,7 @@ export const CreateDistributionConfigurationRequest = S.suspend(() =>
     description: S.optional(S.String),
     distributions: DistributionList,
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/CreateDistributionConfiguration" }),
@@ -4927,7 +4936,7 @@ export const CreateLifecyclePolicyRequest = S.suspend(() =>
     policyDetails: LifecyclePolicyDetails,
     resourceSelection: LifecyclePolicyResourceSelection,
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/CreateLifecyclePolicy" }),
@@ -5022,7 +5031,7 @@ export const StartResourceStateUpdateRequest = S.suspend(() =>
     includeResources: S.optional(ResourceStateUpdateIncludeResources),
     exclusionRules: S.optional(ResourceStateUpdateExclusionRules),
     updateAt: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/StartResourceStateUpdate" }),

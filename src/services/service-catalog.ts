@@ -115,10 +115,12 @@ export type ServiceActionName = string;
 export type ServiceActionDescription = string;
 export type TagOptionKey = string;
 export type TagOptionValue = string;
+export type IgnoreErrors = boolean;
 export type PageToken = string;
 export type PageSizeMax100 = number;
 export type PageSize = number;
 export type ProvisioningArtifactName = string;
+export type Verbose = boolean;
 export type ErrorMessage = string;
 export type OutputKey = string;
 export type PhysicalId = string;
@@ -128,13 +130,18 @@ export type EngineWorkflowFailureReason = string;
 export type SortField = string;
 export type SearchProvisionedProductsPageSize = number;
 export type ProvisionedProductNameOrArn = string;
+export type RetainPhysicalResources = boolean;
 export type TagKey = string;
 export type ProvisioningArtifactDescription = string;
+export type ProvisioningArtifactActive = boolean;
+export type TagOptionActive = boolean;
 export type ProvisioningArtifactPropertyValue = string;
 export type TagValue = string;
 export type OrganizationNodeValue = string;
+export type DisableTemplateValidation = boolean;
 export type ParameterKey = string;
 export type ParameterValue = string;
+export type UsePreviousValue = boolean;
 export type ServiceActionDefinitionValue = string;
 export type ExecutionParameterKey = string;
 export type ExecutionParameterValue = string;
@@ -157,23 +164,29 @@ export type ProvisioningArtifactInfoValue = string;
 export type UniqueTagKey = string;
 export type UniqueTagValue = string;
 export type ServiceActionAssociationErrorMessage = string;
+export type CreationTime = Date;
 export type SourceRevision = string;
 export type Owner = string;
 export type ResourceARN = string;
 export type ProductViewDistributor = string;
+export type HasDefaultPath = boolean;
+export type ProvisioningArtifactCreatedTime = Date;
 export type PortfolioName = string;
+export type CreatedTime = Date;
 export type ProvisionedProductType = string;
 export type ProvisionedProductId = string;
 export type ProvisionedProductStatusMessage = string;
 export type LastRequestId = string;
 export type RoleArn = string;
 export type CloudWatchDashboardName = string;
+export type UpdatedTime = Date;
 export type StatusMessage = string;
 export type LogicalResourceId = string;
 export type PhysicalResourceId = string;
 export type PlanResourceType = string;
 export type DefaultValue = string;
 export type ParameterType = string;
+export type NoEcho = boolean;
 export type InstructionType = string;
 export type InstructionValue = string;
 export type ProvisioningArtifactOutputKey = string;
@@ -184,6 +197,7 @@ export type ResourceDetailId = string;
 export type ResourceDetailARN = string;
 export type ResourceDetailName = string;
 export type ResourceDetailDescription = string;
+export type ResourceDetailCreatedTime = Date;
 export type CodeStarConnectionArn = string;
 export type Repository = string;
 export type RepositoryBranch = string;
@@ -198,7 +212,9 @@ export type RecordTagValue = string;
 export type ProductViewAggregationType = string;
 export type UserArn = string;
 export type UserArnSession = string;
+export type LastSyncTime = Date;
 export type LastSyncStatusMessage = string;
+export type LastSuccessfulSyncTime = Date;
 export type PropertyName = string;
 export type AttributeValue = string;
 export type ApproximateCount = number;
@@ -424,7 +440,7 @@ export const AssociateServiceActionWithProvisioningArtifactInput = S.suspend(
       ProvisioningArtifactId: S.String,
       ServiceActionId: S.String,
       AcceptLanguage: S.optional(S.String),
-      IdempotencyToken: S.optional(S.String),
+      IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     }).pipe(
       T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
     ),
@@ -502,7 +518,7 @@ export const CreateConstraintInput = S.suspend(() =>
     Parameters: S.String,
     Type: S.String,
     Description: S.optional(S.String),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -558,7 +574,7 @@ export const CreateProvisioningArtifactInput = S.suspend(() =>
     AcceptLanguage: S.optional(S.String),
     ProductId: S.String,
     Parameters: ProvisioningArtifactProperties,
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -704,7 +720,7 @@ export const DeleteServiceActionInput = S.suspend(() =>
   S.Struct({
     Id: S.String,
     AcceptLanguage: S.optional(S.String),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1054,7 +1070,7 @@ export const DisassociateServiceActionFromProvisioningArtifactInput = S.suspend(
       ProvisioningArtifactId: S.String,
       ServiceActionId: S.String,
       AcceptLanguage: S.optional(S.String),
-      IdempotencyToken: S.optional(S.String),
+      IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     }).pipe(
       T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
     ),
@@ -1095,7 +1111,7 @@ export const ExecuteProvisionedProductPlanInput = S.suspend(() =>
   S.Struct({
     AcceptLanguage: S.optional(S.String),
     PlanId: S.String,
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1147,7 +1163,7 @@ export const ImportAsProvisionedProductInput = S.suspend(() =>
     ProvisioningArtifactId: S.String,
     ProvisionedProductName: S.String,
     PhysicalId: S.String,
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1435,7 +1451,7 @@ export const NotifyTerminateProvisionedProductEngineWorkflowResultInput =
       RecordId: S.String,
       Status: EngineWorkflowStatus,
       FailureReason: S.optional(S.String),
-      IdempotencyToken: S.String,
+      IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
     }).pipe(
       T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
     ),
@@ -1477,7 +1493,7 @@ export const NotifyUpdateProvisionedProductEngineWorkflowResultInput =
       Status: EngineWorkflowStatus,
       FailureReason: S.optional(S.String),
       Outputs: S.optional(RecordOutputs),
-      IdempotencyToken: S.String,
+      IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
     }).pipe(
       T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
     ),
@@ -1598,7 +1614,7 @@ export const TerminateProvisionedProductInput = S.suspend(() =>
   S.Struct({
     ProvisionedProductName: S.optional(S.String),
     ProvisionedProductId: S.optional(S.String),
-    TerminateToken: S.String,
+    TerminateToken: S.String.pipe(T.IdempotencyToken()),
     IgnoreErrors: S.optional(S.Boolean),
     AcceptLanguage: S.optional(S.String),
     RetainPhysicalResources: S.optional(S.Boolean),
@@ -2245,7 +2261,7 @@ export const CopyProductInput = S.suspend(() =>
       SourceProvisioningArtifactProperties,
     ),
     CopyOptions: S.optional(CopyOptions),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -2267,7 +2283,7 @@ export const CreatePortfolioInput = S.suspend(() =>
     Description: S.optional(S.String),
     ProviderName: S.String,
     Tags: S.optional(AddTags),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -2320,7 +2336,7 @@ export const CreateProvisionedProductPlanInput = S.suspend(() =>
     ProvisionedProductName: S.String,
     ProvisioningArtifactId: S.String,
     ProvisioningParameters: S.optional(UpdateProvisioningParameters),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -2343,7 +2359,7 @@ export const CreateServiceActionInput = S.suspend(() =>
     Definition: ServiceActionDefinitionMap,
     Description: S.optional(S.String),
     AcceptLanguage: S.optional(S.String),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -2510,7 +2526,7 @@ export const ExecuteProvisionedProductServiceActionInput = S.suspend(() =>
   S.Struct({
     ProvisionedProductId: S.String,
     ServiceActionId: S.String,
-    ExecuteToken: S.String,
+    ExecuteToken: S.String.pipe(T.IdempotencyToken()),
     AcceptLanguage: S.optional(S.String),
     Parameters: S.optional(ExecutionParameterMap),
   }).pipe(
@@ -2758,7 +2774,7 @@ export const ProvisionProductInput = S.suspend(() =>
     ProvisioningPreferences: S.optional(ProvisioningPreferences),
     Tags: S.optional(Tags),
     NotificationArns: S.optional(NotificationArns),
-    ProvisionToken: S.String,
+    ProvisionToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -2922,7 +2938,7 @@ export const UpdateProvisionedProductInput = S.suspend(() =>
     ProvisioningParameters: S.optional(UpdateProvisioningParameters),
     ProvisioningPreferences: S.optional(UpdateProvisioningPreferences),
     Tags: S.optional(Tags),
-    UpdateToken: S.String,
+    UpdateToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -2940,7 +2956,7 @@ export const UpdateProvisionedProductPropertiesInput = S.suspend(() =>
     AcceptLanguage: S.optional(S.String),
     ProvisionedProductId: S.String,
     ProvisionedProductProperties: ProvisionedProductProperties,
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -3729,7 +3745,7 @@ export const NotifyProvisionProductEngineWorkflowResultInput = S.suspend(() =>
     FailureReason: S.optional(S.String),
     ResourceIdentifier: S.optional(EngineWorkflowResourceIdentifier),
     Outputs: S.optional(RecordOutputs),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -3914,7 +3930,7 @@ export const CreateProductInput = S.suspend(() =>
     ProductType: ProductType,
     Tags: S.optional(AddTags),
     ProvisioningArtifactParameters: S.optional(ProvisioningArtifactProperties),
-    IdempotencyToken: S.String,
+    IdempotencyToken: S.String.pipe(T.IdempotencyToken()),
     SourceConnection: S.optional(SourceConnection),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

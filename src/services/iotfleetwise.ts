@@ -144,6 +144,7 @@ export type ObdInterfaceName = string;
 export type ObdStandard = string;
 export type VehicleMiddlewareName = string;
 export type CustomDecodingSignalInterfaceName = string;
+export type NetworkFileBlob = Uint8Array;
 export type StorageMaximumSizeValue = number;
 export type StorageMinimumTimeToLiveValue = number;
 export type positiveLong = number;

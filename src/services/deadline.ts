@@ -138,12 +138,16 @@ export type HostName = string;
 export type S3BucketName = string;
 export type S3Prefix = string;
 export type S3Key = string;
+export type CreatedAt = Date;
 export type CreatedBy = string;
+export type UpdatedAt = Date;
 export type UpdatedBy = string;
 export type NextItemOffset = number;
 export type TotalResults = number;
 export type EnvironmentName = string;
 export type JobName = string;
+export type StartedAt = Date;
+export type EndedAt = Date;
 export type TaskFailureRetryCount = number;
 export type JobDescription = string | redacted.Redacted<string>;
 export type SessionActionProgressPercent = number;
@@ -152,10 +156,13 @@ export type SessionActionProgressMessage = string | redacted.Redacted<string>;
 export type StepName = string;
 export type StepDescription = string | redacted.Redacted<string>;
 export type TaskRetryCount = number;
+export type JobParameterDefinition = unknown;
 export type StatusMessage = string;
 export type DnsName = string;
 export type IdentityCenterApplicationArn = string;
 export type Url = string;
+export type StartsAt = Date;
+export type EndsAt = Date;
 export type IpV4Address = string;
 export type IpV6Address = string;
 export type AmountCapabilityName = string;
@@ -188,6 +195,7 @@ export type EbsIops = number;
 export type EbsThroughputMiB = number;
 export type AcceleratorRuntime = string;
 export type UpdateWorkerScheduleInterval = number;
+export type Document = unknown;
 
 //# Schemas
 export type QueueIds = string[];
@@ -916,7 +924,10 @@ export interface CreateFarmRequest {
 }
 export const CreateFarmRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     displayName: S.String,
     description: S.optional(SensitiveString),
     kmsKeyArn: S.optional(S.String),
@@ -1068,7 +1079,10 @@ export interface CreateLimitRequest {
 }
 export const CreateLimitRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     displayName: S.String,
     amountRequirementName: S.String,
     maxCount: S.Number,
@@ -1354,7 +1368,10 @@ export interface UpdateStorageProfileRequest {
 }
 export const UpdateStorageProfileRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     storageProfileId: S.String.pipe(T.HttpLabel("storageProfileId")),
     displayName: S.optional(S.String),
@@ -1759,7 +1776,10 @@ export interface UpdateFleetRequest {
 }
 export const UpdateFleetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     fleetId: S.String.pipe(T.HttpLabel("fleetId")),
     displayName: S.optional(S.String),
@@ -1796,7 +1816,10 @@ export interface DeleteFleetRequest {
 }
 export const DeleteFleetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     fleetId: S.String.pipe(T.HttpLabel("fleetId")),
   }).pipe(
@@ -2216,7 +2239,10 @@ export interface UpdateQueueRequest {
 }
 export const UpdateQueueRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     queueId: S.String.pipe(T.HttpLabel("queueId")),
     displayName: S.optional(S.String),
@@ -2404,7 +2430,10 @@ export interface CreateQueueEnvironmentRequest {
 }
 export const CreateQueueEnvironmentRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     queueId: S.String.pipe(T.HttpLabel("queueId")),
     priority: S.Number,
@@ -2637,7 +2666,10 @@ export interface UpdateQueueEnvironmentRequest {
 }
 export const UpdateQueueEnvironmentRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     queueId: S.String.pipe(T.HttpLabel("queueId")),
     queueEnvironmentId: S.String.pipe(T.HttpLabel("queueEnvironmentId")),
@@ -2706,7 +2738,10 @@ export interface UpdateJobRequest {
 }
 export const UpdateJobRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     targetTaskRunStatus: S.optional(JobTargetTaskRunStatus),
     priority: S.optional(S.Number),
     maxFailedTasksCount: S.optional(S.Number),
@@ -3214,7 +3249,10 @@ export interface UpdateSessionRequest {
 }
 export const UpdateSessionRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     targetLifecycleStatus: SessionLifecycleTargetStatus,
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     queueId: S.String.pipe(T.HttpLabel("queueId")),
@@ -3251,7 +3289,10 @@ export interface UpdateStepRequest {
 export const UpdateStepRequest = S.suspend(() =>
   S.Struct({
     targetTaskRunStatus: StepTargetTaskRunStatus,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     queueId: S.String.pipe(T.HttpLabel("queueId")),
     jobId: S.String.pipe(T.HttpLabel("jobId")),
@@ -3287,7 +3328,10 @@ export interface UpdateTaskRequest {
 }
 export const UpdateTaskRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     targetRunStatus: TaskTargetRunStatus,
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     queueId: S.String.pipe(T.HttpLabel("queueId")),
@@ -3323,7 +3367,10 @@ export interface CreateLicenseEndpointRequest {
 }
 export const CreateLicenseEndpointRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     vpcId: S.String,
     subnetIds: SubnetIdList,
     securityGroupIds: SecurityGroupIdList,
@@ -3508,7 +3555,10 @@ export interface CreateMonitorRequest {
 }
 export const CreateMonitorRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     displayName: S.String,
     identityCenterInstanceArn: S.String,
     subdomain: S.String,
@@ -4021,7 +4071,10 @@ export interface CreateStorageProfileRequest {
 }
 export const CreateStorageProfileRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     displayName: S.String,
     osFamily: StorageProfileOperatingSystemFamily,
@@ -4124,7 +4177,10 @@ export interface UpdateBudgetRequest {
 }
 export const UpdateBudgetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     budgetId: S.String.pipe(T.HttpLabel("budgetId")),
     displayName: S.optional(S.String),
@@ -5707,7 +5763,10 @@ export interface CreateBudgetRequest {
 }
 export const CreateBudgetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     usageTrackingResource: UsageTrackingResource,
     displayName: S.String,
@@ -5811,7 +5870,10 @@ export const CreateWorkerRequest = S.suspend(() =>
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     fleetId: S.String.pipe(T.HttpLabel("fleetId")),
     hostProperties: S.optional(HostPropertiesRequest),
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -5925,7 +5987,10 @@ export interface CreateQueueRequest {
 }
 export const CreateQueueRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     displayName: S.String,
     description: S.optional(SensitiveString),
@@ -6001,7 +6066,10 @@ export const CreateJobRequest = S.suspend(() =>
   S.Struct({
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     queueId: S.String.pipe(T.HttpLabel("queueId")),
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     template: S.optional(SensitiveString),
     templateType: S.optional(JobTemplateType),
     priority: S.Number,
@@ -7045,7 +7113,10 @@ export interface CreateFleetRequest {
 }
 export const CreateFleetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amz-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amz-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     farmId: S.String.pipe(T.HttpLabel("farmId")),
     displayName: S.String,
     description: S.optional(SensitiveString),

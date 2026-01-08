@@ -109,11 +109,18 @@ export type NameType = string;
 export type ClientRequestTokenType = string;
 export type DescriptionType = string;
 export type KmsKeyIdType = string;
+export type SecretBinaryType = Uint8Array | redacted.Redacted<Uint8Array>;
 export type SecretStringType = string | redacted.Redacted<string>;
 export type MedeaTypeType = string;
 export type RecoveryWindowInDaysType = number;
 export type PasswordLengthType = number;
 export type ExcludeCharactersType = string;
+export type ExcludeNumbersType = boolean;
+export type ExcludePunctuationType = boolean;
+export type ExcludeUppercaseType = boolean;
+export type ExcludeLowercaseType = boolean;
+export type IncludeSpaceType = boolean;
+export type RequireEachIncludedTypeType = boolean;
 export type SecretVersionIdType = string;
 export type SecretVersionStageType = string;
 export type MaxResultsType = number;
@@ -132,8 +139,16 @@ export type ExternalSecretRotationMetadataItemKeyType = string;
 export type ExternalSecretRotationMetadataItemValueType = string;
 export type SecretARNType = string;
 export type SecretNameType = string;
+export type DeletionDateType = Date;
+export type RotationEnabledType = boolean;
+export type LastRotatedDateType = Date;
+export type LastChangedDateType = Date;
+export type LastAccessedDateType = Date;
+export type DeletedDateType = Date;
+export type NextRotationDateType = Date;
 export type OwningServiceType = string;
 export type RandomPasswordType = string | redacted.Redacted<string>;
+export type CreatedDateType = Date;
 export type ErrorMessage = string;
 export type StatusMessageType = string;
 export type ErrorCode = string;
@@ -356,7 +371,7 @@ export interface PutSecretValueRequest {
 export const PutSecretValueRequest = S.suspend(() =>
   S.Struct({
     SecretId: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SecretBinary: S.optional(SensitiveBlob),
     SecretString: S.optional(SensitiveString),
     VersionStages: S.optional(SecretVersionStagesType),
@@ -479,7 +494,7 @@ export interface UpdateSecretRequest {
 export const UpdateSecretRequest = S.suspend(() =>
   S.Struct({
     SecretId: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     KmsKeyId: S.optional(S.String),
     SecretBinary: S.optional(SensitiveBlob),
@@ -595,7 +610,7 @@ export interface CreateSecretRequest {
 export const CreateSecretRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     KmsKeyId: S.optional(S.String),
     SecretBinary: S.optional(SensitiveBlob),
@@ -771,7 +786,7 @@ export interface RotateSecretRequest {
 export const RotateSecretRequest = S.suspend(() =>
   S.Struct({
     SecretId: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     RotationLambdaARN: S.optional(S.String),
     RotationRules: S.optional(RotationRulesType),
     ExternalSecretRotationMetadata: S.optional(

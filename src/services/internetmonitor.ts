@@ -301,7 +301,7 @@ export const UpdateMonitorInput = S.suspend(() =>
     ResourcesToAdd: S.optional(SetOfARNs),
     ResourcesToRemove: S.optional(SetOfARNs),
     Status: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     MaxCityNetworksToMonitor: S.optional(S.Number),
     InternetMeasurementsLogDelivery: S.optional(
       InternetMeasurementsLogDelivery,
@@ -927,7 +927,7 @@ export const CreateMonitorInput = S.suspend(() =>
   S.Struct({
     MonitorName: S.String,
     Resources: S.optional(SetOfARNs),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
     MaxCityNetworksToMonitor: S.optional(S.Number),
     InternetMeasurementsLogDelivery: S.optional(

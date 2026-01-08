@@ -97,6 +97,7 @@ export type ErrorMessage = string;
 export type ThirdPartyTypeArn = string;
 export type PublisherId = string;
 export type TypeName = string;
+export type AutoUpdate = boolean;
 export type RoleARN2 = string;
 export type MajorVersion = number;
 export type StackName = string;
@@ -106,25 +107,34 @@ export type RoleARN = string;
 export type ResourceToSkip = string;
 export type TemplateBody = string;
 export type TemplateURL = string;
+export type UsePreviousTemplate = boolean;
 export type ResourceType = string;
 export type NotificationARN = string;
 export type ChangeSetName = string;
 export type ClientToken = string;
 export type Description = string;
+export type IncludeNestedStacks = boolean;
+export type ImportExistingResources = boolean;
 export type GeneratedTemplateName = string;
+export type DisableRollback = boolean;
 export type TimeoutMinutes = number;
 export type StackPolicyBody = string;
 export type StackPolicyURL = string;
+export type EnableTerminationProtection = boolean;
+export type RetainExceptOnCreate = boolean;
 export type StackSetName = string;
 export type Account = string;
 export type Region = string;
+export type EnableStackCreation = boolean;
 export type StackId = string;
 export type ExecutionRoleName = string;
 export type PrivateTypeArn = string;
 export type ChangeSetNameOrId = string;
 export type LogicalResourceId = string;
+export type RetainStacks = boolean;
 export type TypeVersionId = string;
 export type NextToken = string;
+export type IncludePropertyValues = boolean;
 export type OperationId = string;
 export type ResourceScanId = string;
 export type StackDriftDetectionId = string;
@@ -149,6 +159,7 @@ export type TagValue = string;
 export type ResourceScannerMaxResults = number;
 export type StatusMessage = string;
 export type ResourceModel = string;
+export type AcceptTermsAndConditions = boolean;
 export type ConnectionArn = string;
 export type S3Url = string;
 export type RequestToken = string;
@@ -156,27 +167,36 @@ export type TypeConfiguration = string;
 export type TypeConfigurationAlias = string;
 export type ResourceSignalUniqueId = string;
 export type S3Bucket = string;
+export type RefreshAllResources = boolean;
 export type StackPolicyDuringUpdateBody = string;
 export type StackPolicyDuringUpdateURL = string;
 export type LogGroupName = string;
 export type TypeConfigurationArn = string;
 export type ParameterKey = string;
 export type ParameterValue = string;
+export type UsePreviousValue = boolean;
 export type MonitoringTimeInMinutes = number;
 export type AccountsUrl = string;
 export type FailureToleranceCount = number;
 export type FailureTolerancePercentage = number;
 export type MaxConcurrentCount = number;
 export type MaxConcurrentPercentage = number;
+export type AutoDeploymentNullable = boolean;
+export type RetainStacksOnAccountRemovalNullable = boolean;
 export type StackSetARN = string;
+export type ManagedExecutionNullable = boolean;
+export type FailedEventsFilter = boolean;
+export type TreatUnrecognizedResourceTypesAsWarnings = boolean;
 export type StackInstanceFilterValues = string;
 export type OperationResultFilterValues = string;
 export type TypeNamePrefix = string;
 export type ResourceTypeFilter = string;
 export type ChangeSetId = string;
+export type CreationTime = Date;
 export type ChangeSetStatusReason = string;
 export type GeneratedTemplateId = string;
 export type TemplateStatusReason = string;
+export type LastUpdatedTime = Date;
 export type TotalWarnings = number;
 export type PublisherProfile = string;
 export type ResourceScanStatusReason = string;
@@ -187,10 +207,12 @@ export type StackDriftDetectionStatusReason = string;
 export type BoxedInteger = number;
 export type ExecutionStatusReason = string;
 export type StackRefactorStatusReason = string;
+export type IsDefaultVersion = boolean;
 export type TypeTestsStatusDescription = string;
 export type TypeSchema = string;
 export type OptionalSecureUrl = string;
 export type ConfigurationSchema = string;
+export type IsActivated = boolean;
 export type Url = string;
 export type HookTypeName = string;
 export type HookTypeVersionId = string;
@@ -220,7 +242,9 @@ export type Reason = string;
 export type Metadata = string;
 export type Properties = string;
 export type StackResourceDriftStatusReason = string;
+export type DeletionTime = Date;
 export type StackStatusReason = string;
+export type RetainStacksNullable = boolean;
 export type StackSetOperationStatusReason = string;
 export type SupportedMajorVersion = number;
 export type HookTargetTypeName = string;
@@ -231,9 +255,11 @@ export type RemediationMessageRemediationMessage = string;
 export type AnnotationRemediationLink = string;
 export type ExportValue = string;
 export type NumberOfResources = number;
+export type ManagedByStack = boolean;
 export type StackRefactorResourceIdentifier = string;
 export type DetectionReason = string;
 export type TemplateDescription = string;
+export type NoEcho = boolean;
 export type Version = string;
 export type BeforeContext = string;
 export type AfterContext = string;
@@ -252,6 +278,7 @@ export type InSyncStackInstancesCount = number;
 export type InProgressStackInstancesCount = number;
 export type FailedStackInstancesCount = number;
 export type ErrorCode = string;
+export type IsDefaultConfiguration = boolean;
 export type ValidationName = string;
 export type ValidationStatusReason = string;
 export type ValidationPath = string;
@@ -259,6 +286,7 @@ export type ParameterType = string;
 export type PublisherName = string;
 export type ResourcePropertyPath = string;
 export type CausingEntity = string;
+export type RequiredProperty = boolean;
 export type PropertyDescription = string;
 export type AllowedValue = string;
 export type AccountGateStatusReason = string;
@@ -912,7 +940,7 @@ export const DeleteStackInstancesInput = S.suspend(() =>
     Regions: S.optional(RegionList),
     OperationPreferences: S.optional(StackSetOperationPreferences),
     RetainStacks: S.optional(S.Boolean),
-    OperationId: S.optional(S.String),
+    OperationId: S.optional(S.String).pipe(T.IdempotencyToken()),
     CallAs: S.optional(CallAs),
   }).pipe(
     T.all(
@@ -1458,7 +1486,7 @@ export const DetectStackSetDriftInput = S.suspend(() =>
   S.Struct({
     StackSetName: S.optional(S.String),
     OperationPreferences: S.optional(StackSetOperationPreferences),
-    OperationId: S.optional(S.String),
+    OperationId: S.optional(S.String).pipe(T.IdempotencyToken()),
     CallAs: S.optional(CallAs),
   }).pipe(
     T.all(
@@ -1654,7 +1682,7 @@ export const ImportStacksToStackSetInput = S.suspend(() =>
     StackIdsUrl: S.optional(S.String),
     OrganizationalUnitIds: S.optional(OrganizationalUnitIdList),
     OperationPreferences: S.optional(StackSetOperationPreferences),
-    OperationId: S.optional(S.String),
+    OperationId: S.optional(S.String).pipe(T.IdempotencyToken()),
     CallAs: S.optional(CallAs),
   }).pipe(
     T.all(
@@ -2582,7 +2610,7 @@ export const UpdateStackInstancesInput = S.suspend(() =>
     Regions: S.optional(RegionList),
     ParameterOverrides: S.optional(Parameters),
     OperationPreferences: S.optional(StackSetOperationPreferences),
-    OperationId: S.optional(S.String),
+    OperationId: S.optional(S.String).pipe(T.IdempotencyToken()),
     CallAs: S.optional(CallAs),
   }).pipe(
     T.all(
@@ -2659,7 +2687,7 @@ export const UpdateStackSetInput = S.suspend(() =>
     DeploymentTargets: S.optional(DeploymentTargets),
     PermissionModel: S.optional(PermissionModels),
     AutoDeployment: S.optional(AutoDeployment),
-    OperationId: S.optional(S.String),
+    OperationId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Accounts: S.optional(AccountList),
     Regions: S.optional(RegionList),
     CallAs: S.optional(CallAs),
@@ -3103,7 +3131,7 @@ export const CreateStackInstancesInput = S.suspend(() =>
     Regions: S.optional(RegionList),
     ParameterOverrides: S.optional(Parameters),
     OperationPreferences: S.optional(StackSetOperationPreferences),
-    OperationId: S.optional(S.String),
+    OperationId: S.optional(S.String).pipe(T.IdempotencyToken()),
     CallAs: S.optional(CallAs),
   }).pipe(
     T.all(
@@ -3151,7 +3179,7 @@ export const CreateStackSetInput = S.suspend(() =>
     PermissionModel: S.optional(PermissionModels),
     AutoDeployment: S.optional(AutoDeployment),
     CallAs: S.optional(CallAs),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ManagedExecution: S.optional(ManagedExecution),
   }).pipe(
     T.all(
@@ -3256,13 +3284,13 @@ export const DescribeResourceScanOutput = S.suspend(() =>
   identifier: "DescribeResourceScanOutput",
 }) as any as S.Schema<DescribeResourceScanOutput>;
 export interface DescribeStackDriftDetectionStatusOutput {
-  StackId?: string;
-  StackDriftDetectionId?: string;
+  StackId: string;
+  StackDriftDetectionId: string;
   StackDriftStatus?: StackDriftStatus;
-  DetectionStatus?: StackDriftDetectionStatus;
+  DetectionStatus: StackDriftDetectionStatus;
   DetectionStatusReason?: string;
   DriftedStackResourceCount?: number;
-  Timestamp?: Date;
+  Timestamp: Date;
 }
 export const DescribeStackDriftDetectionStatusOutput = S.suspend(() =>
   S.Struct({
@@ -3316,7 +3344,7 @@ export const DescribeTypeRegistrationOutput = S.suspend(() =>
   identifier: "DescribeTypeRegistrationOutput",
 }) as any as S.Schema<DescribeTypeRegistrationOutput>;
 export interface DetectStackDriftOutput {
-  StackDriftDetectionId?: string;
+  StackDriftDetectionId: string;
 }
 export const DetectStackDriftOutput = S.suspend(() =>
   S.Struct({ StackDriftDetectionId: S.optional(S.String) }).pipe(ns),
@@ -3399,7 +3427,23 @@ export const StackResourceDrift = S.suspend(() =>
   identifier: "StackResourceDrift",
 }) as any as S.Schema<StackResourceDrift>;
 export interface DetectStackResourceDriftOutput {
-  StackResourceDrift?: StackResourceDrift;
+  StackResourceDrift: StackResourceDrift & {
+    StackId: StackId;
+    LogicalResourceId: LogicalResourceId;
+    ResourceType: ResourceType;
+    StackResourceDriftStatus: StackResourceDriftStatus;
+    Timestamp: Date;
+    PhysicalResourceIdContext: (PhysicalResourceIdContextKeyValuePair & {
+      Key: Key;
+      Value: Value;
+    })[];
+    PropertyDifferences: (PropertyDifference & {
+      PropertyPath: PropertyPath;
+      ExpectedValue: PropertyValue;
+      ActualValue: PropertyValue;
+      DifferenceType: DifferenceType;
+    })[];
+  };
 }
 export const DetectStackResourceDriftOutput = S.suspend(() =>
   S.Struct({ StackResourceDrift: S.optional(StackResourceDrift) }).pipe(ns),
@@ -4707,7 +4751,12 @@ export const DescribeAccountLimitsOutput = S.suspend(() =>
   identifier: "DescribeAccountLimitsOutput",
 }) as any as S.Schema<DescribeAccountLimitsOutput>;
 export interface DescribeStackEventsOutput {
-  StackEvents?: StackEvent[];
+  StackEvents?: (StackEvent & {
+    StackId: StackId;
+    EventId: EventId;
+    StackName: StackName;
+    Timestamp: Date;
+  })[];
   NextToken?: string;
 }
 export const DescribeStackEventsOutput = S.suspend(() =>
@@ -4719,7 +4768,15 @@ export const DescribeStackEventsOutput = S.suspend(() =>
   identifier: "DescribeStackEventsOutput",
 }) as any as S.Schema<DescribeStackEventsOutput>;
 export interface DescribeStackResourcesOutput {
-  StackResources?: StackResource[];
+  StackResources?: (StackResource & {
+    LogicalResourceId: LogicalResourceId;
+    ResourceType: ResourceType;
+    Timestamp: Date;
+    ResourceStatus: ResourceStatus;
+    DriftInformation: StackResourceDriftInformation & {
+      StackResourceDriftStatus: StackResourceDriftStatus;
+    };
+  })[];
 }
 export const DescribeStackResourcesOutput = S.suspend(() =>
   S.Struct({ StackResources: S.optional(StackResources) }).pipe(ns),
@@ -4738,7 +4795,10 @@ export interface DescribeTypeOutput {
   Schema?: string;
   ProvisioningType?: ProvisioningType;
   DeprecatedStatus?: DeprecatedStatus;
-  LoggingConfig?: LoggingConfig;
+  LoggingConfig?: LoggingConfig & {
+    LogRoleArn: RoleARN2;
+    LogGroupName: LogGroupName;
+  };
   RequiredActivatedTypes?: RequiredActivatedType[];
   ExecutionRoleArn?: string;
   Visibility?: Visibility;
@@ -4800,7 +4860,12 @@ export interface GetHookResultOutput {
   Status?: HookStatus;
   HookStatusReason?: string;
   InvokedAt?: Date;
-  Target?: HookTarget;
+  Target?: HookTarget & {
+    TargetType: HookTargetType;
+    TargetTypeName: HookTargetTypeName;
+    TargetId: HookTargetId;
+    Action: HookTargetAction;
+  };
   Annotations?: Annotation[];
 }
 export const GetHookResultOutput = S.suspend(() =>
@@ -4925,7 +4990,23 @@ export const ListResourceScansOutput = S.suspend(() =>
   identifier: "ListResourceScansOutput",
 }) as any as S.Schema<ListResourceScansOutput>;
 export interface ListStackInstanceResourceDriftsOutput {
-  Summaries?: StackInstanceResourceDriftsSummary[];
+  Summaries?: (StackInstanceResourceDriftsSummary & {
+    StackId: StackId;
+    LogicalResourceId: LogicalResourceId;
+    ResourceType: ResourceType;
+    StackResourceDriftStatus: StackResourceDriftStatus;
+    Timestamp: Date;
+    PhysicalResourceIdContext: (PhysicalResourceIdContextKeyValuePair & {
+      Key: Key;
+      Value: Value;
+    })[];
+    PropertyDifferences: (PropertyDifference & {
+      PropertyPath: PropertyPath;
+      ExpectedValue: PropertyValue;
+      ActualValue: PropertyValue;
+      DifferenceType: DifferenceType;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const ListStackInstanceResourceDriftsOutput = S.suspend(() =>
@@ -4937,7 +5018,19 @@ export const ListStackInstanceResourceDriftsOutput = S.suspend(() =>
   identifier: "ListStackInstanceResourceDriftsOutput",
 }) as any as S.Schema<ListStackInstanceResourceDriftsOutput>;
 export interface ListStackRefactorActionsOutput {
-  StackRefactorActions?: StackRefactorAction[];
+  StackRefactorActions: (StackRefactorAction & {
+    TagResources: (Tag & { Key: TagKey; Value: TagValue })[];
+    ResourceMapping: ResourceMapping & {
+      Source: ResourceLocation & {
+        StackName: StackName;
+        LogicalResourceId: LogicalResourceId;
+      };
+      Destination: ResourceLocation & {
+        StackName: StackName;
+        LogicalResourceId: LogicalResourceId;
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListStackRefactorActionsOutput = S.suspend(() =>
@@ -4949,7 +5042,7 @@ export const ListStackRefactorActionsOutput = S.suspend(() =>
   identifier: "ListStackRefactorActionsOutput",
 }) as any as S.Schema<ListStackRefactorActionsOutput>;
 export interface ListStackRefactorsOutput {
-  StackRefactorSummaries?: StackRefactorSummary[];
+  StackRefactorSummaries: StackRefactorSummary[];
   NextToken?: string;
 }
 export const ListStackRefactorsOutput = S.suspend(() =>
@@ -5733,7 +5826,7 @@ export const CreateChangeSetOutput = S.suspend(() =>
   identifier: "CreateChangeSetOutput",
 }) as any as S.Schema<CreateChangeSetOutput>;
 export interface CreateStackRefactorOutput {
-  StackRefactorId?: string;
+  StackRefactorId: string;
 }
 export const CreateStackRefactorOutput = S.suspend(() =>
   S.Struct({ StackRefactorId: S.optional(S.String) }).pipe(ns),
@@ -5781,7 +5874,15 @@ export const DescribeStackInstanceOutput = S.suspend(() =>
   identifier: "DescribeStackInstanceOutput",
 }) as any as S.Schema<DescribeStackInstanceOutput>;
 export interface DescribeStackResourceOutput {
-  StackResourceDetail?: StackResourceDetail;
+  StackResourceDetail?: StackResourceDetail & {
+    LogicalResourceId: LogicalResourceId;
+    ResourceType: ResourceType;
+    LastUpdatedTimestamp: Date;
+    ResourceStatus: ResourceStatus;
+    DriftInformation: StackResourceDriftInformation & {
+      StackResourceDriftStatus: StackResourceDriftStatus;
+    };
+  };
 }
 export const DescribeStackResourceOutput = S.suspend(() =>
   S.Struct({ StackResourceDetail: S.optional(StackResourceDetail) }).pipe(ns),
@@ -5789,7 +5890,23 @@ export const DescribeStackResourceOutput = S.suspend(() =>
   identifier: "DescribeStackResourceOutput",
 }) as any as S.Schema<DescribeStackResourceOutput>;
 export interface DescribeStackResourceDriftsOutput {
-  StackResourceDrifts?: StackResourceDrift[];
+  StackResourceDrifts: (StackResourceDrift & {
+    StackId: StackId;
+    LogicalResourceId: LogicalResourceId;
+    ResourceType: ResourceType;
+    StackResourceDriftStatus: StackResourceDriftStatus;
+    Timestamp: Date;
+    PhysicalResourceIdContext: (PhysicalResourceIdContextKeyValuePair & {
+      Key: Key;
+      Value: Value;
+    })[];
+    PropertyDifferences: (PropertyDifference & {
+      PropertyPath: PropertyPath;
+      ExpectedValue: PropertyValue;
+      ActualValue: PropertyValue;
+      DifferenceType: DifferenceType;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeStackResourceDriftsOutput = S.suspend(() =>
@@ -5801,7 +5918,18 @@ export const DescribeStackResourceDriftsOutput = S.suspend(() =>
   identifier: "DescribeStackResourceDriftsOutput",
 }) as any as S.Schema<DescribeStackResourceDriftsOutput>;
 export interface DescribeStacksOutput {
-  Stacks?: Stack[];
+  Stacks?: (Stack & {
+    StackName: StackName;
+    CreationTime: CreationTime;
+    StackStatus: StackStatus;
+    RollbackConfiguration: RollbackConfiguration & {
+      RollbackTriggers: (RollbackTrigger & { Arn: Arn; Type: Type })[];
+    };
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    DriftInformation: StackDriftInformation & {
+      StackDriftStatus: StackDriftStatus;
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeStacksOutput = S.suspend(() =>
@@ -5813,7 +5941,7 @@ export const DescribeStacksOutput = S.suspend(() =>
   identifier: "DescribeStacksOutput",
 }) as any as S.Schema<DescribeStacksOutput>;
 export interface DescribeStackSetOutput {
-  StackSet?: StackSet;
+  StackSet?: StackSet & { Tags: (Tag & { Key: TagKey; Value: TagValue })[] };
 }
 export const DescribeStackSetOutput = S.suspend(() =>
   S.Struct({ StackSet: S.optional(StackSet) }).pipe(ns),
@@ -5853,7 +5981,15 @@ export const ListStackInstancesOutput = S.suspend(() =>
   identifier: "ListStackInstancesOutput",
 }) as any as S.Schema<ListStackInstancesOutput>;
 export interface ListStackResourcesOutput {
-  StackResourceSummaries?: StackResourceSummary[];
+  StackResourceSummaries?: (StackResourceSummary & {
+    LogicalResourceId: LogicalResourceId;
+    ResourceType: ResourceType;
+    LastUpdatedTimestamp: Date;
+    ResourceStatus: ResourceStatus;
+    DriftInformation: StackResourceDriftInformationSummary & {
+      StackResourceDriftStatus: StackResourceDriftStatus;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListStackResourcesOutput = S.suspend(() =>
@@ -5865,7 +6001,14 @@ export const ListStackResourcesOutput = S.suspend(() =>
   identifier: "ListStackResourcesOutput",
 }) as any as S.Schema<ListStackResourcesOutput>;
 export interface ListStacksOutput {
-  StackSummaries?: StackSummary[];
+  StackSummaries?: (StackSummary & {
+    StackName: StackName;
+    CreationTime: CreationTime;
+    StackStatus: StackStatus;
+    DriftInformation: StackDriftInformationSummary & {
+      StackDriftStatus: StackDriftStatus;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListStacksOutput = S.suspend(() =>
@@ -6243,9 +6386,11 @@ export interface DescribeChangeSetOutput {
   StatusReason?: string;
   StackDriftStatus?: StackDriftStatus;
   NotificationARNs?: string[];
-  RollbackConfiguration?: RollbackConfiguration;
+  RollbackConfiguration?: RollbackConfiguration & {
+    RollbackTriggers: (RollbackTrigger & { Arn: Arn; Type: Type })[];
+  };
   Capabilities?: Capability[];
-  Tags?: Tag[];
+  Tags?: (Tag & { Key: TagKey; Value: TagValue })[];
   Changes?: Change[];
   NextToken?: string;
   IncludeNestedStacks?: boolean;

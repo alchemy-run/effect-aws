@@ -113,12 +113,14 @@ export type ImportTaskFilterValue = string;
 export type OrderByElementFieldName = string;
 export type DatabaseName = string;
 export type Message = string;
+export type ExportEnabled = boolean;
 export type EC2InstanceType = string;
 export type UserPreferredRegion = string;
 export type BatchDeleteImportDataErrorDescription = string;
 export type StringMax255 = string;
 export type ExportStatusMessage = string;
 export type ConfigurationsDownloadUrl = string;
+export type ExportRequestTime = Date;
 export type BoxedInteger = number;
 export type S3PresignedUrl = string;
 export type UsageMetricBasisName = string;
@@ -541,7 +543,7 @@ export interface StartImportTaskRequest {
 }
 export const StartImportTaskRequest = S.suspend(() =>
   S.Struct({
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     importUrl: S.String,
   }).pipe(

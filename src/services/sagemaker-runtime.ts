@@ -111,6 +111,7 @@ export type InvocationTimeoutSecondsHeader = number;
 export type SessionIdHeader = string;
 export type NewSessionResponseHeader = string;
 export type Message = string;
+export type PartBlob = Uint8Array | redacted.Redacted<Uint8Array>;
 export type ErrorCode = string;
 export type StatusCode = number;
 export type LogStreamArn = string;
@@ -274,7 +275,7 @@ export const InvokeEndpointWithResponseStreamInput = S.suspend(() =>
   identifier: "InvokeEndpointWithResponseStreamInput",
 }) as any as S.Schema<InvokeEndpointWithResponseStreamInput>;
 export interface InvokeEndpointOutput {
-  Body?: T.StreamingOutputBody;
+  Body: T.StreamingOutputBody;
   ContentType?: string;
   InvokedProductionVariant?: string;
   CustomAttributes?: string | redacted.Redacted<string>;

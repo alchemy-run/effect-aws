@@ -87,12 +87,13 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type CrossAccountAuthorization = string;
 export type __stringPatternAWSAZaZ09AZaZ09 = string;
 export type MaxResults = number;
 export type __stringMax256 = string;
 export type __stringMax64PatternAAZAZ09Z = string;
+export type LastAuditTimestamp = Date;
+export type ReadinessCheckTimestamp = Date;
 export type __stringMax64 = string;
 
 //# Schemas
@@ -1329,7 +1330,7 @@ export const CreateCellResponse = S.suspend(() =>
 export interface GetArchitectureRecommendationsResponse {
   LastAuditTimestamp?: Date;
   NextToken?: string;
-  Recommendations?: Recommendation[];
+  Recommendations?: (Recommendation & { RecommendationText: string })[];
 }
 export const GetArchitectureRecommendationsResponse = S.suspend(() =>
   S.Struct({
@@ -1363,7 +1364,12 @@ export const GetCellReadinessSummaryResponse = S.suspend(() =>
 export interface GetReadinessCheckResourceStatusResponse {
   NextToken?: string;
   Readiness?: Readiness;
-  Rules?: RuleResult[];
+  Rules?: (RuleResult & {
+    LastCheckedTimestamp: ReadinessCheckTimestamp;
+    Messages: __listOfMessage;
+    Readiness: Readiness;
+    RuleId: string;
+  })[];
 }
 export const GetReadinessCheckResourceStatusResponse = S.suspend(() =>
   S.Struct({
@@ -1378,7 +1384,10 @@ export interface GetReadinessCheckStatusResponse {
   Messages?: Message[];
   NextToken?: string;
   Readiness?: Readiness;
-  Resources?: ResourceResult[];
+  Resources?: (ResourceResult & {
+    LastCheckedTimestamp: ReadinessCheckTimestamp;
+    Readiness: Readiness;
+  })[];
 }
 export const GetReadinessCheckStatusResponse = S.suspend(() =>
   S.Struct({
@@ -1391,7 +1400,12 @@ export const GetReadinessCheckStatusResponse = S.suspend(() =>
   identifier: "GetReadinessCheckStatusResponse",
 }) as any as S.Schema<GetReadinessCheckStatusResponse>;
 export interface ListCellsResponse {
-  Cells?: CellOutput[];
+  Cells?: (CellOutput & {
+    CellArn: __stringMax256;
+    CellName: __stringMax64PatternAAZAZ09Z;
+    Cells: __listOf__string;
+    ParentReadinessScopes: __listOf__string;
+  })[];
   NextToken?: string;
 }
 export const ListCellsResponse = S.suspend(() =>
@@ -1404,7 +1418,10 @@ export const ListCellsResponse = S.suspend(() =>
 }) as any as S.Schema<ListCellsResponse>;
 export interface ListReadinessChecksResponse {
   NextToken?: string;
-  ReadinessChecks?: ReadinessCheckOutput[];
+  ReadinessChecks?: (ReadinessCheckOutput & {
+    ReadinessCheckArn: __stringMax256;
+    ResourceSet: __stringMax64PatternAAZAZ09Z;
+  })[];
 }
 export const ListReadinessChecksResponse = S.suspend(() =>
   S.Struct({
@@ -1418,7 +1435,11 @@ export const ListReadinessChecksResponse = S.suspend(() =>
 }) as any as S.Schema<ListReadinessChecksResponse>;
 export interface ListRecoveryGroupsResponse {
   NextToken?: string;
-  RecoveryGroups?: RecoveryGroupOutput[];
+  RecoveryGroups?: (RecoveryGroupOutput & {
+    Cells: __listOf__string;
+    RecoveryGroupArn: __stringMax256;
+    RecoveryGroupName: __stringMax64PatternAAZAZ09Z;
+  })[];
 }
 export const ListRecoveryGroupsResponse = S.suspend(() =>
   S.Struct({
@@ -1432,7 +1453,12 @@ export const ListRecoveryGroupsResponse = S.suspend(() =>
 }) as any as S.Schema<ListRecoveryGroupsResponse>;
 export interface ListResourceSetsResponse {
   NextToken?: string;
-  ResourceSets?: ResourceSetOutput[];
+  ResourceSets?: (ResourceSetOutput & {
+    ResourceSetArn: __stringMax256;
+    ResourceSetName: __stringMax64PatternAAZAZ09Z;
+    ResourceSetType: __stringPatternAWSAZaZ09AZaZ09;
+    Resources: __listOfResource;
+  })[];
 }
 export const ListResourceSetsResponse = S.suspend(() =>
   S.Struct({
@@ -1446,7 +1472,11 @@ export const ListResourceSetsResponse = S.suspend(() =>
 }) as any as S.Schema<ListResourceSetsResponse>;
 export interface ListRulesResponse {
   NextToken?: string;
-  Rules?: ListRulesOutput[];
+  Rules?: (ListRulesOutput & {
+    ResourceType: __stringMax64;
+    RuleDescription: __stringMax256;
+    RuleId: __stringMax64;
+  })[];
 }
 export const ListRulesResponse = S.suspend(() =>
   S.Struct({

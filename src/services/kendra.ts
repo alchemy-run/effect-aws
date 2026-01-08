@@ -132,6 +132,7 @@ export type DocumentAttributeKey = string;
 export type VisitorId = string;
 export type QueryId = string;
 export type TagKey = string;
+export type ObjectBoolean = boolean;
 export type MinimumNumberOfQueryingUsers = number;
 export type MinimumQueryCount = number;
 export type DataSourceSyncJobId = string;
@@ -176,12 +177,14 @@ export type JiraAccountUrl = string;
 export type RepositoryName = string;
 export type SiteUrl = string;
 export type SiteId = string;
+export type Template = unknown;
 export type IdentityAttributeName = string;
 export type UserNameAttributeField = string;
 export type GroupAttributeField = string;
 export type Issuer = string;
 export type ClaimRegex = string;
 export type UserId = string;
+export type DocumentMetadataBoolean = boolean;
 export type Importance = number;
 export type Duration = string;
 export type Endpoint = string;
@@ -431,7 +434,7 @@ export const CreateQuerySuggestionsBlockListRequest = S.suspend(() =>
     Name: S.String,
     Description: S.optional(S.String),
     SourceS3Path: S3Path,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     RoleArn: S.String,
     Tags: S.optional(TagList),
   }).pipe(
@@ -457,7 +460,7 @@ export const CreateThesaurusRequest = S.suspend(() =>
     RoleArn: S.String,
     Tags: S.optional(TagList),
     SourceS3Path: S3Path,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -3223,7 +3226,7 @@ export const CreateAccessControlConfigurationRequest = S.suspend(() =>
     Description: S.optional(S.String),
     AccessControlList: S.optional(PrincipalList),
     HierarchicalAccessControlList: S.optional(HierarchicalPrincipalList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -3250,7 +3253,7 @@ export const CreateFaqRequest = S.suspend(() =>
     RoleArn: S.String,
     Tags: S.optional(TagList),
     FileFormat: S.optional(FaqFileFormat),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LanguageCode: S.optional(S.String),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -4126,7 +4129,7 @@ export const CreateExperienceRequest = S.suspend(() =>
     RoleArn: S.optional(S.String),
     Configuration: S.optional(ExperienceConfiguration),
     Description: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -4170,7 +4173,7 @@ export const CreateIndexRequest = S.suspend(() =>
       ServerSideEncryptionConfiguration,
     ),
     Description: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
     UserTokenConfigurations: S.optional(UserTokenConfigurationList),
     UserContextPolicy: S.optional(UserContextPolicy),
@@ -4911,7 +4914,7 @@ export const CreateDataSourceRequest = S.suspend(() =>
     Schedule: S.optional(S.String),
     RoleArn: S.optional(S.String),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LanguageCode: S.optional(S.String),
     CustomDocumentEnrichmentConfiguration: S.optional(
       CustomDocumentEnrichmentConfiguration,

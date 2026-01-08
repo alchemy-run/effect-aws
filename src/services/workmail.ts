@@ -271,7 +271,7 @@ export interface CancelMailboxExportJobRequest {
 }
 export const CancelMailboxExportJobRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     JobId: S.String,
     OrganizationId: S.String,
   }).pipe(
@@ -331,7 +331,7 @@ export const CreateIdentityCenterApplicationRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
     InstanceArn: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -356,7 +356,7 @@ export interface CreateMobileDeviceAccessRuleRequest {
 export const CreateMobileDeviceAccessRuleRequest = S.suspend(() =>
   S.Struct({
     OrganizationId: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Name: S.String,
     Description: S.optional(S.String),
     Effect: MobileDeviceAccessRuleEffect,
@@ -629,7 +629,7 @@ export interface DeleteOrganizationRequest {
 }
 export const DeleteOrganizationRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     OrganizationId: S.String,
     DeleteDirectory: S.Boolean,
     ForceDelete: S.optional(S.Boolean),
@@ -1357,7 +1357,7 @@ export interface RegisterMailDomainRequest {
 }
 export const RegisterMailDomainRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     OrganizationId: S.String,
     DomainName: S.String,
   }).pipe(
@@ -1426,7 +1426,7 @@ export interface StartMailboxExportJobRequest {
 }
 export const StartMailboxExportJobRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     OrganizationId: S.String,
     EntityId: S.String,
     Description: S.optional(S.String),
@@ -1938,7 +1938,7 @@ export interface CreateAvailabilityConfigurationRequest {
 }
 export const CreateAvailabilityConfigurationRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     OrganizationId: S.String,
     DomainName: S.String,
     EwsProvider: S.optional(EwsAvailabilityProvider),
@@ -1981,7 +1981,7 @@ export interface CreateImpersonationRoleRequest {
 }
 export const CreateImpersonationRoleRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     OrganizationId: S.String,
     Name: S.String,
     Type: ImpersonationRoleType,
@@ -2013,7 +2013,7 @@ export const CreateOrganizationRequest = S.suspend(() =>
   S.Struct({
     DirectoryId: S.optional(S.String),
     Alias: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Domains: S.optional(Domains),
     KmsKeyArn: S.optional(S.String),
     EnableInteroperability: S.optional(S.Boolean),

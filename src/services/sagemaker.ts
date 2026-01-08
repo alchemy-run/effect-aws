@@ -107,6 +107,7 @@ export type String256 = string;
 export type ExperimentDescription = string;
 export type EntityName = string;
 export type EntityDescription = string;
+export type CertifyForMarketplace = boolean;
 export type DomainId = string;
 export type UserProfileName = string;
 export type SpaceName = string;
@@ -114,10 +115,12 @@ export type AppName = string;
 export type AppImageConfigName = string;
 export type AutoMLJobName = string;
 export type RoleArn = string;
+export type GenerateCandidateDefinitionsOnly = boolean;
 export type ClusterName = string;
 export type ContextName = string;
 export type MonitoringJobDefinitionName = string;
 export type DeviceFleetDescription = string;
+export type EnableIotRoleAlias = boolean;
 export type DomainName = string;
 export type SubnetId = string;
 export type VpcId = string;
@@ -149,6 +152,7 @@ export type ClientToken = string;
 export type SageMakerImageVersionAlias = string;
 export type MLFramework = string;
 export type ProgrammingLang = string;
+export type Horovod = boolean;
 export type ReleaseNotes = string;
 export type InferenceComponentName = string;
 export type VariantName = string;
@@ -229,6 +233,7 @@ export type HubContentMarkdown = string;
 export type HubContentDocument = string;
 export type HubContentSearchKeyword = string;
 export type SourceUri = string;
+export type CreationTime = Date;
 export type NameContains = string;
 export type AutoMLNameContains = string;
 export type AutoMLMaxResults = number;
@@ -236,8 +241,10 @@ export type CandidateName = string;
 export type AutoMLMaxResultsForTrials = number;
 export type ClusterInstanceGroupName = string;
 export type ClusterEventMaxResults = number;
+export type IncludeNodeLogicalIdsBoolean = boolean;
 export type TrainingPlanArn = string;
 export type CodeRepositoryNameContains = string;
+export type LastModifiedTime = Date;
 export type ListMaxResults = number;
 export type PaginationToken = string;
 export type EndpointConfigNameContains = string;
@@ -279,6 +286,10 @@ export type ApprovalDescription = string;
 export type CustomerMetadataKey = string;
 export type MonitoringDatapointsToAlert = number;
 export type MonitoringEvaluationPeriod = number;
+export type DisassociateNotebookInstanceLifecycleConfig = boolean;
+export type DisassociateNotebookInstanceAcceleratorTypes = boolean;
+export type DisassociateDefaultCodeRepository = boolean;
+export type DisassociateAdditionalCodeRepositories = boolean;
 export type MajorMinorVersion = string;
 export type PipelineArn = string;
 export type PipelineVersionName = string;
@@ -298,6 +309,7 @@ export type StudioLifecycleConfigArn = string;
 export type ArtifactPropertyValue = string;
 export type TargetAttributeName = string;
 export type SampleWeightAttributeName = string;
+export type AutoGenerateEndpointName = boolean;
 export type ValidationFraction = number;
 export type ClusterInstanceCount = number;
 export type ClusterThreadsPerCore = number;
@@ -325,8 +337,11 @@ export type ProductionVariantVolumeSizeInGB = number;
 export type ProductionVariantModelDataDownloadTimeoutInSeconds = number;
 export type ProductionVariantContainerStartupHealthCheckTimeoutInSeconds =
   number;
+export type ProductionVariantSSMAccess = boolean;
+export type EnableCapture = boolean;
 export type SamplingPercentage = number;
 export type DestinationS3Uri = string;
+export type EnableEnhancedMetrics = boolean;
 export type CapacityUnit = number;
 export type FlowDefinitionTaskTitle = string;
 export type FlowDefinitionTaskDescription = string;
@@ -371,6 +386,7 @@ export type BucketName = string;
 export type Key = string;
 export type VersionId = string;
 export type MaxParallelExecutionSteps = number;
+export type AppManaged = boolean;
 export type ProcessingMaxRuntimeInSeconds = number;
 export type ProcessingEnvironmentKey = string;
 export type ProcessingEnvironmentValue = string;
@@ -387,10 +403,15 @@ export type KeepAlivePeriodInSeconds = number;
 export type DirectoryPath = string;
 export type RuleConfigurationName = string;
 export type ProfilingIntervalInMilliseconds = number;
+export type DisableProfiler = boolean;
 export type TrainingEnvironmentKey = string;
 export type TrainingEnvironmentValue = string;
 export type MaximumRetryAttempts = number;
+export type EnableRemoteDebug = boolean;
+export type EnableInfraCheck = boolean;
+export type EnableSessionTagChaining = boolean;
 export type ServerlessJobBaseModelArn = string;
+export type AcceptEula = boolean;
 export type EvaluatorArn = string;
 export type MlFlowResourceArn = string;
 export type MlflowExperimentName = string;
@@ -446,6 +467,7 @@ export type UserProfileArn = string;
 export type ActionArn = string;
 export type ContextArn = string;
 export type InferenceExperimentArn = string;
+export type Success = boolean;
 export type LineageGroupArn = string;
 export type AlgorithmArn = string;
 export type ProductId = string;
@@ -584,6 +606,7 @@ export type HyperParameterTrainingJobEnvironmentValue = string;
 export type NumberOfCpuCores = number;
 export type NumberOfAcceleratorDevices = number;
 export type MemoryInMb = number;
+export type EnableCaching = boolean;
 export type MaxNumberOfTests = number;
 export type MaxParallelOfTests = number;
 export type RecommendationJobFrameworkVersion = string;
@@ -634,6 +657,8 @@ export type TemplateUrl = string;
 export type TemplateContentSha256 = string;
 export type TrainingJobStatusCounter = number;
 export type ObjectiveStatusCounter = number;
+export type InvocationEndTime = Date;
+export type InvocationStartTime = Date;
 export type LabelCounter = number;
 export type MLflowArn = string;
 export type ProvisionedProductStatusMessage = string;
@@ -691,6 +716,7 @@ export type ClarifyProbabilityAttribute = string;
 export type ClarifyLabelAttribute = string;
 export type ClarifyHeader = string;
 export type ClarifyShapNumberOfSamples = number;
+export type ClarifyShapUseLogit = boolean;
 export type ClarifyShapSeed = number;
 export type Dimension = number;
 export type Dollars = number;
@@ -710,6 +736,7 @@ export type UsersPerStep = number;
 export type RecommendationJobSupportedContentType = string;
 export type RepositoryCredentialsProviderArn = string;
 export type ContentDigest = string;
+export type OptimizationModelAcceptEula = boolean;
 export type AthenaCatalog = string;
 export type AthenaDatabase = string;
 export type AthenaQueryString = string;
@@ -3636,7 +3663,7 @@ export interface CreateImageVersionRequest {
 export const CreateImageVersionRequest = S.suspend(() =>
   S.Struct({
     BaseImage: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ImageName: S.optional(S.String),
     Aliases: S.optional(SageMakerImageVersionAliases),
     VendorGuidance: S.optional(VendorGuidance),
@@ -5957,7 +5984,7 @@ export interface DeletePartnerAppRequest {
 export const DeletePartnerAppRequest = S.suspend(() =>
   S.Struct({
     Arn: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -5979,7 +6006,7 @@ export interface DeletePipelineRequest {
 export const DeletePipelineRequest = S.suspend(() =>
   S.Struct({
     PipelineName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -10930,7 +10957,7 @@ export interface RetryPipelineExecutionRequest {
 export const RetryPipelineExecutionRequest = S.suspend(() =>
   S.Struct({
     PipelineExecutionArn: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ParallelismConfiguration: S.optional(ParallelismConfiguration),
   }).pipe(
     T.all(
@@ -10989,7 +11016,7 @@ export const SendPipelineExecutionStepFailureRequest = S.suspend(() =>
   S.Struct({
     CallbackToken: S.optional(S.String),
     FailureReason: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -11403,7 +11430,7 @@ export interface StopPipelineExecutionRequest {
 export const StopPipelineExecutionRequest = S.suspend(() =>
   S.Struct({
     PipelineExecutionArn: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -14732,7 +14759,7 @@ export const UpdatePartnerAppRequest = S.suspend(() =>
     EnableIamSessionBasedIdentity: S.optional(S.Boolean),
     EnableAutoMinorVersionUpgrade: S.optional(S.Boolean),
     AppVersion: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -17702,12 +17729,12 @@ export const AssociateTrialComponentResponse = S.suspend(() =>
   identifier: "AssociateTrialComponentResponse",
 }) as any as S.Schema<AssociateTrialComponentResponse>;
 export interface AttachClusterNodeVolumeResponse {
-  ClusterArn?: string;
-  NodeId?: string;
-  VolumeId?: string;
-  AttachTime?: Date;
-  Status?: VolumeAttachmentStatus;
-  DeviceName?: string;
+  ClusterArn: string;
+  NodeId: string;
+  VolumeId: string;
+  AttachTime: Date;
+  Status: VolumeAttachmentStatus;
+  DeviceName: string;
 }
 export const AttachClusterNodeVolumeResponse = S.suspend(() =>
   S.Struct({
@@ -17729,7 +17756,7 @@ export interface BatchAddClusterNodesRequest {
 export const BatchAddClusterNodesRequest = S.suspend(() =>
   S.Struct({
     ClusterName: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     NodesToAdd: S.optional(AddClusterNodeSpecificationList),
   }).pipe(
     T.all(
@@ -17974,8 +18001,8 @@ export const CreateHubContentPresignedUrlsRequest = S.suspend(() =>
   identifier: "CreateHubContentPresignedUrlsRequest",
 }) as any as S.Schema<CreateHubContentPresignedUrlsRequest>;
 export interface CreateHubContentReferenceResponse {
-  HubArn?: string;
-  HubContentArn?: string;
+  HubArn: string;
+  HubContentArn: string;
 }
 export const CreateHubContentReferenceResponse = S.suspend(() =>
   S.Struct({
@@ -18138,7 +18165,7 @@ export const CreateModelExplainabilityJobDefinitionRequest = S.suspend(() =>
   identifier: "CreateModelExplainabilityJobDefinitionRequest",
 }) as any as S.Schema<CreateModelExplainabilityJobDefinitionRequest>;
 export interface CreateModelPackageGroupOutput {
-  ModelPackageGroupArn?: string;
+  ModelPackageGroupArn: string;
 }
 export const CreateModelPackageGroupOutput = S.suspend(() =>
   S.Struct({ ModelPackageGroupArn: S.optional(S.String) }).pipe(ns),
@@ -18289,7 +18316,7 @@ export const CreatePipelineRequest = S.suspend(() =>
     PipelineDefinition: S.optional(S.String),
     PipelineDefinitionS3Location: S.optional(PipelineDefinitionS3Location),
     PipelineDescription: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     RoleArn: S.optional(S.String),
     Tags: S.optional(TagList),
     ParallelismConfiguration: S.optional(ParallelismConfiguration),
@@ -18348,7 +18375,7 @@ export const CreateStudioLifecycleConfigResponse = S.suspend(() =>
   identifier: "CreateStudioLifecycleConfigResponse",
 }) as any as S.Schema<CreateStudioLifecycleConfigResponse>;
 export interface CreateTrainingPlanResponse {
-  TrainingPlanArn?: string;
+  TrainingPlanArn: string;
 }
 export const CreateTrainingPlanResponse = S.suspend(() =>
   S.Struct({ TrainingPlanArn: S.optional(S.String) }).pipe(ns),
@@ -18400,7 +18427,7 @@ export const DeleteAssociationResponse = S.suspend(() =>
   identifier: "DeleteAssociationResponse",
 }) as any as S.Schema<DeleteAssociationResponse>;
 export interface DeleteClusterResponse {
-  ClusterArn?: string;
+  ClusterArn: string;
 }
 export const DeleteClusterResponse = S.suspend(() =>
   S.Struct({ ClusterArn: S.optional(S.String) }).pipe(ns),
@@ -18452,7 +18479,7 @@ export const DeleteExperimentResponse = S.suspend(() =>
   identifier: "DeleteExperimentResponse",
 }) as any as S.Schema<DeleteExperimentResponse>;
 export interface DeleteInferenceExperimentResponse {
-  InferenceExperimentArn?: string;
+  InferenceExperimentArn: string;
 }
 export const DeleteInferenceExperimentResponse = S.suspend(() =>
   S.Struct({ InferenceExperimentArn: S.optional(S.String) }).pipe(ns),
@@ -18508,7 +18535,7 @@ export const DeleteTrialComponentResponse = S.suspend(() =>
   identifier: "DeleteTrialComponentResponse",
 }) as any as S.Schema<DeleteTrialComponentResponse>;
 export interface DeleteWorkteamResponse {
-  Success?: boolean;
+  Success: boolean;
 }
 export const DeleteWorkteamResponse = S.suspend(() =>
   S.Struct({ Success: S.optional(S.Boolean) }).pipe(ns),
@@ -18562,7 +18589,9 @@ export interface DescribeAppImageConfigResponse {
   AppImageConfigName?: string;
   CreationTime?: Date;
   LastModifiedTime?: Date;
-  KernelGatewayImageConfig?: KernelGatewayImageConfig;
+  KernelGatewayImageConfig?: KernelGatewayImageConfig & {
+    KernelSpecs: (KernelSpec & { Name: KernelName })[];
+  };
   JupyterLabAppImageConfig?: JupyterLabAppImageConfig;
   CodeEditorAppImageConfig?: CodeEditorAppImageConfig;
 }
@@ -18610,7 +18639,13 @@ export const UserContext = S.suspend(() =>
 export interface DescribeArtifactResponse {
   ArtifactName?: string;
   ArtifactArn?: string;
-  Source?: ArtifactSource;
+  Source?: ArtifactSource & {
+    SourceUri: SourceUri;
+    SourceTypes: (ArtifactSourceType & {
+      SourceIdType: ArtifactSourceIdType;
+      Value: String256;
+    })[];
+  };
   ArtifactType?: string;
   Properties?: { [key: string]: string };
   CreationTime?: Date;
@@ -18640,16 +18675,21 @@ export const DescribeArtifactResponse = S.suspend(() =>
   identifier: "DescribeArtifactResponse",
 }) as any as S.Schema<DescribeArtifactResponse>;
 export interface DescribeClusterSchedulerConfigResponse {
-  ClusterSchedulerConfigArn?: string;
-  ClusterSchedulerConfigId?: string;
-  Name?: string;
-  ClusterSchedulerConfigVersion?: number;
-  Status?: SchedulerResourceStatus;
+  ClusterSchedulerConfigArn: string;
+  ClusterSchedulerConfigId: string;
+  Name: string;
+  ClusterSchedulerConfigVersion: number;
+  Status: SchedulerResourceStatus;
   FailureReason?: string;
   ClusterArn?: string;
-  SchedulerConfig?: SchedulerConfig;
+  SchedulerConfig?: SchedulerConfig & {
+    PriorityClasses: (PriorityClass & {
+      Name: ClusterSchedulerPriorityClassName;
+      Weight: PriorityWeight;
+    })[];
+  };
   Description?: string;
-  CreationTime?: Date;
+  CreationTime: Date;
   CreatedBy?: UserContext;
   LastModifiedTime?: Date;
   LastModifiedBy?: UserContext;
@@ -18676,11 +18716,11 @@ export const DescribeClusterSchedulerConfigResponse = S.suspend(() =>
   identifier: "DescribeClusterSchedulerConfigResponse",
 }) as any as S.Schema<DescribeClusterSchedulerConfigResponse>;
 export interface DescribeCodeRepositoryOutput {
-  CodeRepositoryName?: string;
-  CodeRepositoryArn?: string;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
-  GitConfig?: GitConfig;
+  CodeRepositoryName: string;
+  CodeRepositoryArn: string;
+  CreationTime: Date;
+  LastModifiedTime: Date;
+  GitConfig?: GitConfig & { RepositoryUrl: GitConfigUrl };
 }
 export const DescribeCodeRepositoryOutput = S.suspend(() =>
   S.Struct({
@@ -18696,18 +18736,31 @@ export const DescribeCodeRepositoryOutput = S.suspend(() =>
   identifier: "DescribeCodeRepositoryOutput",
 }) as any as S.Schema<DescribeCodeRepositoryOutput>;
 export interface DescribeComputeQuotaResponse {
-  ComputeQuotaArn?: string;
-  ComputeQuotaId?: string;
-  Name?: string;
+  ComputeQuotaArn: string;
+  ComputeQuotaId: string;
+  Name: string;
   Description?: string;
-  ComputeQuotaVersion?: number;
-  Status?: SchedulerResourceStatus;
+  ComputeQuotaVersion: number;
+  Status: SchedulerResourceStatus;
   FailureReason?: string;
   ClusterArn?: string;
-  ComputeQuotaConfig?: ComputeQuotaConfig;
-  ComputeQuotaTarget?: ComputeQuotaTarget;
+  ComputeQuotaConfig?: ComputeQuotaConfig & {
+    ComputeQuotaResources: (ComputeQuotaResourceConfig & {
+      InstanceType: ClusterInstanceType;
+      AcceleratorPartition: AcceleratorPartitionConfig & {
+        Type: MIGProfileType;
+        Count: number;
+      };
+    })[];
+    ResourceSharingConfig: ResourceSharingConfig & {
+      Strategy: ResourceSharingStrategy;
+    };
+  };
+  ComputeQuotaTarget: ComputeQuotaTarget & {
+    TeamName: ComputeQuotaTargetTeamName;
+  };
   ActivationState?: ActivationState;
-  CreationTime?: Date;
+  CreationTime: Date;
   CreatedBy?: UserContext;
   LastModifiedTime?: Date;
   LastModifiedBy?: UserContext;
@@ -18738,7 +18791,7 @@ export const DescribeComputeQuotaResponse = S.suspend(() =>
 export interface DescribeContextResponse {
   ContextName?: string;
   ContextArn?: string;
-  Source?: ContextSource;
+  Source?: ContextSource & { SourceUri: SourceUri };
   ContextType?: string;
   Description?: string;
   Properties?: { [key: string]: string };
@@ -18814,17 +18867,49 @@ export const DataQualityJobInput = S.suspend(() =>
   identifier: "DataQualityJobInput",
 }) as any as S.Schema<DataQualityJobInput>;
 export interface DescribeDataQualityJobDefinitionResponse {
-  JobDefinitionArn?: string;
-  JobDefinitionName?: string;
-  CreationTime?: Date;
+  JobDefinitionArn: string;
+  JobDefinitionName: string;
+  CreationTime: Date;
   DataQualityBaselineConfig?: DataQualityBaselineConfig;
-  DataQualityAppSpecification?: DataQualityAppSpecification;
-  DataQualityJobInput?: DataQualityJobInput;
-  DataQualityJobOutputConfig?: MonitoringOutputConfig;
-  JobResources?: MonitoringResources;
-  NetworkConfig?: MonitoringNetworkConfig;
-  RoleArn?: string;
-  StoppingCondition?: MonitoringStoppingCondition;
+  DataQualityAppSpecification: DataQualityAppSpecification & {
+    ImageUri: ImageUri;
+  };
+  DataQualityJobInput: DataQualityJobInput & {
+    EndpointInput: EndpointInput & {
+      EndpointName: EndpointName;
+      LocalPath: ProcessingLocalPath;
+    };
+    BatchTransformInput: BatchTransformInput & {
+      DataCapturedDestinationS3Uri: DestinationS3Uri;
+      DatasetFormat: MonitoringDatasetFormat;
+      LocalPath: ProcessingLocalPath;
+    };
+  };
+  DataQualityJobOutputConfig: MonitoringOutputConfig & {
+    MonitoringOutputs: (MonitoringOutput & {
+      S3Output: MonitoringS3Output & {
+        S3Uri: MonitoringS3Uri;
+        LocalPath: ProcessingLocalPath;
+      };
+    })[];
+  };
+  JobResources: MonitoringResources & {
+    ClusterConfig: MonitoringClusterConfig & {
+      InstanceCount: ProcessingInstanceCount;
+      InstanceType: ProcessingInstanceType;
+      VolumeSizeInGB: ProcessingVolumeSizeInGB;
+    };
+  };
+  NetworkConfig?: MonitoringNetworkConfig & {
+    VpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+  };
+  RoleArn: string;
+  StoppingCondition?: MonitoringStoppingCondition & {
+    MaxRuntimeInSeconds: MonitoringMaxRuntimeInSeconds;
+  };
 }
 export const DescribeDataQualityJobDefinitionResponse = S.suspend(() =>
   S.Struct({
@@ -18844,12 +18929,12 @@ export const DescribeDataQualityJobDefinitionResponse = S.suspend(() =>
   identifier: "DescribeDataQualityJobDefinitionResponse",
 }) as any as S.Schema<DescribeDataQualityJobDefinitionResponse>;
 export interface DescribeDeviceFleetResponse {
-  DeviceFleetName?: string;
-  DeviceFleetArn?: string;
-  OutputConfig?: EdgeOutputConfig;
+  DeviceFleetName: string;
+  DeviceFleetArn: string;
+  OutputConfig: EdgeOutputConfig & { S3OutputLocation: S3Uri };
   Description?: string;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
+  CreationTime: Date;
+  LastModifiedTime: Date;
   RoleArn?: string;
   IotRoleAlias?: string;
 }
@@ -18982,8 +19067,51 @@ export interface DescribeDomainResponse {
   FailureReason?: string;
   SecurityGroupIdForDomainBoundary?: string;
   AuthMode?: AuthMode;
-  DefaultUserSettings?: UserSettings;
-  DomainSettings?: DomainSettings;
+  DefaultUserSettings?: UserSettings & {
+    JupyterServerAppSettings: JupyterServerAppSettings & {
+      CodeRepositories: (CodeRepository & { RepositoryUrl: RepositoryUrl })[];
+    };
+    KernelGatewayAppSettings: KernelGatewayAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+    };
+    RSessionAppSettings: RSessionAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+    };
+    CodeEditorAppSettings: CodeEditorAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+    };
+    JupyterLabAppSettings: JupyterLabAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+      CodeRepositories: (CodeRepository & { RepositoryUrl: RepositoryUrl })[];
+    };
+    SpaceStorageSettings: DefaultSpaceStorageSettings & {
+      DefaultEbsStorageSettings: DefaultEbsStorageSettings & {
+        DefaultEbsVolumeSizeInGb: SpaceEbsVolumeSizeInGb;
+        MaximumEbsVolumeSizeInGb: SpaceEbsVolumeSizeInGb;
+      };
+    };
+    CustomPosixUserConfig: CustomPosixUserConfig & { Uid: Uid; Gid: Gid };
+  };
+  DomainSettings?: DomainSettings & {
+    RStudioServerProDomainSettings: RStudioServerProDomainSettings & {
+      DomainExecutionRoleArn: RoleArn;
+    };
+    TrustedIdentityPropagationSettings: TrustedIdentityPropagationSettings & {
+      Status: FeatureStatus;
+    };
+  };
   AppNetworkAccessType?: AppNetworkAccessType;
   HomeEfsFileSystemKmsKeyId?: string;
   SubnetIds?: string[];
@@ -18992,7 +19120,31 @@ export interface DescribeDomainResponse {
   KmsKeyId?: string;
   AppSecurityGroupManagement?: AppSecurityGroupManagement;
   TagPropagation?: TagPropagation;
-  DefaultSpaceSettings?: DefaultSpaceSettings;
+  DefaultSpaceSettings?: DefaultSpaceSettings & {
+    JupyterServerAppSettings: JupyterServerAppSettings & {
+      CodeRepositories: (CodeRepository & { RepositoryUrl: RepositoryUrl })[];
+    };
+    KernelGatewayAppSettings: KernelGatewayAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+    };
+    JupyterLabAppSettings: JupyterLabAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+      CodeRepositories: (CodeRepository & { RepositoryUrl: RepositoryUrl })[];
+    };
+    SpaceStorageSettings: DefaultSpaceStorageSettings & {
+      DefaultEbsStorageSettings: DefaultEbsStorageSettings & {
+        DefaultEbsVolumeSizeInGb: SpaceEbsVolumeSizeInGb;
+        MaximumEbsVolumeSizeInGb: SpaceEbsVolumeSizeInGb;
+      };
+    };
+    CustomPosixUserConfig: CustomPosixUserConfig & { Uid: Uid; Gid: Gid };
+  };
 }
 export const DescribeDomainResponse = S.suspend(() =>
   S.Struct({
@@ -19454,17 +19606,60 @@ export const ExplainerConfig = S.suspend(() =>
   identifier: "ExplainerConfig",
 }) as any as S.Schema<ExplainerConfig>;
 export interface DescribeEndpointConfigOutput {
-  EndpointConfigName?: string;
-  EndpointConfigArn?: string;
-  ProductionVariants?: ProductionVariant[];
-  DataCaptureConfig?: DataCaptureConfig;
+  EndpointConfigName: string;
+  EndpointConfigArn: string;
+  ProductionVariants: (ProductionVariant & {
+    VariantName: VariantName;
+    CoreDumpConfig: ProductionVariantCoreDumpConfig & {
+      DestinationS3Uri: DestinationS3Uri;
+    };
+    ServerlessConfig: ProductionVariantServerlessConfig & {
+      MemorySizeInMB: ServerlessMemorySizeInMB;
+      MaxConcurrency: ServerlessMaxConcurrency;
+    };
+    RoutingConfig: ProductionVariantRoutingConfig & {
+      RoutingStrategy: RoutingStrategy;
+    };
+  })[];
+  DataCaptureConfig?: DataCaptureConfig & {
+    InitialSamplingPercentage: SamplingPercentage;
+    DestinationS3Uri: DestinationS3Uri;
+    CaptureOptions: (CaptureOption & { CaptureMode: CaptureMode })[];
+  };
   KmsKeyId?: string;
-  CreationTime?: Date;
-  AsyncInferenceConfig?: AsyncInferenceConfig;
-  ExplainerConfig?: ExplainerConfig;
-  ShadowProductionVariants?: ProductionVariant[];
+  CreationTime: Date;
+  AsyncInferenceConfig?: AsyncInferenceConfig & {
+    OutputConfig: AsyncInferenceOutputConfig;
+  };
+  ExplainerConfig?: ExplainerConfig & {
+    ClarifyExplainerConfig: ClarifyExplainerConfig & {
+      ShapConfig: ClarifyShapConfig & {
+        ShapBaselineConfig: ClarifyShapBaselineConfig;
+        TextConfig: ClarifyTextConfig & {
+          Language: ClarifyTextLanguage;
+          Granularity: ClarifyTextGranularity;
+        };
+      };
+    };
+  };
+  ShadowProductionVariants?: (ProductionVariant & {
+    VariantName: VariantName;
+    CoreDumpConfig: ProductionVariantCoreDumpConfig & {
+      DestinationS3Uri: DestinationS3Uri;
+    };
+    ServerlessConfig: ProductionVariantServerlessConfig & {
+      MemorySizeInMB: ServerlessMemorySizeInMB;
+      MaxConcurrency: ServerlessMaxConcurrency;
+    };
+    RoutingConfig: ProductionVariantRoutingConfig & {
+      RoutingStrategy: RoutingStrategy;
+    };
+  })[];
   ExecutionRoleArn?: string;
-  VpcConfig?: VpcConfig;
+  VpcConfig?: VpcConfig & {
+    SecurityGroupIds: VpcSecurityGroupIds;
+    Subnets: Subnets;
+  };
   EnableNetworkIsolation?: boolean;
   MetricsConfig?: MetricsConfig;
 }
@@ -19488,12 +19683,12 @@ export const DescribeEndpointConfigOutput = S.suspend(() =>
   identifier: "DescribeEndpointConfigOutput",
 }) as any as S.Schema<DescribeEndpointConfigOutput>;
 export interface DescribeFeatureMetadataResponse {
-  FeatureGroupArn?: string;
-  FeatureGroupName?: string;
-  FeatureName?: string;
-  FeatureType?: FeatureType;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
+  FeatureGroupArn: string;
+  FeatureGroupName: string;
+  FeatureName: string;
+  FeatureType: FeatureType;
+  CreationTime: Date;
+  LastModifiedTime: Date;
   Description?: string;
   Parameters?: FeatureParameter[];
 }
@@ -19580,15 +19775,27 @@ export const HumanLoopConfig = S.suspend(() =>
   identifier: "HumanLoopConfig",
 }) as any as S.Schema<HumanLoopConfig>;
 export interface DescribeFlowDefinitionResponse {
-  FlowDefinitionArn?: string;
-  FlowDefinitionName?: string;
-  FlowDefinitionStatus?: FlowDefinitionStatus;
-  CreationTime?: Date;
-  HumanLoopRequestSource?: HumanLoopRequestSource;
-  HumanLoopActivationConfig?: HumanLoopActivationConfig;
-  HumanLoopConfig?: HumanLoopConfig;
-  OutputConfig?: FlowDefinitionOutputConfig;
-  RoleArn?: string;
+  FlowDefinitionArn: string;
+  FlowDefinitionName: string;
+  FlowDefinitionStatus: FlowDefinitionStatus;
+  CreationTime: Date;
+  HumanLoopRequestSource?: HumanLoopRequestSource & {
+    AwsManagedHumanLoopRequestSource: AwsManagedHumanLoopRequestSource;
+  };
+  HumanLoopActivationConfig?: HumanLoopActivationConfig & {
+    HumanLoopActivationConditionsConfig: HumanLoopActivationConditionsConfig & {
+      HumanLoopActivationConditions: HumanLoopActivationConditions;
+    };
+  };
+  HumanLoopConfig?: HumanLoopConfig & {
+    WorkteamArn: WorkteamArn;
+    HumanTaskUiArn: HumanTaskUiArn;
+    TaskTitle: FlowDefinitionTaskTitle;
+    TaskDescription: FlowDefinitionTaskDescription;
+    TaskCount: FlowDefinitionTaskCount;
+  };
+  OutputConfig: FlowDefinitionOutputConfig & { S3OutputPath: S3Uri };
+  RoleArn: string;
   FailureReason?: string;
 }
 export const DescribeFlowDefinitionResponse = S.suspend(() =>
@@ -19608,16 +19815,16 @@ export const DescribeFlowDefinitionResponse = S.suspend(() =>
   identifier: "DescribeFlowDefinitionResponse",
 }) as any as S.Schema<DescribeFlowDefinitionResponse>;
 export interface DescribeHubResponse {
-  HubName?: string;
-  HubArn?: string;
+  HubName: string;
+  HubArn: string;
   HubDisplayName?: string;
   HubDescription?: string;
   HubSearchKeywords?: string[];
   S3StorageConfig?: HubS3StorageConfig;
-  HubStatus?: HubStatus;
+  HubStatus: HubStatus;
   FailureReason?: string;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
+  CreationTime: Date;
+  LastModifiedTime: Date;
 }
 export const DescribeHubResponse = S.suspend(() =>
   S.Struct({
@@ -19832,17 +20039,51 @@ export const ModelBiasJobInput = S.suspend(() =>
   identifier: "ModelBiasJobInput",
 }) as any as S.Schema<ModelBiasJobInput>;
 export interface DescribeModelBiasJobDefinitionResponse {
-  JobDefinitionArn?: string;
-  JobDefinitionName?: string;
-  CreationTime?: Date;
+  JobDefinitionArn: string;
+  JobDefinitionName: string;
+  CreationTime: Date;
   ModelBiasBaselineConfig?: ModelBiasBaselineConfig;
-  ModelBiasAppSpecification?: ModelBiasAppSpecification;
-  ModelBiasJobInput?: ModelBiasJobInput;
-  ModelBiasJobOutputConfig?: MonitoringOutputConfig;
-  JobResources?: MonitoringResources;
-  NetworkConfig?: MonitoringNetworkConfig;
-  RoleArn?: string;
-  StoppingCondition?: MonitoringStoppingCondition;
+  ModelBiasAppSpecification: ModelBiasAppSpecification & {
+    ImageUri: ImageUri;
+    ConfigUri: S3Uri;
+  };
+  ModelBiasJobInput: ModelBiasJobInput & {
+    GroundTruthS3Input: MonitoringGroundTruthS3Input;
+    EndpointInput: EndpointInput & {
+      EndpointName: EndpointName;
+      LocalPath: ProcessingLocalPath;
+    };
+    BatchTransformInput: BatchTransformInput & {
+      DataCapturedDestinationS3Uri: DestinationS3Uri;
+      DatasetFormat: MonitoringDatasetFormat;
+      LocalPath: ProcessingLocalPath;
+    };
+  };
+  ModelBiasJobOutputConfig: MonitoringOutputConfig & {
+    MonitoringOutputs: (MonitoringOutput & {
+      S3Output: MonitoringS3Output & {
+        S3Uri: MonitoringS3Uri;
+        LocalPath: ProcessingLocalPath;
+      };
+    })[];
+  };
+  JobResources: MonitoringResources & {
+    ClusterConfig: MonitoringClusterConfig & {
+      InstanceCount: ProcessingInstanceCount;
+      InstanceType: ProcessingInstanceType;
+      VolumeSizeInGB: ProcessingVolumeSizeInGB;
+    };
+  };
+  NetworkConfig?: MonitoringNetworkConfig & {
+    VpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+  };
+  RoleArn: string;
+  StoppingCondition?: MonitoringStoppingCondition & {
+    MaxRuntimeInSeconds: MonitoringMaxRuntimeInSeconds;
+  };
 }
 export const DescribeModelBiasJobDefinitionResponse = S.suspend(() =>
   S.Struct({
@@ -19862,14 +20103,14 @@ export const DescribeModelBiasJobDefinitionResponse = S.suspend(() =>
   identifier: "DescribeModelBiasJobDefinitionResponse",
 }) as any as S.Schema<DescribeModelBiasJobDefinitionResponse>;
 export interface DescribeModelCardResponse {
-  ModelCardArn?: string;
-  ModelCardName?: string;
-  ModelCardVersion?: number;
-  Content?: string | redacted.Redacted<string>;
-  ModelCardStatus?: ModelCardStatus;
+  ModelCardArn: string;
+  ModelCardName: string;
+  ModelCardVersion: number;
+  Content: string | redacted.Redacted<string>;
+  ModelCardStatus: ModelCardStatus;
   SecurityConfig?: ModelCardSecurityConfig;
-  CreationTime?: Date;
-  CreatedBy?: UserContext;
+  CreationTime: Date;
+  CreatedBy: UserContext;
   LastModifiedTime?: Date;
   LastModifiedBy?: UserContext;
   ModelCardProcessingStatus?: ModelCardProcessingStatus;
@@ -19894,17 +20135,50 @@ export const DescribeModelCardResponse = S.suspend(() =>
   identifier: "DescribeModelCardResponse",
 }) as any as S.Schema<DescribeModelCardResponse>;
 export interface DescribeModelExplainabilityJobDefinitionResponse {
-  JobDefinitionArn?: string;
-  JobDefinitionName?: string;
-  CreationTime?: Date;
+  JobDefinitionArn: string;
+  JobDefinitionName: string;
+  CreationTime: Date;
   ModelExplainabilityBaselineConfig?: ModelExplainabilityBaselineConfig;
-  ModelExplainabilityAppSpecification?: ModelExplainabilityAppSpecification;
-  ModelExplainabilityJobInput?: ModelExplainabilityJobInput;
-  ModelExplainabilityJobOutputConfig?: MonitoringOutputConfig;
-  JobResources?: MonitoringResources;
-  NetworkConfig?: MonitoringNetworkConfig;
-  RoleArn?: string;
-  StoppingCondition?: MonitoringStoppingCondition;
+  ModelExplainabilityAppSpecification: ModelExplainabilityAppSpecification & {
+    ImageUri: ImageUri;
+    ConfigUri: S3Uri;
+  };
+  ModelExplainabilityJobInput: ModelExplainabilityJobInput & {
+    EndpointInput: EndpointInput & {
+      EndpointName: EndpointName;
+      LocalPath: ProcessingLocalPath;
+    };
+    BatchTransformInput: BatchTransformInput & {
+      DataCapturedDestinationS3Uri: DestinationS3Uri;
+      DatasetFormat: MonitoringDatasetFormat;
+      LocalPath: ProcessingLocalPath;
+    };
+  };
+  ModelExplainabilityJobOutputConfig: MonitoringOutputConfig & {
+    MonitoringOutputs: (MonitoringOutput & {
+      S3Output: MonitoringS3Output & {
+        S3Uri: MonitoringS3Uri;
+        LocalPath: ProcessingLocalPath;
+      };
+    })[];
+  };
+  JobResources: MonitoringResources & {
+    ClusterConfig: MonitoringClusterConfig & {
+      InstanceCount: ProcessingInstanceCount;
+      InstanceType: ProcessingInstanceType;
+      VolumeSizeInGB: ProcessingVolumeSizeInGB;
+    };
+  };
+  NetworkConfig?: MonitoringNetworkConfig & {
+    VpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+  };
+  RoleArn: string;
+  StoppingCondition?: MonitoringStoppingCondition & {
+    MaxRuntimeInSeconds: MonitoringMaxRuntimeInSeconds;
+  };
 }
 export const DescribeModelExplainabilityJobDefinitionResponse = S.suspend(() =>
   S.Struct({
@@ -19928,12 +20202,12 @@ export const DescribeModelExplainabilityJobDefinitionResponse = S.suspend(() =>
   identifier: "DescribeModelExplainabilityJobDefinitionResponse",
 }) as any as S.Schema<DescribeModelExplainabilityJobDefinitionResponse>;
 export interface DescribeModelPackageGroupOutput {
-  ModelPackageGroupName?: string;
-  ModelPackageGroupArn?: string;
+  ModelPackageGroupName: string;
+  ModelPackageGroupArn: string;
   ModelPackageGroupDescription?: string;
-  CreationTime?: Date;
-  CreatedBy?: UserContext;
-  ModelPackageGroupStatus?: ModelPackageGroupStatus;
+  CreationTime: Date;
+  CreatedBy: UserContext;
+  ModelPackageGroupStatus: ModelPackageGroupStatus;
 }
 export const DescribeModelPackageGroupOutput = S.suspend(() =>
   S.Struct({
@@ -19948,17 +20222,50 @@ export const DescribeModelPackageGroupOutput = S.suspend(() =>
   identifier: "DescribeModelPackageGroupOutput",
 }) as any as S.Schema<DescribeModelPackageGroupOutput>;
 export interface DescribeModelQualityJobDefinitionResponse {
-  JobDefinitionArn?: string;
-  JobDefinitionName?: string;
-  CreationTime?: Date;
+  JobDefinitionArn: string;
+  JobDefinitionName: string;
+  CreationTime: Date;
   ModelQualityBaselineConfig?: ModelQualityBaselineConfig;
-  ModelQualityAppSpecification?: ModelQualityAppSpecification;
-  ModelQualityJobInput?: ModelQualityJobInput;
-  ModelQualityJobOutputConfig?: MonitoringOutputConfig;
-  JobResources?: MonitoringResources;
-  NetworkConfig?: MonitoringNetworkConfig;
-  RoleArn?: string;
-  StoppingCondition?: MonitoringStoppingCondition;
+  ModelQualityAppSpecification: ModelQualityAppSpecification & {
+    ImageUri: ImageUri;
+  };
+  ModelQualityJobInput: ModelQualityJobInput & {
+    GroundTruthS3Input: MonitoringGroundTruthS3Input;
+    EndpointInput: EndpointInput & {
+      EndpointName: EndpointName;
+      LocalPath: ProcessingLocalPath;
+    };
+    BatchTransformInput: BatchTransformInput & {
+      DataCapturedDestinationS3Uri: DestinationS3Uri;
+      DatasetFormat: MonitoringDatasetFormat;
+      LocalPath: ProcessingLocalPath;
+    };
+  };
+  ModelQualityJobOutputConfig: MonitoringOutputConfig & {
+    MonitoringOutputs: (MonitoringOutput & {
+      S3Output: MonitoringS3Output & {
+        S3Uri: MonitoringS3Uri;
+        LocalPath: ProcessingLocalPath;
+      };
+    })[];
+  };
+  JobResources: MonitoringResources & {
+    ClusterConfig: MonitoringClusterConfig & {
+      InstanceCount: ProcessingInstanceCount;
+      InstanceType: ProcessingInstanceType;
+      VolumeSizeInGB: ProcessingVolumeSizeInGB;
+    };
+  };
+  NetworkConfig?: MonitoringNetworkConfig & {
+    VpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+  };
+  RoleArn: string;
+  StoppingCondition?: MonitoringStoppingCondition & {
+    MaxRuntimeInSeconds: MonitoringMaxRuntimeInSeconds;
+  };
 }
 export const DescribeModelQualityJobDefinitionResponse = S.suspend(() =>
   S.Struct({
@@ -20000,7 +20307,9 @@ export interface DescribeNotebookInstanceOutput {
   AdditionalCodeRepositories?: string[];
   RootAccess?: RootAccess;
   PlatformIdentifier?: string;
-  InstanceMetadataServiceConfiguration?: InstanceMetadataServiceConfiguration;
+  InstanceMetadataServiceConfiguration?: InstanceMetadataServiceConfiguration & {
+    MinimumInstanceMetadataServiceVersion: MinimumInstanceMetadataServiceVersion;
+  };
 }
 export const DescribeNotebookInstanceOutput = S.suspend(() =>
   S.Struct({
@@ -20070,7 +20379,9 @@ export interface DescribePipelineResponse {
   LastRunTime?: Date;
   CreatedBy?: UserContext;
   LastModifiedBy?: UserContext;
-  ParallelismConfiguration?: ParallelismConfiguration;
+  ParallelismConfiguration?: ParallelismConfiguration & {
+    MaxParallelExecutionSteps: MaxParallelExecutionSteps;
+  };
   PipelineVersionDisplayName?: string;
   PipelineVersionDescription?: string;
 }
@@ -20322,24 +20633,72 @@ export const ProcessingResources = S.suspend(() =>
   identifier: "ProcessingResources",
 }) as any as S.Schema<ProcessingResources>;
 export interface DescribeProcessingJobResponse {
-  ProcessingInputs?: ProcessingInput[];
-  ProcessingOutputConfig?: ProcessingOutputConfig;
-  ProcessingJobName?: string;
-  ProcessingResources?: ProcessingResources;
-  StoppingCondition?: ProcessingStoppingCondition;
-  AppSpecification?: AppSpecification;
+  ProcessingInputs?: (ProcessingInput & {
+    InputName: string;
+    S3Input: ProcessingS3Input & {
+      S3Uri: S3Uri;
+      S3DataType: ProcessingS3DataType;
+    };
+    DatasetDefinition: DatasetDefinition & {
+      AthenaDatasetDefinition: AthenaDatasetDefinition & {
+        Catalog: AthenaCatalog;
+        Database: AthenaDatabase;
+        QueryString: AthenaQueryString;
+        OutputS3Uri: S3Uri;
+        OutputFormat: AthenaResultFormat;
+      };
+      RedshiftDatasetDefinition: RedshiftDatasetDefinition & {
+        ClusterId: RedshiftClusterId;
+        Database: RedshiftDatabase;
+        DbUser: RedshiftUserName;
+        QueryString: RedshiftQueryString;
+        ClusterRoleArn: RoleArn;
+        OutputS3Uri: S3Uri;
+        OutputFormat: RedshiftResultFormat;
+      };
+    };
+  })[];
+  ProcessingOutputConfig?: ProcessingOutputConfig & {
+    Outputs: (ProcessingOutput & {
+      OutputName: string;
+      S3Output: ProcessingS3Output & {
+        S3Uri: S3Uri;
+        S3UploadMode: ProcessingS3UploadMode;
+      };
+      FeatureStoreOutput: ProcessingFeatureStoreOutput & {
+        FeatureGroupName: FeatureGroupName;
+      };
+    })[];
+  };
+  ProcessingJobName: string;
+  ProcessingResources: ProcessingResources & {
+    ClusterConfig: ProcessingClusterConfig & {
+      InstanceCount: ProcessingInstanceCount;
+      InstanceType: ProcessingInstanceType;
+      VolumeSizeInGB: ProcessingVolumeSizeInGB;
+    };
+  };
+  StoppingCondition?: ProcessingStoppingCondition & {
+    MaxRuntimeInSeconds: ProcessingMaxRuntimeInSeconds;
+  };
+  AppSpecification: AppSpecification & { ImageUri: ImageUri };
   Environment?: { [key: string]: string };
-  NetworkConfig?: NetworkConfig;
+  NetworkConfig?: NetworkConfig & {
+    VpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+  };
   RoleArn?: string;
   ExperimentConfig?: ExperimentConfig;
-  ProcessingJobArn?: string;
-  ProcessingJobStatus?: ProcessingJobStatus;
+  ProcessingJobArn: string;
+  ProcessingJobStatus: ProcessingJobStatus;
   ExitMessage?: string;
   FailureReason?: string;
   ProcessingEndTime?: Date;
   ProcessingStartTime?: Date;
   LastModifiedTime?: Date;
-  CreationTime?: Date;
+  CreationTime: Date;
   MonitoringScheduleArn?: string;
   AutoMLJobArn?: string;
   TrainingJobArn?: string;
@@ -20386,9 +20745,29 @@ export interface DescribeSpaceResponse {
   LastModifiedTime?: Date;
   CreationTime?: Date;
   FailureReason?: string;
-  SpaceSettings?: SpaceSettings;
-  OwnershipSettings?: OwnershipSettings;
-  SpaceSharingSettings?: SpaceSharingSettings;
+  SpaceSettings?: SpaceSettings & {
+    JupyterServerAppSettings: JupyterServerAppSettings & {
+      CodeRepositories: (CodeRepository & { RepositoryUrl: RepositoryUrl })[];
+    };
+    KernelGatewayAppSettings: KernelGatewayAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+    };
+    JupyterLabAppSettings: SpaceJupyterLabAppSettings & {
+      CodeRepositories: (CodeRepository & { RepositoryUrl: RepositoryUrl })[];
+    };
+    SpaceStorageSettings: SpaceStorageSettings & {
+      EbsStorageSettings: EbsStorageSettings & {
+        EbsVolumeSizeInGb: SpaceEbsVolumeSizeInGb;
+      };
+    };
+  };
+  OwnershipSettings?: OwnershipSettings & {
+    OwnerUserProfileName: UserProfileName;
+  };
+  SpaceSharingSettings?: SpaceSharingSettings & { SharingType: SharingType };
   SpaceDisplayName?: string;
   Url?: string;
 }
@@ -20469,21 +20848,31 @@ export const TransformInput = S.suspend(() =>
   identifier: "TransformInput",
 }) as any as S.Schema<TransformInput>;
 export interface DescribeTransformJobResponse {
-  TransformJobName?: string;
-  TransformJobArn?: string;
-  TransformJobStatus?: TransformJobStatus;
+  TransformJobName: string;
+  TransformJobArn: string;
+  TransformJobStatus: TransformJobStatus;
   FailureReason?: string;
-  ModelName?: string;
+  ModelName: string;
   MaxConcurrentTransforms?: number;
   ModelClientConfig?: ModelClientConfig;
   MaxPayloadInMB?: number;
   BatchStrategy?: BatchStrategy;
   Environment?: { [key: string]: string };
-  TransformInput?: TransformInput;
-  TransformOutput?: TransformOutput;
-  DataCaptureConfig?: BatchDataCaptureConfig;
-  TransformResources?: TransformResources;
-  CreationTime?: Date;
+  TransformInput: TransformInput & {
+    DataSource: TransformDataSource & {
+      S3DataSource: TransformS3DataSource & {
+        S3DataType: S3DataType;
+        S3Uri: S3Uri;
+      };
+    };
+  };
+  TransformOutput?: TransformOutput & { S3OutputPath: S3Uri };
+  DataCaptureConfig?: BatchDataCaptureConfig & { DestinationS3Uri: S3Uri };
+  TransformResources: TransformResources & {
+    InstanceType: TransformInstanceType;
+    InstanceCount: TransformInstanceCount;
+  };
+  CreationTime: Date;
   TransformStartTime?: Date;
   TransformEndTime?: Date;
   LabelingJobArn?: string;
@@ -20533,7 +20922,43 @@ export interface DescribeUserProfileResponse {
   FailureReason?: string;
   SingleSignOnUserIdentifier?: string;
   SingleSignOnUserValue?: string;
-  UserSettings?: UserSettings;
+  UserSettings?: UserSettings & {
+    JupyterServerAppSettings: JupyterServerAppSettings & {
+      CodeRepositories: (CodeRepository & { RepositoryUrl: RepositoryUrl })[];
+    };
+    KernelGatewayAppSettings: KernelGatewayAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+    };
+    RSessionAppSettings: RSessionAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+    };
+    CodeEditorAppSettings: CodeEditorAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+    };
+    JupyterLabAppSettings: JupyterLabAppSettings & {
+      CustomImages: (CustomImage & {
+        ImageName: ImageName;
+        AppImageConfigName: AppImageConfigName;
+      })[];
+      CodeRepositories: (CodeRepository & { RepositoryUrl: RepositoryUrl })[];
+    };
+    SpaceStorageSettings: DefaultSpaceStorageSettings & {
+      DefaultEbsStorageSettings: DefaultEbsStorageSettings & {
+        DefaultEbsVolumeSizeInGb: SpaceEbsVolumeSizeInGb;
+        MaximumEbsVolumeSizeInGb: SpaceEbsVolumeSizeInGb;
+      };
+    };
+    CustomPosixUserConfig: CustomPosixUserConfig & { Uid: Uid; Gid: Gid };
+  };
 }
 export const DescribeUserProfileResponse = S.suspend(() =>
   S.Struct({
@@ -20555,12 +20980,12 @@ export const DescribeUserProfileResponse = S.suspend(() =>
   identifier: "DescribeUserProfileResponse",
 }) as any as S.Schema<DescribeUserProfileResponse>;
 export interface DetachClusterNodeVolumeResponse {
-  ClusterArn?: string;
-  NodeId?: string;
-  VolumeId?: string;
-  AttachTime?: Date;
-  Status?: VolumeAttachmentStatus;
-  DeviceName?: string;
+  ClusterArn: string;
+  NodeId: string;
+  VolumeId: string;
+  AttachTime: Date;
+  Status: VolumeAttachmentStatus;
+  DeviceName: string;
 }
 export const DetachClusterNodeVolumeResponse = S.suspend(() =>
   S.Struct({
@@ -20599,7 +21024,7 @@ export const GetLineageGroupPolicyResponse = S.suspend(() =>
   identifier: "GetLineageGroupPolicyResponse",
 }) as any as S.Schema<GetLineageGroupPolicyResponse>;
 export interface GetModelPackageGroupPolicyOutput {
-  ResourcePolicy?: string;
+  ResourcePolicy: string;
 }
 export const GetModelPackageGroupPolicyOutput = S.suspend(() =>
   S.Struct({ ResourcePolicy: S.optional(S.String) }).pipe(ns),
@@ -20635,8 +21060,8 @@ export const GetScalingConfigurationRecommendationRequest = S.suspend(() =>
   identifier: "GetScalingConfigurationRecommendationRequest",
 }) as any as S.Schema<GetScalingConfigurationRecommendationRequest>;
 export interface ImportHubContentResponse {
-  HubArn?: string;
-  HubContentArn?: string;
+  HubArn: string;
+  HubContentArn: string;
 }
 export const ImportHubContentResponse = S.suspend(() =>
   S.Struct({
@@ -20659,7 +21084,37 @@ export const ListAliasesResponse = S.suspend(() =>
   identifier: "ListAliasesResponse",
 }) as any as S.Schema<ListAliasesResponse>;
 export interface ListCandidatesForAutoMLJobResponse {
-  Candidates?: AutoMLCandidate[];
+  Candidates: (AutoMLCandidate & {
+    CandidateName: CandidateName;
+    ObjectiveStatus: ObjectiveStatus;
+    CandidateSteps: (AutoMLCandidateStep & {
+      CandidateStepType: CandidateStepType;
+      CandidateStepArn: CandidateStepArn;
+      CandidateStepName: CandidateStepName;
+    })[];
+    CandidateStatus: CandidateStatus;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    FinalAutoMLJobObjectiveMetric: FinalAutoMLJobObjectiveMetric & {
+      MetricName: AutoMLMetricEnum;
+      Value: MetricValue;
+    };
+    InferenceContainers: (AutoMLContainerDefinition & {
+      Image: ContainerImage;
+      ModelDataUrl: Url;
+    })[];
+    CandidateProperties: CandidateProperties & {
+      CandidateArtifactLocations: CandidateArtifactLocations & {
+        Explainability: ExplainabilityLocation;
+      };
+    };
+    InferenceContainerDefinitions: {
+      [key: string]: (AutoMLContainerDefinition & {
+        Image: ContainerImage;
+        ModelDataUrl: Url;
+      })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const ListCandidatesForAutoMLJobResponse = S.suspend(() =>
@@ -20709,7 +21164,15 @@ export const HubContentInfo = S.suspend(() =>
 export type HubContentInfoList = HubContentInfo[];
 export const HubContentInfoList = S.Array(HubContentInfo);
 export interface ListHubContentVersionsResponse {
-  HubContentSummaries?: HubContentInfo[];
+  HubContentSummaries: (HubContentInfo & {
+    HubContentName: HubContentName;
+    HubContentArn: HubContentArn;
+    HubContentVersion: HubContentVersion;
+    HubContentType: HubContentType;
+    DocumentSchemaVersion: DocumentSchemaVersion;
+    HubContentStatus: HubContentStatus;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListHubContentVersionsResponse = S.suspend(() =>
@@ -20742,7 +21205,12 @@ export const MonitoringJobDefinitionSummaryList = S.Array(
   MonitoringJobDefinitionSummary,
 );
 export interface ListModelBiasJobDefinitionsResponse {
-  JobDefinitionSummaries?: MonitoringJobDefinitionSummary[];
+  JobDefinitionSummaries: (MonitoringJobDefinitionSummary & {
+    MonitoringJobDefinitionName: MonitoringJobDefinitionName;
+    MonitoringJobDefinitionArn: MonitoringJobDefinitionArn;
+    CreationTime: Date;
+    EndpointName: EndpointName;
+  })[];
   NextToken?: string;
 }
 export const ListModelBiasJobDefinitionsResponse = S.suspend(() =>
@@ -20754,7 +21222,12 @@ export const ListModelBiasJobDefinitionsResponse = S.suspend(() =>
   identifier: "ListModelBiasJobDefinitionsResponse",
 }) as any as S.Schema<ListModelBiasJobDefinitionsResponse>;
 export interface ListModelExplainabilityJobDefinitionsResponse {
-  JobDefinitionSummaries?: MonitoringJobDefinitionSummary[];
+  JobDefinitionSummaries: (MonitoringJobDefinitionSummary & {
+    MonitoringJobDefinitionName: MonitoringJobDefinitionName;
+    MonitoringJobDefinitionArn: MonitoringJobDefinitionArn;
+    CreationTime: Date;
+    EndpointName: EndpointName;
+  })[];
   NextToken?: string;
 }
 export const ListModelExplainabilityJobDefinitionsResponse = S.suspend(() =>
@@ -20766,7 +21239,12 @@ export const ListModelExplainabilityJobDefinitionsResponse = S.suspend(() =>
   identifier: "ListModelExplainabilityJobDefinitionsResponse",
 }) as any as S.Schema<ListModelExplainabilityJobDefinitionsResponse>;
 export interface ListModelQualityJobDefinitionsResponse {
-  JobDefinitionSummaries?: MonitoringJobDefinitionSummary[];
+  JobDefinitionSummaries: (MonitoringJobDefinitionSummary & {
+    MonitoringJobDefinitionName: MonitoringJobDefinitionName;
+    MonitoringJobDefinitionArn: MonitoringJobDefinitionArn;
+    CreationTime: Date;
+    EndpointName: EndpointName;
+  })[];
   NextToken?: string;
 }
 export const ListModelQualityJobDefinitionsResponse = S.suspend(() =>
@@ -20778,7 +21256,13 @@ export const ListModelQualityJobDefinitionsResponse = S.suspend(() =>
   identifier: "ListModelQualityJobDefinitionsResponse",
 }) as any as S.Schema<ListModelQualityJobDefinitionsResponse>;
 export interface ListMonitoringExecutionsResponse {
-  MonitoringExecutionSummaries?: MonitoringExecutionSummary[];
+  MonitoringExecutionSummaries: (MonitoringExecutionSummary & {
+    MonitoringScheduleName: MonitoringScheduleName;
+    ScheduledTime: Date;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    MonitoringExecutionStatus: ExecutionStatus;
+  })[];
   NextToken?: string;
 }
 export const ListMonitoringExecutionsResponse = S.suspend(() =>
@@ -20790,7 +21274,10 @@ export const ListMonitoringExecutionsResponse = S.suspend(() =>
   identifier: "ListMonitoringExecutionsResponse",
 }) as any as S.Schema<ListMonitoringExecutionsResponse>;
 export interface ListPipelineParametersForExecutionResponse {
-  PipelineParameters?: Parameter[];
+  PipelineParameters?: (Parameter & {
+    Name: PipelineParameterName;
+    Value: String1024;
+  })[];
   NextToken?: string;
 }
 export const ListPipelineParametersForExecutionResponse = S.suspend(() =>
@@ -20802,7 +21289,7 @@ export const ListPipelineParametersForExecutionResponse = S.suspend(() =>
   identifier: "ListPipelineParametersForExecutionResponse",
 }) as any as S.Schema<ListPipelineParametersForExecutionResponse>;
 export interface ListSubscribedWorkteamsResponse {
-  SubscribedWorkteams?: SubscribedWorkteam[];
+  SubscribedWorkteams: (SubscribedWorkteam & { WorkteamArn: WorkteamArn })[];
   NextToken?: string;
 }
 export const ListSubscribedWorkteamsResponse = S.suspend(() =>
@@ -20814,7 +21301,7 @@ export const ListSubscribedWorkteamsResponse = S.suspend(() =>
   identifier: "ListSubscribedWorkteamsResponse",
 }) as any as S.Schema<ListSubscribedWorkteamsResponse>;
 export interface ListTagsOutput {
-  Tags?: Tag[];
+  Tags?: (Tag & { Key: TagKey; Value: TagValue })[];
   NextToken?: string;
 }
 export const ListTagsOutput = S.suspend(() =>
@@ -20825,7 +21312,17 @@ export const ListTagsOutput = S.suspend(() =>
   identifier: "ListTagsOutput",
 }) as any as S.Schema<ListTagsOutput>;
 export interface ListTrainingJobsForHyperParameterTuningJobResponse {
-  TrainingJobSummaries?: HyperParameterTrainingJobSummary[];
+  TrainingJobSummaries: (HyperParameterTrainingJobSummary & {
+    TrainingJobName: TrainingJobName;
+    TrainingJobArn: TrainingJobArn;
+    CreationTime: Date;
+    TrainingJobStatus: TrainingJobStatus;
+    TunedHyperParameters: HyperParameters;
+    FinalHyperParameterTuningJobObjectiveMetric: FinalHyperParameterTuningJobObjectiveMetric & {
+      MetricName: MetricName;
+      Value: MetricValue;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListTrainingJobsForHyperParameterTuningJobResponse = S.suspend(
@@ -20872,7 +21369,20 @@ export const ListTrainingPlansRequest = S.suspend(() =>
   identifier: "ListTrainingPlansRequest",
 }) as any as S.Schema<ListTrainingPlansRequest>;
 export interface ListWorkforcesResponse {
-  Workforces?: Workforce[];
+  Workforces: (Workforce & {
+    WorkforceName: WorkforceName;
+    WorkforceArn: WorkforceArn;
+    SourceIpConfig: SourceIpConfig & { Cidrs: Cidrs };
+    CognitoConfig: CognitoConfig & {
+      UserPool: CognitoUserPool;
+      ClientId: ClientId;
+    };
+    WorkforceVpcConfig: WorkforceVpcConfigResponse & {
+      VpcId: WorkforceVpcId;
+      SecurityGroupIds: WorkforceSecurityGroupIds;
+      Subnets: WorkforceSubnets;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListWorkforcesResponse = S.suspend(() =>
@@ -20884,7 +21394,18 @@ export const ListWorkforcesResponse = S.suspend(() =>
   identifier: "ListWorkforcesResponse",
 }) as any as S.Schema<ListWorkforcesResponse>;
 export interface ListWorkteamsResponse {
-  Workteams?: Workteam[];
+  Workteams: (Workteam & {
+    WorkteamName: WorkteamName;
+    MemberDefinitions: (MemberDefinition & {
+      CognitoMemberDefinition: CognitoMemberDefinition & {
+        UserPool: CognitoUserPool;
+        UserGroup: CognitoUserGroup;
+        ClientId: ClientId;
+      };
+    })[];
+    WorkteamArn: WorkteamArn;
+    Description: String200;
+  })[];
   NextToken?: string;
 }
 export const ListWorkteamsResponse = S.suspend(() =>
@@ -20896,7 +21417,7 @@ export const ListWorkteamsResponse = S.suspend(() =>
   identifier: "ListWorkteamsResponse",
 }) as any as S.Schema<ListWorkteamsResponse>;
 export interface PutModelPackageGroupPolicyOutput {
-  ModelPackageGroupArn?: string;
+  ModelPackageGroupArn: string;
 }
 export const PutModelPackageGroupPolicyOutput = S.suspend(() =>
   S.Struct({ ModelPackageGroupArn: S.optional(S.String) }).pipe(ns),
@@ -20984,7 +21505,7 @@ export const SendPipelineExecutionStepSuccessRequest = S.suspend(() =>
   S.Struct({
     CallbackToken: S.optional(S.String),
     OutputParameters: S.optional(OutputParameterList),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -21000,7 +21521,7 @@ export const SendPipelineExecutionStepSuccessRequest = S.suspend(() =>
   identifier: "SendPipelineExecutionStepSuccessRequest",
 }) as any as S.Schema<SendPipelineExecutionStepSuccessRequest>;
 export interface StartInferenceExperimentResponse {
-  InferenceExperimentArn?: string;
+  InferenceExperimentArn: string;
 }
 export const StartInferenceExperimentResponse = S.suspend(() =>
   S.Struct({ InferenceExperimentArn: S.optional(S.String) }).pipe(ns),
@@ -21098,7 +21619,7 @@ export const UpdateArtifactResponse = S.suspend(() =>
   identifier: "UpdateArtifactResponse",
 }) as any as S.Schema<UpdateArtifactResponse>;
 export interface UpdateClusterResponse {
-  ClusterArn?: string;
+  ClusterArn: string;
 }
 export const UpdateClusterResponse = S.suspend(() =>
   S.Struct({ ClusterArn: S.optional(S.String) }).pipe(ns),
@@ -21106,8 +21627,8 @@ export const UpdateClusterResponse = S.suspend(() =>
   identifier: "UpdateClusterResponse",
 }) as any as S.Schema<UpdateClusterResponse>;
 export interface UpdateClusterSchedulerConfigResponse {
-  ClusterSchedulerConfigArn?: string;
-  ClusterSchedulerConfigVersion?: number;
+  ClusterSchedulerConfigArn: string;
+  ClusterSchedulerConfigVersion: number;
 }
 export const UpdateClusterSchedulerConfigResponse = S.suspend(() =>
   S.Struct({
@@ -21140,8 +21661,8 @@ export const UpdateCodeRepositoryInput = S.suspend(() =>
   identifier: "UpdateCodeRepositoryInput",
 }) as any as S.Schema<UpdateCodeRepositoryInput>;
 export interface UpdateComputeQuotaResponse {
-  ComputeQuotaArn?: string;
-  ComputeQuotaVersion?: number;
+  ComputeQuotaArn: string;
+  ComputeQuotaVersion: number;
 }
 export const UpdateComputeQuotaResponse = S.suspend(() =>
   S.Struct({
@@ -21349,7 +21870,7 @@ export const UpdateFeatureMetadataResponse = S.suspend(() =>
   identifier: "UpdateFeatureMetadataResponse",
 }) as any as S.Schema<UpdateFeatureMetadataResponse>;
 export interface UpdateHubResponse {
-  HubArn?: string;
+  HubArn: string;
 }
 export const UpdateHubResponse = S.suspend(() =>
   S.Struct({ HubArn: S.optional(S.String) }).pipe(ns),
@@ -21357,8 +21878,8 @@ export const UpdateHubResponse = S.suspend(() =>
   identifier: "UpdateHubResponse",
 }) as any as S.Schema<UpdateHubResponse>;
 export interface UpdateHubContentResponse {
-  HubArn?: string;
-  HubContentArn?: string;
+  HubArn: string;
+  HubContentArn: string;
 }
 export const UpdateHubContentResponse = S.suspend(() =>
   S.Struct({
@@ -21369,8 +21890,8 @@ export const UpdateHubContentResponse = S.suspend(() =>
   identifier: "UpdateHubContentResponse",
 }) as any as S.Schema<UpdateHubContentResponse>;
 export interface UpdateHubContentReferenceResponse {
-  HubArn?: string;
-  HubContentArn?: string;
+  HubArn: string;
+  HubContentArn: string;
 }
 export const UpdateHubContentReferenceResponse = S.suspend(() =>
   S.Struct({
@@ -21397,7 +21918,7 @@ export const UpdateImageVersionResponse = S.suspend(() =>
   identifier: "UpdateImageVersionResponse",
 }) as any as S.Schema<UpdateImageVersionResponse>;
 export interface UpdateInferenceComponentRuntimeConfigOutput {
-  InferenceComponentArn?: string;
+  InferenceComponentArn: string;
 }
 export const UpdateInferenceComponentRuntimeConfigOutput = S.suspend(() =>
   S.Struct({ InferenceComponentArn: S.optional(S.String) }).pipe(ns),
@@ -21405,7 +21926,7 @@ export const UpdateInferenceComponentRuntimeConfigOutput = S.suspend(() =>
   identifier: "UpdateInferenceComponentRuntimeConfigOutput",
 }) as any as S.Schema<UpdateInferenceComponentRuntimeConfigOutput>;
 export interface UpdateInferenceExperimentResponse {
-  InferenceExperimentArn?: string;
+  InferenceExperimentArn: string;
 }
 export const UpdateInferenceExperimentResponse = S.suspend(() =>
   S.Struct({ InferenceExperimentArn: S.optional(S.String) }).pipe(ns),
@@ -21429,7 +21950,7 @@ export const UpdateMlflowTrackingServerResponse = S.suspend(() =>
   identifier: "UpdateMlflowTrackingServerResponse",
 }) as any as S.Schema<UpdateMlflowTrackingServerResponse>;
 export interface UpdateModelCardResponse {
-  ModelCardArn?: string;
+  ModelCardArn: string;
 }
 export const UpdateModelCardResponse = S.suspend(() =>
   S.Struct({ ModelCardArn: S.optional(S.String) }).pipe(ns),
@@ -21437,7 +21958,7 @@ export const UpdateModelCardResponse = S.suspend(() =>
   identifier: "UpdateModelCardResponse",
 }) as any as S.Schema<UpdateModelCardResponse>;
 export interface UpdateModelPackageOutput {
-  ModelPackageArn?: string;
+  ModelPackageArn: string;
 }
 export const UpdateModelPackageOutput = S.suspend(() =>
   S.Struct({ ModelPackageArn: S.optional(S.String) }).pipe(ns),
@@ -21445,7 +21966,7 @@ export const UpdateModelPackageOutput = S.suspend(() =>
   identifier: "UpdateModelPackageOutput",
 }) as any as S.Schema<UpdateModelPackageOutput>;
 export interface UpdateMonitoringAlertResponse {
-  MonitoringScheduleArn?: string;
+  MonitoringScheduleArn: string;
   MonitoringAlertName?: string;
 }
 export const UpdateMonitoringAlertResponse = S.suspend(() =>
@@ -21457,7 +21978,7 @@ export const UpdateMonitoringAlertResponse = S.suspend(() =>
   identifier: "UpdateMonitoringAlertResponse",
 }) as any as S.Schema<UpdateMonitoringAlertResponse>;
 export interface UpdateMonitoringScheduleResponse {
-  MonitoringScheduleArn?: string;
+  MonitoringScheduleArn: string;
 }
 export const UpdateMonitoringScheduleResponse = S.suspend(() =>
   S.Struct({ MonitoringScheduleArn: S.optional(S.String) }).pipe(ns),
@@ -21565,7 +22086,20 @@ export const UpdateUserProfileResponse = S.suspend(() =>
   identifier: "UpdateUserProfileResponse",
 }) as any as S.Schema<UpdateUserProfileResponse>;
 export interface UpdateWorkforceResponse {
-  Workforce?: Workforce;
+  Workforce: Workforce & {
+    WorkforceName: WorkforceName;
+    WorkforceArn: WorkforceArn;
+    SourceIpConfig: SourceIpConfig & { Cidrs: Cidrs };
+    CognitoConfig: CognitoConfig & {
+      UserPool: CognitoUserPool;
+      ClientId: ClientId;
+    };
+    WorkforceVpcConfig: WorkforceVpcConfigResponse & {
+      VpcId: WorkforceVpcId;
+      SecurityGroupIds: WorkforceSecurityGroupIds;
+      Subnets: WorkforceSubnets;
+    };
+  };
 }
 export const UpdateWorkforceResponse = S.suspend(() =>
   S.Struct({ Workforce: S.optional(Workforce) }).pipe(ns),
@@ -21573,7 +22107,18 @@ export const UpdateWorkforceResponse = S.suspend(() =>
   identifier: "UpdateWorkforceResponse",
 }) as any as S.Schema<UpdateWorkforceResponse>;
 export interface UpdateWorkteamResponse {
-  Workteam?: Workteam;
+  Workteam: Workteam & {
+    WorkteamName: WorkteamName;
+    MemberDefinitions: (MemberDefinition & {
+      CognitoMemberDefinition: CognitoMemberDefinition & {
+        UserPool: CognitoUserPool;
+        UserGroup: CognitoUserGroup;
+        ClientId: ClientId;
+      };
+    })[];
+    WorkteamArn: WorkteamArn;
+    Description: String200;
+  };
 }
 export const UpdateWorkteamResponse = S.suspend(() =>
   S.Struct({ Workteam: S.optional(Workteam) }).pipe(ns),
@@ -25472,7 +26017,7 @@ export const CfnStackUpdateParameter = S.suspend(() =>
 export type CfnStackUpdateParameters = CfnStackUpdateParameter[];
 export const CfnStackUpdateParameters = S.Array(CfnStackUpdateParameter);
 export interface AddTagsOutput {
-  Tags?: Tag[];
+  Tags?: (Tag & { Key: TagKey; Value: TagValue })[];
 }
 export const AddTagsOutput = S.suspend(() =>
   S.Struct({ Tags: S.optional(TagList) }).pipe(ns),
@@ -25480,9 +26025,17 @@ export const AddTagsOutput = S.suspend(() =>
   identifier: "AddTagsOutput",
 }) as any as S.Schema<AddTagsOutput>;
 export interface BatchDeleteClusterNodesResponse {
-  Failed?: BatchDeleteClusterNodesError[];
+  Failed?: (BatchDeleteClusterNodesError & {
+    Code: BatchDeleteClusterNodesErrorCode;
+    Message: string;
+    NodeId: ClusterNodeId;
+  })[];
   Successful?: string[];
-  FailedNodeLogicalIds?: BatchDeleteClusterNodeLogicalIdsError[];
+  FailedNodeLogicalIds?: (BatchDeleteClusterNodeLogicalIdsError & {
+    Code: BatchDeleteClusterNodesErrorCode;
+    Message: string;
+    NodeLogicalId: ClusterNodeLogicalId;
+  })[];
   SuccessfulNodeLogicalIds?: string[];
 }
 export const BatchDeleteClusterNodesResponse = S.suspend(() =>
@@ -25497,8 +26050,16 @@ export const BatchDeleteClusterNodesResponse = S.suspend(() =>
 }) as any as S.Schema<BatchDeleteClusterNodesResponse>;
 export interface BatchRebootClusterNodesResponse {
   Successful?: string[];
-  Failed?: BatchRebootClusterNodesError[];
-  FailedNodeLogicalIds?: BatchRebootClusterNodeLogicalIdsError[];
+  Failed?: (BatchRebootClusterNodesError & {
+    NodeId: ClusterNodeId;
+    ErrorCode: BatchRebootClusterNodesErrorCode;
+    Message: string;
+  })[];
+  FailedNodeLogicalIds?: (BatchRebootClusterNodeLogicalIdsError & {
+    NodeLogicalId: ClusterNodeLogicalId;
+    ErrorCode: BatchRebootClusterNodesErrorCode;
+    Message: string;
+  })[];
   SuccessfulNodeLogicalIds?: string[];
 }
 export const BatchRebootClusterNodesResponse = S.suspend(() =>
@@ -25513,8 +26074,16 @@ export const BatchRebootClusterNodesResponse = S.suspend(() =>
 }) as any as S.Schema<BatchRebootClusterNodesResponse>;
 export interface BatchReplaceClusterNodesResponse {
   Successful?: string[];
-  Failed?: BatchReplaceClusterNodesError[];
-  FailedNodeLogicalIds?: BatchReplaceClusterNodeLogicalIdsError[];
+  Failed?: (BatchReplaceClusterNodesError & {
+    NodeId: ClusterNodeId;
+    ErrorCode: BatchReplaceClusterNodesErrorCode;
+    Message: string;
+  })[];
+  FailedNodeLogicalIds?: (BatchReplaceClusterNodeLogicalIdsError & {
+    NodeLogicalId: ClusterNodeLogicalId;
+    ErrorCode: BatchReplaceClusterNodesErrorCode;
+    Message: string;
+  })[];
   SuccessfulNodeLogicalIds?: string[];
 }
 export const BatchReplaceClusterNodesResponse = S.suspend(() =>
@@ -25615,7 +26184,7 @@ export const CreateClusterSchedulerConfigRequest = S.suspend(() =>
   identifier: "CreateClusterSchedulerConfigRequest",
 }) as any as S.Schema<CreateClusterSchedulerConfigRequest>;
 export interface CreateCodeRepositoryOutput {
-  CodeRepositoryArn?: string;
+  CodeRepositoryArn: string;
 }
 export const CreateCodeRepositoryOutput = S.suspend(() =>
   S.Struct({ CodeRepositoryArn: S.optional(S.String) }).pipe(ns),
@@ -25693,7 +26262,7 @@ export const CreateEdgeDeploymentPlanRequest = S.suspend(() =>
   identifier: "CreateEdgeDeploymentPlanRequest",
 }) as any as S.Schema<CreateEdgeDeploymentPlanRequest>;
 export interface CreateHubResponse {
-  HubArn?: string;
+  HubArn: string;
 }
 export const CreateHubResponse = S.suspend(() =>
   S.Struct({ HubArn: S.optional(S.String) }).pipe(ns),
@@ -25701,7 +26270,7 @@ export const CreateHubResponse = S.suspend(() =>
   identifier: "CreateHubResponse",
 }) as any as S.Schema<CreateHubResponse>;
 export interface CreateHumanTaskUiResponse {
-  HumanTaskUiArn?: string;
+  HumanTaskUiArn: string;
 }
 export const CreateHumanTaskUiResponse = S.suspend(() =>
   S.Struct({ HumanTaskUiArn: S.optional(S.String) }).pipe(ns),
@@ -25779,7 +26348,7 @@ export const CreateModelBiasJobDefinitionRequest = S.suspend(() =>
   identifier: "CreateModelBiasJobDefinitionRequest",
 }) as any as S.Schema<CreateModelBiasJobDefinitionRequest>;
 export interface CreateModelCardResponse {
-  ModelCardArn?: string;
+  ModelCardArn: string;
 }
 export const CreateModelCardResponse = S.suspend(() =>
   S.Struct({ ModelCardArn: S.optional(S.String) }).pipe(ns),
@@ -25787,7 +26356,7 @@ export const CreateModelCardResponse = S.suspend(() =>
   identifier: "CreateModelCardResponse",
 }) as any as S.Schema<CreateModelCardResponse>;
 export interface CreateModelCardExportJobResponse {
-  ModelCardExportJobArn?: string;
+  ModelCardExportJobArn: string;
 }
 export const CreateModelCardExportJobResponse = S.suspend(() =>
   S.Struct({ ModelCardExportJobArn: S.optional(S.String) }).pipe(ns),
@@ -25795,7 +26364,7 @@ export const CreateModelCardExportJobResponse = S.suspend(() =>
   identifier: "CreateModelCardExportJobResponse",
 }) as any as S.Schema<CreateModelCardExportJobResponse>;
 export interface CreateModelExplainabilityJobDefinitionResponse {
-  JobDefinitionArn?: string;
+  JobDefinitionArn: string;
 }
 export const CreateModelExplainabilityJobDefinitionResponse = S.suspend(() =>
   S.Struct({ JobDefinitionArn: S.optional(S.String) }).pipe(ns),
@@ -25803,7 +26372,7 @@ export const CreateModelExplainabilityJobDefinitionResponse = S.suspend(() =>
   identifier: "CreateModelExplainabilityJobDefinitionResponse",
 }) as any as S.Schema<CreateModelExplainabilityJobDefinitionResponse>;
 export interface CreateModelQualityJobDefinitionResponse {
-  JobDefinitionArn?: string;
+  JobDefinitionArn: string;
 }
 export const CreateModelQualityJobDefinitionResponse = S.suspend(() =>
   S.Struct({ JobDefinitionArn: S.optional(S.String) }).pipe(ns),
@@ -25854,7 +26423,7 @@ export const CreatePartnerAppRequest = S.suspend(() =>
     AuthType: S.optional(PartnerAppAuthType),
     EnableIamSessionBasedIdentity: S.optional(S.Boolean),
     EnableAutoMinorVersionUpgrade: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -25949,23 +26518,32 @@ export const CreateWorkforceRequest = S.suspend(() =>
   identifier: "CreateWorkforceRequest",
 }) as any as S.Schema<CreateWorkforceRequest>;
 export interface DescribeCompilationJobResponse {
-  CompilationJobName?: string;
-  CompilationJobArn?: string;
-  CompilationJobStatus?: CompilationJobStatus;
+  CompilationJobName: string;
+  CompilationJobArn: string;
+  CompilationJobStatus: CompilationJobStatus;
   CompilationStartTime?: Date;
   CompilationEndTime?: Date;
-  StoppingCondition?: StoppingCondition;
+  StoppingCondition: StoppingCondition;
   InferenceImage?: string;
   ModelPackageVersionArn?: string;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
-  FailureReason?: string;
-  ModelArtifacts?: ModelArtifacts;
+  CreationTime: Date;
+  LastModifiedTime: Date;
+  FailureReason: string;
+  ModelArtifacts: ModelArtifacts & { S3ModelArtifacts: S3Uri };
   ModelDigests?: ModelDigests;
-  RoleArn?: string;
-  InputConfig?: InputConfig;
-  OutputConfig?: OutputConfig;
-  VpcConfig?: NeoVpcConfig;
+  RoleArn: string;
+  InputConfig: InputConfig & { S3Uri: S3Uri; Framework: Framework };
+  OutputConfig: OutputConfig & {
+    S3OutputLocation: S3Uri;
+    TargetPlatform: TargetPlatform & {
+      Os: TargetPlatformOs;
+      Arch: TargetPlatformArch;
+    };
+  };
+  VpcConfig?: NeoVpcConfig & {
+    SecurityGroupIds: NeoVpcSecurityGroupIds;
+    Subnets: NeoVpcSubnets;
+  };
   DerivedInformation?: DerivedInformation;
 }
 export const DescribeCompilationJobResponse = S.suspend(() =>
@@ -26000,13 +26578,13 @@ export const DescribeCompilationJobResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeCompilationJobResponse>;
 export interface DescribeDeviceResponse {
   DeviceArn?: string;
-  DeviceName?: string;
+  DeviceName: string;
   Description?: string;
-  DeviceFleetName?: string;
+  DeviceFleetName: string;
   IotThingName?: string;
-  RegistrationTime?: Date;
+  RegistrationTime: Date;
   LatestHeartbeat?: Date;
-  Models?: EdgeModel[];
+  Models?: (EdgeModel & { ModelName: EntityName; ModelVersion: EdgeVersion })[];
   MaxModels?: number;
   NextToken?: string;
   AgentVersion?: string;
@@ -26033,21 +26611,23 @@ export const DescribeDeviceResponse = S.suspend(() =>
   identifier: "DescribeDeviceResponse",
 }) as any as S.Schema<DescribeDeviceResponse>;
 export interface DescribeEdgePackagingJobResponse {
-  EdgePackagingJobArn?: string;
-  EdgePackagingJobName?: string;
+  EdgePackagingJobArn: string;
+  EdgePackagingJobName: string;
   CompilationJobName?: string;
   ModelName?: string;
   ModelVersion?: string;
   RoleArn?: string;
-  OutputConfig?: EdgeOutputConfig;
+  OutputConfig?: EdgeOutputConfig & { S3OutputLocation: S3Uri };
   ResourceKey?: string;
-  EdgePackagingJobStatus?: EdgePackagingJobStatus;
+  EdgePackagingJobStatus: EdgePackagingJobStatus;
   EdgePackagingJobStatusMessage?: string;
   CreationTime?: Date;
   LastModifiedTime?: Date;
   ModelArtifact?: string;
   ModelSignature?: string;
-  PresetDeploymentOutput?: EdgePresetDeploymentOutput;
+  PresetDeploymentOutput?: EdgePresetDeploymentOutput & {
+    Type: EdgePresetDeploymentType;
+  };
 }
 export const DescribeEdgePackagingJobResponse = S.suspend(() =>
   S.Struct({
@@ -26076,7 +26656,7 @@ export interface DescribeExperimentResponse {
   ExperimentName?: string;
   ExperimentArn?: string;
   DisplayName?: string;
-  Source?: ExperimentSource;
+  Source?: ExperimentSource & { SourceArn: ExperimentSourceArn };
   Description?: string;
   CreationTime?: Date;
   CreatedBy?: UserContext;
@@ -26103,23 +26683,35 @@ export const DescribeExperimentResponse = S.suspend(() =>
 export type FeatureDefinitions = FeatureDefinition[];
 export const FeatureDefinitions = S.Array(FeatureDefinition);
 export interface DescribeFeatureGroupResponse {
-  FeatureGroupArn?: string;
-  FeatureGroupName?: string;
-  RecordIdentifierFeatureName?: string;
-  EventTimeFeatureName?: string;
-  FeatureDefinitions?: FeatureDefinition[];
-  CreationTime?: Date;
+  FeatureGroupArn: string;
+  FeatureGroupName: string;
+  RecordIdentifierFeatureName: string;
+  EventTimeFeatureName: string;
+  FeatureDefinitions: (FeatureDefinition & {
+    FeatureName: FeatureName;
+    FeatureType: FeatureType;
+  })[];
+  CreationTime: Date;
   LastModifiedTime?: Date;
   OnlineStoreConfig?: OnlineStoreConfig;
-  OfflineStoreConfig?: OfflineStoreConfig;
-  ThroughputConfig?: ThroughputConfigDescription;
+  OfflineStoreConfig?: OfflineStoreConfig & {
+    S3StorageConfig: S3StorageConfig & { S3Uri: S3Uri };
+    DataCatalogConfig: DataCatalogConfig & {
+      TableName: TableName;
+      Catalog: Catalog;
+      Database: Database;
+    };
+  };
+  ThroughputConfig?: ThroughputConfigDescription & {
+    ThroughputMode: ThroughputMode;
+  };
   RoleArn?: string;
   FeatureGroupStatus?: FeatureGroupStatus;
-  OfflineStoreStatus?: OfflineStoreStatus;
-  LastUpdateStatus?: LastUpdateStatus;
+  OfflineStoreStatus?: OfflineStoreStatus & { Status: OfflineStoreStatusValue };
+  LastUpdateStatus?: LastUpdateStatus & { Status: LastUpdateStatusValue };
   FailureReason?: string;
   Description?: string;
-  NextToken?: string;
+  NextToken: string;
   OnlineStoreTotalSizeBytes?: number;
 }
 export const DescribeFeatureGroupResponse = S.suspend(() =>
@@ -26149,25 +26741,25 @@ export const DescribeFeatureGroupResponse = S.suspend(() =>
   identifier: "DescribeFeatureGroupResponse",
 }) as any as S.Schema<DescribeFeatureGroupResponse>;
 export interface DescribeHubContentResponse {
-  HubContentName?: string;
-  HubContentArn?: string;
-  HubContentVersion?: string;
-  HubContentType?: HubContentType;
-  DocumentSchemaVersion?: string;
-  HubName?: string;
-  HubArn?: string;
+  HubContentName: string;
+  HubContentArn: string;
+  HubContentVersion: string;
+  HubContentType: HubContentType;
+  DocumentSchemaVersion: string;
+  HubName: string;
+  HubArn: string;
   HubContentDisplayName?: string;
   HubContentDescription?: string;
   HubContentMarkdown?: string;
-  HubContentDocument?: string;
+  HubContentDocument: string;
   SageMakerPublicHubContentArn?: string;
   ReferenceMinVersion?: string;
   SupportStatus?: HubContentSupportStatus;
   HubContentSearchKeywords?: string[];
   HubContentDependencies?: HubContentDependency[];
-  HubContentStatus?: HubContentStatus;
+  HubContentStatus: HubContentStatus;
   FailureReason?: string;
-  CreationTime?: Date;
+  CreationTime: Date;
   LastModifiedTime?: Date;
 }
 export const DescribeHubContentResponse = S.suspend(() =>
@@ -26199,11 +26791,11 @@ export const DescribeHubContentResponse = S.suspend(() =>
   identifier: "DescribeHubContentResponse",
 }) as any as S.Schema<DescribeHubContentResponse>;
 export interface DescribeHumanTaskUiResponse {
-  HumanTaskUiArn?: string;
-  HumanTaskUiName?: string;
+  HumanTaskUiArn: string;
+  HumanTaskUiName: string;
   HumanTaskUiStatus?: HumanTaskUiStatus;
-  CreationTime?: Date;
-  UiTemplate?: UiTemplateInfo;
+  CreationTime: Date;
+  UiTemplate: UiTemplateInfo;
 }
 export const DescribeHumanTaskUiResponse = S.suspend(() =>
   S.Struct({
@@ -26217,21 +26809,40 @@ export const DescribeHumanTaskUiResponse = S.suspend(() =>
   identifier: "DescribeHumanTaskUiResponse",
 }) as any as S.Schema<DescribeHumanTaskUiResponse>;
 export interface DescribeInferenceExperimentResponse {
-  Arn?: string;
-  Name?: string;
-  Type?: InferenceExperimentType;
+  Arn: string;
+  Name: string;
+  Type: InferenceExperimentType;
   Schedule?: InferenceExperimentSchedule;
-  Status?: InferenceExperimentStatus;
+  Status: InferenceExperimentStatus;
   StatusReason?: string;
   Description?: string;
   CreationTime?: Date;
   CompletionTime?: Date;
   LastModifiedTime?: Date;
   RoleArn?: string;
-  EndpointMetadata?: EndpointMetadata;
-  ModelVariants?: ModelVariantConfigSummary[];
-  DataStorageConfig?: InferenceExperimentDataStorageConfig;
-  ShadowModeConfig?: ShadowModeConfig;
+  EndpointMetadata: EndpointMetadata & { EndpointName: EndpointName };
+  ModelVariants: (ModelVariantConfigSummary & {
+    ModelName: ModelName;
+    VariantName: ModelVariantName;
+    InfrastructureConfig: ModelInfrastructureConfig & {
+      InfrastructureType: ModelInfrastructureType;
+      RealTimeInferenceConfig: RealTimeInferenceConfig & {
+        InstanceType: InstanceType;
+        InstanceCount: TaskCount;
+      };
+    };
+    Status: ModelVariantStatus;
+  })[];
+  DataStorageConfig?: InferenceExperimentDataStorageConfig & {
+    Destination: DestinationS3Uri;
+  };
+  ShadowModeConfig?: ShadowModeConfig & {
+    SourceModelVariantName: ModelVariantName;
+    ShadowModelVariants: (ShadowModelVariantConfig & {
+      ShadowModelVariantName: ModelVariantName;
+      SamplingPercentage: Percentage;
+    })[];
+  };
   KmsKey?: string;
 }
 export const DescribeInferenceExperimentResponse = S.suspend(() =>
@@ -26259,24 +26870,47 @@ export const DescribeInferenceExperimentResponse = S.suspend(() =>
   identifier: "DescribeInferenceExperimentResponse",
 }) as any as S.Schema<DescribeInferenceExperimentResponse>;
 export interface DescribeLabelingJobResponse {
-  LabelingJobStatus?: LabelingJobStatus;
-  LabelCounters?: LabelCounters;
+  LabelingJobStatus: LabelingJobStatus;
+  LabelCounters: LabelCounters;
   FailureReason?: string;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
-  JobReferenceCode?: string;
-  LabelingJobName?: string;
-  LabelingJobArn?: string;
+  CreationTime: Date;
+  LastModifiedTime: Date;
+  JobReferenceCode: string;
+  LabelingJobName: string;
+  LabelingJobArn: string;
   LabelAttributeName?: string;
-  InputConfig?: LabelingJobInputConfig;
-  OutputConfig?: LabelingJobOutputConfig;
-  RoleArn?: string;
+  InputConfig: LabelingJobInputConfig & {
+    DataSource: LabelingJobDataSource & {
+      S3DataSource: LabelingJobS3DataSource & { ManifestS3Uri: S3Uri };
+      SnsDataSource: LabelingJobSnsDataSource & { SnsTopicArn: SnsTopicArn };
+    };
+  };
+  OutputConfig: LabelingJobOutputConfig & { S3OutputPath: S3Uri };
+  RoleArn: string;
   LabelCategoryConfigS3Uri?: string;
   StoppingConditions?: LabelingJobStoppingConditions;
-  LabelingJobAlgorithmsConfig?: LabelingJobAlgorithmsConfig;
-  HumanTaskConfig?: HumanTaskConfig;
-  Tags?: Tag[];
-  LabelingJobOutput?: LabelingJobOutput;
+  LabelingJobAlgorithmsConfig?: LabelingJobAlgorithmsConfig & {
+    LabelingJobAlgorithmSpecificationArn: LabelingJobAlgorithmSpecificationArn;
+    LabelingJobResourceConfig: LabelingJobResourceConfig & {
+      VpcConfig: VpcConfig & {
+        SecurityGroupIds: VpcSecurityGroupIds;
+        Subnets: Subnets;
+      };
+    };
+  };
+  HumanTaskConfig: HumanTaskConfig & {
+    WorkteamArn: WorkteamArn;
+    UiConfig: UiConfig;
+    TaskTitle: TaskTitle;
+    TaskDescription: TaskDescription;
+    NumberOfHumanWorkersPerDataObject: NumberOfHumanWorkersPerDataObject;
+    TaskTimeLimitInSeconds: TaskTimeLimitInSeconds;
+    AnnotationConsolidationConfig: AnnotationConsolidationConfig & {
+      AnnotationConsolidationLambdaArn: LambdaFunctionArn;
+    };
+  };
+  Tags?: (Tag & { Key: TagKey; Value: TagValue })[];
+  LabelingJobOutput?: LabelingJobOutput & { OutputDatasetS3Uri: S3Uri };
 }
 export const DescribeLabelingJobResponse = S.suspend(() =>
   S.Struct({
@@ -26305,16 +26939,16 @@ export const DescribeLabelingJobResponse = S.suspend(() =>
   identifier: "DescribeLabelingJobResponse",
 }) as any as S.Schema<DescribeLabelingJobResponse>;
 export interface DescribeModelCardExportJobResponse {
-  ModelCardExportJobName?: string;
-  ModelCardExportJobArn?: string;
-  Status?: ModelCardExportJobStatus;
-  ModelCardName?: string;
-  ModelCardVersion?: number;
-  OutputConfig?: ModelCardExportOutputConfig;
-  CreatedAt?: Date;
-  LastModifiedAt?: Date;
+  ModelCardExportJobName: string;
+  ModelCardExportJobArn: string;
+  Status: ModelCardExportJobStatus;
+  ModelCardName: string;
+  ModelCardVersion: number;
+  OutputConfig: ModelCardExportOutputConfig & { S3OutputPath: S3Uri };
+  CreatedAt: Date;
+  LastModifiedAt: Date;
   FailureReason?: string;
-  ExportArtifacts?: ModelCardExportArtifacts;
+  ExportArtifacts?: ModelCardExportArtifacts & { S3ExportArtifacts: S3Uri };
 }
 export const DescribeModelCardExportJobResponse = S.suspend(() =>
   S.Struct({
@@ -26333,16 +26967,65 @@ export const DescribeModelCardExportJobResponse = S.suspend(() =>
   identifier: "DescribeModelCardExportJobResponse",
 }) as any as S.Schema<DescribeModelCardExportJobResponse>;
 export interface DescribeMonitoringScheduleResponse {
-  MonitoringScheduleArn?: string;
-  MonitoringScheduleName?: string;
-  MonitoringScheduleStatus?: ScheduleStatus;
+  MonitoringScheduleArn: string;
+  MonitoringScheduleName: string;
+  MonitoringScheduleStatus: ScheduleStatus;
   MonitoringType?: MonitoringType;
   FailureReason?: string;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
-  MonitoringScheduleConfig?: MonitoringScheduleConfig;
+  CreationTime: Date;
+  LastModifiedTime: Date;
+  MonitoringScheduleConfig: MonitoringScheduleConfig & {
+    ScheduleConfig: ScheduleConfig & { ScheduleExpression: ScheduleExpression };
+    MonitoringJobDefinition: MonitoringJobDefinition & {
+      MonitoringInputs: (MonitoringInput & {
+        EndpointInput: EndpointInput & {
+          EndpointName: EndpointName;
+          LocalPath: ProcessingLocalPath;
+        };
+        BatchTransformInput: BatchTransformInput & {
+          DataCapturedDestinationS3Uri: DestinationS3Uri;
+          DatasetFormat: MonitoringDatasetFormat;
+          LocalPath: ProcessingLocalPath;
+        };
+      })[];
+      MonitoringOutputConfig: MonitoringOutputConfig & {
+        MonitoringOutputs: (MonitoringOutput & {
+          S3Output: MonitoringS3Output & {
+            S3Uri: MonitoringS3Uri;
+            LocalPath: ProcessingLocalPath;
+          };
+        })[];
+      };
+      MonitoringResources: MonitoringResources & {
+        ClusterConfig: MonitoringClusterConfig & {
+          InstanceCount: ProcessingInstanceCount;
+          InstanceType: ProcessingInstanceType;
+          VolumeSizeInGB: ProcessingVolumeSizeInGB;
+        };
+      };
+      MonitoringAppSpecification: MonitoringAppSpecification & {
+        ImageUri: ImageUri;
+      };
+      RoleArn: RoleArn;
+      StoppingCondition: MonitoringStoppingCondition & {
+        MaxRuntimeInSeconds: MonitoringMaxRuntimeInSeconds;
+      };
+      NetworkConfig: NetworkConfig & {
+        VpcConfig: VpcConfig & {
+          SecurityGroupIds: VpcSecurityGroupIds;
+          Subnets: Subnets;
+        };
+      };
+    };
+  };
   EndpointName?: string;
-  LastMonitoringExecutionSummary?: MonitoringExecutionSummary;
+  LastMonitoringExecutionSummary?: MonitoringExecutionSummary & {
+    MonitoringScheduleName: MonitoringScheduleName;
+    ScheduledTime: Date;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    MonitoringExecutionStatus: ExecutionStatus;
+  };
 }
 export const DescribeMonitoringScheduleResponse = S.suspend(() =>
   S.Struct({
@@ -26412,24 +27095,33 @@ export const OptimizationConfig = S.Union(
 export type OptimizationConfigs = OptimizationConfig[];
 export const OptimizationConfigs = S.Array(OptimizationConfig);
 export interface DescribeOptimizationJobResponse {
-  OptimizationJobArn?: string;
-  OptimizationJobStatus?: OptimizationJobStatus;
+  OptimizationJobArn: string;
+  OptimizationJobStatus: OptimizationJobStatus;
   OptimizationStartTime?: Date;
   OptimizationEndTime?: Date;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
+  CreationTime: Date;
+  LastModifiedTime: Date;
   FailureReason?: string;
-  OptimizationJobName?: string;
-  ModelSource?: OptimizationJobModelSource;
+  OptimizationJobName: string;
+  ModelSource: OptimizationJobModelSource & {
+    S3: OptimizationJobModelSourceS3 & {
+      ModelAccessConfig: OptimizationModelAccessConfig & {
+        AcceptEula: OptimizationModelAcceptEula;
+      };
+    };
+  };
   OptimizationEnvironment?: { [key: string]: string };
-  DeploymentInstanceType?: OptimizationJobDeploymentInstanceType;
+  DeploymentInstanceType: OptimizationJobDeploymentInstanceType;
   MaxInstanceCount?: number;
-  OptimizationConfigs?: OptimizationConfig[];
-  OutputConfig?: OptimizationJobOutputConfig;
+  OptimizationConfigs: OptimizationConfig[];
+  OutputConfig: OptimizationJobOutputConfig & { S3OutputLocation: S3Uri };
   OptimizationOutput?: OptimizationOutput;
-  RoleArn?: string;
-  StoppingCondition?: StoppingCondition;
-  VpcConfig?: OptimizationVpcConfig;
+  RoleArn: string;
+  StoppingCondition: StoppingCondition;
+  VpcConfig?: OptimizationVpcConfig & {
+    SecurityGroupIds: OptimizationVpcSecurityGroupIds;
+    Subnets: OptimizationVpcSubnets;
+  };
 }
 export const DescribeOptimizationJobResponse = S.suspend(() =>
   S.Struct({
@@ -26523,8 +27215,12 @@ export interface DescribePipelineExecutionResponse {
   LastModifiedTime?: Date;
   CreatedBy?: UserContext;
   LastModifiedBy?: UserContext;
-  ParallelismConfiguration?: ParallelismConfiguration;
-  SelectiveExecutionConfig?: SelectiveExecutionConfig;
+  ParallelismConfiguration?: ParallelismConfiguration & {
+    MaxParallelExecutionSteps: MaxParallelExecutionSteps;
+  };
+  SelectiveExecutionConfig?: SelectiveExecutionConfig & {
+    SelectedSteps: (SelectedStep & { StepName: String256 })[];
+  };
   PipelineVersionId?: number;
   MLflowConfig?: MLflowConfiguration;
 }
@@ -26552,7 +27248,7 @@ export const DescribePipelineExecutionResponse = S.suspend(() =>
   identifier: "DescribePipelineExecutionResponse",
 }) as any as S.Schema<DescribePipelineExecutionResponse>;
 export interface DescribeReservedCapacityResponse {
-  ReservedCapacityArn?: string;
+  ReservedCapacityArn: string;
   ReservedCapacityType?: ReservedCapacityType;
   Status?: ReservedCapacityStatus;
   AvailabilityZone?: string;
@@ -26560,11 +27256,14 @@ export interface DescribeReservedCapacityResponse {
   DurationMinutes?: number;
   StartTime?: Date;
   EndTime?: Date;
-  InstanceType?: ReservedCapacityInstanceType;
-  TotalInstanceCount?: number;
+  InstanceType: ReservedCapacityInstanceType;
+  TotalInstanceCount: number;
   AvailableInstanceCount?: number;
   InUseInstanceCount?: number;
-  UltraServerSummary?: UltraServerSummary;
+  UltraServerSummary?: UltraServerSummary & {
+    UltraServerType: UltraServerType;
+    InstanceType: ReservedCapacityInstanceType;
+  };
 }
 export const DescribeReservedCapacityResponse = S.suspend(() =>
   S.Struct({
@@ -26586,7 +27285,7 @@ export const DescribeReservedCapacityResponse = S.suspend(() =>
   identifier: "DescribeReservedCapacityResponse",
 }) as any as S.Schema<DescribeReservedCapacityResponse>;
 export interface DescribeSubscribedWorkteamResponse {
-  SubscribedWorkteam?: SubscribedWorkteam;
+  SubscribedWorkteam: SubscribedWorkteam & { WorkteamArn: WorkteamArn };
 }
 export const DescribeSubscribedWorkteamResponse = S.suspend(() =>
   S.Struct({ SubscribedWorkteam: S.optional(SubscribedWorkteam) }).pipe(ns),
@@ -26660,48 +27359,102 @@ export const DebugHookConfig = S.suspend(() =>
   identifier: "DebugHookConfig",
 }) as any as S.Schema<DebugHookConfig>;
 export interface DescribeTrainingJobResponse {
-  TrainingJobName?: string;
-  TrainingJobArn?: string;
+  TrainingJobName: string;
+  TrainingJobArn: string;
   TuningJobArn?: string;
   LabelingJobArn?: string;
   AutoMLJobArn?: string;
-  ModelArtifacts?: ModelArtifacts;
-  TrainingJobStatus?: TrainingJobStatus;
-  SecondaryStatus?: SecondaryStatus;
+  ModelArtifacts: ModelArtifacts & { S3ModelArtifacts: S3Uri };
+  TrainingJobStatus: TrainingJobStatus;
+  SecondaryStatus: SecondaryStatus;
   FailureReason?: string;
   HyperParameters?: { [key: string]: string };
-  AlgorithmSpecification?: AlgorithmSpecification;
+  AlgorithmSpecification?: AlgorithmSpecification & {
+    TrainingInputMode: TrainingInputMode;
+    MetricDefinitions: (MetricDefinition & {
+      Name: MetricName;
+      Regex: MetricRegex;
+    })[];
+    TrainingImageConfig: TrainingImageConfig & {
+      TrainingRepositoryAccessMode: TrainingRepositoryAccessMode;
+      TrainingRepositoryAuthConfig: TrainingRepositoryAuthConfig & {
+        TrainingRepositoryCredentialsProviderArn: TrainingRepositoryCredentialsProviderArn;
+      };
+    };
+  };
   RoleArn?: string;
-  InputDataConfig?: Channel[];
-  OutputDataConfig?: OutputDataConfig;
-  ResourceConfig?: ResourceConfig;
-  WarmPoolStatus?: WarmPoolStatus;
-  VpcConfig?: VpcConfig;
-  StoppingCondition?: StoppingCondition;
-  CreationTime?: Date;
+  InputDataConfig?: (Channel & {
+    ChannelName: ChannelName;
+    DataSource: DataSource & {
+      S3DataSource: S3DataSource & {
+        S3DataType: S3DataType;
+        S3Uri: S3Uri;
+        ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+        HubAccessConfig: HubAccessConfig & { HubContentArn: HubContentArn };
+      };
+      FileSystemDataSource: FileSystemDataSource & {
+        FileSystemId: FileSystemId;
+        FileSystemAccessMode: FileSystemAccessMode;
+        FileSystemType: FileSystemType;
+        DirectoryPath: DirectoryPath;
+      };
+    };
+    ShuffleConfig: ShuffleConfig & { Seed: Seed };
+  })[];
+  OutputDataConfig?: OutputDataConfig & { S3OutputPath: S3Uri };
+  ResourceConfig?: ResourceConfig & {
+    InstanceGroups: (InstanceGroup & {
+      InstanceType: TrainingInstanceType;
+      InstanceCount: TrainingInstanceCount;
+      InstanceGroupName: InstanceGroupName;
+    })[];
+    InstancePlacementConfig: InstancePlacementConfig & {
+      PlacementSpecifications: (PlacementSpecification & {
+        InstanceCount: TrainingInstanceCount;
+      })[];
+    };
+  };
+  WarmPoolStatus?: WarmPoolStatus & { Status: WarmPoolResourceStatus };
+  VpcConfig?: VpcConfig & {
+    SecurityGroupIds: VpcSecurityGroupIds;
+    Subnets: Subnets;
+  };
+  StoppingCondition: StoppingCondition;
+  CreationTime: Date;
   TrainingStartTime?: Date;
   TrainingEndTime?: Date;
   LastModifiedTime?: Date;
-  SecondaryStatusTransitions?: SecondaryStatusTransition[];
+  SecondaryStatusTransitions?: (SecondaryStatusTransition & {
+    Status: SecondaryStatus;
+    StartTime: Date;
+  })[];
   FinalMetricDataList?: MetricData[];
   EnableNetworkIsolation?: boolean;
   EnableInterContainerTrafficEncryption?: boolean;
   EnableManagedSpotTraining?: boolean;
-  CheckpointConfig?: CheckpointConfig;
+  CheckpointConfig?: CheckpointConfig & { S3Uri: S3Uri };
   TrainingTimeInSeconds?: number;
   BillableTimeInSeconds?: number;
   BillableTokenCount?: number;
-  DebugHookConfig?: DebugHookConfig;
+  DebugHookConfig?: DebugHookConfig & { S3OutputPath: S3Uri };
   ExperimentConfig?: ExperimentConfig;
-  DebugRuleConfigurations?: DebugRuleConfiguration[];
-  TensorBoardOutputConfig?: TensorBoardOutputConfig;
+  DebugRuleConfigurations?: (DebugRuleConfiguration & {
+    RuleConfigurationName: RuleConfigurationName;
+    RuleEvaluatorImage: AlgorithmImage;
+  })[];
+  TensorBoardOutputConfig?: TensorBoardOutputConfig & { S3OutputPath: S3Uri };
   DebugRuleEvaluationStatuses?: DebugRuleEvaluationStatus[];
   ProfilerConfig?: ProfilerConfig;
-  ProfilerRuleConfigurations?: ProfilerRuleConfiguration[];
+  ProfilerRuleConfigurations?: (ProfilerRuleConfiguration & {
+    RuleConfigurationName: RuleConfigurationName;
+    RuleEvaluatorImage: AlgorithmImage;
+  })[];
   ProfilerRuleEvaluationStatuses?: ProfilerRuleEvaluationStatus[];
   ProfilingStatus?: ProfilingStatus;
   Environment?: { [key: string]: string };
-  RetryStrategy?: RetryStrategy;
+  RetryStrategy?: RetryStrategy & {
+    MaximumRetryAttempts: MaximumRetryAttempts;
+  };
   RemoteDebugConfig?: RemoteDebugConfig;
   InfraCheckConfig?: InfraCheckConfig;
   ServerlessJobConfig?: ServerlessJobConfig;
@@ -26774,9 +27527,9 @@ export const DescribeTrainingJobResponse = S.suspend(() =>
   identifier: "DescribeTrainingJobResponse",
 }) as any as S.Schema<DescribeTrainingJobResponse>;
 export interface DescribeTrainingPlanResponse {
-  TrainingPlanArn?: string;
-  TrainingPlanName?: string;
-  Status?: TrainingPlanStatus;
+  TrainingPlanArn: string;
+  TrainingPlanName: string;
+  Status: TrainingPlanStatus;
   StatusMessage?: string;
   DurationHours?: number;
   DurationMinutes?: number;
@@ -26791,7 +27544,12 @@ export interface DescribeTrainingPlanResponse {
   AvailableSpareInstanceCount?: number;
   TotalUltraServerCount?: number;
   TargetResources?: SageMakerResourceName[];
-  ReservedCapacitySummaries?: ReservedCapacitySummary[];
+  ReservedCapacitySummaries?: (ReservedCapacitySummary & {
+    ReservedCapacityArn: ReservedCapacityArn;
+    InstanceType: ReservedCapacityInstanceType;
+    TotalInstanceCount: TotalInstanceCount;
+    Status: ReservedCapacityStatus;
+  })[];
 }
 export const DescribeTrainingPlanResponse = S.suspend(() =>
   S.Struct({
@@ -26822,7 +27580,7 @@ export interface DescribeTrialResponse {
   TrialArn?: string;
   DisplayName?: string;
   ExperimentName?: string;
-  Source?: TrialSource;
+  Source?: TrialSource & { SourceArn: TrialSourceArn };
   CreationTime?: Date;
   CreatedBy?: UserContext;
   LastModifiedTime?: Date;
@@ -26851,7 +27609,7 @@ export interface DescribeTrialComponentResponse {
   TrialComponentName?: string;
   TrialComponentArn?: string;
   DisplayName?: string;
-  Source?: TrialComponentSource;
+  Source?: TrialComponentSource & { SourceArn: TrialComponentSourceArn };
   Status?: TrialComponentStatus;
   StartTime?: Date;
   EndTime?: Date;
@@ -26860,12 +27618,20 @@ export interface DescribeTrialComponentResponse {
   LastModifiedTime?: Date;
   LastModifiedBy?: UserContext;
   Parameters?: { [key: string]: TrialComponentParameterValue };
-  InputArtifacts?: { [key: string]: TrialComponentArtifact };
-  OutputArtifacts?: { [key: string]: TrialComponentArtifact };
+  InputArtifacts?: {
+    [key: string]: TrialComponentArtifact & {
+      Value: TrialComponentArtifactValue;
+    };
+  };
+  OutputArtifacts?: {
+    [key: string]: TrialComponentArtifact & {
+      Value: TrialComponentArtifactValue;
+    };
+  };
   MetadataProperties?: MetadataProperties;
   Metrics?: TrialComponentMetricSummary[];
   LineageGroupArn?: string;
-  Sources?: TrialComponentSource[];
+  Sources?: (TrialComponentSource & { SourceArn: TrialComponentSourceArn })[];
 }
 export const DescribeTrialComponentResponse = S.suspend(() =>
   S.Struct({
@@ -26894,7 +27660,18 @@ export const DescribeTrialComponentResponse = S.suspend(() =>
   identifier: "DescribeTrialComponentResponse",
 }) as any as S.Schema<DescribeTrialComponentResponse>;
 export interface DescribeWorkteamResponse {
-  Workteam?: Workteam;
+  Workteam: Workteam & {
+    WorkteamName: WorkteamName;
+    MemberDefinitions: (MemberDefinition & {
+      CognitoMemberDefinition: CognitoMemberDefinition & {
+        UserPool: CognitoUserPool;
+        UserGroup: CognitoUserGroup;
+        ClientId: ClientId;
+      };
+    })[];
+    WorkteamArn: WorkteamArn;
+    Description: String200;
+  };
 }
 export const DescribeWorkteamResponse = S.suspend(() =>
   S.Struct({ Workteam: S.optional(Workteam) }).pipe(ns),
@@ -26902,14 +27679,27 @@ export const DescribeWorkteamResponse = S.suspend(() =>
   identifier: "DescribeWorkteamResponse",
 }) as any as S.Schema<DescribeWorkteamResponse>;
 export interface GetDeviceFleetReportResponse {
-  DeviceFleetArn?: string;
-  DeviceFleetName?: string;
-  OutputConfig?: EdgeOutputConfig;
+  DeviceFleetArn: string;
+  DeviceFleetName: string;
+  OutputConfig?: EdgeOutputConfig & { S3OutputLocation: S3Uri };
   Description?: string;
   ReportGenerated?: Date;
-  DeviceStats?: DeviceStats;
-  AgentVersions?: AgentVersion[];
-  ModelStats?: EdgeModelStat[];
+  DeviceStats?: DeviceStats & {
+    ConnectedDeviceCount: number;
+    RegisteredDeviceCount: number;
+  };
+  AgentVersions?: (AgentVersion & {
+    Version: EdgeVersion;
+    AgentCount: number;
+  })[];
+  ModelStats?: (EdgeModelStat & {
+    ModelName: EntityName;
+    ModelVersion: EdgeVersion;
+    OfflineDeviceCount: number;
+    ConnectedDeviceCount: number;
+    ActiveDeviceCount: number;
+    SamplingDeviceCount: number;
+  })[];
 }
 export const GetDeviceFleetReportResponse = S.suspend(() =>
   S.Struct({
@@ -26950,7 +27740,9 @@ export const GetSearchSuggestionsRequest = S.suspend(() =>
   identifier: "GetSearchSuggestionsRequest",
 }) as any as S.Schema<GetSearchSuggestionsRequest>;
 export interface ListActionsResponse {
-  ActionSummaries?: ActionSummary[];
+  ActionSummaries?: (ActionSummary & {
+    Source: ActionSource & { SourceUri: SourceUri };
+  })[];
   NextToken?: string;
 }
 export const ListActionsResponse = S.suspend(() =>
@@ -26962,7 +27754,12 @@ export const ListActionsResponse = S.suspend(() =>
   identifier: "ListActionsResponse",
 }) as any as S.Schema<ListActionsResponse>;
 export interface ListAlgorithmsOutput {
-  AlgorithmSummaryList?: AlgorithmSummary[];
+  AlgorithmSummaryList: (AlgorithmSummary & {
+    AlgorithmName: EntityName;
+    AlgorithmArn: AlgorithmArn;
+    CreationTime: CreationTime;
+    AlgorithmStatus: AlgorithmStatus;
+  })[];
   NextToken?: string;
 }
 export const ListAlgorithmsOutput = S.suspend(() =>
@@ -26975,7 +27772,11 @@ export const ListAlgorithmsOutput = S.suspend(() =>
 }) as any as S.Schema<ListAlgorithmsOutput>;
 export interface ListAppImageConfigsResponse {
   NextToken?: string;
-  AppImageConfigs?: AppImageConfigDetails[];
+  AppImageConfigs?: (AppImageConfigDetails & {
+    KernelGatewayImageConfig: KernelGatewayImageConfig & {
+      KernelSpecs: (KernelSpec & { Name: KernelName })[];
+    };
+  })[];
 }
 export const ListAppImageConfigsResponse = S.suspend(() =>
   S.Struct({
@@ -26997,7 +27798,15 @@ export const ListAppsResponse = S.suspend(() =>
   identifier: "ListAppsResponse",
 }) as any as S.Schema<ListAppsResponse>;
 export interface ListArtifactsResponse {
-  ArtifactSummaries?: ArtifactSummary[];
+  ArtifactSummaries?: (ArtifactSummary & {
+    Source: ArtifactSource & {
+      SourceUri: SourceUri;
+      SourceTypes: (ArtifactSourceType & {
+        SourceIdType: ArtifactSourceIdType;
+        Value: String256;
+      })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const ListArtifactsResponse = S.suspend(() =>
@@ -27021,7 +27830,14 @@ export const ListAssociationsResponse = S.suspend(() =>
   identifier: "ListAssociationsResponse",
 }) as any as S.Schema<ListAssociationsResponse>;
 export interface ListAutoMLJobsResponse {
-  AutoMLJobSummaries?: AutoMLJobSummary[];
+  AutoMLJobSummaries: (AutoMLJobSummary & {
+    AutoMLJobName: AutoMLJobName;
+    AutoMLJobArn: AutoMLJobArn;
+    AutoMLJobStatus: AutoMLJobStatus;
+    AutoMLJobSecondaryStatus: AutoMLJobSecondaryStatus;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListAutoMLJobsResponse = S.suspend(() =>
@@ -27034,7 +27850,13 @@ export const ListAutoMLJobsResponse = S.suspend(() =>
 }) as any as S.Schema<ListAutoMLJobsResponse>;
 export interface ListClusterEventsResponse {
   NextToken?: string;
-  Events?: ClusterEventSummary[];
+  Events?: (ClusterEventSummary & {
+    EventId: EventId;
+    ClusterArn: ClusterArn;
+    ClusterName: ClusterName;
+    ResourceType: ClusterEventResourceType;
+    EventTime: Date;
+  })[];
 }
 export const ListClusterEventsResponse = S.suspend(() =>
   S.Struct({
@@ -27046,7 +27868,15 @@ export const ListClusterEventsResponse = S.suspend(() =>
 }) as any as S.Schema<ListClusterEventsResponse>;
 export interface ListClusterNodesResponse {
   NextToken?: string;
-  ClusterNodeSummaries?: ClusterNodeSummary[];
+  ClusterNodeSummaries: (ClusterNodeSummary & {
+    InstanceGroupName: ClusterInstanceGroupName;
+    InstanceId: string;
+    InstanceType: ClusterInstanceType;
+    LaunchTime: Date;
+    InstanceStatus: ClusterInstanceStatusDetails & {
+      Status: ClusterInstanceStatus;
+    };
+  })[];
 }
 export const ListClusterNodesResponse = S.suspend(() =>
   S.Struct({
@@ -27058,7 +27888,12 @@ export const ListClusterNodesResponse = S.suspend(() =>
 }) as any as S.Schema<ListClusterNodesResponse>;
 export interface ListClustersResponse {
   NextToken?: string;
-  ClusterSummaries?: ClusterSummary[];
+  ClusterSummaries: (ClusterSummary & {
+    ClusterArn: ClusterArn;
+    ClusterName: ClusterName;
+    CreationTime: Date;
+    ClusterStatus: ClusterStatus;
+  })[];
 }
 export const ListClustersResponse = S.suspend(() =>
   S.Struct({
@@ -27069,7 +27904,13 @@ export const ListClustersResponse = S.suspend(() =>
   identifier: "ListClustersResponse",
 }) as any as S.Schema<ListClustersResponse>;
 export interface ListClusterSchedulerConfigsResponse {
-  ClusterSchedulerConfigSummaries?: ClusterSchedulerConfigSummary[];
+  ClusterSchedulerConfigSummaries?: (ClusterSchedulerConfigSummary & {
+    ClusterSchedulerConfigArn: ClusterSchedulerConfigArn;
+    ClusterSchedulerConfigId: ClusterSchedulerConfigId;
+    Name: EntityName;
+    CreationTime: Date;
+    Status: SchedulerResourceStatus;
+  })[];
   NextToken?: string;
 }
 export const ListClusterSchedulerConfigsResponse = S.suspend(() =>
@@ -27083,7 +27924,13 @@ export const ListClusterSchedulerConfigsResponse = S.suspend(() =>
   identifier: "ListClusterSchedulerConfigsResponse",
 }) as any as S.Schema<ListClusterSchedulerConfigsResponse>;
 export interface ListCodeRepositoriesOutput {
-  CodeRepositorySummaryList?: CodeRepositorySummary[];
+  CodeRepositorySummaryList: (CodeRepositorySummary & {
+    CodeRepositoryName: EntityName;
+    CodeRepositoryArn: CodeRepositoryArn;
+    CreationTime: CreationTime;
+    LastModifiedTime: LastModifiedTime;
+    GitConfig: GitConfig & { RepositoryUrl: GitConfigUrl };
+  })[];
   NextToken?: string;
 }
 export const ListCodeRepositoriesOutput = S.suspend(() =>
@@ -27095,7 +27942,12 @@ export const ListCodeRepositoriesOutput = S.suspend(() =>
   identifier: "ListCodeRepositoriesOutput",
 }) as any as S.Schema<ListCodeRepositoriesOutput>;
 export interface ListCompilationJobsResponse {
-  CompilationJobSummaries?: CompilationJobSummary[];
+  CompilationJobSummaries: (CompilationJobSummary & {
+    CompilationJobName: EntityName;
+    CompilationJobArn: CompilationJobArn;
+    CreationTime: CreationTime;
+    CompilationJobStatus: CompilationJobStatus;
+  })[];
   NextToken?: string;
 }
 export const ListCompilationJobsResponse = S.suspend(() =>
@@ -27107,7 +27959,28 @@ export const ListCompilationJobsResponse = S.suspend(() =>
   identifier: "ListCompilationJobsResponse",
 }) as any as S.Schema<ListCompilationJobsResponse>;
 export interface ListComputeQuotasResponse {
-  ComputeQuotaSummaries?: ComputeQuotaSummary[];
+  ComputeQuotaSummaries?: (ComputeQuotaSummary & {
+    ComputeQuotaArn: ComputeQuotaArn;
+    ComputeQuotaId: ComputeQuotaId;
+    Name: EntityName;
+    Status: SchedulerResourceStatus;
+    ComputeQuotaTarget: ComputeQuotaTarget & {
+      TeamName: ComputeQuotaTargetTeamName;
+    };
+    CreationTime: Date;
+    ComputeQuotaConfig: ComputeQuotaConfig & {
+      ComputeQuotaResources: (ComputeQuotaResourceConfig & {
+        InstanceType: ClusterInstanceType;
+        AcceleratorPartition: AcceleratorPartitionConfig & {
+          Type: MIGProfileType;
+          Count: number;
+        };
+      })[];
+      ResourceSharingConfig: ResourceSharingConfig & {
+        Strategy: ResourceSharingStrategy;
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListComputeQuotasResponse = S.suspend(() =>
@@ -27119,7 +27992,9 @@ export const ListComputeQuotasResponse = S.suspend(() =>
   identifier: "ListComputeQuotasResponse",
 }) as any as S.Schema<ListComputeQuotasResponse>;
 export interface ListContextsResponse {
-  ContextSummaries?: ContextSummary[];
+  ContextSummaries?: (ContextSummary & {
+    Source: ContextSource & { SourceUri: SourceUri };
+  })[];
   NextToken?: string;
 }
 export const ListContextsResponse = S.suspend(() =>
@@ -27131,7 +28006,12 @@ export const ListContextsResponse = S.suspend(() =>
   identifier: "ListContextsResponse",
 }) as any as S.Schema<ListContextsResponse>;
 export interface ListDataQualityJobDefinitionsResponse {
-  JobDefinitionSummaries?: MonitoringJobDefinitionSummary[];
+  JobDefinitionSummaries: (MonitoringJobDefinitionSummary & {
+    MonitoringJobDefinitionName: MonitoringJobDefinitionName;
+    MonitoringJobDefinitionArn: MonitoringJobDefinitionArn;
+    CreationTime: Date;
+    EndpointName: EndpointName;
+  })[];
   NextToken?: string;
 }
 export const ListDataQualityJobDefinitionsResponse = S.suspend(() =>
@@ -27143,7 +28023,10 @@ export const ListDataQualityJobDefinitionsResponse = S.suspend(() =>
   identifier: "ListDataQualityJobDefinitionsResponse",
 }) as any as S.Schema<ListDataQualityJobDefinitionsResponse>;
 export interface ListDeviceFleetsResponse {
-  DeviceFleetSummaries?: DeviceFleetSummary[];
+  DeviceFleetSummaries: (DeviceFleetSummary & {
+    DeviceFleetArn: DeviceFleetArn;
+    DeviceFleetName: EntityName;
+  })[];
   NextToken?: string;
 }
 export const ListDeviceFleetsResponse = S.suspend(() =>
@@ -27167,7 +28050,14 @@ export const ListDomainsResponse = S.suspend(() =>
   identifier: "ListDomainsResponse",
 }) as any as S.Schema<ListDomainsResponse>;
 export interface ListEdgeDeploymentPlansResponse {
-  EdgeDeploymentPlanSummaries?: EdgeDeploymentPlanSummary[];
+  EdgeDeploymentPlanSummaries: (EdgeDeploymentPlanSummary & {
+    EdgeDeploymentPlanArn: EdgeDeploymentPlanArn;
+    EdgeDeploymentPlanName: EntityName;
+    DeviceFleetName: EntityName;
+    EdgeDeploymentSuccess: number;
+    EdgeDeploymentPending: number;
+    EdgeDeploymentFailed: number;
+  })[];
   NextToken?: string;
 }
 export const ListEdgeDeploymentPlansResponse = S.suspend(() =>
@@ -27179,7 +28069,11 @@ export const ListEdgeDeploymentPlansResponse = S.suspend(() =>
   identifier: "ListEdgeDeploymentPlansResponse",
 }) as any as S.Schema<ListEdgeDeploymentPlansResponse>;
 export interface ListEdgePackagingJobsResponse {
-  EdgePackagingJobSummaries?: EdgePackagingJobSummary[];
+  EdgePackagingJobSummaries: (EdgePackagingJobSummary & {
+    EdgePackagingJobArn: EdgePackagingJobArn;
+    EdgePackagingJobName: EntityName;
+    EdgePackagingJobStatus: EdgePackagingJobStatus;
+  })[];
   NextToken?: string;
 }
 export const ListEdgePackagingJobsResponse = S.suspend(() =>
@@ -27191,7 +28085,11 @@ export const ListEdgePackagingJobsResponse = S.suspend(() =>
   identifier: "ListEdgePackagingJobsResponse",
 }) as any as S.Schema<ListEdgePackagingJobsResponse>;
 export interface ListEndpointConfigsOutput {
-  EndpointConfigs?: EndpointConfigSummary[];
+  EndpointConfigs: (EndpointConfigSummary & {
+    EndpointConfigName: EndpointConfigName;
+    EndpointConfigArn: EndpointConfigArn;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListEndpointConfigsOutput = S.suspend(() =>
@@ -27203,7 +28101,13 @@ export const ListEndpointConfigsOutput = S.suspend(() =>
   identifier: "ListEndpointConfigsOutput",
 }) as any as S.Schema<ListEndpointConfigsOutput>;
 export interface ListEndpointsOutput {
-  Endpoints?: EndpointSummary[];
+  Endpoints: (EndpointSummary & {
+    EndpointName: EndpointName;
+    EndpointArn: EndpointArn;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    EndpointStatus: EndpointStatus;
+  })[];
   NextToken?: string;
 }
 export const ListEndpointsOutput = S.suspend(() =>
@@ -27215,7 +28119,9 @@ export const ListEndpointsOutput = S.suspend(() =>
   identifier: "ListEndpointsOutput",
 }) as any as S.Schema<ListEndpointsOutput>;
 export interface ListExperimentsResponse {
-  ExperimentSummaries?: ExperimentSummary[];
+  ExperimentSummaries?: (ExperimentSummary & {
+    ExperimentSource: ExperimentSource & { SourceArn: ExperimentSourceArn };
+  })[];
   NextToken?: string;
 }
 export const ListExperimentsResponse = S.suspend(() =>
@@ -27227,7 +28133,14 @@ export const ListExperimentsResponse = S.suspend(() =>
   identifier: "ListExperimentsResponse",
 }) as any as S.Schema<ListExperimentsResponse>;
 export interface ListFeatureGroupsResponse {
-  FeatureGroupSummaries?: FeatureGroupSummary[];
+  FeatureGroupSummaries: (FeatureGroupSummary & {
+    FeatureGroupName: FeatureGroupName;
+    FeatureGroupArn: FeatureGroupArn;
+    CreationTime: Date;
+    OfflineStoreStatus: OfflineStoreStatus & {
+      Status: OfflineStoreStatusValue;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListFeatureGroupsResponse = S.suspend(() =>
@@ -27239,7 +28152,12 @@ export const ListFeatureGroupsResponse = S.suspend(() =>
   identifier: "ListFeatureGroupsResponse",
 }) as any as S.Schema<ListFeatureGroupsResponse>;
 export interface ListFlowDefinitionsResponse {
-  FlowDefinitionSummaries?: FlowDefinitionSummary[];
+  FlowDefinitionSummaries: (FlowDefinitionSummary & {
+    FlowDefinitionName: FlowDefinitionName;
+    FlowDefinitionArn: FlowDefinitionArn;
+    FlowDefinitionStatus: FlowDefinitionStatus;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListFlowDefinitionsResponse = S.suspend(() =>
@@ -27251,7 +28169,15 @@ export const ListFlowDefinitionsResponse = S.suspend(() =>
   identifier: "ListFlowDefinitionsResponse",
 }) as any as S.Schema<ListFlowDefinitionsResponse>;
 export interface ListHubContentsResponse {
-  HubContentSummaries?: HubContentInfo[];
+  HubContentSummaries: (HubContentInfo & {
+    HubContentName: HubContentName;
+    HubContentArn: HubContentArn;
+    HubContentVersion: HubContentVersion;
+    HubContentType: HubContentType;
+    DocumentSchemaVersion: DocumentSchemaVersion;
+    HubContentStatus: HubContentStatus;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListHubContentsResponse = S.suspend(() =>
@@ -27263,7 +28189,13 @@ export const ListHubContentsResponse = S.suspend(() =>
   identifier: "ListHubContentsResponse",
 }) as any as S.Schema<ListHubContentsResponse>;
 export interface ListHubsResponse {
-  HubSummaries?: HubInfo[];
+  HubSummaries: (HubInfo & {
+    HubName: HubName;
+    HubArn: HubArn;
+    HubStatus: HubStatus;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListHubsResponse = S.suspend(() =>
@@ -27275,7 +28207,11 @@ export const ListHubsResponse = S.suspend(() =>
   identifier: "ListHubsResponse",
 }) as any as S.Schema<ListHubsResponse>;
 export interface ListHumanTaskUisResponse {
-  HumanTaskUiSummaries?: HumanTaskUiSummary[];
+  HumanTaskUiSummaries: (HumanTaskUiSummary & {
+    HumanTaskUiName: HumanTaskUiName;
+    HumanTaskUiArn: HumanTaskUiArn;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListHumanTaskUisResponse = S.suspend(() =>
@@ -27287,7 +28223,18 @@ export const ListHumanTaskUisResponse = S.suspend(() =>
   identifier: "ListHumanTaskUisResponse",
 }) as any as S.Schema<ListHumanTaskUisResponse>;
 export interface ListHyperParameterTuningJobsResponse {
-  HyperParameterTuningJobSummaries?: HyperParameterTuningJobSummary[];
+  HyperParameterTuningJobSummaries: (HyperParameterTuningJobSummary & {
+    HyperParameterTuningJobName: HyperParameterTuningJobName;
+    HyperParameterTuningJobArn: HyperParameterTuningJobArn;
+    HyperParameterTuningJobStatus: HyperParameterTuningJobStatus;
+    Strategy: HyperParameterTuningJobStrategyType;
+    CreationTime: Date;
+    TrainingJobStatusCounters: TrainingJobStatusCounters;
+    ObjectiveStatusCounters: ObjectiveStatusCounters;
+    ResourceLimits: ResourceLimits & {
+      MaxParallelTrainingJobs: MaxParallelTrainingJobs;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListHyperParameterTuningJobsResponse = S.suspend(() =>
@@ -27301,7 +28248,13 @@ export const ListHyperParameterTuningJobsResponse = S.suspend(() =>
   identifier: "ListHyperParameterTuningJobsResponse",
 }) as any as S.Schema<ListHyperParameterTuningJobsResponse>;
 export interface ListImagesResponse {
-  Images?: Image[];
+  Images?: (Image & {
+    CreationTime: Date;
+    ImageArn: ImageArn;
+    ImageName: ImageName;
+    ImageStatus: ImageStatus;
+    LastModifiedTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListImagesResponse = S.suspend(() =>
@@ -27313,7 +28266,14 @@ export const ListImagesResponse = S.suspend(() =>
   identifier: "ListImagesResponse",
 }) as any as S.Schema<ListImagesResponse>;
 export interface ListImageVersionsResponse {
-  ImageVersions?: ImageVersion[];
+  ImageVersions?: (ImageVersion & {
+    CreationTime: Date;
+    ImageArn: ImageArn;
+    ImageVersionArn: ImageVersionArn;
+    ImageVersionStatus: ImageVersionStatus;
+    LastModifiedTime: Date;
+    Version: ImageVersionNumber;
+  })[];
   NextToken?: string;
 }
 export const ListImageVersionsResponse = S.suspend(() =>
@@ -27325,7 +28285,15 @@ export const ListImageVersionsResponse = S.suspend(() =>
   identifier: "ListImageVersionsResponse",
 }) as any as S.Schema<ListImageVersionsResponse>;
 export interface ListInferenceComponentsOutput {
-  InferenceComponents?: InferenceComponentSummary[];
+  InferenceComponents: (InferenceComponentSummary & {
+    CreationTime: Date;
+    InferenceComponentArn: InferenceComponentArn;
+    InferenceComponentName: InferenceComponentName;
+    EndpointArn: EndpointArn;
+    EndpointName: EndpointName;
+    VariantName: VariantName;
+    LastModifiedTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListInferenceComponentsOutput = S.suspend(() =>
@@ -27337,7 +28305,13 @@ export const ListInferenceComponentsOutput = S.suspend(() =>
   identifier: "ListInferenceComponentsOutput",
 }) as any as S.Schema<ListInferenceComponentsOutput>;
 export interface ListInferenceExperimentsResponse {
-  InferenceExperiments?: InferenceExperimentSummary[];
+  InferenceExperiments?: (InferenceExperimentSummary & {
+    Name: InferenceExperimentName;
+    Type: InferenceExperimentType;
+    Status: InferenceExperimentStatus;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListInferenceExperimentsResponse = S.suspend(() =>
@@ -27349,7 +28323,16 @@ export const ListInferenceExperimentsResponse = S.suspend(() =>
   identifier: "ListInferenceExperimentsResponse",
 }) as any as S.Schema<ListInferenceExperimentsResponse>;
 export interface ListInferenceRecommendationsJobsResponse {
-  InferenceRecommendationsJobs?: InferenceRecommendationsJob[];
+  InferenceRecommendationsJobs: (InferenceRecommendationsJob & {
+    JobName: RecommendationJobName;
+    JobDescription: RecommendationJobDescription;
+    JobType: RecommendationJobType;
+    JobArn: RecommendationJobArn;
+    Status: RecommendationJobStatus;
+    CreationTime: CreationTime;
+    RoleArn: RoleArn;
+    LastModifiedTime: LastModifiedTime;
+  })[];
   NextToken?: string;
 }
 export const ListInferenceRecommendationsJobsResponse = S.suspend(() =>
@@ -27361,7 +28344,22 @@ export const ListInferenceRecommendationsJobsResponse = S.suspend(() =>
   identifier: "ListInferenceRecommendationsJobsResponse",
 }) as any as S.Schema<ListInferenceRecommendationsJobsResponse>;
 export interface ListLabelingJobsResponse {
-  LabelingJobSummaryList?: LabelingJobSummary[];
+  LabelingJobSummaryList?: (LabelingJobSummary & {
+    LabelingJobName: LabelingJobName;
+    LabelingJobArn: LabelingJobArn;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    LabelingJobStatus: LabelingJobStatus;
+    LabelCounters: LabelCounters;
+    WorkteamArn: WorkteamArn;
+    LabelingJobOutput: LabelingJobOutput & { OutputDatasetS3Uri: S3Uri };
+    InputConfig: LabelingJobInputConfig & {
+      DataSource: LabelingJobDataSource & {
+        S3DataSource: LabelingJobS3DataSource & { ManifestS3Uri: S3Uri };
+        SnsDataSource: LabelingJobSnsDataSource & { SnsTopicArn: SnsTopicArn };
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListLabelingJobsResponse = S.suspend(() =>
@@ -27409,7 +28407,15 @@ export const ListMlflowTrackingServersResponse = S.suspend(() =>
   identifier: "ListMlflowTrackingServersResponse",
 }) as any as S.Schema<ListMlflowTrackingServersResponse>;
 export interface ListModelCardExportJobsResponse {
-  ModelCardExportJobSummaries?: ModelCardExportJobSummary[];
+  ModelCardExportJobSummaries: (ModelCardExportJobSummary & {
+    ModelCardExportJobName: EntityName;
+    ModelCardExportJobArn: ModelCardExportJobArn;
+    Status: ModelCardExportJobStatus;
+    ModelCardName: EntityName;
+    ModelCardVersion: number;
+    CreatedAt: Date;
+    LastModifiedAt: Date;
+  })[];
   NextToken?: string;
 }
 export const ListModelCardExportJobsResponse = S.suspend(() =>
@@ -27421,7 +28427,12 @@ export const ListModelCardExportJobsResponse = S.suspend(() =>
   identifier: "ListModelCardExportJobsResponse",
 }) as any as S.Schema<ListModelCardExportJobsResponse>;
 export interface ListModelCardsResponse {
-  ModelCardSummaries?: ModelCardSummary[];
+  ModelCardSummaries: (ModelCardSummary & {
+    ModelCardName: EntityName;
+    ModelCardArn: ModelCardArn;
+    ModelCardStatus: ModelCardStatus;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListModelCardsResponse = S.suspend(() =>
@@ -27433,7 +28444,13 @@ export const ListModelCardsResponse = S.suspend(() =>
   identifier: "ListModelCardsResponse",
 }) as any as S.Schema<ListModelCardsResponse>;
 export interface ListModelCardVersionsResponse {
-  ModelCardVersionSummaryList?: ModelCardVersionSummary[];
+  ModelCardVersionSummaryList: (ModelCardVersionSummary & {
+    ModelCardName: EntityName;
+    ModelCardArn: ModelCardArn;
+    ModelCardStatus: ModelCardStatus;
+    ModelCardVersion: number;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListModelCardVersionsResponse = S.suspend(() =>
@@ -27469,7 +28486,12 @@ export const ListModelMetadataRequest = S.suspend(() =>
   identifier: "ListModelMetadataRequest",
 }) as any as S.Schema<ListModelMetadataRequest>;
 export interface ListModelPackageGroupsOutput {
-  ModelPackageGroupSummaryList?: ModelPackageGroupSummary[];
+  ModelPackageGroupSummaryList: (ModelPackageGroupSummary & {
+    ModelPackageGroupName: EntityName;
+    ModelPackageGroupArn: ModelPackageGroupArn;
+    CreationTime: CreationTime;
+    ModelPackageGroupStatus: ModelPackageGroupStatus;
+  })[];
   NextToken?: string;
 }
 export const ListModelPackageGroupsOutput = S.suspend(() =>
@@ -27481,7 +28503,15 @@ export const ListModelPackageGroupsOutput = S.suspend(() =>
   identifier: "ListModelPackageGroupsOutput",
 }) as any as S.Schema<ListModelPackageGroupsOutput>;
 export interface ListModelPackagesOutput {
-  ModelPackageSummaryList?: ModelPackageSummary[];
+  ModelPackageSummaryList: (ModelPackageSummary & {
+    ModelPackageArn: ModelPackageArn;
+    CreationTime: CreationTime;
+    ModelPackageStatus: ModelPackageStatus;
+    ModelLifeCycle: ModelLifeCycle & {
+      Stage: EntityName;
+      StageStatus: EntityName;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListModelPackagesOutput = S.suspend(() =>
@@ -27493,7 +28523,11 @@ export const ListModelPackagesOutput = S.suspend(() =>
   identifier: "ListModelPackagesOutput",
 }) as any as S.Schema<ListModelPackagesOutput>;
 export interface ListModelsOutput {
-  Models?: ModelSummary[];
+  Models: (ModelSummary & {
+    ModelName: ModelName;
+    ModelArn: ModelArn;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListModelsOutput = S.suspend(() =>
@@ -27505,7 +28539,12 @@ export const ListModelsOutput = S.suspend(() =>
   identifier: "ListModelsOutput",
 }) as any as S.Schema<ListModelsOutput>;
 export interface ListMonitoringAlertHistoryResponse {
-  MonitoringAlertHistory?: MonitoringAlertHistorySummary[];
+  MonitoringAlertHistory?: (MonitoringAlertHistorySummary & {
+    MonitoringScheduleName: MonitoringScheduleName;
+    MonitoringAlertName: MonitoringAlertName;
+    CreationTime: Date;
+    AlertStatus: MonitoringAlertStatus;
+  })[];
   NextToken?: string;
 }
 export const ListMonitoringAlertHistoryResponse = S.suspend(() =>
@@ -27517,7 +28556,13 @@ export const ListMonitoringAlertHistoryResponse = S.suspend(() =>
   identifier: "ListMonitoringAlertHistoryResponse",
 }) as any as S.Schema<ListMonitoringAlertHistoryResponse>;
 export interface ListMonitoringSchedulesResponse {
-  MonitoringScheduleSummaries?: MonitoringScheduleSummary[];
+  MonitoringScheduleSummaries: (MonitoringScheduleSummary & {
+    MonitoringScheduleName: MonitoringScheduleName;
+    MonitoringScheduleArn: MonitoringScheduleArn;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    MonitoringScheduleStatus: ScheduleStatus;
+  })[];
   NextToken?: string;
 }
 export const ListMonitoringSchedulesResponse = S.suspend(() =>
@@ -27530,7 +28575,10 @@ export const ListMonitoringSchedulesResponse = S.suspend(() =>
 }) as any as S.Schema<ListMonitoringSchedulesResponse>;
 export interface ListNotebookInstanceLifecycleConfigsOutput {
   NextToken?: string;
-  NotebookInstanceLifecycleConfigs?: NotebookInstanceLifecycleConfigSummary[];
+  NotebookInstanceLifecycleConfigs?: (NotebookInstanceLifecycleConfigSummary & {
+    NotebookInstanceLifecycleConfigName: NotebookInstanceLifecycleConfigName;
+    NotebookInstanceLifecycleConfigArn: NotebookInstanceLifecycleConfigArn;
+  })[];
 }
 export const ListNotebookInstanceLifecycleConfigsOutput = S.suspend(() =>
   S.Struct({
@@ -27544,7 +28592,10 @@ export const ListNotebookInstanceLifecycleConfigsOutput = S.suspend(() =>
 }) as any as S.Schema<ListNotebookInstanceLifecycleConfigsOutput>;
 export interface ListNotebookInstancesOutput {
   NextToken?: string;
-  NotebookInstances?: NotebookInstanceSummary[];
+  NotebookInstances?: (NotebookInstanceSummary & {
+    NotebookInstanceName: NotebookInstanceName;
+    NotebookInstanceArn: NotebookInstanceArn;
+  })[];
 }
 export const ListNotebookInstancesOutput = S.suspend(() =>
   S.Struct({
@@ -27555,7 +28606,14 @@ export const ListNotebookInstancesOutput = S.suspend(() =>
   identifier: "ListNotebookInstancesOutput",
 }) as any as S.Schema<ListNotebookInstancesOutput>;
 export interface ListOptimizationJobsResponse {
-  OptimizationJobSummaries?: OptimizationJobSummary[];
+  OptimizationJobSummaries: (OptimizationJobSummary & {
+    OptimizationJobName: EntityName;
+    OptimizationJobArn: OptimizationJobArn;
+    CreationTime: CreationTime;
+    OptimizationJobStatus: OptimizationJobStatus;
+    DeploymentInstanceType: OptimizationJobDeploymentInstanceType;
+    OptimizationTypes: OptimizationTypes;
+  })[];
   NextToken?: string;
 }
 export const ListOptimizationJobsResponse = S.suspend(() =>
@@ -27615,7 +28673,12 @@ export const ListPipelineVersionsResponse = S.suspend(() =>
   identifier: "ListPipelineVersionsResponse",
 }) as any as S.Schema<ListPipelineVersionsResponse>;
 export interface ListProcessingJobsResponse {
-  ProcessingJobSummaries?: ProcessingJobSummary[];
+  ProcessingJobSummaries: (ProcessingJobSummary & {
+    ProcessingJobName: ProcessingJobName;
+    ProcessingJobArn: ProcessingJobArn;
+    CreationTime: Date;
+    ProcessingJobStatus: ProcessingJobStatus;
+  })[];
   NextToken?: string;
 }
 export const ListProcessingJobsResponse = S.suspend(() =>
@@ -27627,7 +28690,13 @@ export const ListProcessingJobsResponse = S.suspend(() =>
   identifier: "ListProcessingJobsResponse",
 }) as any as S.Schema<ListProcessingJobsResponse>;
 export interface ListProjectsOutput {
-  ProjectSummaryList?: ProjectSummary[];
+  ProjectSummaryList: (ProjectSummary & {
+    ProjectName: ProjectEntityName;
+    ProjectArn: ProjectArn;
+    ProjectId: ProjectId;
+    CreationTime: Date;
+    ProjectStatus: ProjectStatus;
+  })[];
   NextToken?: string;
 }
 export const ListProjectsOutput = S.suspend(() =>
@@ -27639,7 +28708,12 @@ export const ListProjectsOutput = S.suspend(() =>
   identifier: "ListProjectsOutput",
 }) as any as S.Schema<ListProjectsOutput>;
 export interface ListResourceCatalogsResponse {
-  ResourceCatalogs?: ResourceCatalog[];
+  ResourceCatalogs?: (ResourceCatalog & {
+    ResourceCatalogArn: ResourceCatalogArn;
+    ResourceCatalogName: ResourceCatalogName;
+    Description: ResourceCatalogDescription;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListResourceCatalogsResponse = S.suspend(() =>
@@ -27651,7 +28725,13 @@ export const ListResourceCatalogsResponse = S.suspend(() =>
   identifier: "ListResourceCatalogsResponse",
 }) as any as S.Schema<ListResourceCatalogsResponse>;
 export interface ListStageDevicesResponse {
-  DeviceDeploymentSummaries?: DeviceDeploymentSummary[];
+  DeviceDeploymentSummaries: (DeviceDeploymentSummary & {
+    EdgeDeploymentPlanArn: EdgeDeploymentPlanArn;
+    EdgeDeploymentPlanName: EntityName;
+    StageName: EntityName;
+    DeviceName: DeviceName;
+    DeviceArn: DeviceArn;
+  })[];
   NextToken?: string;
 }
 export const ListStageDevicesResponse = S.suspend(() =>
@@ -27675,7 +28755,13 @@ export const ListStudioLifecycleConfigsResponse = S.suspend(() =>
   identifier: "ListStudioLifecycleConfigsResponse",
 }) as any as S.Schema<ListStudioLifecycleConfigsResponse>;
 export interface ListTrainingJobsResponse {
-  TrainingJobSummaries?: TrainingJobSummary[];
+  TrainingJobSummaries: (TrainingJobSummary & {
+    TrainingJobName: TrainingJobName;
+    TrainingJobArn: TrainingJobArn;
+    CreationTime: Date;
+    TrainingJobStatus: TrainingJobStatus;
+    WarmPoolStatus: WarmPoolStatus & { Status: WarmPoolResourceStatus };
+  })[];
   NextToken?: string;
 }
 export const ListTrainingJobsResponse = S.suspend(() =>
@@ -27687,7 +28773,12 @@ export const ListTrainingJobsResponse = S.suspend(() =>
   identifier: "ListTrainingJobsResponse",
 }) as any as S.Schema<ListTrainingJobsResponse>;
 export interface ListTransformJobsResponse {
-  TransformJobSummaries?: TransformJobSummary[];
+  TransformJobSummaries: (TransformJobSummary & {
+    TransformJobName: TransformJobName;
+    TransformJobArn: TransformJobArn;
+    CreationTime: Date;
+    TransformJobStatus: TransformJobStatus;
+  })[];
   NextToken?: string;
 }
 export const ListTransformJobsResponse = S.suspend(() =>
@@ -27699,7 +28790,11 @@ export const ListTransformJobsResponse = S.suspend(() =>
   identifier: "ListTransformJobsResponse",
 }) as any as S.Schema<ListTransformJobsResponse>;
 export interface ListTrialComponentsResponse {
-  TrialComponentSummaries?: TrialComponentSummary[];
+  TrialComponentSummaries?: (TrialComponentSummary & {
+    TrialComponentSource: TrialComponentSource & {
+      SourceArn: TrialComponentSourceArn;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListTrialComponentsResponse = S.suspend(() =>
@@ -27711,7 +28806,9 @@ export const ListTrialComponentsResponse = S.suspend(() =>
   identifier: "ListTrialComponentsResponse",
 }) as any as S.Schema<ListTrialComponentsResponse>;
 export interface ListTrialsResponse {
-  TrialSummaries?: TrialSummary[];
+  TrialSummaries?: (TrialSummary & {
+    TrialSource: TrialSource & { SourceArn: TrialSourceArn };
+  })[];
   NextToken?: string;
 }
 export const ListTrialsResponse = S.suspend(() =>
@@ -27724,7 +28821,13 @@ export const ListTrialsResponse = S.suspend(() =>
 }) as any as S.Schema<ListTrialsResponse>;
 export interface ListUltraServersByReservedCapacityResponse {
   NextToken?: string;
-  UltraServers?: UltraServer[];
+  UltraServers: (UltraServer & {
+    UltraServerId: NonEmptyString256;
+    UltraServerType: UltraServerType;
+    AvailabilityZone: AvailabilityZone;
+    InstanceType: ReservedCapacityInstanceType;
+    TotalInstanceCount: TotalInstanceCount;
+  })[];
 }
 export const ListUltraServersByReservedCapacityResponse = S.suspend(() =>
   S.Struct({
@@ -27837,7 +28940,7 @@ export const StartPipelineExecutionRequest = S.suspend(() =>
     PipelineExecutionDisplayName: S.optional(S.String),
     PipelineParameters: S.optional(ParameterList),
     PipelineExecutionDescription: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ParallelismConfiguration: S.optional(ParallelismConfiguration),
     SelectiveExecutionConfig: S.optional(SelectiveExecutionConfig),
     PipelineVersionId: S.optional(S.Number),
@@ -27857,7 +28960,7 @@ export const StartPipelineExecutionRequest = S.suspend(() =>
   identifier: "StartPipelineExecutionRequest",
 }) as any as S.Schema<StartPipelineExecutionRequest>;
 export interface StopInferenceExperimentResponse {
-  InferenceExperimentArn?: string;
+  InferenceExperimentArn: string;
 }
 export const StopInferenceExperimentResponse = S.suspend(() =>
   S.Struct({ InferenceExperimentArn: S.optional(S.String) }).pipe(ns),
@@ -27865,7 +28968,7 @@ export const StopInferenceExperimentResponse = S.suspend(() =>
   identifier: "StopInferenceExperimentResponse",
 }) as any as S.Schema<StopInferenceExperimentResponse>;
 export interface UpdateCodeRepositoryOutput {
-  CodeRepositoryArn?: string;
+  CodeRepositoryArn: string;
 }
 export const UpdateCodeRepositoryOutput = S.suspend(() =>
   S.Struct({ CodeRepositoryArn: S.optional(S.String) }).pipe(ns),
@@ -27909,7 +29012,7 @@ export const UpdateDomainRequest = S.suspend(() =>
   identifier: "UpdateDomainRequest",
 }) as any as S.Schema<UpdateDomainRequest>;
 export interface UpdateEndpointOutput {
-  EndpointArn?: string;
+  EndpointArn: string;
 }
 export const UpdateEndpointOutput = S.suspend(() =>
   S.Struct({ EndpointArn: S.optional(S.String) }).pipe(ns),
@@ -27939,7 +29042,7 @@ export const UpdateEndpointWeightsAndCapacitiesInput = S.suspend(() =>
   identifier: "UpdateEndpointWeightsAndCapacitiesInput",
 }) as any as S.Schema<UpdateEndpointWeightsAndCapacitiesInput>;
 export interface UpdateFeatureGroupResponse {
-  FeatureGroupArn?: string;
+  FeatureGroupArn: string;
 }
 export const UpdateFeatureGroupResponse = S.suspend(() =>
   S.Struct({ FeatureGroupArn: S.optional(S.String) }).pipe(ns),
@@ -27947,7 +29050,7 @@ export const UpdateFeatureGroupResponse = S.suspend(() =>
   identifier: "UpdateFeatureGroupResponse",
 }) as any as S.Schema<UpdateFeatureGroupResponse>;
 export interface UpdateTrainingJobResponse {
-  TrainingJobArn?: string;
+  TrainingJobArn: string;
 }
 export const UpdateTrainingJobResponse = S.suspend(() =>
   S.Struct({ TrainingJobArn: S.optional(S.String) }).pipe(ns),
@@ -29675,9 +30778,39 @@ export const BatchAddClusterNodesResponse = S.suspend(() =>
   identifier: "BatchAddClusterNodesResponse",
 }) as any as S.Schema<BatchAddClusterNodesResponse>;
 export interface BatchDescribeModelPackageOutput {
-  ModelPackageSummaries?: { [key: string]: BatchDescribeModelPackageSummary };
+  ModelPackageSummaries?: {
+    [key: string]: BatchDescribeModelPackageSummary & {
+      ModelPackageGroupName: EntityName;
+      ModelPackageArn: ModelPackageArn;
+      CreationTime: CreationTime;
+      InferenceSpecification: InferenceSpecification & {
+        Containers: (ModelPackageContainerDefinition & {
+          ModelDataSource: ModelDataSource & {
+            S3DataSource: S3ModelDataSource & {
+              S3Uri: S3ModelUri;
+              S3DataType: S3ModelDataType;
+              CompressionType: ModelCompressionType;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: InferenceHubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+          };
+          ModelInput: ModelInput & { DataInputConfig: DataInputConfig };
+          AdditionalS3DataSource: AdditionalS3DataSource & {
+            S3DataType: AdditionalS3DataSourceDataType;
+            S3Uri: S3Uri;
+          };
+        })[];
+      };
+      ModelPackageStatus: ModelPackageStatus;
+    };
+  };
   BatchDescribeModelPackageErrorMap?: {
-    [key: string]: BatchDescribeModelPackageError;
+    [key: string]: BatchDescribeModelPackageError & {
+      ErrorCode: string;
+      ErrorResponse: string;
+    };
   };
 }
 export const BatchDescribeModelPackageOutput = S.suspend(() =>
@@ -29811,8 +30944,8 @@ export const CreateClusterRequest = S.suspend(() =>
   identifier: "CreateClusterRequest",
 }) as any as S.Schema<CreateClusterRequest>;
 export interface CreateClusterSchedulerConfigResponse {
-  ClusterSchedulerConfigArn?: string;
-  ClusterSchedulerConfigId?: string;
+  ClusterSchedulerConfigArn: string;
+  ClusterSchedulerConfigId: string;
 }
 export const CreateClusterSchedulerConfigResponse = S.suspend(() =>
   S.Struct({
@@ -29823,7 +30956,7 @@ export const CreateClusterSchedulerConfigResponse = S.suspend(() =>
   identifier: "CreateClusterSchedulerConfigResponse",
 }) as any as S.Schema<CreateClusterSchedulerConfigResponse>;
 export interface CreateCompilationJobResponse {
-  CompilationJobArn?: string;
+  CompilationJobArn: string;
 }
 export const CreateCompilationJobResponse = S.suspend(() =>
   S.Struct({ CompilationJobArn: S.optional(S.String) }).pipe(ns),
@@ -29863,7 +30996,7 @@ export const CreateComputeQuotaRequest = S.suspend(() =>
   identifier: "CreateComputeQuotaRequest",
 }) as any as S.Schema<CreateComputeQuotaRequest>;
 export interface CreateEdgeDeploymentPlanResponse {
-  EdgeDeploymentPlanArn?: string;
+  EdgeDeploymentPlanArn: string;
 }
 export const CreateEdgeDeploymentPlanResponse = S.suspend(() =>
   S.Struct({ EdgeDeploymentPlanArn: S.optional(S.String) }).pipe(ns),
@@ -29967,7 +31100,7 @@ export const CreateFlowDefinitionRequest = S.suspend(() =>
   identifier: "CreateFlowDefinitionRequest",
 }) as any as S.Schema<CreateFlowDefinitionRequest>;
 export interface CreateHubContentPresignedUrlsResponse {
-  AuthorizedUrlConfigs?: AuthorizedUrl[];
+  AuthorizedUrlConfigs: AuthorizedUrl[];
   NextToken?: string;
 }
 export const CreateHubContentPresignedUrlsResponse = S.suspend(() =>
@@ -30011,7 +31144,7 @@ export const CreateHyperParameterTuningJobRequest = S.suspend(() =>
   identifier: "CreateHyperParameterTuningJobRequest",
 }) as any as S.Schema<CreateHyperParameterTuningJobRequest>;
 export interface CreateInferenceComponentOutput {
-  InferenceComponentArn?: string;
+  InferenceComponentArn: string;
 }
 export const CreateInferenceComponentOutput = S.suspend(() =>
   S.Struct({ InferenceComponentArn: S.optional(S.String) }).pipe(ns),
@@ -30097,7 +31230,7 @@ export const CreateLabelingJobRequest = S.suspend(() =>
   identifier: "CreateLabelingJobRequest",
 }) as any as S.Schema<CreateLabelingJobRequest>;
 export interface CreateModelBiasJobDefinitionResponse {
-  JobDefinitionArn?: string;
+  JobDefinitionArn: string;
 }
 export const CreateModelBiasJobDefinitionResponse = S.suspend(() =>
   S.Struct({ JobDefinitionArn: S.optional(S.String) }).pipe(ns),
@@ -30144,7 +31277,7 @@ export const CreateModelPackageInput = S.suspend(() =>
     ModelApprovalStatus: S.optional(ModelApprovalStatus),
     MetadataProperties: S.optional(MetadataProperties),
     ModelMetrics: S.optional(ModelMetrics),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Domain: S.optional(S.String),
     Task: S.optional(S.String),
     SamplePayloadUrl: S.optional(S.String),
@@ -30369,7 +31502,7 @@ export const CreateTrialComponentResponse = S.suspend(() =>
   identifier: "CreateTrialComponentResponse",
 }) as any as S.Schema<CreateTrialComponentResponse>;
 export interface CreateWorkforceResponse {
-  WorkforceArn?: string;
+  WorkforceArn: string;
 }
 export const CreateWorkforceResponse = S.suspend(() =>
   S.Struct({ WorkforceArn: S.optional(S.String) }).pipe(ns),
@@ -30411,7 +31544,7 @@ export const CreateWorkteamRequest = S.suspend(() =>
 export interface DescribeActionResponse {
   ActionName?: string;
   ActionArn?: string;
-  Source?: ActionSource;
+  Source?: ActionSource & { SourceUri: SourceUri };
   ActionType?: string;
   Description?: string;
   Status?: ActionStatus;
@@ -30499,15 +31632,137 @@ export const TrainingSpecification = S.suspend(() =>
   identifier: "TrainingSpecification",
 }) as any as S.Schema<TrainingSpecification>;
 export interface DescribeAlgorithmOutput {
-  AlgorithmName?: string;
-  AlgorithmArn?: string;
+  AlgorithmName: string;
+  AlgorithmArn: string;
   AlgorithmDescription?: string;
-  CreationTime?: Date;
-  TrainingSpecification?: TrainingSpecification;
-  InferenceSpecification?: InferenceSpecification;
-  ValidationSpecification?: AlgorithmValidationSpecification;
-  AlgorithmStatus?: AlgorithmStatus;
-  AlgorithmStatusDetails?: AlgorithmStatusDetails;
+  CreationTime: Date;
+  TrainingSpecification: TrainingSpecification & {
+    TrainingImage: ContainerImage;
+    SupportedTrainingInstanceTypes: TrainingInstanceTypes;
+    TrainingChannels: (ChannelSpecification & {
+      Name: ChannelName;
+      SupportedContentTypes: ContentTypes;
+      SupportedInputModes: InputModes;
+    })[];
+    SupportedHyperParameters: (HyperParameterSpecification & {
+      Name: ParameterName;
+      Type: ParameterType;
+      Range: ParameterRange & {
+        IntegerParameterRangeSpecification: IntegerParameterRangeSpecification & {
+          MinValue: ParameterValue;
+          MaxValue: ParameterValue;
+        };
+        ContinuousParameterRangeSpecification: ContinuousParameterRangeSpecification & {
+          MinValue: ParameterValue;
+          MaxValue: ParameterValue;
+        };
+        CategoricalParameterRangeSpecification: CategoricalParameterRangeSpecification & {
+          Values: ParameterValues;
+        };
+      };
+    })[];
+    MetricDefinitions: (MetricDefinition & {
+      Name: MetricName;
+      Regex: MetricRegex;
+    })[];
+    SupportedTuningJobObjectiveMetrics: (HyperParameterTuningJobObjective & {
+      Type: HyperParameterTuningJobObjectiveType;
+      MetricName: MetricName;
+    })[];
+    AdditionalS3DataSource: AdditionalS3DataSource & {
+      S3DataType: AdditionalS3DataSourceDataType;
+      S3Uri: S3Uri;
+    };
+  };
+  InferenceSpecification?: InferenceSpecification & {
+    Containers: (ModelPackageContainerDefinition & {
+      ModelDataSource: ModelDataSource & {
+        S3DataSource: S3ModelDataSource & {
+          S3Uri: S3ModelUri;
+          S3DataType: S3ModelDataType;
+          CompressionType: ModelCompressionType;
+          ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+          HubAccessConfig: InferenceHubAccessConfig & {
+            HubContentArn: HubContentArn;
+          };
+        };
+      };
+      ModelInput: ModelInput & { DataInputConfig: DataInputConfig };
+      AdditionalS3DataSource: AdditionalS3DataSource & {
+        S3DataType: AdditionalS3DataSourceDataType;
+        S3Uri: S3Uri;
+      };
+    })[];
+  };
+  ValidationSpecification?: AlgorithmValidationSpecification & {
+    ValidationRole: RoleArn;
+    ValidationProfiles: (AlgorithmValidationProfile & {
+      ProfileName: EntityName;
+      TrainingJobDefinition: TrainingJobDefinition & {
+        TrainingInputMode: TrainingInputMode;
+        InputDataConfig: (Channel & {
+          ChannelName: ChannelName;
+          DataSource: DataSource & {
+            S3DataSource: S3DataSource & {
+              S3DataType: S3DataType;
+              S3Uri: S3Uri;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: HubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+            FileSystemDataSource: FileSystemDataSource & {
+              FileSystemId: FileSystemId;
+              FileSystemAccessMode: FileSystemAccessMode;
+              FileSystemType: FileSystemType;
+              DirectoryPath: DirectoryPath;
+            };
+          };
+          ShuffleConfig: ShuffleConfig & { Seed: Seed };
+        })[];
+        OutputDataConfig: OutputDataConfig & { S3OutputPath: S3Uri };
+        ResourceConfig: ResourceConfig & {
+          InstanceGroups: (InstanceGroup & {
+            InstanceType: TrainingInstanceType;
+            InstanceCount: TrainingInstanceCount;
+            InstanceGroupName: InstanceGroupName;
+          })[];
+          InstancePlacementConfig: InstancePlacementConfig & {
+            PlacementSpecifications: (PlacementSpecification & {
+              InstanceCount: TrainingInstanceCount;
+            })[];
+          };
+        };
+        StoppingCondition: StoppingCondition;
+      };
+      TransformJobDefinition: TransformJobDefinition & {
+        TransformInput: TransformInput & {
+          DataSource: TransformDataSource & {
+            S3DataSource: TransformS3DataSource & {
+              S3DataType: S3DataType;
+              S3Uri: S3Uri;
+            };
+          };
+        };
+        TransformOutput: TransformOutput & { S3OutputPath: S3Uri };
+        TransformResources: TransformResources & {
+          InstanceType: TransformInstanceType;
+          InstanceCount: TransformInstanceCount;
+        };
+      };
+    })[];
+  };
+  AlgorithmStatus: AlgorithmStatus;
+  AlgorithmStatusDetails: AlgorithmStatusDetails & {
+    ValidationStatuses: (AlgorithmStatusItem & {
+      Name: EntityName;
+      Status: DetailedAlgorithmStatus;
+    })[];
+    ImageScanStatuses: (AlgorithmStatusItem & {
+      Name: EntityName;
+      Status: DetailedAlgorithmStatus;
+    })[];
+  };
   ProductId?: string;
   CertifyForMarketplace?: boolean;
 }
@@ -30529,16 +31784,88 @@ export const DescribeAlgorithmOutput = S.suspend(() =>
   identifier: "DescribeAlgorithmOutput",
 }) as any as S.Schema<DescribeAlgorithmOutput>;
 export interface DescribeClusterResponse {
-  ClusterArn?: string;
+  ClusterArn: string;
   ClusterName?: string;
-  ClusterStatus?: ClusterStatus;
+  ClusterStatus: ClusterStatus;
   CreationTime?: Date;
   FailureMessage?: string;
-  InstanceGroups?: ClusterInstanceGroupDetails[];
-  RestrictedInstanceGroups?: ClusterRestrictedInstanceGroupDetails[];
-  VpcConfig?: VpcConfig;
-  Orchestrator?: ClusterOrchestrator;
-  TieredStorageConfig?: ClusterTieredStorageConfig;
+  InstanceGroups: (ClusterInstanceGroupDetails & {
+    LifeCycleConfig: ClusterLifeCycleConfig & {
+      SourceS3Uri: S3Uri;
+      OnCreate: ClusterLifeCycleConfigFileName;
+    };
+    OverrideVpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+    ScheduledUpdateConfig: ScheduledUpdateConfig & {
+      ScheduleExpression: CronScheduleExpression;
+      DeploymentConfig: DeploymentConfiguration & {
+        RollingUpdatePolicy: RollingDeploymentPolicy & {
+          MaximumBatchSize: CapacitySizeConfig & {
+            Type: NodeUnavailabilityType;
+            Value: NodeUnavailabilityValue;
+          };
+          RollbackMaximumBatchSize: CapacitySizeConfig & {
+            Type: NodeUnavailabilityType;
+            Value: NodeUnavailabilityValue;
+          };
+        };
+        AutoRollbackConfiguration: (AlarmDetails & { AlarmName: AlarmName })[];
+      };
+    };
+    ActiveSoftwareUpdateConfig: DeploymentConfiguration & {
+      RollingUpdatePolicy: RollingDeploymentPolicy & {
+        MaximumBatchSize: CapacitySizeConfig & {
+          Type: NodeUnavailabilityType;
+          Value: NodeUnavailabilityValue;
+        };
+        RollbackMaximumBatchSize: CapacitySizeConfig & {
+          Type: NodeUnavailabilityType;
+          Value: NodeUnavailabilityValue;
+        };
+      };
+      AutoRollbackConfiguration: (AlarmDetails & { AlarmName: AlarmName })[];
+    };
+  })[];
+  RestrictedInstanceGroups?: (ClusterRestrictedInstanceGroupDetails & {
+    OverrideVpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+    ScheduledUpdateConfig: ScheduledUpdateConfig & {
+      ScheduleExpression: CronScheduleExpression;
+      DeploymentConfig: DeploymentConfiguration & {
+        RollingUpdatePolicy: RollingDeploymentPolicy & {
+          MaximumBatchSize: CapacitySizeConfig & {
+            Type: NodeUnavailabilityType;
+            Value: NodeUnavailabilityValue;
+          };
+          RollbackMaximumBatchSize: CapacitySizeConfig & {
+            Type: NodeUnavailabilityType;
+            Value: NodeUnavailabilityValue;
+          };
+        };
+        AutoRollbackConfiguration: (AlarmDetails & { AlarmName: AlarmName })[];
+      };
+    };
+    EnvironmentConfig: EnvironmentConfigDetails & {
+      FSxLustreConfig: FSxLustreConfig & {
+        SizeInGiB: FSxLustreSizeInGiB;
+        PerUnitStorageThroughput: FSxLustrePerUnitStorageThroughput;
+      };
+    };
+  })[];
+  VpcConfig?: VpcConfig & {
+    SecurityGroupIds: VpcSecurityGroupIds;
+    Subnets: Subnets;
+  };
+  Orchestrator?: ClusterOrchestrator & {
+    Eks: ClusterOrchestratorEksConfig & { ClusterArn: EksClusterArn };
+  };
+  TieredStorageConfig?: ClusterTieredStorageConfig & {
+    Mode: ClusterConfigMode;
+  };
   NodeRecovery?: ClusterNodeRecovery;
   NodeProvisioningMode?: ClusterNodeProvisioningMode;
   ClusterRole?: string;
@@ -30569,7 +31896,19 @@ export const DescribeClusterResponse = S.suspend(() =>
 export type EksRoleAccessEntries = string[];
 export const EksRoleAccessEntries = S.Array(S.String);
 export interface DescribeClusterNodeResponse {
-  NodeDetails?: ClusterNodeDetails;
+  NodeDetails: ClusterNodeDetails & {
+    InstanceStatus: ClusterInstanceStatusDetails & {
+      Status: ClusterInstanceStatus;
+    };
+    LifeCycleConfig: ClusterLifeCycleConfig & {
+      SourceS3Uri: S3Uri;
+      OnCreate: ClusterLifeCycleConfigFileName;
+    };
+    OverrideVpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+  };
 }
 export const DescribeClusterNodeResponse = S.suspend(() =>
   S.Struct({ NodeDetails: S.optional(ClusterNodeDetails) }).pipe(ns),
@@ -30577,14 +31916,31 @@ export const DescribeClusterNodeResponse = S.suspend(() =>
   identifier: "DescribeClusterNodeResponse",
 }) as any as S.Schema<DescribeClusterNodeResponse>;
 export interface DescribeEdgeDeploymentPlanResponse {
-  EdgeDeploymentPlanArn?: string;
-  EdgeDeploymentPlanName?: string;
-  ModelConfigs?: EdgeDeploymentModelConfig[];
-  DeviceFleetName?: string;
+  EdgeDeploymentPlanArn: string;
+  EdgeDeploymentPlanName: string;
+  ModelConfigs: (EdgeDeploymentModelConfig & {
+    ModelHandle: EntityName;
+    EdgePackagingJobName: EntityName;
+  })[];
+  DeviceFleetName: string;
   EdgeDeploymentSuccess?: number;
   EdgeDeploymentPending?: number;
   EdgeDeploymentFailed?: number;
-  Stages?: DeploymentStageStatusSummary[];
+  Stages: (DeploymentStageStatusSummary & {
+    StageName: EntityName;
+    DeviceSelectionConfig: DeviceSelectionConfig & {
+      DeviceSubsetType: DeviceSubsetType;
+    };
+    DeploymentConfig: EdgeDeploymentConfig & {
+      FailureHandlingPolicy: FailureHandlingPolicy;
+    };
+    DeploymentStatus: EdgeDeploymentStatus & {
+      StageStatus: StageStatus;
+      EdgeDeploymentSuccessInStage: number;
+      EdgeDeploymentPendingInStage: number;
+      EdgeDeploymentFailedInStage: number;
+    };
+  })[];
   NextToken?: string;
   CreationTime?: Date;
   LastModifiedTime?: Date;
@@ -30609,21 +31965,233 @@ export const DescribeEdgeDeploymentPlanResponse = S.suspend(() =>
   identifier: "DescribeEdgeDeploymentPlanResponse",
 }) as any as S.Schema<DescribeEdgeDeploymentPlanResponse>;
 export interface DescribeHyperParameterTuningJobResponse {
-  HyperParameterTuningJobName?: string;
-  HyperParameterTuningJobArn?: string;
-  HyperParameterTuningJobConfig?: HyperParameterTuningJobConfig;
-  TrainingJobDefinition?: HyperParameterTrainingJobDefinition;
-  TrainingJobDefinitions?: HyperParameterTrainingJobDefinition[];
-  HyperParameterTuningJobStatus?: HyperParameterTuningJobStatus;
-  CreationTime?: Date;
+  HyperParameterTuningJobName: string;
+  HyperParameterTuningJobArn: string;
+  HyperParameterTuningJobConfig: HyperParameterTuningJobConfig & {
+    Strategy: HyperParameterTuningJobStrategyType;
+    ResourceLimits: ResourceLimits & {
+      MaxParallelTrainingJobs: MaxParallelTrainingJobs;
+    };
+    HyperParameterTuningJobObjective: HyperParameterTuningJobObjective & {
+      Type: HyperParameterTuningJobObjectiveType;
+      MetricName: MetricName;
+    };
+    ParameterRanges: ParameterRanges & {
+      IntegerParameterRanges: (IntegerParameterRange & {
+        Name: ParameterKey;
+        MinValue: ParameterValue;
+        MaxValue: ParameterValue;
+      })[];
+      ContinuousParameterRanges: (ContinuousParameterRange & {
+        Name: ParameterKey;
+        MinValue: ParameterValue;
+        MaxValue: ParameterValue;
+      })[];
+      CategoricalParameterRanges: (CategoricalParameterRange & {
+        Name: ParameterKey;
+        Values: ParameterValues;
+      })[];
+      AutoParameters: (AutoParameter & {
+        Name: ParameterKey;
+        ValueHint: ParameterValue;
+      })[];
+    };
+  };
+  TrainingJobDefinition?: HyperParameterTrainingJobDefinition & {
+    AlgorithmSpecification: HyperParameterAlgorithmSpecification & {
+      TrainingInputMode: TrainingInputMode;
+      MetricDefinitions: (MetricDefinition & {
+        Name: MetricName;
+        Regex: MetricRegex;
+      })[];
+    };
+    RoleArn: RoleArn;
+    OutputDataConfig: OutputDataConfig & { S3OutputPath: S3Uri };
+    StoppingCondition: StoppingCondition;
+    TuningObjective: HyperParameterTuningJobObjective & {
+      Type: HyperParameterTuningJobObjectiveType;
+      MetricName: MetricName;
+    };
+    HyperParameterRanges: ParameterRanges & {
+      IntegerParameterRanges: (IntegerParameterRange & {
+        Name: ParameterKey;
+        MinValue: ParameterValue;
+        MaxValue: ParameterValue;
+      })[];
+      ContinuousParameterRanges: (ContinuousParameterRange & {
+        Name: ParameterKey;
+        MinValue: ParameterValue;
+        MaxValue: ParameterValue;
+      })[];
+      CategoricalParameterRanges: (CategoricalParameterRange & {
+        Name: ParameterKey;
+        Values: ParameterValues;
+      })[];
+      AutoParameters: (AutoParameter & {
+        Name: ParameterKey;
+        ValueHint: ParameterValue;
+      })[];
+    };
+    InputDataConfig: (Channel & {
+      ChannelName: ChannelName;
+      DataSource: DataSource & {
+        S3DataSource: S3DataSource & {
+          S3DataType: S3DataType;
+          S3Uri: S3Uri;
+          ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+          HubAccessConfig: HubAccessConfig & { HubContentArn: HubContentArn };
+        };
+        FileSystemDataSource: FileSystemDataSource & {
+          FileSystemId: FileSystemId;
+          FileSystemAccessMode: FileSystemAccessMode;
+          FileSystemType: FileSystemType;
+          DirectoryPath: DirectoryPath;
+        };
+      };
+      ShuffleConfig: ShuffleConfig & { Seed: Seed };
+    })[];
+    VpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+    ResourceConfig: ResourceConfig & {
+      InstanceGroups: (InstanceGroup & {
+        InstanceType: TrainingInstanceType;
+        InstanceCount: TrainingInstanceCount;
+        InstanceGroupName: InstanceGroupName;
+      })[];
+      InstancePlacementConfig: InstancePlacementConfig & {
+        PlacementSpecifications: (PlacementSpecification & {
+          InstanceCount: TrainingInstanceCount;
+        })[];
+      };
+    };
+    HyperParameterTuningResourceConfig: HyperParameterTuningResourceConfig & {
+      InstanceConfigs: (HyperParameterTuningInstanceConfig & {
+        InstanceType: TrainingInstanceType;
+        InstanceCount: TrainingInstanceCount;
+        VolumeSizeInGB: VolumeSizeInGB;
+      })[];
+    };
+    CheckpointConfig: CheckpointConfig & { S3Uri: S3Uri };
+    RetryStrategy: RetryStrategy & {
+      MaximumRetryAttempts: MaximumRetryAttempts;
+    };
+  };
+  TrainingJobDefinitions?: (HyperParameterTrainingJobDefinition & {
+    AlgorithmSpecification: HyperParameterAlgorithmSpecification & {
+      TrainingInputMode: TrainingInputMode;
+      MetricDefinitions: (MetricDefinition & {
+        Name: MetricName;
+        Regex: MetricRegex;
+      })[];
+    };
+    RoleArn: RoleArn;
+    OutputDataConfig: OutputDataConfig & { S3OutputPath: S3Uri };
+    StoppingCondition: StoppingCondition;
+    TuningObjective: HyperParameterTuningJobObjective & {
+      Type: HyperParameterTuningJobObjectiveType;
+      MetricName: MetricName;
+    };
+    HyperParameterRanges: ParameterRanges & {
+      IntegerParameterRanges: (IntegerParameterRange & {
+        Name: ParameterKey;
+        MinValue: ParameterValue;
+        MaxValue: ParameterValue;
+      })[];
+      ContinuousParameterRanges: (ContinuousParameterRange & {
+        Name: ParameterKey;
+        MinValue: ParameterValue;
+        MaxValue: ParameterValue;
+      })[];
+      CategoricalParameterRanges: (CategoricalParameterRange & {
+        Name: ParameterKey;
+        Values: ParameterValues;
+      })[];
+      AutoParameters: (AutoParameter & {
+        Name: ParameterKey;
+        ValueHint: ParameterValue;
+      })[];
+    };
+    InputDataConfig: (Channel & {
+      ChannelName: ChannelName;
+      DataSource: DataSource & {
+        S3DataSource: S3DataSource & {
+          S3DataType: S3DataType;
+          S3Uri: S3Uri;
+          ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+          HubAccessConfig: HubAccessConfig & { HubContentArn: HubContentArn };
+        };
+        FileSystemDataSource: FileSystemDataSource & {
+          FileSystemId: FileSystemId;
+          FileSystemAccessMode: FileSystemAccessMode;
+          FileSystemType: FileSystemType;
+          DirectoryPath: DirectoryPath;
+        };
+      };
+      ShuffleConfig: ShuffleConfig & { Seed: Seed };
+    })[];
+    VpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+    ResourceConfig: ResourceConfig & {
+      InstanceGroups: (InstanceGroup & {
+        InstanceType: TrainingInstanceType;
+        InstanceCount: TrainingInstanceCount;
+        InstanceGroupName: InstanceGroupName;
+      })[];
+      InstancePlacementConfig: InstancePlacementConfig & {
+        PlacementSpecifications: (PlacementSpecification & {
+          InstanceCount: TrainingInstanceCount;
+        })[];
+      };
+    };
+    HyperParameterTuningResourceConfig: HyperParameterTuningResourceConfig & {
+      InstanceConfigs: (HyperParameterTuningInstanceConfig & {
+        InstanceType: TrainingInstanceType;
+        InstanceCount: TrainingInstanceCount;
+        VolumeSizeInGB: VolumeSizeInGB;
+      })[];
+    };
+    CheckpointConfig: CheckpointConfig & { S3Uri: S3Uri };
+    RetryStrategy: RetryStrategy & {
+      MaximumRetryAttempts: MaximumRetryAttempts;
+    };
+  })[];
+  HyperParameterTuningJobStatus: HyperParameterTuningJobStatus;
+  CreationTime: Date;
   HyperParameterTuningEndTime?: Date;
   LastModifiedTime?: Date;
-  TrainingJobStatusCounters?: TrainingJobStatusCounters;
-  ObjectiveStatusCounters?: ObjectiveStatusCounters;
-  BestTrainingJob?: HyperParameterTrainingJobSummary;
-  OverallBestTrainingJob?: HyperParameterTrainingJobSummary;
-  WarmStartConfig?: HyperParameterTuningJobWarmStartConfig;
-  Autotune?: Autotune;
+  TrainingJobStatusCounters: TrainingJobStatusCounters;
+  ObjectiveStatusCounters: ObjectiveStatusCounters;
+  BestTrainingJob?: HyperParameterTrainingJobSummary & {
+    TrainingJobName: TrainingJobName;
+    TrainingJobArn: TrainingJobArn;
+    CreationTime: Date;
+    TrainingJobStatus: TrainingJobStatus;
+    TunedHyperParameters: HyperParameters;
+    FinalHyperParameterTuningJobObjectiveMetric: FinalHyperParameterTuningJobObjectiveMetric & {
+      MetricName: MetricName;
+      Value: MetricValue;
+    };
+  };
+  OverallBestTrainingJob?: HyperParameterTrainingJobSummary & {
+    TrainingJobName: TrainingJobName;
+    TrainingJobArn: TrainingJobArn;
+    CreationTime: Date;
+    TrainingJobStatus: TrainingJobStatus;
+    TunedHyperParameters: HyperParameters;
+    FinalHyperParameterTuningJobObjectiveMetric: FinalHyperParameterTuningJobObjectiveMetric & {
+      MetricName: MetricName;
+      Value: MetricValue;
+    };
+  };
+  WarmStartConfig?: HyperParameterTuningJobWarmStartConfig & {
+    ParentHyperParameterTuningJobs: ParentHyperParameterTuningJobs;
+    WarmStartType: HyperParameterTuningJobWarmStartType;
+  };
+  Autotune?: Autotune & { Mode: AutotuneMode };
   FailureReason?: string;
   TuningJobCompletionDetails?: HyperParameterTuningJobCompletionDetails;
   ConsumedResources?: HyperParameterTuningJobConsumedResources;
@@ -30659,18 +32227,37 @@ export const DescribeHyperParameterTuningJobResponse = S.suspend(() =>
   identifier: "DescribeHyperParameterTuningJobResponse",
 }) as any as S.Schema<DescribeHyperParameterTuningJobResponse>;
 export interface DescribeInferenceComponentOutput {
-  InferenceComponentName?: string;
-  InferenceComponentArn?: string;
-  EndpointName?: string;
-  EndpointArn?: string;
+  InferenceComponentName: string;
+  InferenceComponentArn: string;
+  EndpointName: string;
+  EndpointArn: string;
   VariantName?: string;
   FailureReason?: string;
-  Specification?: InferenceComponentSpecificationSummary;
+  Specification?: InferenceComponentSpecificationSummary & {
+    ComputeResourceRequirements: InferenceComponentComputeResourceRequirements & {
+      MinMemoryRequiredInMb: MemoryInMb;
+    };
+    DataCacheConfig: InferenceComponentDataCacheConfigSummary & {
+      EnableCaching: EnableCaching;
+    };
+  };
   RuntimeConfig?: InferenceComponentRuntimeConfigSummary;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
+  CreationTime: Date;
+  LastModifiedTime: Date;
   InferenceComponentStatus?: InferenceComponentStatus;
-  LastDeploymentConfig?: InferenceComponentDeploymentConfig;
+  LastDeploymentConfig?: InferenceComponentDeploymentConfig & {
+    RollingUpdatePolicy: InferenceComponentRollingUpdatePolicy & {
+      MaximumBatchSize: InferenceComponentCapacitySize & {
+        Type: InferenceComponentCapacitySizeType;
+        Value: CapacitySizeValue;
+      };
+      WaitIntervalInSeconds: WaitIntervalInSeconds;
+      RollbackMaximumBatchSize: InferenceComponentCapacitySize & {
+        Type: InferenceComponentCapacitySizeType;
+        Value: CapacitySizeValue;
+      };
+    };
+  };
 }
 export const DescribeInferenceComponentOutput = S.suspend(() =>
   S.Struct({
@@ -30693,16 +32280,87 @@ export const DescribeInferenceComponentOutput = S.suspend(() =>
   identifier: "DescribeInferenceComponentOutput",
 }) as any as S.Schema<DescribeInferenceComponentOutput>;
 export interface DescribeModelOutput {
-  ModelName?: string;
-  PrimaryContainer?: ContainerDefinition;
-  Containers?: ContainerDefinition[];
-  InferenceExecutionConfig?: InferenceExecutionConfig;
+  ModelName: string;
+  PrimaryContainer?: ContainerDefinition & {
+    ImageConfig: ImageConfig & {
+      RepositoryAccessMode: RepositoryAccessMode;
+      RepositoryAuthConfig: RepositoryAuthConfig & {
+        RepositoryCredentialsProviderArn: RepositoryCredentialsProviderArn;
+      };
+    };
+    ModelDataSource: ModelDataSource & {
+      S3DataSource: S3ModelDataSource & {
+        S3Uri: S3ModelUri;
+        S3DataType: S3ModelDataType;
+        CompressionType: ModelCompressionType;
+        ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+        HubAccessConfig: InferenceHubAccessConfig & {
+          HubContentArn: HubContentArn;
+        };
+      };
+    };
+    AdditionalModelDataSources: (AdditionalModelDataSource & {
+      ChannelName: AdditionalModelChannelName;
+      S3DataSource: S3ModelDataSource & {
+        S3Uri: S3ModelUri;
+        S3DataType: S3ModelDataType;
+        CompressionType: ModelCompressionType;
+        ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+        HubAccessConfig: InferenceHubAccessConfig & {
+          HubContentArn: HubContentArn;
+        };
+      };
+    })[];
+  };
+  Containers?: (ContainerDefinition & {
+    ImageConfig: ImageConfig & {
+      RepositoryAccessMode: RepositoryAccessMode;
+      RepositoryAuthConfig: RepositoryAuthConfig & {
+        RepositoryCredentialsProviderArn: RepositoryCredentialsProviderArn;
+      };
+    };
+    ModelDataSource: ModelDataSource & {
+      S3DataSource: S3ModelDataSource & {
+        S3Uri: S3ModelUri;
+        S3DataType: S3ModelDataType;
+        CompressionType: ModelCompressionType;
+        ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+        HubAccessConfig: InferenceHubAccessConfig & {
+          HubContentArn: HubContentArn;
+        };
+      };
+    };
+    AdditionalModelDataSources: (AdditionalModelDataSource & {
+      ChannelName: AdditionalModelChannelName;
+      S3DataSource: S3ModelDataSource & {
+        S3Uri: S3ModelUri;
+        S3DataType: S3ModelDataType;
+        CompressionType: ModelCompressionType;
+        ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+        HubAccessConfig: InferenceHubAccessConfig & {
+          HubContentArn: HubContentArn;
+        };
+      };
+    })[];
+  })[];
+  InferenceExecutionConfig?: InferenceExecutionConfig & {
+    Mode: InferenceExecutionMode;
+  };
   ExecutionRoleArn?: string;
-  VpcConfig?: VpcConfig;
-  CreationTime?: Date;
-  ModelArn?: string;
+  VpcConfig?: VpcConfig & {
+    SecurityGroupIds: VpcSecurityGroupIds;
+    Subnets: Subnets;
+  };
+  CreationTime: Date;
+  ModelArn: string;
   EnableNetworkIsolation?: boolean;
-  DeploymentRecommendation?: DeploymentRecommendation;
+  DeploymentRecommendation?: DeploymentRecommendation & {
+    RecommendationStatus: RecommendationStatus;
+    RealTimeInferenceRecommendations: (RealTimeInferenceRecommendation & {
+      RecommendationId: string;
+      InstanceType: ProductionVariantInstanceType;
+    })[];
+  };
 }
 export const DescribeModelOutput = S.suspend(() =>
   S.Struct({
@@ -30721,23 +32379,109 @@ export const DescribeModelOutput = S.suspend(() =>
   identifier: "DescribeModelOutput",
 }) as any as S.Schema<DescribeModelOutput>;
 export interface DescribeModelPackageOutput {
-  ModelPackageName?: string;
+  ModelPackageName: string;
   ModelPackageGroupName?: string;
   ModelPackageVersion?: number;
   ModelPackageRegistrationType?: ModelPackageRegistrationType;
-  ModelPackageArn?: string;
+  ModelPackageArn: string;
   ModelPackageDescription?: string;
-  CreationTime?: Date;
-  InferenceSpecification?: InferenceSpecification;
-  SourceAlgorithmSpecification?: SourceAlgorithmSpecification;
-  ValidationSpecification?: ModelPackageValidationSpecification;
-  ModelPackageStatus?: ModelPackageStatus;
-  ModelPackageStatusDetails?: ModelPackageStatusDetails;
+  CreationTime: Date;
+  InferenceSpecification?: InferenceSpecification & {
+    Containers: (ModelPackageContainerDefinition & {
+      ModelDataSource: ModelDataSource & {
+        S3DataSource: S3ModelDataSource & {
+          S3Uri: S3ModelUri;
+          S3DataType: S3ModelDataType;
+          CompressionType: ModelCompressionType;
+          ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+          HubAccessConfig: InferenceHubAccessConfig & {
+            HubContentArn: HubContentArn;
+          };
+        };
+      };
+      ModelInput: ModelInput & { DataInputConfig: DataInputConfig };
+      AdditionalS3DataSource: AdditionalS3DataSource & {
+        S3DataType: AdditionalS3DataSourceDataType;
+        S3Uri: S3Uri;
+      };
+    })[];
+  };
+  SourceAlgorithmSpecification?: SourceAlgorithmSpecification & {
+    SourceAlgorithms: (SourceAlgorithm & {
+      AlgorithmName: ArnOrName;
+      ModelDataSource: ModelDataSource & {
+        S3DataSource: S3ModelDataSource & {
+          S3Uri: S3ModelUri;
+          S3DataType: S3ModelDataType;
+          CompressionType: ModelCompressionType;
+          ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+          HubAccessConfig: InferenceHubAccessConfig & {
+            HubContentArn: HubContentArn;
+          };
+        };
+      };
+    })[];
+  };
+  ValidationSpecification?: ModelPackageValidationSpecification & {
+    ValidationRole: RoleArn;
+    ValidationProfiles: (ModelPackageValidationProfile & {
+      ProfileName: EntityName;
+      TransformJobDefinition: TransformJobDefinition & {
+        TransformInput: TransformInput & {
+          DataSource: TransformDataSource & {
+            S3DataSource: TransformS3DataSource & {
+              S3DataType: S3DataType;
+              S3Uri: S3Uri;
+            };
+          };
+        };
+        TransformOutput: TransformOutput & { S3OutputPath: S3Uri };
+        TransformResources: TransformResources & {
+          InstanceType: TransformInstanceType;
+          InstanceCount: TransformInstanceCount;
+        };
+      };
+    })[];
+  };
+  ModelPackageStatus: ModelPackageStatus;
+  ModelPackageStatusDetails: ModelPackageStatusDetails & {
+    ValidationStatuses: (ModelPackageStatusItem & {
+      Name: EntityName;
+      Status: DetailedModelPackageStatus;
+    })[];
+    ImageScanStatuses: (ModelPackageStatusItem & {
+      Name: EntityName;
+      Status: DetailedModelPackageStatus;
+    })[];
+  };
   CertifyForMarketplace?: boolean;
   ModelApprovalStatus?: ModelApprovalStatus;
   CreatedBy?: UserContext;
   MetadataProperties?: MetadataProperties;
-  ModelMetrics?: ModelMetrics;
+  ModelMetrics?: ModelMetrics & {
+    ModelQuality: ModelQuality & {
+      Statistics: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+      Constraints: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+    };
+    ModelDataQuality: ModelDataQuality & {
+      Statistics: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+      Constraints: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+    };
+    Bias: Bias & {
+      Report: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+      PreTrainingReport: MetricsSource & {
+        ContentType: ContentType;
+        S3Uri: S3Uri;
+      };
+      PostTrainingReport: MetricsSource & {
+        ContentType: ContentType;
+        S3Uri: S3Uri;
+      };
+    };
+    Explainability: Explainability & {
+      Report: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+    };
+  };
   LastModifiedTime?: Date;
   LastModifiedBy?: UserContext;
   ApprovalDescription?: string;
@@ -30745,13 +32489,60 @@ export interface DescribeModelPackageOutput {
   Task?: string;
   SamplePayloadUrl?: string;
   CustomerMetadataProperties?: { [key: string]: string };
-  DriftCheckBaselines?: DriftCheckBaselines;
-  AdditionalInferenceSpecifications?: AdditionalInferenceSpecificationDefinition[];
+  DriftCheckBaselines?: DriftCheckBaselines & {
+    Bias: DriftCheckBias & {
+      ConfigFile: FileSource & { S3Uri: S3Uri };
+      PreTrainingConstraints: MetricsSource & {
+        ContentType: ContentType;
+        S3Uri: S3Uri;
+      };
+      PostTrainingConstraints: MetricsSource & {
+        ContentType: ContentType;
+        S3Uri: S3Uri;
+      };
+    };
+    Explainability: DriftCheckExplainability & {
+      Constraints: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+      ConfigFile: FileSource & { S3Uri: S3Uri };
+    };
+    ModelQuality: DriftCheckModelQuality & {
+      Statistics: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+      Constraints: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+    };
+    ModelDataQuality: DriftCheckModelDataQuality & {
+      Statistics: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+      Constraints: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+    };
+  };
+  AdditionalInferenceSpecifications?: (AdditionalInferenceSpecificationDefinition & {
+    Name: EntityName;
+    Containers: (ModelPackageContainerDefinition & {
+      ModelDataSource: ModelDataSource & {
+        S3DataSource: S3ModelDataSource & {
+          S3Uri: S3ModelUri;
+          S3DataType: S3ModelDataType;
+          CompressionType: ModelCompressionType;
+          ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+          HubAccessConfig: InferenceHubAccessConfig & {
+            HubContentArn: HubContentArn;
+          };
+        };
+      };
+      ModelInput: ModelInput & { DataInputConfig: DataInputConfig };
+      AdditionalS3DataSource: AdditionalS3DataSource & {
+        S3DataType: AdditionalS3DataSourceDataType;
+        S3Uri: S3Uri;
+      };
+    })[];
+  })[];
   SkipModelValidation?: SkipModelValidation;
   SourceUri?: string;
-  SecurityConfig?: ModelPackageSecurityConfig;
+  SecurityConfig?: ModelPackageSecurityConfig & { KmsKeyId: KmsKeyId };
   ModelCard?: ModelPackageModelCard;
-  ModelLifeCycle?: ModelLifeCycle;
+  ModelLifeCycle?: ModelLifeCycle & {
+    Stage: EntityName;
+    StageStatus: EntityName;
+  };
 }
 export const DescribeModelPackageOutput = S.suspend(() =>
   S.Struct({
@@ -30795,7 +32586,20 @@ export const DescribeModelPackageOutput = S.suspend(() =>
   identifier: "DescribeModelPackageOutput",
 }) as any as S.Schema<DescribeModelPackageOutput>;
 export interface DescribeWorkforceResponse {
-  Workforce?: Workforce;
+  Workforce: Workforce & {
+    WorkforceName: WorkforceName;
+    WorkforceArn: WorkforceArn;
+    SourceIpConfig: SourceIpConfig & { Cidrs: Cidrs };
+    CognitoConfig: CognitoConfig & {
+      UserPool: CognitoUserPool;
+      ClientId: ClientId;
+    };
+    WorkforceVpcConfig: WorkforceVpcConfigResponse & {
+      VpcId: WorkforceVpcId;
+      SecurityGroupIds: WorkforceSecurityGroupIds;
+      Subnets: WorkforceSubnets;
+    };
+  };
 }
 export const DescribeWorkforceResponse = S.suspend(() =>
   S.Struct({ Workforce: S.optional(Workforce) }).pipe(ns),
@@ -30803,7 +32607,14 @@ export const DescribeWorkforceResponse = S.suspend(() =>
   identifier: "DescribeWorkforceResponse",
 }) as any as S.Schema<DescribeWorkforceResponse>;
 export interface ListDevicesResponse {
-  DeviceSummaries?: DeviceSummary[];
+  DeviceSummaries: (DeviceSummary & {
+    DeviceName: EntityName;
+    DeviceArn: DeviceArn;
+    Models: (EdgeModelSummary & {
+      ModelName: EntityName;
+      ModelVersion: EdgeVersion;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const ListDevicesResponse = S.suspend(() =>
@@ -30815,7 +32626,32 @@ export const ListDevicesResponse = S.suspend(() =>
   identifier: "ListDevicesResponse",
 }) as any as S.Schema<ListDevicesResponse>;
 export interface ListInferenceRecommendationsJobStepsResponse {
-  Steps?: InferenceRecommendationsJobStep[];
+  Steps?: (InferenceRecommendationsJobStep & {
+    StepType: RecommendationStepType;
+    JobName: RecommendationJobName;
+    Status: RecommendationJobStatus;
+    InferenceBenchmark: RecommendationJobInferenceBenchmark & {
+      ModelConfiguration: ModelConfiguration & {
+        EnvironmentParameters: (EnvironmentParameter & {
+          Key: string;
+          ValueType: string;
+          Value: string;
+        })[];
+      };
+      EndpointMetrics: InferenceMetrics & {
+        MaxInvocations: number;
+        ModelLatency: number;
+      };
+      EndpointConfiguration: EndpointOutputConfiguration & {
+        EndpointName: string;
+        VariantName: string;
+        ServerlessConfig: ProductionVariantServerlessConfig & {
+          MemorySizeInMB: ServerlessMemorySizeInMB;
+          MaxConcurrency: ServerlessMaxConcurrency;
+        };
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListInferenceRecommendationsJobStepsResponse = S.suspend(() =>
@@ -30827,7 +32663,11 @@ export const ListInferenceRecommendationsJobStepsResponse = S.suspend(() =>
   identifier: "ListInferenceRecommendationsJobStepsResponse",
 }) as any as S.Schema<ListInferenceRecommendationsJobStepsResponse>;
 export interface ListLabelingJobsForWorkteamResponse {
-  LabelingJobSummaryList?: LabelingJobForWorkteamSummary[];
+  LabelingJobSummaryList: (LabelingJobForWorkteamSummary & {
+    JobReferenceCode: JobReferenceCode;
+    WorkRequesterAccountId: AccountId;
+    CreationTime: Date;
+  })[];
   NextToken?: string;
 }
 export const ListLabelingJobsForWorkteamResponse = S.suspend(() =>
@@ -30839,7 +32679,15 @@ export const ListLabelingJobsForWorkteamResponse = S.suspend(() =>
   identifier: "ListLabelingJobsForWorkteamResponse",
 }) as any as S.Schema<ListLabelingJobsForWorkteamResponse>;
 export interface ListSpacesResponse {
-  Spaces?: SpaceDetails[];
+  Spaces?: (SpaceDetails & {
+    SpaceSettingsSummary: SpaceSettingsSummary & {
+      SpaceStorageSettings: SpaceStorageSettings & {
+        EbsStorageSettings: EbsStorageSettings & {
+          EbsVolumeSizeInGb: SpaceEbsVolumeSizeInGb;
+        };
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListSpacesResponse = S.suspend(() =>
@@ -30852,7 +32700,17 @@ export const ListSpacesResponse = S.suspend(() =>
 }) as any as S.Schema<ListSpacesResponse>;
 export interface ListTrainingPlansResponse {
   NextToken?: string;
-  TrainingPlanSummaries?: TrainingPlanSummary[];
+  TrainingPlanSummaries: (TrainingPlanSummary & {
+    TrainingPlanArn: TrainingPlanArn;
+    TrainingPlanName: TrainingPlanName;
+    Status: TrainingPlanStatus;
+    ReservedCapacitySummaries: (ReservedCapacitySummary & {
+      ReservedCapacityArn: ReservedCapacityArn;
+      InstanceType: ReservedCapacityInstanceType;
+      TotalInstanceCount: TotalInstanceCount;
+      Status: ReservedCapacityStatus;
+    })[];
+  })[];
 }
 export const ListTrainingPlansResponse = S.suspend(() =>
   S.Struct({
@@ -30863,8 +32721,8 @@ export const ListTrainingPlansResponse = S.suspend(() =>
   identifier: "ListTrainingPlansResponse",
 }) as any as S.Schema<ListTrainingPlansResponse>;
 export interface RenderUiTemplateResponse {
-  RenderedContent?: string;
-  Errors?: RenderingError[];
+  RenderedContent: string;
+  Errors: (RenderingError & { Code: string; Message: string })[];
 }
 export const RenderUiTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -30875,7 +32733,14 @@ export const RenderUiTemplateResponse = S.suspend(() =>
   identifier: "RenderUiTemplateResponse",
 }) as any as S.Schema<RenderUiTemplateResponse>;
 export interface SearchTrainingPlanOfferingsResponse {
-  TrainingPlanOfferings?: TrainingPlanOffering[];
+  TrainingPlanOfferings: (TrainingPlanOffering & {
+    TrainingPlanOfferingId: TrainingPlanOfferingId;
+    TargetResources: SageMakerResourceNames;
+    ReservedCapacityOfferings: (ReservedCapacityOffering & {
+      InstanceType: ReservedCapacityInstanceType;
+      InstanceCount: ReservedCapacityInstanceCount;
+    })[];
+  })[];
 }
 export const SearchTrainingPlanOfferingsResponse = S.suspend(() =>
   S.Struct({ TrainingPlanOfferings: S.optional(TrainingPlanOfferings) }).pipe(
@@ -30927,7 +32792,7 @@ export const UpdateDomainResponse = S.suspend(() =>
   identifier: "UpdateDomainResponse",
 }) as any as S.Schema<UpdateDomainResponse>;
 export interface UpdateEndpointWeightsAndCapacitiesOutput {
-  EndpointArn?: string;
+  EndpointArn: string;
 }
 export const UpdateEndpointWeightsAndCapacitiesOutput = S.suspend(() =>
   S.Struct({ EndpointArn: S.optional(S.String) }).pipe(ns),
@@ -31402,7 +33267,7 @@ export const CreateAppImageConfigResponse = S.suspend(() =>
   identifier: "CreateAppImageConfigResponse",
 }) as any as S.Schema<CreateAppImageConfigResponse>;
 export interface CreateAutoMLJobResponse {
-  AutoMLJobArn?: string;
+  AutoMLJobArn: string;
 }
 export const CreateAutoMLJobResponse = S.suspend(() =>
   S.Struct({ AutoMLJobArn: S.optional(S.String) }).pipe(ns),
@@ -31410,7 +33275,7 @@ export const CreateAutoMLJobResponse = S.suspend(() =>
   identifier: "CreateAutoMLJobResponse",
 }) as any as S.Schema<CreateAutoMLJobResponse>;
 export interface CreateClusterResponse {
-  ClusterArn?: string;
+  ClusterArn: string;
 }
 export const CreateClusterResponse = S.suspend(() =>
   S.Struct({ ClusterArn: S.optional(S.String) }).pipe(ns),
@@ -31418,8 +33283,8 @@ export const CreateClusterResponse = S.suspend(() =>
   identifier: "CreateClusterResponse",
 }) as any as S.Schema<CreateClusterResponse>;
 export interface CreateComputeQuotaResponse {
-  ComputeQuotaArn?: string;
-  ComputeQuotaId?: string;
+  ComputeQuotaArn: string;
+  ComputeQuotaId: string;
 }
 export const CreateComputeQuotaResponse = S.suspend(() =>
   S.Struct({
@@ -31512,7 +33377,7 @@ export const CreateDomainRequest = S.suspend(() =>
   identifier: "CreateDomainRequest",
 }) as any as S.Schema<CreateDomainRequest>;
 export interface CreateEndpointOutput {
-  EndpointArn?: string;
+  EndpointArn: string;
 }
 export const CreateEndpointOutput = S.suspend(() =>
   S.Struct({ EndpointArn: S.optional(S.String) }).pipe(ns),
@@ -31562,7 +33427,7 @@ export const CreateEndpointConfigInput = S.suspend(() =>
   identifier: "CreateEndpointConfigInput",
 }) as any as S.Schema<CreateEndpointConfigInput>;
 export interface CreateFeatureGroupResponse {
-  FeatureGroupArn?: string;
+  FeatureGroupArn: string;
 }
 export const CreateFeatureGroupResponse = S.suspend(() =>
   S.Struct({ FeatureGroupArn: S.optional(S.String) }).pipe(ns),
@@ -31570,7 +33435,7 @@ export const CreateFeatureGroupResponse = S.suspend(() =>
   identifier: "CreateFeatureGroupResponse",
 }) as any as S.Schema<CreateFeatureGroupResponse>;
 export interface CreateFlowDefinitionResponse {
-  FlowDefinitionArn?: string;
+  FlowDefinitionArn: string;
 }
 export const CreateFlowDefinitionResponse = S.suspend(() =>
   S.Struct({ FlowDefinitionArn: S.optional(S.String) }).pipe(ns),
@@ -31578,7 +33443,7 @@ export const CreateFlowDefinitionResponse = S.suspend(() =>
   identifier: "CreateFlowDefinitionResponse",
 }) as any as S.Schema<CreateFlowDefinitionResponse>;
 export interface CreateHyperParameterTuningJobResponse {
-  HyperParameterTuningJobArn?: string;
+  HyperParameterTuningJobArn: string;
 }
 export const CreateHyperParameterTuningJobResponse = S.suspend(() =>
   S.Struct({ HyperParameterTuningJobArn: S.optional(S.String) }).pipe(ns),
@@ -31586,7 +33451,7 @@ export const CreateHyperParameterTuningJobResponse = S.suspend(() =>
   identifier: "CreateHyperParameterTuningJobResponse",
 }) as any as S.Schema<CreateHyperParameterTuningJobResponse>;
 export interface CreateInferenceExperimentResponse {
-  InferenceExperimentArn?: string;
+  InferenceExperimentArn: string;
 }
 export const CreateInferenceExperimentResponse = S.suspend(() =>
   S.Struct({ InferenceExperimentArn: S.optional(S.String) }).pipe(ns),
@@ -31628,7 +33493,7 @@ export const CreateInferenceRecommendationsJobRequest = S.suspend(() =>
   identifier: "CreateInferenceRecommendationsJobRequest",
 }) as any as S.Schema<CreateInferenceRecommendationsJobRequest>;
 export interface CreateLabelingJobResponse {
-  LabelingJobArn?: string;
+  LabelingJobArn: string;
 }
 export const CreateLabelingJobResponse = S.suspend(() =>
   S.Struct({ LabelingJobArn: S.optional(S.String) }).pipe(ns),
@@ -31670,7 +33535,7 @@ export const CreateModelInput = S.suspend(() =>
   identifier: "CreateModelInput",
 }) as any as S.Schema<CreateModelInput>;
 export interface CreateModelPackageOutput {
-  ModelPackageArn?: string;
+  ModelPackageArn: string;
 }
 export const CreateModelPackageOutput = S.suspend(() =>
   S.Struct({ ModelPackageArn: S.optional(S.String) }).pipe(ns),
@@ -31678,7 +33543,7 @@ export const CreateModelPackageOutput = S.suspend(() =>
   identifier: "CreateModelPackageOutput",
 }) as any as S.Schema<CreateModelPackageOutput>;
 export interface CreateMonitoringScheduleResponse {
-  MonitoringScheduleArn?: string;
+  MonitoringScheduleArn: string;
 }
 export const CreateMonitoringScheduleResponse = S.suspend(() =>
   S.Struct({ MonitoringScheduleArn: S.optional(S.String) }).pipe(ns),
@@ -31686,7 +33551,7 @@ export const CreateMonitoringScheduleResponse = S.suspend(() =>
   identifier: "CreateMonitoringScheduleResponse",
 }) as any as S.Schema<CreateMonitoringScheduleResponse>;
 export interface CreateOptimizationJobResponse {
-  OptimizationJobArn?: string;
+  OptimizationJobArn: string;
 }
 export const CreateOptimizationJobResponse = S.suspend(() =>
   S.Struct({ OptimizationJobArn: S.optional(S.String) }).pipe(ns),
@@ -31694,7 +33559,7 @@ export const CreateOptimizationJobResponse = S.suspend(() =>
   identifier: "CreateOptimizationJobResponse",
 }) as any as S.Schema<CreateOptimizationJobResponse>;
 export interface CreateProcessingJobResponse {
-  ProcessingJobArn?: string;
+  ProcessingJobArn: string;
 }
 export const CreateProcessingJobResponse = S.suspend(() =>
   S.Struct({ ProcessingJobArn: S.optional(S.String) }).pipe(ns),
@@ -31702,8 +33567,8 @@ export const CreateProcessingJobResponse = S.suspend(() =>
   identifier: "CreateProcessingJobResponse",
 }) as any as S.Schema<CreateProcessingJobResponse>;
 export interface CreateProjectOutput {
-  ProjectArn?: string;
-  ProjectId?: string;
+  ProjectArn: string;
+  ProjectId: string;
 }
 export const CreateProjectOutput = S.suspend(() =>
   S.Struct({
@@ -31820,7 +33685,7 @@ export const CreateTrainingJobRequest = S.suspend(() =>
   identifier: "CreateTrainingJobRequest",
 }) as any as S.Schema<CreateTrainingJobRequest>;
 export interface CreateTransformJobResponse {
-  TransformJobArn?: string;
+  TransformJobArn: string;
 }
 export const CreateTransformJobResponse = S.suspend(() =>
   S.Struct({ TransformJobArn: S.optional(S.String) }).pipe(ns),
@@ -31836,25 +33701,77 @@ export const CreateWorkteamResponse = S.suspend(() =>
   identifier: "CreateWorkteamResponse",
 }) as any as S.Schema<CreateWorkteamResponse>;
 export interface DescribeAutoMLJobResponse {
-  AutoMLJobName?: string;
-  AutoMLJobArn?: string;
-  InputDataConfig?: AutoMLChannel[];
-  OutputDataConfig?: AutoMLOutputDataConfig;
-  RoleArn?: string;
-  AutoMLJobObjective?: AutoMLJobObjective;
+  AutoMLJobName: string;
+  AutoMLJobArn: string;
+  InputDataConfig: (AutoMLChannel & {
+    TargetAttributeName: TargetAttributeName;
+    DataSource: AutoMLDataSource & {
+      S3DataSource: AutoMLS3DataSource & {
+        S3DataType: AutoMLS3DataType;
+        S3Uri: S3Uri;
+      };
+    };
+  })[];
+  OutputDataConfig: AutoMLOutputDataConfig & { S3OutputPath: S3Uri };
+  RoleArn: string;
+  AutoMLJobObjective?: AutoMLJobObjective & { MetricName: AutoMLMetricEnum };
   ProblemType?: ProblemType;
-  AutoMLJobConfig?: AutoMLJobConfig;
-  CreationTime?: Date;
+  AutoMLJobConfig?: AutoMLJobConfig & {
+    SecurityConfig: AutoMLSecurityConfig & {
+      VpcConfig: VpcConfig & {
+        SecurityGroupIds: VpcSecurityGroupIds;
+        Subnets: Subnets;
+      };
+    };
+    CandidateGenerationConfig: AutoMLCandidateGenerationConfig & {
+      AlgorithmsConfig: (AutoMLAlgorithmConfig & {
+        AutoMLAlgorithms: AutoMLAlgorithms;
+      })[];
+    };
+  };
+  CreationTime: Date;
   EndTime?: Date;
-  LastModifiedTime?: Date;
+  LastModifiedTime: Date;
   FailureReason?: string;
   PartialFailureReasons?: AutoMLPartialFailureReason[];
-  BestCandidate?: AutoMLCandidate;
-  AutoMLJobStatus?: AutoMLJobStatus;
-  AutoMLJobSecondaryStatus?: AutoMLJobSecondaryStatus;
+  BestCandidate?: AutoMLCandidate & {
+    CandidateName: CandidateName;
+    ObjectiveStatus: ObjectiveStatus;
+    CandidateSteps: (AutoMLCandidateStep & {
+      CandidateStepType: CandidateStepType;
+      CandidateStepArn: CandidateStepArn;
+      CandidateStepName: CandidateStepName;
+    })[];
+    CandidateStatus: CandidateStatus;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    FinalAutoMLJobObjectiveMetric: FinalAutoMLJobObjectiveMetric & {
+      MetricName: AutoMLMetricEnum;
+      Value: MetricValue;
+    };
+    InferenceContainers: (AutoMLContainerDefinition & {
+      Image: ContainerImage;
+      ModelDataUrl: Url;
+    })[];
+    CandidateProperties: CandidateProperties & {
+      CandidateArtifactLocations: CandidateArtifactLocations & {
+        Explainability: ExplainabilityLocation;
+      };
+    };
+    InferenceContainerDefinitions: {
+      [key: string]: (AutoMLContainerDefinition & {
+        Image: ContainerImage;
+        ModelDataUrl: Url;
+      })[];
+    };
+  };
+  AutoMLJobStatus: AutoMLJobStatus;
+  AutoMLJobSecondaryStatus: AutoMLJobSecondaryStatus;
   GenerateCandidateDefinitionsOnly?: boolean;
   AutoMLJobArtifacts?: AutoMLJobArtifacts;
-  ResolvedAttributes?: ResolvedAttributes;
+  ResolvedAttributes?: ResolvedAttributes & {
+    AutoMLJobObjective: AutoMLJobObjective & { MetricName: AutoMLMetricEnum };
+  };
   ModelDeployConfig?: ModelDeployConfig;
   ModelDeployResult?: ModelDeployResult;
 }
@@ -31927,29 +33844,77 @@ export const AutoMLProblemTypeConfig = S.Union(
   S.Struct({ TextGenerationJobConfig: TextGenerationJobConfig }),
 );
 export interface DescribeAutoMLJobV2Response {
-  AutoMLJobName?: string;
-  AutoMLJobArn?: string;
-  AutoMLJobInputDataConfig?: AutoMLJobChannel[];
-  OutputDataConfig?: AutoMLOutputDataConfig;
-  RoleArn?: string;
-  AutoMLJobObjective?: AutoMLJobObjective;
+  AutoMLJobName: string;
+  AutoMLJobArn: string;
+  AutoMLJobInputDataConfig: (AutoMLJobChannel & {
+    DataSource: AutoMLDataSource & {
+      S3DataSource: AutoMLS3DataSource & {
+        S3DataType: AutoMLS3DataType;
+        S3Uri: S3Uri;
+      };
+    };
+  })[];
+  OutputDataConfig: AutoMLOutputDataConfig & { S3OutputPath: S3Uri };
+  RoleArn: string;
+  AutoMLJobObjective?: AutoMLJobObjective & { MetricName: AutoMLMetricEnum };
   AutoMLProblemTypeConfig?: AutoMLProblemTypeConfig;
   AutoMLProblemTypeConfigName?: AutoMLProblemTypeConfigName;
-  CreationTime?: Date;
+  CreationTime: Date;
   EndTime?: Date;
-  LastModifiedTime?: Date;
+  LastModifiedTime: Date;
   FailureReason?: string;
   PartialFailureReasons?: AutoMLPartialFailureReason[];
-  BestCandidate?: AutoMLCandidate;
-  AutoMLJobStatus?: AutoMLJobStatus;
-  AutoMLJobSecondaryStatus?: AutoMLJobSecondaryStatus;
+  BestCandidate?: AutoMLCandidate & {
+    CandidateName: CandidateName;
+    ObjectiveStatus: ObjectiveStatus;
+    CandidateSteps: (AutoMLCandidateStep & {
+      CandidateStepType: CandidateStepType;
+      CandidateStepArn: CandidateStepArn;
+      CandidateStepName: CandidateStepName;
+    })[];
+    CandidateStatus: CandidateStatus;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    FinalAutoMLJobObjectiveMetric: FinalAutoMLJobObjectiveMetric & {
+      MetricName: AutoMLMetricEnum;
+      Value: MetricValue;
+    };
+    InferenceContainers: (AutoMLContainerDefinition & {
+      Image: ContainerImage;
+      ModelDataUrl: Url;
+    })[];
+    CandidateProperties: CandidateProperties & {
+      CandidateArtifactLocations: CandidateArtifactLocations & {
+        Explainability: ExplainabilityLocation;
+      };
+    };
+    InferenceContainerDefinitions: {
+      [key: string]: (AutoMLContainerDefinition & {
+        Image: ContainerImage;
+        ModelDataUrl: Url;
+      })[];
+    };
+  };
+  AutoMLJobStatus: AutoMLJobStatus;
+  AutoMLJobSecondaryStatus: AutoMLJobSecondaryStatus;
   AutoMLJobArtifacts?: AutoMLJobArtifacts;
-  ResolvedAttributes?: AutoMLResolvedAttributes;
+  ResolvedAttributes?: AutoMLResolvedAttributes & {
+    AutoMLJobObjective: AutoMLJobObjective & { MetricName: AutoMLMetricEnum };
+  };
   ModelDeployConfig?: ModelDeployConfig;
   ModelDeployResult?: ModelDeployResult;
   DataSplitConfig?: AutoMLDataSplitConfig;
-  SecurityConfig?: AutoMLSecurityConfig;
-  AutoMLComputeConfig?: AutoMLComputeConfig;
+  SecurityConfig?: AutoMLSecurityConfig & {
+    VpcConfig: VpcConfig & {
+      SecurityGroupIds: VpcSecurityGroupIds;
+      Subnets: Subnets;
+    };
+  };
+  AutoMLComputeConfig?: AutoMLComputeConfig & {
+    EmrServerlessComputeConfig: EmrServerlessComputeConfig & {
+      ExecutionRoleARN: RoleArn;
+    };
+  };
 }
 export const DescribeAutoMLJobV2Response = S.suspend(() =>
   S.Struct({
@@ -32003,20 +33968,124 @@ export const AdditionalEnis = S.suspend(() =>
   identifier: "AdditionalEnis",
 }) as any as S.Schema<AdditionalEnis>;
 export interface DescribeEndpointOutput {
-  EndpointName?: string;
-  EndpointArn?: string;
+  EndpointName: string;
+  EndpointArn: string;
   EndpointConfigName?: string;
-  ProductionVariants?: ProductionVariantSummary[];
-  DataCaptureConfig?: DataCaptureConfigSummary;
-  EndpointStatus?: EndpointStatus;
+  ProductionVariants?: (ProductionVariantSummary & {
+    VariantName: VariantName;
+    VariantStatus: (ProductionVariantStatus & { Status: VariantStatus })[];
+    CurrentServerlessConfig: ProductionVariantServerlessConfig & {
+      MemorySizeInMB: ServerlessMemorySizeInMB;
+      MaxConcurrency: ServerlessMaxConcurrency;
+    };
+    DesiredServerlessConfig: ProductionVariantServerlessConfig & {
+      MemorySizeInMB: ServerlessMemorySizeInMB;
+      MaxConcurrency: ServerlessMaxConcurrency;
+    };
+    RoutingConfig: ProductionVariantRoutingConfig & {
+      RoutingStrategy: RoutingStrategy;
+    };
+  })[];
+  DataCaptureConfig?: DataCaptureConfigSummary & {
+    EnableCapture: EnableCapture;
+    CaptureStatus: CaptureStatus;
+    CurrentSamplingPercentage: SamplingPercentage;
+    DestinationS3Uri: DestinationS3Uri;
+    KmsKeyId: KmsKeyId;
+  };
+  EndpointStatus: EndpointStatus;
   FailureReason?: string;
-  CreationTime?: Date;
-  LastModifiedTime?: Date;
-  LastDeploymentConfig?: DeploymentConfig;
-  AsyncInferenceConfig?: AsyncInferenceConfig;
-  PendingDeploymentSummary?: PendingDeploymentSummary;
-  ExplainerConfig?: ExplainerConfig;
-  ShadowProductionVariants?: ProductionVariantSummary[];
+  CreationTime: Date;
+  LastModifiedTime: Date;
+  LastDeploymentConfig?: DeploymentConfig & {
+    BlueGreenUpdatePolicy: BlueGreenUpdatePolicy & {
+      TrafficRoutingConfiguration: TrafficRoutingConfig & {
+        Type: TrafficRoutingConfigType;
+        WaitIntervalInSeconds: WaitIntervalInSeconds;
+        CanarySize: CapacitySize & {
+          Type: CapacitySizeType;
+          Value: CapacitySizeValue;
+        };
+        LinearStepSize: CapacitySize & {
+          Type: CapacitySizeType;
+          Value: CapacitySizeValue;
+        };
+      };
+    };
+    RollingUpdatePolicy: RollingUpdatePolicy & {
+      MaximumBatchSize: CapacitySize & {
+        Type: CapacitySizeType;
+        Value: CapacitySizeValue;
+      };
+      WaitIntervalInSeconds: WaitIntervalInSeconds;
+      RollbackMaximumBatchSize: CapacitySize & {
+        Type: CapacitySizeType;
+        Value: CapacitySizeValue;
+      };
+    };
+  };
+  AsyncInferenceConfig?: AsyncInferenceConfig & {
+    OutputConfig: AsyncInferenceOutputConfig;
+  };
+  PendingDeploymentSummary?: PendingDeploymentSummary & {
+    EndpointConfigName: EndpointConfigName;
+    ProductionVariants: (PendingProductionVariantSummary & {
+      VariantName: VariantName;
+      VariantStatus: (ProductionVariantStatus & { Status: VariantStatus })[];
+      CurrentServerlessConfig: ProductionVariantServerlessConfig & {
+        MemorySizeInMB: ServerlessMemorySizeInMB;
+        MaxConcurrency: ServerlessMaxConcurrency;
+      };
+      DesiredServerlessConfig: ProductionVariantServerlessConfig & {
+        MemorySizeInMB: ServerlessMemorySizeInMB;
+        MaxConcurrency: ServerlessMaxConcurrency;
+      };
+      RoutingConfig: ProductionVariantRoutingConfig & {
+        RoutingStrategy: RoutingStrategy;
+      };
+    })[];
+    ShadowProductionVariants: (PendingProductionVariantSummary & {
+      VariantName: VariantName;
+      VariantStatus: (ProductionVariantStatus & { Status: VariantStatus })[];
+      CurrentServerlessConfig: ProductionVariantServerlessConfig & {
+        MemorySizeInMB: ServerlessMemorySizeInMB;
+        MaxConcurrency: ServerlessMaxConcurrency;
+      };
+      DesiredServerlessConfig: ProductionVariantServerlessConfig & {
+        MemorySizeInMB: ServerlessMemorySizeInMB;
+        MaxConcurrency: ServerlessMaxConcurrency;
+      };
+      RoutingConfig: ProductionVariantRoutingConfig & {
+        RoutingStrategy: RoutingStrategy;
+      };
+    })[];
+  };
+  ExplainerConfig?: ExplainerConfig & {
+    ClarifyExplainerConfig: ClarifyExplainerConfig & {
+      ShapConfig: ClarifyShapConfig & {
+        ShapBaselineConfig: ClarifyShapBaselineConfig;
+        TextConfig: ClarifyTextConfig & {
+          Language: ClarifyTextLanguage;
+          Granularity: ClarifyTextGranularity;
+        };
+      };
+    };
+  };
+  ShadowProductionVariants?: (ProductionVariantSummary & {
+    VariantName: VariantName;
+    VariantStatus: (ProductionVariantStatus & { Status: VariantStatus })[];
+    CurrentServerlessConfig: ProductionVariantServerlessConfig & {
+      MemorySizeInMB: ServerlessMemorySizeInMB;
+      MaxConcurrency: ServerlessMaxConcurrency;
+    };
+    DesiredServerlessConfig: ProductionVariantServerlessConfig & {
+      MemorySizeInMB: ServerlessMemorySizeInMB;
+      MaxConcurrency: ServerlessMaxConcurrency;
+    };
+    RoutingConfig: ProductionVariantRoutingConfig & {
+      RoutingStrategy: RoutingStrategy;
+    };
+  })[];
   MetricsConfig?: MetricsConfig;
 }
 export const DescribeEndpointOutput = S.suspend(() =>
@@ -32043,20 +34112,59 @@ export const DescribeEndpointOutput = S.suspend(() =>
   identifier: "DescribeEndpointOutput",
 }) as any as S.Schema<DescribeEndpointOutput>;
 export interface DescribeInferenceRecommendationsJobResponse {
-  JobName?: string;
+  JobName: string;
   JobDescription?: string;
-  JobType?: RecommendationJobType;
-  JobArn?: string;
-  RoleArn?: string;
-  Status?: RecommendationJobStatus;
-  CreationTime?: Date;
+  JobType: RecommendationJobType;
+  JobArn: string;
+  RoleArn: string;
+  Status: RecommendationJobStatus;
+  CreationTime: Date;
   CompletionTime?: Date;
-  LastModifiedTime?: Date;
+  LastModifiedTime: Date;
   FailureReason?: string;
-  InputConfig?: RecommendationJobInputConfig;
+  InputConfig: RecommendationJobInputConfig & {
+    EndpointConfigurations: (EndpointInputConfiguration & {
+      ServerlessConfig: ProductionVariantServerlessConfig & {
+        MemorySizeInMB: ServerlessMemorySizeInMB;
+        MaxConcurrency: ServerlessMaxConcurrency;
+      };
+      EnvironmentParameterRanges: EnvironmentParameterRanges & {
+        CategoricalParameterRanges: (CategoricalParameter & {
+          Name: String64;
+          Value: CategoricalParameterRangeValues;
+        })[];
+      };
+    })[];
+    VpcConfig: RecommendationJobVpcConfig & {
+      SecurityGroupIds: RecommendationJobVpcSecurityGroupIds;
+      Subnets: RecommendationJobVpcSubnets;
+    };
+  };
   StoppingConditions?: RecommendationJobStoppingConditions;
-  InferenceRecommendations?: InferenceRecommendation[];
-  EndpointPerformances?: EndpointPerformance[];
+  InferenceRecommendations?: (InferenceRecommendation & {
+    EndpointConfiguration: EndpointOutputConfiguration & {
+      EndpointName: string;
+      VariantName: string;
+      ServerlessConfig: ProductionVariantServerlessConfig & {
+        MemorySizeInMB: ServerlessMemorySizeInMB;
+        MaxConcurrency: ServerlessMaxConcurrency;
+      };
+    };
+    ModelConfiguration: ModelConfiguration & {
+      EnvironmentParameters: (EnvironmentParameter & {
+        Key: string;
+        ValueType: string;
+        Value: string;
+      })[];
+    };
+  })[];
+  EndpointPerformances?: (EndpointPerformance & {
+    Metrics: InferenceMetrics & {
+      MaxInvocations: number;
+      ModelLatency: number;
+    };
+    EndpointInfo: EndpointInfo;
+  })[];
 }
 export const DescribeInferenceRecommendationsJobResponse = S.suspend(() =>
   S.Struct({
@@ -32081,16 +34189,25 @@ export const DescribeInferenceRecommendationsJobResponse = S.suspend(() =>
   identifier: "DescribeInferenceRecommendationsJobResponse",
 }) as any as S.Schema<DescribeInferenceRecommendationsJobResponse>;
 export interface DescribeProjectOutput {
-  ProjectArn?: string;
-  ProjectName?: string;
-  ProjectId?: string;
+  ProjectArn: string;
+  ProjectName: string;
+  ProjectId: string;
   ProjectDescription?: string;
-  ServiceCatalogProvisioningDetails?: ServiceCatalogProvisioningDetails;
+  ServiceCatalogProvisioningDetails?: ServiceCatalogProvisioningDetails & {
+    ProductId: ServiceCatalogEntityId;
+  };
   ServiceCatalogProvisionedProductDetails?: ServiceCatalogProvisionedProductDetails;
-  ProjectStatus?: ProjectStatus;
-  TemplateProviderDetails?: TemplateProviderDetail[];
+  ProjectStatus: ProjectStatus;
+  TemplateProviderDetails?: (TemplateProviderDetail & {
+    CfnTemplateProviderDetail: CfnTemplateProviderDetail & {
+      TemplateName: CfnTemplateName;
+      TemplateURL: CfnTemplateURL;
+      Parameters: (CfnStackParameter & { Key: CfnStackParameterKey })[];
+      StackDetail: CfnStackDetail & { StatusMessage: CfnStackStatusMessage };
+    };
+  })[];
   CreatedBy?: UserContext;
-  CreationTime?: Date;
+  CreationTime: Date;
   LastModifiedTime?: Date;
   LastModifiedBy?: UserContext;
 }
@@ -32129,7 +34246,13 @@ export const GetSearchSuggestionsResponse = S.suspend(() =>
   identifier: "GetSearchSuggestionsResponse",
 }) as any as S.Schema<GetSearchSuggestionsResponse>;
 export interface ListModelMetadataResponse {
-  ModelMetadataSummaries?: ModelMetadataSummary[];
+  ModelMetadataSummaries: (ModelMetadataSummary & {
+    Domain: string;
+    Framework: string;
+    Task: string;
+    Model: string;
+    FrameworkVersion: string;
+  })[];
   NextToken?: string;
 }
 export const ListModelMetadataResponse = S.suspend(() =>
@@ -32141,7 +34264,15 @@ export const ListModelMetadataResponse = S.suspend(() =>
   identifier: "ListModelMetadataResponse",
 }) as any as S.Schema<ListModelMetadataResponse>;
 export interface ListMonitoringAlertsResponse {
-  MonitoringAlertSummaries?: MonitoringAlertSummary[];
+  MonitoringAlertSummaries?: (MonitoringAlertSummary & {
+    MonitoringAlertName: MonitoringAlertName;
+    CreationTime: Date;
+    LastModifiedTime: Date;
+    AlertStatus: MonitoringAlertStatus;
+    DatapointsToAlert: MonitoringDatapointsToAlert;
+    EvaluationPeriod: MonitoringEvaluationPeriod;
+    Actions: MonitoringAlertActions;
+  })[];
   NextToken?: string;
 }
 export const ListMonitoringAlertsResponse = S.suspend(() =>
@@ -32167,7 +34298,7 @@ export const QueryLineageResponse = S.suspend(() =>
   identifier: "QueryLineageResponse",
 }) as any as S.Schema<QueryLineageResponse>;
 export interface UpdateClusterSoftwareResponse {
-  ClusterArn?: string;
+  ClusterArn: string;
 }
 export const UpdateClusterSoftwareResponse = S.suspend(() =>
   S.Struct({ ClusterArn: S.optional(S.String) }).pipe(ns),
@@ -32175,7 +34306,7 @@ export const UpdateClusterSoftwareResponse = S.suspend(() =>
   identifier: "UpdateClusterSoftwareResponse",
 }) as any as S.Schema<UpdateClusterSoftwareResponse>;
 export interface UpdateInferenceComponentOutput {
-  InferenceComponentArn?: string;
+  InferenceComponentArn: string;
 }
 export const UpdateInferenceComponentOutput = S.suspend(() =>
   S.Struct({ InferenceComponentArn: S.optional(S.String) }).pipe(ns),
@@ -32183,7 +34314,7 @@ export const UpdateInferenceComponentOutput = S.suspend(() =>
   identifier: "UpdateInferenceComponentOutput",
 }) as any as S.Schema<UpdateInferenceComponentOutput>;
 export interface UpdateProjectOutput {
-  ProjectArn?: string;
+  ProjectArn: string;
 }
 export const UpdateProjectOutput = S.suspend(() =>
   S.Struct({ ProjectArn: S.optional(S.String) }).pipe(ns),
@@ -33102,7 +35233,7 @@ export const ModelDashboardModelCard = S.suspend(() =>
   identifier: "ModelDashboardModelCard",
 }) as any as S.Schema<ModelDashboardModelCard>;
 export interface CreateAlgorithmOutput {
-  AlgorithmArn?: string;
+  AlgorithmArn: string;
 }
 export const CreateAlgorithmOutput = S.suspend(() =>
   S.Struct({ AlgorithmArn: S.optional(S.String) }).pipe(ns),
@@ -33150,7 +35281,7 @@ export const CreateAutoMLJobV2Request = S.suspend(() =>
   identifier: "CreateAutoMLJobV2Request",
 }) as any as S.Schema<CreateAutoMLJobV2Request>;
 export interface CreateDataQualityJobDefinitionResponse {
-  JobDefinitionArn?: string;
+  JobDefinitionArn: string;
 }
 export const CreateDataQualityJobDefinitionResponse = S.suspend(() =>
   S.Struct({ JobDefinitionArn: S.optional(S.String) }).pipe(ns),
@@ -33172,7 +35303,7 @@ export const CreateDomainResponse = S.suspend(() =>
   identifier: "CreateDomainResponse",
 }) as any as S.Schema<CreateDomainResponse>;
 export interface CreateEndpointConfigOutput {
-  EndpointConfigArn?: string;
+  EndpointConfigArn: string;
 }
 export const CreateEndpointConfigOutput = S.suspend(() =>
   S.Struct({ EndpointConfigArn: S.optional(S.String) }).pipe(ns),
@@ -33180,7 +35311,7 @@ export const CreateEndpointConfigOutput = S.suspend(() =>
   identifier: "CreateEndpointConfigOutput",
 }) as any as S.Schema<CreateEndpointConfigOutput>;
 export interface CreateInferenceRecommendationsJobResponse {
-  JobArn?: string;
+  JobArn: string;
 }
 export const CreateInferenceRecommendationsJobResponse = S.suspend(() =>
   S.Struct({ JobArn: S.optional(S.String) }).pipe(ns),
@@ -33188,7 +35319,7 @@ export const CreateInferenceRecommendationsJobResponse = S.suspend(() =>
   identifier: "CreateInferenceRecommendationsJobResponse",
 }) as any as S.Schema<CreateInferenceRecommendationsJobResponse>;
 export interface CreateModelOutput {
-  ModelArn?: string;
+  ModelArn: string;
 }
 export const CreateModelOutput = S.suspend(() =>
   S.Struct({ ModelArn: S.optional(S.String) }).pipe(ns),
@@ -33204,7 +35335,7 @@ export const CreateSpaceResponse = S.suspend(() =>
   identifier: "CreateSpaceResponse",
 }) as any as S.Schema<CreateSpaceResponse>;
 export interface CreateTrainingJobResponse {
-  TrainingJobArn?: string;
+  TrainingJobArn: string;
 }
 export const CreateTrainingJobResponse = S.suspend(() =>
   S.Struct({ TrainingJobArn: S.optional(S.String) }).pipe(ns),
@@ -33234,7 +35365,28 @@ export const CustomizedMetricSpecification = S.suspend(() =>
   identifier: "CustomizedMetricSpecification",
 }) as any as S.Schema<CustomizedMetricSpecification>;
 export interface ListPipelineExecutionStepsResponse {
-  PipelineExecutionSteps?: PipelineExecutionStep[];
+  PipelineExecutionSteps?: (PipelineExecutionStep & {
+    Metadata: PipelineExecutionStepMetadata & {
+      Callback: CallbackStepMetadata & {
+        OutputParameters: (OutputParameter & {
+          Name: String256;
+          Value: String1024;
+        })[];
+      };
+      Lambda: LambdaStepMetadata & {
+        OutputParameters: (OutputParameter & {
+          Name: String256;
+          Value: String1024;
+        })[];
+      };
+      Lineage: LineageMetadata & {
+        Associations: (AssociationInfo & {
+          SourceArn: String2048;
+          DestinationArn: String2048;
+        })[];
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListPipelineExecutionStepsResponse = S.suspend(() =>
@@ -33453,7 +35605,7 @@ export const TrialComponentSourceDetail = S.suspend(() =>
   identifier: "TrialComponentSourceDetail",
 }) as any as S.Schema<TrialComponentSourceDetail>;
 export interface CreateAutoMLJobV2Response {
-  AutoMLJobArn?: string;
+  AutoMLJobArn: string;
 }
 export const CreateAutoMLJobV2Response = S.suspend(() =>
   S.Struct({ AutoMLJobArn: S.optional(S.String) }).pipe(ns),
@@ -33461,7 +35613,13 @@ export const CreateAutoMLJobV2Response = S.suspend(() =>
   identifier: "CreateAutoMLJobV2Response",
 }) as any as S.Schema<CreateAutoMLJobV2Response>;
 export interface DescribeClusterEventResponse {
-  EventDetails?: ClusterEventDetail;
+  EventDetails?: ClusterEventDetail & {
+    EventId: EventId;
+    ClusterArn: ClusterArn;
+    ClusterName: ClusterName;
+    ResourceType: ClusterEventResourceType;
+    EventTime: Date;
+  };
 }
 export const DescribeClusterEventResponse = S.suspend(() =>
   S.Struct({ EventDetails: S.optional(ClusterEventDetail) }).pipe(ns),
@@ -33609,7 +35767,986 @@ export const GetScalingConfigurationRecommendationResponse = S.suspend(() =>
   identifier: "GetScalingConfigurationRecommendationResponse",
 }) as any as S.Schema<GetScalingConfigurationRecommendationResponse>;
 export interface SearchResponse {
-  Results?: SearchRecord[];
+  Results?: (SearchRecord & {
+    TrainingJob: TrainingJob & {
+      ModelArtifacts: ModelArtifacts & { S3ModelArtifacts: S3Uri };
+      AlgorithmSpecification: AlgorithmSpecification & {
+        TrainingInputMode: TrainingInputMode;
+        MetricDefinitions: (MetricDefinition & {
+          Name: MetricName;
+          Regex: MetricRegex;
+        })[];
+        TrainingImageConfig: TrainingImageConfig & {
+          TrainingRepositoryAccessMode: TrainingRepositoryAccessMode;
+          TrainingRepositoryAuthConfig: TrainingRepositoryAuthConfig & {
+            TrainingRepositoryCredentialsProviderArn: TrainingRepositoryCredentialsProviderArn;
+          };
+        };
+      };
+      InputDataConfig: (Channel & {
+        ChannelName: ChannelName;
+        DataSource: DataSource & {
+          S3DataSource: S3DataSource & {
+            S3DataType: S3DataType;
+            S3Uri: S3Uri;
+            ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+            HubAccessConfig: HubAccessConfig & { HubContentArn: HubContentArn };
+          };
+          FileSystemDataSource: FileSystemDataSource & {
+            FileSystemId: FileSystemId;
+            FileSystemAccessMode: FileSystemAccessMode;
+            FileSystemType: FileSystemType;
+            DirectoryPath: DirectoryPath;
+          };
+        };
+        ShuffleConfig: ShuffleConfig & { Seed: Seed };
+      })[];
+      OutputDataConfig: OutputDataConfig & { S3OutputPath: S3Uri };
+      ResourceConfig: ResourceConfig & {
+        InstanceGroups: (InstanceGroup & {
+          InstanceType: TrainingInstanceType;
+          InstanceCount: TrainingInstanceCount;
+          InstanceGroupName: InstanceGroupName;
+        })[];
+        InstancePlacementConfig: InstancePlacementConfig & {
+          PlacementSpecifications: (PlacementSpecification & {
+            InstanceCount: TrainingInstanceCount;
+          })[];
+        };
+      };
+      VpcConfig: VpcConfig & {
+        SecurityGroupIds: VpcSecurityGroupIds;
+        Subnets: Subnets;
+      };
+      SecondaryStatusTransitions: (SecondaryStatusTransition & {
+        Status: SecondaryStatus;
+        StartTime: Date;
+      })[];
+      CheckpointConfig: CheckpointConfig & { S3Uri: S3Uri };
+      DebugHookConfig: DebugHookConfig & { S3OutputPath: S3Uri };
+      DebugRuleConfigurations: (DebugRuleConfiguration & {
+        RuleConfigurationName: RuleConfigurationName;
+        RuleEvaluatorImage: AlgorithmImage;
+      })[];
+      TensorBoardOutputConfig: TensorBoardOutputConfig & {
+        S3OutputPath: S3Uri;
+      };
+      RetryStrategy: RetryStrategy & {
+        MaximumRetryAttempts: MaximumRetryAttempts;
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+    Experiment: Experiment & {
+      Source: ExperimentSource & { SourceArn: ExperimentSourceArn };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+    Trial: Trial & {
+      Source: TrialSource & { SourceArn: TrialSourceArn };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      TrialComponentSummaries: (TrialComponentSimpleSummary & {
+        TrialComponentSource: TrialComponentSource & {
+          SourceArn: TrialComponentSourceArn;
+        };
+      })[];
+    };
+    TrialComponent: TrialComponent & {
+      Source: TrialComponentSource & { SourceArn: TrialComponentSourceArn };
+      InputArtifacts: {
+        [key: string]: TrialComponentArtifact & {
+          Value: TrialComponentArtifactValue;
+        };
+      };
+      OutputArtifacts: {
+        [key: string]: TrialComponentArtifact & {
+          Value: TrialComponentArtifactValue;
+        };
+      };
+      SourceDetail: TrialComponentSourceDetail & {
+        TrainingJob: TrainingJob & {
+          ModelArtifacts: ModelArtifacts & { S3ModelArtifacts: S3Uri };
+          AlgorithmSpecification: AlgorithmSpecification & {
+            TrainingInputMode: TrainingInputMode;
+            MetricDefinitions: (MetricDefinition & {
+              Name: MetricName;
+              Regex: MetricRegex;
+            })[];
+            TrainingImageConfig: TrainingImageConfig & {
+              TrainingRepositoryAccessMode: TrainingRepositoryAccessMode;
+              TrainingRepositoryAuthConfig: TrainingRepositoryAuthConfig & {
+                TrainingRepositoryCredentialsProviderArn: TrainingRepositoryCredentialsProviderArn;
+              };
+            };
+          };
+          InputDataConfig: (Channel & {
+            ChannelName: ChannelName;
+            DataSource: DataSource & {
+              S3DataSource: S3DataSource & {
+                S3DataType: S3DataType;
+                S3Uri: S3Uri;
+                ModelAccessConfig: ModelAccessConfig & {
+                  AcceptEula: AcceptEula;
+                };
+                HubAccessConfig: HubAccessConfig & {
+                  HubContentArn: HubContentArn;
+                };
+              };
+              FileSystemDataSource: FileSystemDataSource & {
+                FileSystemId: FileSystemId;
+                FileSystemAccessMode: FileSystemAccessMode;
+                FileSystemType: FileSystemType;
+                DirectoryPath: DirectoryPath;
+              };
+            };
+            ShuffleConfig: ShuffleConfig & { Seed: Seed };
+          })[];
+          OutputDataConfig: OutputDataConfig & { S3OutputPath: S3Uri };
+          ResourceConfig: ResourceConfig & {
+            InstanceGroups: (InstanceGroup & {
+              InstanceType: TrainingInstanceType;
+              InstanceCount: TrainingInstanceCount;
+              InstanceGroupName: InstanceGroupName;
+            })[];
+            InstancePlacementConfig: InstancePlacementConfig & {
+              PlacementSpecifications: (PlacementSpecification & {
+                InstanceCount: TrainingInstanceCount;
+              })[];
+            };
+          };
+          VpcConfig: VpcConfig & {
+            SecurityGroupIds: VpcSecurityGroupIds;
+            Subnets: Subnets;
+          };
+          SecondaryStatusTransitions: (SecondaryStatusTransition & {
+            Status: SecondaryStatus;
+            StartTime: Date;
+          })[];
+          CheckpointConfig: CheckpointConfig & { S3Uri: S3Uri };
+          DebugHookConfig: DebugHookConfig & { S3OutputPath: S3Uri };
+          DebugRuleConfigurations: (DebugRuleConfiguration & {
+            RuleConfigurationName: RuleConfigurationName;
+            RuleEvaluatorImage: AlgorithmImage;
+          })[];
+          TensorBoardOutputConfig: TensorBoardOutputConfig & {
+            S3OutputPath: S3Uri;
+          };
+          RetryStrategy: RetryStrategy & {
+            MaximumRetryAttempts: MaximumRetryAttempts;
+          };
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+        ProcessingJob: ProcessingJob & {
+          ProcessingInputs: (ProcessingInput & {
+            InputName: string;
+            S3Input: ProcessingS3Input & {
+              S3Uri: S3Uri;
+              S3DataType: ProcessingS3DataType;
+            };
+            DatasetDefinition: DatasetDefinition & {
+              AthenaDatasetDefinition: AthenaDatasetDefinition & {
+                Catalog: AthenaCatalog;
+                Database: AthenaDatabase;
+                QueryString: AthenaQueryString;
+                OutputS3Uri: S3Uri;
+                OutputFormat: AthenaResultFormat;
+              };
+              RedshiftDatasetDefinition: RedshiftDatasetDefinition & {
+                ClusterId: RedshiftClusterId;
+                Database: RedshiftDatabase;
+                DbUser: RedshiftUserName;
+                QueryString: RedshiftQueryString;
+                ClusterRoleArn: RoleArn;
+                OutputS3Uri: S3Uri;
+                OutputFormat: RedshiftResultFormat;
+              };
+            };
+          })[];
+          ProcessingOutputConfig: ProcessingOutputConfig & {
+            Outputs: (ProcessingOutput & {
+              OutputName: string;
+              S3Output: ProcessingS3Output & {
+                S3Uri: S3Uri;
+                S3UploadMode: ProcessingS3UploadMode;
+              };
+              FeatureStoreOutput: ProcessingFeatureStoreOutput & {
+                FeatureGroupName: FeatureGroupName;
+              };
+            })[];
+          };
+          ProcessingResources: ProcessingResources & {
+            ClusterConfig: ProcessingClusterConfig & {
+              InstanceCount: ProcessingInstanceCount;
+              InstanceType: ProcessingInstanceType;
+              VolumeSizeInGB: ProcessingVolumeSizeInGB;
+            };
+          };
+          StoppingCondition: ProcessingStoppingCondition & {
+            MaxRuntimeInSeconds: ProcessingMaxRuntimeInSeconds;
+          };
+          AppSpecification: AppSpecification & { ImageUri: ImageUri };
+          NetworkConfig: NetworkConfig & {
+            VpcConfig: VpcConfig & {
+              SecurityGroupIds: VpcSecurityGroupIds;
+              Subnets: Subnets;
+            };
+          };
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+        TransformJob: TransformJob & {
+          TransformInput: TransformInput & {
+            DataSource: TransformDataSource & {
+              S3DataSource: TransformS3DataSource & {
+                S3DataType: S3DataType;
+                S3Uri: S3Uri;
+              };
+            };
+          };
+          TransformOutput: TransformOutput & { S3OutputPath: S3Uri };
+          DataCaptureConfig: BatchDataCaptureConfig & {
+            DestinationS3Uri: S3Uri;
+          };
+          TransformResources: TransformResources & {
+            InstanceType: TransformInstanceType;
+            InstanceCount: TransformInstanceCount;
+          };
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+    Endpoint: Endpoint & {
+      EndpointName: EndpointName;
+      EndpointArn: EndpointArn;
+      EndpointConfigName: EndpointConfigName;
+      EndpointStatus: EndpointStatus;
+      CreationTime: Date;
+      LastModifiedTime: Date;
+      ProductionVariants: (ProductionVariantSummary & {
+        VariantName: VariantName;
+        VariantStatus: (ProductionVariantStatus & { Status: VariantStatus })[];
+        CurrentServerlessConfig: ProductionVariantServerlessConfig & {
+          MemorySizeInMB: ServerlessMemorySizeInMB;
+          MaxConcurrency: ServerlessMaxConcurrency;
+        };
+        DesiredServerlessConfig: ProductionVariantServerlessConfig & {
+          MemorySizeInMB: ServerlessMemorySizeInMB;
+          MaxConcurrency: ServerlessMaxConcurrency;
+        };
+        RoutingConfig: ProductionVariantRoutingConfig & {
+          RoutingStrategy: RoutingStrategy;
+        };
+      })[];
+      DataCaptureConfig: DataCaptureConfigSummary & {
+        EnableCapture: EnableCapture;
+        CaptureStatus: CaptureStatus;
+        CurrentSamplingPercentage: SamplingPercentage;
+        DestinationS3Uri: DestinationS3Uri;
+        KmsKeyId: KmsKeyId;
+      };
+      MonitoringSchedules: (MonitoringSchedule & {
+        MonitoringScheduleConfig: MonitoringScheduleConfig & {
+          ScheduleConfig: ScheduleConfig & {
+            ScheduleExpression: ScheduleExpression;
+          };
+          MonitoringJobDefinition: MonitoringJobDefinition & {
+            MonitoringInputs: (MonitoringInput & {
+              EndpointInput: EndpointInput & {
+                EndpointName: EndpointName;
+                LocalPath: ProcessingLocalPath;
+              };
+              BatchTransformInput: BatchTransformInput & {
+                DataCapturedDestinationS3Uri: DestinationS3Uri;
+                DatasetFormat: MonitoringDatasetFormat;
+                LocalPath: ProcessingLocalPath;
+              };
+            })[];
+            MonitoringOutputConfig: MonitoringOutputConfig & {
+              MonitoringOutputs: (MonitoringOutput & {
+                S3Output: MonitoringS3Output & {
+                  S3Uri: MonitoringS3Uri;
+                  LocalPath: ProcessingLocalPath;
+                };
+              })[];
+            };
+            MonitoringResources: MonitoringResources & {
+              ClusterConfig: MonitoringClusterConfig & {
+                InstanceCount: ProcessingInstanceCount;
+                InstanceType: ProcessingInstanceType;
+                VolumeSizeInGB: ProcessingVolumeSizeInGB;
+              };
+            };
+            MonitoringAppSpecification: MonitoringAppSpecification & {
+              ImageUri: ImageUri;
+            };
+            RoleArn: RoleArn;
+            StoppingCondition: MonitoringStoppingCondition & {
+              MaxRuntimeInSeconds: MonitoringMaxRuntimeInSeconds;
+            };
+            NetworkConfig: NetworkConfig & {
+              VpcConfig: VpcConfig & {
+                SecurityGroupIds: VpcSecurityGroupIds;
+                Subnets: Subnets;
+              };
+            };
+          };
+        };
+        LastMonitoringExecutionSummary: MonitoringExecutionSummary & {
+          MonitoringScheduleName: MonitoringScheduleName;
+          ScheduledTime: Date;
+          CreationTime: Date;
+          LastModifiedTime: Date;
+          MonitoringExecutionStatus: ExecutionStatus;
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      })[];
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      ShadowProductionVariants: (ProductionVariantSummary & {
+        VariantName: VariantName;
+        VariantStatus: (ProductionVariantStatus & { Status: VariantStatus })[];
+        CurrentServerlessConfig: ProductionVariantServerlessConfig & {
+          MemorySizeInMB: ServerlessMemorySizeInMB;
+          MaxConcurrency: ServerlessMaxConcurrency;
+        };
+        DesiredServerlessConfig: ProductionVariantServerlessConfig & {
+          MemorySizeInMB: ServerlessMemorySizeInMB;
+          MaxConcurrency: ServerlessMaxConcurrency;
+        };
+        RoutingConfig: ProductionVariantRoutingConfig & {
+          RoutingStrategy: RoutingStrategy;
+        };
+      })[];
+    };
+    ModelPackage: ModelPackage & {
+      InferenceSpecification: InferenceSpecification & {
+        Containers: (ModelPackageContainerDefinition & {
+          ModelDataSource: ModelDataSource & {
+            S3DataSource: S3ModelDataSource & {
+              S3Uri: S3ModelUri;
+              S3DataType: S3ModelDataType;
+              CompressionType: ModelCompressionType;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: InferenceHubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+          };
+          ModelInput: ModelInput & { DataInputConfig: DataInputConfig };
+          AdditionalS3DataSource: AdditionalS3DataSource & {
+            S3DataType: AdditionalS3DataSourceDataType;
+            S3Uri: S3Uri;
+          };
+        })[];
+      };
+      SourceAlgorithmSpecification: SourceAlgorithmSpecification & {
+        SourceAlgorithms: (SourceAlgorithm & {
+          AlgorithmName: ArnOrName;
+          ModelDataSource: ModelDataSource & {
+            S3DataSource: S3ModelDataSource & {
+              S3Uri: S3ModelUri;
+              S3DataType: S3ModelDataType;
+              CompressionType: ModelCompressionType;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: InferenceHubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+          };
+        })[];
+      };
+      ValidationSpecification: ModelPackageValidationSpecification & {
+        ValidationRole: RoleArn;
+        ValidationProfiles: (ModelPackageValidationProfile & {
+          ProfileName: EntityName;
+          TransformJobDefinition: TransformJobDefinition & {
+            TransformInput: TransformInput & {
+              DataSource: TransformDataSource & {
+                S3DataSource: TransformS3DataSource & {
+                  S3DataType: S3DataType;
+                  S3Uri: S3Uri;
+                };
+              };
+            };
+            TransformOutput: TransformOutput & { S3OutputPath: S3Uri };
+            TransformResources: TransformResources & {
+              InstanceType: TransformInstanceType;
+              InstanceCount: TransformInstanceCount;
+            };
+          };
+        })[];
+      };
+      ModelPackageStatusDetails: ModelPackageStatusDetails & {
+        ValidationStatuses: (ModelPackageStatusItem & {
+          Name: EntityName;
+          Status: DetailedModelPackageStatus;
+        })[];
+        ImageScanStatuses: (ModelPackageStatusItem & {
+          Name: EntityName;
+          Status: DetailedModelPackageStatus;
+        })[];
+      };
+      ModelMetrics: ModelMetrics & {
+        ModelQuality: ModelQuality & {
+          Statistics: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+          Constraints: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+        };
+        ModelDataQuality: ModelDataQuality & {
+          Statistics: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+          Constraints: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+        };
+        Bias: Bias & {
+          Report: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+          PreTrainingReport: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+          PostTrainingReport: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+        };
+        Explainability: Explainability & {
+          Report: MetricsSource & { ContentType: ContentType; S3Uri: S3Uri };
+        };
+      };
+      AdditionalInferenceSpecifications: (AdditionalInferenceSpecificationDefinition & {
+        Name: EntityName;
+        Containers: (ModelPackageContainerDefinition & {
+          ModelDataSource: ModelDataSource & {
+            S3DataSource: S3ModelDataSource & {
+              S3Uri: S3ModelUri;
+              S3DataType: S3ModelDataType;
+              CompressionType: ModelCompressionType;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: InferenceHubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+          };
+          ModelInput: ModelInput & { DataInputConfig: DataInputConfig };
+          AdditionalS3DataSource: AdditionalS3DataSource & {
+            S3DataType: AdditionalS3DataSourceDataType;
+            S3Uri: S3Uri;
+          };
+        })[];
+      })[];
+      SecurityConfig: ModelPackageSecurityConfig & { KmsKeyId: KmsKeyId };
+      ModelLifeCycle: ModelLifeCycle & {
+        Stage: EntityName;
+        StageStatus: EntityName;
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      DriftCheckBaselines: DriftCheckBaselines & {
+        Bias: DriftCheckBias & {
+          ConfigFile: FileSource & { S3Uri: S3Uri };
+          PreTrainingConstraints: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+          PostTrainingConstraints: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+        };
+        Explainability: DriftCheckExplainability & {
+          Constraints: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+          ConfigFile: FileSource & { S3Uri: S3Uri };
+        };
+        ModelQuality: DriftCheckModelQuality & {
+          Statistics: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+          Constraints: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+        };
+        ModelDataQuality: DriftCheckModelDataQuality & {
+          Statistics: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+          Constraints: MetricsSource & {
+            ContentType: ContentType;
+            S3Uri: S3Uri;
+          };
+        };
+      };
+    };
+    ModelPackageGroup: ModelPackageGroup & {
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+    Pipeline: Pipeline & {
+      ParallelismConfiguration: ParallelismConfiguration & {
+        MaxParallelExecutionSteps: MaxParallelExecutionSteps;
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+    PipelineExecution: PipelineExecution & {
+      ParallelismConfiguration: ParallelismConfiguration & {
+        MaxParallelExecutionSteps: MaxParallelExecutionSteps;
+      };
+      SelectiveExecutionConfig: SelectiveExecutionConfig & {
+        SelectedSteps: (SelectedStep & { StepName: String256 })[];
+      };
+      PipelineParameters: (Parameter & {
+        Name: PipelineParameterName;
+        Value: String1024;
+      })[];
+    };
+    FeatureGroup: FeatureGroup & {
+      FeatureDefinitions: (FeatureDefinition & {
+        FeatureName: FeatureName;
+        FeatureType: FeatureType;
+      })[];
+      OfflineStoreConfig: OfflineStoreConfig & {
+        S3StorageConfig: S3StorageConfig & { S3Uri: S3Uri };
+        DataCatalogConfig: DataCatalogConfig & {
+          TableName: TableName;
+          Catalog: Catalog;
+          Database: Database;
+        };
+      };
+      OfflineStoreStatus: OfflineStoreStatus & {
+        Status: OfflineStoreStatusValue;
+      };
+      LastUpdateStatus: LastUpdateStatus & { Status: LastUpdateStatusValue };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+    Project: Project & {
+      ServiceCatalogProvisioningDetails: ServiceCatalogProvisioningDetails & {
+        ProductId: ServiceCatalogEntityId;
+      };
+      TemplateProviderDetails: (TemplateProviderDetail & {
+        CfnTemplateProviderDetail: CfnTemplateProviderDetail & {
+          TemplateName: CfnTemplateName;
+          TemplateURL: CfnTemplateURL;
+          Parameters: (CfnStackParameter & { Key: CfnStackParameterKey })[];
+          StackDetail: CfnStackDetail & {
+            StatusMessage: CfnStackStatusMessage;
+          };
+        };
+      })[];
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+    HyperParameterTuningJob: HyperParameterTuningJobSearchEntity & {
+      HyperParameterTuningJobConfig: HyperParameterTuningJobConfig & {
+        Strategy: HyperParameterTuningJobStrategyType;
+        ResourceLimits: ResourceLimits & {
+          MaxParallelTrainingJobs: MaxParallelTrainingJobs;
+        };
+        HyperParameterTuningJobObjective: HyperParameterTuningJobObjective & {
+          Type: HyperParameterTuningJobObjectiveType;
+          MetricName: MetricName;
+        };
+        ParameterRanges: ParameterRanges & {
+          IntegerParameterRanges: (IntegerParameterRange & {
+            Name: ParameterKey;
+            MinValue: ParameterValue;
+            MaxValue: ParameterValue;
+          })[];
+          ContinuousParameterRanges: (ContinuousParameterRange & {
+            Name: ParameterKey;
+            MinValue: ParameterValue;
+            MaxValue: ParameterValue;
+          })[];
+          CategoricalParameterRanges: (CategoricalParameterRange & {
+            Name: ParameterKey;
+            Values: ParameterValues;
+          })[];
+          AutoParameters: (AutoParameter & {
+            Name: ParameterKey;
+            ValueHint: ParameterValue;
+          })[];
+        };
+      };
+      TrainingJobDefinition: HyperParameterTrainingJobDefinition & {
+        AlgorithmSpecification: HyperParameterAlgorithmSpecification & {
+          TrainingInputMode: TrainingInputMode;
+          MetricDefinitions: (MetricDefinition & {
+            Name: MetricName;
+            Regex: MetricRegex;
+          })[];
+        };
+        RoleArn: RoleArn;
+        OutputDataConfig: OutputDataConfig & { S3OutputPath: S3Uri };
+        StoppingCondition: StoppingCondition;
+        TuningObjective: HyperParameterTuningJobObjective & {
+          Type: HyperParameterTuningJobObjectiveType;
+          MetricName: MetricName;
+        };
+        HyperParameterRanges: ParameterRanges & {
+          IntegerParameterRanges: (IntegerParameterRange & {
+            Name: ParameterKey;
+            MinValue: ParameterValue;
+            MaxValue: ParameterValue;
+          })[];
+          ContinuousParameterRanges: (ContinuousParameterRange & {
+            Name: ParameterKey;
+            MinValue: ParameterValue;
+            MaxValue: ParameterValue;
+          })[];
+          CategoricalParameterRanges: (CategoricalParameterRange & {
+            Name: ParameterKey;
+            Values: ParameterValues;
+          })[];
+          AutoParameters: (AutoParameter & {
+            Name: ParameterKey;
+            ValueHint: ParameterValue;
+          })[];
+        };
+        InputDataConfig: (Channel & {
+          ChannelName: ChannelName;
+          DataSource: DataSource & {
+            S3DataSource: S3DataSource & {
+              S3DataType: S3DataType;
+              S3Uri: S3Uri;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: HubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+            FileSystemDataSource: FileSystemDataSource & {
+              FileSystemId: FileSystemId;
+              FileSystemAccessMode: FileSystemAccessMode;
+              FileSystemType: FileSystemType;
+              DirectoryPath: DirectoryPath;
+            };
+          };
+          ShuffleConfig: ShuffleConfig & { Seed: Seed };
+        })[];
+        VpcConfig: VpcConfig & {
+          SecurityGroupIds: VpcSecurityGroupIds;
+          Subnets: Subnets;
+        };
+        ResourceConfig: ResourceConfig & {
+          InstanceGroups: (InstanceGroup & {
+            InstanceType: TrainingInstanceType;
+            InstanceCount: TrainingInstanceCount;
+            InstanceGroupName: InstanceGroupName;
+          })[];
+          InstancePlacementConfig: InstancePlacementConfig & {
+            PlacementSpecifications: (PlacementSpecification & {
+              InstanceCount: TrainingInstanceCount;
+            })[];
+          };
+        };
+        HyperParameterTuningResourceConfig: HyperParameterTuningResourceConfig & {
+          InstanceConfigs: (HyperParameterTuningInstanceConfig & {
+            InstanceType: TrainingInstanceType;
+            InstanceCount: TrainingInstanceCount;
+            VolumeSizeInGB: VolumeSizeInGB;
+          })[];
+        };
+        CheckpointConfig: CheckpointConfig & { S3Uri: S3Uri };
+        RetryStrategy: RetryStrategy & {
+          MaximumRetryAttempts: MaximumRetryAttempts;
+        };
+      };
+      TrainingJobDefinitions: (HyperParameterTrainingJobDefinition & {
+        AlgorithmSpecification: HyperParameterAlgorithmSpecification & {
+          TrainingInputMode: TrainingInputMode;
+          MetricDefinitions: (MetricDefinition & {
+            Name: MetricName;
+            Regex: MetricRegex;
+          })[];
+        };
+        RoleArn: RoleArn;
+        OutputDataConfig: OutputDataConfig & { S3OutputPath: S3Uri };
+        StoppingCondition: StoppingCondition;
+        TuningObjective: HyperParameterTuningJobObjective & {
+          Type: HyperParameterTuningJobObjectiveType;
+          MetricName: MetricName;
+        };
+        HyperParameterRanges: ParameterRanges & {
+          IntegerParameterRanges: (IntegerParameterRange & {
+            Name: ParameterKey;
+            MinValue: ParameterValue;
+            MaxValue: ParameterValue;
+          })[];
+          ContinuousParameterRanges: (ContinuousParameterRange & {
+            Name: ParameterKey;
+            MinValue: ParameterValue;
+            MaxValue: ParameterValue;
+          })[];
+          CategoricalParameterRanges: (CategoricalParameterRange & {
+            Name: ParameterKey;
+            Values: ParameterValues;
+          })[];
+          AutoParameters: (AutoParameter & {
+            Name: ParameterKey;
+            ValueHint: ParameterValue;
+          })[];
+        };
+        InputDataConfig: (Channel & {
+          ChannelName: ChannelName;
+          DataSource: DataSource & {
+            S3DataSource: S3DataSource & {
+              S3DataType: S3DataType;
+              S3Uri: S3Uri;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: HubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+            FileSystemDataSource: FileSystemDataSource & {
+              FileSystemId: FileSystemId;
+              FileSystemAccessMode: FileSystemAccessMode;
+              FileSystemType: FileSystemType;
+              DirectoryPath: DirectoryPath;
+            };
+          };
+          ShuffleConfig: ShuffleConfig & { Seed: Seed };
+        })[];
+        VpcConfig: VpcConfig & {
+          SecurityGroupIds: VpcSecurityGroupIds;
+          Subnets: Subnets;
+        };
+        ResourceConfig: ResourceConfig & {
+          InstanceGroups: (InstanceGroup & {
+            InstanceType: TrainingInstanceType;
+            InstanceCount: TrainingInstanceCount;
+            InstanceGroupName: InstanceGroupName;
+          })[];
+          InstancePlacementConfig: InstancePlacementConfig & {
+            PlacementSpecifications: (PlacementSpecification & {
+              InstanceCount: TrainingInstanceCount;
+            })[];
+          };
+        };
+        HyperParameterTuningResourceConfig: HyperParameterTuningResourceConfig & {
+          InstanceConfigs: (HyperParameterTuningInstanceConfig & {
+            InstanceType: TrainingInstanceType;
+            InstanceCount: TrainingInstanceCount;
+            VolumeSizeInGB: VolumeSizeInGB;
+          })[];
+        };
+        CheckpointConfig: CheckpointConfig & { S3Uri: S3Uri };
+        RetryStrategy: RetryStrategy & {
+          MaximumRetryAttempts: MaximumRetryAttempts;
+        };
+      })[];
+      BestTrainingJob: HyperParameterTrainingJobSummary & {
+        TrainingJobName: TrainingJobName;
+        TrainingJobArn: TrainingJobArn;
+        CreationTime: Date;
+        TrainingJobStatus: TrainingJobStatus;
+        TunedHyperParameters: HyperParameters;
+        FinalHyperParameterTuningJobObjectiveMetric: FinalHyperParameterTuningJobObjectiveMetric & {
+          MetricName: MetricName;
+          Value: MetricValue;
+        };
+      };
+      OverallBestTrainingJob: HyperParameterTrainingJobSummary & {
+        TrainingJobName: TrainingJobName;
+        TrainingJobArn: TrainingJobArn;
+        CreationTime: Date;
+        TrainingJobStatus: TrainingJobStatus;
+        TunedHyperParameters: HyperParameters;
+        FinalHyperParameterTuningJobObjectiveMetric: FinalHyperParameterTuningJobObjectiveMetric & {
+          MetricName: MetricName;
+          Value: MetricValue;
+        };
+      };
+      WarmStartConfig: HyperParameterTuningJobWarmStartConfig & {
+        ParentHyperParameterTuningJobs: ParentHyperParameterTuningJobs;
+        WarmStartType: HyperParameterTuningJobWarmStartType;
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+    ModelCard: ModelCard & { Tags: (Tag & { Key: TagKey; Value: TagValue })[] };
+    Model: ModelDashboardModel & {
+      Model: Model & {
+        PrimaryContainer: ContainerDefinition & {
+          ImageConfig: ImageConfig & {
+            RepositoryAccessMode: RepositoryAccessMode;
+            RepositoryAuthConfig: RepositoryAuthConfig & {
+              RepositoryCredentialsProviderArn: RepositoryCredentialsProviderArn;
+            };
+          };
+          ModelDataSource: ModelDataSource & {
+            S3DataSource: S3ModelDataSource & {
+              S3Uri: S3ModelUri;
+              S3DataType: S3ModelDataType;
+              CompressionType: ModelCompressionType;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: InferenceHubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+          };
+          AdditionalModelDataSources: (AdditionalModelDataSource & {
+            ChannelName: AdditionalModelChannelName;
+            S3DataSource: S3ModelDataSource & {
+              S3Uri: S3ModelUri;
+              S3DataType: S3ModelDataType;
+              CompressionType: ModelCompressionType;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: InferenceHubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+          })[];
+        };
+        Containers: (ContainerDefinition & {
+          ImageConfig: ImageConfig & {
+            RepositoryAccessMode: RepositoryAccessMode;
+            RepositoryAuthConfig: RepositoryAuthConfig & {
+              RepositoryCredentialsProviderArn: RepositoryCredentialsProviderArn;
+            };
+          };
+          ModelDataSource: ModelDataSource & {
+            S3DataSource: S3ModelDataSource & {
+              S3Uri: S3ModelUri;
+              S3DataType: S3ModelDataType;
+              CompressionType: ModelCompressionType;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: InferenceHubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+          };
+          AdditionalModelDataSources: (AdditionalModelDataSource & {
+            ChannelName: AdditionalModelChannelName;
+            S3DataSource: S3ModelDataSource & {
+              S3Uri: S3ModelUri;
+              S3DataType: S3ModelDataType;
+              CompressionType: ModelCompressionType;
+              ModelAccessConfig: ModelAccessConfig & { AcceptEula: AcceptEula };
+              HubAccessConfig: InferenceHubAccessConfig & {
+                HubContentArn: HubContentArn;
+              };
+            };
+          })[];
+        })[];
+        InferenceExecutionConfig: InferenceExecutionConfig & {
+          Mode: InferenceExecutionMode;
+        };
+        VpcConfig: VpcConfig & {
+          SecurityGroupIds: VpcSecurityGroupIds;
+          Subnets: Subnets;
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        DeploymentRecommendation: DeploymentRecommendation & {
+          RecommendationStatus: RecommendationStatus;
+          RealTimeInferenceRecommendations: (RealTimeInferenceRecommendation & {
+            RecommendationId: string;
+            InstanceType: ProductionVariantInstanceType;
+          })[];
+        };
+      };
+      Endpoints: (ModelDashboardEndpoint & {
+        EndpointName: EndpointName;
+        EndpointArn: EndpointArn;
+        CreationTime: Date;
+        LastModifiedTime: Date;
+        EndpointStatus: EndpointStatus;
+      })[];
+      LastBatchTransformJob: TransformJob & {
+        TransformInput: TransformInput & {
+          DataSource: TransformDataSource & {
+            S3DataSource: TransformS3DataSource & {
+              S3DataType: S3DataType;
+              S3Uri: S3Uri;
+            };
+          };
+        };
+        TransformOutput: TransformOutput & { S3OutputPath: S3Uri };
+        DataCaptureConfig: BatchDataCaptureConfig & { DestinationS3Uri: S3Uri };
+        TransformResources: TransformResources & {
+          InstanceType: TransformInstanceType;
+          InstanceCount: TransformInstanceCount;
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+      MonitoringSchedules: (ModelDashboardMonitoringSchedule & {
+        MonitoringScheduleConfig: MonitoringScheduleConfig & {
+          ScheduleConfig: ScheduleConfig & {
+            ScheduleExpression: ScheduleExpression;
+          };
+          MonitoringJobDefinition: MonitoringJobDefinition & {
+            MonitoringInputs: (MonitoringInput & {
+              EndpointInput: EndpointInput & {
+                EndpointName: EndpointName;
+                LocalPath: ProcessingLocalPath;
+              };
+              BatchTransformInput: BatchTransformInput & {
+                DataCapturedDestinationS3Uri: DestinationS3Uri;
+                DatasetFormat: MonitoringDatasetFormat;
+                LocalPath: ProcessingLocalPath;
+              };
+            })[];
+            MonitoringOutputConfig: MonitoringOutputConfig & {
+              MonitoringOutputs: (MonitoringOutput & {
+                S3Output: MonitoringS3Output & {
+                  S3Uri: MonitoringS3Uri;
+                  LocalPath: ProcessingLocalPath;
+                };
+              })[];
+            };
+            MonitoringResources: MonitoringResources & {
+              ClusterConfig: MonitoringClusterConfig & {
+                InstanceCount: ProcessingInstanceCount;
+                InstanceType: ProcessingInstanceType;
+                VolumeSizeInGB: ProcessingVolumeSizeInGB;
+              };
+            };
+            MonitoringAppSpecification: MonitoringAppSpecification & {
+              ImageUri: ImageUri;
+            };
+            RoleArn: RoleArn;
+            StoppingCondition: MonitoringStoppingCondition & {
+              MaxRuntimeInSeconds: MonitoringMaxRuntimeInSeconds;
+            };
+            NetworkConfig: NetworkConfig & {
+              VpcConfig: VpcConfig & {
+                SecurityGroupIds: VpcSecurityGroupIds;
+                Subnets: Subnets;
+              };
+            };
+          };
+        };
+        MonitoringAlertSummaries: (MonitoringAlertSummary & {
+          MonitoringAlertName: MonitoringAlertName;
+          CreationTime: Date;
+          LastModifiedTime: Date;
+          AlertStatus: MonitoringAlertStatus;
+          DatapointsToAlert: MonitoringDatapointsToAlert;
+          EvaluationPeriod: MonitoringEvaluationPeriod;
+          Actions: MonitoringAlertActions;
+        })[];
+        LastMonitoringExecutionSummary: MonitoringExecutionSummary & {
+          MonitoringScheduleName: MonitoringScheduleName;
+          ScheduledTime: Date;
+          CreationTime: Date;
+          LastModifiedTime: Date;
+          MonitoringExecutionStatus: ExecutionStatus;
+        };
+        BatchTransformInput: BatchTransformInput & {
+          DataCapturedDestinationS3Uri: DestinationS3Uri;
+          DatasetFormat: MonitoringDatasetFormat;
+          LocalPath: ProcessingLocalPath;
+        };
+      })[];
+      ModelCard: ModelDashboardModelCard & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    };
+  })[];
   NextToken?: string;
   TotalHits?: TotalHits;
 }

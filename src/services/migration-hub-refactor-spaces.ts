@@ -153,7 +153,7 @@ export const CreateEnvironmentRequest = S.suspend(() =>
     Description: S.optional(S.String),
     NetworkFabricType: S.String,
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/environments" }),
@@ -722,7 +722,7 @@ export const CreateApplicationRequest = S.suspend(() =>
     ProxyType: S.String,
     ApiGatewayProxy: S.optional(ApiGatewayProxyInput),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -788,7 +788,7 @@ export const CreateRouteRequest = S.suspend(() =>
     DefaultRoute: S.optional(DefaultRouteInput),
     UriPathRoute: S.optional(UriPathRouteInput),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -828,7 +828,7 @@ export const CreateServiceRequest = S.suspend(() =>
     UrlEndpoint: S.optional(UrlEndpointInput),
     LambdaEndpoint: S.optional(LambdaEndpointInput),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({

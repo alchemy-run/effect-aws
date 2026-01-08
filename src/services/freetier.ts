@@ -124,8 +124,6 @@ export type ActivityId = string;
 export type AccountId = string;
 export type MaxResults = number;
 export type NextPageToken = string;
-export type GenericDouble = number;
-export type GenericString = string;
 export type Value = string;
 
 //# Schemas

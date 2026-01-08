@@ -105,6 +105,8 @@ export type S3KeyPrefix = string;
 export type NonBlankString = string;
 export type WorkflowDefinitionArn = string;
 export type WorkflowRunArn = string;
+export type ToolInputSchemaDocument = unknown;
+export type SensitiveDocument = unknown;
 
 //# Schemas
 export type SortOrder = "Ascending" | "Descending";
@@ -203,7 +205,7 @@ export const CreateSessionRequest = S.suspend(() =>
       T.HttpLabel("workflowDefinitionName"),
     ),
     workflowRunId: S.String.pipe(T.HttpLabel("workflowRunId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -524,7 +526,7 @@ export const CreateWorkflowDefinitionRequest = S.suspend(() =>
     name: S.String,
     description: S.optional(SensitiveString),
     exportConfig: S.optional(WorkflowExportConfig),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/workflow-definitions" }),
@@ -579,7 +581,7 @@ export const CreateWorkflowRunRequest = S.suspend(() =>
       T.HttpLabel("workflowDefinitionName"),
     ),
     modelId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     logGroupName: S.optional(S.String),
     clientInfo: ClientInfo,
   }).pipe(
@@ -779,7 +781,7 @@ export const CreateActRequest = S.suspend(() =>
     sessionId: S.String.pipe(T.HttpLabel("sessionId")),
     task: SensitiveString,
     toolSpecs: S.optional(ToolSpecs),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({

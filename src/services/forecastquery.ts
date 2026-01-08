@@ -88,7 +88,6 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type Arn = string;
-export type DateTime = string;
 export type NextToken = string;
 export type LongArn = string;
 export type AttributeName = string;

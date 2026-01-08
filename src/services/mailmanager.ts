@@ -532,7 +532,7 @@ export interface CreateAddonInstanceRequest {
 }
 export const CreateAddonInstanceRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     AddonSubscriptionId: S.String,
     Tags: S.optional(TagList),
   }).pipe(
@@ -588,7 +588,7 @@ export interface CreateAddonSubscriptionRequest {
 }
 export const CreateAddonSubscriptionRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     AddonName: S.String,
     Tags: S.optional(TagList),
   }).pipe(
@@ -644,7 +644,7 @@ export interface CreateAddressListRequest {
 }
 export const CreateAddressListRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     AddressListName: S.String,
     Tags: S.optional(TagList),
   }).pipe(
@@ -1718,7 +1718,7 @@ export interface CreateAddressListImportJobRequest {
 }
 export const CreateAddressListImportJobRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     AddressListId: S.String,
     Name: S.String,
     ImportDataFormat: ImportDataFormat,
@@ -1908,7 +1908,7 @@ export interface CreateArchiveRequest {
 }
 export const CreateArchiveRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ArchiveName: S.String,
     Retention: S.optional(ArchiveRetention),
     KmsKeyArn: S.optional(S.String),
@@ -1957,7 +1957,7 @@ export interface CreateRelayRequest {
 }
 export const CreateRelayRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     RelayName: S.String,
     ServerName: S.String,
     ServerPort: S.Number,
@@ -2634,7 +2634,7 @@ export interface CreateIngressPointRequest {
 }
 export const CreateIngressPointRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     IngressPointName: S.String,
     Type: IngressPointType,
     RuleSetId: S.String,
@@ -2833,7 +2833,7 @@ export interface CreateRuleSetRequest {
 }
 export const CreateRuleSetRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     RuleSetName: S.String,
     Rules: Rules,
     Tags: S.optional(TagList),
@@ -2853,7 +2853,7 @@ export interface CreateTrafficPolicyRequest {
 }
 export const CreateTrafficPolicyRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TrafficPolicyName: S.String,
     PolicyStatements: PolicyStatementList,
     DefaultAction: AcceptAction,

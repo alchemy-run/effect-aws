@@ -91,6 +91,7 @@ export type EncoderConfigurationName = string;
 export type IngestConfigurationName = string;
 export type IngestConfigurationStageArn = string;
 export type UserId = string;
+export type InsecureIngest = boolean;
 export type StageArn = string;
 export type ParticipantTokenDurationMinutes = number;
 export type ParticipantTokenUserId = string;
@@ -115,6 +116,7 @@ export type IngestConfigurationState = string;
 export type MaxIngestConfigurationResults = number;
 export type MaxParticipantEventResults = number;
 export type MaxParticipantReplicaResults = number;
+export type Published = boolean;
 export type ParticipantState = string;
 export type MaxParticipantResults = number;
 export type ParticipantRecordingFilterByRecordingState = string;
@@ -133,12 +135,14 @@ export type Bitrate = number;
 export type TagValue = string;
 export type AutoParticipantRecordingStorageConfigurationArn = string;
 export type ParticipantRecordingReconnectWindowSeconds = number;
+export type RecordParticipantReplicas = boolean;
 export type S3BucketName = string;
 export type DestinationConfigurationName = string;
 export type errorMessage = string;
 export type ThumbnailIntervalSeconds = number;
 export type ParticipantRecordingTargetSegmentDurationSeconds = number;
 export type AttributeKey = string;
+export type OmitStoppedVideo = boolean;
 export type GridGap = number;
 export type PipOffset = number;
 export type PipWidth = number;
@@ -154,9 +158,11 @@ export type ReplicationType = string;
 export type ReplicationState = string;
 export type PublicKeyFingerprint = string;
 export type EventName = string;
+export type Replica = boolean;
 export type RecordingConfigurationFormat = string;
 export type DestinationState = string;
 export type StageEndpoint = string;
+export type ParticipantTokenExpirationTime = Date;
 export type CompositionRecordingTargetSegmentDurationSeconds = number;
 export type ParticipantTokenString = string | redacted.Redacted<string>;
 
@@ -2122,7 +2128,7 @@ export interface StartCompositionRequest {
 export const StartCompositionRequest = S.suspend(() =>
   S.Struct({
     stageArn: S.String,
-    idempotencyToken: S.optional(S.String),
+    idempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     layout: S.optional(LayoutConfiguration),
     destinations: DestinationConfigurationList,
     tags: S.optional(Tags),

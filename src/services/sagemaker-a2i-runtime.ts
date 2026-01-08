@@ -286,14 +286,14 @@ export const HumanLoopSummary = S.suspend(() =>
 export type HumanLoopSummaries = HumanLoopSummary[];
 export const HumanLoopSummaries = S.Array(HumanLoopSummary);
 export interface DescribeHumanLoopResponse {
-  CreationTime?: Date;
+  CreationTime: Date;
   FailureReason?: string;
   FailureCode?: string;
-  HumanLoopStatus?: HumanLoopStatus;
-  HumanLoopName?: string;
-  HumanLoopArn?: string;
-  FlowDefinitionArn?: string;
-  HumanLoopOutput?: HumanLoopOutput;
+  HumanLoopStatus: HumanLoopStatus;
+  HumanLoopName: string;
+  HumanLoopArn: string;
+  FlowDefinitionArn: string;
+  HumanLoopOutput?: HumanLoopOutput & { OutputS3Uri: string };
 }
 export const DescribeHumanLoopResponse = S.suspend(() =>
   S.Struct({
@@ -310,7 +310,7 @@ export const DescribeHumanLoopResponse = S.suspend(() =>
   identifier: "DescribeHumanLoopResponse",
 }) as any as S.Schema<DescribeHumanLoopResponse>;
 export interface ListHumanLoopsResponse {
-  HumanLoopSummaries?: HumanLoopSummary[];
+  HumanLoopSummaries: HumanLoopSummary[];
   NextToken?: string;
 }
 export const ListHumanLoopsResponse = S.suspend(() =>

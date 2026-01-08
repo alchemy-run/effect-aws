@@ -203,7 +203,10 @@ export const CreateBillEstimateRequest = S.suspend(() =>
   S.Struct({
     billScenarioId: S.String,
     name: S.String,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     tags: S.optional(Tags),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -296,7 +299,10 @@ export interface CreateBillScenarioRequest {
 export const CreateBillScenarioRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     tags: S.optional(Tags),
     groupSharingPreference: S.optional(GroupSharingPreferenceEnum),
     costCategoryGroupSharingPreferenceArn: S.optional(S.String),
@@ -469,7 +475,10 @@ export interface CreateWorkloadEstimateRequest {
 export const CreateWorkloadEstimateRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     rateType: S.optional(WorkloadEstimateRateType),
     tags: S.optional(Tags),
   }).pipe(
@@ -1307,7 +1316,10 @@ export const BatchCreateWorkloadEstimateUsageRequest = S.suspend(() =>
   S.Struct({
     workloadEstimateId: S.String,
     usage: BatchCreateWorkloadEstimateUsageEntries,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -2084,6 +2096,7 @@ export const BatchCreateBillScenarioCommitmentModificationRequest = S.suspend(
         BatchCreateBillScenarioCommitmentModificationEntries,
       clientToken: S.optional(S.String).pipe(
         T.HttpHeader("X-Amzn-Client-Token"),
+        T.IdempotencyToken(),
       ),
     }).pipe(
       T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -2279,7 +2292,10 @@ export const BatchCreateBillScenarioUsageModificationRequest = S.suspend(() =>
   S.Struct({
     billScenarioId: S.String,
     usageModifications: BatchCreateBillScenarioUsageModificationEntries,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

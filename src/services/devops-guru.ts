@@ -2141,7 +2141,7 @@ export interface StartCostEstimationRequest {
 export const StartCostEstimationRequest = S.suspend(() =>
   S.Struct({
     ResourceCollection: CostEstimationResourceCollectionFilter,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/cost-estimation" }),

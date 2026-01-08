@@ -95,9 +95,7 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type __integerMinNegative50Max50 = number;
-export type __integer = number;
 export type __integerMin1Max20 = number;
 export type __integerMinNegative1000Max1000 = number;
 export type __integerMin1Max150 = number;
@@ -135,6 +133,7 @@ export type __stringPatternAZaZ23AZaZ = string;
 export type __integerMin0Max15 = number;
 export type __integerMin32Max8192 = number;
 export type __integerMin0Max100 = number;
+export type __timestampUnix = Date;
 export type __stringPatternSNManifestConfirmConditionNotificationNS = string;
 export type __stringPatternSNSignalProcessingNotificationNS = string;
 export type __integerMin2Max2147483647 = number;
@@ -265,8 +264,6 @@ export type __integerMin0Max4 = number;
 export type __integerMinNegative1Max3 = number;
 export type __stringMin1Max100000 = string;
 export type __integerMin0Max4194303 = number;
-export type __double = number;
-export type __long = number;
 export type __integerMin1Max1 = number;
 export type __stringMin14PatternS3SccSCCTtmlTTMLDfxpDFXPStlSTLSrtSRTXmlXMLSmiSMIVttVTTWebvttWEBVTTHttpsSccSCCTtmlTTMLDfxpDFXPStlSTLSrtSRTXmlXMLSmiSMIVttVTTWebvttWEBVTT =
   string;
@@ -9603,7 +9600,12 @@ export const CreateQueueRequest = S.suspend(() =>
   identifier: "CreateQueueRequest",
 }) as any as S.Schema<CreateQueueRequest>;
 export interface GetJobsQueryResultsResponse {
-  Jobs?: Job[];
+  Jobs?: (Job & {
+    Role: string;
+    Settings: JobSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+    Warnings: (WarningGroup & { Code: number; Count: number })[];
+  })[];
   NextToken?: string;
   Status?: JobsQueryStatus;
 }
@@ -9629,7 +9631,12 @@ export const GetPolicyResponse = S.suspend(() =>
   identifier: "GetPolicyResponse",
 }) as any as S.Schema<GetPolicyResponse>;
 export interface ListJobsResponse {
-  Jobs?: Job[];
+  Jobs?: (Job & {
+    Role: string;
+    Settings: JobSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+    Warnings: (WarningGroup & { Code: number; Count: number })[];
+  })[];
   NextToken?: string;
 }
 export const ListJobsResponse = S.suspend(() =>
@@ -9641,7 +9648,11 @@ export const ListJobsResponse = S.suspend(() =>
   identifier: "ListJobsResponse",
 }) as any as S.Schema<ListJobsResponse>;
 export interface ListJobTemplatesResponse {
-  JobTemplates?: JobTemplate[];
+  JobTemplates?: (JobTemplate & {
+    Name: string;
+    Settings: JobTemplateSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+  })[];
   NextToken?: string;
 }
 export const ListJobTemplatesResponse = S.suspend(() =>
@@ -9656,7 +9667,7 @@ export const ListJobTemplatesResponse = S.suspend(() =>
 }) as any as S.Schema<ListJobTemplatesResponse>;
 export interface ListPresetsResponse {
   NextToken?: string;
-  Presets?: Preset[];
+  Presets?: (Preset & { Name: string; Settings: PresetSettings })[];
 }
 export const ListPresetsResponse = S.suspend(() =>
   S.Struct({
@@ -9668,7 +9679,7 @@ export const ListPresetsResponse = S.suspend(() =>
 }) as any as S.Schema<ListPresetsResponse>;
 export interface ListQueuesResponse {
   NextToken?: string;
-  Queues?: Queue[];
+  Queues?: (Queue & { Name: string })[];
   TotalConcurrentJobs?: number;
   UnallocatedConcurrentJobs?: number;
 }
@@ -9718,7 +9729,12 @@ export const PutPolicyResponse = S.suspend(() =>
   identifier: "PutPolicyResponse",
 }) as any as S.Schema<PutPolicyResponse>;
 export interface SearchJobsResponse {
-  Jobs?: Job[];
+  Jobs?: (Job & {
+    Role: string;
+    Settings: JobSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+    Warnings: (WarningGroup & { Code: number; Count: number })[];
+  })[];
   NextToken?: string;
 }
 export const SearchJobsResponse = S.suspend(() =>
@@ -9757,7 +9773,11 @@ export const StartJobsQueryRequest = S.suspend(() =>
   identifier: "StartJobsQueryRequest",
 }) as any as S.Schema<StartJobsQueryRequest>;
 export interface UpdateJobTemplateResponse {
-  JobTemplate?: JobTemplate;
+  JobTemplate?: JobTemplate & {
+    Name: string;
+    Settings: JobTemplateSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+  };
 }
 export const UpdateJobTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -9769,7 +9789,7 @@ export const UpdateJobTemplateResponse = S.suspend(() =>
   identifier: "UpdateJobTemplateResponse",
 }) as any as S.Schema<UpdateJobTemplateResponse>;
 export interface UpdatePresetResponse {
-  Preset?: Preset;
+  Preset?: Preset & { Name: string; Settings: PresetSettings };
 }
 export const UpdatePresetResponse = S.suspend(() =>
   S.Struct({
@@ -9781,7 +9801,7 @@ export const UpdatePresetResponse = S.suspend(() =>
   identifier: "UpdatePresetResponse",
 }) as any as S.Schema<UpdatePresetResponse>;
 export interface UpdateQueueResponse {
-  Queue?: Queue;
+  Queue?: Queue & { Name: string };
 }
 export const UpdateQueueResponse = S.suspend(() =>
   S.Struct({
@@ -9872,7 +9892,7 @@ export const CreateJobTemplateRequest = S.suspend(() =>
   identifier: "CreateJobTemplateRequest",
 }) as any as S.Schema<CreateJobTemplateRequest>;
 export interface CreateQueueResponse {
-  Queue?: Queue;
+  Queue?: Queue & { Name: string };
 }
 export const CreateQueueResponse = S.suspend(() =>
   S.Struct({
@@ -9896,7 +9916,11 @@ export const DescribeEndpointsResponse = S.suspend(() =>
   identifier: "DescribeEndpointsResponse",
 }) as any as S.Schema<DescribeEndpointsResponse>;
 export interface GetJobTemplateResponse {
-  JobTemplate?: JobTemplate;
+  JobTemplate?: JobTemplate & {
+    Name: string;
+    Settings: JobTemplateSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+  };
 }
 export const GetJobTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -9908,7 +9932,7 @@ export const GetJobTemplateResponse = S.suspend(() =>
   identifier: "GetJobTemplateResponse",
 }) as any as S.Schema<GetJobTemplateResponse>;
 export interface GetPresetResponse {
-  Preset?: Preset;
+  Preset?: Preset & { Name: string; Settings: PresetSettings };
 }
 export const GetPresetResponse = S.suspend(() =>
   S.Struct({
@@ -9956,7 +9980,11 @@ export const Format = S.Literal("mp4", "quicktime", "matroska", "webm", "mxf");
 export type __listOf__integer = number[];
 export const __listOf__integer = S.Array(S.Number);
 export interface CreateJobTemplateResponse {
-  JobTemplate?: JobTemplate;
+  JobTemplate?: JobTemplate & {
+    Name: string;
+    Settings: JobTemplateSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+  };
 }
 export const CreateJobTemplateResponse = S.suspend(() =>
   S.Struct({
@@ -9968,7 +9996,7 @@ export const CreateJobTemplateResponse = S.suspend(() =>
   identifier: "CreateJobTemplateResponse",
 }) as any as S.Schema<CreateJobTemplateResponse>;
 export interface GetQueueResponse {
-  Queue?: Queue;
+  Queue?: Queue & { Name: string };
 }
 export const GetQueueResponse = S.suspend(() =>
   S.Struct({
@@ -10227,7 +10255,12 @@ export const CreatePresetRequest = S.suspend(() =>
   identifier: "CreatePresetRequest",
 }) as any as S.Schema<CreatePresetRequest>;
 export interface GetJobResponse {
-  Job?: Job;
+  Job?: Job & {
+    Role: string;
+    Settings: JobSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+    Warnings: (WarningGroup & { Code: number; Count: number })[];
+  };
 }
 export const GetJobResponse = S.suspend(() =>
   S.Struct({
@@ -10375,7 +10408,7 @@ export const Track = S.suspend(() =>
 export type __listOfTrack = Track[];
 export const __listOfTrack = S.Array(Track);
 export interface CreatePresetResponse {
-  Preset?: Preset;
+  Preset?: Preset & { Name: string; Settings: PresetSettings };
 }
 export const CreatePresetResponse = S.suspend(() =>
   S.Struct({
@@ -10444,6 +10477,7 @@ export const CreateJobRequest = S.suspend(() =>
     ),
     ClientRequestToken: S.optional(S.String).pipe(
       T.JsonName("clientRequestToken"),
+      T.IdempotencyToken(),
     ),
     HopDestinations: S.optional(__listOfHopDestination).pipe(
       T.JsonName("hopDestinations"),
@@ -10490,7 +10524,12 @@ export const ProbeResponse = S.suspend(() =>
   identifier: "ProbeResponse",
 }) as any as S.Schema<ProbeResponse>;
 export interface CreateJobResponse {
-  Job?: Job;
+  Job?: Job & {
+    Role: string;
+    Settings: JobSettings;
+    AccelerationSettings: AccelerationSettings & { Mode: AccelerationMode };
+    Warnings: (WarningGroup & { Code: number; Count: number })[];
+  };
 }
 export const CreateJobResponse = S.suspend(() =>
   S.Struct({

@@ -345,7 +345,7 @@ export const CreateBillOfMaterialsImportJobRequest = S.suspend(() =>
   S.Struct({
     instanceId: S.String.pipe(T.HttpLabel("instanceId")),
     s3uri: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -929,7 +929,7 @@ export const CreateInstanceRequest = S.suspend(() =>
     kmsKeyArn: S.optional(S.String),
     webAppDnsDomain: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/api/instance" }),
@@ -1442,7 +1442,7 @@ export const SendDataIntegrationEventRequest = S.suspend(() =>
     data: SensitiveString,
     eventGroupId: S.String,
     eventTimestamp: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     datasetTarget: S.optional(DataIntegrationEventDatasetTargetConfiguration),
   }).pipe(
     T.all(

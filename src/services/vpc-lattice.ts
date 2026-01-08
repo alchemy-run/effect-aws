@@ -426,7 +426,7 @@ export interface CreateAccessLogSubscriptionRequest {
 }
 export const CreateAccessLogSubscriptionRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     resourceIdentifier: S.String,
     destinationArn: S.String,
     serviceNetworkLogType: S.optional(S.String),
@@ -554,7 +554,7 @@ export interface StartDomainVerificationRequest {
 }
 export const StartDomainVerificationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     domainName: S.String,
     tags: S.optional(TagMap),
   }).pipe(
@@ -1001,7 +1001,7 @@ export interface CreateResourceGatewayRequest {
 }
 export const CreateResourceGatewayRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     vpcIdentifier: S.optional(S.String),
     subnetIds: S.optional(SubnetList),
@@ -1292,7 +1292,7 @@ export interface CreateServiceRequest {
 }
 export const CreateServiceRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     tags: S.optional(TagMap),
     customDomainName: S.optional(S.String),
@@ -1503,7 +1503,7 @@ export interface CreateServiceNetworkResourceAssociationRequest {
 }
 export const CreateServiceNetworkResourceAssociationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     resourceConfigurationIdentifier: S.String,
     serviceNetworkIdentifier: S.String,
     privateDnsEnabled: S.optional(S.Boolean),
@@ -1608,7 +1608,7 @@ export interface CreateServiceNetworkServiceAssociationRequest {
 }
 export const CreateServiceNetworkServiceAssociationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     serviceIdentifier: S.String,
     serviceNetworkIdentifier: S.String,
     tags: S.optional(TagMap),
@@ -2590,7 +2590,7 @@ export interface CreateServiceNetworkRequest {
 }
 export const CreateServiceNetworkRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     authType: S.optional(S.String),
     tags: S.optional(TagMap),
@@ -2811,7 +2811,7 @@ export interface CreateServiceNetworkVpcAssociationRequest {
 }
 export const CreateServiceNetworkVpcAssociationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     serviceNetworkIdentifier: S.String,
     vpcIdentifier: S.String,
     privateDnsEnabled: S.optional(S.Boolean),
@@ -2913,7 +2913,7 @@ export const CreateTargetGroupRequest = S.suspend(() =>
     name: S.String,
     type: S.String,
     config: S.optional(TargetGroupConfig),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -3557,7 +3557,7 @@ export const CreateResourceConfigurationRequest = S.suspend(() =>
     customDomainName: S.optional(S.String),
     groupDomain: S.optional(S.String),
     domainVerificationIdentifier: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -3889,7 +3889,7 @@ export const CreateListenerRequest = S.suspend(() =>
     protocol: S.String,
     port: S.optional(S.Number),
     defaultAction: RuleAction,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -4013,7 +4013,7 @@ export const CreateRuleRequest = S.suspend(() =>
     match: RuleMatch,
     priority: S.Number,
     action: RuleAction,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(

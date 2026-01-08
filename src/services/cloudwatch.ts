@@ -130,8 +130,10 @@ export type MetricWidget = string;
 export type OutputFormat = string;
 export type DashboardNamePrefix = string;
 export type AmazonResourceName = string;
+export type IncludeLinkedAccounts = boolean;
 export type AccountId = string;
 export type ListMetricStreamsMaxResults = number;
+export type ActionsEnabled = boolean;
 export type ResourceName = string;
 export type AlarmDescription = string;
 export type AlarmRule = string;
@@ -140,12 +142,15 @@ export type SuppressorPeriod = number;
 export type DashboardBody = string;
 export type InsightRuleState = string;
 export type InsightRuleDefinition = string;
+export type InsightRuleOnTransformedLogs = boolean;
 export type EvaluationPeriods = number;
 export type DatapointsToAlarm = number;
 export type Threshold = number;
 export type TreatMissingData = string;
 export type EvaluateLowSampleCountPercentile = string;
 export type MetricId = string;
+export type StrictEntityValidation = boolean;
+export type IncludeLinkedAccountsMetrics = boolean;
 export type StateReason = string;
 export type StateReasonData = string;
 export type TagKey = string;
@@ -153,8 +158,10 @@ export type DimensionName = string;
 export type DimensionValue = string;
 export type MetricExpression = string;
 export type MetricLabel = string;
+export type ReturnData = boolean;
 export type GetMetricDataLabelTimezone = string;
 export type AnomalyDetectorMetricTimezone = string;
+export type PeriodicSpikes = boolean;
 export type TagValue = string;
 export type TemplateName = string;
 export type DatapointValue = number;
@@ -168,6 +175,7 @@ export type InsightRuleAggregationStatistic = string;
 export type InsightRuleUnboundDouble = number;
 export type InsightRuleUnboundLong = number;
 export type MetricStreamState = string;
+export type MetricWidgetImage = Uint8Array;
 export type AwsQueryErrorMessage = string;
 export type Stat = string;
 export type FailureResource = string;
@@ -178,7 +186,9 @@ export type HistorySummary = string;
 export type HistoryData = string;
 export type ActionsSuppressedReason = string;
 export type InsightRuleSchema = string;
+export type InsightRuleIsManaged = boolean;
 export type InsightRuleContributorKey = string;
+export type LastModified = Date;
 export type Size = number;
 export type DataPath = string;
 export type Message = string;
@@ -1428,7 +1438,22 @@ export const MetricAlarm = S.suspend(() =>
 export type MetricAlarms = MetricAlarm[];
 export const MetricAlarms = S.Array(MetricAlarm);
 export interface DescribeAlarmsForMetricOutput {
-  MetricAlarms?: MetricAlarm[];
+  MetricAlarms?: (MetricAlarm & {
+    Dimensions: (Dimension & { Name: DimensionName; Value: DimensionValue })[];
+    Metrics: (MetricDataQuery & {
+      Id: MetricId;
+      MetricStat: MetricStat & {
+        Metric: Metric & {
+          Dimensions: (Dimension & {
+            Name: DimensionName;
+            Value: DimensionValue;
+          })[];
+        };
+        Period: Period;
+        Stat: Stat;
+      };
+    })[];
+  })[];
 }
 export const DescribeAlarmsForMetricOutput = S.suspend(() =>
   S.Struct({ MetricAlarms: S.optional(MetricAlarms) }).pipe(ns),
@@ -1530,7 +1555,13 @@ export interface GetMetricStreamOutput {
   CreationDate?: Date;
   LastUpdateDate?: Date;
   OutputFormat?: MetricStreamOutputFormat;
-  StatisticsConfigurations?: MetricStreamStatisticsConfiguration[];
+  StatisticsConfigurations?: (MetricStreamStatisticsConfiguration & {
+    IncludeMetrics: (MetricStreamStatisticsMetric & {
+      Namespace: Namespace;
+      MetricName: MetricName;
+    })[];
+    AdditionalStatistics: MetricStreamStatisticsAdditionalStatistics;
+  })[];
   IncludeLinkedAccountsMetrics?: boolean;
 }
 export const GetMetricStreamOutput = S.suspend(() =>
@@ -1592,7 +1623,7 @@ export const ListMetricsInput = S.suspend(() =>
   identifier: "ListMetricsInput",
 }) as any as S.Schema<ListMetricsInput>;
 export interface ListTagsForResourceOutput {
-  Tags?: Tag[];
+  Tags?: (Tag & { Key: TagKey; Value: TagValue })[];
 }
 export const ListTagsForResourceOutput = S.suspend(() =>
   S.Struct({ Tags: S.optional(TagList) }).pipe(ns),
@@ -1989,7 +2020,22 @@ export const DescribeAlarmHistoryOutput = S.suspend(() =>
 }) as any as S.Schema<DescribeAlarmHistoryOutput>;
 export interface DescribeAlarmsOutput {
   CompositeAlarms?: CompositeAlarm[];
-  MetricAlarms?: MetricAlarm[];
+  MetricAlarms?: (MetricAlarm & {
+    Dimensions: (Dimension & { Name: DimensionName; Value: DimensionValue })[];
+    Metrics: (MetricDataQuery & {
+      Id: MetricId;
+      MetricStat: MetricStat & {
+        Metric: Metric & {
+          Dimensions: (Dimension & {
+            Name: DimensionName;
+            Value: DimensionValue;
+          })[];
+        };
+        Period: Period;
+        Stat: Stat;
+      };
+    })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeAlarmsOutput = S.suspend(() =>
@@ -2002,7 +2048,33 @@ export const DescribeAlarmsOutput = S.suspend(() =>
   identifier: "DescribeAlarmsOutput",
 }) as any as S.Schema<DescribeAlarmsOutput>;
 export interface DescribeAnomalyDetectorsOutput {
-  AnomalyDetectors?: AnomalyDetector[];
+  AnomalyDetectors?: (AnomalyDetector & {
+    Dimensions: (Dimension & { Name: DimensionName; Value: DimensionValue })[];
+    Configuration: AnomalyDetectorConfiguration & {
+      ExcludedTimeRanges: (Range & { StartTime: Date; EndTime: Date })[];
+    };
+    SingleMetricAnomalyDetector: SingleMetricAnomalyDetector & {
+      Dimensions: (Dimension & {
+        Name: DimensionName;
+        Value: DimensionValue;
+      })[];
+    };
+    MetricMathAnomalyDetector: MetricMathAnomalyDetector & {
+      MetricDataQueries: (MetricDataQuery & {
+        Id: MetricId;
+        MetricStat: MetricStat & {
+          Metric: Metric & {
+            Dimensions: (Dimension & {
+              Name: DimensionName;
+              Value: DimensionValue;
+            })[];
+          };
+          Period: Period;
+          Stat: Stat;
+        };
+      })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeAnomalyDetectorsOutput = S.suspend(() =>
@@ -2015,7 +2087,12 @@ export const DescribeAnomalyDetectorsOutput = S.suspend(() =>
 }) as any as S.Schema<DescribeAnomalyDetectorsOutput>;
 export interface DescribeInsightRulesOutput {
   NextToken?: string;
-  InsightRules?: InsightRule[];
+  InsightRules?: (InsightRule & {
+    Name: InsightRuleName;
+    State: InsightRuleState;
+    Schema: InsightRuleSchema;
+    Definition: InsightRuleDefinition;
+  })[];
 }
 export const DescribeInsightRulesOutput = S.suspend(() =>
   S.Struct({
@@ -2038,7 +2115,9 @@ export const ListDashboardsOutput = S.suspend(() =>
   identifier: "ListDashboardsOutput",
 }) as any as S.Schema<ListDashboardsOutput>;
 export interface ListMetricsOutput {
-  Metrics?: Metric[];
+  Metrics?: (Metric & {
+    Dimensions: (Dimension & { Name: DimensionName; Value: DimensionValue })[];
+  })[];
   NextToken?: string;
   OwningAccounts?: string[];
 }
@@ -2283,7 +2362,11 @@ export const EntityMetricData = S.suspend(() =>
 export type EntityMetricDataList = EntityMetricData[];
 export const EntityMetricDataList = S.Array(EntityMetricData);
 export interface DescribeAlarmContributorsOutput {
-  AlarmContributors?: AlarmContributor[];
+  AlarmContributors: (AlarmContributor & {
+    ContributorId: ContributorId;
+    ContributorAttributes: ContributorAttributes;
+    StateReason: StateReason;
+  })[];
   NextToken?: string;
 }
 export const DescribeAlarmContributorsOutput = S.suspend(() =>
@@ -2299,8 +2382,15 @@ export interface GetInsightRuleReportOutput {
   AggregationStatistic?: string;
   AggregateValue?: number;
   ApproximateUniqueCount?: number;
-  Contributors?: InsightRuleContributor[];
-  MetricDatapoints?: InsightRuleMetricDatapoint[];
+  Contributors?: (InsightRuleContributor & {
+    Keys: InsightRuleContributorKeys;
+    ApproximateAggregateValue: InsightRuleUnboundDouble;
+    Datapoints: (InsightRuleContributorDatapoint & {
+      Timestamp: Date;
+      ApproximateValue: InsightRuleUnboundDouble;
+    })[];
+  })[];
+  MetricDatapoints?: (InsightRuleMetricDatapoint & { Timestamp: Date })[];
 }
 export const GetInsightRuleReportOutput = S.suspend(() =>
   S.Struct({
@@ -2359,7 +2449,12 @@ export const GetMetricStatisticsOutput = S.suspend(() =>
   identifier: "GetMetricStatisticsOutput",
 }) as any as S.Schema<GetMetricStatisticsOutput>;
 export interface ListManagedInsightRulesOutput {
-  ManagedRules?: ManagedRuleDescription[];
+  ManagedRules?: (ManagedRuleDescription & {
+    RuleState: ManagedRuleState & {
+      RuleName: InsightRuleName;
+      State: InsightRuleState;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListManagedInsightRulesOutput = S.suspend(() =>

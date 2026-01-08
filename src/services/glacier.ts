@@ -91,9 +91,7 @@ const rules = T.EndpointResolver((p, _) => {
 export type TagKey = string;
 export type TagValue = string;
 export type Size = number;
-export type long = number;
 export type httpstatus = number;
-export type DateTime = string;
 
 //# Schemas
 export type TagKeyList = string[];

@@ -100,6 +100,7 @@ export type ActivationDescription = string;
 export type DefaultInstanceName = string;
 export type IamRole = string;
 export type RegistrationLimit = number;
+export type ExpirationDate = Date;
 export type DocumentARN = string;
 export type DocumentVersion = string;
 export type ScheduleExpression = string;
@@ -107,6 +108,7 @@ export type AssociationName = string;
 export type AutomationTargetParameterName = string;
 export type MaxErrors = string;
 export type MaxConcurrency = string;
+export type ApplyOnlyAtCronInterval = boolean;
 export type CalendarNameOrARN = string;
 export type ScheduleOffset = number;
 export type Duration = number;
@@ -123,6 +125,7 @@ export type MaintenanceWindowTimezone = string;
 export type MaintenanceWindowOffset = number;
 export type MaintenanceWindowDurationHours = number;
 export type MaintenanceWindowCutoff = number;
+export type MaintenanceWindowAllowUnassociatedTargets = boolean;
 export type ClientToken = string;
 export type OpsItemDescription = string;
 export type OpsItemType = string;
@@ -141,6 +144,7 @@ export type ResourceDataSyncType = string;
 export type ActivationId = string;
 export type AssociationId = string;
 export type InventoryItemTypeName = string;
+export type DryRun = boolean;
 export type UUID = string;
 export type MaintenanceWindowId = string;
 export type OpsMetadataArn = string;
@@ -178,6 +182,8 @@ export type SnapshotId = string;
 export type ExecutionPreviewId = string;
 export type InventoryItemTypeNameFilter = string;
 export type GetInventorySchemaMaxResults = number;
+export type AggregatorSchemaOnly = boolean;
+export type IsSubTypeSchema = boolean;
 export type MaintenanceWindowExecutionTaskInvocationId = string;
 export type OpsItemArn = string;
 export type GetOpsMetadataMaxResults = number;
@@ -223,6 +229,7 @@ export type ChangeRequestName = string;
 export type ChangeDetailsValue = string;
 export type SessionReason = string;
 export type DocumentVersionNumber = string;
+export type MaintenanceWindowEnabled = boolean;
 export type MetadataKey = string;
 export type ServiceSettingValue = string;
 export type TagValue = string;
@@ -251,6 +258,8 @@ export type ResourceDataSyncS3Region = string;
 export type ResourceDataSyncAWSKMSKeyARN = string;
 export type ResourceDataSyncSourceType = string;
 export type ResourceDataSyncSourceRegion = string;
+export type ResourceDataSyncIncludeFutureRegions = boolean;
+export type ResourceDataSyncEnableAllOpsDataSources = boolean;
 export type AssociationExecutionFilterValue = string;
 export type AssociationExecutionTargetsFilterValue = string;
 export type AutomationExecutionFilterValue = string;
@@ -302,6 +311,7 @@ export type MaintenanceWindowTaskParameterName = string;
 export type AutomationParameterValue = string;
 export type NotificationArn = string;
 export type CloudWatchLogGroupName = string;
+export type CloudWatchOutputEnabled = boolean;
 export type SessionManagerParameterName = string;
 export type SessionManagerParameterValue = string;
 export type StatusMessage = string;
@@ -345,6 +355,9 @@ export type MaintenanceWindowStepFunctionsInput =
 export type MaintenanceWindowStepFunctionsName = string;
 export type MaintenanceWindowLambdaClientContext = string;
 export type MaintenanceWindowLambdaQualifier = string;
+export type MaintenanceWindowLambdaPayload =
+  | Uint8Array
+  | redacted.Redacted<Uint8Array>;
 export type DocumentReviewComment = string;
 export type TotalCount = number;
 export type RemainingCount = number;
@@ -374,7 +387,10 @@ export type PatchAvailableSecurityUpdateCount = number;
 export type PatchCriticalNonCompliantCount = number;
 export type PatchSecurityNonCompliantCount = number;
 export type PatchOtherNonCompliantCount = number;
+export type InventoryDeletionStartTime = Date;
 export type InventoryDeletionLastStatusMessage = string;
+export type InventoryDeletionLastStatusUpdateTime = Date;
+export type DefaultBaseline = boolean;
 export type AccessKeyIdType = string;
 export type AccessKeySecretType = string | redacted.Redacted<string>;
 export type SessionTokenType = string | redacted.Redacted<string>;
@@ -388,6 +404,10 @@ export type TargetCount = number;
 export type CompletedCount = number;
 export type ErrorCount = number;
 export type DeliveryTimedOutCount = number;
+export type LastResourceDataSyncTime = Date;
+export type LastSuccessfulResourceDataSyncTime = Date;
+export type ResourceDataSyncLastModifiedTime = Date;
+export type ResourceDataSyncCreatedTime = Date;
 export type LastResourceDataSyncMessage = string;
 export type ResourceDataSyncOrganizationalUnitId = string;
 export type ActivationCode = string;
@@ -422,6 +442,7 @@ export type ComplianceSummaryCount = number;
 export type ResourceDataSyncState = string;
 export type BatchErrorMessage = string;
 export type RegistrationsCount = number;
+export type CreatedDate = Date;
 export type ResourceCountByStatus = string;
 export type AssociationResourceId = string;
 export type AssociationResourceType = string;
@@ -442,6 +463,7 @@ export type SessionDetails = string;
 export type MaxSessionDuration = string;
 export type InstanceTagName = string;
 export type InvocationTraceOutput = string;
+export type NodeCaptureTime = Date;
 export type NodeId = string;
 export type NodeRegion = string;
 export type InstanceCount = number;
@@ -847,7 +869,7 @@ export const CreateMaintenanceWindowRequest = S.suspend(() =>
     Duration: S.Number,
     Cutoff: S.Number,
     AllowUnassociatedTargets: S.Boolean,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -960,7 +982,7 @@ export const DeleteInventoryRequest = S.suspend(() =>
     TypeName: S.String,
     SchemaDeleteOption: S.optional(InventorySchemaDeleteOption),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -2843,7 +2865,7 @@ export const RegisterTargetWithMaintenanceWindowRequest = S.suspend(() =>
     OwnerInformation: S.optional(SensitiveString),
     Name: S.optional(S.String),
     Description: S.optional(SensitiveString),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -8378,7 +8400,7 @@ export const CreatePatchBaselineRequest = S.suspend(() =>
     Description: S.optional(S.String),
     Sources: S.optional(PatchSourceList),
     AvailableSecurityUpdatesComplianceStatus: S.optional(PatchComplianceStatus),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -9053,7 +9075,7 @@ export const RegisterTaskWithMaintenanceWindowRequest = S.suspend(() =>
     LoggingInfo: S.optional(LoggingInfo),
     Name: S.optional(S.String),
     Description: S.optional(SensitiveString),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     CutoffBehavior: S.optional(MaintenanceWindowTaskCutoffBehavior),
     AlarmConfiguration: S.optional(AlarmConfiguration),
   }).pipe(

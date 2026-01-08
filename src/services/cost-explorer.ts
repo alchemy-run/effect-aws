@@ -209,7 +209,6 @@ const rules = T.EndpointResolver((p, _) => {
 export type CostCategoryName = string;
 export type ZonedDateTime = string;
 export type CostCategoryValue = string;
-export type GenericString = string;
 export type Arn = string;
 export type NextPageToken = string;
 export type PageSize = number;
@@ -222,9 +221,10 @@ export type SearchString = string;
 export type MaxResults = number;
 export type CostComparisonDriversMaxResults = number;
 export type PredictionIntervalLevel = number;
-export type NonNegativeInteger = number;
+export type RecommendationsPageSize = number;
 export type RecommendationDetailId = string;
 export type TagKey = string;
+export type AnalysesPageSize = number;
 export type CostAllocationTagsMaxResults = number;
 export type CostCategoryMaxResults = number;
 export type ResourceType = string;
@@ -232,8 +232,8 @@ export type RecommendationId = string;
 export type ResourceTagKey = string;
 export type NullableNonNegativeDouble = number;
 export type YearMonthDay = string;
+export type NonNegativeInteger = number;
 export type ResourceTagValue = string;
-export type GenericDouble = number;
 export type GroupDefinitionKey = string;
 export type SortDefinitionKey = string;
 export type SubscriberAddress = string;
@@ -242,6 +242,7 @@ export type NonNegativeLong = number;
 export type Entity = string;
 export type AccountId = string;
 export type SavingsPlansId = string;
+export type Estimated = boolean;
 export type MetricAmount = string;
 export type MetricUnit = string;
 export type UtilizationPercentage = string;
@@ -3633,6 +3634,7 @@ export interface RDSInstanceDetails {
   LicenseModel?: string;
   CurrentGeneration?: boolean;
   SizeFlexEligible?: boolean;
+  DeploymentModel?: string;
 }
 export const RDSInstanceDetails = S.suspend(() =>
   S.Struct({
@@ -3645,6 +3647,7 @@ export const RDSInstanceDetails = S.suspend(() =>
     LicenseModel: S.optional(S.String),
     CurrentGeneration: S.optional(S.Boolean),
     SizeFlexEligible: S.optional(S.Boolean),
+    DeploymentModel: S.optional(S.String),
   }),
 ).annotations({
   identifier: "RDSInstanceDetails",
@@ -4182,16 +4185,38 @@ export const getSavingsPlansUtilizationDetails: {
 /**
  * Lists the commitment purchase analyses for your account.
  */
-export const listCommitmentPurchaseAnalyses: (
-  input: ListCommitmentPurchaseAnalysesRequest,
-) => effect.Effect<
-  ListCommitmentPurchaseAnalysesResponse,
-  | DataUnavailableException
-  | InvalidNextTokenException
-  | LimitExceededException
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listCommitmentPurchaseAnalyses: {
+  (
+    input: ListCommitmentPurchaseAnalysesRequest,
+  ): effect.Effect<
+    ListCommitmentPurchaseAnalysesResponse,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  pages: (
+    input: ListCommitmentPurchaseAnalysesRequest,
+  ) => stream.Stream<
+    ListCommitmentPurchaseAnalysesResponse,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListCommitmentPurchaseAnalysesRequest,
+  ) => stream.Stream<
+    AnalysisSummary,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+} = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCommitmentPurchaseAnalysesRequest,
   output: ListCommitmentPurchaseAnalysesResponse,
   errors: [
@@ -4199,6 +4224,12 @@ export const listCommitmentPurchaseAnalyses: (
     InvalidNextTokenException,
     LimitExceededException,
   ],
+  pagination: {
+    inputToken: "NextPageToken",
+    outputToken: "NextPageToken",
+    items: "AnalysisSummaryList",
+    pageSize: "PageSize",
+  } as const,
 }));
 /**
  * Retrieves a list of your historical cost allocation tag backfill requests.
@@ -4355,16 +4386,38 @@ export const listCostCategoryResourceAssociations: {
  * Retrieves a list of your historical recommendation generations within the past 30
  * days.
  */
-export const listSavingsPlansPurchaseRecommendationGeneration: (
-  input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
-) => effect.Effect<
-  ListSavingsPlansPurchaseRecommendationGenerationResponse,
-  | DataUnavailableException
-  | InvalidNextTokenException
-  | LimitExceededException
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSavingsPlansPurchaseRecommendationGeneration: {
+  (
+    input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
+  ): effect.Effect<
+    ListSavingsPlansPurchaseRecommendationGenerationResponse,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  pages: (
+    input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
+  ) => stream.Stream<
+    ListSavingsPlansPurchaseRecommendationGenerationResponse,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
+  ) => stream.Stream<
+    GenerationSummary,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+} = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSavingsPlansPurchaseRecommendationGenerationRequest,
   output: ListSavingsPlansPurchaseRecommendationGenerationResponse,
   errors: [
@@ -4372,6 +4425,12 @@ export const listSavingsPlansPurchaseRecommendationGeneration: (
     InvalidNextTokenException,
     LimitExceededException,
   ],
+  pagination: {
+    inputToken: "NextPageToken",
+    outputToken: "NextPageToken",
+    items: "GenerationSummaryList",
+    pageSize: "PageSize",
+  } as const,
 }));
 /**
  * Request a cost allocation tag backfill. This will backfill the activation status (either `active` or `inactive`) for all tag keys from `para:BackfillFrom` up to the time this request is made.
@@ -5306,16 +5365,38 @@ export const getAnomalies: {
  * example, your RI recommendation is for `c4.large` because that is the smallest size
  * instance in the c4 instance family.
  */
-export const getReservationPurchaseRecommendation: (
-  input: GetReservationPurchaseRecommendationRequest,
-) => effect.Effect<
-  GetReservationPurchaseRecommendationResponse,
-  | DataUnavailableException
-  | InvalidNextTokenException
-  | LimitExceededException
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getReservationPurchaseRecommendation: {
+  (
+    input: GetReservationPurchaseRecommendationRequest,
+  ): effect.Effect<
+    GetReservationPurchaseRecommendationResponse,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  pages: (
+    input: GetReservationPurchaseRecommendationRequest,
+  ) => stream.Stream<
+    GetReservationPurchaseRecommendationResponse,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetReservationPurchaseRecommendationRequest,
+  ) => stream.Stream<
+    ReservationPurchaseRecommendation,
+    | DataUnavailableException
+    | InvalidNextTokenException
+    | LimitExceededException
+    | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+} = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetReservationPurchaseRecommendationRequest,
   output: GetReservationPurchaseRecommendationResponse,
   errors: [
@@ -5323,6 +5404,12 @@ export const getReservationPurchaseRecommendation: (
     InvalidNextTokenException,
     LimitExceededException,
   ],
+  pagination: {
+    inputToken: "NextPageToken",
+    outputToken: "NextPageToken",
+    items: "Recommendations",
+    pageSize: "PageSize",
+  } as const,
 }));
 /**
  * Creates recommendations that help you save cost by identifying idle and underutilized
@@ -5332,14 +5419,36 @@ export const getReservationPurchaseRecommendation: (
  * providing savings detail and metrics. For more information about calculation and function, see
  * Optimizing Your Cost with Rightsizing Recommendations in the *Billing and Cost Management User Guide*.
  */
-export const getRightsizingRecommendation: (
-  input: GetRightsizingRecommendationRequest,
-) => effect.Effect<
-  GetRightsizingRecommendationResponse,
-  InvalidNextTokenException | LimitExceededException | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getRightsizingRecommendation: {
+  (
+    input: GetRightsizingRecommendationRequest,
+  ): effect.Effect<
+    GetRightsizingRecommendationResponse,
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  pages: (
+    input: GetRightsizingRecommendationRequest,
+  ) => stream.Stream<
+    GetRightsizingRecommendationResponse,
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+  items: (
+    input: GetRightsizingRecommendationRequest,
+  ) => stream.Stream<
+    RightsizingRecommendation,
+    InvalidNextTokenException | LimitExceededException | CommonErrors,
+    Credentials | Region | HttpClient.HttpClient
+  >;
+} = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetRightsizingRecommendationRequest,
   output: GetRightsizingRecommendationResponse,
   errors: [InvalidNextTokenException, LimitExceededException],
+  pagination: {
+    inputToken: "NextPageToken",
+    outputToken: "NextPageToken",
+    items: "RightsizingRecommendations",
+    pageSize: "PageSize",
+  } as const,
 }));

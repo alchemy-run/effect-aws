@@ -118,6 +118,7 @@ export type Endpoint2 = string;
 export type TagKey = string;
 export type OTPCode = string;
 export type TagValue = string;
+export type Binary = Uint8Array;
 export type Iso2CountryCode = string;
 export type account = string;
 export type messageId = string;

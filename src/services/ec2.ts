@@ -146,6 +146,7 @@ export type CopySnapshotRequestPSU = string | redacted.Redacted<string>;
 export type SnapshotCompletionDurationMinutesRequest = number;
 export type OutpostArn = string;
 export type PlacementGroupArn = string;
+export type MillisecondDateTime = Date;
 export type CapacityReservationCommitmentDuration = number;
 export type Ipv4PoolCoipId = string;
 export type LocalGatewayRoutetableId = string;
@@ -365,6 +366,7 @@ export type ListSnapshotsInRecycleBinMaxResults = number;
 export type CoolOffPeriodRequestHours = number;
 export type RetentionPeriodRequestDays = number;
 export type BoxedInteger = number;
+export type BoxedBoolean = boolean;
 export type CoipPoolId = string;
 export type StringType = string;
 export type KernelId = string;
@@ -417,6 +419,14 @@ export type IpamPoolCidrId = string;
 export type ImageUsageReportState = string;
 export type ImageUsageReportStateReason = string;
 export type Location = string;
+export type CurrentGenerationFlag = boolean;
+export type FreeTierEligibleFlag = boolean;
+export type BareMetalFlag = boolean;
+export type InstanceStorageFlag = boolean;
+export type HibernationFlag = boolean;
+export type BurstablePerformanceFlag = boolean;
+export type DedicatedHostFlag = boolean;
+export type AutoRecoveryFlag = boolean;
 export type customerGatewayConfiguration = string | redacted.Redacted<string>;
 export type ImageProvider = string;
 export type MarketplaceProductCode = string;
@@ -441,6 +451,10 @@ export type MaximumNetworkCards = number;
 export type DefaultNetworkCardIndex = number;
 export type MaxIpv4AddrPerInterface = number;
 export type MaxIpv6AddrPerInterface = number;
+export type Ipv6Flag = boolean;
+export type EfaSupportedFlag = boolean;
+export type EncryptionInTransitSupported = boolean;
+export type EnaSrdSupported = boolean;
 export type totalGpuMemory = number;
 export type totalFpgaMemory = number;
 export type totalInferenceMemory = number;
@@ -4600,7 +4614,7 @@ export const AllocateIpamPoolCidrRequest = S.suspend(() =>
     IpamPoolId: S.optional(S.String),
     Cidr: S.optional(S.String),
     NetmaskLength: S.optional(S.Number),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     PreviewNextCidr: S.optional(S.Boolean),
     AllowedCidrs: S.optional(IpamPoolAllocationAllowedCidrs).pipe(
@@ -4835,7 +4849,7 @@ export const AssociateClientVpnTargetNetworkRequest = S.suspend(() =>
   S.Struct({
     ClientVpnEndpointId: S.optional(S.String),
     SubnetId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -4947,7 +4961,7 @@ export const AssociateIpamResourceDiscoveryRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -5197,7 +5211,7 @@ export const AssociateTrunkInterfaceRequest = S.suspend(() =>
     TrunkInterfaceId: S.optional(S.String),
     VlanId: S.optional(S.Number),
     GreKey: S.optional(S.Number),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -5341,7 +5355,7 @@ export const AttachVerifiedAccessTrustProviderRequest = S.suspend(() =>
   S.Struct({
     VerifiedAccessInstanceId: S.optional(S.String),
     VerifiedAccessTrustProviderId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -5429,7 +5443,7 @@ export const AuthorizeClientVpnIngressRequest = S.suspend(() =>
     AccessGroupId: S.optional(S.String),
     AuthorizeAllGroups: S.optional(S.Boolean),
     Description: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -6013,7 +6027,7 @@ export interface CopyImageRequest {
 }
 export const CopyImageRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     Encrypted: S.optional(S.Boolean).pipe(
       T.XmlName("encrypted"),
@@ -6134,7 +6148,7 @@ export const CopyVolumesRequest = S.suspend(() =>
     ),
     MultiAttachEnabled: S.optional(S.Boolean),
     Throughput: S.optional(S.Number),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -6164,7 +6178,7 @@ export const CreateCapacityManagerDataExportRequest = S.suspend(() =>
     S3BucketPrefix: S.optional(S.String),
     Schedule: S.optional(Schedule),
     OutputFormat: S.optional(OutputFormat),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
@@ -6249,7 +6263,7 @@ export interface CreateCapacityReservationBySplittingRequest {
 export const CreateCapacityReservationBySplittingRequest = S.suspend(() =>
   S.Struct({
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SourceCapacityReservationId: S.optional(S.String),
     InstanceCount: S.optional(S.Number),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
@@ -6282,7 +6296,7 @@ export const CreateCarrierGatewayRequest = S.suspend(() =>
       T.XmlName("TagSpecification"),
     ),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -6311,7 +6325,7 @@ export const CreateClientVpnRouteRequest = S.suspend(() =>
     DestinationCidrBlock: S.optional(S.String),
     TargetVpcSubnetId: S.optional(S.String),
     Description: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -6471,7 +6485,7 @@ export interface CreateDelegateMacVolumeOwnershipTaskRequest {
 }
 export const CreateDelegateMacVolumeOwnershipTaskRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     InstanceId: S.optional(S.String),
     MacCredentials: S.optional(SensitiveString),
@@ -6537,7 +6551,7 @@ export const CreateInstanceConnectEndpointRequest = S.suspend(() =>
       T.XmlName("SecurityGroupId"),
     ),
     PreserveClientIp: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
@@ -6595,7 +6609,7 @@ export const CreateInterruptibleCapacityReservationAllocationRequest =
     S.Struct({
       CapacityReservationId: S.optional(S.String),
       InstanceCount: S.optional(S.Number),
-      ClientToken: S.optional(S.String),
+      ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
       DryRun: S.optional(S.Boolean),
       TagSpecifications: S.optional(TagSpecificationList).pipe(
         T.XmlName("TagSpecification"),
@@ -6628,7 +6642,7 @@ export const CreateIpamExternalResourceVerificationTokenRequest = S.suspend(
       TagSpecifications: S.optional(TagSpecificationList).pipe(
         T.XmlName("TagSpecification"),
       ),
-      ClientToken: S.optional(S.String),
+      ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     }).pipe(
       T.all(
         ns,
@@ -6655,7 +6669,7 @@ export const CreateIpamPolicyRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     IpamId: S.optional(S.String),
   }).pipe(
     T.all(
@@ -6692,7 +6706,7 @@ export const CreateIpamPrefixListResolverTargetRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -6734,7 +6748,7 @@ export const CreateIpamResourceDiscoveryRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -7713,7 +7727,7 @@ export interface CreateLaunchTemplateVersionRequest {
 export const CreateLaunchTemplateVersionRequest = S.suspend(() =>
   S.Struct({
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LaunchTemplateId: S.optional(S.String),
     LaunchTemplateName: S.optional(S.String),
     SourceVersion: S.optional(S.String),
@@ -7929,7 +7943,7 @@ export const CreateNetworkAclRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean).pipe(
       T.XmlName("dryRun"),
       T.Ec2QueryName("DryRun"),
@@ -8063,7 +8077,7 @@ export const CreateReplaceRootVolumeTaskRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.optional(S.String),
     SnapshotId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
@@ -8209,7 +8223,7 @@ export interface CreateRouteServerRequest {
 export const CreateRouteServerRequest = S.suspend(() =>
   S.Struct({
     AmazonSideAsn: S.optional(S.Number),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     PersistRoutes: S.optional(RouteServerPersistRoutesAction),
     PersistRoutesDuration: S.optional(S.Number),
@@ -8242,7 +8256,7 @@ export const CreateRouteServerEndpointRequest = S.suspend(() =>
   S.Struct({
     RouteServerId: S.optional(S.String),
     SubnetId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
@@ -8272,7 +8286,7 @@ export const CreateRouteTableRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean).pipe(
       T.XmlName("dryRun"),
       T.Ec2QueryName("DryRun"),
@@ -8490,7 +8504,7 @@ export const CreateTrafficMirrorFilterRequest = S.suspend(() =>
       T.XmlName("TagSpecification"),
     ),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -8530,7 +8544,7 @@ export const CreateTrafficMirrorSessionRequest = S.suspend(() =>
       T.XmlName("TagSpecification"),
     ),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -8563,7 +8577,7 @@ export const CreateTrafficMirrorTargetRequest = S.suspend(() =>
       T.XmlName("TagSpecification"),
     ),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     GatewayLoadBalancerEndpointId: S.optional(S.String),
   }).pipe(
     T.all(
@@ -8816,7 +8830,7 @@ export const CreateVerifiedAccessGroupRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     SseSpecification: S.optional(VerifiedAccessSseSpecificationRequest),
   }).pipe(
@@ -8847,7 +8861,7 @@ export const CreateVerifiedAccessInstanceRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     FIPSEnabled: S.optional(S.Boolean),
     CidrEndpointsCustomSubDomain: S.optional(S.String),
@@ -8902,7 +8916,7 @@ export const CreateVolumeRequest = S.suspend(() =>
     ),
     MultiAttachEnabled: S.optional(S.Boolean),
     Throughput: S.optional(S.Number),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeInitializationRate: S.optional(S.Number),
     Operator: S.optional(OperatorRequest),
     DryRun: S.optional(S.Boolean).pipe(
@@ -11042,7 +11056,7 @@ export interface DeleteVerifiedAccessEndpointRequest {
 export const DeleteVerifiedAccessEndpointRequest = S.suspend(() =>
   S.Struct({
     VerifiedAccessEndpointId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -11066,7 +11080,7 @@ export interface DeleteVerifiedAccessGroupRequest {
 export const DeleteVerifiedAccessGroupRequest = S.suspend(() =>
   S.Struct({
     VerifiedAccessGroupId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -11091,7 +11105,7 @@ export const DeleteVerifiedAccessInstanceRequest = S.suspend(() =>
   S.Struct({
     VerifiedAccessInstanceId: S.optional(S.String),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -11115,7 +11129,7 @@ export const DeleteVerifiedAccessTrustProviderRequest = S.suspend(() =>
   S.Struct({
     VerifiedAccessTrustProviderId: S.optional(S.String),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -17165,7 +17179,7 @@ export const DetachVerifiedAccessTrustProviderRequest = S.suspend(() =>
   S.Struct({
     VerifiedAccessInstanceId: S.optional(S.String),
     VerifiedAccessTrustProviderId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -17321,7 +17335,7 @@ export interface DisableCapacityManagerRequest {
 export const DisableCapacityManagerRequest = S.suspend(() =>
   S.Struct({
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -18111,7 +18125,7 @@ export interface DisassociateTrunkInterfaceRequest {
 export const DisassociateTrunkInterfaceRequest = S.suspend(() =>
   S.Struct({
     AssociationId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -18234,7 +18248,7 @@ export const EnableCapacityManagerRequest = S.suspend(() =>
   S.Struct({
     OrganizationsAccess: S.optional(S.Boolean),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -21616,7 +21630,7 @@ export const ModifyIpamPrefixListResolverTargetRequest = S.suspend(() =>
     IpamPrefixListResolverTargetId: S.optional(S.String),
     DesiredVersion: S.optional(S.Number),
     TrackLatestVersion: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -21715,7 +21729,7 @@ export interface ModifyLaunchTemplateRequest {
 export const ModifyLaunchTemplateRequest = S.suspend(() =>
   S.Struct({
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LaunchTemplateId: S.optional(S.String),
     LaunchTemplateName: S.optional(S.String),
     DefaultVersion: S.optional(S.String).pipe(T.XmlName("SetDefaultVersion")),
@@ -22121,7 +22135,7 @@ export const ModifyVerifiedAccessEndpointPolicyRequest = S.suspend(() =>
     VerifiedAccessEndpointId: S.optional(S.String),
     PolicyEnabled: S.optional(S.Boolean),
     PolicyDocument: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     SseSpecification: S.optional(VerifiedAccessSseSpecificationRequest),
   }).pipe(
@@ -22150,7 +22164,7 @@ export const ModifyVerifiedAccessGroupRequest = S.suspend(() =>
     VerifiedAccessGroupId: S.optional(S.String),
     VerifiedAccessInstanceId: S.optional(S.String),
     Description: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -22179,7 +22193,7 @@ export const ModifyVerifiedAccessGroupPolicyRequest = S.suspend(() =>
     VerifiedAccessGroupId: S.optional(S.String),
     PolicyEnabled: S.optional(S.Boolean),
     PolicyDocument: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     SseSpecification: S.optional(VerifiedAccessSseSpecificationRequest),
   }).pipe(
@@ -22208,7 +22222,7 @@ export const ModifyVerifiedAccessInstanceRequest = S.suspend(() =>
     VerifiedAccessInstanceId: S.optional(S.String),
     Description: S.optional(S.String),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     CidrEndpointsCustomSubDomain: S.optional(S.String),
   }).pipe(
     T.all(
@@ -22859,7 +22873,7 @@ export interface MoveCapacityReservationInstancesRequest {
 export const MoveCapacityReservationInstancesRequest = S.suspend(() =>
   S.Struct({
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SourceCapacityReservationId: S.optional(S.String),
     DestinationCapacityReservationId: S.optional(S.String),
     InstanceCount: S.optional(S.Number),
@@ -24558,7 +24572,7 @@ export const StartNetworkInsightsAccessScopeAnalysisRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -24594,7 +24608,7 @@ export const StartNetworkInsightsAnalysisRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -24869,7 +24883,7 @@ export const UpdateCapacityManagerOrganizationsAccessRequest = S.suspend(() =>
   S.Struct({
     OrganizationsAccess: S.optional(S.Boolean),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -36406,7 +36420,7 @@ export interface CreateCapacityReservationFleetRequest {
 export const CreateCapacityReservationFleetRequest = S.suspend(() =>
   S.Struct({
     AllocationStrategy: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     InstanceTypeSpecifications: S.optional(
       ReservationFleetInstanceSpecificationList,
     ).pipe(T.XmlName("InstanceTypeSpecification")),
@@ -36668,7 +36682,7 @@ export const CreateIpamRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tier: S.optional(IpamTier),
     EnablePrivateGua: S.optional(S.Boolean),
     MeteredAccount: S.optional(IpamMeteredAccount),
@@ -36724,7 +36738,7 @@ export const CreateIpamPoolRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     AwsService: S.optional(IpamPoolAwsService),
     PublicIpSource: S.optional(IpamPoolPublicIpSource),
     SourceResource: S.optional(IpamPoolSourceResourceRequest),
@@ -36758,7 +36772,7 @@ export const CreateIpamScopeRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ExternalAuthorityConfiguration: S.optional(ExternalAuthorityConfiguration),
   }).pipe(
     T.all(
@@ -36817,7 +36831,7 @@ export interface CreateMacSystemIntegrityProtectionModificationTaskRequest {
 export const CreateMacSystemIntegrityProtectionModificationTaskRequest =
   S.suspend(() =>
     S.Struct({
-      ClientToken: S.optional(S.String),
+      ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
       DryRun: S.optional(S.Boolean),
       InstanceId: S.optional(S.String),
       MacCredentials: S.optional(SensitiveString),
@@ -36863,7 +36877,7 @@ export const CreateManagedPrefixListRequest = S.suspend(() =>
       T.XmlName("TagSpecification"),
     ),
     AddressFamily: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -36897,7 +36911,7 @@ export const CreateNatGatewayRequest = S.suspend(() =>
   S.Struct({
     AvailabilityMode: S.optional(AvailabilityMode),
     AllocationId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     SubnetId: S.optional(S.String),
     VpcId: S.optional(S.String),
@@ -37033,7 +37047,7 @@ export const CreateNetworkInterfaceRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     EnablePrimaryIpv6: S.optional(S.Boolean),
     ConnectionTrackingSpecification: S.optional(
       ConnectionTrackingSpecificationRequest,
@@ -37351,7 +37365,7 @@ export const CreateTrafficMirrorFilterRuleRequest = S.suspend(() =>
     SourceCidrBlock: S.optional(S.String),
     Description: S.optional(S.String),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
@@ -37592,7 +37606,7 @@ export const CreateVerifiedAccessTrustProviderRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     SseSpecification: S.optional(VerifiedAccessSseSpecificationRequest),
     NativeApplicationOidcOptions: S.optional(
@@ -41608,7 +41622,7 @@ export interface ExportImageRequest {
 }
 export const ExportImageRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     DiskImageFormat: S.optional(DiskImageFormat),
     DryRun: S.optional(S.Boolean),
@@ -43539,7 +43553,7 @@ export const ModifyVerifiedAccessTrustProviderRequest = S.suspend(() =>
     DeviceOptions: S.optional(ModifyVerifiedAccessTrustProviderDeviceOptions),
     Description: S.optional(S.String),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SseSpecification: S.optional(VerifiedAccessSseSpecificationRequest),
     NativeApplicationOidcOptions: S.optional(
       ModifyVerifiedAccessNativeApplicationOidcOptions,
@@ -44594,7 +44608,7 @@ export const ProvisionIpamPoolCidrRequest = S.suspend(() =>
     Cidr: S.optional(S.String),
     CidrAuthorizationContext: S.optional(IpamCidrAuthorizationContext),
     NetmaskLength: S.optional(S.Number),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VerificationMethod: S.optional(VerificationMethod),
     IpamExternalResourceVerificationTokenId: S.optional(S.String),
   }).pipe(
@@ -44952,7 +44966,7 @@ export interface PurchaseScheduledInstancesRequest {
 }
 export const PurchaseScheduledInstancesRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     PurchaseRequests: S.optional(PurchaseRequestSet).pipe(
       T.XmlName("PurchaseRequest"),
@@ -54713,7 +54727,7 @@ export const CreateClientVpnEndpointRequest = S.suspend(() =>
     Description: S.optional(S.String),
     SplitTunnel: S.optional(S.Boolean),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
@@ -54972,7 +54986,7 @@ export const CreateImageUsageReportRequest = S.suspend(() =>
     AccountIds: S.optional(ImageUsageReportUserIdStringList).pipe(
       T.XmlName("AccountId"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
@@ -55188,7 +55202,7 @@ export const CreateIpamPrefixListResolverRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -55559,7 +55573,7 @@ export const CreateNetworkInsightsPathRequest = S.suspend(() =>
       T.XmlName("TagSpecification"),
     ),
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FilterAtSource: S.optional(PathRequestFilter),
     FilterAtDestination: S.optional(PathRequestFilter),
   }).pipe(
@@ -56406,7 +56420,7 @@ export const CreateVerifiedAccessEndpointRequest = S.suspend(() =>
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     SseSpecification: S.optional(VerifiedAccessSseSpecificationRequest),
     RdsOptions: S.optional(CreateVerifiedAccessEndpointRdsOptions),
@@ -57879,7 +57893,12 @@ export const DescribeSpotFleetRequestHistoryResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeSpotFleetRequestHistoryResponse>;
 export interface DescribeSpotFleetRequestsResponse {
   NextToken?: string;
-  SpotFleetRequestConfigs?: SpotFleetRequestConfig[];
+  SpotFleetRequestConfigs?: (SpotFleetRequestConfig & {
+    SpotFleetRequestConfig: SpotFleetRequestConfigData & {
+      IamFleetRole: string;
+      TargetCapacity: number;
+    };
+  })[];
 }
 export const DescribeSpotFleetRequestsResponse = S.suspend(() =>
   S.Struct({
@@ -59943,7 +59962,7 @@ export const ModifyVerifiedAccessEndpointRequest = S.suspend(() =>
     ),
     NetworkInterfaceOptions: S.optional(ModifyVerifiedAccessEndpointEniOptions),
     Description: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     RdsOptions: S.optional(ModifyVerifiedAccessEndpointRdsOptions),
     CidrOptions: S.optional(ModifyVerifiedAccessEndpointCidrOptions),
@@ -59995,7 +60014,7 @@ export const ModifyVerifiedAccessInstanceLoggingConfigurationRequest =
       VerifiedAccessInstanceId: S.optional(S.String),
       AccessLogs: S.optional(VerifiedAccessLogOptions),
       DryRun: S.optional(S.Boolean),
-      ClientToken: S.optional(S.String),
+      ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     }).pipe(
       T.all(
         ns,
@@ -65517,7 +65536,7 @@ export interface CreateLaunchTemplateRequest {
 export const CreateLaunchTemplateRequest = S.suspend(() =>
   S.Struct({
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LaunchTemplateName: S.optional(S.String),
     VersionDescription: S.optional(S.String),
     LaunchTemplateData: S.optional(RequestLaunchTemplateData),
@@ -65605,7 +65624,7 @@ export const CreateNetworkInsightsAccessScopeRequest = S.suspend(() =>
     ExcludePaths: S.optional(AccessScopePathListRequest).pipe(
       T.XmlName("ExcludePath"),
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TagSpecifications: S.optional(TagSpecificationList).pipe(
       T.XmlName("TagSpecification"),
     ),
@@ -66608,7 +66627,11 @@ export const DescribeScheduledInstancesResult = S.suspend(() =>
   identifier: "DescribeScheduledInstancesResult",
 }) as any as S.Schema<DescribeScheduledInstancesResult>;
 export interface DescribeSpotInstanceRequestsResult {
-  SpotInstanceRequests?: SpotInstanceRequest[];
+  SpotInstanceRequests?: (SpotInstanceRequest & {
+    LaunchSpecification: LaunchSpecification & {
+      Monitoring: RunInstancesMonitoringEnabled & { Enabled: boolean };
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeSpotInstanceRequestsResult = S.suspend(() =>
@@ -67439,7 +67462,11 @@ export const ReplaceImageCriteriaInAllowedImagesSettingsResult = S.suspend(() =>
   identifier: "ReplaceImageCriteriaInAllowedImagesSettingsResult",
 }) as any as S.Schema<ReplaceImageCriteriaInAllowedImagesSettingsResult>;
 export interface RequestSpotInstancesResult {
-  SpotInstanceRequests?: SpotInstanceRequest[];
+  SpotInstanceRequests?: (SpotInstanceRequest & {
+    LaunchSpecification: LaunchSpecification & {
+      Monitoring: RunInstancesMonitoringEnabled & { Enabled: boolean };
+    };
+  })[];
 }
 export const RequestSpotInstancesResult = S.suspend(() =>
   S.Struct({
@@ -67568,6 +67595,7 @@ export const RunInstancesRequest = S.suspend(() =>
     ),
     ClientToken: S.optional(S.String).pipe(
       T.XmlName("clientToken"),
+      T.IdempotencyToken(),
       T.Ec2QueryName("ClientToken"),
     ),
     AdditionalInfo: S.optional(S.String).pipe(
@@ -67610,7 +67638,7 @@ export interface RunScheduledInstancesRequest {
 }
 export const RunScheduledInstancesRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DryRun: S.optional(S.Boolean),
     InstanceCount: S.optional(S.Number),
     LaunchSpecification: S.optional(ScheduledInstancesLaunchSpecification),
@@ -69566,7 +69594,7 @@ export interface CreateFleetRequest {
 export const CreateFleetRequest = S.suspend(() =>
   S.Struct({
     DryRun: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SpotOptions: S.optional(SpotOptionsRequest),
     OnDemandOptions: S.optional(OnDemandOptionsRequest),
     ExcessCapacityTerminationPolicy: S.optional(

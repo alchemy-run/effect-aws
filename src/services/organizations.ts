@@ -267,6 +267,7 @@ export type ErrorCode = string;
 export type ErrorMessage = string;
 export type PathToError = string;
 export type PolicyArn = string;
+export type AwsManagedPolicy = boolean;
 export type GenericArn = string;
 export type TargetName = string;
 export type ExceptionType = string;

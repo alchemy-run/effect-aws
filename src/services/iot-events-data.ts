@@ -97,6 +97,7 @@ export type RequestId = string;
 export type Note = string;
 export type MessageId = string;
 export type EphemeralInputName = string;
+export type Payload = Uint8Array;
 export type SnoozeDuration = number;
 export type EpochMilliTimestamp = number;
 export type AlarmModelVersion = string;

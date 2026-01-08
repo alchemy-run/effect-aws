@@ -106,12 +106,14 @@ export type DirectQueryDataSourceDescription = string;
 export type ARN = string;
 export type PackageID = string;
 export type AWSAccount = string;
+export type DryRun = boolean;
 export type ClientToken = string;
 export type ApplicationName = string;
 export type KmsKeyArn = string;
 export type VersionString = string;
 export type PolicyDocument = string;
 export type IndexName = string;
+export type IndexSchema = unknown;
 export type ConnectionAlias = string;
 export type PackageName = string;
 export type PackageDescription = string;
@@ -150,6 +152,7 @@ export type NumberOfAZs = string;
 export type NumberOfNodes = string;
 export type NumberOfShards = string;
 export type MaintenanceStatusMessage = string;
+export type UpdateTimestamp = Date;
 export type UpgradeName = string;
 export type DirectQueryDataSourceRoleArn = string;
 export type CloudWatchLogsLogGroupArn = string;
@@ -160,11 +163,15 @@ export type SubjectKey = string;
 export type RolesKey = string;
 export type IAMFederationSubjectKey = string;
 export type IAMFederationRolesKey = string;
+export type StartAt = Date;
 export type OwnerId = string;
 export type Region = string;
+export type DeploymentCloseDateTimeStamp = Date;
 export type DomainId = string;
 export type ServiceUrl = string;
 export type HostedZoneId = string;
+export type CreatedAt = Date;
+export type LastUpdated = Date;
 export type PackageVersion = string;
 export type PackageOwner = string;
 export type TotalNumberOfStages = number;
@@ -175,12 +182,14 @@ export type DeploymentType = string;
 export type Message = string;
 export type InstanceRole = string;
 export type ReferencePath = string;
+export type StartTimestamp = Date;
 export type SAMLMetadata = string;
 export type SAMLEntityId = string;
 export type DurationValue = number;
 export type StartTimeHours = number;
 export type StartTimeMinutes = number;
 export type ConnectionStatusMessage = string;
+export type DisableTimestamp = Date;
 export type IdentityCenterApplicationARN = string;
 export type IdentityStoreId = string;
 export type ErrorType = string;
@@ -193,6 +202,7 @@ export type ChangeProgressStageName = string;
 export type ChangeProgressStageStatus = string;
 export type Description = string;
 export type Issue = string;
+export type AutoTuneDate = Date;
 export type ScheduledAutoTuneDescription = string;
 export type UIntValue = number;
 export type StorageSubTypeName = string;
@@ -3483,7 +3493,7 @@ export interface CreateApplicationRequest {
 }
 export const CreateApplicationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     dataSources: S.optional(DataSources),
     iamIdentityCenterOptions: S.optional(IamIdentityCenterOptionsInput),

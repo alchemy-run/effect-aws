@@ -2649,7 +2649,12 @@ export const CreateThemeForStackRequest = S.suspend(() =>
   identifier: "CreateThemeForStackRequest",
 }) as any as S.Schema<CreateThemeForStackRequest>;
 export interface DeleteImageResult {
-  Image?: Image;
+  Image?: Image & {
+    Name: string;
+    Applications: (Application & {
+      IconS3Location: S3Location & { S3Bucket: S3Bucket };
+    })[];
+  };
 }
 export const DeleteImageResult = S.suspend(() =>
   S.Struct({ Image: S.optional(Image) }),
@@ -2657,7 +2662,10 @@ export const DeleteImageResult = S.suspend(() =>
   identifier: "DeleteImageResult",
 }) as any as S.Schema<DeleteImageResult>;
 export interface DeleteImageBuilderResult {
-  ImageBuilder?: ImageBuilder;
+  ImageBuilder?: ImageBuilder & {
+    Name: string;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const DeleteImageBuilderResult = S.suspend(() =>
   S.Struct({ ImageBuilder: S.optional(ImageBuilder) }),
@@ -2665,7 +2673,10 @@ export const DeleteImageBuilderResult = S.suspend(() =>
   identifier: "DeleteImageBuilderResult",
 }) as any as S.Schema<DeleteImageBuilderResult>;
 export interface DescribeAppBlockBuilderAppBlockAssociationsResult {
-  AppBlockBuilderAppBlockAssociations?: AppBlockBuilderAppBlockAssociation[];
+  AppBlockBuilderAppBlockAssociations?: (AppBlockBuilderAppBlockAssociation & {
+    AppBlockArn: Arn;
+    AppBlockBuilderName: Name;
+  })[];
   NextToken?: string;
 }
 export const DescribeAppBlockBuilderAppBlockAssociationsResult = S.suspend(() =>
@@ -2679,7 +2690,10 @@ export const DescribeAppBlockBuilderAppBlockAssociationsResult = S.suspend(() =>
   identifier: "DescribeAppBlockBuilderAppBlockAssociationsResult",
 }) as any as S.Schema<DescribeAppBlockBuilderAppBlockAssociationsResult>;
 export interface DescribeApplicationFleetAssociationsResult {
-  ApplicationFleetAssociations?: ApplicationFleetAssociation[];
+  ApplicationFleetAssociations?: (ApplicationFleetAssociation & {
+    FleetName: string;
+    ApplicationArn: Arn;
+  })[];
   NextToken?: string;
 }
 export const DescribeApplicationFleetAssociationsResult = S.suspend(() =>
@@ -2691,7 +2705,9 @@ export const DescribeApplicationFleetAssociationsResult = S.suspend(() =>
   identifier: "DescribeApplicationFleetAssociationsResult",
 }) as any as S.Schema<DescribeApplicationFleetAssociationsResult>;
 export interface DescribeApplicationsResult {
-  Applications?: Application[];
+  Applications?: (Application & {
+    IconS3Location: S3Location & { S3Bucket: S3Bucket };
+  })[];
   NextToken?: string;
 }
 export const DescribeApplicationsResult = S.suspend(() =>
@@ -2703,7 +2719,10 @@ export const DescribeApplicationsResult = S.suspend(() =>
   identifier: "DescribeApplicationsResult",
 }) as any as S.Schema<DescribeApplicationsResult>;
 export interface DescribeImageBuildersResult {
-  ImageBuilders?: ImageBuilder[];
+  ImageBuilders?: (ImageBuilder & {
+    Name: string;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeImageBuildersResult = S.suspend(() =>
@@ -2715,7 +2734,12 @@ export const DescribeImageBuildersResult = S.suspend(() =>
   identifier: "DescribeImageBuildersResult",
 }) as any as S.Schema<DescribeImageBuildersResult>;
 export interface DescribeImagesResult {
-  Images?: Image[];
+  Images?: (Image & {
+    Name: string;
+    Applications: (Application & {
+      IconS3Location: S3Location & { S3Bucket: S3Bucket };
+    })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeImagesResult = S.suspend(() =>
@@ -2724,7 +2748,11 @@ export const DescribeImagesResult = S.suspend(() =>
   identifier: "DescribeImagesResult",
 }) as any as S.Schema<DescribeImagesResult>;
 export interface DescribeUserStackAssociationsResult {
-  UserStackAssociations?: UserStackAssociation[];
+  UserStackAssociations?: (UserStackAssociation & {
+    StackName: string;
+    UserName: Username;
+    AuthenticationType: AuthenticationType;
+  })[];
   NextToken?: string;
 }
 export const DescribeUserStackAssociationsResult = S.suspend(() =>
@@ -2780,7 +2808,12 @@ export const ExportImageTask = S.suspend(() =>
   identifier: "ExportImageTask",
 }) as any as S.Schema<ExportImageTask>;
 export interface GetExportImageTaskResult {
-  ExportImageTask?: ExportImageTask;
+  ExportImageTask?: ExportImageTask & {
+    TaskId: UUID;
+    ImageArn: Arn;
+    AmiName: AmiName;
+    CreatedDate: Date;
+  };
 }
 export const GetExportImageTaskResult = S.suspend(() =>
   S.Struct({ ExportImageTask: S.optional(ExportImageTask) }),
@@ -2891,7 +2924,15 @@ export const AppBlockBuilder = S.suspend(() =>
   identifier: "AppBlockBuilder",
 }) as any as S.Schema<AppBlockBuilder>;
 export interface StartAppBlockBuilderResult {
-  AppBlockBuilder?: AppBlockBuilder;
+  AppBlockBuilder?: AppBlockBuilder & {
+    Arn: Arn;
+    Name: string;
+    Platform: AppBlockBuilderPlatformType;
+    InstanceType: string;
+    VpcConfig: VpcConfig;
+    State: AppBlockBuilderState;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const StartAppBlockBuilderResult = S.suspend(() =>
   S.Struct({ AppBlockBuilder: S.optional(AppBlockBuilder) }),
@@ -2899,7 +2940,10 @@ export const StartAppBlockBuilderResult = S.suspend(() =>
   identifier: "StartAppBlockBuilderResult",
 }) as any as S.Schema<StartAppBlockBuilderResult>;
 export interface StartImageBuilderResult {
-  ImageBuilder?: ImageBuilder;
+  ImageBuilder?: ImageBuilder & {
+    Name: string;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const StartImageBuilderResult = S.suspend(() =>
   S.Struct({ ImageBuilder: S.optional(ImageBuilder) }),
@@ -2907,7 +2951,15 @@ export const StartImageBuilderResult = S.suspend(() =>
   identifier: "StartImageBuilderResult",
 }) as any as S.Schema<StartImageBuilderResult>;
 export interface StopAppBlockBuilderResult {
-  AppBlockBuilder?: AppBlockBuilder;
+  AppBlockBuilder?: AppBlockBuilder & {
+    Arn: Arn;
+    Name: string;
+    Platform: AppBlockBuilderPlatformType;
+    InstanceType: string;
+    VpcConfig: VpcConfig;
+    State: AppBlockBuilderState;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const StopAppBlockBuilderResult = S.suspend(() =>
   S.Struct({ AppBlockBuilder: S.optional(AppBlockBuilder) }),
@@ -2915,7 +2967,10 @@ export const StopAppBlockBuilderResult = S.suspend(() =>
   identifier: "StopAppBlockBuilderResult",
 }) as any as S.Schema<StopAppBlockBuilderResult>;
 export interface StopImageBuilderResult {
-  ImageBuilder?: ImageBuilder;
+  ImageBuilder?: ImageBuilder & {
+    Name: string;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const StopImageBuilderResult = S.suspend(() =>
   S.Struct({ ImageBuilder: S.optional(ImageBuilder) }),
@@ -2923,7 +2978,15 @@ export const StopImageBuilderResult = S.suspend(() =>
   identifier: "StopImageBuilderResult",
 }) as any as S.Schema<StopImageBuilderResult>;
 export interface UpdateAppBlockBuilderResult {
-  AppBlockBuilder?: AppBlockBuilder;
+  AppBlockBuilder?: AppBlockBuilder & {
+    Arn: Arn;
+    Name: string;
+    Platform: AppBlockBuilderPlatformType;
+    InstanceType: string;
+    VpcConfig: VpcConfig;
+    State: AppBlockBuilderState;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const UpdateAppBlockBuilderResult = S.suspend(() =>
   S.Struct({ AppBlockBuilder: S.optional(AppBlockBuilder) }),
@@ -2931,7 +2994,9 @@ export const UpdateAppBlockBuilderResult = S.suspend(() =>
   identifier: "UpdateAppBlockBuilderResult",
 }) as any as S.Schema<UpdateAppBlockBuilderResult>;
 export interface UpdateApplicationResult {
-  Application?: Application;
+  Application?: Application & {
+    IconS3Location: S3Location & { S3Bucket: S3Bucket };
+  };
 }
 export const UpdateApplicationResult = S.suspend(() =>
   S.Struct({ Application: S.optional(Application) }),
@@ -2959,7 +3024,13 @@ export const DirectoryConfig = S.suspend(() =>
   identifier: "DirectoryConfig",
 }) as any as S.Schema<DirectoryConfig>;
 export interface UpdateDirectoryConfigResult {
-  DirectoryConfig?: DirectoryConfig;
+  DirectoryConfig?: DirectoryConfig & {
+    DirectoryName: DirectoryName;
+    ServiceAccountCredentials: ServiceAccountCredentials & {
+      AccountName: AccountName;
+      AccountPassword: AccountPassword;
+    };
+  };
 }
 export const UpdateDirectoryConfigResult = S.suspend(() =>
   S.Struct({ DirectoryConfig: S.optional(DirectoryConfig) }),
@@ -2989,7 +3060,12 @@ export const Entitlement = S.suspend(() =>
   }),
 ).annotations({ identifier: "Entitlement" }) as any as S.Schema<Entitlement>;
 export interface UpdateEntitlementResult {
-  Entitlement?: Entitlement;
+  Entitlement?: Entitlement & {
+    Name: Name;
+    StackName: Name;
+    AppVisibility: AppVisibility;
+    Attributes: (EntitlementAttribute & { Name: string; Value: string })[];
+  };
 }
 export const UpdateEntitlementResult = S.suspend(() =>
   S.Struct({ Entitlement: S.optional(Entitlement) }),
@@ -3098,7 +3174,14 @@ export const Fleet = S.suspend(() =>
   }),
 ).annotations({ identifier: "Fleet" }) as any as S.Schema<Fleet>;
 export interface UpdateFleetResult {
-  Fleet?: Fleet;
+  Fleet?: Fleet & {
+    Arn: Arn;
+    Name: string;
+    InstanceType: string;
+    ComputeCapacityStatus: ComputeCapacityStatus & { Desired: number };
+    State: FleetState;
+    SessionScriptS3Location: S3Location & { S3Bucket: S3Bucket };
+  };
 }
 export const UpdateFleetResult = S.suspend(() =>
   S.Struct({ Fleet: S.optional(Fleet) }),
@@ -3195,7 +3278,14 @@ export const Stack = S.suspend(() =>
   }),
 ).annotations({ identifier: "Stack" }) as any as S.Schema<Stack>;
 export interface UpdateStackResult {
-  Stack?: Stack;
+  Stack?: Stack & {
+    Name: string;
+    StorageConnectors: (StorageConnector & {
+      ConnectorType: StorageConnectorType;
+    })[];
+    UserSettings: (UserSetting & { Action: Action; Permission: Permission })[];
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const UpdateStackResult = S.suspend(() =>
   S.Struct({ Stack: S.optional(Stack) }),
@@ -3452,7 +3542,10 @@ export const UsageReportExecutionErrorCode = S.Literal(
   "INTERNAL_SERVICE_ERROR",
 );
 export interface AssociateAppBlockBuilderAppBlockResult {
-  AppBlockBuilderAppBlockAssociation?: AppBlockBuilderAppBlockAssociation;
+  AppBlockBuilderAppBlockAssociation?: AppBlockBuilderAppBlockAssociation & {
+    AppBlockArn: Arn;
+    AppBlockBuilderName: Name;
+  };
 }
 export const AssociateAppBlockBuilderAppBlockResult = S.suspend(() =>
   S.Struct({
@@ -3464,7 +3557,10 @@ export const AssociateAppBlockBuilderAppBlockResult = S.suspend(() =>
   identifier: "AssociateAppBlockBuilderAppBlockResult",
 }) as any as S.Schema<AssociateAppBlockBuilderAppBlockResult>;
 export interface AssociateApplicationFleetResult {
-  ApplicationFleetAssociation?: ApplicationFleetAssociation;
+  ApplicationFleetAssociation?: ApplicationFleetAssociation & {
+    FleetName: string;
+    ApplicationArn: Arn;
+  };
 }
 export const AssociateApplicationFleetResult = S.suspend(() =>
   S.Struct({
@@ -3474,7 +3570,13 @@ export const AssociateApplicationFleetResult = S.suspend(() =>
   identifier: "AssociateApplicationFleetResult",
 }) as any as S.Schema<AssociateApplicationFleetResult>;
 export interface BatchAssociateUserStackResult {
-  errors?: UserStackAssociationError[];
+  errors?: (UserStackAssociationError & {
+    UserStackAssociation: UserStackAssociation & {
+      StackName: string;
+      UserName: Username;
+      AuthenticationType: AuthenticationType;
+    };
+  })[];
 }
 export const BatchAssociateUserStackResult = S.suspend(() =>
   S.Struct({ errors: S.optional(UserStackAssociationErrorList) }),
@@ -3482,7 +3584,13 @@ export const BatchAssociateUserStackResult = S.suspend(() =>
   identifier: "BatchAssociateUserStackResult",
 }) as any as S.Schema<BatchAssociateUserStackResult>;
 export interface BatchDisassociateUserStackResult {
-  errors?: UserStackAssociationError[];
+  errors?: (UserStackAssociationError & {
+    UserStackAssociation: UserStackAssociation & {
+      StackName: string;
+      UserName: Username;
+      AuthenticationType: AuthenticationType;
+    };
+  })[];
 }
 export const BatchDisassociateUserStackResult = S.suspend(() =>
   S.Struct({ errors: S.optional(UserStackAssociationErrorList) }),
@@ -3490,7 +3598,21 @@ export const BatchDisassociateUserStackResult = S.suspend(() =>
   identifier: "BatchDisassociateUserStackResult",
 }) as any as S.Schema<BatchDisassociateUserStackResult>;
 export interface CreateAppBlockResult {
-  AppBlock?: AppBlock;
+  AppBlock?: AppBlock & {
+    Name: string;
+    Arn: Arn;
+    SourceS3Location: S3Location & { S3Bucket: S3Bucket };
+    SetupScriptDetails: ScriptDetails & {
+      ScriptS3Location: S3Location & { S3Bucket: S3Bucket };
+      ExecutablePath: string;
+      TimeoutInSeconds: number;
+    };
+    PostSetupScriptDetails: ScriptDetails & {
+      ScriptS3Location: S3Location & { S3Bucket: S3Bucket };
+      ExecutablePath: string;
+      TimeoutInSeconds: number;
+    };
+  };
 }
 export const CreateAppBlockResult = S.suspend(() =>
   S.Struct({ AppBlock: S.optional(AppBlock) }),
@@ -3498,7 +3620,15 @@ export const CreateAppBlockResult = S.suspend(() =>
   identifier: "CreateAppBlockResult",
 }) as any as S.Schema<CreateAppBlockResult>;
 export interface CreateAppBlockBuilderResult {
-  AppBlockBuilder?: AppBlockBuilder;
+  AppBlockBuilder?: AppBlockBuilder & {
+    Arn: Arn;
+    Name: string;
+    Platform: AppBlockBuilderPlatformType;
+    InstanceType: string;
+    VpcConfig: VpcConfig;
+    State: AppBlockBuilderState;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const CreateAppBlockBuilderResult = S.suspend(() =>
   S.Struct({ AppBlockBuilder: S.optional(AppBlockBuilder) }),
@@ -3506,7 +3636,13 @@ export const CreateAppBlockBuilderResult = S.suspend(() =>
   identifier: "CreateAppBlockBuilderResult",
 }) as any as S.Schema<CreateAppBlockBuilderResult>;
 export interface CreateDirectoryConfigResult {
-  DirectoryConfig?: DirectoryConfig;
+  DirectoryConfig?: DirectoryConfig & {
+    DirectoryName: DirectoryName;
+    ServiceAccountCredentials: ServiceAccountCredentials & {
+      AccountName: AccountName;
+      AccountPassword: AccountPassword;
+    };
+  };
 }
 export const CreateDirectoryConfigResult = S.suspend(() =>
   S.Struct({ DirectoryConfig: S.optional(DirectoryConfig) }),
@@ -3514,7 +3650,12 @@ export const CreateDirectoryConfigResult = S.suspend(() =>
   identifier: "CreateDirectoryConfigResult",
 }) as any as S.Schema<CreateDirectoryConfigResult>;
 export interface CreateEntitlementResult {
-  Entitlement?: Entitlement;
+  Entitlement?: Entitlement & {
+    Name: Name;
+    StackName: Name;
+    AppVisibility: AppVisibility;
+    Attributes: (EntitlementAttribute & { Name: string; Value: string })[];
+  };
 }
 export const CreateEntitlementResult = S.suspend(() =>
   S.Struct({ Entitlement: S.optional(Entitlement) }),
@@ -3522,7 +3663,14 @@ export const CreateEntitlementResult = S.suspend(() =>
   identifier: "CreateEntitlementResult",
 }) as any as S.Schema<CreateEntitlementResult>;
 export interface CreateFleetResult {
-  Fleet?: Fleet;
+  Fleet?: Fleet & {
+    Arn: Arn;
+    Name: string;
+    InstanceType: string;
+    ComputeCapacityStatus: ComputeCapacityStatus & { Desired: number };
+    State: FleetState;
+    SessionScriptS3Location: S3Location & { S3Bucket: S3Bucket };
+  };
 }
 export const CreateFleetResult = S.suspend(() =>
   S.Struct({ Fleet: S.optional(Fleet) }),
@@ -3530,7 +3678,12 @@ export const CreateFleetResult = S.suspend(() =>
   identifier: "CreateFleetResult",
 }) as any as S.Schema<CreateFleetResult>;
 export interface CreateImportedImageResult {
-  Image?: Image;
+  Image?: Image & {
+    Name: string;
+    Applications: (Application & {
+      IconS3Location: S3Location & { S3Bucket: S3Bucket };
+    })[];
+  };
 }
 export const CreateImportedImageResult = S.suspend(() =>
   S.Struct({ Image: S.optional(Image) }),
@@ -3538,7 +3691,14 @@ export const CreateImportedImageResult = S.suspend(() =>
   identifier: "CreateImportedImageResult",
 }) as any as S.Schema<CreateImportedImageResult>;
 export interface CreateStackResult {
-  Stack?: Stack;
+  Stack?: Stack & {
+    Name: string;
+    StorageConnectors: (StorageConnector & {
+      ConnectorType: StorageConnectorType;
+    })[];
+    UserSettings: (UserSetting & { Action: Action; Permission: Permission })[];
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const CreateStackResult = S.suspend(() =>
   S.Struct({ Stack: S.optional(Stack) }),
@@ -3554,7 +3714,21 @@ export const CreateThemeForStackResult = S.suspend(() =>
   identifier: "CreateThemeForStackResult",
 }) as any as S.Schema<CreateThemeForStackResult>;
 export interface DescribeAppBlocksResult {
-  AppBlocks?: AppBlock[];
+  AppBlocks?: (AppBlock & {
+    Name: string;
+    Arn: Arn;
+    SourceS3Location: S3Location & { S3Bucket: S3Bucket };
+    SetupScriptDetails: ScriptDetails & {
+      ScriptS3Location: S3Location & { S3Bucket: S3Bucket };
+      ExecutablePath: string;
+      TimeoutInSeconds: number;
+    };
+    PostSetupScriptDetails: ScriptDetails & {
+      ScriptS3Location: S3Location & { S3Bucket: S3Bucket };
+      ExecutablePath: string;
+      TimeoutInSeconds: number;
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeAppBlocksResult = S.suspend(() =>
@@ -3566,7 +3740,15 @@ export const DescribeAppBlocksResult = S.suspend(() =>
   identifier: "DescribeAppBlocksResult",
 }) as any as S.Schema<DescribeAppBlocksResult>;
 export interface DescribeAppLicenseUsageResult {
-  AppLicenseUsages?: AdminAppLicenseUsageRecord[];
+  AppLicenseUsages?: (AdminAppLicenseUsageRecord & {
+    UserArn: string;
+    BillingPeriod: string;
+    OwnerAWSAccountId: AwsAccountId;
+    SubscriptionFirstUsedDate: Date;
+    SubscriptionLastUsedDate: Date;
+    LicenseType: string;
+    UserId: string;
+  })[];
   NextToken?: string;
 }
 export const DescribeAppLicenseUsageResult = S.suspend(() =>
@@ -3578,7 +3760,13 @@ export const DescribeAppLicenseUsageResult = S.suspend(() =>
   identifier: "DescribeAppLicenseUsageResult",
 }) as any as S.Schema<DescribeAppLicenseUsageResult>;
 export interface DescribeDirectoryConfigsResult {
-  DirectoryConfigs?: DirectoryConfig[];
+  DirectoryConfigs?: (DirectoryConfig & {
+    DirectoryName: DirectoryName;
+    ServiceAccountCredentials: ServiceAccountCredentials & {
+      AccountName: AccountName;
+      AccountPassword: AccountPassword;
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeDirectoryConfigsResult = S.suspend(() =>
@@ -3590,7 +3778,12 @@ export const DescribeDirectoryConfigsResult = S.suspend(() =>
   identifier: "DescribeDirectoryConfigsResult",
 }) as any as S.Schema<DescribeDirectoryConfigsResult>;
 export interface DescribeEntitlementsResult {
-  Entitlements?: Entitlement[];
+  Entitlements?: (Entitlement & {
+    Name: Name;
+    StackName: Name;
+    AppVisibility: AppVisibility;
+    Attributes: (EntitlementAttribute & { Name: string; Value: string })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeEntitlementsResult = S.suspend(() =>
@@ -3603,7 +3796,10 @@ export const DescribeEntitlementsResult = S.suspend(() =>
 }) as any as S.Schema<DescribeEntitlementsResult>;
 export interface DescribeImagePermissionsResult {
   Name?: string;
-  SharedImagePermissionsList?: SharedImagePermissions[];
+  SharedImagePermissionsList?: (SharedImagePermissions & {
+    sharedAccountId: AwsAccountId;
+    imagePermissions: ImagePermissions;
+  })[];
   NextToken?: string;
 }
 export const DescribeImagePermissionsResult = S.suspend(() =>
@@ -3616,7 +3812,13 @@ export const DescribeImagePermissionsResult = S.suspend(() =>
   identifier: "DescribeImagePermissionsResult",
 }) as any as S.Schema<DescribeImagePermissionsResult>;
 export interface DescribeSessionsResult {
-  Sessions?: Session[];
+  Sessions?: (Session & {
+    Id: string;
+    UserId: UserId;
+    StackName: string;
+    FleetName: string;
+    State: SessionState;
+  })[];
   NextToken?: string;
 }
 export const DescribeSessionsResult = S.suspend(() =>
@@ -3650,7 +3852,7 @@ export const DescribeThemeForStackResult = S.suspend(() =>
   identifier: "DescribeThemeForStackResult",
 }) as any as S.Schema<DescribeThemeForStackResult>;
 export interface DescribeUsersResult {
-  Users?: User[];
+  Users?: (User & { AuthenticationType: AuthenticationType })[];
   NextToken?: string;
 }
 export const DescribeUsersResult = S.suspend(() =>
@@ -3659,7 +3861,9 @@ export const DescribeUsersResult = S.suspend(() =>
   identifier: "DescribeUsersResult",
 }) as any as S.Schema<DescribeUsersResult>;
 export interface ListEntitledApplicationsResult {
-  EntitledApplications?: EntitledApplication[];
+  EntitledApplications?: (EntitledApplication & {
+    ApplicationIdentifier: string;
+  })[];
   NextToken?: string;
 }
 export const ListEntitledApplicationsResult = S.suspend(() =>
@@ -3671,7 +3875,12 @@ export const ListEntitledApplicationsResult = S.suspend(() =>
   identifier: "ListEntitledApplicationsResult",
 }) as any as S.Schema<ListEntitledApplicationsResult>;
 export interface ListExportImageTasksResult {
-  ExportImageTasks?: ExportImageTask[];
+  ExportImageTasks?: (ExportImageTask & {
+    TaskId: UUID;
+    ImageArn: Arn;
+    AmiName: AmiName;
+    CreatedDate: Date;
+  })[];
   NextToken?: string;
 }
 export const ListExportImageTasksResult = S.suspend(() =>
@@ -3726,7 +3935,9 @@ export const UsageReportSubscription = S.suspend(() =>
 export type UsageReportSubscriptionList = UsageReportSubscription[];
 export const UsageReportSubscriptionList = S.Array(UsageReportSubscription);
 export interface CreateApplicationResult {
-  Application?: Application;
+  Application?: Application & {
+    IconS3Location: S3Location & { S3Bucket: S3Bucket };
+  };
 }
 export const CreateApplicationResult = S.suspend(() =>
   S.Struct({ Application: S.optional(Application) }),
@@ -3734,7 +3945,12 @@ export const CreateApplicationResult = S.suspend(() =>
   identifier: "CreateApplicationResult",
 }) as any as S.Schema<CreateApplicationResult>;
 export interface CreateExportImageTaskResult {
-  ExportImageTask?: ExportImageTask;
+  ExportImageTask?: ExportImageTask & {
+    TaskId: UUID;
+    ImageArn: Arn;
+    AmiName: AmiName;
+    CreatedDate: Date;
+  };
 }
 export const CreateExportImageTaskResult = S.suspend(() =>
   S.Struct({ ExportImageTask: S.optional(ExportImageTask) }),
@@ -3742,7 +3958,10 @@ export const CreateExportImageTaskResult = S.suspend(() =>
   identifier: "CreateExportImageTaskResult",
 }) as any as S.Schema<CreateExportImageTaskResult>;
 export interface CreateImageBuilderResult {
-  ImageBuilder?: ImageBuilder;
+  ImageBuilder?: ImageBuilder & {
+    Name: string;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  };
 }
 export const CreateImageBuilderResult = S.suspend(() =>
   S.Struct({ ImageBuilder: S.optional(ImageBuilder) }),
@@ -3750,7 +3969,12 @@ export const CreateImageBuilderResult = S.suspend(() =>
   identifier: "CreateImageBuilderResult",
 }) as any as S.Schema<CreateImageBuilderResult>;
 export interface CreateUpdatedImageResult {
-  image?: Image;
+  image?: Image & {
+    Name: string;
+    Applications: (Application & {
+      IconS3Location: S3Location & { S3Bucket: S3Bucket };
+    })[];
+  };
   canUpdateImage?: boolean;
 }
 export const CreateUpdatedImageResult = S.suspend(() =>
@@ -3759,7 +3983,15 @@ export const CreateUpdatedImageResult = S.suspend(() =>
   identifier: "CreateUpdatedImageResult",
 }) as any as S.Schema<CreateUpdatedImageResult>;
 export interface DescribeAppBlockBuildersResult {
-  AppBlockBuilders?: AppBlockBuilder[];
+  AppBlockBuilders?: (AppBlockBuilder & {
+    Arn: Arn;
+    Name: string;
+    Platform: AppBlockBuilderPlatformType;
+    InstanceType: string;
+    VpcConfig: VpcConfig;
+    State: AppBlockBuilderState;
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeAppBlockBuildersResult = S.suspend(() =>
@@ -3771,7 +4003,14 @@ export const DescribeAppBlockBuildersResult = S.suspend(() =>
   identifier: "DescribeAppBlockBuildersResult",
 }) as any as S.Schema<DescribeAppBlockBuildersResult>;
 export interface DescribeFleetsResult {
-  Fleets?: Fleet[];
+  Fleets?: (Fleet & {
+    Arn: Arn;
+    Name: string;
+    InstanceType: string;
+    ComputeCapacityStatus: ComputeCapacityStatus & { Desired: number };
+    State: FleetState;
+    SessionScriptS3Location: S3Location & { S3Bucket: S3Bucket };
+  })[];
   NextToken?: string;
 }
 export const DescribeFleetsResult = S.suspend(() =>
@@ -3780,7 +4019,14 @@ export const DescribeFleetsResult = S.suspend(() =>
   identifier: "DescribeFleetsResult",
 }) as any as S.Schema<DescribeFleetsResult>;
 export interface DescribeStacksResult {
-  Stacks?: Stack[];
+  Stacks?: (Stack & {
+    Name: string;
+    StorageConnectors: (StorageConnector & {
+      ConnectorType: StorageConnectorType;
+    })[];
+    UserSettings: (UserSetting & { Action: Action; Permission: Permission })[];
+    AccessEndpoints: (AccessEndpoint & { EndpointType: AccessEndpointType })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeStacksResult = S.suspend(() =>

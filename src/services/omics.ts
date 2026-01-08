@@ -89,6 +89,7 @@ export type S3AccessPolicy = string;
 export type StoreName = string;
 export type Arn = string;
 export type VersionName = string;
+export type RunLeftNormalization = boolean;
 export type ResourceId = string;
 export type ResourceIdentifier = string;
 export type Description = string;
@@ -121,6 +122,7 @@ export type RunId = string;
 export type RunRoleArn = string;
 export type RunName = string;
 export type NumericIdInArn = string;
+export type RunParameters = unknown;
 export type RunOutputUri = string;
 export type RunLogLevel = string;
 export type RunRequestId = string;
@@ -199,6 +201,9 @@ export type ConnectionArn = string;
 export type FullRepositoryId = string;
 export type StoreId = string;
 export type JobStatusMsg = string;
+export type CreationTime = Date;
+export type UpdateTime = Date;
+export type CompletionTime = Date;
 export type StatusMessage = string;
 export type ReferenceStoreArn = string;
 export type JobStatusMessage = string;
@@ -207,16 +212,20 @@ export type ReferenceCreationType = string;
 export type CreationJobId = string;
 export type RunCacheArn = string;
 export type RunCacheStatus = string;
+export type RunCacheTimestamp = Date;
 export type RunGroupArn = string;
+export type RunGroupTimestamp = Date;
 export type RunArn = string;
 export type RunUuid = string;
 export type EngineVersion = string;
 export type WorkflowDigest = string;
 export type RunStartedBy = string;
+export type RunTimestamp = Date;
 export type RunStatusMessage = string;
 export type RunFailureReason = string;
 export type WorkflowUuid = string;
 export type TaskName = string;
+export type TaskTimestamp = Date;
 export type TaskStatusMessage = string;
 export type TaskLogStream = string;
 export type TaskInstanceType = string;
@@ -227,6 +236,7 @@ export type ReadSetArn = string;
 export type ReadSetStatusMessage = string;
 export type WorkflowArn = string;
 export type WorkflowStatus = string;
+export type WorkflowTimestamp = Date;
 export type WorkflowStatusMessage = string;
 export type ReadmeS3PresignedUrl = string;
 export type WorkflowVersionArn = string;
@@ -251,8 +261,11 @@ export type WorkflowMetadataValue = string;
 export type Separator = string;
 export type Encoding = string;
 export type Quote = string;
+export type QuoteAll = boolean;
 export type EscapeChar = string;
+export type EscapeQuotes = boolean;
 export type CommentChar = string;
+export type Header = boolean;
 export type LineSep = string;
 export type FormatToHeaderKey = string;
 export type SchemaValueType = string;
@@ -711,7 +724,7 @@ export const CreateRunCacheRequest = S.suspend(() =>
     cacheS3Location: S.String,
     description: S.optional(S.String),
     name: S.optional(S.String),
-    requestId: S.String,
+    requestId: S.String.pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     cacheBucketOwnerId: S.optional(S.String),
   }).pipe(
@@ -831,7 +844,7 @@ export const CreateRunGroupRequest = S.suspend(() =>
     maxRuns: S.optional(S.Number),
     maxDuration: S.optional(S.Number),
     tags: S.optional(TagMap),
-    requestId: S.String,
+    requestId: S.String.pipe(T.IdempotencyToken()),
     maxGpus: S.optional(S.Number),
   }).pipe(
     T.all(
@@ -977,7 +990,7 @@ export const StartRunRequest = S.suspend(() =>
     outputUri: S.String,
     logLevel: S.optional(S.String),
     tags: S.optional(TagMap),
-    requestId: S.String,
+    requestId: S.String.pipe(T.IdempotencyToken()),
     retentionMode: S.optional(S.String),
     storageType: S.optional(S.String),
     workflowOwnerId: S.optional(S.String),
@@ -1163,7 +1176,7 @@ export const UpdateSequenceStoreRequest = S.suspend(() =>
     id: S.String.pipe(T.HttpLabel("id")),
     name: S.optional(S.String),
     description: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     fallbackLocation: S.optional(S.String),
     propagatedSetLevelTags: S.optional(PropagatedSetLevelTags),
     s3AccessConfig: S.optional(S3AccessConfig),
@@ -1970,7 +1983,7 @@ export const CreateWorkflowVersionRequest = S.suspend(() =>
     engine: S.optional(S.String),
     main: S.optional(S.String),
     parameterTemplate: S.optional(WorkflowParameterTemplate),
-    requestId: S.String,
+    requestId: S.String.pipe(T.IdempotencyToken()),
     storageType: S.optional(S.String),
     storageCapacity: S.optional(S.Number),
     tags: S.optional(TagMap),
@@ -2961,7 +2974,7 @@ export const CreateSequenceStoreRequest = S.suspend(() =>
     description: S.optional(S.String),
     sseConfig: S.optional(SseConfig),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     fallbackLocation: S.optional(S.String),
     eTagAlgorithmFamily: S.optional(S.String),
     propagatedSetLevelTags: S.optional(PropagatedSetLevelTags),
@@ -4811,7 +4824,7 @@ export const CreateWorkflowRequest = S.suspend(() =>
     parameterTemplate: S.optional(WorkflowParameterTemplate),
     storageCapacity: S.optional(S.Number),
     tags: S.optional(TagMap),
-    requestId: S.String,
+    requestId: S.String.pipe(T.IdempotencyToken()),
     accelerators: S.optional(S.String),
     storageType: S.optional(S.String),
     containerRegistryMap: S.optional(ContainerRegistryMap),

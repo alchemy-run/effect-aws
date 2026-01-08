@@ -219,6 +219,7 @@ export type ContentStatus = string;
 export type MessageTemplateAttributeType = string;
 export type QuickResponseStatus = string;
 export type FilterAttributeKey = string;
+export type JSONDocument = unknown;
 export type AIAgentAssociationConfigurationType = string;
 export type ToolType = string;
 export type UrlFilterPattern = string | redacted.Redacted<string>;
@@ -855,7 +856,7 @@ export interface UpdateAIAgentRequest {
 }
 export const UpdateAIAgentRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     aiAgentId: S.String.pipe(T.HttpLabel("aiAgentId")),
     visibilityStatus: S.String,
@@ -941,7 +942,7 @@ export const CreateAIAgentVersionRequest = S.suspend(() =>
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     aiAgentId: S.String.pipe(T.HttpLabel("aiAgentId")),
     modifiedTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1211,7 +1212,7 @@ export interface UpdateAIGuardrailRequest {
 }
 export const UpdateAIGuardrailRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     aiGuardrailId: S.String.pipe(T.HttpLabel("aiGuardrailId")),
     visibilityStatus: S.String,
@@ -1307,7 +1308,7 @@ export const CreateAIGuardrailVersionRequest = S.suspend(() =>
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     aiGuardrailId: S.String.pipe(T.HttpLabel("aiGuardrailId")),
     modifiedTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1461,7 +1462,7 @@ export interface UpdateAIPromptRequest {
 }
 export const UpdateAIPromptRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     aiPromptId: S.String.pipe(T.HttpLabel("aiPromptId")),
     visibilityStatus: S.String,
@@ -1549,7 +1550,7 @@ export const CreateAIPromptVersionRequest = S.suspend(() =>
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     aiPromptId: S.String.pipe(T.HttpLabel("aiPromptId")),
     modifiedTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -2170,7 +2171,7 @@ export const CreateContentRequest = S.suspend(() =>
     overrideLinkOutUri: S.optional(S.String),
     metadata: S.optional(ContentMetadata),
     uploadId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -3501,7 +3502,7 @@ export interface CreateAssistantRequest {
 }
 export const CreateAssistantRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     type: S.String,
     description: S.optional(S.String),
@@ -4311,7 +4312,7 @@ export const CreateQuickResponseRequest = S.suspend(() =>
     isActive: S.optional(S.Boolean),
     channels: S.optional(Channels),
     language: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -5450,7 +5451,7 @@ export interface CreateAIGuardrailRequest {
 }
 export const CreateAIGuardrailRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     name: S.String,
     blockedInputMessaging: SensitiveString,
@@ -5532,7 +5533,7 @@ export interface CreateAIPromptRequest {
 }
 export const CreateAIPromptRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     name: S.String,
     type: S.String,
@@ -5605,7 +5606,7 @@ export const CreateAssistantAssociationRequest = S.suspend(() =>
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     associationType: S.String,
     association: AssistantAssociationInputData,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -5646,7 +5647,7 @@ export interface CreateSessionRequest {
 }
 export const CreateSessionRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     name: S.String,
     description: S.optional(S.String),
@@ -5863,7 +5864,7 @@ export interface CreateContentAssociationRequest {
 }
 export const CreateContentAssociationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     knowledgeBaseId: S.String.pipe(T.HttpLabel("knowledgeBaseId")),
     contentId: S.String.pipe(T.HttpLabel("contentId")),
     associationType: S.String,
@@ -6222,7 +6223,7 @@ export const StartImportJobRequest = S.suspend(() =>
     knowledgeBaseId: S.String.pipe(T.HttpLabel("knowledgeBaseId")),
     importJobType: S.String,
     uploadId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     metadata: S.optional(ContentMetadata),
     externalSourceConfiguration: S.optional(ExternalSourceConfiguration),
   }).pipe(
@@ -6803,7 +6804,7 @@ export const CreateMessageTemplateRequest = S.suspend(() =>
     sourceConfiguration: S.optional(MessageTemplateSourceConfiguration),
     defaultAttributes: S.optional(MessageTemplateAttributes),
     groupingConfiguration: S.optional(GroupingConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -6959,7 +6960,7 @@ export const SendMessageRequest = S.suspend(() =>
     aiAgentId: S.optional(S.String),
     conversationContext: S.optional(ConversationContext),
     configuration: S.optional(MessageConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     orchestratorUseCase: S.optional(S.String),
     metadata: S.optional(MessageMetadata),
   }).pipe(
@@ -6991,7 +6992,7 @@ export interface CreateKnowledgeBaseRequest {
 }
 export const CreateKnowledgeBaseRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     knowledgeBaseType: S.String,
     sourceConfiguration: S.optional(SourceConfiguration),
@@ -7175,7 +7176,7 @@ export interface CreateAIAgentRequest {
 }
 export const CreateAIAgentRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     name: S.String,
     type: S.String,

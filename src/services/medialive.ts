@@ -87,14 +87,12 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type __integerMin1 = number;
 export type __stringMin0Max1024 = string;
 export type __stringPatternS = string;
 export type __stringMax64 = string;
 export type __stringMin1Max255PatternS = string;
 export type __integerMin10Max86400 = number;
-export type __double = number;
 export type __stringMin1Max256PatternS = string;
 export type __stringMin1Max2048 = string;
 export type MaxResults = number;
@@ -104,12 +102,12 @@ export type __integerMin800Max3000 = number;
 export type __integerMin1000000Max100000000 = number;
 export type __integerMin0Max65535 = number;
 export type __integerMin0Max100000000 = number;
-export type __integer = number;
+export type __timestampIso8601 = Date;
 export type __stringPatternArnMedialiveCloudwatchAlarmTemplateGroup = string;
 export type __stringMin7Max11PatternAws097 = string;
 export type __stringPatternArnMedialiveEventbridgeRuleTemplateGroup = string;
 export type __stringPatternArnMedialiveSignalMap = string;
-export type __long = number;
+export type __timestamp = Date;
 export type __stringPatternArnMedialiveCloudwatchAlarmTemplate = string;
 export type __stringPatternArnMedialiveEventbridgeRuleTemplate = string;
 export type __stringMin1 = string;
@@ -542,7 +540,10 @@ export const CreateChannelPlacementGroupRequest = S.suspend(() =>
     ClusterId: S.String.pipe(T.HttpLabel("ClusterId")),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
     Nodes: S.optional(__listOf__string).pipe(T.JsonName("nodes")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
   }).pipe(
     T.all(
@@ -573,7 +574,10 @@ export const CreateCloudWatchAlarmTemplateGroupRequest = S.suspend(() =>
     Description: S.optional(S.String).pipe(T.JsonName("description")),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/prod/cloudwatch-alarm-template-groups" }),
@@ -598,7 +602,10 @@ export const CreateEventBridgeRuleTemplateGroupRequest = S.suspend(() =>
     Description: S.optional(S.String).pipe(T.JsonName("description")),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/prod/eventbridge-rule-template-groups" }),
@@ -620,7 +627,10 @@ export interface CreatePartnerInputRequest {
 export const CreatePartnerInputRequest = S.suspend(() =>
   S.Struct({
     InputId: S.String.pipe(T.HttpLabel("InputId")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
   }).pipe(
     T.all(
@@ -646,7 +656,10 @@ export const CreateSdiSourceRequest = S.suspend(() =>
   S.Struct({
     Mode: S.optional(SdiSourceMode).pipe(T.JsonName("mode")),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
     Type: S.optional(SdiSourceType).pipe(T.JsonName("type")),
   }).pipe(
@@ -685,7 +698,10 @@ export const CreateSignalMapRequest = S.suspend(() =>
     ).pipe(T.JsonName("eventBridgeRuleTemplateGroupIdentifiers")),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/prod/signal-maps" }),
@@ -4309,7 +4325,10 @@ export const CreateCloudWatchAlarmTemplateRequest = S.suspend(() =>
     TreatMissingData: S.optional(CloudWatchAlarmTemplateTreatMissingData).pipe(
       T.JsonName("treatMissingData"),
     ),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/prod/cloudwatch-alarm-templates" }),
@@ -4370,7 +4389,10 @@ export const CreateEventBridgeRuleTemplateRequest = S.suspend(() =>
     GroupIdentifier: S.optional(S.String).pipe(T.JsonName("groupIdentifier")),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/prod/eventbridge-rule-templates" }),
@@ -4449,7 +4471,10 @@ export const CreateMultiplexRequest = S.suspend(() =>
       .pipe(T.JsonName("multiplexSettings"))
       .annotations({ identifier: "MultiplexSettings" }),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
   }).pipe(
     T.all(
@@ -4477,7 +4502,10 @@ export const CreateNetworkRequest = S.suspend(() =>
       T.JsonName("ipPools"),
     ),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Routes: S.optional(__listOfRouteCreateRequest).pipe(T.JsonName("routes")),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
   }).pipe(
@@ -4508,7 +4536,10 @@ export const CreateNodeRequest = S.suspend(() =>
     NodeInterfaceMappings: S.optional(
       __listOfNodeInterfaceMappingCreateRequest,
     ).pipe(T.JsonName("nodeInterfaceMappings")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Role: S.optional(NodeRole).pipe(T.JsonName("role")),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
   }).pipe(
@@ -4540,7 +4571,10 @@ export const CreateNodeRegistrationScriptRequest = S.suspend(() =>
     NodeInterfaceMappings: S.optional(__listOfNodeInterfaceMapping).pipe(
       T.JsonName("nodeInterfaceMappings"),
     ),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Role: S.optional(NodeRole).pipe(T.JsonName("role")),
   }).pipe(
     T.all(
@@ -9788,9 +9822,265 @@ export interface DescribeChannelResponse {
   ChannelClass?: ChannelClass;
   Destinations?: OutputDestination[];
   EgressEndpoints?: ChannelEgressEndpoint[];
-  EncoderSettings?: EncoderSettings;
+  EncoderSettings?: EncoderSettings & {
+    AudioDescriptions: (AudioDescription & {
+      AudioSelectorName: string;
+      Name: __stringMax255;
+      AudioWatermarkingSettings: AudioWatermarkSettings & {
+        NielsenWatermarksSettings: NielsenWatermarksSettings & {
+          NielsenCbetSettings: NielsenCBET & {
+            CbetCheckDigitString: __stringMin2Max2;
+            CbetStepaside: NielsenWatermarksCbetStepaside;
+            Csid: __stringMin1Max7;
+          };
+          NielsenNaesIiNwSettings: NielsenNaesIiNw & {
+            CheckDigitString: __stringMin2Max2;
+            Sid: __doubleMin1Max65535;
+          };
+        };
+      };
+      RemixSettings: RemixSettings & {
+        ChannelMappings: (AudioChannelMapping & {
+          InputChannelLevels: (InputChannelLevel & {
+            Gain: __integerMinNegative60Max6;
+            InputChannel: __integerMin0Max15;
+          })[];
+          OutputChannel: __integerMin0Max7;
+        })[];
+      };
+    })[];
+    OutputGroups: (OutputGroup & {
+      OutputGroupSettings: OutputGroupSettings & {
+        ArchiveGroupSettings: ArchiveGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        FrameCaptureGroupSettings: FrameCaptureGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        HlsGroupSettings: HlsGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+            LanguageDescription: __stringMin1;
+          })[];
+          KeyProviderSettings: KeyProviderSettings & {
+            StaticKeySettings: StaticKeySettings & {
+              StaticKeyValue: __stringMin32Max32;
+              KeyProviderServer: InputLocation & { Uri: __stringMax2048 };
+            };
+          };
+        };
+        MediaPackageGroupSettings: MediaPackageGroupSettings & {
+          Destination: OutputLocationRef;
+          MediapackageV2GroupSettings: MediaPackageV2GroupSettings & {
+            CaptionLanguageMappings: (CaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+              LanguageDescription: __stringMin1;
+            })[];
+          };
+        };
+        MsSmoothGroupSettings: MsSmoothGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        CmafIngestGroupSettings: CmafIngestGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CmafIngestCaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+          })[];
+          AdditionalDestinations: (AdditionalDestinations & {
+            Destination: OutputLocationRef;
+          })[];
+        };
+      };
+      Outputs: (Output & {
+        OutputSettings: OutputSettings & {
+          ArchiveOutputSettings: ArchiveOutputSettings & {
+            ContainerSettings: ArchiveContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+          };
+          HlsOutputSettings: HlsOutputSettings & {
+            HlsSettings: HlsSettings & {
+              AudioOnlyHlsSettings: AudioOnlyHlsSettings & {
+                AudioOnlyImage: InputLocation & { Uri: __stringMax2048 };
+              };
+              StandardHlsSettings: StandardHlsSettings & {
+                M3u8Settings: M3u8Settings;
+              };
+            };
+          };
+          MultiplexOutputSettings: MultiplexOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          RtmpOutputSettings: RtmpOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          UdpOutputSettings: UdpOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+          SrtOutputSettings: SrtOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+        };
+      })[];
+    })[];
+    TimecodeConfig: TimecodeConfig & { Source: TimecodeConfigSource };
+    VideoDescriptions: (VideoDescription & {
+      Name: string;
+      CodecSettings: VideoCodecSettings & {
+        FrameCaptureSettings: FrameCaptureSettings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H264Settings: H264Settings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H265Settings: H265Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Mpeg2Settings: Mpeg2Settings & {
+          FramerateDenominator: __integerMin1;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Av1Settings: Av1Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+      };
+    })[];
+    AvailBlanking: AvailBlanking & {
+      AvailBlankingImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    AvailConfiguration: AvailConfiguration & {
+      AvailSettings: AvailSettings & {
+        Esam: Esam & {
+          AcquisitionPointId: __stringMax256;
+          PoisEndpoint: __stringMax2048;
+        };
+      };
+    };
+    BlackoutSlate: BlackoutSlate & {
+      BlackoutSlateImage: InputLocation & { Uri: __stringMax2048 };
+      NetworkEndBlackoutImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    CaptionDescriptions: (CaptionDescription & {
+      CaptionSelectorName: string;
+      Name: string;
+      DestinationSettings: CaptionDestinationSettings & {
+        BurnInDestinationSettings: BurnInDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+        DvbSubDestinationSettings: DvbSubDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+      };
+    })[];
+    GlobalConfiguration: GlobalConfiguration & {
+      InputLossBehavior: InputLossBehavior & {
+        InputLossImageSlate: InputLocation & { Uri: __stringMax2048 };
+      };
+    };
+    MotionGraphicsConfiguration: MotionGraphicsConfiguration & {
+      MotionGraphicsSettings: MotionGraphicsSettings;
+    };
+    ThumbnailConfiguration: ThumbnailConfiguration & { State: ThumbnailState };
+    ColorCorrectionSettings: ColorCorrectionSettings & {
+      GlobalColorCorrections: (ColorCorrection & {
+        InputColorSpace: ColorSpace;
+        OutputColorSpace: ColorSpace;
+        Uri: string;
+      })[];
+    };
+  };
   Id?: string;
-  InputAttachments?: InputAttachment[];
+  InputAttachments?: (InputAttachment & {
+    AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+      SecondaryInputId: string;
+      FailoverConditions: (FailoverCondition & {
+        FailoverConditionSettings: FailoverConditionSettings & {
+          AudioSilenceSettings: AudioSilenceFailoverSettings & {
+            AudioSelectorName: string;
+          };
+        };
+      })[];
+    };
+    InputSettings: InputSettings & {
+      AudioSelectors: (AudioSelector & {
+        Name: __stringMin1;
+        SelectorSettings: AudioSelectorSettings & {
+          AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+            GroupId: __stringMin1;
+            Name: __stringMin1;
+          };
+          AudioLanguageSelection: AudioLanguageSelection & {
+            LanguageCode: string;
+          };
+          AudioPidSelection: AudioPidSelection & { Pid: __integerMin0Max8191 };
+          AudioTrackSelection: AudioTrackSelection & {
+            Tracks: (AudioTrack & { Track: __integerMin1 })[];
+            DolbyEDecode: AudioDolbyEDecode & {
+              ProgramSelection: DolbyEProgramSelection;
+            };
+          };
+        };
+      })[];
+      CaptionSelectors: (CaptionSelector & {
+        Name: __stringMin1;
+        SelectorSettings: CaptionSelectorSettings & {
+          TeletextSourceSettings: TeletextSourceSettings & {
+            OutputRectangle: CaptionRectangle & {
+              Height: __doubleMin0Max100;
+              LeftOffset: __doubleMin0Max100;
+              TopOffset: __doubleMin0Max100;
+              Width: __doubleMin0Max100;
+            };
+          };
+        };
+      })[];
+    };
+  })[];
   InputSpecification?: InputSpecification;
   LogLevel?: LogLevel;
   Maintenance?: MaintenanceStatus;
@@ -9994,7 +10284,10 @@ export interface DescribeMultiplexResponse {
   AvailabilityZones?: string[];
   Destinations?: MultiplexOutputDestination[];
   Id?: string;
-  MultiplexSettings?: MultiplexSettings;
+  MultiplexSettings?: MultiplexSettings & {
+    TransportStreamBitrate: __integerMin1000000Max100000000;
+    TransportStreamId: __integerMin0Max65535;
+  };
   Name?: string;
   PipelinesRunningCount?: number;
   ProgramCount?: number;
@@ -10092,7 +10385,13 @@ export const __listOfMultiplexProgramPipelineDetail = S.Array(
 );
 export interface DescribeMultiplexProgramResponse {
   ChannelId?: string;
-  MultiplexProgramSettings?: MultiplexProgramSettings;
+  MultiplexProgramSettings?: MultiplexProgramSettings & {
+    ProgramNumber: __integerMin0Max65535;
+    ServiceDescriptor: MultiplexProgramServiceDescriptor & {
+      ProviderName: __stringMax256;
+      ServiceName: __stringMax256;
+    };
+  };
   PacketIdentifiersMap?: MultiplexProgramPacketIdentifiersMap;
   PipelineDetails?: MultiplexProgramPipelineDetail[];
   ProgramName?: string;
@@ -11033,7 +11332,75 @@ export type __listOfScheduleAction = ScheduleAction[];
 export const __listOfScheduleAction = S.Array(ScheduleAction);
 export interface DescribeScheduleResponse {
   NextToken?: string;
-  ScheduleActions?: ScheduleAction[];
+  ScheduleActions?: (ScheduleAction & {
+    ActionName: string;
+    ScheduleActionSettings: ScheduleActionSettings & {
+      HlsTimedMetadataSettings: HlsTimedMetadataScheduleActionSettings & {
+        Id3: string;
+      };
+      InputPrepareSettings: InputPrepareScheduleActionSettings & {
+        InputClippingSettings: InputClippingSettings & {
+          InputTimecodeSource: InputTimecodeSource;
+        };
+      };
+      InputSwitchSettings: InputSwitchScheduleActionSettings & {
+        InputAttachmentNameReference: string;
+        InputClippingSettings: InputClippingSettings & {
+          InputTimecodeSource: InputTimecodeSource;
+        };
+      };
+      PauseStateSettings: PauseStateScheduleActionSettings & {
+        Pipelines: (PipelinePauseStateSettings & { PipelineId: PipelineId })[];
+      };
+      Scte35InputSettings: Scte35InputScheduleActionSettings & {
+        Mode: Scte35InputMode;
+      };
+      Scte35ReturnToNetworkSettings: Scte35ReturnToNetworkScheduleActionSettings & {
+        SpliceEventId: __longMin0Max4294967295;
+      };
+      Scte35SpliceInsertSettings: Scte35SpliceInsertScheduleActionSettings & {
+        SpliceEventId: __longMin0Max4294967295;
+      };
+      Scte35TimeSignalSettings: Scte35TimeSignalScheduleActionSettings & {
+        Scte35Descriptors: (Scte35Descriptor & {
+          Scte35DescriptorSettings: Scte35DescriptorSettings & {
+            SegmentationDescriptorScte35DescriptorSettings: Scte35SegmentationDescriptor & {
+              SegmentationCancelIndicator: Scte35SegmentationCancelIndicator;
+              SegmentationEventId: __longMin0Max4294967295;
+              DeliveryRestrictions: Scte35DeliveryRestrictions & {
+                ArchiveAllowedFlag: Scte35ArchiveAllowedFlag;
+                DeviceRestrictions: Scte35DeviceRestrictions;
+                NoRegionalBlackoutFlag: Scte35NoRegionalBlackoutFlag;
+                WebDeliveryAllowedFlag: Scte35WebDeliveryAllowedFlag;
+              };
+            };
+          };
+        })[];
+      };
+      StaticImageActivateSettings: StaticImageActivateScheduleActionSettings & {
+        Image: InputLocation & { Uri: __stringMax2048 };
+      };
+      StaticImageOutputActivateSettings: StaticImageOutputActivateScheduleActionSettings & {
+        Image: InputLocation & { Uri: __stringMax2048 };
+        OutputNames: __listOf__string;
+      };
+      StaticImageOutputDeactivateSettings: StaticImageOutputDeactivateScheduleActionSettings & {
+        OutputNames: __listOf__string;
+      };
+      TimedMetadataSettings: TimedMetadataScheduleActionSettings & {
+        Id3: string;
+      };
+    };
+    ScheduleActionStartSettings: ScheduleActionStartSettings & {
+      FixedModeScheduleActionStartSettings: FixedModeScheduleActionStartSettings & {
+        Time: string;
+      };
+      FollowModeScheduleActionStartSettings: FollowModeScheduleActionStartSettings & {
+        FollowPoint: FollowPoint;
+        ReferenceActionName: string;
+      };
+    };
+  })[];
 }
 export const DescribeScheduleResponse = S.suspend(() =>
   S.Struct({
@@ -11145,7 +11512,9 @@ export interface GetEventBridgeRuleTemplateResponse {
   Arn?: string;
   CreatedAt?: Date;
   Description?: string;
-  EventTargets?: EventBridgeRuleTemplateTarget[];
+  EventTargets?: (EventBridgeRuleTemplateTarget & {
+    Arn: __stringMin1Max2048PatternArn;
+  })[];
   EventType?: EventBridgeRuleTemplateEventType;
   GroupId?: string;
   Id?: string;
@@ -11306,14 +11675,37 @@ export interface GetSignalMapResponse {
   DiscoveryEntryPointArn?: string;
   ErrorMessage?: string;
   EventBridgeRuleTemplateGroupIds?: string[];
-  FailedMediaResourceMap?: { [key: string]: MediaResource };
+  FailedMediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   Id?: string;
   LastDiscoveredAt?: Date;
-  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment;
-  MediaResourceMap?: { [key: string]: MediaResource };
+  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment & {
+    DetailsUri: __stringMin1Max2048;
+    Status: SignalMapMonitorDeploymentStatus;
+  };
+  MediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   ModifiedAt?: Date;
   MonitorChangesPendingDeployment?: boolean;
-  MonitorDeployment?: MonitorDeployment;
+  MonitorDeployment?: MonitorDeployment & {
+    Status: SignalMapMonitorDeploymentStatus;
+  };
   Name?: string;
   Status?: SignalMapStatus;
   Tags?: { [key: string]: string };
@@ -11365,7 +11757,11 @@ export const GetSignalMapResponse = S.suspend(() =>
   identifier: "GetSignalMapResponse",
 }) as any as S.Schema<GetSignalMapResponse>;
 export interface ListInputsResponse {
-  Inputs?: Input[];
+  Inputs?: (Input & {
+    MulticastSettings: MulticastSettings & {
+      Sources: (MulticastSource & { Url: string })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const ListInputsResponse = S.suspend(() =>
@@ -11413,7 +11809,10 @@ export const PurchaseOfferingRequest = S.suspend(() =>
     RenewalSettings: S.optional(RenewalSettings)
       .pipe(T.JsonName("renewalSettings"))
       .annotations({ identifier: "RenewalSettings" }),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Start: S.optional(S.String).pipe(T.JsonName("start")),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
   }).pipe(
@@ -11435,9 +11834,265 @@ export interface RestartChannelPipelinesResponse {
   ChannelClass?: ChannelClass;
   Destinations?: OutputDestination[];
   EgressEndpoints?: ChannelEgressEndpoint[];
-  EncoderSettings?: EncoderSettings;
+  EncoderSettings?: EncoderSettings & {
+    AudioDescriptions: (AudioDescription & {
+      AudioSelectorName: string;
+      Name: __stringMax255;
+      AudioWatermarkingSettings: AudioWatermarkSettings & {
+        NielsenWatermarksSettings: NielsenWatermarksSettings & {
+          NielsenCbetSettings: NielsenCBET & {
+            CbetCheckDigitString: __stringMin2Max2;
+            CbetStepaside: NielsenWatermarksCbetStepaside;
+            Csid: __stringMin1Max7;
+          };
+          NielsenNaesIiNwSettings: NielsenNaesIiNw & {
+            CheckDigitString: __stringMin2Max2;
+            Sid: __doubleMin1Max65535;
+          };
+        };
+      };
+      RemixSettings: RemixSettings & {
+        ChannelMappings: (AudioChannelMapping & {
+          InputChannelLevels: (InputChannelLevel & {
+            Gain: __integerMinNegative60Max6;
+            InputChannel: __integerMin0Max15;
+          })[];
+          OutputChannel: __integerMin0Max7;
+        })[];
+      };
+    })[];
+    OutputGroups: (OutputGroup & {
+      OutputGroupSettings: OutputGroupSettings & {
+        ArchiveGroupSettings: ArchiveGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        FrameCaptureGroupSettings: FrameCaptureGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        HlsGroupSettings: HlsGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+            LanguageDescription: __stringMin1;
+          })[];
+          KeyProviderSettings: KeyProviderSettings & {
+            StaticKeySettings: StaticKeySettings & {
+              StaticKeyValue: __stringMin32Max32;
+              KeyProviderServer: InputLocation & { Uri: __stringMax2048 };
+            };
+          };
+        };
+        MediaPackageGroupSettings: MediaPackageGroupSettings & {
+          Destination: OutputLocationRef;
+          MediapackageV2GroupSettings: MediaPackageV2GroupSettings & {
+            CaptionLanguageMappings: (CaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+              LanguageDescription: __stringMin1;
+            })[];
+          };
+        };
+        MsSmoothGroupSettings: MsSmoothGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        CmafIngestGroupSettings: CmafIngestGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CmafIngestCaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+          })[];
+          AdditionalDestinations: (AdditionalDestinations & {
+            Destination: OutputLocationRef;
+          })[];
+        };
+      };
+      Outputs: (Output & {
+        OutputSettings: OutputSettings & {
+          ArchiveOutputSettings: ArchiveOutputSettings & {
+            ContainerSettings: ArchiveContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+          };
+          HlsOutputSettings: HlsOutputSettings & {
+            HlsSettings: HlsSettings & {
+              AudioOnlyHlsSettings: AudioOnlyHlsSettings & {
+                AudioOnlyImage: InputLocation & { Uri: __stringMax2048 };
+              };
+              StandardHlsSettings: StandardHlsSettings & {
+                M3u8Settings: M3u8Settings;
+              };
+            };
+          };
+          MultiplexOutputSettings: MultiplexOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          RtmpOutputSettings: RtmpOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          UdpOutputSettings: UdpOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+          SrtOutputSettings: SrtOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+        };
+      })[];
+    })[];
+    TimecodeConfig: TimecodeConfig & { Source: TimecodeConfigSource };
+    VideoDescriptions: (VideoDescription & {
+      Name: string;
+      CodecSettings: VideoCodecSettings & {
+        FrameCaptureSettings: FrameCaptureSettings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H264Settings: H264Settings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H265Settings: H265Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Mpeg2Settings: Mpeg2Settings & {
+          FramerateDenominator: __integerMin1;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Av1Settings: Av1Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+      };
+    })[];
+    AvailBlanking: AvailBlanking & {
+      AvailBlankingImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    AvailConfiguration: AvailConfiguration & {
+      AvailSettings: AvailSettings & {
+        Esam: Esam & {
+          AcquisitionPointId: __stringMax256;
+          PoisEndpoint: __stringMax2048;
+        };
+      };
+    };
+    BlackoutSlate: BlackoutSlate & {
+      BlackoutSlateImage: InputLocation & { Uri: __stringMax2048 };
+      NetworkEndBlackoutImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    CaptionDescriptions: (CaptionDescription & {
+      CaptionSelectorName: string;
+      Name: string;
+      DestinationSettings: CaptionDestinationSettings & {
+        BurnInDestinationSettings: BurnInDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+        DvbSubDestinationSettings: DvbSubDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+      };
+    })[];
+    GlobalConfiguration: GlobalConfiguration & {
+      InputLossBehavior: InputLossBehavior & {
+        InputLossImageSlate: InputLocation & { Uri: __stringMax2048 };
+      };
+    };
+    MotionGraphicsConfiguration: MotionGraphicsConfiguration & {
+      MotionGraphicsSettings: MotionGraphicsSettings;
+    };
+    ThumbnailConfiguration: ThumbnailConfiguration & { State: ThumbnailState };
+    ColorCorrectionSettings: ColorCorrectionSettings & {
+      GlobalColorCorrections: (ColorCorrection & {
+        InputColorSpace: ColorSpace;
+        OutputColorSpace: ColorSpace;
+        Uri: string;
+      })[];
+    };
+  };
   Id?: string;
-  InputAttachments?: InputAttachment[];
+  InputAttachments?: (InputAttachment & {
+    AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+      SecondaryInputId: string;
+      FailoverConditions: (FailoverCondition & {
+        FailoverConditionSettings: FailoverConditionSettings & {
+          AudioSilenceSettings: AudioSilenceFailoverSettings & {
+            AudioSelectorName: string;
+          };
+        };
+      })[];
+    };
+    InputSettings: InputSettings & {
+      AudioSelectors: (AudioSelector & {
+        Name: __stringMin1;
+        SelectorSettings: AudioSelectorSettings & {
+          AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+            GroupId: __stringMin1;
+            Name: __stringMin1;
+          };
+          AudioLanguageSelection: AudioLanguageSelection & {
+            LanguageCode: string;
+          };
+          AudioPidSelection: AudioPidSelection & { Pid: __integerMin0Max8191 };
+          AudioTrackSelection: AudioTrackSelection & {
+            Tracks: (AudioTrack & { Track: __integerMin1 })[];
+            DolbyEDecode: AudioDolbyEDecode & {
+              ProgramSelection: DolbyEProgramSelection;
+            };
+          };
+        };
+      })[];
+      CaptionSelectors: (CaptionSelector & {
+        Name: __stringMin1;
+        SelectorSettings: CaptionSelectorSettings & {
+          TeletextSourceSettings: TeletextSourceSettings & {
+            OutputRectangle: CaptionRectangle & {
+              Height: __doubleMin0Max100;
+              LeftOffset: __doubleMin0Max100;
+              TopOffset: __doubleMin0Max100;
+              Width: __doubleMin0Max100;
+            };
+          };
+        };
+      })[];
+    };
+  })[];
   InputSpecification?: InputSpecification;
   LogLevel?: LogLevel;
   Maintenance?: MaintenanceStatus;
@@ -11515,9 +12170,265 @@ export interface StartChannelResponse {
   ChannelClass?: ChannelClass;
   Destinations?: OutputDestination[];
   EgressEndpoints?: ChannelEgressEndpoint[];
-  EncoderSettings?: EncoderSettings;
+  EncoderSettings?: EncoderSettings & {
+    AudioDescriptions: (AudioDescription & {
+      AudioSelectorName: string;
+      Name: __stringMax255;
+      AudioWatermarkingSettings: AudioWatermarkSettings & {
+        NielsenWatermarksSettings: NielsenWatermarksSettings & {
+          NielsenCbetSettings: NielsenCBET & {
+            CbetCheckDigitString: __stringMin2Max2;
+            CbetStepaside: NielsenWatermarksCbetStepaside;
+            Csid: __stringMin1Max7;
+          };
+          NielsenNaesIiNwSettings: NielsenNaesIiNw & {
+            CheckDigitString: __stringMin2Max2;
+            Sid: __doubleMin1Max65535;
+          };
+        };
+      };
+      RemixSettings: RemixSettings & {
+        ChannelMappings: (AudioChannelMapping & {
+          InputChannelLevels: (InputChannelLevel & {
+            Gain: __integerMinNegative60Max6;
+            InputChannel: __integerMin0Max15;
+          })[];
+          OutputChannel: __integerMin0Max7;
+        })[];
+      };
+    })[];
+    OutputGroups: (OutputGroup & {
+      OutputGroupSettings: OutputGroupSettings & {
+        ArchiveGroupSettings: ArchiveGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        FrameCaptureGroupSettings: FrameCaptureGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        HlsGroupSettings: HlsGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+            LanguageDescription: __stringMin1;
+          })[];
+          KeyProviderSettings: KeyProviderSettings & {
+            StaticKeySettings: StaticKeySettings & {
+              StaticKeyValue: __stringMin32Max32;
+              KeyProviderServer: InputLocation & { Uri: __stringMax2048 };
+            };
+          };
+        };
+        MediaPackageGroupSettings: MediaPackageGroupSettings & {
+          Destination: OutputLocationRef;
+          MediapackageV2GroupSettings: MediaPackageV2GroupSettings & {
+            CaptionLanguageMappings: (CaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+              LanguageDescription: __stringMin1;
+            })[];
+          };
+        };
+        MsSmoothGroupSettings: MsSmoothGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        CmafIngestGroupSettings: CmafIngestGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CmafIngestCaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+          })[];
+          AdditionalDestinations: (AdditionalDestinations & {
+            Destination: OutputLocationRef;
+          })[];
+        };
+      };
+      Outputs: (Output & {
+        OutputSettings: OutputSettings & {
+          ArchiveOutputSettings: ArchiveOutputSettings & {
+            ContainerSettings: ArchiveContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+          };
+          HlsOutputSettings: HlsOutputSettings & {
+            HlsSettings: HlsSettings & {
+              AudioOnlyHlsSettings: AudioOnlyHlsSettings & {
+                AudioOnlyImage: InputLocation & { Uri: __stringMax2048 };
+              };
+              StandardHlsSettings: StandardHlsSettings & {
+                M3u8Settings: M3u8Settings;
+              };
+            };
+          };
+          MultiplexOutputSettings: MultiplexOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          RtmpOutputSettings: RtmpOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          UdpOutputSettings: UdpOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+          SrtOutputSettings: SrtOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+        };
+      })[];
+    })[];
+    TimecodeConfig: TimecodeConfig & { Source: TimecodeConfigSource };
+    VideoDescriptions: (VideoDescription & {
+      Name: string;
+      CodecSettings: VideoCodecSettings & {
+        FrameCaptureSettings: FrameCaptureSettings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H264Settings: H264Settings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H265Settings: H265Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Mpeg2Settings: Mpeg2Settings & {
+          FramerateDenominator: __integerMin1;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Av1Settings: Av1Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+      };
+    })[];
+    AvailBlanking: AvailBlanking & {
+      AvailBlankingImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    AvailConfiguration: AvailConfiguration & {
+      AvailSettings: AvailSettings & {
+        Esam: Esam & {
+          AcquisitionPointId: __stringMax256;
+          PoisEndpoint: __stringMax2048;
+        };
+      };
+    };
+    BlackoutSlate: BlackoutSlate & {
+      BlackoutSlateImage: InputLocation & { Uri: __stringMax2048 };
+      NetworkEndBlackoutImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    CaptionDescriptions: (CaptionDescription & {
+      CaptionSelectorName: string;
+      Name: string;
+      DestinationSettings: CaptionDestinationSettings & {
+        BurnInDestinationSettings: BurnInDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+        DvbSubDestinationSettings: DvbSubDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+      };
+    })[];
+    GlobalConfiguration: GlobalConfiguration & {
+      InputLossBehavior: InputLossBehavior & {
+        InputLossImageSlate: InputLocation & { Uri: __stringMax2048 };
+      };
+    };
+    MotionGraphicsConfiguration: MotionGraphicsConfiguration & {
+      MotionGraphicsSettings: MotionGraphicsSettings;
+    };
+    ThumbnailConfiguration: ThumbnailConfiguration & { State: ThumbnailState };
+    ColorCorrectionSettings: ColorCorrectionSettings & {
+      GlobalColorCorrections: (ColorCorrection & {
+        InputColorSpace: ColorSpace;
+        OutputColorSpace: ColorSpace;
+        Uri: string;
+      })[];
+    };
+  };
   Id?: string;
-  InputAttachments?: InputAttachment[];
+  InputAttachments?: (InputAttachment & {
+    AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+      SecondaryInputId: string;
+      FailoverConditions: (FailoverCondition & {
+        FailoverConditionSettings: FailoverConditionSettings & {
+          AudioSilenceSettings: AudioSilenceFailoverSettings & {
+            AudioSelectorName: string;
+          };
+        };
+      })[];
+    };
+    InputSettings: InputSettings & {
+      AudioSelectors: (AudioSelector & {
+        Name: __stringMin1;
+        SelectorSettings: AudioSelectorSettings & {
+          AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+            GroupId: __stringMin1;
+            Name: __stringMin1;
+          };
+          AudioLanguageSelection: AudioLanguageSelection & {
+            LanguageCode: string;
+          };
+          AudioPidSelection: AudioPidSelection & { Pid: __integerMin0Max8191 };
+          AudioTrackSelection: AudioTrackSelection & {
+            Tracks: (AudioTrack & { Track: __integerMin1 })[];
+            DolbyEDecode: AudioDolbyEDecode & {
+              ProgramSelection: DolbyEProgramSelection;
+            };
+          };
+        };
+      })[];
+      CaptionSelectors: (CaptionSelector & {
+        Name: __stringMin1;
+        SelectorSettings: CaptionSelectorSettings & {
+          TeletextSourceSettings: TeletextSourceSettings & {
+            OutputRectangle: CaptionRectangle & {
+              Height: __doubleMin0Max100;
+              LeftOffset: __doubleMin0Max100;
+              TopOffset: __doubleMin0Max100;
+              Width: __doubleMin0Max100;
+            };
+          };
+        };
+      })[];
+    };
+  })[];
   InputSpecification?: InputSpecification;
   LogLevel?: LogLevel;
   Maintenance?: MaintenanceStatus;
@@ -11593,14 +12504,37 @@ export interface StartDeleteMonitorDeploymentResponse {
   DiscoveryEntryPointArn?: string;
   ErrorMessage?: string;
   EventBridgeRuleTemplateGroupIds?: string[];
-  FailedMediaResourceMap?: { [key: string]: MediaResource };
+  FailedMediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   Id?: string;
   LastDiscoveredAt?: Date;
-  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment;
-  MediaResourceMap?: { [key: string]: MediaResource };
+  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment & {
+    DetailsUri: __stringMin1Max2048;
+    Status: SignalMapMonitorDeploymentStatus;
+  };
+  MediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   ModifiedAt?: Date;
   MonitorChangesPendingDeployment?: boolean;
-  MonitorDeployment?: MonitorDeployment;
+  MonitorDeployment?: MonitorDeployment & {
+    Status: SignalMapMonitorDeploymentStatus;
+  };
   Name?: string;
   Status?: SignalMapStatus;
   Tags?: { [key: string]: string };
@@ -11659,14 +12593,37 @@ export interface StartMonitorDeploymentResponse {
   DiscoveryEntryPointArn?: string;
   ErrorMessage?: string;
   EventBridgeRuleTemplateGroupIds?: string[];
-  FailedMediaResourceMap?: { [key: string]: MediaResource };
+  FailedMediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   Id?: string;
   LastDiscoveredAt?: Date;
-  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment;
-  MediaResourceMap?: { [key: string]: MediaResource };
+  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment & {
+    DetailsUri: __stringMin1Max2048;
+    Status: SignalMapMonitorDeploymentStatus;
+  };
+  MediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   ModifiedAt?: Date;
   MonitorChangesPendingDeployment?: boolean;
-  MonitorDeployment?: MonitorDeployment;
+  MonitorDeployment?: MonitorDeployment & {
+    Status: SignalMapMonitorDeploymentStatus;
+  };
   Name?: string;
   Status?: SignalMapStatus;
   Tags?: { [key: string]: string };
@@ -11722,7 +12679,10 @@ export interface StartMultiplexResponse {
   AvailabilityZones?: string[];
   Destinations?: MultiplexOutputDestination[];
   Id?: string;
-  MultiplexSettings?: MultiplexSettings;
+  MultiplexSettings?: MultiplexSettings & {
+    TransportStreamBitrate: __integerMin1000000Max100000000;
+    TransportStreamId: __integerMin0Max65535;
+  };
   Name?: string;
   PipelinesRunningCount?: number;
   ProgramCount?: number;
@@ -11761,14 +12721,37 @@ export interface StartUpdateSignalMapResponse {
   DiscoveryEntryPointArn?: string;
   ErrorMessage?: string;
   EventBridgeRuleTemplateGroupIds?: string[];
-  FailedMediaResourceMap?: { [key: string]: MediaResource };
+  FailedMediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   Id?: string;
   LastDiscoveredAt?: Date;
-  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment;
-  MediaResourceMap?: { [key: string]: MediaResource };
+  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment & {
+    DetailsUri: __stringMin1Max2048;
+    Status: SignalMapMonitorDeploymentStatus;
+  };
+  MediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   ModifiedAt?: Date;
   MonitorChangesPendingDeployment?: boolean;
-  MonitorDeployment?: MonitorDeployment;
+  MonitorDeployment?: MonitorDeployment & {
+    Status: SignalMapMonitorDeploymentStatus;
+  };
   Name?: string;
   Status?: SignalMapStatus;
   Tags?: { [key: string]: string };
@@ -11825,9 +12808,265 @@ export interface StopChannelResponse {
   ChannelClass?: ChannelClass;
   Destinations?: OutputDestination[];
   EgressEndpoints?: ChannelEgressEndpoint[];
-  EncoderSettings?: EncoderSettings;
+  EncoderSettings?: EncoderSettings & {
+    AudioDescriptions: (AudioDescription & {
+      AudioSelectorName: string;
+      Name: __stringMax255;
+      AudioWatermarkingSettings: AudioWatermarkSettings & {
+        NielsenWatermarksSettings: NielsenWatermarksSettings & {
+          NielsenCbetSettings: NielsenCBET & {
+            CbetCheckDigitString: __stringMin2Max2;
+            CbetStepaside: NielsenWatermarksCbetStepaside;
+            Csid: __stringMin1Max7;
+          };
+          NielsenNaesIiNwSettings: NielsenNaesIiNw & {
+            CheckDigitString: __stringMin2Max2;
+            Sid: __doubleMin1Max65535;
+          };
+        };
+      };
+      RemixSettings: RemixSettings & {
+        ChannelMappings: (AudioChannelMapping & {
+          InputChannelLevels: (InputChannelLevel & {
+            Gain: __integerMinNegative60Max6;
+            InputChannel: __integerMin0Max15;
+          })[];
+          OutputChannel: __integerMin0Max7;
+        })[];
+      };
+    })[];
+    OutputGroups: (OutputGroup & {
+      OutputGroupSettings: OutputGroupSettings & {
+        ArchiveGroupSettings: ArchiveGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        FrameCaptureGroupSettings: FrameCaptureGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        HlsGroupSettings: HlsGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+            LanguageDescription: __stringMin1;
+          })[];
+          KeyProviderSettings: KeyProviderSettings & {
+            StaticKeySettings: StaticKeySettings & {
+              StaticKeyValue: __stringMin32Max32;
+              KeyProviderServer: InputLocation & { Uri: __stringMax2048 };
+            };
+          };
+        };
+        MediaPackageGroupSettings: MediaPackageGroupSettings & {
+          Destination: OutputLocationRef;
+          MediapackageV2GroupSettings: MediaPackageV2GroupSettings & {
+            CaptionLanguageMappings: (CaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+              LanguageDescription: __stringMin1;
+            })[];
+          };
+        };
+        MsSmoothGroupSettings: MsSmoothGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        CmafIngestGroupSettings: CmafIngestGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CmafIngestCaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+          })[];
+          AdditionalDestinations: (AdditionalDestinations & {
+            Destination: OutputLocationRef;
+          })[];
+        };
+      };
+      Outputs: (Output & {
+        OutputSettings: OutputSettings & {
+          ArchiveOutputSettings: ArchiveOutputSettings & {
+            ContainerSettings: ArchiveContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+          };
+          HlsOutputSettings: HlsOutputSettings & {
+            HlsSettings: HlsSettings & {
+              AudioOnlyHlsSettings: AudioOnlyHlsSettings & {
+                AudioOnlyImage: InputLocation & { Uri: __stringMax2048 };
+              };
+              StandardHlsSettings: StandardHlsSettings & {
+                M3u8Settings: M3u8Settings;
+              };
+            };
+          };
+          MultiplexOutputSettings: MultiplexOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          RtmpOutputSettings: RtmpOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          UdpOutputSettings: UdpOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+          SrtOutputSettings: SrtOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+        };
+      })[];
+    })[];
+    TimecodeConfig: TimecodeConfig & { Source: TimecodeConfigSource };
+    VideoDescriptions: (VideoDescription & {
+      Name: string;
+      CodecSettings: VideoCodecSettings & {
+        FrameCaptureSettings: FrameCaptureSettings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H264Settings: H264Settings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H265Settings: H265Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Mpeg2Settings: Mpeg2Settings & {
+          FramerateDenominator: __integerMin1;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Av1Settings: Av1Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+      };
+    })[];
+    AvailBlanking: AvailBlanking & {
+      AvailBlankingImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    AvailConfiguration: AvailConfiguration & {
+      AvailSettings: AvailSettings & {
+        Esam: Esam & {
+          AcquisitionPointId: __stringMax256;
+          PoisEndpoint: __stringMax2048;
+        };
+      };
+    };
+    BlackoutSlate: BlackoutSlate & {
+      BlackoutSlateImage: InputLocation & { Uri: __stringMax2048 };
+      NetworkEndBlackoutImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    CaptionDescriptions: (CaptionDescription & {
+      CaptionSelectorName: string;
+      Name: string;
+      DestinationSettings: CaptionDestinationSettings & {
+        BurnInDestinationSettings: BurnInDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+        DvbSubDestinationSettings: DvbSubDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+      };
+    })[];
+    GlobalConfiguration: GlobalConfiguration & {
+      InputLossBehavior: InputLossBehavior & {
+        InputLossImageSlate: InputLocation & { Uri: __stringMax2048 };
+      };
+    };
+    MotionGraphicsConfiguration: MotionGraphicsConfiguration & {
+      MotionGraphicsSettings: MotionGraphicsSettings;
+    };
+    ThumbnailConfiguration: ThumbnailConfiguration & { State: ThumbnailState };
+    ColorCorrectionSettings: ColorCorrectionSettings & {
+      GlobalColorCorrections: (ColorCorrection & {
+        InputColorSpace: ColorSpace;
+        OutputColorSpace: ColorSpace;
+        Uri: string;
+      })[];
+    };
+  };
   Id?: string;
-  InputAttachments?: InputAttachment[];
+  InputAttachments?: (InputAttachment & {
+    AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+      SecondaryInputId: string;
+      FailoverConditions: (FailoverCondition & {
+        FailoverConditionSettings: FailoverConditionSettings & {
+          AudioSilenceSettings: AudioSilenceFailoverSettings & {
+            AudioSelectorName: string;
+          };
+        };
+      })[];
+    };
+    InputSettings: InputSettings & {
+      AudioSelectors: (AudioSelector & {
+        Name: __stringMin1;
+        SelectorSettings: AudioSelectorSettings & {
+          AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+            GroupId: __stringMin1;
+            Name: __stringMin1;
+          };
+          AudioLanguageSelection: AudioLanguageSelection & {
+            LanguageCode: string;
+          };
+          AudioPidSelection: AudioPidSelection & { Pid: __integerMin0Max8191 };
+          AudioTrackSelection: AudioTrackSelection & {
+            Tracks: (AudioTrack & { Track: __integerMin1 })[];
+            DolbyEDecode: AudioDolbyEDecode & {
+              ProgramSelection: DolbyEProgramSelection;
+            };
+          };
+        };
+      })[];
+      CaptionSelectors: (CaptionSelector & {
+        Name: __stringMin1;
+        SelectorSettings: CaptionSelectorSettings & {
+          TeletextSourceSettings: TeletextSourceSettings & {
+            OutputRectangle: CaptionRectangle & {
+              Height: __doubleMin0Max100;
+              LeftOffset: __doubleMin0Max100;
+              TopOffset: __doubleMin0Max100;
+              Width: __doubleMin0Max100;
+            };
+          };
+        };
+      })[];
+    };
+  })[];
   InputSpecification?: InputSpecification;
   LogLevel?: LogLevel;
   Maintenance?: MaintenanceStatus;
@@ -11900,7 +13139,10 @@ export interface StopMultiplexResponse {
   AvailabilityZones?: string[];
   Destinations?: MultiplexOutputDestination[];
   Id?: string;
-  MultiplexSettings?: MultiplexSettings;
+  MultiplexSettings?: MultiplexSettings & {
+    TransportStreamBitrate: __integerMin1000000Max100000000;
+    TransportStreamId: __integerMin0Max65535;
+  };
   Name?: string;
   PipelinesRunningCount?: number;
   ProgramCount?: number;
@@ -12160,7 +13402,9 @@ export interface UpdateEventBridgeRuleTemplateResponse {
   Arn?: string;
   CreatedAt?: Date;
   Description?: string;
-  EventTargets?: EventBridgeRuleTemplateTarget[];
+  EventTargets?: (EventBridgeRuleTemplateTarget & {
+    Arn: __stringMin1Max2048PatternArn;
+  })[];
   EventType?: EventBridgeRuleTemplateEventType;
   GroupId?: string;
   Id?: string;
@@ -13710,7 +14954,10 @@ export const CreateClusterRequest = S.suspend(() =>
     NetworkSettings: S.optional(ClusterNetworkSettingsCreateRequest)
       .pipe(T.JsonName("networkSettings"))
       .annotations({ identifier: "ClusterNetworkSettingsCreateRequest" }),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
   }).pipe(
     T.all(
@@ -13729,7 +14976,9 @@ export interface CreateEventBridgeRuleTemplateResponse {
   Arn?: string;
   CreatedAt?: Date;
   Description?: string;
-  EventTargets?: EventBridgeRuleTemplateTarget[];
+  EventTargets?: (EventBridgeRuleTemplateTarget & {
+    Arn: __stringMin1Max2048PatternArn;
+  })[];
   EventType?: EventBridgeRuleTemplateEventType;
   GroupId?: string;
   Id?: string;
@@ -13848,7 +15097,11 @@ export const CreateNodeRegistrationScriptResponse = S.suspend(() =>
   identifier: "CreateNodeRegistrationScriptResponse",
 }) as any as S.Schema<CreateNodeRegistrationScriptResponse>;
 export interface CreatePartnerInputResponse {
-  Input?: Input;
+  Input?: Input & {
+    MulticastSettings: MulticastSettings & {
+      Sources: (MulticastSource & { Url: string })[];
+    };
+  };
 }
 export const CreatePartnerInputResponse = S.suspend(() =>
   S.Struct({
@@ -13873,7 +15126,13 @@ export const CreateSdiSourceResponse = S.suspend(() =>
 }) as any as S.Schema<CreateSdiSourceResponse>;
 export interface DeleteMultiplexProgramResponse {
   ChannelId?: string;
-  MultiplexProgramSettings?: MultiplexProgramSettings;
+  MultiplexProgramSettings?: MultiplexProgramSettings & {
+    ProgramNumber: __integerMin0Max65535;
+    ServiceDescriptor: MultiplexProgramServiceDescriptor & {
+      ProviderName: __stringMax256;
+      ServiceName: __stringMax256;
+    };
+  };
   PacketIdentifiersMap?: MultiplexProgramPacketIdentifiersMap;
   PipelineDetails?: MultiplexProgramPipelineDetail[];
   ProgramName?: string;
@@ -14060,7 +15319,56 @@ export const ListChannelPlacementGroupsResponse = S.suspend(() =>
   identifier: "ListChannelPlacementGroupsResponse",
 }) as any as S.Schema<ListChannelPlacementGroupsResponse>;
 export interface ListChannelsResponse {
-  Channels?: ChannelSummary[];
+  Channels?: (ChannelSummary & {
+    InputAttachments: (InputAttachment & {
+      AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+        SecondaryInputId: string;
+        FailoverConditions: (FailoverCondition & {
+          FailoverConditionSettings: FailoverConditionSettings & {
+            AudioSilenceSettings: AudioSilenceFailoverSettings & {
+              AudioSelectorName: string;
+            };
+          };
+        })[];
+      };
+      InputSettings: InputSettings & {
+        AudioSelectors: (AudioSelector & {
+          Name: __stringMin1;
+          SelectorSettings: AudioSelectorSettings & {
+            AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+              GroupId: __stringMin1;
+              Name: __stringMin1;
+            };
+            AudioLanguageSelection: AudioLanguageSelection & {
+              LanguageCode: string;
+            };
+            AudioPidSelection: AudioPidSelection & {
+              Pid: __integerMin0Max8191;
+            };
+            AudioTrackSelection: AudioTrackSelection & {
+              Tracks: (AudioTrack & { Track: __integerMin1 })[];
+              DolbyEDecode: AudioDolbyEDecode & {
+                ProgramSelection: DolbyEProgramSelection;
+              };
+            };
+          };
+        })[];
+        CaptionSelectors: (CaptionSelector & {
+          Name: __stringMin1;
+          SelectorSettings: CaptionSelectorSettings & {
+            TeletextSourceSettings: TeletextSourceSettings & {
+              OutputRectangle: CaptionRectangle & {
+                Height: __doubleMin0Max100;
+                LeftOffset: __doubleMin0Max100;
+                TopOffset: __doubleMin0Max100;
+                Width: __doubleMin0Max100;
+              };
+            };
+          };
+        })[];
+      };
+    })[];
+  })[];
   NextToken?: string;
 }
 export const ListChannelsResponse = S.suspend(() =>
@@ -14072,7 +15380,13 @@ export const ListChannelsResponse = S.suspend(() =>
   identifier: "ListChannelsResponse",
 }) as any as S.Schema<ListChannelsResponse>;
 export interface ListCloudWatchAlarmTemplateGroupsResponse {
-  CloudWatchAlarmTemplateGroups?: CloudWatchAlarmTemplateGroupSummary[];
+  CloudWatchAlarmTemplateGroups?: (CloudWatchAlarmTemplateGroupSummary & {
+    Arn: __stringPatternArnMedialiveCloudwatchAlarmTemplateGroup;
+    CreatedAt: __timestampIso8601;
+    Id: __stringMin7Max11PatternAws097;
+    Name: __stringMin1Max255PatternS;
+    TemplateCount: number;
+  })[];
   NextToken?: string;
 }
 export const ListCloudWatchAlarmTemplateGroupsResponse = S.suspend(() =>
@@ -14086,7 +15400,21 @@ export const ListCloudWatchAlarmTemplateGroupsResponse = S.suspend(() =>
   identifier: "ListCloudWatchAlarmTemplateGroupsResponse",
 }) as any as S.Schema<ListCloudWatchAlarmTemplateGroupsResponse>;
 export interface ListCloudWatchAlarmTemplatesResponse {
-  CloudWatchAlarmTemplates?: CloudWatchAlarmTemplateSummary[];
+  CloudWatchAlarmTemplates?: (CloudWatchAlarmTemplateSummary & {
+    Arn: __stringPatternArnMedialiveCloudwatchAlarmTemplate;
+    ComparisonOperator: CloudWatchAlarmTemplateComparisonOperator;
+    CreatedAt: __timestampIso8601;
+    EvaluationPeriods: __integerMin1;
+    GroupId: __stringMin7Max11PatternAws097;
+    Id: __stringMin7Max11PatternAws097;
+    MetricName: __stringMax64;
+    Name: __stringMin1Max255PatternS;
+    Period: __integerMin10Max86400;
+    Statistic: CloudWatchAlarmTemplateStatistic;
+    TargetResourceType: CloudWatchAlarmTemplateTargetResourceType;
+    Threshold: number;
+    TreatMissingData: CloudWatchAlarmTemplateTreatMissingData;
+  })[];
   NextToken?: string;
 }
 export const ListCloudWatchAlarmTemplatesResponse = S.suspend(() =>
@@ -14126,7 +15454,13 @@ export const ListClustersResponse = S.suspend(() =>
   identifier: "ListClustersResponse",
 }) as any as S.Schema<ListClustersResponse>;
 export interface ListEventBridgeRuleTemplateGroupsResponse {
-  EventBridgeRuleTemplateGroups?: EventBridgeRuleTemplateGroupSummary[];
+  EventBridgeRuleTemplateGroups?: (EventBridgeRuleTemplateGroupSummary & {
+    Arn: __stringPatternArnMedialiveEventbridgeRuleTemplateGroup;
+    CreatedAt: __timestampIso8601;
+    Id: __stringMin7Max11PatternAws097;
+    Name: __stringMin1Max255PatternS;
+    TemplateCount: number;
+  })[];
   NextToken?: string;
 }
 export const ListEventBridgeRuleTemplateGroupsResponse = S.suspend(() =>
@@ -14140,7 +15474,15 @@ export const ListEventBridgeRuleTemplateGroupsResponse = S.suspend(() =>
   identifier: "ListEventBridgeRuleTemplateGroupsResponse",
 }) as any as S.Schema<ListEventBridgeRuleTemplateGroupsResponse>;
 export interface ListEventBridgeRuleTemplatesResponse {
-  EventBridgeRuleTemplates?: EventBridgeRuleTemplateSummary[];
+  EventBridgeRuleTemplates?: (EventBridgeRuleTemplateSummary & {
+    Arn: __stringPatternArnMedialiveEventbridgeRuleTemplate;
+    CreatedAt: __timestampIso8601;
+    EventTargetCount: __integerMax5;
+    EventType: EventBridgeRuleTemplateEventType;
+    GroupId: __stringMin7Max11PatternAws097;
+    Id: __stringMin7Max11PatternAws097;
+    Name: __stringMin1Max255PatternS;
+  })[];
   NextToken?: string;
 }
 export const ListEventBridgeRuleTemplatesResponse = S.suspend(() =>
@@ -14289,7 +15631,14 @@ export const ListSdiSourcesResponse = S.suspend(() =>
 }) as any as S.Schema<ListSdiSourcesResponse>;
 export interface ListSignalMapsResponse {
   NextToken?: string;
-  SignalMaps?: SignalMapSummary[];
+  SignalMaps?: (SignalMapSummary & {
+    Arn: __stringPatternArnMedialiveSignalMap;
+    CreatedAt: __timestampIso8601;
+    Id: __stringMin7Max11PatternAws097;
+    MonitorDeploymentStatus: SignalMapMonitorDeploymentStatus;
+    Name: __stringMin1Max255PatternS;
+    Status: SignalMapStatus;
+  })[];
 }
 export const ListSignalMapsResponse = S.suspend(() =>
   S.Struct({
@@ -14314,7 +15663,270 @@ export const PurchaseOfferingResponse = S.suspend(() =>
   identifier: "PurchaseOfferingResponse",
 }) as any as S.Schema<PurchaseOfferingResponse>;
 export interface UpdateChannelResponse {
-  Channel?: Channel;
+  Channel?: Channel & {
+    EncoderSettings: EncoderSettings & {
+      AudioDescriptions: (AudioDescription & {
+        AudioSelectorName: string;
+        Name: __stringMax255;
+        AudioWatermarkingSettings: AudioWatermarkSettings & {
+          NielsenWatermarksSettings: NielsenWatermarksSettings & {
+            NielsenCbetSettings: NielsenCBET & {
+              CbetCheckDigitString: __stringMin2Max2;
+              CbetStepaside: NielsenWatermarksCbetStepaside;
+              Csid: __stringMin1Max7;
+            };
+            NielsenNaesIiNwSettings: NielsenNaesIiNw & {
+              CheckDigitString: __stringMin2Max2;
+              Sid: __doubleMin1Max65535;
+            };
+          };
+        };
+        RemixSettings: RemixSettings & {
+          ChannelMappings: (AudioChannelMapping & {
+            InputChannelLevels: (InputChannelLevel & {
+              Gain: __integerMinNegative60Max6;
+              InputChannel: __integerMin0Max15;
+            })[];
+            OutputChannel: __integerMin0Max7;
+          })[];
+        };
+      })[];
+      OutputGroups: (OutputGroup & {
+        OutputGroupSettings: OutputGroupSettings & {
+          ArchiveGroupSettings: ArchiveGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          FrameCaptureGroupSettings: FrameCaptureGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          HlsGroupSettings: HlsGroupSettings & {
+            Destination: OutputLocationRef;
+            CaptionLanguageMappings: (CaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+              LanguageDescription: __stringMin1;
+            })[];
+            KeyProviderSettings: KeyProviderSettings & {
+              StaticKeySettings: StaticKeySettings & {
+                StaticKeyValue: __stringMin32Max32;
+                KeyProviderServer: InputLocation & { Uri: __stringMax2048 };
+              };
+            };
+          };
+          MediaPackageGroupSettings: MediaPackageGroupSettings & {
+            Destination: OutputLocationRef;
+            MediapackageV2GroupSettings: MediaPackageV2GroupSettings & {
+              CaptionLanguageMappings: (CaptionLanguageMapping & {
+                CaptionChannel: __integerMin1Max4;
+                LanguageCode: __stringMin3Max3;
+                LanguageDescription: __stringMin1;
+              })[];
+            };
+          };
+          MsSmoothGroupSettings: MsSmoothGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          CmafIngestGroupSettings: CmafIngestGroupSettings & {
+            Destination: OutputLocationRef;
+            CaptionLanguageMappings: (CmafIngestCaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+            })[];
+            AdditionalDestinations: (AdditionalDestinations & {
+              Destination: OutputLocationRef;
+            })[];
+          };
+        };
+        Outputs: (Output & {
+          OutputSettings: OutputSettings & {
+            ArchiveOutputSettings: ArchiveOutputSettings & {
+              ContainerSettings: ArchiveContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+            };
+            HlsOutputSettings: HlsOutputSettings & {
+              HlsSettings: HlsSettings & {
+                AudioOnlyHlsSettings: AudioOnlyHlsSettings & {
+                  AudioOnlyImage: InputLocation & { Uri: __stringMax2048 };
+                };
+                StandardHlsSettings: StandardHlsSettings & {
+                  M3u8Settings: M3u8Settings;
+                };
+              };
+            };
+            MultiplexOutputSettings: MultiplexOutputSettings & {
+              Destination: OutputLocationRef;
+            };
+            RtmpOutputSettings: RtmpOutputSettings & {
+              Destination: OutputLocationRef;
+            };
+            UdpOutputSettings: UdpOutputSettings & {
+              ContainerSettings: UdpContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+              Destination: OutputLocationRef;
+            };
+            SrtOutputSettings: SrtOutputSettings & {
+              ContainerSettings: UdpContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+              Destination: OutputLocationRef;
+            };
+          };
+        })[];
+      })[];
+      TimecodeConfig: TimecodeConfig & { Source: TimecodeConfigSource };
+      VideoDescriptions: (VideoDescription & {
+        Name: string;
+        CodecSettings: VideoCodecSettings & {
+          FrameCaptureSettings: FrameCaptureSettings & {
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          H264Settings: H264Settings & {
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          H265Settings: H265Settings & {
+            FramerateDenominator: __integerMin1Max3003;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          Mpeg2Settings: Mpeg2Settings & {
+            FramerateDenominator: __integerMin1;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          Av1Settings: Av1Settings & {
+            FramerateDenominator: __integerMin1Max3003;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+        };
+      })[];
+      AvailBlanking: AvailBlanking & {
+        AvailBlankingImage: InputLocation & { Uri: __stringMax2048 };
+      };
+      AvailConfiguration: AvailConfiguration & {
+        AvailSettings: AvailSettings & {
+          Esam: Esam & {
+            AcquisitionPointId: __stringMax256;
+            PoisEndpoint: __stringMax2048;
+          };
+        };
+      };
+      BlackoutSlate: BlackoutSlate & {
+        BlackoutSlateImage: InputLocation & { Uri: __stringMax2048 };
+        NetworkEndBlackoutImage: InputLocation & { Uri: __stringMax2048 };
+      };
+      CaptionDescriptions: (CaptionDescription & {
+        CaptionSelectorName: string;
+        Name: string;
+        DestinationSettings: CaptionDestinationSettings & {
+          BurnInDestinationSettings: BurnInDestinationSettings & {
+            Font: InputLocation & { Uri: __stringMax2048 };
+          };
+          DvbSubDestinationSettings: DvbSubDestinationSettings & {
+            Font: InputLocation & { Uri: __stringMax2048 };
+          };
+        };
+      })[];
+      GlobalConfiguration: GlobalConfiguration & {
+        InputLossBehavior: InputLossBehavior & {
+          InputLossImageSlate: InputLocation & { Uri: __stringMax2048 };
+        };
+      };
+      MotionGraphicsConfiguration: MotionGraphicsConfiguration & {
+        MotionGraphicsSettings: MotionGraphicsSettings;
+      };
+      ThumbnailConfiguration: ThumbnailConfiguration & {
+        State: ThumbnailState;
+      };
+      ColorCorrectionSettings: ColorCorrectionSettings & {
+        GlobalColorCorrections: (ColorCorrection & {
+          InputColorSpace: ColorSpace;
+          OutputColorSpace: ColorSpace;
+          Uri: string;
+        })[];
+      };
+    };
+    InputAttachments: (InputAttachment & {
+      AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+        SecondaryInputId: string;
+        FailoverConditions: (FailoverCondition & {
+          FailoverConditionSettings: FailoverConditionSettings & {
+            AudioSilenceSettings: AudioSilenceFailoverSettings & {
+              AudioSelectorName: string;
+            };
+          };
+        })[];
+      };
+      InputSettings: InputSettings & {
+        AudioSelectors: (AudioSelector & {
+          Name: __stringMin1;
+          SelectorSettings: AudioSelectorSettings & {
+            AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+              GroupId: __stringMin1;
+              Name: __stringMin1;
+            };
+            AudioLanguageSelection: AudioLanguageSelection & {
+              LanguageCode: string;
+            };
+            AudioPidSelection: AudioPidSelection & {
+              Pid: __integerMin0Max8191;
+            };
+            AudioTrackSelection: AudioTrackSelection & {
+              Tracks: (AudioTrack & { Track: __integerMin1 })[];
+              DolbyEDecode: AudioDolbyEDecode & {
+                ProgramSelection: DolbyEProgramSelection;
+              };
+            };
+          };
+        })[];
+        CaptionSelectors: (CaptionSelector & {
+          Name: __stringMin1;
+          SelectorSettings: CaptionSelectorSettings & {
+            TeletextSourceSettings: TeletextSourceSettings & {
+              OutputRectangle: CaptionRectangle & {
+                Height: __doubleMin0Max100;
+                LeftOffset: __doubleMin0Max100;
+                TopOffset: __doubleMin0Max100;
+                Width: __doubleMin0Max100;
+              };
+            };
+          };
+        })[];
+      };
+    })[];
+  };
 }
 export const UpdateChannelResponse = S.suspend(() =>
   S.Struct({
@@ -14326,7 +15938,270 @@ export const UpdateChannelResponse = S.suspend(() =>
   identifier: "UpdateChannelResponse",
 }) as any as S.Schema<UpdateChannelResponse>;
 export interface UpdateChannelClassResponse {
-  Channel?: Channel;
+  Channel?: Channel & {
+    EncoderSettings: EncoderSettings & {
+      AudioDescriptions: (AudioDescription & {
+        AudioSelectorName: string;
+        Name: __stringMax255;
+        AudioWatermarkingSettings: AudioWatermarkSettings & {
+          NielsenWatermarksSettings: NielsenWatermarksSettings & {
+            NielsenCbetSettings: NielsenCBET & {
+              CbetCheckDigitString: __stringMin2Max2;
+              CbetStepaside: NielsenWatermarksCbetStepaside;
+              Csid: __stringMin1Max7;
+            };
+            NielsenNaesIiNwSettings: NielsenNaesIiNw & {
+              CheckDigitString: __stringMin2Max2;
+              Sid: __doubleMin1Max65535;
+            };
+          };
+        };
+        RemixSettings: RemixSettings & {
+          ChannelMappings: (AudioChannelMapping & {
+            InputChannelLevels: (InputChannelLevel & {
+              Gain: __integerMinNegative60Max6;
+              InputChannel: __integerMin0Max15;
+            })[];
+            OutputChannel: __integerMin0Max7;
+          })[];
+        };
+      })[];
+      OutputGroups: (OutputGroup & {
+        OutputGroupSettings: OutputGroupSettings & {
+          ArchiveGroupSettings: ArchiveGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          FrameCaptureGroupSettings: FrameCaptureGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          HlsGroupSettings: HlsGroupSettings & {
+            Destination: OutputLocationRef;
+            CaptionLanguageMappings: (CaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+              LanguageDescription: __stringMin1;
+            })[];
+            KeyProviderSettings: KeyProviderSettings & {
+              StaticKeySettings: StaticKeySettings & {
+                StaticKeyValue: __stringMin32Max32;
+                KeyProviderServer: InputLocation & { Uri: __stringMax2048 };
+              };
+            };
+          };
+          MediaPackageGroupSettings: MediaPackageGroupSettings & {
+            Destination: OutputLocationRef;
+            MediapackageV2GroupSettings: MediaPackageV2GroupSettings & {
+              CaptionLanguageMappings: (CaptionLanguageMapping & {
+                CaptionChannel: __integerMin1Max4;
+                LanguageCode: __stringMin3Max3;
+                LanguageDescription: __stringMin1;
+              })[];
+            };
+          };
+          MsSmoothGroupSettings: MsSmoothGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          CmafIngestGroupSettings: CmafIngestGroupSettings & {
+            Destination: OutputLocationRef;
+            CaptionLanguageMappings: (CmafIngestCaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+            })[];
+            AdditionalDestinations: (AdditionalDestinations & {
+              Destination: OutputLocationRef;
+            })[];
+          };
+        };
+        Outputs: (Output & {
+          OutputSettings: OutputSettings & {
+            ArchiveOutputSettings: ArchiveOutputSettings & {
+              ContainerSettings: ArchiveContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+            };
+            HlsOutputSettings: HlsOutputSettings & {
+              HlsSettings: HlsSettings & {
+                AudioOnlyHlsSettings: AudioOnlyHlsSettings & {
+                  AudioOnlyImage: InputLocation & { Uri: __stringMax2048 };
+                };
+                StandardHlsSettings: StandardHlsSettings & {
+                  M3u8Settings: M3u8Settings;
+                };
+              };
+            };
+            MultiplexOutputSettings: MultiplexOutputSettings & {
+              Destination: OutputLocationRef;
+            };
+            RtmpOutputSettings: RtmpOutputSettings & {
+              Destination: OutputLocationRef;
+            };
+            UdpOutputSettings: UdpOutputSettings & {
+              ContainerSettings: UdpContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+              Destination: OutputLocationRef;
+            };
+            SrtOutputSettings: SrtOutputSettings & {
+              ContainerSettings: UdpContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+              Destination: OutputLocationRef;
+            };
+          };
+        })[];
+      })[];
+      TimecodeConfig: TimecodeConfig & { Source: TimecodeConfigSource };
+      VideoDescriptions: (VideoDescription & {
+        Name: string;
+        CodecSettings: VideoCodecSettings & {
+          FrameCaptureSettings: FrameCaptureSettings & {
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          H264Settings: H264Settings & {
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          H265Settings: H265Settings & {
+            FramerateDenominator: __integerMin1Max3003;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          Mpeg2Settings: Mpeg2Settings & {
+            FramerateDenominator: __integerMin1;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          Av1Settings: Av1Settings & {
+            FramerateDenominator: __integerMin1Max3003;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+        };
+      })[];
+      AvailBlanking: AvailBlanking & {
+        AvailBlankingImage: InputLocation & { Uri: __stringMax2048 };
+      };
+      AvailConfiguration: AvailConfiguration & {
+        AvailSettings: AvailSettings & {
+          Esam: Esam & {
+            AcquisitionPointId: __stringMax256;
+            PoisEndpoint: __stringMax2048;
+          };
+        };
+      };
+      BlackoutSlate: BlackoutSlate & {
+        BlackoutSlateImage: InputLocation & { Uri: __stringMax2048 };
+        NetworkEndBlackoutImage: InputLocation & { Uri: __stringMax2048 };
+      };
+      CaptionDescriptions: (CaptionDescription & {
+        CaptionSelectorName: string;
+        Name: string;
+        DestinationSettings: CaptionDestinationSettings & {
+          BurnInDestinationSettings: BurnInDestinationSettings & {
+            Font: InputLocation & { Uri: __stringMax2048 };
+          };
+          DvbSubDestinationSettings: DvbSubDestinationSettings & {
+            Font: InputLocation & { Uri: __stringMax2048 };
+          };
+        };
+      })[];
+      GlobalConfiguration: GlobalConfiguration & {
+        InputLossBehavior: InputLossBehavior & {
+          InputLossImageSlate: InputLocation & { Uri: __stringMax2048 };
+        };
+      };
+      MotionGraphicsConfiguration: MotionGraphicsConfiguration & {
+        MotionGraphicsSettings: MotionGraphicsSettings;
+      };
+      ThumbnailConfiguration: ThumbnailConfiguration & {
+        State: ThumbnailState;
+      };
+      ColorCorrectionSettings: ColorCorrectionSettings & {
+        GlobalColorCorrections: (ColorCorrection & {
+          InputColorSpace: ColorSpace;
+          OutputColorSpace: ColorSpace;
+          Uri: string;
+        })[];
+      };
+    };
+    InputAttachments: (InputAttachment & {
+      AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+        SecondaryInputId: string;
+        FailoverConditions: (FailoverCondition & {
+          FailoverConditionSettings: FailoverConditionSettings & {
+            AudioSilenceSettings: AudioSilenceFailoverSettings & {
+              AudioSelectorName: string;
+            };
+          };
+        })[];
+      };
+      InputSettings: InputSettings & {
+        AudioSelectors: (AudioSelector & {
+          Name: __stringMin1;
+          SelectorSettings: AudioSelectorSettings & {
+            AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+              GroupId: __stringMin1;
+              Name: __stringMin1;
+            };
+            AudioLanguageSelection: AudioLanguageSelection & {
+              LanguageCode: string;
+            };
+            AudioPidSelection: AudioPidSelection & {
+              Pid: __integerMin0Max8191;
+            };
+            AudioTrackSelection: AudioTrackSelection & {
+              Tracks: (AudioTrack & { Track: __integerMin1 })[];
+              DolbyEDecode: AudioDolbyEDecode & {
+                ProgramSelection: DolbyEProgramSelection;
+              };
+            };
+          };
+        })[];
+        CaptionSelectors: (CaptionSelector & {
+          Name: __stringMin1;
+          SelectorSettings: CaptionSelectorSettings & {
+            TeletextSourceSettings: TeletextSourceSettings & {
+              OutputRectangle: CaptionRectangle & {
+                Height: __doubleMin0Max100;
+                LeftOffset: __doubleMin0Max100;
+                TopOffset: __doubleMin0Max100;
+                Width: __doubleMin0Max100;
+              };
+            };
+          };
+        })[];
+      };
+    })[];
+  };
 }
 export const UpdateChannelClassResponse = S.suspend(() =>
   S.Struct({
@@ -14520,7 +16395,15 @@ export const UpdateMultiplexRequest = S.suspend(() =>
   identifier: "UpdateMultiplexRequest",
 }) as any as S.Schema<UpdateMultiplexRequest>;
 export interface UpdateMultiplexProgramResponse {
-  MultiplexProgram?: MultiplexProgram;
+  MultiplexProgram?: MultiplexProgram & {
+    MultiplexProgramSettings: MultiplexProgramSettings & {
+      ProgramNumber: __integerMin0Max65535;
+      ServiceDescriptor: MultiplexProgramServiceDescriptor & {
+        ProviderName: __stringMax256;
+        ServiceName: __stringMax256;
+      };
+    };
+  };
 }
 export const UpdateMultiplexProgramResponse = S.suspend(() =>
   S.Struct({
@@ -14732,7 +16615,12 @@ export const CreateClusterResponse = S.suspend(() =>
   identifier: "CreateClusterResponse",
 }) as any as S.Schema<CreateClusterResponse>;
 export interface CreateMultiplexResponse {
-  Multiplex?: Multiplex;
+  Multiplex?: Multiplex & {
+    MultiplexSettings: MultiplexSettings & {
+      TransportStreamBitrate: __integerMin1000000Max100000000;
+      TransportStreamId: __integerMin0Max65535;
+    };
+  };
 }
 export const CreateMultiplexResponse = S.suspend(() =>
   S.Struct({
@@ -14756,7 +16644,10 @@ export const CreateMultiplexProgramRequest = S.suspend(() =>
       .pipe(T.JsonName("multiplexProgramSettings"))
       .annotations({ identifier: "MultiplexProgramSettings" }),
     ProgramName: S.optional(S.String).pipe(T.JsonName("programName")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -14779,9 +16670,265 @@ export interface DeleteChannelResponse {
   ChannelClass?: ChannelClass;
   Destinations?: OutputDestination[];
   EgressEndpoints?: ChannelEgressEndpoint[];
-  EncoderSettings?: EncoderSettings;
+  EncoderSettings?: EncoderSettings & {
+    AudioDescriptions: (AudioDescription & {
+      AudioSelectorName: string;
+      Name: __stringMax255;
+      AudioWatermarkingSettings: AudioWatermarkSettings & {
+        NielsenWatermarksSettings: NielsenWatermarksSettings & {
+          NielsenCbetSettings: NielsenCBET & {
+            CbetCheckDigitString: __stringMin2Max2;
+            CbetStepaside: NielsenWatermarksCbetStepaside;
+            Csid: __stringMin1Max7;
+          };
+          NielsenNaesIiNwSettings: NielsenNaesIiNw & {
+            CheckDigitString: __stringMin2Max2;
+            Sid: __doubleMin1Max65535;
+          };
+        };
+      };
+      RemixSettings: RemixSettings & {
+        ChannelMappings: (AudioChannelMapping & {
+          InputChannelLevels: (InputChannelLevel & {
+            Gain: __integerMinNegative60Max6;
+            InputChannel: __integerMin0Max15;
+          })[];
+          OutputChannel: __integerMin0Max7;
+        })[];
+      };
+    })[];
+    OutputGroups: (OutputGroup & {
+      OutputGroupSettings: OutputGroupSettings & {
+        ArchiveGroupSettings: ArchiveGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        FrameCaptureGroupSettings: FrameCaptureGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        HlsGroupSettings: HlsGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+            LanguageDescription: __stringMin1;
+          })[];
+          KeyProviderSettings: KeyProviderSettings & {
+            StaticKeySettings: StaticKeySettings & {
+              StaticKeyValue: __stringMin32Max32;
+              KeyProviderServer: InputLocation & { Uri: __stringMax2048 };
+            };
+          };
+        };
+        MediaPackageGroupSettings: MediaPackageGroupSettings & {
+          Destination: OutputLocationRef;
+          MediapackageV2GroupSettings: MediaPackageV2GroupSettings & {
+            CaptionLanguageMappings: (CaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+              LanguageDescription: __stringMin1;
+            })[];
+          };
+        };
+        MsSmoothGroupSettings: MsSmoothGroupSettings & {
+          Destination: OutputLocationRef;
+        };
+        CmafIngestGroupSettings: CmafIngestGroupSettings & {
+          Destination: OutputLocationRef;
+          CaptionLanguageMappings: (CmafIngestCaptionLanguageMapping & {
+            CaptionChannel: __integerMin1Max4;
+            LanguageCode: __stringMin3Max3;
+          })[];
+          AdditionalDestinations: (AdditionalDestinations & {
+            Destination: OutputLocationRef;
+          })[];
+        };
+      };
+      Outputs: (Output & {
+        OutputSettings: OutputSettings & {
+          ArchiveOutputSettings: ArchiveOutputSettings & {
+            ContainerSettings: ArchiveContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+          };
+          HlsOutputSettings: HlsOutputSettings & {
+            HlsSettings: HlsSettings & {
+              AudioOnlyHlsSettings: AudioOnlyHlsSettings & {
+                AudioOnlyImage: InputLocation & { Uri: __stringMax2048 };
+              };
+              StandardHlsSettings: StandardHlsSettings & {
+                M3u8Settings: M3u8Settings;
+              };
+            };
+          };
+          MultiplexOutputSettings: MultiplexOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          RtmpOutputSettings: RtmpOutputSettings & {
+            Destination: OutputLocationRef;
+          };
+          UdpOutputSettings: UdpOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+          SrtOutputSettings: SrtOutputSettings & {
+            ContainerSettings: UdpContainerSettings & {
+              M2tsSettings: M2tsSettings & {
+                DvbNitSettings: DvbNitSettings & {
+                  NetworkId: __integerMin0Max65536;
+                  NetworkName: __stringMin1Max256;
+                };
+              };
+            };
+            Destination: OutputLocationRef;
+          };
+        };
+      })[];
+    })[];
+    TimecodeConfig: TimecodeConfig & { Source: TimecodeConfigSource };
+    VideoDescriptions: (VideoDescription & {
+      Name: string;
+      CodecSettings: VideoCodecSettings & {
+        FrameCaptureSettings: FrameCaptureSettings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H264Settings: H264Settings & {
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        H265Settings: H265Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Mpeg2Settings: Mpeg2Settings & {
+          FramerateDenominator: __integerMin1;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+        Av1Settings: Av1Settings & {
+          FramerateDenominator: __integerMin1Max3003;
+          FramerateNumerator: __integerMin1;
+          TimecodeBurninSettings: TimecodeBurninSettings & {
+            FontSize: TimecodeBurninFontSize;
+            Position: TimecodeBurninPosition;
+          };
+        };
+      };
+    })[];
+    AvailBlanking: AvailBlanking & {
+      AvailBlankingImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    AvailConfiguration: AvailConfiguration & {
+      AvailSettings: AvailSettings & {
+        Esam: Esam & {
+          AcquisitionPointId: __stringMax256;
+          PoisEndpoint: __stringMax2048;
+        };
+      };
+    };
+    BlackoutSlate: BlackoutSlate & {
+      BlackoutSlateImage: InputLocation & { Uri: __stringMax2048 };
+      NetworkEndBlackoutImage: InputLocation & { Uri: __stringMax2048 };
+    };
+    CaptionDescriptions: (CaptionDescription & {
+      CaptionSelectorName: string;
+      Name: string;
+      DestinationSettings: CaptionDestinationSettings & {
+        BurnInDestinationSettings: BurnInDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+        DvbSubDestinationSettings: DvbSubDestinationSettings & {
+          Font: InputLocation & { Uri: __stringMax2048 };
+        };
+      };
+    })[];
+    GlobalConfiguration: GlobalConfiguration & {
+      InputLossBehavior: InputLossBehavior & {
+        InputLossImageSlate: InputLocation & { Uri: __stringMax2048 };
+      };
+    };
+    MotionGraphicsConfiguration: MotionGraphicsConfiguration & {
+      MotionGraphicsSettings: MotionGraphicsSettings;
+    };
+    ThumbnailConfiguration: ThumbnailConfiguration & { State: ThumbnailState };
+    ColorCorrectionSettings: ColorCorrectionSettings & {
+      GlobalColorCorrections: (ColorCorrection & {
+        InputColorSpace: ColorSpace;
+        OutputColorSpace: ColorSpace;
+        Uri: string;
+      })[];
+    };
+  };
   Id?: string;
-  InputAttachments?: InputAttachment[];
+  InputAttachments?: (InputAttachment & {
+    AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+      SecondaryInputId: string;
+      FailoverConditions: (FailoverCondition & {
+        FailoverConditionSettings: FailoverConditionSettings & {
+          AudioSilenceSettings: AudioSilenceFailoverSettings & {
+            AudioSelectorName: string;
+          };
+        };
+      })[];
+    };
+    InputSettings: InputSettings & {
+      AudioSelectors: (AudioSelector & {
+        Name: __stringMin1;
+        SelectorSettings: AudioSelectorSettings & {
+          AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+            GroupId: __stringMin1;
+            Name: __stringMin1;
+          };
+          AudioLanguageSelection: AudioLanguageSelection & {
+            LanguageCode: string;
+          };
+          AudioPidSelection: AudioPidSelection & { Pid: __integerMin0Max8191 };
+          AudioTrackSelection: AudioTrackSelection & {
+            Tracks: (AudioTrack & { Track: __integerMin1 })[];
+            DolbyEDecode: AudioDolbyEDecode & {
+              ProgramSelection: DolbyEProgramSelection;
+            };
+          };
+        };
+      })[];
+      CaptionSelectors: (CaptionSelector & {
+        Name: __stringMin1;
+        SelectorSettings: CaptionSelectorSettings & {
+          TeletextSourceSettings: TeletextSourceSettings & {
+            OutputRectangle: CaptionRectangle & {
+              Height: __doubleMin0Max100;
+              LeftOffset: __doubleMin0Max100;
+              TopOffset: __doubleMin0Max100;
+              Width: __doubleMin0Max100;
+            };
+          };
+        };
+      })[];
+    };
+  })[];
   InputSpecification?: InputSpecification;
   LogLevel?: LogLevel;
   Maintenance?: MaintenanceStatus;
@@ -14880,7 +17027,10 @@ export interface DeleteMultiplexResponse {
   AvailabilityZones?: string[];
   Destinations?: MultiplexOutputDestination[];
   Id?: string;
-  MultiplexSettings?: MultiplexSettings;
+  MultiplexSettings?: MultiplexSettings & {
+    TransportStreamBitrate: __integerMin1000000Max100000000;
+    TransportStreamId: __integerMin0Max65535;
+  };
   Name?: string;
   PipelinesRunningCount?: number;
   ProgramCount?: number;
@@ -15018,7 +17168,11 @@ export const UpdateClusterResponse = S.suspend(() =>
   identifier: "UpdateClusterResponse",
 }) as any as S.Schema<UpdateClusterResponse>;
 export interface UpdateInputResponse {
-  Input?: Input;
+  Input?: Input & {
+    MulticastSettings: MulticastSettings & {
+      Sources: (MulticastSource & { Url: string })[];
+    };
+  };
 }
 export const UpdateInputResponse = S.suspend(() =>
   S.Struct({
@@ -15086,7 +17240,12 @@ export const UpdateInputDeviceResponse = S.suspend(() =>
   identifier: "UpdateInputDeviceResponse",
 }) as any as S.Schema<UpdateInputDeviceResponse>;
 export interface UpdateMultiplexResponse {
-  Multiplex?: Multiplex;
+  Multiplex?: Multiplex & {
+    MultiplexSettings: MultiplexSettings & {
+      TransportStreamBitrate: __integerMin1000000Max100000000;
+      TransportStreamId: __integerMin0Max65535;
+    };
+  };
 }
 export const UpdateMultiplexResponse = S.suspend(() =>
   S.Struct({
@@ -15131,7 +17290,10 @@ export const CreateInputRequest = S.suspend(() =>
       T.JsonName("mediaConnectFlows"),
     ),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     RoleArn: S.optional(S.String).pipe(T.JsonName("roleArn")),
     Sources: S.optional(__listOfInputSourceRequest).pipe(T.JsonName("sources")),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
@@ -15169,7 +17331,15 @@ export const CreateInputRequest = S.suspend(() =>
   identifier: "CreateInputRequest",
 }) as any as S.Schema<CreateInputRequest>;
 export interface CreateMultiplexProgramResponse {
-  MultiplexProgram?: MultiplexProgram;
+  MultiplexProgram?: MultiplexProgram & {
+    MultiplexProgramSettings: MultiplexProgramSettings & {
+      ProgramNumber: __integerMin0Max65535;
+      ServiceDescriptor: MultiplexProgramServiceDescriptor & {
+        ProviderName: __stringMax256;
+        ServiceName: __stringMax256;
+      };
+    };
+  };
 }
 export const CreateMultiplexProgramResponse = S.suspend(() =>
   S.Struct({
@@ -15188,14 +17358,37 @@ export interface CreateSignalMapResponse {
   DiscoveryEntryPointArn?: string;
   ErrorMessage?: string;
   EventBridgeRuleTemplateGroupIds?: string[];
-  FailedMediaResourceMap?: { [key: string]: MediaResource };
+  FailedMediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   Id?: string;
   LastDiscoveredAt?: Date;
-  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment;
-  MediaResourceMap?: { [key: string]: MediaResource };
+  LastSuccessfulMonitorDeployment?: SuccessfulMonitorDeployment & {
+    DetailsUri: __stringMin1Max2048;
+    Status: SignalMapMonitorDeploymentStatus;
+  };
+  MediaResourceMap?: {
+    [key: string]: MediaResource & {
+      Destinations: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+      Sources: (MediaResourceNeighbor & {
+        Arn: __stringMin1Max2048PatternArn;
+      })[];
+    };
+  };
   ModifiedAt?: Date;
   MonitorChangesPendingDeployment?: boolean;
-  MonitorDeployment?: MonitorDeployment;
+  MonitorDeployment?: MonitorDeployment & {
+    Status: SignalMapMonitorDeploymentStatus;
+  };
   Name?: string;
   Status?: SignalMapStatus;
   Tags?: { [key: string]: string };
@@ -15265,7 +17458,9 @@ export interface DescribeInputResponse {
   Type?: InputType;
   SrtSettings?: SrtSettings;
   InputNetworkLocation?: InputNetworkLocation;
-  MulticastSettings?: MulticastSettings;
+  MulticastSettings?: MulticastSettings & {
+    Sources: (MulticastSource & { Url: string })[];
+  };
   Smpte2110ReceiverGroupSettings?: Smpte2110ReceiverGroupSettings;
   SdiSources?: string[];
   RouterSettings?: RouterInputSettings;
@@ -15337,7 +17532,11 @@ export const ValidationError = S.suspend(() =>
 export type __listOfValidationError = ValidationError[];
 export const __listOfValidationError = S.Array(ValidationError);
 export interface CreateInputResponse {
-  Input?: Input;
+  Input?: Input & {
+    MulticastSettings: MulticastSettings & {
+      Sources: (MulticastSource & { Url: string })[];
+    };
+  };
 }
 export const CreateInputResponse = S.suspend(() =>
   S.Struct({
@@ -15430,7 +17629,10 @@ export const CreateChannelRequest = S.suspend(() =>
       .pipe(T.JsonName("maintenance"))
       .annotations({ identifier: "MaintenanceCreateSettings" }),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
-    RequestId: S.optional(S.String).pipe(T.JsonName("requestId")),
+    RequestId: S.optional(S.String).pipe(
+      T.JsonName("requestId"),
+      T.IdempotencyToken(),
+    ),
     Reserved: S.optional(S.String).pipe(T.JsonName("reserved")),
     RoleArn: S.optional(S.String).pipe(T.JsonName("roleArn")),
     Tags: S.optional(Tags).pipe(T.JsonName("tags")),
@@ -15461,7 +17663,270 @@ export const CreateChannelRequest = S.suspend(() =>
   identifier: "CreateChannelRequest",
 }) as any as S.Schema<CreateChannelRequest>;
 export interface CreateChannelResponse {
-  Channel?: Channel;
+  Channel?: Channel & {
+    EncoderSettings: EncoderSettings & {
+      AudioDescriptions: (AudioDescription & {
+        AudioSelectorName: string;
+        Name: __stringMax255;
+        AudioWatermarkingSettings: AudioWatermarkSettings & {
+          NielsenWatermarksSettings: NielsenWatermarksSettings & {
+            NielsenCbetSettings: NielsenCBET & {
+              CbetCheckDigitString: __stringMin2Max2;
+              CbetStepaside: NielsenWatermarksCbetStepaside;
+              Csid: __stringMin1Max7;
+            };
+            NielsenNaesIiNwSettings: NielsenNaesIiNw & {
+              CheckDigitString: __stringMin2Max2;
+              Sid: __doubleMin1Max65535;
+            };
+          };
+        };
+        RemixSettings: RemixSettings & {
+          ChannelMappings: (AudioChannelMapping & {
+            InputChannelLevels: (InputChannelLevel & {
+              Gain: __integerMinNegative60Max6;
+              InputChannel: __integerMin0Max15;
+            })[];
+            OutputChannel: __integerMin0Max7;
+          })[];
+        };
+      })[];
+      OutputGroups: (OutputGroup & {
+        OutputGroupSettings: OutputGroupSettings & {
+          ArchiveGroupSettings: ArchiveGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          FrameCaptureGroupSettings: FrameCaptureGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          HlsGroupSettings: HlsGroupSettings & {
+            Destination: OutputLocationRef;
+            CaptionLanguageMappings: (CaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+              LanguageDescription: __stringMin1;
+            })[];
+            KeyProviderSettings: KeyProviderSettings & {
+              StaticKeySettings: StaticKeySettings & {
+                StaticKeyValue: __stringMin32Max32;
+                KeyProviderServer: InputLocation & { Uri: __stringMax2048 };
+              };
+            };
+          };
+          MediaPackageGroupSettings: MediaPackageGroupSettings & {
+            Destination: OutputLocationRef;
+            MediapackageV2GroupSettings: MediaPackageV2GroupSettings & {
+              CaptionLanguageMappings: (CaptionLanguageMapping & {
+                CaptionChannel: __integerMin1Max4;
+                LanguageCode: __stringMin3Max3;
+                LanguageDescription: __stringMin1;
+              })[];
+            };
+          };
+          MsSmoothGroupSettings: MsSmoothGroupSettings & {
+            Destination: OutputLocationRef;
+          };
+          CmafIngestGroupSettings: CmafIngestGroupSettings & {
+            Destination: OutputLocationRef;
+            CaptionLanguageMappings: (CmafIngestCaptionLanguageMapping & {
+              CaptionChannel: __integerMin1Max4;
+              LanguageCode: __stringMin3Max3;
+            })[];
+            AdditionalDestinations: (AdditionalDestinations & {
+              Destination: OutputLocationRef;
+            })[];
+          };
+        };
+        Outputs: (Output & {
+          OutputSettings: OutputSettings & {
+            ArchiveOutputSettings: ArchiveOutputSettings & {
+              ContainerSettings: ArchiveContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+            };
+            HlsOutputSettings: HlsOutputSettings & {
+              HlsSettings: HlsSettings & {
+                AudioOnlyHlsSettings: AudioOnlyHlsSettings & {
+                  AudioOnlyImage: InputLocation & { Uri: __stringMax2048 };
+                };
+                StandardHlsSettings: StandardHlsSettings & {
+                  M3u8Settings: M3u8Settings;
+                };
+              };
+            };
+            MultiplexOutputSettings: MultiplexOutputSettings & {
+              Destination: OutputLocationRef;
+            };
+            RtmpOutputSettings: RtmpOutputSettings & {
+              Destination: OutputLocationRef;
+            };
+            UdpOutputSettings: UdpOutputSettings & {
+              ContainerSettings: UdpContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+              Destination: OutputLocationRef;
+            };
+            SrtOutputSettings: SrtOutputSettings & {
+              ContainerSettings: UdpContainerSettings & {
+                M2tsSettings: M2tsSettings & {
+                  DvbNitSettings: DvbNitSettings & {
+                    NetworkId: __integerMin0Max65536;
+                    NetworkName: __stringMin1Max256;
+                  };
+                };
+              };
+              Destination: OutputLocationRef;
+            };
+          };
+        })[];
+      })[];
+      TimecodeConfig: TimecodeConfig & { Source: TimecodeConfigSource };
+      VideoDescriptions: (VideoDescription & {
+        Name: string;
+        CodecSettings: VideoCodecSettings & {
+          FrameCaptureSettings: FrameCaptureSettings & {
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          H264Settings: H264Settings & {
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          H265Settings: H265Settings & {
+            FramerateDenominator: __integerMin1Max3003;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          Mpeg2Settings: Mpeg2Settings & {
+            FramerateDenominator: __integerMin1;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+          Av1Settings: Av1Settings & {
+            FramerateDenominator: __integerMin1Max3003;
+            FramerateNumerator: __integerMin1;
+            TimecodeBurninSettings: TimecodeBurninSettings & {
+              FontSize: TimecodeBurninFontSize;
+              Position: TimecodeBurninPosition;
+            };
+          };
+        };
+      })[];
+      AvailBlanking: AvailBlanking & {
+        AvailBlankingImage: InputLocation & { Uri: __stringMax2048 };
+      };
+      AvailConfiguration: AvailConfiguration & {
+        AvailSettings: AvailSettings & {
+          Esam: Esam & {
+            AcquisitionPointId: __stringMax256;
+            PoisEndpoint: __stringMax2048;
+          };
+        };
+      };
+      BlackoutSlate: BlackoutSlate & {
+        BlackoutSlateImage: InputLocation & { Uri: __stringMax2048 };
+        NetworkEndBlackoutImage: InputLocation & { Uri: __stringMax2048 };
+      };
+      CaptionDescriptions: (CaptionDescription & {
+        CaptionSelectorName: string;
+        Name: string;
+        DestinationSettings: CaptionDestinationSettings & {
+          BurnInDestinationSettings: BurnInDestinationSettings & {
+            Font: InputLocation & { Uri: __stringMax2048 };
+          };
+          DvbSubDestinationSettings: DvbSubDestinationSettings & {
+            Font: InputLocation & { Uri: __stringMax2048 };
+          };
+        };
+      })[];
+      GlobalConfiguration: GlobalConfiguration & {
+        InputLossBehavior: InputLossBehavior & {
+          InputLossImageSlate: InputLocation & { Uri: __stringMax2048 };
+        };
+      };
+      MotionGraphicsConfiguration: MotionGraphicsConfiguration & {
+        MotionGraphicsSettings: MotionGraphicsSettings;
+      };
+      ThumbnailConfiguration: ThumbnailConfiguration & {
+        State: ThumbnailState;
+      };
+      ColorCorrectionSettings: ColorCorrectionSettings & {
+        GlobalColorCorrections: (ColorCorrection & {
+          InputColorSpace: ColorSpace;
+          OutputColorSpace: ColorSpace;
+          Uri: string;
+        })[];
+      };
+    };
+    InputAttachments: (InputAttachment & {
+      AutomaticInputFailoverSettings: AutomaticInputFailoverSettings & {
+        SecondaryInputId: string;
+        FailoverConditions: (FailoverCondition & {
+          FailoverConditionSettings: FailoverConditionSettings & {
+            AudioSilenceSettings: AudioSilenceFailoverSettings & {
+              AudioSelectorName: string;
+            };
+          };
+        })[];
+      };
+      InputSettings: InputSettings & {
+        AudioSelectors: (AudioSelector & {
+          Name: __stringMin1;
+          SelectorSettings: AudioSelectorSettings & {
+            AudioHlsRenditionSelection: AudioHlsRenditionSelection & {
+              GroupId: __stringMin1;
+              Name: __stringMin1;
+            };
+            AudioLanguageSelection: AudioLanguageSelection & {
+              LanguageCode: string;
+            };
+            AudioPidSelection: AudioPidSelection & {
+              Pid: __integerMin0Max8191;
+            };
+            AudioTrackSelection: AudioTrackSelection & {
+              Tracks: (AudioTrack & { Track: __integerMin1 })[];
+              DolbyEDecode: AudioDolbyEDecode & {
+                ProgramSelection: DolbyEProgramSelection;
+              };
+            };
+          };
+        })[];
+        CaptionSelectors: (CaptionSelector & {
+          Name: __stringMin1;
+          SelectorSettings: CaptionSelectorSettings & {
+            TeletextSourceSettings: TeletextSourceSettings & {
+              OutputRectangle: CaptionRectangle & {
+                Height: __doubleMin0Max100;
+                LeftOffset: __doubleMin0Max100;
+                TopOffset: __doubleMin0Max100;
+                Width: __doubleMin0Max100;
+              };
+            };
+          };
+        })[];
+      };
+    })[];
+  };
 }
 export const CreateChannelResponse = S.suspend(() =>
   S.Struct({
@@ -15497,8 +17962,152 @@ export const BatchScheduleActionDeleteResult = S.suspend(() =>
   identifier: "BatchScheduleActionDeleteResult",
 }) as any as S.Schema<BatchScheduleActionDeleteResult>;
 export interface BatchUpdateScheduleResponse {
-  Creates?: BatchScheduleActionCreateResult;
-  Deletes?: BatchScheduleActionDeleteResult;
+  Creates?: BatchScheduleActionCreateResult & {
+    ScheduleActions: (ScheduleAction & {
+      ActionName: string;
+      ScheduleActionSettings: ScheduleActionSettings & {
+        HlsTimedMetadataSettings: HlsTimedMetadataScheduleActionSettings & {
+          Id3: string;
+        };
+        InputPrepareSettings: InputPrepareScheduleActionSettings & {
+          InputClippingSettings: InputClippingSettings & {
+            InputTimecodeSource: InputTimecodeSource;
+          };
+        };
+        InputSwitchSettings: InputSwitchScheduleActionSettings & {
+          InputAttachmentNameReference: string;
+          InputClippingSettings: InputClippingSettings & {
+            InputTimecodeSource: InputTimecodeSource;
+          };
+        };
+        PauseStateSettings: PauseStateScheduleActionSettings & {
+          Pipelines: (PipelinePauseStateSettings & {
+            PipelineId: PipelineId;
+          })[];
+        };
+        Scte35InputSettings: Scte35InputScheduleActionSettings & {
+          Mode: Scte35InputMode;
+        };
+        Scte35ReturnToNetworkSettings: Scte35ReturnToNetworkScheduleActionSettings & {
+          SpliceEventId: __longMin0Max4294967295;
+        };
+        Scte35SpliceInsertSettings: Scte35SpliceInsertScheduleActionSettings & {
+          SpliceEventId: __longMin0Max4294967295;
+        };
+        Scte35TimeSignalSettings: Scte35TimeSignalScheduleActionSettings & {
+          Scte35Descriptors: (Scte35Descriptor & {
+            Scte35DescriptorSettings: Scte35DescriptorSettings & {
+              SegmentationDescriptorScte35DescriptorSettings: Scte35SegmentationDescriptor & {
+                SegmentationCancelIndicator: Scte35SegmentationCancelIndicator;
+                SegmentationEventId: __longMin0Max4294967295;
+                DeliveryRestrictions: Scte35DeliveryRestrictions & {
+                  ArchiveAllowedFlag: Scte35ArchiveAllowedFlag;
+                  DeviceRestrictions: Scte35DeviceRestrictions;
+                  NoRegionalBlackoutFlag: Scte35NoRegionalBlackoutFlag;
+                  WebDeliveryAllowedFlag: Scte35WebDeliveryAllowedFlag;
+                };
+              };
+            };
+          })[];
+        };
+        StaticImageActivateSettings: StaticImageActivateScheduleActionSettings & {
+          Image: InputLocation & { Uri: __stringMax2048 };
+        };
+        StaticImageOutputActivateSettings: StaticImageOutputActivateScheduleActionSettings & {
+          Image: InputLocation & { Uri: __stringMax2048 };
+          OutputNames: __listOf__string;
+        };
+        StaticImageOutputDeactivateSettings: StaticImageOutputDeactivateScheduleActionSettings & {
+          OutputNames: __listOf__string;
+        };
+        TimedMetadataSettings: TimedMetadataScheduleActionSettings & {
+          Id3: string;
+        };
+      };
+      ScheduleActionStartSettings: ScheduleActionStartSettings & {
+        FixedModeScheduleActionStartSettings: FixedModeScheduleActionStartSettings & {
+          Time: string;
+        };
+        FollowModeScheduleActionStartSettings: FollowModeScheduleActionStartSettings & {
+          FollowPoint: FollowPoint;
+          ReferenceActionName: string;
+        };
+      };
+    })[];
+  };
+  Deletes?: BatchScheduleActionDeleteResult & {
+    ScheduleActions: (ScheduleAction & {
+      ActionName: string;
+      ScheduleActionSettings: ScheduleActionSettings & {
+        HlsTimedMetadataSettings: HlsTimedMetadataScheduleActionSettings & {
+          Id3: string;
+        };
+        InputPrepareSettings: InputPrepareScheduleActionSettings & {
+          InputClippingSettings: InputClippingSettings & {
+            InputTimecodeSource: InputTimecodeSource;
+          };
+        };
+        InputSwitchSettings: InputSwitchScheduleActionSettings & {
+          InputAttachmentNameReference: string;
+          InputClippingSettings: InputClippingSettings & {
+            InputTimecodeSource: InputTimecodeSource;
+          };
+        };
+        PauseStateSettings: PauseStateScheduleActionSettings & {
+          Pipelines: (PipelinePauseStateSettings & {
+            PipelineId: PipelineId;
+          })[];
+        };
+        Scte35InputSettings: Scte35InputScheduleActionSettings & {
+          Mode: Scte35InputMode;
+        };
+        Scte35ReturnToNetworkSettings: Scte35ReturnToNetworkScheduleActionSettings & {
+          SpliceEventId: __longMin0Max4294967295;
+        };
+        Scte35SpliceInsertSettings: Scte35SpliceInsertScheduleActionSettings & {
+          SpliceEventId: __longMin0Max4294967295;
+        };
+        Scte35TimeSignalSettings: Scte35TimeSignalScheduleActionSettings & {
+          Scte35Descriptors: (Scte35Descriptor & {
+            Scte35DescriptorSettings: Scte35DescriptorSettings & {
+              SegmentationDescriptorScte35DescriptorSettings: Scte35SegmentationDescriptor & {
+                SegmentationCancelIndicator: Scte35SegmentationCancelIndicator;
+                SegmentationEventId: __longMin0Max4294967295;
+                DeliveryRestrictions: Scte35DeliveryRestrictions & {
+                  ArchiveAllowedFlag: Scte35ArchiveAllowedFlag;
+                  DeviceRestrictions: Scte35DeviceRestrictions;
+                  NoRegionalBlackoutFlag: Scte35NoRegionalBlackoutFlag;
+                  WebDeliveryAllowedFlag: Scte35WebDeliveryAllowedFlag;
+                };
+              };
+            };
+          })[];
+        };
+        StaticImageActivateSettings: StaticImageActivateScheduleActionSettings & {
+          Image: InputLocation & { Uri: __stringMax2048 };
+        };
+        StaticImageOutputActivateSettings: StaticImageOutputActivateScheduleActionSettings & {
+          Image: InputLocation & { Uri: __stringMax2048 };
+          OutputNames: __listOf__string;
+        };
+        StaticImageOutputDeactivateSettings: StaticImageOutputDeactivateScheduleActionSettings & {
+          OutputNames: __listOf__string;
+        };
+        TimedMetadataSettings: TimedMetadataScheduleActionSettings & {
+          Id3: string;
+        };
+      };
+      ScheduleActionStartSettings: ScheduleActionStartSettings & {
+        FixedModeScheduleActionStartSettings: FixedModeScheduleActionStartSettings & {
+          Time: string;
+        };
+        FollowModeScheduleActionStartSettings: FollowModeScheduleActionStartSettings & {
+          FollowPoint: FollowPoint;
+          ReferenceActionName: string;
+        };
+      };
+    })[];
+  };
 }
 export const BatchUpdateScheduleResponse = S.suspend(() =>
   S.Struct({

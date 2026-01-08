@@ -348,7 +348,7 @@ export const UpdateTemplateRequest = S.suspend(() =>
     id: S.String.pipe(T.HttpLabel("id")),
     templateName: S.optional(S.String),
     templateDescription: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/template/{id}" }),
@@ -990,7 +990,7 @@ export const CreateTemplateRequest = S.suspend(() =>
     templateName: S.String,
     templateDescription: S.optional(S.String),
     templateSource: TemplateSource,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(

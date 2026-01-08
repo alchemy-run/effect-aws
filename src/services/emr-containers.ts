@@ -253,7 +253,7 @@ export const CreateVirtualClusterRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
     containerProvider: ContainerProvider,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     securityConfigurationId: S.optional(S.String),
   }).pipe(
@@ -445,7 +445,7 @@ export const GetManagedEndpointSessionCredentialsRequest = S.suspend(() =>
     credentialType: S.String,
     durationInSeconds: S.optional(S.Number),
     logContext: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1391,7 +1391,7 @@ export const StartJobRunRequest = S.suspend(() =>
   S.Struct({
     name: S.optional(S.String),
     virtualClusterId: S.String.pipe(T.HttpLabel("virtualClusterId")),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     executionRoleArn: S.optional(S.String),
     releaseLabel: S.optional(S.String),
     jobDriver: S.optional(JobDriver),
@@ -1454,7 +1454,7 @@ export const CreateManagedEndpointRequest = S.suspend(() =>
     executionRoleArn: S.String,
     certificateArn: S.optional(S.String),
     configurationOverrides: S.optional(ConfigurationOverrides),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -1514,7 +1514,7 @@ export interface CreateJobTemplateRequest {
 export const CreateJobTemplateRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     jobTemplateData: JobTemplateData,
     tags: S.optional(TagMap),
     kmsKeyArn: S.optional(S.String),
@@ -1572,7 +1572,7 @@ export interface CreateSecurityConfigurationRequest {
 }
 export const CreateSecurityConfigurationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     name: S.String,
     containerProvider: S.optional(ContainerProvider),
     securityConfigurationData: SecurityConfigurationData,

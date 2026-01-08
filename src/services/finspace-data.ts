@@ -176,7 +176,7 @@ export const AssociateUserToPermissionGroupRequest = S.suspend(() =>
   S.Struct({
     permissionGroupId: S.String.pipe(T.HttpLabel("permissionGroupId")),
     userId: S.String.pipe(T.HttpLabel("userId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -204,7 +204,7 @@ export const CreatePermissionGroupRequest = S.suspend(() =>
     name: SensitiveString,
     description: S.optional(SensitiveString),
     applicationPermissions: ApplicationPermissionList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/permission-group" }),
@@ -235,7 +235,7 @@ export const CreateUserRequest = S.suspend(() =>
     lastName: S.optional(SensitiveString),
     apiAccess: S.optional(ApiAccess),
     apiAccessPrincipalArn: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/user" }),
@@ -255,7 +255,10 @@ export interface DeleteDatasetRequest {
 }
 export const DeleteDatasetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     datasetId: S.String.pipe(T.HttpLabel("datasetId")),
   }).pipe(
     T.all(
@@ -277,7 +280,10 @@ export interface DeletePermissionGroupRequest {
 export const DeletePermissionGroupRequest = S.suspend(() =>
   S.Struct({
     permissionGroupId: S.String.pipe(T.HttpLabel("permissionGroupId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -301,7 +307,7 @@ export interface DisableUserRequest {
 export const DisableUserRequest = S.suspend(() =>
   S.Struct({
     userId: S.String.pipe(T.HttpLabel("userId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/user/{userId}/disable" }),
@@ -324,7 +330,10 @@ export const DisassociateUserFromPermissionGroupRequest = S.suspend(() =>
   S.Struct({
     permissionGroupId: S.String.pipe(T.HttpLabel("permissionGroupId")),
     userId: S.String.pipe(T.HttpLabel("userId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -348,7 +357,7 @@ export interface EnableUserRequest {
 export const EnableUserRequest = S.suspend(() =>
   S.Struct({
     userId: S.String.pipe(T.HttpLabel("userId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/user/{userId}/enable" }),
@@ -692,7 +701,7 @@ export interface ResetUserPasswordRequest {
 export const ResetUserPasswordRequest = S.suspend(() =>
   S.Struct({
     userId: S.String.pipe(T.HttpLabel("userId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/user/{userId}/password" }),
@@ -719,7 +728,7 @@ export interface UpdateChangesetRequest {
 }
 export const UpdateChangesetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     datasetId: S.String.pipe(T.HttpLabel("datasetId")),
     changesetId: S.String.pipe(T.HttpLabel("changesetId")),
     sourceParams: SourceParams,
@@ -814,7 +823,7 @@ export interface UpdateDatasetRequest {
 }
 export const UpdateDatasetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     datasetId: S.String.pipe(T.HttpLabel("datasetId")),
     datasetTitle: S.String,
     kind: DatasetKind,
@@ -847,7 +856,7 @@ export const UpdatePermissionGroupRequest = S.suspend(() =>
     name: S.optional(SensitiveString),
     description: S.optional(SensitiveString),
     applicationPermissions: S.optional(ApplicationPermissionList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/permission-group/{permissionGroupId}" }),
@@ -878,7 +887,7 @@ export const UpdateUserRequest = S.suspend(() =>
     lastName: S.optional(SensitiveString),
     apiAccess: S.optional(ApiAccess),
     apiAccessPrincipalArn: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/user/{userId}" }),
@@ -999,7 +1008,7 @@ export interface CreateChangesetRequest {
 }
 export const CreateChangesetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     datasetId: S.String.pipe(T.HttpLabel("datasetId")),
     changeType: ChangeType,
     sourceParams: SourceParams,
@@ -1529,7 +1538,7 @@ export interface CreateDataViewRequest {
 }
 export const CreateDataViewRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     datasetId: S.String.pipe(T.HttpLabel("datasetId")),
     autoUpdate: S.optional(S.Boolean),
     sortColumns: S.optional(SortColumnList),
@@ -1728,7 +1737,7 @@ export interface CreateDatasetRequest {
 }
 export const CreateDatasetRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     datasetTitle: S.String,
     kind: DatasetKind,
     datasetDescription: S.optional(S.String),

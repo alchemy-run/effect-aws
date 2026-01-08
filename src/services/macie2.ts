@@ -84,13 +84,11 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type __stringMin1Max512PatternSS = string;
 export type __stringMin1Max128Pattern = string;
-export type __integer = number;
 export type ClassificationScopeId = string;
 export type SensitivityInspectionTemplateId = string;
-export type __long = number;
+export type __timestampIso8601 = Date;
 export type MaxResults = number;
 export type __stringMin1Max2048 = string;
 export type __stringMin1Max64PatternW = string;
@@ -102,7 +100,6 @@ export type NextToken = string;
 export type __stringMin3Max255PatternAZaZ093255 = string;
 export type __stringMin1Max1024PatternSS = string;
 export type S3BucketName = string;
-export type __double = number;
 export type __stringMin1Max128 = string;
 
 //# Schemas
@@ -709,7 +706,10 @@ export interface EnableMacieRequest {
 }
 export const EnableMacieRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     findingPublishingFrequency: S.optional(FindingPublishingFrequency).pipe(
       T.JsonName("findingPublishingFrequency"),
     ),
@@ -738,7 +738,10 @@ export interface EnableOrganizationAdminAccountRequest {
 export const EnableOrganizationAdminAccountRequest = S.suspend(() =>
   S.Struct({
     adminAccountId: S.optional(S.String).pipe(T.JsonName("adminAccountId")),
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/admin" }),
@@ -1493,7 +1496,10 @@ export interface PutFindingsPublicationConfigurationRequest {
 }
 export const PutFindingsPublicationConfigurationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     securityHubConfiguration: S.optional(SecurityHubConfiguration)
       .pipe(T.JsonName("securityHubConfiguration"))
       .annotations({ identifier: "SecurityHubConfiguration" }),
@@ -1716,7 +1722,10 @@ export interface UpdateFindingsFilterRequest {
 export const UpdateFindingsFilterRequest = S.suspend(() =>
   S.Struct({
     action: S.optional(FindingsFilterAction).pipe(T.JsonName("action")),
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     description: S.optional(S.String).pipe(T.JsonName("description")),
     findingCriteria: S.optional(FindingCriteria)
       .pipe(T.JsonName("findingCriteria"))
@@ -2260,7 +2269,10 @@ export interface CreateCustomDataIdentifierRequest {
 }
 export const CreateCustomDataIdentifierRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     description: S.optional(S.String).pipe(T.JsonName("description")),
     ignoreWords: S.optional(__listOf__string).pipe(T.JsonName("ignoreWords")),
     keywords: S.optional(__listOf__string).pipe(T.JsonName("keywords")),
@@ -2374,7 +2386,10 @@ export interface GetCustomDataIdentifierResponse {
   maximumMatchDistance?: number;
   name?: string;
   regex?: string;
-  severityLevels?: SeverityLevel[];
+  severityLevels?: (SeverityLevel & {
+    occurrencesThreshold: number;
+    severity: DataIdentifierSeverity;
+  })[];
   tags?: { [key: string]: string };
 }
 export const GetCustomDataIdentifierResponse = S.suspend(() =>
@@ -2451,7 +2466,10 @@ export const GetFindingsFilterResponse = S.suspend(() =>
   identifier: "GetFindingsFilterResponse",
 }) as any as S.Schema<GetFindingsFilterResponse>;
 export interface GetFindingsPublicationConfigurationResponse {
-  securityHubConfiguration?: SecurityHubConfiguration;
+  securityHubConfiguration?: SecurityHubConfiguration & {
+    publishClassificationFindings: boolean;
+    publishPolicyFindings: boolean;
+  };
 }
 export const GetFindingsPublicationConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -2526,8 +2544,10 @@ export const GetMemberResponse = S.suspend(() =>
   identifier: "GetMemberResponse",
 }) as any as S.Schema<GetMemberResponse>;
 export interface GetRevealConfigurationResponse {
-  configuration?: RevealConfiguration;
-  retrievalConfiguration?: RetrievalConfiguration;
+  configuration?: RevealConfiguration & { status: RevealStatus };
+  retrievalConfiguration?: RetrievalConfiguration & {
+    retrievalMode: RetrievalMode;
+  };
 }
 export const GetRevealConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -2643,7 +2663,9 @@ export const ListTagsForResourceResponse = S.suspend(() =>
   identifier: "ListTagsForResourceResponse",
 }) as any as S.Schema<ListTagsForResourceResponse>;
 export interface PutClassificationExportConfigurationResponse {
-  configuration?: ClassificationExportConfiguration;
+  configuration?: ClassificationExportConfiguration & {
+    s3Destination: S3Destination & { bucketName: string; kmsKeyArn: string };
+  };
 }
 export const PutClassificationExportConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -3431,7 +3453,10 @@ export interface CreateAllowListRequest {
 }
 export const CreateAllowListRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     criteria: S.optional(AllowListCriteria)
       .pipe(T.JsonName("criteria"))
       .annotations({ identifier: "AllowListCriteria" }),
@@ -3732,7 +3757,12 @@ export interface DescribeClassificationJobResponse {
   managedDataIdentifierIds?: string[];
   managedDataIdentifierSelector?: ManagedDataIdentifierSelector;
   name?: string;
-  s3JobDefinition?: S3JobDefinition;
+  s3JobDefinition?: S3JobDefinition & {
+    bucketDefinitions: (S3BucketDefinitionForJob & {
+      accountId: string;
+      buckets: __listOf__string;
+    })[];
+  };
   samplingPercentage?: number;
   scheduleFrequency?: JobScheduleFrequency;
   statistics?: Statistics;
@@ -3742,7 +3772,10 @@ export interface DescribeClassificationJobResponse {
 export const DescribeClassificationJobResponse = S.suspend(() =>
   S.Struct({
     allowListIds: S.optional(__listOf__string).pipe(T.JsonName("allowListIds")),
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     createdAt: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))).pipe(
       T.JsonName("createdAt"),
     ),
@@ -3791,11 +3824,16 @@ export const DescribeClassificationJobResponse = S.suspend(() =>
 export interface GetAllowListResponse {
   arn?: string;
   createdAt?: Date;
-  criteria?: AllowListCriteria;
+  criteria?: AllowListCriteria & {
+    s3WordsList: S3WordsList & {
+      bucketName: __stringMin3Max255PatternAZaZ093255;
+      objectKey: __stringMin1Max1024PatternSS;
+    };
+  };
   description?: string;
   id?: string;
   name?: string;
-  status?: AllowListStatus;
+  status?: AllowListStatus & { code: AllowListStatusCode };
   tags?: { [key: string]: string };
   updatedAt?: Date;
 }
@@ -3823,7 +3861,9 @@ export const GetAllowListResponse = S.suspend(() =>
   identifier: "GetAllowListResponse",
 }) as any as S.Schema<GetAllowListResponse>;
 export interface GetClassificationExportConfigurationResponse {
-  configuration?: ClassificationExportConfiguration;
+  configuration?: ClassificationExportConfiguration & {
+    s3Destination: S3Destination & { bucketName: string; kmsKeyArn: string };
+  };
 }
 export const GetClassificationExportConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -4008,7 +4048,10 @@ export const ListOrganizationAdminAccountsResponse = S.suspend(() =>
   identifier: "ListOrganizationAdminAccountsResponse",
 }) as any as S.Schema<ListOrganizationAdminAccountsResponse>;
 export interface ListResourceProfileArtifactsResponse {
-  artifacts?: ResourceProfileArtifact[];
+  artifacts?: (ResourceProfileArtifact & {
+    arn: string;
+    classificationResultStatus: string;
+  })[];
   nextToken?: string;
 }
 export const ListResourceProfileArtifactsResponse = S.suspend(() =>
@@ -4092,8 +4135,10 @@ export const UpdateClassificationScopeResponse = S.suspend(() =>
   identifier: "UpdateClassificationScopeResponse",
 }) as any as S.Schema<UpdateClassificationScopeResponse>;
 export interface UpdateRevealConfigurationResponse {
-  configuration?: RevealConfiguration;
-  retrievalConfiguration?: RetrievalConfiguration;
+  configuration?: RevealConfiguration & { status: RevealStatus };
+  retrievalConfiguration?: RetrievalConfiguration & {
+    retrievalMode: RetrievalMode;
+  };
 }
 export const UpdateRevealConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -4291,7 +4336,10 @@ export interface CreateFindingsFilterRequest {
 export const CreateFindingsFilterRequest = S.suspend(() =>
   S.Struct({
     action: S.optional(FindingsFilterAction).pipe(T.JsonName("action")),
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     description: S.optional(S.String).pipe(T.JsonName("description")),
     findingCriteria: S.optional(FindingCriteria)
       .pipe(T.JsonName("findingCriteria"))
@@ -4379,7 +4427,11 @@ export const GetBucketStatisticsResponse = S.suspend(() =>
 export interface GetClassificationScopeResponse {
   id?: string;
   name?: string;
-  s3?: S3ClassificationScope;
+  s3?: S3ClassificationScope & {
+    excludes: S3ClassificationScopeExclusion & {
+      bucketNames: __listOfS3BucketName;
+    };
+  };
 }
 export const GetClassificationScopeResponse = S.suspend(() =>
   S.Struct({
@@ -4406,7 +4458,9 @@ export const GetFindingStatisticsResponse = S.suspend(() =>
 }) as any as S.Schema<GetFindingStatisticsResponse>;
 export interface GetSensitiveDataOccurrencesResponse {
   error?: string;
-  sensitiveDataOccurrences?: { [key: string]: DetectedDataDetails[] };
+  sensitiveDataOccurrences?: {
+    [key: string]: (DetectedDataDetails & { value: __stringMin1Max128 })[];
+  };
   status?: RevealRequestStatus;
 }
 export const GetSensitiveDataOccurrencesResponse = S.suspend(() =>
@@ -4692,7 +4746,12 @@ export const UserIdentityType = S.Literal(
   "AWSService",
 );
 export interface ListClassificationJobsResponse {
-  items?: JobSummary[];
+  items?: (JobSummary & {
+    bucketDefinitions: (S3BucketDefinitionForJob & {
+      accountId: string;
+      buckets: __listOf__string;
+    })[];
+  })[];
   nextToken?: string;
 }
 export const ListClassificationJobsResponse = S.suspend(() =>
@@ -5424,7 +5483,10 @@ export interface CreateClassificationJobRequest {
 export const CreateClassificationJobRequest = S.suspend(() =>
   S.Struct({
     allowListIds: S.optional(__listOf__string).pipe(T.JsonName("allowListIds")),
-    clientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     customDataIdentifierIds: S.optional(__listOf__string).pipe(
       T.JsonName("customDataIdentifierIds"),
     ),
@@ -7159,7 +7221,7 @@ export const listFindings: {
   items: (
     input: ListFindingsRequest,
   ) => stream.Stream<
-    __string,
+    string,
     | AccessDeniedException
     | ConflictException
     | InternalServerException

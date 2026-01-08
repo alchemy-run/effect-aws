@@ -834,7 +834,7 @@ export const CreateAppInstanceRequest = S.suspend(() =>
   S.Struct({
     Name: SensitiveString,
     Metadata: S.optional(SensitiveString),
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -864,7 +864,7 @@ export const CreateAppInstanceUserRequest = S.suspend(() =>
     AppInstanceUserId: SensitiveString,
     Name: SensitiveString,
     Metadata: S.optional(SensitiveString),
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
     ExpirationSettings: S.optional(ExpirationSettings),
   }).pipe(
@@ -946,7 +946,7 @@ export const RegisterAppInstanceUserEndpointRequest = S.suspend(() =>
     Type: AppInstanceUserEndpointType,
     ResourceArn: S.String,
     EndpointAttributes: EndpointAttributes,
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     AllowMessages: S.optional(AllowMessages),
   }).pipe(
     T.all(
@@ -1402,7 +1402,7 @@ export const CreateAppInstanceBotRequest = S.suspend(() =>
     AppInstanceArn: S.String,
     Name: S.optional(SensitiveString),
     Metadata: S.optional(SensitiveString),
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
     Configuration: Configuration,
   }).pipe(

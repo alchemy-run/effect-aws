@@ -118,7 +118,9 @@ export type ExternalImageId = string;
 export type MaxFacesToIndex = number;
 export type PageSize = number;
 export type DatasetLabel = string;
+export type IsLabeled = boolean;
 export type QueryString = string;
+export type HasErrors = boolean;
 export type ListDatasetEntriesPageSize = number;
 export type ListDatasetLabelsPageSize = number;
 export type ListMediaAnalysisJobsPageSize = number;
@@ -131,6 +133,7 @@ export type JobTag = string;
 export type MediaAnalysisJobName = string;
 export type InferenceUnits = number;
 export type TagKey = string;
+export type ImageBlob = Uint8Array;
 export type S3Bucket = string;
 export type S3KeyPrefix = string;
 export type TagValue = string;
@@ -140,6 +143,7 @@ export type HumanLoopName = string;
 export type FlowDefinitionArn = string;
 export type MediaAnalysisS3KeyPrefix = string;
 export type MaxDurationInSecondsULong = number;
+export type GroundTruthBlob = Uint8Array;
 export type ULong = number;
 export type StreamProcessorArn = string;
 export type Url = string;
@@ -157,6 +161,7 @@ export type BoundingBoxHeight = number;
 export type BoundingBoxWidth = number;
 export type SegmentConfidence = number;
 export type KinesisVideoStreamFragmentNumber = string;
+export type LivenessImageBlob = Uint8Array | redacted.Redacted<Uint8Array>;
 export type Version = string;
 export type Timecode = string;
 export type ImageId = string;
@@ -286,7 +291,7 @@ export const AssociateFacesRequest = S.suspend(() =>
     UserId: S.String,
     FaceIds: UserFaceIdList,
     UserMatchThreshold: S.optional(S.Number),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -333,7 +338,7 @@ export const CreateUserRequest = S.suspend(() =>
   S.Struct({
     CollectionId: S.String,
     UserId: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -446,7 +451,7 @@ export const DeleteUserRequest = S.suspend(() =>
   S.Struct({
     CollectionId: S.String,
     UserId: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -581,7 +586,7 @@ export const DisassociateFacesRequest = S.suspend(() =>
   S.Struct({
     CollectionId: S.String,
     UserId: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FaceIds: UserFaceIdList,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -3467,7 +3472,7 @@ export interface StartMediaAnalysisJobRequest {
 }
 export const StartMediaAnalysisJobRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     JobName: S.optional(S.String),
     OperationsConfig: MediaAnalysisOperationsConfig,
     Input: MediaAnalysisInput,

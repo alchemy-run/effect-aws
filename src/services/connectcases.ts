@@ -119,8 +119,11 @@ export type FieldOptionName = string;
 export type FieldOptionValue = string;
 export type DomainArn = string;
 export type DomainStatus = string;
+export type CreatedTime = Date;
 export type FieldArn = string;
 export type LayoutArn = string;
+export type Deleted = boolean;
+export type LastModifiedTime = Date;
 export type TemplateArn = string;
 export type CommentBody = string;
 export type CommentBodyTextType = string;
@@ -130,6 +133,7 @@ export type SlaName = string | redacted.Redacted<string>;
 export type SlaStatus = string;
 export type AuditEventId = string;
 export type AuditEventType = string;
+export type AuditEventDateTime = Date;
 export type CaseRuleArn = string;
 export type RuleType = string;
 export type FieldNamespace = string;
@@ -138,8 +142,12 @@ export type TargetSlaMinutes = number;
 export type ParentChildFieldOptionValue = string;
 export type AuditEventFieldId = string;
 export type IamPrincipalArn = string;
+export type AssociationTime = Date;
 export type CaseArn = string;
+export type ConnectedToSystemTime = Date;
 export type RelatedItemArn = string;
+export type SlaTargetTime = Date;
+export type SlaCompletionTime = Date;
 
 //# Schemas
 export type TagKeyList = string[];
@@ -1786,7 +1794,7 @@ export const CreateCaseRequest = S.suspend(() =>
     domainId: S.String.pipe(T.HttpLabel("domainId")),
     templateId: S.String,
     fields: FieldValueList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     performedBy: S.optional(UserUnion),
   }).pipe(
     T.all(

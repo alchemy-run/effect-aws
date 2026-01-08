@@ -459,6 +459,7 @@ export type ListStreamConsumersInputLimit = number;
 export type ListStreamsInputLimit = number;
 export type TagKey = string;
 export type ListTagsForStreamInputLimit = number;
+export type Data = Uint8Array;
 export type PartitionKey = string;
 export type HashKey = string;
 export type Policy = string;

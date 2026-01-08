@@ -110,6 +110,7 @@ export type ActionType = string | redacted.Redacted<string>;
 export type ActionId = string | redacted.Redacted<string>;
 export type SchemaJson = string | redacted.Redacted<string>;
 export type ResourceArn = string;
+export type TimestampFormat = Date;
 export type Namespace = string | redacted.Redacted<string>;
 export type UserPoolArn = string;
 export type ClientId = string | redacted.Redacted<string>;
@@ -117,6 +118,7 @@ export type Issuer = string;
 export type EntityIdPrefix = string | redacted.Redacted<string>;
 export type StaticPolicyDescription = string | redacted.Redacted<string>;
 export type DiscoveryUrl = string;
+export type BooleanAttribute = boolean;
 export type LongAttribute = number;
 export type StringAttribute = string | redacted.Redacted<string>;
 export type IpAddr = string | redacted.Redacted<string>;
@@ -455,7 +457,7 @@ export interface CreatePolicyTemplateInput {
 }
 export const CreatePolicyTemplateInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     policyStoreId: S.String,
     description: S.optional(SensitiveString),
     statement: SensitiveString,
@@ -639,7 +641,7 @@ export interface CreatePolicyStoreInput {
 }
 export const CreatePolicyStoreInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     validationSettings: ValidationSettings,
     description: S.optional(SensitiveString),
     deletionProtection: S.optional(DeletionProtection),
@@ -1101,7 +1103,7 @@ export interface CreatePolicyInput {
 }
 export const CreatePolicyInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     policyStoreId: S.String,
     definition: PolicyDefinition,
   }).pipe(
@@ -1627,7 +1629,7 @@ export interface CreateIdentitySourceInput {
 }
 export const CreateIdentitySourceInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     policyStoreId: S.String,
     configuration: Configuration,
     principalEntityType: S.optional(SensitiveString),

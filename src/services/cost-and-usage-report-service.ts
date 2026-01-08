@@ -89,10 +89,10 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type ReportName = string;
 export type MaxResults = number;
-export type GenericString = string;
 export type TagKey = string;
 export type S3Bucket = string;
 export type S3Prefix = string;
+export type RefreshClosedReports = boolean;
 export type BillingViewArn = string;
 export type TagValue = string;
 export type DeleteResponseMessage = string;

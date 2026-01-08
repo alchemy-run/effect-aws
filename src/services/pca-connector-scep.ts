@@ -152,7 +152,7 @@ export interface CreateChallengeRequest {
 export const CreateChallengeRequest = S.suspend(() =>
   S.Struct({
     ConnectorArn: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -514,7 +514,7 @@ export const CreateConnectorRequest = S.suspend(() =>
   S.Struct({
     CertificateAuthorityArn: S.String,
     MobileDeviceManagement: S.optional(MobileDeviceManagement),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(

@@ -89,6 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type id = string;
+export type cancelActive = boolean;
 export type longString = string;
 export type int = number;
 export type taskId = string;

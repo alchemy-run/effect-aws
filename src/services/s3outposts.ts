@@ -97,6 +97,7 @@ export type MaxResults = number;
 export type EndpointArn = string;
 export type ErrorMessage = string;
 export type CidrBlock = string;
+export type CreationTime = Date;
 export type VpcId = string;
 export type OutpostArn = string;
 export type S3OutpostArn = string;

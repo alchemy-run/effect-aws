@@ -95,7 +95,6 @@ export type TargetEngineVersion = string;
 export type TargetDBParameterGroupName = string;
 export type TargetDBClusterParameterGroupName = string;
 export type TargetDBInstanceClass = string;
-export type IntegerOptional = number;
 export type TargetStorageType = string;
 export type CustomEngineName = string;
 export type CustomEngineVersion = string;
@@ -104,12 +103,10 @@ export type String255 = string;
 export type KmsKeyIdOrArn = string;
 export type Description = string;
 export type CustomDBEngineVersionManifest = string;
-export type LongOptional = number;
 export type GlobalClusterIdentifier = string;
 export type DBProxyName = string;
 export type Arn = string;
 export type DBProxyEndpointName = string;
-export type DoubleOptional = number;
 export type SourceArn = string;
 export type IntegrationName = string;
 export type DataFilter = string;
@@ -6977,7 +6974,7 @@ export interface Integration {
   DataFilter?: string;
   Description?: string;
   CreateTime?: Date;
-  Errors?: IntegrationError[];
+  Errors?: (IntegrationError & { ErrorCode: string })[];
 }
 export const Integration = S.suspend(() =>
   S.Struct({
@@ -7662,7 +7659,11 @@ export const CreateDBSecurityGroupResult = S.suspend(() =>
   identifier: "CreateDBSecurityGroupResult",
 }) as any as S.Schema<CreateDBSecurityGroupResult>;
 export interface CreateDBSnapshotResult {
-  DBSnapshot?: DBSnapshot;
+  DBSnapshot?: DBSnapshot & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  };
 }
 export const CreateDBSnapshotResult = S.suspend(() =>
   S.Struct({ DBSnapshot: S.optional(DBSnapshot) }).pipe(ns),
@@ -7793,7 +7794,13 @@ export const DeleteDBClusterSnapshotResult = S.suspend(() =>
   identifier: "DeleteDBClusterSnapshotResult",
 }) as any as S.Schema<DeleteDBClusterSnapshotResult>;
 export interface DeleteDBInstanceResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const DeleteDBInstanceResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -7809,7 +7816,11 @@ export const DeleteDBProxyEndpointResponse = S.suspend(() =>
   identifier: "DeleteDBProxyEndpointResponse",
 }) as any as S.Schema<DeleteDBProxyEndpointResponse>;
 export interface DeleteDBSnapshotResult {
-  DBSnapshot?: DBSnapshot;
+  DBSnapshot?: DBSnapshot & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  };
 }
 export const DeleteDBSnapshotResult = S.suspend(() =>
   S.Struct({ DBSnapshot: S.optional(DBSnapshot) }).pipe(ns),
@@ -7972,7 +7983,11 @@ export const DBEngineVersionMessage = S.suspend(() =>
 }) as any as S.Schema<DBEngineVersionMessage>;
 export interface DBInstanceAutomatedBackupMessage {
   Marker?: string;
-  DBInstanceAutomatedBackups?: DBInstanceAutomatedBackup[];
+  DBInstanceAutomatedBackups?: (DBInstanceAutomatedBackup & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  })[];
 }
 export const DBInstanceAutomatedBackupMessage = S.suspend(() =>
   S.Struct({
@@ -7984,7 +7999,13 @@ export const DBInstanceAutomatedBackupMessage = S.suspend(() =>
 }) as any as S.Schema<DBInstanceAutomatedBackupMessage>;
 export interface DBInstanceMessage {
   Marker?: string;
-  DBInstances?: DBInstance[];
+  DBInstances?: (DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  })[];
 }
 export const DBInstanceMessage = S.suspend(() =>
   S.Struct({
@@ -8068,7 +8089,11 @@ export const DescribeDBShardGroupsResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeDBShardGroupsResponse>;
 export interface DBSnapshotMessage {
   Marker?: string;
-  DBSnapshots?: DBSnapshot[];
+  DBSnapshots?: (DBSnapshot & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  })[];
 }
 export const DBSnapshotMessage = S.suspend(() =>
   S.Struct({
@@ -8150,7 +8175,9 @@ export const GlobalClustersMessage = S.suspend(() =>
 }) as any as S.Schema<GlobalClustersMessage>;
 export interface DescribeIntegrationsResponse {
   Marker?: string;
-  Integrations?: Integration[];
+  Integrations?: (Integration & {
+    Errors: (IntegrationError & { ErrorCode: string })[];
+  })[];
 }
 export const DescribeIntegrationsResponse = S.suspend(() =>
   S.Struct({
@@ -8731,7 +8758,11 @@ export const ModifyDBRecommendationMessage = S.suspend(() =>
   identifier: "ModifyDBRecommendationMessage",
 }) as any as S.Schema<ModifyDBRecommendationMessage>;
 export interface ModifyDBSnapshotResult {
-  DBSnapshot?: DBSnapshot;
+  DBSnapshot?: DBSnapshot & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  };
 }
 export const ModifyDBSnapshotResult = S.suspend(() =>
   S.Struct({ DBSnapshot: S.optional(DBSnapshot) }).pipe(ns),
@@ -8811,7 +8842,13 @@ export const ModifyTenantDatabaseResult = S.suspend(() =>
   identifier: "ModifyTenantDatabaseResult",
 }) as any as S.Schema<ModifyTenantDatabaseResult>;
 export interface PromoteReadReplicaResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const PromoteReadReplicaResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -8901,7 +8938,13 @@ export const RebootDBClusterResult = S.suspend(() =>
   identifier: "RebootDBClusterResult",
 }) as any as S.Schema<RebootDBClusterResult>;
 export interface RebootDBInstanceResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const RebootDBInstanceResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -9040,7 +9083,13 @@ export const RestoreDBClusterToPointInTimeResult = S.suspend(() =>
   identifier: "RestoreDBClusterToPointInTimeResult",
 }) as any as S.Schema<RestoreDBClusterToPointInTimeResult>;
 export interface RestoreDBInstanceFromDBSnapshotResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const RestoreDBInstanceFromDBSnapshotResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -9048,7 +9097,13 @@ export const RestoreDBInstanceFromDBSnapshotResult = S.suspend(() =>
   identifier: "RestoreDBInstanceFromDBSnapshotResult",
 }) as any as S.Schema<RestoreDBInstanceFromDBSnapshotResult>;
 export interface RestoreDBInstanceFromS3Result {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const RestoreDBInstanceFromS3Result = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -9056,7 +9111,13 @@ export const RestoreDBInstanceFromS3Result = S.suspend(() =>
   identifier: "RestoreDBInstanceFromS3Result",
 }) as any as S.Schema<RestoreDBInstanceFromS3Result>;
 export interface RestoreDBInstanceToPointInTimeResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const RestoreDBInstanceToPointInTimeResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -9100,7 +9161,13 @@ export const StartDBClusterResult = S.suspend(() =>
   identifier: "StartDBClusterResult",
 }) as any as S.Schema<StartDBClusterResult>;
 export interface StartDBInstanceResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const StartDBInstanceResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -9108,7 +9175,11 @@ export const StartDBInstanceResult = S.suspend(() =>
   identifier: "StartDBInstanceResult",
 }) as any as S.Schema<StartDBInstanceResult>;
 export interface StartDBInstanceAutomatedBackupsReplicationResult {
-  DBInstanceAutomatedBackup?: DBInstanceAutomatedBackup;
+  DBInstanceAutomatedBackup?: DBInstanceAutomatedBackup & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  };
 }
 export const StartDBInstanceAutomatedBackupsReplicationResult = S.suspend(() =>
   S.Struct({
@@ -9140,7 +9211,13 @@ export const StopDBClusterResult = S.suspend(() =>
   identifier: "StopDBClusterResult",
 }) as any as S.Schema<StopDBClusterResult>;
 export interface StopDBInstanceResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const StopDBInstanceResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -9148,7 +9225,11 @@ export const StopDBInstanceResult = S.suspend(() =>
   identifier: "StopDBInstanceResult",
 }) as any as S.Schema<StopDBInstanceResult>;
 export interface StopDBInstanceAutomatedBackupsReplicationResult {
-  DBInstanceAutomatedBackup?: DBInstanceAutomatedBackup;
+  DBInstanceAutomatedBackup?: DBInstanceAutomatedBackup & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  };
 }
 export const StopDBInstanceAutomatedBackupsReplicationResult = S.suspend(() =>
   S.Struct({
@@ -9174,7 +9255,13 @@ export const SwitchoverGlobalClusterResult = S.suspend(() =>
   identifier: "SwitchoverGlobalClusterResult",
 }) as any as S.Schema<SwitchoverGlobalClusterResult>;
 export interface SwitchoverReadReplicaResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const SwitchoverReadReplicaResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -9429,7 +9516,11 @@ export const CopyDBParameterGroupResult = S.suspend(() =>
   identifier: "CopyDBParameterGroupResult",
 }) as any as S.Schema<CopyDBParameterGroupResult>;
 export interface CopyDBSnapshotResult {
-  DBSnapshot?: DBSnapshot;
+  DBSnapshot?: DBSnapshot & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  };
 }
 export const CopyDBSnapshotResult = S.suspend(() =>
   S.Struct({ DBSnapshot: S.optional(DBSnapshot) }).pipe(ns),
@@ -9445,7 +9536,13 @@ export const CreateDBClusterResult = S.suspend(() =>
   identifier: "CreateDBClusterResult",
 }) as any as S.Schema<CreateDBClusterResult>;
 export interface CreateDBInstanceResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const CreateDBInstanceResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -9469,7 +9566,11 @@ export const CreateDBProxyEndpointResponse = S.suspend(() =>
   identifier: "CreateDBProxyEndpointResponse",
 }) as any as S.Schema<CreateDBProxyEndpointResponse>;
 export interface DeleteDBInstanceAutomatedBackupResult {
-  DBInstanceAutomatedBackup?: DBInstanceAutomatedBackup;
+  DBInstanceAutomatedBackup?: DBInstanceAutomatedBackup & {
+    AdditionalStorageVolumes: (AdditionalStorageVolume & {
+      VolumeName: string;
+    })[];
+  };
 }
 export const DeleteDBInstanceAutomatedBackupResult = S.suspend(() =>
   S.Struct({
@@ -9591,7 +9692,13 @@ export const ModifyDBClusterResult = S.suspend(() =>
   identifier: "ModifyDBClusterResult",
 }) as any as S.Schema<ModifyDBClusterResult>;
 export interface ModifyDBInstanceResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const ModifyDBInstanceResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),
@@ -10300,7 +10407,13 @@ export const DescribeDBClusterSnapshotAttributesResult = S.suspend(() =>
   identifier: "DescribeDBClusterSnapshotAttributesResult",
 }) as any as S.Schema<DescribeDBClusterSnapshotAttributesResult>;
 export interface DescribeDBMajorEngineVersionsResponse {
-  DBMajorEngineVersions?: DBMajorEngineVersion[];
+  DBMajorEngineVersions?: (DBMajorEngineVersion & {
+    SupportedEngineLifecycles: (SupportedEngineLifecycle & {
+      LifecycleSupportName: LifecycleSupportName;
+      LifecycleSupportStartDate: Date;
+      LifecycleSupportEndDate: Date;
+    })[];
+  })[];
   Marker?: string;
 }
 export const DescribeDBMajorEngineVersionsResponse = S.suspend(() =>
@@ -10486,7 +10599,13 @@ export const ValidDBInstanceModificationsMessage = S.suspend(() =>
   identifier: "ValidDBInstanceModificationsMessage",
 }) as any as S.Schema<ValidDBInstanceModificationsMessage>;
 export interface CreateDBInstanceReadReplicaResult {
-  DBInstance?: DBInstance;
+  DBInstance?: DBInstance & {
+    PendingModifiedValues: PendingModifiedValues & {
+      AdditionalStorageVolumes: (AdditionalStorageVolume & {
+        VolumeName: string;
+      })[];
+    };
+  };
 }
 export const CreateDBInstanceReadReplicaResult = S.suspend(() =>
   S.Struct({ DBInstance: S.optional(DBInstance) }).pipe(ns),

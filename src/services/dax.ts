@@ -85,7 +85,7 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type IntegerOptional = number;
+export type SSEEnabled = boolean;
 export type ExceptionMessage = string;
 export type AwsQueryErrorMessage = string;
 

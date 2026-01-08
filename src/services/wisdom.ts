@@ -426,7 +426,7 @@ export interface CreateSessionRequest {
 }
 export const CreateSessionRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     name: S.String,
     description: S.optional(S.String),
@@ -757,7 +757,7 @@ export const CreateContentRequest = S.suspend(() =>
     overrideLinkOutUri: S.optional(S.String),
     metadata: S.optional(ContentMetadata),
     uploadId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -1132,7 +1132,7 @@ export interface CreateAssistantRequest {
 }
 export const CreateAssistantRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     type: S.String,
     description: S.optional(S.String),
@@ -1165,7 +1165,7 @@ export const CreateAssistantAssociationRequest = S.suspend(() =>
     assistantId: S.String.pipe(T.HttpLabel("assistantId")),
     associationType: S.String,
     association: AssistantAssociationInputData,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -1402,7 +1402,7 @@ export const CreateQuickResponseRequest = S.suspend(() =>
     isActive: S.optional(S.Boolean),
     channels: S.optional(Channels),
     language: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -2022,7 +2022,7 @@ export interface CreateKnowledgeBaseRequest {
 }
 export const CreateKnowledgeBaseRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     knowledgeBaseType: S.String,
     sourceConfiguration: S.optional(SourceConfiguration),
@@ -2216,7 +2216,7 @@ export const StartImportJobRequest = S.suspend(() =>
     knowledgeBaseId: S.String.pipe(T.HttpLabel("knowledgeBaseId")),
     importJobType: S.String,
     uploadId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     metadata: S.optional(ContentMetadata),
     externalSourceConfiguration: S.optional(ExternalSourceConfiguration),
   }).pipe(

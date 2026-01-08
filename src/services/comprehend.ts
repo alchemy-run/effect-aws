@@ -89,6 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type CustomerInputString = string | redacted.Redacted<string>;
 export type DocumentClassifierEndpointArn = string;
+export type SemiStructuredDocumentBlob = Uint8Array;
 export type ComprehendFlywheelArn = string;
 export type ComprehendArnName = string;
 export type Description = string;
@@ -288,7 +289,7 @@ export const CreateEndpointRequest = S.suspend(() =>
     EndpointName: S.String,
     ModelArn: S.optional(S.String),
     DesiredInferenceUnits: S.Number,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
     DataAccessRoleArn: S.optional(S.String),
     FlywheelArn: S.optional(S.String),
@@ -782,7 +783,7 @@ export const StartDominantLanguageDetectionJobRequest = S.suspend(() =>
     OutputDataConfig: OutputDataConfig,
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
     Tags: S.optional(TagList),
@@ -813,7 +814,7 @@ export const StartEntitiesDetectionJobRequest = S.suspend(() =>
     JobName: S.optional(S.String),
     EntityRecognizerArn: S.optional(S.String),
     LanguageCode: LanguageCode,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
     Tags: S.optional(TagList),
@@ -841,7 +842,7 @@ export const StartEventsDetectionJobRequest = S.suspend(() =>
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
     LanguageCode: LanguageCode,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TargetEventTypes: TargetEventTypes,
     Tags: S.optional(TagList),
   }).pipe(
@@ -882,7 +883,7 @@ export const StartKeyPhrasesDetectionJobRequest = S.suspend(() =>
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
     LanguageCode: LanguageCode,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
     Tags: S.optional(TagList),
@@ -910,7 +911,7 @@ export const StartSentimentDetectionJobRequest = S.suspend(() =>
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
     LanguageCode: LanguageCode,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
     Tags: S.optional(TagList),
@@ -938,7 +939,7 @@ export const StartTargetedSentimentDetectionJobRequest = S.suspend(() =>
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
     LanguageCode: LanguageCode,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
     Tags: S.optional(TagList),
@@ -966,7 +967,7 @@ export const StartTopicsDetectionJobRequest = S.suspend(() =>
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
     NumberOfTopics: S.optional(S.Number),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
     Tags: S.optional(TagList),
@@ -2057,7 +2058,7 @@ export const StartDocumentClassificationJobRequest = S.suspend(() =>
     InputDataConfig: InputDataConfig,
     OutputDataConfig: OutputDataConfig,
     DataAccessRoleArn: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
     Tags: S.optional(TagList),
@@ -2158,7 +2159,7 @@ export const StartPiiEntitiesDetectionJobRequest = S.suspend(() =>
     DataAccessRoleArn: S.String,
     JobName: S.optional(S.String),
     LanguageCode: LanguageCode,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -3850,7 +3851,7 @@ export const CreateDocumentClassifierRequest = S.suspend(() =>
     Tags: S.optional(TagList),
     InputDataConfig: DocumentClassifierInputDataConfig,
     OutputDataConfig: S.optional(DocumentClassifierOutputDataConfig),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LanguageCode: LanguageCode,
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
@@ -3883,7 +3884,7 @@ export const CreateEntityRecognizerRequest = S.suspend(() =>
     DataAccessRoleArn: S.String,
     Tags: S.optional(TagList),
     InputDataConfig: EntityRecognizerInputDataConfig,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LanguageCode: LanguageCode,
     VolumeKmsKeyId: S.optional(S.String),
     VpcConfig: S.optional(VpcConfig),
@@ -3915,7 +3916,7 @@ export const CreateFlywheelRequest = S.suspend(() =>
     ModelType: S.optional(ModelType),
     DataLakeS3Uri: S.String,
     DataSecurityConfig: S.optional(DataSecurityConfig),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -4575,7 +4576,7 @@ export const CreateDatasetRequest = S.suspend(() =>
     DatasetType: S.optional(DatasetType),
     Description: S.optional(S.String),
     InputDataConfig: DatasetInputDataConfig,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

@@ -423,7 +423,7 @@ export const CreateRequesterGatewayRequest = S.suspend(() =>
     vpcId: S.String,
     subnetIds: SubnetIdList,
     securityGroupIds: SecurityGroupIdList,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     description: S.optional(S.String),
     tags: S.optional(TagsMap),
   }).pipe(
@@ -480,7 +480,7 @@ export interface UpdateRequesterGatewayRequest {
 }
 export const UpdateRequesterGatewayRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     gatewayId: S.String.pipe(T.HttpLabel("gatewayId")),
     description: S.optional(S.String),
   }).pipe(
@@ -506,7 +506,7 @@ export interface CreateOutboundExternalLinkRequest {
 }
 export const CreateOutboundExternalLinkRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     gatewayId: S.String.pipe(T.HttpLabel("gatewayId")),
     attributes: S.optional(LinkAttributes),
     publicEndpoint: S.String,
@@ -682,7 +682,7 @@ export const UpdateResponderGatewayRequest = S.suspend(() =>
     protocol: Protocol,
     trustStoreConfiguration: S.optional(TrustStoreConfiguration),
     managedEndpointConfiguration: S.optional(ManagedEndpointConfiguration),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     gatewayId: S.String.pipe(T.HttpLabel("gatewayId")),
     description: S.optional(S.String),
   }).pipe(
@@ -707,7 +707,7 @@ export interface CreateInboundExternalLinkRequest {
 }
 export const CreateInboundExternalLinkRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     gatewayId: S.String.pipe(T.HttpLabel("gatewayId")),
     attributes: S.optional(LinkAttributes),
     logSettings: LinkLogSettings,
@@ -1410,7 +1410,7 @@ export const CreateResponderGatewayRequest = S.suspend(() =>
     protocol: Protocol,
     trustStoreConfiguration: S.optional(TrustStoreConfiguration),
     managedEndpointConfiguration: S.optional(ManagedEndpointConfiguration),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     description: S.optional(S.String),
     tags: S.optional(TagsMap),
   }).pipe(
@@ -1502,7 +1502,7 @@ export interface UpdateLinkModuleFlowRequest {
 }
 export const UpdateLinkModuleFlowRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     gatewayId: S.String.pipe(T.HttpLabel("gatewayId")),
     linkId: S.String.pipe(T.HttpLabel("linkId")),
     modules: ModuleConfigurationList,

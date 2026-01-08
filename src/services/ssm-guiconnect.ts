@@ -105,7 +105,9 @@ export interface DeleteConnectionRecordingPreferencesRequest {
   ClientToken?: string;
 }
 export const DeleteConnectionRecordingPreferencesRequest = S.suspend(() =>
-  S.Struct({ ClientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/DeleteConnectionRecordingPreferences" }),
       svc,
@@ -154,7 +156,7 @@ export interface UpdateConnectionRecordingPreferencesRequest {
 export const UpdateConnectionRecordingPreferencesRequest = S.suspend(() =>
   S.Struct({
     ConnectionRecordingPreferences: ConnectionRecordingPreferences,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/UpdateConnectionRecordingPreferences" }),

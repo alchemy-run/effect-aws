@@ -110,6 +110,7 @@ export type SecurityGroupId = string;
 export type AuthenticationType = string;
 export type InstanceType = string;
 export type MaxConcurrentSessions = number;
+export type CertificateAuthorityBody = Uint8Array;
 export type CertificateThumbprint = string;
 export type KinesisStreamArn = string;
 export type EnabledType = string;
@@ -136,7 +137,9 @@ export type S3BucketOwner = string;
 export type CookieDomain = string | redacted.Redacted<string>;
 export type CookieName = string | redacted.Redacted<string>;
 export type CookiePath = string | redacted.Redacted<string>;
+export type IconImage = Uint8Array;
 export type S3Uri = string;
+export type WallpaperImage = Uint8Array;
 export type IpAddress = string | redacted.Redacted<string>;
 export type RendererType = string;
 export type BrowserType = string;
@@ -405,7 +408,7 @@ export const UpdateBrowserSettingsRequest = S.suspend(() =>
   S.Struct({
     browserSettingsArn: S.String.pipe(T.HttpLabel("browserSettingsArn")),
     browserPolicy: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     webContentFilteringPolicy: S.optional(WebContentFilteringPolicy),
   }).pipe(
     T.all(
@@ -581,7 +584,7 @@ export const UpdateDataProtectionSettingsRequest = S.suspend(() =>
     inlineRedactionConfiguration: S.optional(InlineRedactionConfiguration),
     displayName: S.optional(SensitiveString),
     description: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -689,7 +692,7 @@ export const UpdateIdentityProviderRequest = S.suspend(() =>
     identityProviderName: S.optional(SensitiveString),
     identityProviderType: S.optional(S.String),
     identityProviderDetails: S.optional(IdentityProviderDetails),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -804,7 +807,7 @@ export const UpdateIpAccessSettingsRequest = S.suspend(() =>
     displayName: S.optional(SensitiveString),
     description: S.optional(SensitiveString),
     ipRules: S.optional(IpRuleList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -892,7 +895,7 @@ export const CreateNetworkSettingsRequest = S.suspend(() =>
     subnetIds: SubnetIdList,
     securityGroupIds: SecurityGroupIdList,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/networkSettings" }),
@@ -938,7 +941,7 @@ export const UpdateNetworkSettingsRequest = S.suspend(() =>
     vpcId: S.optional(S.String),
     subnetIds: S.optional(SubnetIdList),
     securityGroupIds: S.optional(SecurityGroupIdList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1025,7 +1028,7 @@ export const CreatePortalRequest = S.suspend(() =>
     tags: S.optional(TagList),
     customerManagedKey: S.optional(S.String),
     additionalEncryptionContext: S.optional(EncryptionContextMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     authenticationType: S.optional(S.String),
     instanceType: S.optional(S.String),
     maxConcurrentSessions: S.optional(S.Number),
@@ -1695,7 +1698,7 @@ export const CreateTrustStoreRequest = S.suspend(() =>
   S.Struct({
     certificateList: CertificateList,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/trustStores" }),
@@ -1737,7 +1740,7 @@ export const UpdateTrustStoreRequest = S.suspend(() =>
     trustStoreArn: S.String.pipe(T.HttpLabel("trustStoreArn")),
     certificatesToAdd: S.optional(CertificateList),
     certificatesToDelete: S.optional(CertificateThumbprintList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PATCH", uri: "/trustStores/{trustStoreArn+}" }),
@@ -1854,7 +1857,7 @@ export const CreateUserAccessLoggingSettingsRequest = S.suspend(() =>
   S.Struct({
     kinesisStreamArn: S.String,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/userAccessLoggingSettings" }),
@@ -1903,7 +1906,7 @@ export const UpdateUserAccessLoggingSettingsRequest = S.suspend(() =>
       T.HttpLabel("userAccessLoggingSettingsArn"),
     ),
     kinesisStreamArn: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -2158,7 +2161,7 @@ export const TagResourceRequest = S.suspend(() =>
   S.Struct({
     resourceArn: S.String.pipe(T.HttpLabel("resourceArn")),
     tags: TagList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/tags/{resourceArn+}" }),
@@ -2190,7 +2193,7 @@ export const CreateBrowserSettingsRequest = S.suspend(() =>
     customerManagedKey: S.optional(S.String),
     additionalEncryptionContext: S.optional(EncryptionContextMap),
     browserPolicy: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     webContentFilteringPolicy: S.optional(WebContentFilteringPolicy),
   }).pipe(
     T.all(
@@ -2281,7 +2284,7 @@ export const CreateIdentityProviderRequest = S.suspend(() =>
     identityProviderName: SensitiveString,
     identityProviderType: S.String,
     identityProviderDetails: IdentityProviderDetails,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -2337,7 +2340,7 @@ export const CreateIpAccessSettingsRequest = S.suspend(() =>
     customerManagedKey: S.optional(S.String),
     additionalEncryptionContext: S.optional(EncryptionContextMap),
     ipRules: IpRuleList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/ipAccessSettings" }),
@@ -2698,7 +2701,7 @@ export const UpdateUserSettingsRequest = S.suspend(() =>
     printAllowed: S.optional(S.String),
     disconnectTimeoutInMinutes: S.optional(S.Number),
     idleDisconnectTimeoutInMinutes: S.optional(S.Number),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     cookieSynchronizationConfiguration: S.optional(
       CookieSynchronizationConfiguration,
     ),
@@ -3228,7 +3231,7 @@ export const CreateSessionLoggerRequest = S.suspend(() =>
     customerManagedKey: S.optional(S.String),
     additionalEncryptionContext: S.optional(EncryptionContextMap),
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/sessionLoggers" }),
@@ -3424,7 +3427,7 @@ export const CreateDataProtectionSettingsRequest = S.suspend(() =>
     customerManagedKey: S.optional(S.String),
     additionalEncryptionContext: S.optional(EncryptionContextMap),
     inlineRedactionConfiguration: S.optional(InlineRedactionConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/dataProtectionSettings" }),
@@ -3474,7 +3477,7 @@ export const CreateUserSettingsRequest = S.suspend(() =>
     tags: S.optional(TagList),
     disconnectTimeoutInMinutes: S.optional(S.Number),
     idleDisconnectTimeoutInMinutes: S.optional(S.Number),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     cookieSynchronizationConfiguration: S.optional(
       CookieSynchronizationConfiguration,
     ),

@@ -149,14 +149,15 @@ const rules = T.EndpointResolver((p, _) => {
 export type AnycastIpListName = string;
 export type integer = number;
 export type FunctionName = string;
+export type FunctionBlob = Uint8Array | redacted.Redacted<Uint8Array>;
 export type KeyValueStoreName = string;
 export type KeyValueStoreComment = string;
-export type long = number;
 export type ResourceId = string;
 export type distributionIdString = string;
 export type aliasString = string;
 export type listConflictingAliasesMaxItemsInteger = number;
 export type ResourceARN = string;
+export type FunctionEventObject = Uint8Array | redacted.Redacted<Uint8Array>;
 export type CommentType = string | redacted.Redacted<string>;
 export type ParameterName = string;
 export type ParameterValue = string;

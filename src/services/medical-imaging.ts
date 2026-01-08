@@ -105,6 +105,7 @@ export type LambdaArn = string;
 export type ImageFrameId = string;
 export type TagValue = string;
 export type Message = string;
+export type DICOMAttribute = Uint8Array | redacted.Redacted<Uint8Array>;
 export type CopiableAttributes = string | redacted.Redacted<string>;
 export type DICOMPatientId = string | redacted.Redacted<string>;
 export type DICOMAccessionNumber = string | redacted.Redacted<string>;
@@ -334,7 +335,7 @@ export const StartDICOMImportJobRequest = S.suspend(() =>
   S.Struct({
     jobName: S.optional(S.String),
     dataAccessRoleArn: S.String,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     datastoreId: S.String.pipe(T.HttpLabel("datastoreId")),
     inputS3Uri: S.String,
     outputS3Uri: S.String,
@@ -393,7 +394,7 @@ export interface CreateDatastoreRequest {
 export const CreateDatastoreRequest = S.suspend(() =>
   S.Struct({
     datastoreName: S.optional(S.String),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     kmsKeyArn: S.optional(S.String),
     lambdaAuthorizerArn: S.optional(S.String),

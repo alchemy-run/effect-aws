@@ -398,7 +398,7 @@ export interface InvokeDataAutomationAsyncRequest {
 }
 export const InvokeDataAutomationAsyncRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     inputConfiguration: InputConfiguration,
     outputConfiguration: OutputConfiguration,
     dataAutomationConfiguration: S.optional(DataAutomationConfiguration),

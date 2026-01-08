@@ -2,9 +2,10 @@
  * Request Builder - wraps Protocol and Middleware to build complete requests.
  *
  * This layer:
- * 1. Uses the Protocol to serialize the input into a Request
- * 2. Applies middleware (e.g., checksum computation, streaming body handling)
- * 3. Adds common headers
+ * 1. Fills in idempotency tokens with generated UUIDs if not provided
+ * 2. Uses the Protocol to serialize the input into a Request
+ * 3. Applies middleware (e.g., checksum computation, streaming body handling)
+ * 4. Adds common headers
  *
  * This is independently testable without making HTTP requests.
  */
@@ -12,6 +13,10 @@
 import * as Effect from "effect/Effect";
 import { makeStreamingBodyMiddleware } from "../middleware/streaming-body.ts";
 import { getMiddleware, getProtocol } from "../traits.ts";
+import {
+  fillIdempotencyTokens,
+  findIdempotencyTokenProps,
+} from "./generate-idempotency-tokens.ts";
 import type { Operation } from "./operation.ts";
 import type { Protocol, ProtocolHandler } from "./protocol.ts";
 
@@ -51,10 +56,16 @@ export const makeRequestBuilder = (
   // Create streaming body middleware (schema analysis done once)
   const applyStreamingBody = makeStreamingBodyMiddleware(inputSchema);
 
+  // Find idempotency token properties (done once at creation time)
+  const idempotencyTokenProps = findIdempotencyTokenProps(inputSchema);
+
   // Return a function that builds requests
   return Effect.fn(function* (input: unknown) {
+    // Fill in any undefined idempotency tokens with generated UUIDs
+    const filledInput = fillIdempotencyTokens(input, idempotencyTokenProps);
+
     // Serialize request using the protocol handler
-    let request = yield* protocol.serializeRequest(input);
+    let request = yield* protocol.serializeRequest(filledInput);
 
     // Apply annotation-based middleware (e.g., checksum)
     for (const mw of middleware) {

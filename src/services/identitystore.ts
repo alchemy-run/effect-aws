@@ -99,6 +99,7 @@ export type SensitiveStringType = string | redacted.Redacted<string>;
 export type UserName = string | redacted.Redacted<string>;
 export type ExtensionName = string;
 export type AttributePath = string;
+export type AttributeValue = unknown;
 export type StringType = string;
 export type ExceptionMessage = string;
 export type RequestId = string;
@@ -473,6 +474,20 @@ export const Photo = S.suspend(() =>
 ).annotations({ identifier: "Photo" }) as any as S.Schema<Photo>;
 export type Photos = Photo[];
 export const Photos = S.Array(Photo);
+export interface Role {
+  Value?: string | redacted.Redacted<string>;
+  Type?: string | redacted.Redacted<string>;
+  Primary?: boolean;
+}
+export const Role = S.suspend(() =>
+  S.Struct({
+    Value: S.optional(SensitiveString),
+    Type: S.optional(SensitiveString),
+    Primary: S.optional(S.Boolean),
+  }),
+).annotations({ identifier: "Role" }) as any as S.Schema<Role>;
+export type Roles = Role[];
+export const Roles = S.Array(Role);
 export type Extensions = { [key: string]: any };
 export const Extensions = S.Record({ key: S.String, value: S.Any });
 export type UserStatus = "ENABLED" | "DISABLED";
@@ -664,6 +679,7 @@ export interface CreateUserRequest {
   Photos?: Photo[];
   Website?: string | redacted.Redacted<string>;
   Birthdate?: string | redacted.Redacted<string>;
+  Roles?: Role[];
   Extensions?: { [key: string]: any };
 }
 export const CreateUserRequest = S.suspend(() =>
@@ -685,6 +701,7 @@ export const CreateUserRequest = S.suspend(() =>
     Photos: S.optional(Photos),
     Website: S.optional(SensitiveString),
     Birthdate: S.optional(SensitiveString),
+    Roles: S.optional(Roles),
     Extensions: S.optional(Extensions),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -713,6 +730,7 @@ export interface DescribeUserResponse {
   Photos?: Photo[];
   Website?: string | redacted.Redacted<string>;
   Birthdate?: string | redacted.Redacted<string>;
+  Roles?: Role[];
   CreatedAt?: Date;
   CreatedBy?: string;
   UpdatedAt?: Date;
@@ -741,6 +759,7 @@ export const DescribeUserResponse = S.suspend(() =>
     Photos: S.optional(Photos),
     Website: S.optional(SensitiveString),
     Birthdate: S.optional(SensitiveString),
+    Roles: S.optional(Roles),
     CreatedAt: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
     CreatedBy: S.optional(S.String),
     UpdatedAt: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
@@ -804,6 +823,7 @@ export interface User {
   Photos?: Photo[];
   Website?: string | redacted.Redacted<string>;
   Birthdate?: string | redacted.Redacted<string>;
+  Roles?: Role[];
   CreatedAt?: Date;
   CreatedBy?: string;
   UpdatedAt?: Date;
@@ -832,6 +852,7 @@ export const User = S.suspend(() =>
     Photos: S.optional(Photos),
     Website: S.optional(SensitiveString),
     Birthdate: S.optional(SensitiveString),
+    Roles: S.optional(Roles),
     CreatedAt: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
     CreatedBy: S.optional(S.String),
     UpdatedAt: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),

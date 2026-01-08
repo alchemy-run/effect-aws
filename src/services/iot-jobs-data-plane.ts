@@ -89,6 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type DescribeJobExecutionJobId = string;
 export type ThingName = string;
+export type IncludeJobDocument = boolean;
 export type ExecutionNumber = number;
 export type TargetArn = string;
 export type CommandArn = string;
@@ -97,14 +98,17 @@ export type ClientRequestTokenV2 = string;
 export type StepTimeoutInMinutes = number;
 export type JobId = string;
 export type ExpectedVersion = number;
+export type IncludeExecutionState = boolean;
 export type CommandParameterName = string;
 export type DetailsKey = string;
 export type DetailsValue = string;
 export type JobDocument = string;
 export type StringParameterValue = string;
+export type BooleanParameterValue = boolean;
 export type IntegerParameterValue = number;
 export type LongParameterValue = number;
 export type DoubleParameterValue = number;
+export type BinaryParameterValue = Uint8Array;
 export type UnsignedLongParameterValue = string;
 export type QueuedAt = number;
 export type StartedAt = number;
@@ -114,6 +118,7 @@ export type VersionNumber = number;
 export type errorMessage = string;
 export type CommandExecutionId = string;
 export type resourceId = string;
+export type BinaryBlob = Uint8Array;
 
 //# Schemas
 export type JobExecutionStatus =
@@ -365,7 +370,7 @@ export const StartCommandExecutionRequest = S.suspend(() =>
     commandArn: S.String,
     parameters: S.optional(CommandExecutionParameterMap),
     executionTimeoutSeconds: S.optional(S.Number),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/command-executions" }),

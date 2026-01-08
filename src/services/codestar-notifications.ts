@@ -93,6 +93,7 @@ export type NotificationRuleResource = string;
 export type ClientRequestToken = string;
 export type NotificationRuleArn = string;
 export type TargetAddress = string | redacted.Redacted<string>;
+export type ForceUnsubscribeAll = boolean;
 export type NextToken = string;
 export type MaxResults = number;
 export type TagKey = string;
@@ -103,6 +104,8 @@ export type ListNotificationRulesFilterValue = string;
 export type ListTargetsFilterValue = string;
 export type Message = string;
 export type NotificationRuleCreatedBy = string;
+export type CreatedTimestamp = Date;
+export type LastModifiedTimestamp = Date;
 export type ServiceName = string;
 export type EventTypeName = string;
 export type ResourceType = string;
@@ -403,7 +406,7 @@ export const CreateNotificationRuleRequest = S.suspend(() =>
     Resource: S.String,
     Targets: Targets,
     DetailType: DetailType,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
     Status: S.optional(NotificationRuleStatus),
   }).pipe(

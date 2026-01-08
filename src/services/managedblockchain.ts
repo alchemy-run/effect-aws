@@ -95,6 +95,7 @@ export type FrameworkVersionString = string;
 export type AccessorListMaxResults = number;
 export type PaginationToken = string;
 export type ProposalListMaxResults = number;
+export type IsOwned = boolean;
 export type MemberListMaxResults = number;
 export type NetworkListMaxResults = number;
 export type NodeListMaxResults = number;
@@ -111,6 +112,7 @@ export type AccessorBillingTokenString = string;
 export type VoteCount = number;
 export type UsernameString = string;
 export type PasswordString = string | redacted.Redacted<string>;
+export type Enabled = boolean;
 export type ExceptionMessage = string;
 
 //# Schemas
@@ -736,7 +738,7 @@ export interface CreateAccessorInput {
 }
 export const CreateAccessorInput = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     AccessorType: AccessorType,
     Tags: S.optional(InputTagMap),
     NetworkType: S.optional(AccessorNetworkType),
@@ -762,7 +764,7 @@ export interface CreateNodeInput {
 }
 export const CreateNodeInput = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     NetworkId: S.String.pipe(T.HttpLabel("NetworkId")),
     MemberId: S.optional(S.String),
     NodeConfiguration: NodeConfiguration,
@@ -1166,7 +1168,7 @@ export interface CreateNetworkInput {
 }
 export const CreateNetworkInput = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     Name: S.String,
     Description: S.optional(S.String),
     Framework: Framework,
@@ -1206,7 +1208,7 @@ export interface CreateProposalInput {
 }
 export const CreateProposalInput = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     NetworkId: S.String.pipe(T.HttpLabel("NetworkId")),
     MemberId: S.String,
     Actions: ProposalActions,
@@ -1426,7 +1428,7 @@ export interface CreateMemberInput {
 }
 export const CreateMemberInput = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     InvitationId: S.String,
     NetworkId: S.String.pipe(T.HttpLabel("NetworkId")),
     MemberConfiguration: MemberConfiguration,

@@ -89,6 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type MaxResults = number;
 export type AccountId = string;
+export type Datetime = Date;
 
 //# Schemas
 export interface GetPreferencesRequest {}

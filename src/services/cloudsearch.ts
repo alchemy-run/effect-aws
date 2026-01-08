@@ -104,11 +104,13 @@ export type ARN = string;
 export type SearchInstanceType = string;
 export type PartitionCount = number;
 export type InstanceCount = number;
+export type MultiAZ = boolean;
 export type ErrorCode = string;
 export type ErrorMessage = string;
 export type ServiceUrl = string;
 export type MaximumReplicationCount = number;
 export type MaximumPartitionCount = number;
+export type UpdateTimestamp = Date;
 
 //# Schemas
 export interface ListDomainNamesRequest {}

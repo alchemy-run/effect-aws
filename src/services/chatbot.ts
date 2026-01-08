@@ -102,6 +102,7 @@ export type TeamsChannelName = string | redacted.Redacted<string>;
 export type UUID = string;
 export type TeamName = string | redacted.Redacted<string>;
 export type GuardrailPolicyArn = string;
+export type BooleanAccountPreference = boolean;
 export type SlackTeamId = string;
 export type SlackChannelId = string;
 export type SlackChannelDisplayName = string | redacted.Redacted<string>;
@@ -1484,7 +1485,7 @@ export const CreateCustomActionRequest = S.suspend(() =>
     AliasName: S.optional(S.String),
     Attachments: S.optional(CustomActionAttachmentList),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ActionName: S.String,
   }).pipe(
     T.all(

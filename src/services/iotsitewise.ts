@@ -100,6 +100,8 @@ export type Description = string;
 export type ETag = string;
 export type SelectAll = string;
 export type ARN = string;
+export type AdaptiveIngestion = boolean;
+export type DeleteFilesAfterImport = boolean;
 export type RestrictedName = string;
 export type RestrictedDescription = string;
 export type DashboardDefinition = string;
@@ -107,9 +109,11 @@ export type GatewayName = string;
 export type GatewayVersion = string;
 export type Email = string | redacted.Redacted<string>;
 export type IamArn = string;
+export type ExcludeProperties = boolean;
 export type AssetModelVersionFilter = string;
 export type ComputationModelVersionFilter = string;
 export type CapabilityNamespace = string;
+export type DisallowIngestNullNaN = boolean;
 export type QueryStatement = string;
 export type ExecuteQueryNextToken = string;
 export type ExecuteQueryMaxResults = number;
@@ -136,9 +140,13 @@ export type EntryId = string;
 export type TagValue = string;
 export type Bucket = string;
 export type ComputationModelDataBindingVariable = string;
+export type ImageFileData = Uint8Array;
 export type PortalTypeKey = string;
 export type NumberOfDays = number;
+export type Unlimited = boolean;
 export type ActionPayloadString = string;
+export type MatchByPropertyName = boolean;
+export type CreateMissingProperty = boolean;
 export type ErrorMessage = string;
 export type ResourceId = string;
 export type ResourceArn = string;
@@ -160,6 +168,7 @@ export type ExecutionDetailsValue = string;
 export type PropertyValueStringValue = string;
 export type PropertyValueIntegerValue = number;
 export type PropertyValueDoubleValue = number;
+export type PropertyValueBooleanValue = boolean;
 export type DefaultValue = string;
 export type Expression = string;
 export type MonitorErrorMessage = string;
@@ -333,7 +342,7 @@ export const AssociateAssetsRequest = S.suspend(() =>
     assetId: S.String.pipe(T.HttpLabel("assetId")),
     hierarchyId: S.String,
     childAssetId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/assets/{assetId}/associate" }),
@@ -364,7 +373,7 @@ export const AssociateTimeSeriesToAssetPropertyRequest = S.suspend(() =>
     alias: S.String.pipe(T.HttpQuery("alias")),
     assetId: S.String.pipe(T.HttpQuery("assetId")),
     propertyId: S.String.pipe(T.HttpQuery("propertyId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/timeseries/associate" }),
@@ -393,7 +402,7 @@ export const BatchAssociateProjectAssetsRequest = S.suspend(() =>
   S.Struct({
     projectId: S.String.pipe(T.HttpLabel("projectId")),
     assetIds: IDs,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/projects/{projectId}/assets/associate" }),
@@ -416,7 +425,7 @@ export const BatchDisassociateProjectAssetsRequest = S.suspend(() =>
   S.Struct({
     projectId: S.String.pipe(T.HttpLabel("projectId")),
     assetIds: IDs,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -450,7 +459,7 @@ export const CreateAssetRequest = S.suspend(() =>
     assetModelId: S.String,
     assetId: S.optional(S.String),
     assetExternalId: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     assetDescription: S.optional(S.String),
   }).pipe(
@@ -672,7 +681,7 @@ export const CreateAssetModelCompositeModelRequest = S.suspend(() =>
     assetModelCompositeModelDescription: S.optional(S.String),
     assetModelCompositeModelName: S.String,
     assetModelCompositeModelType: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     composedAssetModelId: S.optional(S.String),
     assetModelCompositeModelProperties: S.optional(
       AssetModelPropertyDefinitions,
@@ -712,7 +721,7 @@ export const CreateDashboardRequest = S.suspend(() =>
     dashboardName: S.String,
     dashboardDescription: S.optional(S.String),
     dashboardDefinition: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -739,7 +748,7 @@ export const CreateProjectRequest = S.suspend(() =>
     portalId: S.String,
     projectName: S.String,
     projectDescription: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -761,7 +770,10 @@ export interface DeleteAccessPolicyRequest {
 export const DeleteAccessPolicyRequest = S.suspend(() =>
   S.Struct({
     accessPolicyId: S.String.pipe(T.HttpLabel("accessPolicyId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/access-policies/{accessPolicyId}" }),
@@ -788,7 +800,10 @@ export interface DeleteAssetRequest {
 export const DeleteAssetRequest = S.suspend(() =>
   S.Struct({
     assetId: S.String.pipe(T.HttpLabel("assetId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/assets/{assetId}" }),
@@ -812,7 +827,10 @@ export interface DeleteAssetModelRequest {
 export const DeleteAssetModelRequest = S.suspend(() =>
   S.Struct({
     assetModelId: S.String.pipe(T.HttpLabel("assetModelId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     ifMatch: S.optional(S.String).pipe(T.HttpHeader("If-Match")),
     ifNoneMatch: S.optional(S.String).pipe(T.HttpHeader("If-None-Match")),
     matchForVersionType: S.optional(AssetModelVersionType).pipe(
@@ -845,7 +863,10 @@ export const DeleteAssetModelCompositeModelRequest = S.suspend(() =>
     assetModelCompositeModelId: S.String.pipe(
       T.HttpLabel("assetModelCompositeModelId"),
     ),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     ifMatch: S.optional(S.String).pipe(T.HttpHeader("If-Match")),
     ifNoneMatch: S.optional(S.String).pipe(T.HttpHeader("If-None-Match")),
     matchForVersionType: S.optional(AssetModelVersionType).pipe(
@@ -876,7 +897,10 @@ export const DeleteAssetModelInterfaceRelationshipRequest = S.suspend(() =>
   S.Struct({
     assetModelId: S.String.pipe(T.HttpLabel("assetModelId")),
     interfaceAssetModelId: S.String.pipe(T.HttpLabel("interfaceAssetModelId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -900,7 +924,10 @@ export interface DeleteComputationModelRequest {
 export const DeleteComputationModelRequest = S.suspend(() =>
   S.Struct({
     computationModelId: S.String.pipe(T.HttpLabel("computationModelId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -924,7 +951,10 @@ export interface DeleteDashboardRequest {
 export const DeleteDashboardRequest = S.suspend(() =>
   S.Struct({
     dashboardId: S.String.pipe(T.HttpLabel("dashboardId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/dashboards/{dashboardId}" }),
@@ -951,7 +981,10 @@ export interface DeleteDatasetRequest {
 export const DeleteDatasetRequest = S.suspend(() =>
   S.Struct({
     datasetId: S.String.pipe(T.HttpLabel("datasetId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/datasets/{datasetId}" }),
@@ -993,7 +1026,10 @@ export interface DeletePortalRequest {
 export const DeletePortalRequest = S.suspend(() =>
   S.Struct({
     portalId: S.String.pipe(T.HttpLabel("portalId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/portals/{portalId}" }),
@@ -1014,7 +1050,10 @@ export interface DeleteProjectRequest {
 export const DeleteProjectRequest = S.suspend(() =>
   S.Struct({
     projectId: S.String.pipe(T.HttpLabel("projectId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/projects/{projectId}" }),
@@ -1043,7 +1082,7 @@ export const DeleteTimeSeriesRequest = S.suspend(() =>
     alias: S.optional(S.String).pipe(T.HttpQuery("alias")),
     assetId: S.optional(S.String).pipe(T.HttpQuery("assetId")),
     propertyId: S.optional(S.String).pipe(T.HttpQuery("propertyId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/timeseries/delete" }),
@@ -1484,7 +1523,7 @@ export const DisassociateAssetsRequest = S.suspend(() =>
     assetId: S.String.pipe(T.HttpLabel("assetId")),
     hierarchyId: S.String,
     childAssetId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/assets/{assetId}/disassociate" }),
@@ -1515,7 +1554,7 @@ export const DisassociateTimeSeriesFromAssetPropertyRequest = S.suspend(() =>
     alias: S.String.pipe(T.HttpQuery("alias")),
     assetId: S.String.pipe(T.HttpQuery("assetId")),
     propertyId: S.String.pipe(T.HttpQuery("propertyId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/timeseries/disassociate" }),
@@ -1546,7 +1585,7 @@ export const ExecuteQueryRequest = S.suspend(() =>
     queryStatement: S.String,
     nextToken: S.optional(S.String),
     maxResults: S.optional(S.Number),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/queries/execution" }),
@@ -2599,7 +2638,7 @@ export const UpdateAccessPolicyRequest = S.suspend(() =>
     accessPolicyIdentity: Identity,
     accessPolicyResource: Resource,
     accessPolicyPermission: Permission,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/access-policies/{accessPolicyId}" }),
@@ -2631,7 +2670,7 @@ export const UpdateAssetRequest = S.suspend(() =>
     assetId: S.String.pipe(T.HttpLabel("assetId")),
     assetExternalId: S.optional(S.String),
     assetName: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assetDescription: S.optional(S.String),
   }).pipe(
     T.all(
@@ -2693,7 +2732,7 @@ export const UpdateAssetModelCompositeModelRequest = S.suspend(() =>
     assetModelCompositeModelExternalId: S.optional(S.String),
     assetModelCompositeModelDescription: S.optional(S.String),
     assetModelCompositeModelName: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assetModelCompositeModelProperties: S.optional(AssetModelProperties),
     ifMatch: S.optional(S.String).pipe(T.HttpHeader("If-Match")),
     ifNoneMatch: S.optional(S.String).pipe(T.HttpHeader("If-None-Match")),
@@ -2730,7 +2769,7 @@ export const UpdateAssetPropertyRequest = S.suspend(() =>
     propertyId: S.String.pipe(T.HttpLabel("propertyId")),
     propertyAlias: S.optional(S.String),
     propertyNotificationState: S.optional(PropertyNotificationState),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     propertyUnit: S.optional(S.String),
   }).pipe(
     T.all(
@@ -2836,7 +2875,7 @@ export const UpdateComputationModelRequest = S.suspend(() =>
     computationModelDescription: S.optional(S.String),
     computationModelConfiguration: ComputationModelConfiguration,
     computationModelDataBinding: ComputationModelDataBinding,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -2866,7 +2905,7 @@ export const UpdateDashboardRequest = S.suspend(() =>
     dashboardName: S.String,
     dashboardDescription: S.optional(S.String),
     dashboardDefinition: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/dashboards/{dashboardId}" }),
@@ -2930,7 +2969,7 @@ export const UpdateDatasetRequest = S.suspend(() =>
     datasetName: S.String,
     datasetDescription: S.optional(S.String),
     datasetSource: DatasetSource,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/datasets/{datasetId}" }),
@@ -3006,7 +3045,7 @@ export const UpdateProjectRequest = S.suspend(() =>
     projectId: S.String.pipe(T.HttpLabel("projectId")),
     projectName: S.String,
     projectDescription: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/projects/{projectId}" }),
@@ -4194,7 +4233,7 @@ export const UpdatePortalRequest = S.suspend(() =>
     portalContactEmail: SensitiveString,
     portalLogoImage: S.optional(Image),
     roleArn: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     notificationSenderEmail: S.optional(SensitiveString),
     alarms: S.optional(Alarms),
     portalType: S.optional(PortalType),
@@ -5048,7 +5087,7 @@ export const CreateAccessPolicyRequest = S.suspend(() =>
     accessPolicyIdentity: Identity,
     accessPolicyResource: Resource,
     accessPolicyPermission: Permission,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -5121,7 +5160,7 @@ export const CreatePortalRequest = S.suspend(() =>
     portalName: S.String,
     portalDescription: S.optional(S.String),
     portalContactEmail: SensitiveString,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     portalLogoImageFile: S.optional(ImageFile),
     roleArn: S.String,
     tags: S.optional(TagMap),
@@ -5682,7 +5721,7 @@ export const PutAssetModelInterfaceRelationshipRequest = S.suspend(() =>
     assetModelId: S.String.pipe(T.HttpLabel("assetModelId")),
     interfaceAssetModelId: S.String.pipe(T.HttpLabel("interfaceAssetModelId")),
     propertyMappingConfiguration: PropertyMappingConfiguration,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -5721,7 +5760,7 @@ export const UpdateAssetModelRequest = S.suspend(() =>
     assetModelProperties: S.optional(AssetModelProperties),
     assetModelHierarchies: S.optional(AssetModelHierarchies),
     assetModelCompositeModels: S.optional(AssetModelCompositeModels),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ifMatch: S.optional(S.String).pipe(T.HttpHeader("If-Match")),
     ifNoneMatch: S.optional(S.String).pipe(T.HttpHeader("If-None-Match")),
     matchForVersionType: S.optional(AssetModelVersionType).pipe(
@@ -6119,7 +6158,7 @@ export const CreateComputationModelRequest = S.suspend(() =>
     computationModelDescription: S.optional(S.String),
     computationModelConfiguration: ComputationModelConfiguration,
     computationModelDataBinding: ComputationModelDataBinding,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -6148,7 +6187,7 @@ export const CreateDatasetRequest = S.suspend(() =>
     datasetName: S.String,
     datasetDescription: S.optional(S.String),
     datasetSource: DatasetSource,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -6610,7 +6649,7 @@ export const CreateAssetModelRequest = S.suspend(() =>
     assetModelProperties: S.optional(AssetModelPropertyDefinitions),
     assetModelHierarchies: S.optional(AssetModelHierarchyDefinitions),
     assetModelCompositeModels: S.optional(AssetModelCompositeModelDefinitions),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(

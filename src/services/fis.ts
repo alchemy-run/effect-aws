@@ -124,8 +124,12 @@ export type ExperimentTemplateActionStartAfter = string;
 export type CloudWatchLogGroupArn = string;
 export type S3BucketName = string;
 export type S3ObjectKey = string;
+export type CreationTime = Date;
+export type LastUpdateTime = Date;
 export type TargetAccountConfigurationsCount = number;
 export type ActionDescription = string;
+export type ExperimentStartTime = Date;
+export type ExperimentEndTime = Date;
 export type TargetResourceTypeDescription = string;
 export type ExperimentTemplateTargetFilterPath = string;
 export type ExperimentTemplateTargetFilterValue = string;
@@ -146,16 +150,20 @@ export type TargetResourceTypeParameterName = string;
 export type TargetInformationKey = string;
 export type TargetInformationValue = string;
 export type ActionParameterDescription = string;
+export type ActionParameterRequired = boolean;
 export type ExperimentErrorAccountId = string;
 export type ExperimentErrorCode = string;
 export type ExperimentErrorLocation = string;
 export type ExperimentTargetSelectionMode = string;
 export type ExperimentActionDescription = string;
 export type ExperimentActionStartAfter = string;
+export type ExperimentActionStartTime = Date;
+export type ExperimentActionEndTime = Date;
 export type ExperimentReportReason = string;
 export type ExperimentReportS3ReportArn = string;
 export type ExperimentReportS3ReportType = string;
 export type TargetResourceTypeParameterDescription = string;
+export type TargetResourceTypeParameterRequired = boolean;
 export type ExperimentTargetFilterPath = string;
 export type ExperimentTargetFilterValue = string;
 export type ExperimentTargetParameterName = string;
@@ -178,7 +186,7 @@ export interface CreateTargetAccountConfigurationRequest {
 }
 export const CreateTargetAccountConfigurationRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     experimentTemplateId: S.String.pipe(T.HttpLabel("experimentTemplateId")),
     accountId: S.String.pipe(T.HttpLabel("accountId")),
     roleArn: S.String,
@@ -1125,7 +1133,7 @@ export interface StartExperimentRequest {
 }
 export const StartExperimentRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     experimentTemplateId: S.String,
     experimentOptions: S.optional(StartExperimentExperimentOptionsInput),
     tags: S.optional(TagMap),
@@ -2098,7 +2106,7 @@ export interface CreateExperimentTemplateRequest {
 }
 export const CreateExperimentTemplateRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     description: S.String,
     stopConditions: CreateExperimentTemplateStopConditionInputList,
     targets: S.optional(CreateExperimentTemplateTargetInputMap),

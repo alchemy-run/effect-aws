@@ -607,7 +607,7 @@ export const UpdateDeletionProtectionInput = S.suspend(() =>
   S.Struct({
     arn: S.String,
     deletionProtected: S.Boolean,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/updateDeletionProtection" }),
@@ -645,7 +645,7 @@ export interface UpdateTimelineEventInput {
 }
 export const UpdateTimelineEventInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     incidentRecordArn: S.String,
     eventId: S.String,
     eventTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
@@ -793,7 +793,7 @@ export interface CreateTimelineEventInput {
 }
 export const CreateTimelineEventInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     incidentRecordArn: S.String,
     eventTime: S.Date.pipe(T.TimestampFormat("epoch-seconds")),
     eventType: S.String,
@@ -955,7 +955,7 @@ export interface UpdateIncidentRecordInput {
 }
 export const UpdateIncidentRecordInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     arn: S.String,
     title: S.optional(S.String),
     summary: S.optional(S.String),
@@ -989,7 +989,7 @@ export interface UpdateRelatedItemsInput {
 }
 export const UpdateRelatedItemsInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     incidentRecordArn: S.String,
     relatedItemsUpdate: RelatedItemsUpdate,
   }).pipe(
@@ -1028,7 +1028,7 @@ export interface UpdateResponsePlanInput {
 }
 export const UpdateResponsePlanInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     arn: S.String,
     displayName: S.optional(S.String),
     incidentTemplateTitle: S.optional(S.String),
@@ -1209,7 +1209,7 @@ export interface CreateReplicationSetInput {
 export const CreateReplicationSetInput = S.suspend(() =>
   S.Struct({
     regions: RegionMapInput,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -1295,7 +1295,7 @@ export const UpdateReplicationSetInput = S.suspend(() =>
   S.Struct({
     arn: S.String,
     actions: UpdateActionList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/updateReplicationSet" }),
@@ -1530,7 +1530,7 @@ export interface CreateResponsePlanInput {
 }
 export const CreateResponsePlanInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     displayName: S.optional(S.String),
     incidentTemplate: IncidentTemplate,
@@ -1570,7 +1570,7 @@ export interface StartIncidentInput {
 }
 export const StartIncidentInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     responsePlanArn: S.String,
     title: S.optional(S.String),
     impact: S.optional(S.Number),

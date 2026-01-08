@@ -189,7 +189,7 @@ export const ApplyArchiveRuleRequest = S.suspend(() =>
   S.Struct({
     analyzerArn: S.String,
     ruleName: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/archive-rule" }),
@@ -667,7 +667,7 @@ export const UpdateFindingsRequest = S.suspend(() =>
     status: S.String,
     ids: S.optional(FindingIdList),
     resourceArn: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/finding" }),
@@ -843,7 +843,10 @@ export interface DeleteAnalyzerRequest {
 export const DeleteAnalyzerRequest = S.suspend(() =>
   S.Struct({
     analyzerName: S.String.pipe(T.HttpLabel("analyzerName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/analyzer/{analyzerName}" }),
@@ -895,7 +898,7 @@ export const CreateArchiveRuleRequest = S.suspend(() =>
     analyzerName: S.String.pipe(T.HttpLabel("analyzerName")),
     ruleName: S.String,
     filter: FilterCriteriaMap,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/analyzer/{analyzerName}/archive-rule" }),
@@ -950,7 +953,7 @@ export const UpdateArchiveRuleRequest = S.suspend(() =>
     analyzerName: S.String.pipe(T.HttpLabel("analyzerName")),
     ruleName: S.String.pipe(T.HttpLabel("ruleName")),
     filter: FilterCriteriaMap,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -982,7 +985,10 @@ export const DeleteArchiveRuleRequest = S.suspend(() =>
   S.Struct({
     analyzerName: S.String.pipe(T.HttpLabel("analyzerName")),
     ruleName: S.String.pipe(T.HttpLabel("ruleName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -1632,7 +1638,7 @@ export const StartPolicyGenerationRequest = S.suspend(() =>
   S.Struct({
     policyGenerationDetails: PolicyGenerationDetails,
     cloudTrailDetails: S.optional(CloudTrailDetails),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/policy/generation" }),
@@ -2513,7 +2519,7 @@ export const CreateAnalyzerRequest = S.suspend(() =>
     type: S.String,
     archiveRules: S.optional(InlineArchiveRulesList),
     tags: S.optional(TagsMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     configuration: S.optional(AnalyzerConfiguration),
   }).pipe(
     T.all(
@@ -2712,7 +2718,7 @@ export const CreateAccessPreviewRequest = S.suspend(() =>
   S.Struct({
     analyzerArn: S.String,
     configurations: ConfigurationsMap,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/access-preview" }),

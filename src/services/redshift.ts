@@ -95,7 +95,6 @@ export type PartnerIntegrationAccountId = string;
 export type PartnerIntegrationClusterIdentifier = string;
 export type PartnerIntegrationDatabaseName = string;
 export type PartnerIntegrationPartnerName = string;
-export type IntegerOptional = number;
 export type AuthenticationProfileNameString = string;
 export type SensitiveString = string | redacted.Redacted<string>;
 export type CatalogNameString = string;
@@ -111,10 +110,8 @@ export type IdcDisplayNameString = string;
 export type IntegrationArn = string;
 export type InboundIntegrationArn = string;
 export type S3KeyPrefixValue = string;
-export type LongOptional = number;
 export type PartnerIntegrationStatusMessage = string;
 export type ExceptionMessage = string;
-export type DoubleOptional = number;
 export type Description = string;
 
 //# Schemas
@@ -6051,7 +6048,11 @@ export const ModifyRedshiftIdcApplicationResult = S.suspend(() =>
 }) as any as S.Schema<ModifyRedshiftIdcApplicationResult>;
 export interface ScheduledAction {
   ScheduledActionName?: string;
-  TargetAction?: ScheduledActionType;
+  TargetAction?: ScheduledActionType & {
+    ResizeCluster: ResizeClusterMessage & { ClusterIdentifier: string };
+    PauseCluster: PauseClusterMessage & { ClusterIdentifier: string };
+    ResumeCluster: ResumeClusterMessage & { ClusterIdentifier: string };
+  };
   Schedule?: string;
   IamRole?: string;
   ScheduledActionDescription?: string;
@@ -6383,7 +6384,7 @@ export interface Integration {
   SourceArn?: string;
   TargetArn?: string;
   Status?: ZeroETLIntegrationStatus;
-  Errors?: IntegrationError[];
+  Errors?: (IntegrationError & { ErrorCode: string })[];
   CreateTime?: Date;
   Description?: string;
   KMSKeyId?: string;
@@ -6642,7 +6643,9 @@ export const EventsMessage = S.suspend(() =>
 }) as any as S.Schema<EventsMessage>;
 export interface InboundIntegrationsMessage {
   Marker?: string;
-  InboundIntegrations?: InboundIntegration[];
+  InboundIntegrations?: (InboundIntegration & {
+    Errors: (IntegrationError & { ErrorCode: string })[];
+  })[];
 }
 export const InboundIntegrationsMessage = S.suspend(() =>
   S.Struct({
@@ -6654,7 +6657,9 @@ export const InboundIntegrationsMessage = S.suspend(() =>
 }) as any as S.Schema<InboundIntegrationsMessage>;
 export interface IntegrationsMessage {
   Marker?: string;
-  Integrations?: Integration[];
+  Integrations?: (Integration & {
+    Errors: (IntegrationError & { ErrorCode: string })[];
+  })[];
 }
 export const IntegrationsMessage = S.suspend(() =>
   S.Struct({
@@ -6714,7 +6719,13 @@ export const ReservedNodeOfferingsMessage = S.suspend(() =>
 }) as any as S.Schema<ReservedNodeOfferingsMessage>;
 export interface ScheduledActionsMessage {
   Marker?: string;
-  ScheduledActions?: ScheduledAction[];
+  ScheduledActions?: (ScheduledAction & {
+    TargetAction: ScheduledActionType & {
+      ResizeCluster: ResizeClusterMessage & { ClusterIdentifier: string };
+      PauseCluster: PauseClusterMessage & { ClusterIdentifier: string };
+      ResumeCluster: ResumeClusterMessage & { ClusterIdentifier: string };
+    };
+  })[];
 }
 export const ScheduledActionsMessage = S.suspend(() =>
   S.Struct({

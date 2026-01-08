@@ -11,6 +11,7 @@ export default defineConfig({
       "aws-models",
       "aws-sdk-js-v3",
       "smithy",
+      "smithy-typescript",
     ],
     // Run test files in parallel
     // fileParallelism: true,

@@ -86,13 +86,11 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type __stringMin0Max256 = string;
 export type __stringMin20Max1600 = string;
-export type __string = string;
 export type __stringMin1Max100000 = string;
 export type GetDiscoveredSchemaVersionItemInput = string;
-export type __integer = number;
 export type SynthesizedJson__string = string;
 export type __stringMin0Max36 = string;
-export type __long = number;
+export type __timestampIso8601 = Date;
 
 //# Schemas
 export type Type = "OpenApi3" | "JSONSchemaDraft4";
@@ -820,7 +818,7 @@ export interface UpdateSchemaRequest {
 }
 export const UpdateSchemaRequest = S.suspend(() =>
   S.Struct({
-    ClientTokenId: S.optional(S.String),
+    ClientTokenId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Content: S.optional(S.String),
     Description: S.optional(S.String),
     RegistryName: S.String.pipe(T.HttpLabel("RegistryName")),

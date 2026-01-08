@@ -515,7 +515,7 @@ export interface CreateIndexInput {
 }
 export const CreateIndexInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -897,7 +897,7 @@ export interface CreateViewInput {
 }
 export const CreateViewInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ViewName: S.String,
     IncludedProperties: S.optional(IncludedPropertyList),
     Scope: S.optional(S.String),

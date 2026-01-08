@@ -119,6 +119,7 @@ export type integer = number;
 export type BackupVaultNameOrWildcard = string;
 export type GlobalSettingsName = string;
 export type GlobalSettingsValue = string;
+export type IsEnabled = boolean;
 export type BackupOptionKey = string;
 export type BackupOptionValue = string;
 export type MetadataKey = string;
@@ -486,7 +487,7 @@ export const CreateBackupVaultInput = S.suspend(() =>
     BackupVaultName: S.String.pipe(T.HttpLabel("BackupVaultName")),
     BackupVaultTags: S.optional(Tags),
     EncryptionKeyArn: S.optional(S.String),
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/backup-vaults/{BackupVaultName}" }),
@@ -512,7 +513,7 @@ export const CreateLogicallyAirGappedBackupVaultInput = S.suspend(() =>
   S.Struct({
     BackupVaultName: S.String.pipe(T.HttpLabel("BackupVaultName")),
     BackupVaultTags: S.optional(Tags),
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     MinRetentionDays: S.Number,
     MaxRetentionDays: S.Number,
     EncryptionKeyArn: S.optional(S.String),
@@ -544,7 +545,7 @@ export const CreateRestoreAccessBackupVaultInput = S.suspend(() =>
     SourceBackupVaultArn: S.String,
     BackupVaultName: S.optional(S.String),
     BackupVaultTags: S.optional(Tags),
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     RequesterComment: S.optional(SensitiveString),
   }).pipe(
     T.all(
@@ -2613,7 +2614,7 @@ export const StartCopyJobInput = S.suspend(() =>
     SourceBackupVaultName: S.String,
     DestinationBackupVaultArn: S.String,
     IamRoleArn: S.String,
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Lifecycle: S.optional(Lifecycle),
   }).pipe(
     T.all(
@@ -2635,7 +2636,7 @@ export interface StartReportJobInput {
 export const StartReportJobInput = S.suspend(() =>
   S.Struct({
     ReportPlanName: S.String.pipe(T.HttpLabel("ReportPlanName")),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/audit/report-jobs/{ReportPlanName}" }),
@@ -2947,7 +2948,7 @@ export const UpdateFrameworkInput = S.suspend(() =>
     FrameworkName: S.String.pipe(T.HttpLabel("FrameworkName")),
     FrameworkDescription: S.optional(S.String),
     FrameworkControls: S.optional(FrameworkControls),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/audit/frameworks/{FrameworkName}" }),
@@ -3130,7 +3131,7 @@ export const UpdateReportPlanInput = S.suspend(() =>
     ReportPlanDescription: S.optional(S.String),
     ReportDeliveryChannel: S.optional(ReportDeliveryChannel),
     ReportSetting: S.optional(ReportSetting),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/audit/report-plans/{ReportPlanName}" }),
@@ -3546,7 +3547,7 @@ export const CreateReportPlanInput = S.suspend(() =>
     ReportDeliveryChannel: ReportDeliveryChannel,
     ReportSetting: ReportSetting,
     ReportPlanTags: S.optional(stringMap),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/audit/report-plans" }),
@@ -4168,7 +4169,7 @@ export const StartBackupJobInput = S.suspend(() =>
     LogicallyAirGappedBackupVaultArn: S.optional(S.String),
     ResourceArn: S.String,
     IamRoleArn: S.String,
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     StartWindowMinutes: S.optional(S.Number),
     CompleteWindowMinutes: S.optional(S.Number),
     Lifecycle: S.optional(Lifecycle),
@@ -4223,7 +4224,7 @@ export const StartRestoreJobInput = S.suspend(() =>
     RecoveryPointArn: S.String,
     Metadata: Metadata,
     IamRoleArn: S.optional(S.String),
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ResourceType: S.optional(S.String),
     CopySourceTagsToRestoredResource: S.optional(S.Boolean),
   }).pipe(
@@ -5179,7 +5180,7 @@ export const CreateFrameworkInput = S.suspend(() =>
     FrameworkName: S.String,
     FrameworkDescription: S.optional(S.String),
     FrameworkControls: FrameworkControls,
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FrameworkTags: S.optional(stringMap),
   }).pipe(
     T.all(
@@ -5205,7 +5206,7 @@ export const CreateLegalHoldInput = S.suspend(() =>
   S.Struct({
     Title: S.String,
     Description: S.String,
-    IdempotencyToken: S.optional(S.String),
+    IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     RecoveryPointSelection: S.optional(RecoveryPointSelection),
     Tags: S.optional(Tags),
   }).pipe(
@@ -5267,7 +5268,7 @@ export const CreateTieringConfigurationInput = S.suspend(() =>
   S.Struct({
     TieringConfiguration: TieringConfigurationInputForCreate,
     TieringConfigurationTags: S.optional(Tags),
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/tiering-configurations" }),
@@ -6063,7 +6064,7 @@ export const CreateBackupPlanInput = S.suspend(() =>
   S.Struct({
     BackupPlan: BackupPlanInput,
     BackupPlanTags: S.optional(Tags),
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/backup/plans" }),
@@ -6086,7 +6087,7 @@ export const CreateBackupSelectionInput = S.suspend(() =>
   S.Struct({
     BackupPlanId: S.String.pipe(T.HttpLabel("BackupPlanId")),
     BackupSelection: BackupSelection,
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/backup/plans/{BackupPlanId}/selections" }),

@@ -891,7 +891,7 @@ export const StartWorkflowRunRequest = S.suspend(() =>
     spaceName: S.String.pipe(T.HttpLabel("spaceName")),
     projectName: S.String.pipe(T.HttpLabel("projectName")),
     workflowId: S.String.pipe(T.HttpQuery("workflowId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({

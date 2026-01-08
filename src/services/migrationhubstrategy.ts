@@ -135,6 +135,7 @@ export type AssessmentStatus = string;
 export type AssessmentStatusMessage = string;
 export type RecommendationReportStatus = string;
 export type RecommendationReportStatusMessage = string;
+export type RecommendationReportTimeStamp = Date;
 export type CollectorHealth = string;
 export type AwsManagedTargetDestination = string;
 export type SelfManageTargetDestination = string;

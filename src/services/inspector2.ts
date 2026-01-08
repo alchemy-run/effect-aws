@@ -149,6 +149,7 @@ export type SortField = string;
 export type SortOrder = string;
 export type VulnId = string;
 export type RuleId = string;
+export type CisRuleDetails = Uint8Array;
 export type Reason = string;
 export type BenchmarkVersion = string;
 export type BenchmarkProfile = string;
@@ -171,6 +172,7 @@ export type ResourceStringComparison = string;
 export type ResourceStringInput = string;
 export type ResourceMapComparison = string;
 export type EcrRescanDurationStatus = string;
+export type DateTimeTimestamp = Date;
 export type Ec2ScanModeStatus = string;
 export type CoverageStringComparison = string;
 export type CoverageStringInput = string;
@@ -212,10 +214,14 @@ export type AggCounts = number;
 export type DelegatedAdminStatus = string;
 export type TimeOfDay = string;
 export type Timezone = string;
+export type CisaDateAdded = Date;
+export type CisaDateDue = Date;
 export type CisaAction = string;
 export type EvidenceRule = string;
 export type EvidenceDetail = string;
 export type EvidenceSeverity = string;
+export type LastSeen = Date;
+export type FirstSeen = Date;
 export type FreeTrialType = string;
 export type FreeTrialStatus = string;
 export type UsageType = string;
@@ -234,6 +240,8 @@ export type VulnerabilitySource = string;
 export type VulnerabilityDescription = string;
 export type VendorSeverity = string;
 export type RelatedVulnerability = string;
+export type VendorCreatedAt = Date;
+export type VendorUpdatedAt = Date;
 export type VulnerabilitySourceUrl = string;
 export type ValidationExceptionReason = string;
 export type NetworkProtocol = string;
@@ -700,7 +708,7 @@ export const EnableRequest = S.suspend(() =>
   S.Struct({
     accountIds: S.optional(AccountIdSet),
     resourceTypes: EnableResourceTypeList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/enable" }),
@@ -721,7 +729,7 @@ export interface EnableDelegatedAdminAccountRequest {
 export const EnableDelegatedAdminAccountRequest = S.suspend(() =>
   S.Struct({
     delegatedAdminAccountId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/delegatedadminaccounts/enable" }),
@@ -1268,7 +1276,7 @@ export interface StartCodeSecurityScanRequest {
 }
 export const StartCodeSecurityScanRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     resource: CodeSecurityResource,
   }).pipe(
     T.all(

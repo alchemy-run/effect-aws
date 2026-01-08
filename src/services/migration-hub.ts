@@ -89,6 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type ProgressUpdateStream = string;
 export type MigrationTaskName = string;
+export type DryRun = boolean;
 export type ApplicationId = string;
 export type CreatedArtifactName = string;
 export type ConfigurationId = string;
@@ -99,6 +100,7 @@ export type MaxResultsCreatedArtifacts = number;
 export type MaxResultsResources = number;
 export type ResourceName = string;
 export type MaxResultsSourceResources = number;
+export type UpdateDateTime = Date;
 export type NextUpdateSeconds = number;
 export type CreatedArtifactDescription = string;
 export type DiscoveredResourceDescription = string;

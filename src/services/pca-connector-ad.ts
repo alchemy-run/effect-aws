@@ -217,7 +217,7 @@ export interface CreateDirectoryRegistrationRequest {
 export const CreateDirectoryRegistrationRequest = S.suspend(() =>
   S.Struct({
     DirectoryId: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -318,7 +318,7 @@ export const CreateServicePrincipalNameRequest = S.suspend(() =>
       T.HttpLabel("DirectoryRegistrationArn"),
     ),
     ConnectorArn: S.String.pipe(T.HttpLabel("ConnectorArn")),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1384,7 +1384,7 @@ export const CreateConnectorRequest = S.suspend(() =>
     DirectoryId: S.String,
     CertificateAuthorityArn: S.String,
     VpcInformation: VpcInformation,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(
@@ -1420,7 +1420,7 @@ export const CreateTemplateGroupAccessControlEntryRequest = S.suspend(() =>
     GroupSecurityIdentifier: S.String,
     GroupDisplayName: S.String,
     AccessRights: AccessRights,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1913,7 +1913,7 @@ export const CreateTemplateRequest = S.suspend(() =>
     ConnectorArn: S.String,
     Name: S.String,
     Definition: TemplateDefinition,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(

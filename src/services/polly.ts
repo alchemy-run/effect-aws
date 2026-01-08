@@ -86,6 +86,7 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type LexiconName = string;
+export type IncludeAdditionalLanguageCodes = boolean;
 export type NextToken = string;
 export type TaskId = string;
 export type MaxResults = number;
@@ -101,6 +102,7 @@ export type RequestCharacters = number;
 export type LanguageName = string;
 export type VoiceName = string;
 export type Alphabet = string;
+export type LastModified = Date;
 export type LexiconArn = string;
 export type LexemesCount = number;
 export type Size = number;

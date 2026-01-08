@@ -90,7 +90,6 @@ const rules = T.EndpointResolver((p, _) => {
 export type NetworkId = string;
 export type ClientToken = string;
 export type UserId = string;
-export type GenericString = string;
 export type SensitiveString = string | redacted.Redacted<string>;
 export type BotId = string;
 export type SecurityGroupId = string;
@@ -126,7 +125,10 @@ export const BatchDeleteUserRequest = S.suspend(() =>
   S.Struct({
     networkId: S.String.pipe(T.HttpLabel("networkId")),
     userIds: UserIds,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -152,7 +154,10 @@ export const BatchLookupUserUnameRequest = S.suspend(() =>
   S.Struct({
     networkId: S.String.pipe(T.HttpLabel("networkId")),
     unames: Unames,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -178,7 +183,10 @@ export const BatchReinviteUserRequest = S.suspend(() =>
   S.Struct({
     networkId: S.String.pipe(T.HttpLabel("networkId")),
     userIds: UserIds,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "PATCH", uri: "/networks/{networkId}/users/re-invite" }),
@@ -203,7 +211,10 @@ export const BatchResetDevicesForUserRequest = S.suspend(() =>
     networkId: S.String.pipe(T.HttpLabel("networkId")),
     userId: S.String.pipe(T.HttpLabel("userId")),
     appIds: AppIds,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -231,7 +242,10 @@ export const BatchToggleUserSuspendStatusRequest = S.suspend(() =>
     networkId: S.String.pipe(T.HttpLabel("networkId")),
     suspend: S.Boolean.pipe(T.HttpQuery("suspend")),
     userIds: UserIds,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -388,7 +402,10 @@ export interface DeleteNetworkRequest {
 export const DeleteNetworkRequest = S.suspend(() =>
   S.Struct({
     networkId: S.String.pipe(T.HttpLabel("networkId")),
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/networks/{networkId}" }),
@@ -1044,7 +1061,10 @@ export const UpdateNetworkRequest = S.suspend(() =>
   S.Struct({
     networkId: S.String.pipe(T.HttpLabel("networkId")),
     networkName: S.String,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     encryptionKeyArn: S.optional(S.String),
   }).pipe(
     T.all(
@@ -1299,7 +1319,10 @@ export const BatchCreateUserRequest = S.suspend(() =>
   S.Struct({
     networkId: S.String.pipe(T.HttpLabel("networkId")),
     users: BatchCreateUserRequestItems,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/networks/{networkId}/users" }),
@@ -2140,7 +2163,10 @@ export const CreateSecurityGroupRequest = S.suspend(() =>
     networkId: S.String.pipe(T.HttpLabel("networkId")),
     name: S.String,
     securityGroupSettings: SecurityGroupSettingsRequest,
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Client-Token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/networks/{networkId}/security-groups" }),

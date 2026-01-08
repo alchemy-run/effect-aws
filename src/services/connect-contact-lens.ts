@@ -263,7 +263,36 @@ export const RealtimeContactAnalysisSegments = S.Array(
   RealtimeContactAnalysisSegment,
 );
 export interface ListRealtimeContactAnalysisSegmentsResponse {
-  Segments?: RealtimeContactAnalysisSegment[];
+  Segments: (RealtimeContactAnalysisSegment & {
+    Transcript: Transcript & {
+      Id: TranscriptId;
+      ParticipantId: ParticipantId;
+      ParticipantRole: ParticipantRole;
+      Content: TranscriptContent;
+      BeginOffsetMillis: OffsetMillis;
+      EndOffsetMillis: OffsetMillis;
+      IssuesDetected: (IssueDetected & {
+        CharacterOffsets: CharacterOffsets & {
+          BeginOffsetChar: CharacterOffset;
+          EndOffsetChar: CharacterOffset;
+        };
+      })[];
+    };
+    Categories: Categories & {
+      MatchedCategories: MatchedCategories;
+      MatchedDetails: {
+        [key: string]: CategoryDetails & {
+          PointsOfInterest: (PointOfInterest & {
+            BeginOffsetMillis: OffsetMillis;
+            EndOffsetMillis: OffsetMillis;
+          })[];
+        };
+      };
+    };
+    PostContactSummary: PostContactSummary & {
+      Status: PostContactSummaryStatus;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListRealtimeContactAnalysisSegmentsResponse = S.suspend(() =>

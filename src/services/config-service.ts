@@ -119,6 +119,8 @@ export type CosmosPageLimit = number;
 export type DescribePendingAggregationRequestsLimit = number;
 export type ResourceEvaluationId = string;
 export type GetConformancePackComplianceDetailsLimit = number;
+export type LaterTime = Date;
+export type EarlierTime = Date;
 export type MaxResults = number;
 export type ResourceName = string;
 export type ListResourceEvaluationsPageItemLimit = number;
@@ -142,6 +144,7 @@ export type ParameterName = string;
 export type ParameterValue = string;
 export type SSMDocumentName = string;
 export type SSMDocumentVersion = string;
+export type OrderingTimestamp = Date;
 export type StringWithCharLimit256Min0 = string;
 export type StringWithCharLimit2048 = string;
 export type StringWithCharLimit768 = string;
@@ -160,17 +163,23 @@ export type ResourceConfiguration = string;
 export type ErrorMessage = string;
 export type ResourceTypeValue = string;
 export type ServicePrincipalValue = string;
+export type AllSupported = boolean;
+export type IncludeGlobalResourceTypes = boolean;
 export type ConfigurationAggregatorArn = string;
 export type ConformancePackArn = string;
 export type ConformancePackId = string;
 export type StackArn = string;
 export type ConformancePackStatusReason = string;
 export type Version = string;
+export type ConfigurationItemCaptureTime = Date;
 export type ConfigurationStateId = string;
 export type ConfigurationItemMD5Hash = string;
 export type ARN = string;
 export type AvailabilityZone = string;
+export type ResourceCreationTime = Date;
 export type RelatedEvent = string;
+export type ConfigurationItemDeliveryTime = Date;
+export type ResourceDeletionTime = Date;
 export type Description = string;
 export type Percentage = number;
 export type RelationshipName = string;
@@ -179,6 +188,7 @@ export type SupplementaryConfigurationValue = string;
 export type FieldName = string;
 export type Annotation = string;
 export type ComplianceScore = string;
+export type LastUpdatedTime = Date;
 
 //# Schemas
 export interface GetComplianceSummaryByConfigRuleRequest {}
@@ -8690,7 +8700,7 @@ export const selectAggregateResourceConfig: {
   items: (
     input: SelectAggregateResourceConfigRequest,
   ) => stream.Stream<
-    String,
+    string,
     | InvalidExpressionException
     | InvalidLimitException
     | InvalidNextTokenException
@@ -9196,7 +9206,7 @@ export const selectResourceConfig: {
   items: (
     input: SelectResourceConfigRequest,
   ) => stream.Stream<
-    String,
+    string,
     | InvalidExpressionException
     | InvalidLimitException
     | InvalidNextTokenException

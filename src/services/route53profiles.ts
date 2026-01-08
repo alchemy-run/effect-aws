@@ -98,6 +98,7 @@ export type TagKey = string;
 export type TagValue = string;
 export type ExceptionMessage = string;
 export type AccountId = string;
+export type Rfc3339Timestamp = Date;
 
 //# Schemas
 export type TagKeyList = string[];
@@ -144,7 +145,7 @@ export interface CreateProfileRequest {
 export const CreateProfileRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(

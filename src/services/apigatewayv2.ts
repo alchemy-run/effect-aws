@@ -95,7 +95,6 @@ export type SelectionKey = string;
 export type UriWithLengthBetween1And2048 = string;
 export type StringWithLengthBetween1And64 = string;
 export type Id = string;
-export type __string = string;
 export type IntegerWithLengthBetween0And3600 = number;
 export type StringWithLengthBetween1And512 = string;
 export type StringWithLengthBetween1And1024 = string;
@@ -112,10 +111,9 @@ export type MaxResults = number;
 export type __stringMin1Max307200 = string;
 export type IntegerWithLengthBetweenMinus1And86400 = number;
 export type StringWithLengthBetween1And1600 = string;
+export type __timestampIso8601 = Date;
 export type __stringMin3Max255 = string;
 export type __stringMin1Max32768 = string;
-export type __integer = number;
-export type __double = number;
 export type StringWithLengthBetween0And2048 = string;
 export type __stringMin10Max30PatternAZ09 = string;
 export type NextToken = string;
@@ -3593,7 +3591,12 @@ export const DisplayOrder = S.suspend(() =>
 export interface CreatePortalProductResponse {
   Description?: string;
   DisplayName?: string;
-  DisplayOrder?: DisplayOrder;
+  DisplayOrder?: DisplayOrder & {
+    Contents: (Section & {
+      ProductRestEndpointPageArns: __listOf__stringMin20Max2048;
+      SectionName: string;
+    })[];
+  };
   LastModified?: Date;
   PortalProductArn?: string;
   PortalProductId?: string;
@@ -3960,7 +3963,12 @@ export const GetModelTemplateResponse = S.suspend(() =>
 export interface GetPortalProductResponse {
   Description?: string;
   DisplayName?: string;
-  DisplayOrder?: DisplayOrder;
+  DisplayOrder?: DisplayOrder & {
+    Contents: (Section & {
+      ProductRestEndpointPageArns: __listOf__stringMin20Max2048;
+      SectionName: string;
+    })[];
+  };
   LastModified?: Date;
   PortalProductArn?: string;
   PortalProductId?: string;
@@ -3996,7 +4004,10 @@ export const GetPortalProductSharingPolicyResponse = S.suspend(() =>
   identifier: "GetPortalProductSharingPolicyResponse",
 }) as any as S.Schema<GetPortalProductSharingPolicyResponse>;
 export interface GetProductPageResponse {
-  DisplayContent?: DisplayContent;
+  DisplayContent?: DisplayContent & {
+    Body: __stringMin1Max32768;
+    Title: __stringMin1Max255;
+  };
   LastModified?: Date;
   ProductPageArn?: string;
   ProductPageId?: string;
@@ -4084,8 +4095,21 @@ export const GetRouteResponseResponse = S.suspend(() =>
   identifier: "GetRouteResponseResponse",
 }) as any as S.Schema<GetRouteResponseResponse>;
 export interface GetRoutingRuleResponse {
-  Actions?: RoutingRuleAction[];
-  Conditions?: RoutingRuleCondition[];
+  Actions?: (RoutingRuleAction & {
+    InvokeApi: RoutingRuleActionInvokeApi & {
+      ApiId: Id;
+      Stage: StringWithLengthBetween1And128;
+    };
+  })[];
+  Conditions?: (RoutingRuleCondition & {
+    MatchBasePaths: RoutingRuleMatchBasePaths & { AnyOf: __listOfSelectionKey };
+    MatchHeaders: RoutingRuleMatchHeaders & {
+      AnyOf: (RoutingRuleMatchHeaderValue & {
+        Header: SelectionKey;
+        ValueGlob: SelectionExpression;
+      })[];
+    };
+  })[];
   Priority?: number;
   RoutingRuleArn?: string;
   RoutingRuleId?: string;
@@ -4256,8 +4280,21 @@ export const ImportApiResponse = S.suspend(() =>
   identifier: "ImportApiResponse",
 }) as any as S.Schema<ImportApiResponse>;
 export interface PutRoutingRuleResponse {
-  Actions?: RoutingRuleAction[];
-  Conditions?: RoutingRuleCondition[];
+  Actions?: (RoutingRuleAction & {
+    InvokeApi: RoutingRuleActionInvokeApi & {
+      ApiId: Id;
+      Stage: StringWithLengthBetween1And128;
+    };
+  })[];
+  Conditions?: (RoutingRuleCondition & {
+    MatchBasePaths: RoutingRuleMatchBasePaths & { AnyOf: __listOfSelectionKey };
+    MatchHeaders: RoutingRuleMatchHeaders & {
+      AnyOf: (RoutingRuleMatchHeaderValue & {
+        Header: SelectionKey;
+        ValueGlob: SelectionExpression;
+      })[];
+    };
+  })[];
   Priority?: number;
   RoutingRuleArn?: string;
   RoutingRuleId?: string;
@@ -4713,16 +4750,37 @@ export const Preview = S.suspend(() =>
   }),
 ).annotations({ identifier: "Preview" }) as any as S.Schema<Preview>;
 export interface UpdatePortalResponse {
-  Authorization?: Authorization;
-  EndpointConfiguration?: EndpointConfigurationResponse;
+  Authorization?: Authorization & {
+    CognitoConfig: CognitoConfig & {
+      AppClientId: __stringMin1Max256;
+      UserPoolArn: __stringMin20Max2048;
+      UserPoolDomain: __stringMin20Max2048;
+    };
+  };
+  EndpointConfiguration?: EndpointConfigurationResponse & {
+    PortalDefaultDomainName: __stringMin3Max256;
+    PortalDomainHostedZoneId: __stringMin1Max64;
+  };
   IncludedPortalProductArns?: string[];
   LastModified?: Date;
   LastPublished?: Date;
   LastPublishedDescription?: string;
   PortalArn?: string;
-  PortalContent?: PortalContent;
+  PortalContent?: PortalContent & {
+    DisplayName: __stringMin3Max255;
+    Theme: PortalTheme & {
+      CustomColors: CustomColors & {
+        AccentColor: __stringMin1Max16;
+        BackgroundColor: __stringMin1Max16;
+        ErrorValidationColor: __stringMin1Max16;
+        HeaderColor: __stringMin1Max16;
+        NavigationColor: __stringMin1Max16;
+        TextColor: __stringMin1Max16;
+      };
+    };
+  };
   PortalId?: string;
-  Preview?: Preview;
+  Preview?: Preview & { PreviewStatus: PreviewStatus };
   PublishStatus?: PublishStatus;
   RumAppMonitorName?: string;
   StatusException?: StatusException;
@@ -4769,7 +4827,10 @@ export const UpdatePortalResponse = S.suspend(() =>
   identifier: "UpdatePortalResponse",
 }) as any as S.Schema<UpdatePortalResponse>;
 export interface UpdateProductPageResponse {
-  DisplayContent?: DisplayContent;
+  DisplayContent?: DisplayContent & {
+    Body: __stringMin1Max32768;
+    Title: __stringMin1Max255;
+  };
   LastModified?: Date;
   ProductPageArn?: string;
   ProductPageId?: string;
@@ -4831,11 +4892,20 @@ export const RestEndpointIdentifier = S.suspend(() =>
   identifier: "RestEndpointIdentifier",
 }) as any as S.Schema<RestEndpointIdentifier>;
 export interface UpdateProductRestEndpointPageResponse {
-  DisplayContent?: EndpointDisplayContentResponse;
+  DisplayContent?: EndpointDisplayContentResponse & {
+    Endpoint: __stringMin1Max1024;
+  };
   LastModified?: Date;
   ProductRestEndpointPageArn?: string;
   ProductRestEndpointPageId?: string;
-  RestEndpointIdentifier?: RestEndpointIdentifier;
+  RestEndpointIdentifier?: RestEndpointIdentifier & {
+    IdentifierParts: IdentifierParts & {
+      Method: __stringMin1Max20;
+      Path: __stringMin1Max4096;
+      RestApiId: __stringMin1Max50;
+      Stage: __stringMin1Max128;
+    };
+  };
   Status?: Status;
   StatusException?: StatusException;
   TryItState?: TryItState;
@@ -5852,7 +5922,10 @@ export const CreateIntegrationResult = S.suspend(() =>
   identifier: "CreateIntegrationResult",
 }) as any as S.Schema<CreateIntegrationResult>;
 export interface CreateProductPageResponse {
-  DisplayContent?: DisplayContent;
+  DisplayContent?: DisplayContent & {
+    Body: __stringMin1Max32768;
+    Title: __stringMin1Max255;
+  };
   LastModified?: Date;
   ProductPageArn?: string;
   ProductPageId?: string;
@@ -6009,7 +6082,7 @@ export const CreateStageResponse = S.suspend(() =>
   identifier: "CreateStageResponse",
 }) as any as S.Schema<CreateStageResponse>;
 export interface GetApiMappingsResponse {
-  Items?: ApiMapping[];
+  Items?: (ApiMapping & { ApiId: Id; Stage: StringWithLengthBetween1And128 })[];
   NextToken?: string;
 }
 export const GetApiMappingsResponse = S.suspend(() =>
@@ -6021,7 +6094,11 @@ export const GetApiMappingsResponse = S.suspend(() =>
   identifier: "GetApiMappingsResponse",
 }) as any as S.Schema<GetApiMappingsResponse>;
 export interface GetApisResponse {
-  Items?: Api[];
+  Items?: (Api & {
+    Name: StringWithLengthBetween1And128;
+    ProtocolType: ProtocolType;
+    RouteSelectionExpression: SelectionExpression;
+  })[];
   NextToken?: string;
 }
 export const GetApisResponse = S.suspend(() =>
@@ -6033,7 +6110,7 @@ export const GetApisResponse = S.suspend(() =>
   identifier: "GetApisResponse",
 }) as any as S.Schema<GetApisResponse>;
 export interface GetAuthorizersResponse {
-  Items?: Authorizer[];
+  Items?: (Authorizer & { Name: StringWithLengthBetween1And128 })[];
   NextToken?: string;
 }
 export const GetAuthorizersResponse = S.suspend(() =>
@@ -6085,7 +6162,7 @@ export const GetDomainNameResponse = S.suspend(() =>
   identifier: "GetDomainNameResponse",
 }) as any as S.Schema<GetDomainNameResponse>;
 export interface GetDomainNamesResponse {
-  Items?: DomainName[];
+  Items?: (DomainName & { DomainName: StringWithLengthBetween1And512 })[];
   NextToken?: string;
 }
 export const GetDomainNamesResponse = S.suspend(() =>
@@ -6173,7 +6250,7 @@ export const GetIntegrationResult = S.suspend(() =>
   identifier: "GetIntegrationResult",
 }) as any as S.Schema<GetIntegrationResult>;
 export interface GetIntegrationResponsesResponse {
-  Items?: IntegrationResponse[];
+  Items?: (IntegrationResponse & { IntegrationResponseKey: SelectionKey })[];
   NextToken?: string;
 }
 export const GetIntegrationResponsesResponse = S.suspend(() =>
@@ -6197,7 +6274,7 @@ export const GetIntegrationsResponse = S.suspend(() =>
   identifier: "GetIntegrationsResponse",
 }) as any as S.Schema<GetIntegrationsResponse>;
 export interface GetModelsResponse {
-  Items?: Model[];
+  Items?: (Model & { Name: StringWithLengthBetween1And128 })[];
   NextToken?: string;
 }
 export const GetModelsResponse = S.suspend(() =>
@@ -6209,16 +6286,37 @@ export const GetModelsResponse = S.suspend(() =>
   identifier: "GetModelsResponse",
 }) as any as S.Schema<GetModelsResponse>;
 export interface GetPortalResponse {
-  Authorization?: Authorization;
-  EndpointConfiguration?: EndpointConfigurationResponse;
+  Authorization?: Authorization & {
+    CognitoConfig: CognitoConfig & {
+      AppClientId: __stringMin1Max256;
+      UserPoolArn: __stringMin20Max2048;
+      UserPoolDomain: __stringMin20Max2048;
+    };
+  };
+  EndpointConfiguration?: EndpointConfigurationResponse & {
+    PortalDefaultDomainName: __stringMin3Max256;
+    PortalDomainHostedZoneId: __stringMin1Max64;
+  };
   IncludedPortalProductArns?: string[];
   LastModified?: Date;
   LastPublished?: Date;
   LastPublishedDescription?: string;
   PortalArn?: string;
-  PortalContent?: PortalContent;
+  PortalContent?: PortalContent & {
+    DisplayName: __stringMin3Max255;
+    Theme: PortalTheme & {
+      CustomColors: CustomColors & {
+        AccentColor: __stringMin1Max16;
+        BackgroundColor: __stringMin1Max16;
+        ErrorValidationColor: __stringMin1Max16;
+        HeaderColor: __stringMin1Max16;
+        NavigationColor: __stringMin1Max16;
+        TextColor: __stringMin1Max16;
+      };
+    };
+  };
   PortalId?: string;
-  Preview?: Preview;
+  Preview?: Preview & { PreviewStatus: PreviewStatus };
   PublishStatus?: PublishStatus;
   RumAppMonitorName?: string;
   StatusException?: StatusException;
@@ -6265,12 +6363,21 @@ export const GetPortalResponse = S.suspend(() =>
   identifier: "GetPortalResponse",
 }) as any as S.Schema<GetPortalResponse>;
 export interface GetProductRestEndpointPageResponse {
-  DisplayContent?: EndpointDisplayContentResponse;
+  DisplayContent?: EndpointDisplayContentResponse & {
+    Endpoint: __stringMin1Max1024;
+  };
   LastModified?: Date;
   ProductRestEndpointPageArn?: string;
   ProductRestEndpointPageId?: string;
   RawDisplayContent?: string;
-  RestEndpointIdentifier?: RestEndpointIdentifier;
+  RestEndpointIdentifier?: RestEndpointIdentifier & {
+    IdentifierParts: IdentifierParts & {
+      Method: __stringMin1Max20;
+      Path: __stringMin1Max4096;
+      RestApiId: __stringMin1Max50;
+      Stage: __stringMin1Max128;
+    };
+  };
   Status?: Status;
   StatusException?: StatusException;
   TryItState?: TryItState;
@@ -6305,7 +6412,7 @@ export const GetProductRestEndpointPageResponse = S.suspend(() =>
   identifier: "GetProductRestEndpointPageResponse",
 }) as any as S.Schema<GetProductRestEndpointPageResponse>;
 export interface GetRouteResponsesResponse {
-  Items?: RouteResponse[];
+  Items?: (RouteResponse & { RouteResponseKey: SelectionKey })[];
   NextToken?: string;
 }
 export const GetRouteResponsesResponse = S.suspend(() =>
@@ -6317,7 +6424,7 @@ export const GetRouteResponsesResponse = S.suspend(() =>
   identifier: "GetRouteResponsesResponse",
 }) as any as S.Schema<GetRouteResponsesResponse>;
 export interface GetRoutesResponse {
-  Items?: Route[];
+  Items?: (Route & { RouteKey: SelectionKey })[];
   NextToken?: string;
 }
 export const GetRoutesResponse = S.suspend(() =>
@@ -6329,7 +6436,7 @@ export const GetRoutesResponse = S.suspend(() =>
   identifier: "GetRoutesResponse",
 }) as any as S.Schema<GetRoutesResponse>;
 export interface GetStagesResponse {
-  Items?: Stage[];
+  Items?: (Stage & { StageName: StringWithLengthBetween1And128 })[];
   NextToken?: string;
 }
 export const GetStagesResponse = S.suspend(() =>
@@ -6341,7 +6448,12 @@ export const GetStagesResponse = S.suspend(() =>
   identifier: "GetStagesResponse",
 }) as any as S.Schema<GetStagesResponse>;
 export interface GetVpcLinksResponse {
-  Items?: VpcLink[];
+  Items?: (VpcLink & {
+    Name: StringWithLengthBetween1And128;
+    SecurityGroupIds: SecurityGroupIdList;
+    SubnetIds: SubnetIdList;
+    VpcLinkId: Id;
+  })[];
   NextToken?: string;
 }
 export const GetVpcLinksResponse = S.suspend(() =>
@@ -6353,7 +6465,13 @@ export const GetVpcLinksResponse = S.suspend(() =>
   identifier: "GetVpcLinksResponse",
 }) as any as S.Schema<GetVpcLinksResponse>;
 export interface ListPortalProductsResponse {
-  Items?: PortalProductSummary[];
+  Items?: (PortalProductSummary & {
+    Description: __stringMin0Max1024;
+    DisplayName: __stringMin1Max255;
+    LastModified: __timestampIso8601;
+    PortalProductArn: __stringMin20Max2048;
+    PortalProductId: __stringMin10Max30PatternAZ09;
+  })[];
   NextToken?: string;
 }
 export const ListPortalProductsResponse = S.suspend(() =>
@@ -6365,7 +6483,37 @@ export const ListPortalProductsResponse = S.suspend(() =>
   identifier: "ListPortalProductsResponse",
 }) as any as S.Schema<ListPortalProductsResponse>;
 export interface ListPortalsResponse {
-  Items?: PortalSummary[];
+  Items?: (PortalSummary & {
+    Authorization: Authorization & {
+      CognitoConfig: CognitoConfig & {
+        AppClientId: __stringMin1Max256;
+        UserPoolArn: __stringMin20Max2048;
+        UserPoolDomain: __stringMin20Max2048;
+      };
+    };
+    EndpointConfiguration: EndpointConfigurationResponse & {
+      PortalDefaultDomainName: __stringMin3Max256;
+      PortalDomainHostedZoneId: __stringMin1Max64;
+    };
+    IncludedPortalProductArns: __listOf__stringMin20Max2048;
+    LastModified: __timestampIso8601;
+    PortalArn: __stringMin20Max2048;
+    PortalContent: PortalContent & {
+      DisplayName: __stringMin3Max255;
+      Theme: PortalTheme & {
+        CustomColors: CustomColors & {
+          AccentColor: __stringMin1Max16;
+          BackgroundColor: __stringMin1Max16;
+          ErrorValidationColor: __stringMin1Max16;
+          HeaderColor: __stringMin1Max16;
+          NavigationColor: __stringMin1Max16;
+          TextColor: __stringMin1Max16;
+        };
+      };
+    };
+    PortalId: __stringMin10Max30PatternAZ09;
+    Preview: Preview & { PreviewStatus: PreviewStatus };
+  })[];
   NextToken?: string;
 }
 export const ListPortalsResponse = S.suspend(() =>
@@ -6377,7 +6525,12 @@ export const ListPortalsResponse = S.suspend(() =>
   identifier: "ListPortalsResponse",
 }) as any as S.Schema<ListPortalsResponse>;
 export interface ListProductPagesResponse {
-  Items?: ProductPageSummaryNoBody[];
+  Items?: (ProductPageSummaryNoBody & {
+    LastModified: __timestampIso8601;
+    PageTitle: __stringMin1Max255;
+    ProductPageArn: __stringMin20Max2048;
+    ProductPageId: __stringMin10Max30PatternAZ09;
+  })[];
   NextToken?: string;
 }
 export const ListProductPagesResponse = S.suspend(() =>
@@ -6391,7 +6544,22 @@ export const ListProductPagesResponse = S.suspend(() =>
   identifier: "ListProductPagesResponse",
 }) as any as S.Schema<ListProductPagesResponse>;
 export interface ListProductRestEndpointPagesResponse {
-  Items?: ProductRestEndpointPageSummaryNoBody[];
+  Items?: (ProductRestEndpointPageSummaryNoBody & {
+    Endpoint: __stringMin1Max1024;
+    LastModified: __timestampIso8601;
+    ProductRestEndpointPageArn: __stringMin20Max2048;
+    ProductRestEndpointPageId: __stringMin10Max30PatternAZ09;
+    RestEndpointIdentifier: RestEndpointIdentifier & {
+      IdentifierParts: IdentifierParts & {
+        Method: __stringMin1Max20;
+        Path: __stringMin1Max4096;
+        RestApiId: __stringMin1Max50;
+        Stage: __stringMin1Max128;
+      };
+    };
+    Status: Status;
+    TryItState: TryItState;
+  })[];
   NextToken?: string;
 }
 export const ListProductRestEndpointPagesResponse = S.suspend(() =>
@@ -6406,7 +6574,25 @@ export const ListProductRestEndpointPagesResponse = S.suspend(() =>
 }) as any as S.Schema<ListProductRestEndpointPagesResponse>;
 export interface ListRoutingRulesResponse {
   NextToken?: string;
-  RoutingRules?: RoutingRule[];
+  RoutingRules?: (RoutingRule & {
+    Actions: (RoutingRuleAction & {
+      InvokeApi: RoutingRuleActionInvokeApi & {
+        ApiId: Id;
+        Stage: StringWithLengthBetween1And128;
+      };
+    })[];
+    Conditions: (RoutingRuleCondition & {
+      MatchBasePaths: RoutingRuleMatchBasePaths & {
+        AnyOf: __listOfSelectionKey;
+      };
+      MatchHeaders: RoutingRuleMatchHeaders & {
+        AnyOf: (RoutingRuleMatchHeaderValue & {
+          Header: SelectionKey;
+          ValueGlob: SelectionExpression;
+        })[];
+      };
+    })[];
+  })[];
 }
 export const ListRoutingRulesResponse = S.suspend(() =>
   S.Struct({
@@ -6487,11 +6673,20 @@ export const CreatePortalRequest = S.suspend(() =>
   identifier: "CreatePortalRequest",
 }) as any as S.Schema<CreatePortalRequest>;
 export interface CreateProductRestEndpointPageResponse {
-  DisplayContent?: EndpointDisplayContentResponse;
+  DisplayContent?: EndpointDisplayContentResponse & {
+    Endpoint: __stringMin1Max1024;
+  };
   LastModified?: Date;
   ProductRestEndpointPageArn?: string;
   ProductRestEndpointPageId?: string;
-  RestEndpointIdentifier?: RestEndpointIdentifier;
+  RestEndpointIdentifier?: RestEndpointIdentifier & {
+    IdentifierParts: IdentifierParts & {
+      Method: __stringMin1Max20;
+      Path: __stringMin1Max4096;
+      RestApiId: __stringMin1Max50;
+      Stage: __stringMin1Max128;
+    };
+  };
   Status?: Status;
   StatusException?: StatusException;
   TryItState?: TryItState;
@@ -6603,7 +6798,12 @@ export const CreateRoutingRuleRequest = S.suspend(() =>
 export interface UpdatePortalProductResponse {
   Description?: string;
   DisplayName?: string;
-  DisplayOrder?: DisplayOrder;
+  DisplayOrder?: DisplayOrder & {
+    Contents: (Section & {
+      ProductRestEndpointPageArns: __listOf__stringMin20Max2048;
+      SectionName: string;
+    })[];
+  };
   LastModified?: Date;
   PortalProductArn?: string;
   PortalProductId?: string;
@@ -6627,14 +6827,35 @@ export const UpdatePortalProductResponse = S.suspend(() =>
   identifier: "UpdatePortalProductResponse",
 }) as any as S.Schema<UpdatePortalProductResponse>;
 export interface CreatePortalResponse {
-  Authorization?: Authorization;
-  EndpointConfiguration?: EndpointConfigurationResponse;
+  Authorization?: Authorization & {
+    CognitoConfig: CognitoConfig & {
+      AppClientId: __stringMin1Max256;
+      UserPoolArn: __stringMin20Max2048;
+      UserPoolDomain: __stringMin20Max2048;
+    };
+  };
+  EndpointConfiguration?: EndpointConfigurationResponse & {
+    PortalDefaultDomainName: __stringMin3Max256;
+    PortalDomainHostedZoneId: __stringMin1Max64;
+  };
   IncludedPortalProductArns?: string[];
   LastModified?: Date;
   LastPublished?: Date;
   LastPublishedDescription?: string;
   PortalArn?: string;
-  PortalContent?: PortalContent;
+  PortalContent?: PortalContent & {
+    DisplayName: __stringMin3Max255;
+    Theme: PortalTheme & {
+      CustomColors: CustomColors & {
+        AccentColor: __stringMin1Max16;
+        BackgroundColor: __stringMin1Max16;
+        ErrorValidationColor: __stringMin1Max16;
+        HeaderColor: __stringMin1Max16;
+        NavigationColor: __stringMin1Max16;
+        TextColor: __stringMin1Max16;
+      };
+    };
+  };
   PortalId?: string;
   PublishStatus?: PublishStatus;
   RumAppMonitorName?: string;
@@ -6679,8 +6900,21 @@ export const CreatePortalResponse = S.suspend(() =>
   identifier: "CreatePortalResponse",
 }) as any as S.Schema<CreatePortalResponse>;
 export interface CreateRoutingRuleResponse {
-  Actions?: RoutingRuleAction[];
-  Conditions?: RoutingRuleCondition[];
+  Actions?: (RoutingRuleAction & {
+    InvokeApi: RoutingRuleActionInvokeApi & {
+      ApiId: Id;
+      Stage: StringWithLengthBetween1And128;
+    };
+  })[];
+  Conditions?: (RoutingRuleCondition & {
+    MatchBasePaths: RoutingRuleMatchBasePaths & { AnyOf: __listOfSelectionKey };
+    MatchHeaders: RoutingRuleMatchHeaders & {
+      AnyOf: (RoutingRuleMatchHeaderValue & {
+        Header: SelectionKey;
+        ValueGlob: SelectionExpression;
+      })[];
+    };
+  })[];
   Priority?: number;
   RoutingRuleArn?: string;
   RoutingRuleId?: string;

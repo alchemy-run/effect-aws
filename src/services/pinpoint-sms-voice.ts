@@ -88,7 +88,6 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type WordCharactersWithDelimiters = string;
-export type __string = string;
 export type NonEmptyString = string;
 export type NextTokenString = string;
 

@@ -98,13 +98,12 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type MigrationProjectIdentifier = string;
-export type IntegerOptional = number;
 export type SecretString = string | redacted.Redacted<string>;
 export type ReplicationInstanceClass = string;
 export type Marker = string;
+export type CertificateWallet = Uint8Array;
+export type Iso8601DateTime = Date;
 export type ExceptionMessage = string;
-export type LongOptional = number;
-export type DoubleOptional = number;
 export type ResourceArn = string;
 
 //# Schemas

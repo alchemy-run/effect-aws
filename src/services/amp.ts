@@ -95,11 +95,13 @@ export type PaginationToken = string;
 export type WorkspaceAlias = string;
 export type KmsKeyArn = string;
 export type WorkspaceId = string;
+export type AlertManagerDefinitionData = Uint8Array;
 export type AnomalyDetectorAlias = string;
 export type AnomalyDetectorEvaluationInterval = number;
 export type AnomalyDetectorId = string;
 export type LogGroupArn = string;
 export type RuleGroupsNamespaceName = string;
+export type RuleGroupsNamespaceData = Uint8Array;
 export type TagValue = string;
 export type IamRoleArn = string;
 export type FilterKey = string;
@@ -258,7 +260,7 @@ export const UpdateScraperRequest = S.suspend(() =>
     scrapeConfiguration: S.optional(ScrapeConfiguration),
     destination: S.optional(Destination),
     roleConfiguration: S.optional(RoleConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/scrapers/{scraperId}" }),
@@ -279,7 +281,10 @@ export interface DeleteScraperRequest {
 export const DeleteScraperRequest = S.suspend(() =>
   S.Struct({
     scraperId: S.String.pipe(T.HttpLabel("scraperId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/scrapers/{scraperId}" }),
@@ -320,7 +325,10 @@ export interface DeleteScraperLoggingConfigurationRequest {
 export const DeleteScraperLoggingConfigurationRequest = S.suspend(() =>
   S.Struct({
     scraperId: S.String.pipe(T.HttpLabel("scraperId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -354,7 +362,7 @@ export interface CreateWorkspaceRequest {
 export const CreateWorkspaceRequest = S.suspend(() =>
   S.Struct({
     alias: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     kmsKeyArn: S.optional(S.String),
   }).pipe(
@@ -396,7 +404,7 @@ export const UpdateWorkspaceAliasRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     alias: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/workspaces/{workspaceId}/alias" }),
@@ -423,7 +431,10 @@ export interface DeleteWorkspaceRequest {
 export const DeleteWorkspaceRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/workspaces/{workspaceId}" }),
@@ -475,7 +486,7 @@ export const CreateAlertManagerDefinitionRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     data: T.Blob,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -521,7 +532,7 @@ export const PutAlertManagerDefinitionRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     data: T.Blob,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -545,7 +556,10 @@ export interface DeleteAlertManagerDefinitionRequest {
 export const DeleteAlertManagerDefinitionRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -626,7 +640,7 @@ export const PutAnomalyDetectorRequest = S.suspend(() =>
     missingDataAction: S.optional(AnomalyDetectorMissingDataAction),
     configuration: AnomalyDetectorConfiguration,
     labels: S.optional(PrometheusMetricLabelMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -676,7 +690,10 @@ export const DeleteAnomalyDetectorRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     anomalyDetectorId: S.String.pipe(T.HttpLabel("anomalyDetectorId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -736,7 +753,7 @@ export const CreateLoggingConfigurationRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     logGroupArn: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/workspaces/{workspaceId}/logging" }),
@@ -776,7 +793,7 @@ export const UpdateLoggingConfigurationRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     logGroupArn: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/workspaces/{workspaceId}/logging" }),
@@ -797,7 +814,10 @@ export interface DeleteLoggingConfigurationRequest {
 export const DeleteLoggingConfigurationRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/workspaces/{workspaceId}/logging" }),
@@ -873,7 +893,7 @@ export const UpdateQueryLoggingConfigurationRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     destinations: LoggingDestinations,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/workspaces/{workspaceId}/logging/query" }),
@@ -894,7 +914,10 @@ export interface DeleteQueryLoggingConfigurationRequest {
 export const DeleteQueryLoggingConfigurationRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -929,7 +952,7 @@ export const CreateRuleGroupsNamespaceRequest = S.suspend(() =>
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     name: S.String,
     data: T.Blob,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -982,7 +1005,7 @@ export const PutRuleGroupsNamespaceRequest = S.suspend(() =>
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     name: S.String.pipe(T.HttpLabel("name")),
     data: T.Blob,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1008,7 +1031,10 @@ export const DeleteRuleGroupsNamespaceRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     name: S.String.pipe(T.HttpLabel("name")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -1086,7 +1112,7 @@ export const PutResourcePolicyRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     policyDocument: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     revisionId: S.optional(S.String),
   }).pipe(
     T.all(
@@ -1126,7 +1152,10 @@ export interface DeleteResourcePolicyRequest {
 export const DeleteResourcePolicyRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     revisionId: S.optional(S.String).pipe(T.HttpQuery("revisionId")),
   }).pipe(
     T.all(
@@ -1674,7 +1703,7 @@ export const CreateScraperRequest = S.suspend(() =>
     source: Source,
     destination: Destination,
     roleConfiguration: S.optional(RoleConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -1865,7 +1894,7 @@ export const CreateQueryLoggingConfigurationRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
     destinations: LoggingDestinations,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1943,7 +1972,7 @@ export interface UpdateWorkspaceConfigurationRequest {
 export const UpdateWorkspaceConfigurationRequest = S.suspend(() =>
   S.Struct({
     workspaceId: S.String.pipe(T.HttpLabel("workspaceId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     limitsPerLabelSet: S.optional(LimitsPerLabelSetList),
     retentionPeriodInDays: S.optional(S.Number),
   }).pipe(
@@ -2088,7 +2117,7 @@ export const CreateAnomalyDetectorRequest = S.suspend(() =>
     missingDataAction: S.optional(AnomalyDetectorMissingDataAction),
     configuration: AnomalyDetectorConfiguration,
     labels: S.optional(PrometheusMetricLabelMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(

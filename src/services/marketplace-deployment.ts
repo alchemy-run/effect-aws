@@ -205,7 +205,7 @@ export const PutDeploymentParameterRequest = S.suspend(() =>
     deploymentParameter: DeploymentParameterInput,
     tags: S.optional(TagsMap),
     expirationDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({

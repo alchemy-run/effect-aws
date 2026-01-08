@@ -346,6 +346,7 @@ const rules = T.EndpointResolver((p, _) => {
 export type TableArn = string;
 export type BackupName = string;
 export type TableName = string;
+export type DeletionProtectionEnabled = boolean;
 export type ResourcePolicy = string;
 export type BackupArn = string;
 export type ConditionExpression = string;
@@ -357,9 +358,11 @@ export type ImportArn = string;
 export type PositiveLongObject = number;
 export type StreamArn = string;
 export type PartiQLStatement = string;
+export type ConsistentRead = boolean;
 export type PartiQLNextToken = string;
 export type PositiveIntegerObject = number;
 export type ClientRequestToken = string;
+export type ExportTime = Date;
 export type ClientToken = string;
 export type S3Bucket = string;
 export type S3BucketOwner = string;
@@ -368,6 +371,8 @@ export type S3SseKmsKeyId = string;
 export type AttributeName = string;
 export type ProjectionExpression = string;
 export type BackupsInputLimit = number;
+export type TimeRangeLowerBound = Date;
+export type TimeRangeUpperBound = Date;
 export type NextTokenString = string;
 export type ListContributorInsightsLimit = number;
 export type ListExportsMaxLimit = number;
@@ -376,12 +381,15 @@ export type RegionName = string;
 export type ListImportsMaxLimit = number;
 export type ImportNextToken = string;
 export type ListTablesInputLimit = number;
+export type ConfirmRemoveSelfResourceAccess = boolean;
 export type KeyExpression = string;
 export type ScanTotalSegments = number;
 export type ScanSegment = number;
 export type TagKeyString = string;
 export type UpdateExpression = string;
 export type KeySchemaAttributeName = string;
+export type StreamEnabled = boolean;
+export type SSEEnabled = boolean;
 export type KMSMasterKeyId = string;
 export type TagValueString = string;
 export type LongObject = number;
@@ -389,19 +397,29 @@ export type ExpressionAttributeNameVariable = string;
 export type ExpressionAttributeValueVariable = string;
 export type StringAttributeValue = string;
 export type NumberAttributeValue = string;
+export type BinaryAttributeValue = Uint8Array;
+export type NullAttributeValue = boolean;
+export type BooleanAttributeValue = boolean;
+export type ExportFromTime = Date;
+export type ExportToTime = Date;
 export type RecoveryPeriodInDays = number;
 export type AutoScalingRoleArn = string;
+export type TimeToLiveEnabled = boolean;
 export type TimeToLiveAttributeName = string;
 export type ContributorInsightsRule = string;
+export type LastUpdateDateTime = Date;
 export type ErrorMessage = string;
 export type NonKeyAttributeName = string;
 export type CsvDelimiter = string;
 export type CsvHeader = string;
 export type AutoScalingPolicyName = string;
 export type BackupSizeBytes = number;
+export type BackupCreationDateTime = Date;
 export type TableId = string;
 export type ExceptionName = string;
 export type ExceptionDescription = string;
+export type ExportStartTime = Date;
+export type ExportEndTime = Date;
 export type ExportManifest = string;
 export type FailureCode = string;
 export type FailureMessage = string;
@@ -411,13 +429,18 @@ export type GlobalTableArnString = string;
 export type NonNegativeLongObject = number;
 export type ErrorCount = number;
 export type CloudWatchLogGroupArn = string;
+export type ImportStartTime = Date;
+export type ImportEndTime = Date;
 export type ProcessedItemCount = number;
 export type ImportedItemCount = number;
 export type ConsumedCapacityUnits = number;
 export type IntegerObject = number;
 export type DoubleObject = number;
+export type TableCreationDateTime = Date;
+export type Backfilling = boolean;
 export type ReplicaStatusDescription = string;
 export type ReplicaStatusPercentProgress = string;
+export type RestoreInProgress = boolean;
 export type KMSMasterKeyArn = string;
 export type ArchivalReason = string;
 export type ItemCollectionSizeEstimateBound = number;
@@ -2536,7 +2559,7 @@ export interface ExecuteTransactionInput {
 export const ExecuteTransactionInput = S.suspend(() =>
   S.Struct({
     TransactStatements: ParameterizedStatements,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ReturnConsumedCapacity: S.optional(ReturnConsumedCapacity),
   }).pipe(
     T.all(
@@ -2569,7 +2592,7 @@ export const ExportTableToPointInTimeInput = S.suspend(() =>
   S.Struct({
     TableArn: S.String.pipe(T.ContextParam("ResourceArn")),
     ExportTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     S3Bucket: S.String,
     S3BucketOwner: S.optional(S.String),
     S3Prefix: S.optional(S.String),
@@ -3852,7 +3875,7 @@ export interface ImportTableInput {
 }
 export const ImportTableInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     S3BucketSource: S3BucketSource,
     InputFormat: InputFormat,
     InputFormatOptions: S.optional(InputFormatOptions),
@@ -4015,7 +4038,7 @@ export const TransactWriteItemsInput = S.suspend(() =>
     TransactItems: TransactWriteItemList,
     ReturnConsumedCapacity: S.optional(ReturnConsumedCapacity),
     ReturnItemCollectionMetrics: S.optional(ReturnItemCollectionMetrics),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,

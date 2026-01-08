@@ -91,6 +91,10 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type Arn = string;
+export type PassphraseBlob = Uint8Array | redacted.Redacted<Uint8Array>;
+export type CertificateBodyBlob = Uint8Array;
+export type PrivateKeyBlob = Uint8Array | redacted.Redacted<Uint8Array>;
+export type CertificateChainBlob = Uint8Array;
 export type NextToken = string;
 export type MaxItems = number;
 export type IdempotencyToken = string;

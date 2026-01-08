@@ -404,7 +404,7 @@ export interface StartEngagementByAcceptingInvitationTaskRequest {
 export const StartEngagementByAcceptingInvitationTaskRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Identifier: S.String,
     Tags: S.optional(TagList),
   }).pipe(
@@ -1965,7 +1965,7 @@ export interface StartOpportunityFromEngagementTaskRequest {
 export const StartOpportunityFromEngagementTaskRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Identifier: S.String,
     ContextIdentifier: S.String,
     Tags: S.optional(TagList),
@@ -2032,7 +2032,7 @@ export const CreateResourceSnapshotRequest = S.suspend(() =>
     ResourceType: ResourceType,
     ResourceIdentifier: S.String,
     ResourceSnapshotTemplateIdentifier: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/CreateResourceSnapshot" }),
@@ -2151,7 +2151,7 @@ export interface CreateResourceSnapshotJobRequest {
 export const CreateResourceSnapshotJobRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     EngagementIdentifier: S.String,
     ResourceType: ResourceType,
     ResourceIdentifier: S.String,
@@ -2676,7 +2676,7 @@ export interface CreateEngagementRequest {
 export const CreateEngagementRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Title: S.String,
     Description: S.String,
     Contexts: S.optional(EngagementContexts),
@@ -2828,7 +2828,7 @@ export interface StartEngagementFromOpportunityTaskRequest {
 export const StartEngagementFromOpportunityTaskRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Identifier: S.String,
     AwsSubmission: AwsSubmission,
     Tags: S.optional(TagList),
@@ -4139,7 +4139,7 @@ export const CreateOpportunityRequest = S.suspend(() =>
     OpportunityType: S.optional(OpportunityType),
     Marketing: S.optional(Marketing),
     SoftwareRevenue: S.optional(SoftwareRevenue),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     LifeCycle: S.optional(LifeCycle),
     Origin: S.optional(OpportunityOrigin),
     OpportunityTeam: S.optional(PartnerOpportunityTeamMembersList),
@@ -4282,7 +4282,7 @@ export const CreateEngagementContextRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
     EngagementIdentifier: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Type: EngagementContextType,
     Payload: EngagementContextPayload,
   }).pipe(
@@ -4307,7 +4307,7 @@ export interface CreateEngagementInvitationRequest {
 export const CreateEngagementInvitationRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     EngagementIdentifier: S.String,
     Invitation: Invitation,
   }).pipe(

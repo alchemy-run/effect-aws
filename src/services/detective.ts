@@ -150,6 +150,7 @@ export type APISuccessCount = number;
 export type APIFailureCount = number;
 export type Location = string;
 export type HourlyTimeDelta = number;
+export type IsNewForEntireAccount = boolean;
 export type Aso = string;
 export type UserAgent = string;
 export type Type = string;

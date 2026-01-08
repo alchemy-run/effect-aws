@@ -152,6 +152,9 @@ export type IdentityName = string;
 export type CustomInstructionsString = string | redacted.Redacted<string>;
 export type SessionTagValue = string | redacted.Redacted<string>;
 export type SensitiveString = string | redacted.Redacted<string>;
+export type AssetBundleImportBodyBlob =
+  | Uint8Array
+  | redacted.Redacted<Uint8Array>;
 export type S3Uri = string;
 export type ActionsListMemberString = string;
 export type PermissionPrincipalString = string;
@@ -169,6 +172,7 @@ export type Title = string;
 export type FlowDescription = string;
 export type SensitiveLong = number;
 export type SensitiveDouble = number;
+export type SensitiveTimestamp = Date;
 export type DataSetIdentifier = string;
 export type SheetTitle = string;
 export type SheetDescription = string;
@@ -230,6 +234,7 @@ export type SqlQuery = string | redacted.Redacted<string>;
 export type StringDatasetParameterDefaultValue = string;
 export type DecimalDatasetParameterDefaultValue = number;
 export type IntegerDatasetParameterDefaultValue = number;
+export type DateTimeDatasetParameterDefaultValue = Date;
 export type DestinationTableAlias = string;
 export type SemanticTableAlias = string;
 export type DatabaseUser = string;
@@ -32415,7 +32420,7 @@ export const listRoleMemberships: {
   items: (
     input: ListRoleMembershipsRequest,
   ) => stream.Stream<
-    String,
+    string,
     | AccessDeniedException
     | InternalFailureException
     | InvalidNextTokenException

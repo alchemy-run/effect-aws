@@ -106,6 +106,7 @@ export type Resource = string;
 export type CollectionType = string;
 export type StandbyReplicas = string;
 export type IndexName = string;
+export type IndexSchema = unknown;
 export type LifecycleResource = string;
 export type SecurityConfigType = string;
 export type ConfigName = string;
@@ -202,7 +203,7 @@ export const CreateLifecyclePolicyRequest = S.suspend(() =>
     name: S.String,
     description: S.optional(S.String),
     policy: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -222,7 +223,7 @@ export const CreateSecurityPolicyRequest = S.suspend(() =>
     name: S.String,
     description: S.optional(S.String),
     policy: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -269,7 +270,7 @@ export const UpdateVpcEndpointRequest = S.suspend(() =>
     removeSubnetIds: S.optional(SubnetIds),
     addSecurityGroupIds: S.optional(SecurityGroupIds),
     removeSecurityGroupIds: S.optional(SecurityGroupIds),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -289,7 +290,7 @@ export const CreateAccessPolicyRequest = S.suspend(() =>
     name: S.String,
     description: S.optional(S.String),
     policy: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -322,7 +323,7 @@ export const UpdateAccessPolicyRequest = S.suspend(() =>
     policyVersion: S.String,
     description: S.optional(S.String),
     policy: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -338,7 +339,7 @@ export const DeleteAccessPolicyRequest = S.suspend(() =>
   S.Struct({
     type: S.String,
     name: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -378,7 +379,7 @@ export const UpdateCollectionRequest = S.suspend(() =>
   S.Struct({
     id: S.String,
     description: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -390,7 +391,10 @@ export interface DeleteCollectionRequest {
   clientToken?: string;
 }
 export const DeleteCollectionRequest = S.suspend(() =>
-  S.Struct({ id: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    id: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
 ).annotations({
@@ -477,7 +481,7 @@ export const UpdateLifecyclePolicyRequest = S.suspend(() =>
     policyVersion: S.String,
     description: S.optional(S.String),
     policy: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -493,7 +497,7 @@ export const DeleteLifecyclePolicyRequest = S.suspend(() =>
   S.Struct({
     type: S.String,
     name: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -539,7 +543,10 @@ export interface DeleteSecurityConfigRequest {
   clientToken?: string;
 }
 export const DeleteSecurityConfigRequest = S.suspend(() =>
-  S.Struct({ id: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    id: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
 ).annotations({
@@ -593,7 +600,7 @@ export const UpdateSecurityPolicyRequest = S.suspend(() =>
     policyVersion: S.String,
     description: S.optional(S.String),
     policy: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -609,7 +616,7 @@ export const DeleteSecurityPolicyRequest = S.suspend(() =>
   S.Struct({
     type: S.String,
     name: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -653,7 +660,7 @@ export const CreateVpcEndpointRequest = S.suspend(() =>
     vpcId: S.String,
     subnetIds: SubnetIds,
     securityGroupIds: S.optional(SecurityGroupIds),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -665,7 +672,10 @@ export interface DeleteVpcEndpointRequest {
   clientToken?: string;
 }
 export const DeleteVpcEndpointRequest = S.suspend(() =>
-  S.Struct({ id: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    id: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
 ).annotations({
@@ -976,7 +986,7 @@ export const CreateCollectionRequest = S.suspend(() =>
     tags: S.optional(Tags),
     standbyReplicas: S.optional(S.String),
     vectorOptions: S.optional(VectorOptions),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1054,7 +1064,7 @@ export const CreateSecurityConfigRequest = S.suspend(() =>
     samlOptions: S.optional(SamlConfigOptions),
     iamIdentityCenterOptions: S.optional(CreateIamIdentityCenterConfigOptions),
     iamFederationOptions: S.optional(IamFederationConfigOptions),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1080,7 +1090,7 @@ export const UpdateSecurityConfigRequest = S.suspend(() =>
       UpdateIamIdentityCenterConfigOptions,
     ),
     iamFederationOptions: S.optional(IamFederationConfigOptions),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

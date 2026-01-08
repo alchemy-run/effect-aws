@@ -3322,6 +3322,7 @@ export interface Collaboration {
   analyticsEngine?: AnalyticsEngine;
   autoApprovedChangeTypes?: AutoApprovedChangeType[];
   allowedResultRegions?: SupportedS3Region[];
+  isMetricsEnabled?: boolean;
 }
 export const Collaboration = S.suspend(() =>
   S.Struct({
@@ -3342,6 +3343,7 @@ export const Collaboration = S.suspend(() =>
     analyticsEngine: S.optional(AnalyticsEngine),
     autoApprovedChangeTypes: S.optional(AutoApprovedChangeTypeList),
     allowedResultRegions: S.optional(AllowedResultRegions),
+    isMetricsEnabled: S.optional(S.Boolean),
   }),
 ).annotations({
   identifier: "Collaboration",
@@ -4155,6 +4157,7 @@ export interface Membership {
   defaultResultConfiguration?: MembershipProtectedQueryResultConfiguration;
   defaultJobResultConfiguration?: MembershipProtectedJobResultConfiguration;
   paymentConfiguration: MembershipPaymentConfiguration;
+  isMetricsEnabled?: boolean;
 }
 export const Membership = S.suspend(() =>
   S.Struct({
@@ -4179,6 +4182,7 @@ export const Membership = S.suspend(() =>
       MembershipProtectedJobResultConfiguration,
     ),
     paymentConfiguration: MembershipPaymentConfiguration,
+    isMetricsEnabled: S.optional(S.Boolean),
   }),
 ).annotations({ identifier: "Membership" }) as any as S.Schema<Membership>;
 export interface UpdateMembershipOutput {
@@ -6058,6 +6062,7 @@ export interface CreateCollaborationInput {
   analyticsEngine?: AnalyticsEngine;
   autoApprovedChangeRequestTypes?: AutoApprovedChangeType[];
   allowedResultRegions?: SupportedS3Region[];
+  isMetricsEnabled?: boolean;
 }
 export const CreateCollaborationInput = S.suspend(() =>
   S.Struct({
@@ -6075,6 +6080,7 @@ export const CreateCollaborationInput = S.suspend(() =>
     analyticsEngine: S.optional(AnalyticsEngine),
     autoApprovedChangeRequestTypes: S.optional(AutoApprovedChangeTypeList),
     allowedResultRegions: S.optional(AllowedResultRegions),
+    isMetricsEnabled: S.optional(S.Boolean),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/collaborations" }),
@@ -6187,6 +6193,7 @@ export interface CreateMembershipInput {
   defaultResultConfiguration?: MembershipProtectedQueryResultConfiguration;
   defaultJobResultConfiguration?: MembershipProtectedJobResultConfiguration;
   paymentConfiguration?: MembershipPaymentConfiguration;
+  isMetricsEnabled?: boolean;
 }
 export const CreateMembershipInput = S.suspend(() =>
   S.Struct({
@@ -6201,6 +6208,7 @@ export const CreateMembershipInput = S.suspend(() =>
       MembershipProtectedJobResultConfiguration,
     ),
     paymentConfiguration: S.optional(MembershipPaymentConfiguration),
+    isMetricsEnabled: S.optional(S.Boolean),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/memberships" }),

@@ -102,6 +102,7 @@ export type MessageType = string;
 export type RegistrationType = string;
 export type RegistrationIdOrArn = string;
 export type ResourceIdOrArn = string;
+export type AttachmentBody = Uint8Array;
 export type AttachmentUrl = string;
 export type PhoneNumber = string;
 export type ProtectConfigurationArn = string;
@@ -295,7 +296,7 @@ export const AssociateOriginationIdentityRequest = S.suspend(() =>
     PoolId: S.String,
     OriginationIdentity: S.String,
     IsoCountryCode: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -337,7 +338,7 @@ export const CreateOptOutListRequest = S.suspend(() =>
   S.Struct({
     OptOutListName: S.String,
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -359,7 +360,7 @@ export const CreatePoolRequest = S.suspend(() =>
     MessageType: S.String,
     DeletionProtectionEnabled: S.optional(S.Boolean),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -373,7 +374,7 @@ export interface CreateProtectConfigurationRequest {
 }
 export const CreateProtectConfigurationRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DeletionProtectionEnabled: S.optional(S.Boolean),
     Tags: S.optional(TagList),
   }).pipe(
@@ -391,7 +392,7 @@ export const CreateRegistrationRequest = S.suspend(() =>
   S.Struct({
     RegistrationType: S.String,
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -420,7 +421,7 @@ export const CreateRegistrationAttachmentRequest = S.suspend(() =>
     AttachmentBody: S.optional(T.Blob),
     AttachmentUrl: S.optional(S.String),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -446,7 +447,7 @@ export const CreateVerifiedDestinationNumberRequest = S.suspend(() =>
   S.Struct({
     DestinationPhoneNumber: S.String,
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -782,7 +783,7 @@ export const DisassociateOriginationIdentityRequest = S.suspend(() =>
     PoolId: S.String,
     OriginationIdentity: S.String,
     IsoCountryCode: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -897,7 +898,7 @@ export interface PutProtectConfigurationRuleSetNumberOverrideRequest {
 export const PutProtectConfigurationRuleSetNumberOverrideRequest = S.suspend(
   () =>
     S.Struct({
-      ClientToken: S.optional(S.String),
+      ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
       ProtectConfigurationId: S.String,
       DestinationPhoneNumber: S.String,
       Action: S.String,
@@ -987,7 +988,7 @@ export const RequestPhoneNumberRequest = S.suspend(() =>
     InternationalSendingEnabled: S.optional(S.Boolean),
     DeletionProtectionEnabled: S.optional(S.Boolean),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1009,7 +1010,7 @@ export const RequestSenderIdRequest = S.suspend(() =>
     MessageTypes: S.optional(MessageTypeList),
     DeletionProtectionEnabled: S.optional(S.Boolean),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1646,7 +1647,7 @@ export const CreateConfigurationSetRequest = S.suspend(() =>
   S.Struct({
     ConfigurationSetName: S.String,
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1670,7 +1671,7 @@ export const CreateEventDestinationRequest = S.suspend(() =>
     CloudWatchLogsDestination: S.optional(CloudWatchLogsDestination),
     KinesisFirehoseDestination: S.optional(KinesisFirehoseDestination),
     SnsDestination: S.optional(SnsDestination),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

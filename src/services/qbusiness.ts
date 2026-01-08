@@ -127,6 +127,7 @@ export type MaxResultsIntegerForListDataAccessors = number;
 export type IndexName = string;
 export type MaxResultsIntegerForListIndices = number;
 export type DataSourceName = string;
+export type DataSourceConfiguration = unknown;
 export type SyncSchedule = string;
 export type MaxResultsIntegerForListDataSources = number;
 export type PluginName = string;
@@ -196,6 +197,7 @@ export type ResponseConfigurationSummary = string;
 export type ConversationTitle = string;
 export type MessageBody = string;
 export type DocumentAttributeStringValue = string;
+export type ActionPayloadFieldValue = unknown;
 export type Instruction = string;
 export type IdcTrustedTokenIssuerArn = string;
 export type MetricValue = string;
@@ -204,6 +206,7 @@ export type IndexedTextDocument = number;
 export type SourceAttributionMediaId = string;
 export type BoostingDurationInSeconds = number;
 export type SnippetExcerptText = string;
+export type ActionReviewPayloadFieldArrayItemJsonSchema = unknown;
 
 //# Schemas
 export type QIamActions = string[];
@@ -1295,7 +1298,7 @@ export const UpdateChatResponseConfigurationRequest = S.suspend(() =>
     ),
     displayName: S.optional(S.String),
     responseConfigurations: ResponseConfigurations,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3090,7 +3093,7 @@ export const CreateSubscriptionRequest = S.suspend(() =>
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
     principal: SubscriptionPrincipal,
     type: SubscriptionType,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3118,7 +3121,7 @@ export const CreateUserRequest = S.suspend(() =>
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
     userId: S.String,
     userAliases: S.optional(UserAliases),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/applications/{applicationId}/users" }),
@@ -3317,7 +3320,7 @@ export const CreateApplicationRequest = S.suspend(() =>
     description: S.optional(S.String),
     encryptionConfiguration: S.optional(EncryptionConfiguration),
     tags: S.optional(Tags),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     attachmentsConfiguration: S.optional(AttachmentsConfiguration),
     qAppsConfiguration: S.optional(QAppsConfiguration),
     personalizationConfiguration: S.optional(PersonalizationConfiguration),
@@ -3421,7 +3424,7 @@ export const CreateIndexRequest = S.suspend(() =>
     type: S.optional(IndexType),
     tags: S.optional(Tags),
     capacityConfiguration: S.optional(IndexCapacityConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/applications/{applicationId}/indices" }),
@@ -4303,7 +4306,10 @@ export const ChatInput = S.suspend(() =>
     userGroups: S.optional(UserGroups).pipe(T.HttpQuery("userGroups")),
     conversationId: S.optional(S.String).pipe(T.HttpQuery("conversationId")),
     parentMessageId: S.optional(S.String).pipe(T.HttpQuery("parentMessageId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     inputStream: S.optional(ChatInputStream).pipe(T.HttpPayload()),
   }).pipe(
     T.all(
@@ -4756,7 +4762,7 @@ export const CreatePluginRequest = S.suspend(() =>
     serverUrl: S.optional(S.String),
     customPluginConfiguration: S.optional(CustomPluginConfiguration),
     tags: S.optional(Tags),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/applications/{applicationId}/plugins" }),
@@ -4815,7 +4821,7 @@ export const CreateWebExperienceRequest = S.suspend(() =>
     origins: S.optional(WebExperienceOrigins),
     roleArn: S.optional(S.String),
     tags: S.optional(Tags),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     identityProviderConfiguration: S.optional(IdentityProviderConfiguration),
     browserExtensionConfiguration: S.optional(BrowserExtensionConfiguration),
     customizationConfiguration: S.optional(CustomizationConfiguration),
@@ -5080,7 +5086,7 @@ export const ChatSyncInput = S.suspend(() =>
     attributeFilter: S.optional(AttributeFilter),
     chatMode: S.optional(ChatMode),
     chatModeConfiguration: S.optional(ChatModeConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -5108,7 +5114,7 @@ export const CreateChatResponseConfigurationRequest = S.suspend(() =>
   S.Struct({
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
     displayName: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     responseConfigurations: ResponseConfigurations,
     tags: S.optional(Tags),
   }).pipe(
@@ -5160,7 +5166,7 @@ export const CreateDataAccessorRequest = S.suspend(() =>
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
     principal: S.String,
     actionConfigurations: ActionConfigurationList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     displayName: SensitiveString,
     authenticationDetail: S.optional(DataAccessorAuthenticationDetail),
     tags: S.optional(Tags),
@@ -5241,7 +5247,7 @@ export const CreateDataSourceRequest = S.suspend(() =>
     tags: S.optional(Tags),
     syncSchedule: S.optional(S.String),
     roleArn: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     documentEnrichmentConfiguration: S.optional(
       DocumentEnrichmentConfiguration,
     ),
@@ -5895,7 +5901,7 @@ export interface UpdateChatControlsConfigurationRequest {
 export const UpdateChatControlsConfigurationRequest = S.suspend(() =>
   S.Struct({
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     responseScope: S.optional(ResponseScope),
     orchestrationConfiguration: S.optional(OrchestrationConfiguration),
     blockedPhrasesConfigurationUpdate: S.optional(
@@ -5986,7 +5992,7 @@ export const CreateRetrieverRequest = S.suspend(() =>
     displayName: S.String,
     configuration: RetrieverConfiguration,
     roleArn: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(Tags),
   }).pipe(
     T.all(

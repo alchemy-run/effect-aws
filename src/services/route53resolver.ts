@@ -104,6 +104,8 @@ export type OutpostResolverName = string;
 export type InstanceCount = number;
 export type OutpostInstanceType = string;
 export type OutpostArn = string;
+export type RniEnhancedMetricsEnabled = boolean;
+export type TargetNameServerMetricsEnabled = boolean;
 export type ResolverQueryLogConfigName = string;
 export type DestinationArn = string;
 export type DomainName = string;
@@ -278,7 +280,7 @@ export interface CreateFirewallDomainListRequest {
 }
 export const CreateFirewallDomainListRequest = S.suspend(() =>
   S.Struct({
-    CreatorRequestId: S.String,
+    CreatorRequestId: S.String.pipe(T.IdempotencyToken()),
     Name: S.String,
     Tags: S.optional(TagList),
   }).pipe(
@@ -305,7 +307,7 @@ export interface CreateFirewallRuleRequest {
 }
 export const CreateFirewallRuleRequest = S.suspend(() =>
   S.Struct({
-    CreatorRequestId: S.String,
+    CreatorRequestId: S.String.pipe(T.IdempotencyToken()),
     FirewallRuleGroupId: S.String,
     FirewallDomainListId: S.optional(S.String),
     Priority: S.Number,
@@ -334,7 +336,7 @@ export interface CreateFirewallRuleGroupRequest {
 }
 export const CreateFirewallRuleGroupRequest = S.suspend(() =>
   S.Struct({
-    CreatorRequestId: S.String,
+    CreatorRequestId: S.String.pipe(T.IdempotencyToken()),
     Name: S.String,
     Tags: S.optional(TagList),
   }).pipe(
@@ -375,7 +377,7 @@ export const CreateResolverQueryLogConfigRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
     DestinationArn: S.String,
-    CreatorRequestId: S.String,
+    CreatorRequestId: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1651,7 +1653,7 @@ export interface AssociateFirewallRuleGroupRequest {
 }
 export const AssociateFirewallRuleGroupRequest = S.suspend(() =>
   S.Struct({
-    CreatorRequestId: S.String,
+    CreatorRequestId: S.String.pipe(T.IdempotencyToken()),
     FirewallRuleGroupId: S.String,
     VpcId: S.String,
     Priority: S.Number,

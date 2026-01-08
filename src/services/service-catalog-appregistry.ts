@@ -216,7 +216,7 @@ export const CreateAttributeGroupRequest = S.suspend(() =>
     description: S.optional(S.String),
     attributes: S.String,
     tags: S.optional(Tags),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/attribute-groups" }),
@@ -765,7 +765,7 @@ export const CreateApplicationRequest = S.suspend(() =>
     name: S.String,
     description: S.optional(S.String),
     tags: S.optional(Tags),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/applications" }),

@@ -965,7 +965,7 @@ export interface ExportEarthObservationJobInput {
 export const ExportEarthObservationJobInput = S.suspend(() =>
   S.Struct({
     Arn: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ExecutionRoleArn: S.String,
     OutputConfig: OutputConfigInput,
     ExportSourceImages: S.optional(S.Boolean),
@@ -1030,7 +1030,7 @@ export interface StartVectorEnrichmentJobInput {
 export const StartVectorEnrichmentJobInput = S.suspend(() =>
   S.Struct({
     Name: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     KmsKeyId: S.optional(S.String),
     InputConfig: VectorEnrichmentJobInputConfig,
     JobConfig: VectorEnrichmentJobConfig,
@@ -1106,7 +1106,7 @@ export interface ExportVectorEnrichmentJobInput {
 export const ExportVectorEnrichmentJobInput = S.suspend(() =>
   S.Struct({
     Arn: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ExecutionRoleArn: S.String,
     OutputConfig: ExportVectorEnrichmentJobOutputConfig,
   }).pipe(
@@ -1354,7 +1354,7 @@ export interface StartEarthObservationJobInput {
 export const StartEarthObservationJobInput = S.suspend(() =>
   S.Struct({
     Name: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     KmsKeyId: S.optional(S.String),
     InputConfig: InputConfigInput,
     JobConfig: JobConfigInput,

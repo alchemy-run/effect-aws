@@ -124,6 +124,7 @@ export type StringWithLengthBetween1And2048 = string;
 export type DeletionProtectionDuration = number;
 export type DynamicParameterKey = string;
 export type Percentage = number;
+export type Iso8601DateTime = Date;
 
 //# Schemas
 export interface GetAccountSettingsRequest {}

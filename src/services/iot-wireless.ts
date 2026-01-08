@@ -112,6 +112,7 @@ export type ServiceProfileName = string;
 export type WirelessDeviceName = string;
 export type WirelessGatewayName = string;
 export type WirelessGatewayTaskDefinitionId = string;
+export type AutoCreateTasks = boolean;
 export type WirelessGatewayTaskName = string;
 export type DeviceProfileId = string;
 export type MessageId = string;
@@ -120,6 +121,7 @@ export type ImportTaskId = string;
 export type Identifier = string;
 export type PartnerAccountId = string;
 export type PositionResourceIdentifier = string;
+export type CreationDate = Date;
 export type ResourceIdentifier = string;
 export type ResourceType = string;
 export type MaxResults = number;
@@ -138,10 +140,12 @@ export type GatewayMaxEirp = number;
 export type AmazonId = string;
 export type AppServerPrivateKey = string | redacted.Redacted<string>;
 export type TagValue = string;
+export type SupportsClassB = boolean;
 export type ClassBTimeout = number;
 export type PingSlotPeriod = number;
 export type PingSlotDr = number;
 export type PingSlotFreq = number;
+export type SupportsClassC = boolean;
 export type ClassCTimeout = number;
 export type MacVersion = string;
 export type RegParamsRevision = string;
@@ -153,8 +157,13 @@ export type PresetFreq = number;
 export type MaxEirp = number;
 export type MaxDutyCycle = number;
 export type RfRegion = string;
+export type SupportsJoin = boolean;
+export type Supports32BitFCnt = boolean;
+export type AddGwMetadata = boolean;
 export type DrMinBox = number;
 export type DrMaxBox = number;
+export type PrAllowed = boolean;
+export type RaAllowed = boolean;
 export type TxPowerIndexMin = number;
 export type TxPowerIndexMax = number;
 export type NbTransMin = number;
@@ -165,6 +174,8 @@ export type GatewayEui = string;
 export type SubBand = number;
 export type UpdateDataSource = string;
 export type MetricQueryId = string;
+export type MetricQueryStartTimestamp = Date;
+export type MetricQueryEndTimestamp = Date;
 export type MacAddress = string;
 export type RSS = number;
 export type IPAddress = string;
@@ -172,17 +183,22 @@ export type GnssNav = string;
 export type GPST = number;
 export type CaptureTimeAccuracy = number;
 export type Coordinate = number;
+export type Use2DSolver = boolean;
+export type StartTime = Date;
 export type DlDr = number;
 export type DlFreq = number;
+export type SessionStartTimeTimestamp = Date;
 export type SessionTimeout = number;
 export type DeviceCreationFile = string;
 export type Role = string;
 export type DestinationArn = string;
 export type DeviceProfileArn = string;
 export type FuotaTaskArn = string;
+export type CreatedAt = Date;
 export type MulticastGroupArn = string;
 export type MulticastGroupStatus = string;
 export type NetworkAnalyzerConfigurationArn = string;
+export type AccountLinked = boolean;
 export type PositionSolverVersion = string;
 export type ISODateTimeString = string;
 export type EndPoint = string;
@@ -191,6 +207,7 @@ export type ServiceProfileArn = string;
 export type WirelessDeviceArn = string;
 export type ThingName = string;
 export type ImportTaskArn = string;
+export type CreationTime = Date;
 export type StatusReason = string;
 export type ImportedWirelessDeviceCount = number;
 export type WirelessGatewayArn = string;
@@ -225,6 +242,7 @@ export type TAC = number;
 export type LteTimingAdvance = number;
 export type RSRP = number;
 export type RSRQ = number;
+export type NRCapable = boolean;
 export type SystemId = number;
 export type NetworkId = number;
 export type BaseStationId = number;
@@ -235,6 +253,7 @@ export type BaseLng = number;
 export type Seq = number;
 export type AckModeRetryDurationSecs = number;
 export type ApplicationServerPublicKey = string | redacted.Redacted<string>;
+export type QualificationStatus = boolean;
 export type NumberOfDevicesRequested = number;
 export type NumberOfDevicesInGroup = number;
 export type Fingerprint = string | redacted.Redacted<string>;
@@ -248,9 +267,13 @@ export type DlRate = number;
 export type DlBucketSize = number;
 export type DlRatePolicy = string;
 export type DevStatusReqFreq = number;
+export type ReportDevStatusBattery = boolean;
+export type ReportDevStatusMargin = boolean;
 export type DrMin = number;
 export type DrMax = number;
 export type ChannelMask = string;
+export type HrAllowed = boolean;
+export type NwkGeoLoc = boolean;
 export type TargetPer = number;
 export type MinGwDiversity = number;
 export type SidewalkId = string;
@@ -277,15 +300,19 @@ export type PnOffset = number;
 export type CdmaChannel = number;
 export type TransmissionInterval = number;
 export type MaxAllowedSignature = number;
+export type FactorySupport = boolean;
 export type ApId = string;
 export type DeviceTypeId = string;
 export type CertificateValue = string;
 export type ProviderNetId = string;
 export type Id = string;
+export type DlAllowed = boolean;
 export type OnboardStatusReason = string;
+export type LastUpdateTime = Date;
 export type DownlinkFrequency = number;
 export type MulticastGroupMessageId = string;
 export type MetricQueryError = string;
+export type MetricQueryTimestamp = Date;
 export type MetricUnit = string;
 export type Min = number;
 export type Max = number;
@@ -654,7 +681,7 @@ export const CreateDestinationRequest = S.suspend(() =>
     Description: S.optional(S.String),
     RoleArn: S.String,
     Tags: S.optional(TagList),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/destinations" }),
@@ -3256,7 +3283,7 @@ export interface AssociateAwsAccountWithPartnerAccountRequest {
 export const AssociateAwsAccountWithPartnerAccountRequest = S.suspend(() =>
   S.Struct({
     Sidewalk: SidewalkAccountInfo,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -3300,7 +3327,7 @@ export const CreateDeviceProfileRequest = S.suspend(() =>
     Name: S.optional(S.String),
     LoRaWAN: S.optional(LoRaWANDeviceProfile),
     Tags: S.optional(TagList),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Sidewalk: S.optional(SidewalkCreateDeviceProfile),
   }).pipe(
     T.all(
@@ -3332,7 +3359,7 @@ export const CreateFuotaTaskRequest = S.suspend(() =>
   S.Struct({
     Name: S.optional(S.String),
     Description: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LoRaWAN: S.optional(LoRaWANFuotaTask),
     FirmwareUpdateImage: S.String,
     FirmwareUpdateRole: S.String,
@@ -3372,7 +3399,7 @@ export const CreateNetworkAnalyzerConfigurationRequest = S.suspend(() =>
     WirelessGateways: S.optional(WirelessGatewayList),
     Description: S.optional(S.String),
     Tags: S.optional(TagList),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     MulticastGroups: S.optional(NetworkAnalyzerMulticastGroupList),
   }).pipe(
     T.all(
@@ -3398,7 +3425,7 @@ export const CreateServiceProfileRequest = S.suspend(() =>
     Name: S.optional(S.String),
     LoRaWAN: S.optional(LoRaWANServiceProfile),
     Tags: S.optional(TagList),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/service-profiles" }),
@@ -3830,7 +3857,7 @@ export interface StartSingleWirelessDeviceImportTaskRequest {
 export const StartSingleWirelessDeviceImportTaskRequest = S.suspend(() =>
   S.Struct({
     DestinationName: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DeviceName: S.optional(S.String),
     Tags: S.optional(TagList),
     Positioning: S.optional(PositioningConfigStatus),
@@ -3858,7 +3885,7 @@ export interface StartWirelessDeviceImportTaskRequest {
 export const StartWirelessDeviceImportTaskRequest = S.suspend(() =>
   S.Struct({
     DestinationName: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
     Positioning: S.optional(PositioningConfigStatus),
     Sidewalk: SidewalkStartImportInfo,
@@ -4787,7 +4814,7 @@ export const CreateMulticastGroupRequest = S.suspend(() =>
   S.Struct({
     Name: S.optional(S.String),
     Description: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LoRaWAN: LoRaWANMulticast,
     Tags: S.optional(TagList),
   }).pipe(
@@ -4834,7 +4861,7 @@ export const CreateWirelessGatewayRequest = S.suspend(() =>
     Description: S.optional(S.String),
     LoRaWAN: LoRaWANGateway,
     Tags: S.optional(TagList),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/wireless-gateways" }),
@@ -5840,7 +5867,7 @@ export const CreateWirelessDeviceRequest = S.suspend(() =>
     Name: S.optional(S.String),
     Description: S.optional(S.String),
     DestinationName: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LoRaWAN: S.optional(LoRaWANDevice),
     Tags: S.optional(TagList),
     Positioning: S.optional(PositioningConfigStatus),
@@ -5879,7 +5906,7 @@ export const CreateWirelessGatewayTaskDefinitionRequest = S.suspend(() =>
     AutoCreateTasks: S.Boolean,
     Name: S.optional(S.String),
     Update: S.optional(UpdateWirelessGatewayTaskCreate),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(

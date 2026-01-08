@@ -97,12 +97,14 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type CertificateId = string;
+export type SetAsActive = boolean;
 export type BillingGroupName = string;
 export type BillingGroupArn = string;
 export type ThingName = string;
 export type ThingArn = string;
 export type ThingGroupName = string;
 export type ThingGroupArn = string;
+export type OverrideDynamicGroups = boolean;
 export type PackageName = string;
 export type VersionName = string;
 export type ClientToken = string;
@@ -118,15 +120,19 @@ export type SecurityProfileTargetArn = string;
 export type MitigationActionsTaskId = string;
 export type AuditTaskId = string;
 export type ReasonCode = string;
+export type ForceFlag = boolean;
 export type ExpectedVersion = number;
 export type ErrorMessage2 = string;
 export type ConfirmationToken = string;
 export type AuditCheckName = string;
+export type SuppressIndefinitely = boolean;
 export type AuditDescription = string;
 export type ClientRequestToken = string;
 export type AuthorizerName = string;
 export type AuthorizerFunctionArn = string;
 export type TokenKeyName = string;
+export type BooleanKey = boolean;
+export type EnableCachingForHttp = boolean;
 export type CertificateSigningRequest = string;
 export type CertificateProviderName = string;
 export type CertificateProviderFunctionArn = string;
@@ -163,9 +169,11 @@ export type Target = string;
 export type ResourceDescription = string | redacted.Redacted<string>;
 export type PackageVersionRecipe = string | redacted.Redacted<string>;
 export type PolicyDocument = string;
+export type SetAsDefault = boolean;
 export type TemplateName = string;
 export type TemplateDescription = string;
 export type TemplateBody = string;
+export type Enabled2 = boolean;
 export type RoleAlias = string;
 export type CredentialDurationSeconds = number;
 export type DayOfMonth = string;
@@ -176,31 +184,45 @@ export type StreamId = string;
 export type StreamDescription = string;
 export type ThingTypeName = string;
 export type RuleName = string;
+export type DeleteScheduledAudits = boolean;
 export type OptionalVersion = number;
+export type ForceDelete = boolean;
 export type CommandExecutionId = string;
 export type ExecutionNumber = number;
+export type DeleteStream_ = boolean;
+export type ForceDeleteAWSJob = boolean;
 export type PolicyVersionId = string;
 export type TemplateVersionId = number;
 export type AwsArn = string;
 export type LogTargetName = string;
+export type UndoDeprecate = boolean;
 export type FindingId = string;
 export type ReservedDomainConfigurationName = string;
 export type KmsKeyArn = string;
 export type KmsAccessRoleArn = string;
 export type EndpointType = string;
+export type CreationDate = Date;
+export type LastModifiedDate = Date;
+export type BeforeSubstitutionFlag = boolean;
 export type ManagedJobTemplateName = string;
 export type ManagedTemplateVersion = string;
 export type TaskId = string;
 export type TinyMaxResults = number;
 export type NextToken = string;
+export type BooleanWrapperObject = boolean;
 export type CognitoIdentityPoolId = string;
 export type Percent = number;
 export type RegistrationCode = string;
 export type ConnectivityApiThingName = string | redacted.Redacted<string>;
+export type VerboseFlag = boolean;
 export type DeviceDefenderThingName = string;
+export type ListSuppressedAlerts = boolean;
 export type MaxResults = number;
+export type Recursive = boolean;
 export type Marker = string;
 export type PageSize = number;
+export type ListSuppressedFindings = boolean;
+export type AscendingOrder = boolean;
 export type RegistryMaxResults = number;
 export type CommandMaxResults = number;
 export type CommandArn = string;
@@ -211,16 +233,22 @@ export type LaserMaxResults = number;
 export type ThingGroupId = string;
 export type PackageCatalogMaxResults = number;
 export type ResourceArn = string;
+export type RecursiveWithoutDefault = boolean;
 export type AttributeName = string;
 export type AttributeValue = string;
+export type usePrefixAttributeValue = boolean;
 export type TopicRuleDestinationMaxResults = number;
 export type Topic = string;
 export type TopicRuleMaxResults = number;
+export type IsDisabled = boolean;
 export type SkyfallMaxResults = number;
 export type VerificationStateDescription = string;
 export type CertificatePem = string;
+export type AllowAutoRegistration = boolean;
+export type SetAsActiveFlag = boolean;
 export type Message = string;
 export type SearchQueryMaxResults = number;
+export type DisableAllLogs = boolean;
 export type RegistryS3BucketName = string;
 export type RegistryS3KeyName = string;
 export type ClientId = string;
@@ -228,6 +256,16 @@ export type Token = string;
 export type TokenSignature = string;
 export type AwsAccountId = string;
 export type TagKey = string;
+export type RemoveAutoRegistration = boolean;
+export type DeprecationFlag = boolean;
+export type RemoveAuthorizerConfig = boolean;
+export type UnsetDefaultVersion = boolean;
+export type RemoveHook = boolean;
+export type DeleteBehaviors = boolean;
+export type DeleteAlertTargets = boolean;
+export type DeleteAdditionalMetricsToRetain = boolean;
+export type DeleteMetricsExportConfig = boolean;
+export type RemoveThingType = boolean;
 export type DetailsKey = string;
 export type DetailsValue = string;
 export type RoleAliasArn = string;
@@ -236,9 +274,12 @@ export type KeyName = string;
 export type KeyValue = string;
 export type TagValue = string;
 export type BillingGroupDescription = string;
+export type CommandPayloadBlob = Uint8Array;
 export type MimeType = string;
 export type CommandParameterDescription = string;
+export type AllowAuthorizerOverride = boolean;
 export type SecurityPolicy = string;
+export type EnableOCSPCheck = boolean;
 export type OCSPLambdaArn = string;
 export type ClientCertificateCallbackArn = string;
 export type ThingGroupDescription = string;
@@ -263,8 +304,11 @@ export type ResourceAttributeKey = string;
 export type ResourceAttributeValue = string;
 export type PayloadVersion = string;
 export type BehaviorName = string;
+export type SuppressAlerts = boolean;
+export type ExportMetric = boolean;
 export type MqttTopic = string;
 export type FileId = number;
+export type Flag = boolean;
 export type ThingTypeDescription = string;
 export type SQL = string;
 export type Description = string;
@@ -272,18 +316,21 @@ export type AwsIotSqlVersion = string;
 export type AuthorizerArn = string;
 export type ErrorCode = string;
 export type ErrorMessage = string;
+export type EnabledBoolean = boolean;
 export type Parameter = string;
 export type LogEventType = string;
 export type LogDestination = string;
 export type Resource = string;
 export type HttpQueryString = string;
 export type MqttUsername = string;
+export type MqttPassword = Uint8Array;
 export type MqttClientId = string;
 export type ServerName = string;
 export type CertificateProviderArn = string;
 export type CustomMetricArn = string;
 export type DimensionArn = string;
 export type PolicyArn = string;
+export type IsDefaultVersion = boolean;
 export type TemplateArn = string;
 export type ScheduledAuditArn = string;
 export type StatusCode = number;
@@ -312,6 +359,7 @@ export type PrincipalArn = string;
 export type S3FileUrl = string;
 export type StreamArn = string;
 export type StreamVersion = number;
+export type Valid = boolean;
 export type S3Bucket = string;
 export type S3Key = string;
 export type S3Version = string;
@@ -319,9 +367,11 @@ export type IssuerCertificateSubject = string;
 export type IssuerId = string;
 export type IssuerCertificateSerialNumber = string;
 export type StringParameterValue = string;
+export type BooleanParameterValue = boolean;
 export type IntegerParameterValue = number;
 export type LongParameterValue = number;
 export type DoubleParameterValue = number;
+export type BinaryParameterValue = Uint8Array;
 export type UnsignedLongParameterValue = string;
 export type RolloutRatePerMinute = number;
 export type IncrementFactor = number;
@@ -342,6 +392,7 @@ export type Url = string;
 export type SubnetId = string;
 export type SecurityGroupId = string;
 export type VpcId = string;
+export type Enabled = boolean;
 export type MaxBuckets = number;
 export type FieldName = string;
 export type ShadowName = string;
@@ -351,6 +402,7 @@ export type HttpHeaderValue = string;
 export type PublicKey = string;
 export type PrivateKey = string | redacted.Redacted<string>;
 export type ReasonForNonCompliance = string;
+export type IsSuppressed = boolean;
 export type TotalChecksCount = number;
 export type InProgressChecksCount = number;
 export type WaitingForDataCollectionChecksCount = number;
@@ -359,11 +411,15 @@ export type NonCompliantChecksCount = number;
 export type FailedChecksCount = number;
 export type CanceledChecksCount = number;
 export type CustomerVersion = number;
+export type PrimitiveBoolean = boolean;
 export type ServerCertificateStatusDetail = string;
+export type Forced = boolean;
 export type VersionNumber = number;
 export type ApproximateSecondsBeforeTimedOut = number;
 export type Regex = string;
 export type Example = string;
+export type Optional = boolean;
+export type DeprecationDate = Date;
 export type DataCollectionPercentage = number;
 export type StatusReasonCode = string;
 export type StatusReasonDescription = string;
@@ -379,6 +435,8 @@ export type Maximum = number;
 export type SumOfSquares = number;
 export type Variance = number;
 export type StdDeviation = number;
+export type CreatedAtDate = Date;
+export type LastUpdatedAtDate = Date;
 export type DetectMitigationActionExecutionErrorCode = string;
 export type SbomValidationErrorMessage = string;
 export type TopicPattern = string;
@@ -404,6 +462,7 @@ export type RangeKeyValue = string;
 export type PayloadField = string;
 export type FunctionArn = string;
 export type QueueUrl = string;
+export type UseBase64 = boolean;
 export type StreamName = string;
 export type PartitionKey = string;
 export type Qos = number;
@@ -411,6 +470,7 @@ export type BucketName = string;
 export type Key = string;
 export type DeliveryStreamName = string;
 export type FirehoseSeparator = string;
+export type BatchMode = boolean;
 export type AlarmName = string;
 export type StateReason = string;
 export type StateValue = string;
@@ -428,6 +488,7 @@ export type ExecutionNamePrefix = string;
 export type StateMachineName = string;
 export type TimestreamDatabaseName = string;
 export type TimestreamTableName = string;
+export type EnableBatching = boolean;
 export type ConfigValue = string;
 export type TargetFieldName = string;
 export type TotalFindingsCount = number;
@@ -435,6 +496,7 @@ export type FailedFindingsCount = number;
 export type SucceededFindingsCount = number;
 export type SkippedFindingsCount = number;
 export type CanceledFindingsCount = number;
+export type CheckCompliant = boolean;
 export type TotalResourcesCount = number;
 export type NonCompliantResourcesCount = number;
 export type SuppressedNonCompliantResourcesCount = number;
@@ -449,6 +511,8 @@ export type InProgressThings = number;
 export type RemovedThings = number;
 export type TimedOutThings = number;
 export type StringCommandExecutionResult = string;
+export type BooleanCommandExecutionResult = boolean;
+export type BinaryCommandExecutionResult = Uint8Array;
 export type Code = string;
 export type OTAUpdateErrorMessage = string;
 export type RetryAttempt = number;
@@ -456,6 +520,7 @@ export type ConnectivityTimestamp = number;
 export type DisconnectReason = string;
 export type Platform = string;
 export type CertificatePathOnDevice = string;
+export type Signature = Uint8Array;
 export type CertificateName = string;
 export type InlineDocument = string;
 export type PayloadFormatIndicator = string;
@@ -486,6 +551,7 @@ export type UserPropertyValue = string;
 export type AssetPropertyQuality = string;
 export type SigningRegion = string;
 export type ServiceName = string;
+export type IsAuthenticated = boolean;
 export type PrincipalId = string;
 export type Seconds = number;
 export type AssetPropertyStringValue = string;
@@ -1478,7 +1544,7 @@ export const CreateCertificateProviderRequest = S.suspend(() =>
     ),
     lambdaFunctionArn: S.String,
     accountDefaultForOperations: CertificateProviderAccountDefaultForOperations,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -1509,7 +1575,7 @@ export const CreateCustomMetricRequest = S.suspend(() =>
     displayName: S.optional(S.String),
     metricType: CustomMetricType,
     tags: S.optional(TagList),
-    clientRequestToken: S.String,
+    clientRequestToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/custom-metric/{metricName}" }),
@@ -1536,7 +1602,7 @@ export const CreateDimensionRequest = S.suspend(() =>
     type: DimensionType,
     stringValues: DimensionStringValues,
     tags: S.optional(TagList),
-    clientRequestToken: S.String,
+    clientRequestToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/dimensions/{name}" }),
@@ -2336,7 +2402,10 @@ export interface DeletePackageRequest {
 export const DeletePackageRequest = S.suspend(() =>
   S.Struct({
     packageName: S.String.pipe(T.HttpLabel("packageName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/packages/{packageName}" }),
@@ -2363,7 +2432,10 @@ export const DeletePackageVersionRequest = S.suspend(() =>
   S.Struct({
     packageName: S.String.pipe(T.HttpLabel("packageName")),
     versionName: S.String.pipe(T.HttpLabel("versionName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -3502,7 +3574,10 @@ export const DisassociateSbomFromPackageVersionRequest = S.suspend(() =>
   S.Struct({
     packageName: S.String.pipe(T.HttpLabel("packageName")),
     versionName: S.String.pipe(T.HttpLabel("versionName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -7632,7 +7707,10 @@ export const UpdatePackageRequest = S.suspend(() =>
     description: S.optional(SensitiveString),
     defaultVersionName: S.optional(S.String),
     unsetDefaultVersion: S.optional(S.Boolean),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "PATCH", uri: "/packages/{packageName}" }),
@@ -7666,7 +7744,10 @@ export interface UpdatePackageConfigurationRequest {
 export const UpdatePackageConfigurationRequest = S.suspend(() =>
   S.Struct({
     versionUpdateByJobsConfig: S.optional(VersionUpdateByJobsConfig),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "PATCH", uri: "/package-configuration" }),
@@ -7727,7 +7808,10 @@ export const UpdatePackageVersionRequest = S.suspend(() =>
     artifact: S.optional(PackageVersionArtifact),
     action: S.optional(PackageVersionAction),
     recipe: S.optional(SensitiveString),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -9149,7 +9233,10 @@ export const CreatePackageRequest = S.suspend(() =>
     packageName: S.String.pipe(T.HttpLabel("packageName")),
     description: S.optional(SensitiveString),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/packages/{packageName}" }),
@@ -9182,7 +9269,10 @@ export const CreatePackageVersionRequest = S.suspend(() =>
     artifact: S.optional(PackageVersionArtifact),
     recipe: S.optional(SensitiveString),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -10581,7 +10671,7 @@ export const StartDetectMitigationActionsTaskRequest = S.suspend(() =>
     violationEventOccurrenceRange: S.optional(ViolationEventOccurrenceRange),
     includeOnlyActiveViolations: S.optional(S.Boolean),
     includeSuppressedAlerts: S.optional(S.Boolean),
-    clientRequestToken: S.String,
+    clientRequestToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -12057,7 +12147,10 @@ export const AssociateSbomWithPackageVersionRequest = S.suspend(() =>
     packageName: S.String.pipe(T.HttpLabel("packageName")),
     versionName: S.String.pipe(T.HttpLabel("versionName")),
     sbom: Sbom,
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -12089,7 +12182,7 @@ export const CreateAuditSuppressionRequest = S.suspend(() =>
     expirationDate: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
     suppressIndefinitely: S.optional(S.Boolean),
     description: S.optional(S.String),
-    clientRequestToken: S.String,
+    clientRequestToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/audit/suppressions/create" }),
@@ -13074,7 +13167,7 @@ export const StartAuditMitigationActionsTaskRequest = S.suspend(() =>
     taskId: S.String.pipe(T.HttpLabel("taskId")),
     target: AuditMitigationActionsTaskTarget,
     auditCheckToActionsMapping: AuditCheckToActionsMapping,
-    clientRequestToken: S.String,
+    clientRequestToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({

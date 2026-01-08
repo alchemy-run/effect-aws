@@ -102,12 +102,17 @@ export type TagKey = string;
 export type S3Uri = string;
 export type EncryptionKeyID = string;
 export type TagValue = string;
+export type TerminologyFile = Uint8Array | redacted.Redacted<Uint8Array>;
 export type ContentType = string;
+export type DocumentContent = Uint8Array | redacted.Redacted<Uint8Array>;
 export type TranslatedTextString = string;
 export type UnboundedLengthString = string;
 export type ParallelDataArn = string;
 export type TerminologyArn = string;
 export type LocalizedNameString = string;
+export type TranslatedDocumentContent =
+  | Uint8Array
+  | redacted.Redacted<Uint8Array>;
 
 //# Schemas
 export type TerminologyDataFormat = "CSV" | "TMX" | "TSV";
@@ -371,7 +376,7 @@ export const UpdateParallelDataRequest = S.suspend(() =>
     Name: S.String,
     Description: S.optional(S.String),
     ParallelDataConfig: ParallelDataConfig,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -580,7 +585,7 @@ export const CreateParallelDataRequest = S.suspend(() =>
     Description: S.optional(S.String),
     ParallelDataConfig: ParallelDataConfig,
     EncryptionKey: S.optional(EncryptionKey),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -692,7 +697,7 @@ export const StartTextTranslationJobRequest = S.suspend(() =>
     TargetLanguageCodes: TargetLanguageCodeStringList,
     TerminologyNames: S.optional(ResourceNameList),
     ParallelDataNames: S.optional(ResourceNameList),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Settings: S.optional(TranslationSettings),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

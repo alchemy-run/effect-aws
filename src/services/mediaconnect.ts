@@ -4165,7 +4165,18 @@ export const DeleteGatewayResponse = S.suspend(() =>
 }) as any as S.Schema<DeleteGatewayResponse>;
 export interface ListOfferingsResponse {
   NextToken?: string;
-  Offerings?: Offering[];
+  Offerings?: (Offering & {
+    CurrencyCode: string;
+    Duration: number;
+    DurationUnits: DurationUnits;
+    OfferingArn: string;
+    OfferingDescription: string;
+    PricePerUnit: string;
+    PriceUnits: PriceUnits;
+    ResourceSpecification: ResourceSpecification & {
+      ResourceType: ResourceType;
+    };
+  })[];
 }
 export const ListOfferingsResponse = S.suspend(() =>
   S.Struct({
@@ -4176,7 +4187,23 @@ export const ListOfferingsResponse = S.suspend(() =>
   identifier: "ListOfferingsResponse",
 }) as any as S.Schema<ListOfferingsResponse>;
 export interface DescribeReservationResponse {
-  Reservation?: Reservation;
+  Reservation?: Reservation & {
+    CurrencyCode: string;
+    Duration: number;
+    DurationUnits: DurationUnits;
+    End: string;
+    OfferingArn: string;
+    OfferingDescription: string;
+    PricePerUnit: string;
+    PriceUnits: PriceUnits;
+    ReservationArn: string;
+    ReservationName: string;
+    ReservationState: ReservationState;
+    ResourceSpecification: ResourceSpecification & {
+      ResourceType: ResourceType;
+    };
+    Start: string;
+  };
 }
 export const DescribeReservationResponse = S.suspend(() =>
   S.Struct({
@@ -4189,7 +4216,23 @@ export const DescribeReservationResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeReservationResponse>;
 export interface ListReservationsResponse {
   NextToken?: string;
-  Reservations?: Reservation[];
+  Reservations?: (Reservation & {
+    CurrencyCode: string;
+    Duration: number;
+    DurationUnits: DurationUnits;
+    End: string;
+    OfferingArn: string;
+    OfferingDescription: string;
+    PricePerUnit: string;
+    PriceUnits: PriceUnits;
+    ReservationArn: string;
+    ReservationName: string;
+    ReservationState: ReservationState;
+    ResourceSpecification: ResourceSpecification & {
+      ResourceType: ResourceType;
+    };
+    Start: string;
+  })[];
 }
 export const ListReservationsResponse = S.suspend(() =>
   S.Struct({
@@ -4876,7 +4919,10 @@ export const BatchGetRouterOutputError = S.suspend(() =>
 export type BatchGetRouterOutputErrorList = BatchGetRouterOutputError[];
 export const BatchGetRouterOutputErrorList = S.Array(BatchGetRouterOutputError);
 export interface ListEntitlementsResponse {
-  Entitlements?: ListedEntitlement[];
+  Entitlements?: (ListedEntitlement & {
+    EntitlementArn: string;
+    EntitlementName: string;
+  })[];
   NextToken?: string;
 }
 export const ListEntitlementsResponse = S.suspend(() =>
@@ -5097,7 +5143,43 @@ export const Bridge = S.suspend(() =>
   }),
 ).annotations({ identifier: "Bridge" }) as any as S.Schema<Bridge>;
 export interface UpdateBridgeResponse {
-  Bridge?: Bridge;
+  Bridge?: Bridge & {
+    BridgeArn: string;
+    BridgeState: BridgeState;
+    Name: string;
+    PlacementArn: string;
+    BridgeMessages: (MessageDetail & { Code: string; Message: string })[];
+    EgressGatewayBridge: EgressGatewayBridge & { MaxBitrate: number };
+    IngressGatewayBridge: IngressGatewayBridge & {
+      MaxBitrate: number;
+      MaxOutputs: number;
+    };
+    Outputs: (BridgeOutput & {
+      FlowOutput: BridgeFlowOutput & {
+        FlowArn: string;
+        FlowSourceArn: string;
+        Name: string;
+      };
+      NetworkOutput: BridgeNetworkOutput & {
+        IpAddress: string;
+        Name: string;
+        NetworkName: string;
+        Port: number;
+        Protocol: Protocol;
+        Ttl: number;
+      };
+    })[];
+    Sources: (BridgeSource & {
+      FlowSource: BridgeFlowSource & { FlowArn: string; Name: string };
+      NetworkSource: BridgeNetworkSource & {
+        MulticastIp: string;
+        Name: string;
+        NetworkName: string;
+        Port: number;
+        Protocol: Protocol;
+      };
+    })[];
+  };
 }
 export const UpdateBridgeResponse = S.suspend(() =>
   S.Struct({
@@ -5109,7 +5191,13 @@ export const UpdateBridgeResponse = S.suspend(() =>
   identifier: "UpdateBridgeResponse",
 }) as any as S.Schema<UpdateBridgeResponse>;
 export interface ListBridgesResponse {
-  Bridges?: ListedBridge[];
+  Bridges?: (ListedBridge & {
+    BridgeArn: string;
+    BridgeState: BridgeState;
+    BridgeType: string;
+    Name: string;
+    PlacementArn: string;
+  })[];
   NextToken?: string;
 }
 export const ListBridgesResponse = S.suspend(() =>
@@ -5122,7 +5210,21 @@ export const ListBridgesResponse = S.suspend(() =>
 }) as any as S.Schema<ListBridgesResponse>;
 export interface UpdateBridgeOutputResponse {
   BridgeArn?: string;
-  Output?: BridgeOutput;
+  Output?: BridgeOutput & {
+    FlowOutput: BridgeFlowOutput & {
+      FlowArn: string;
+      FlowSourceArn: string;
+      Name: string;
+    };
+    NetworkOutput: BridgeNetworkOutput & {
+      IpAddress: string;
+      Name: string;
+      NetworkName: string;
+      Port: number;
+      Protocol: Protocol;
+      Ttl: number;
+    };
+  };
 }
 export const UpdateBridgeOutputResponse = S.suspend(() =>
   S.Struct({
@@ -5581,7 +5683,91 @@ export const Flow = S.suspend(() =>
   }),
 ).annotations({ identifier: "Flow" }) as any as S.Schema<Flow>;
 export interface UpdateFlowResponse {
-  Flow?: Flow;
+  Flow?: Flow & {
+    AvailabilityZone: string;
+    Entitlements: (Entitlement & {
+      EntitlementArn: string;
+      Name: string;
+      Subscribers: __listOfString;
+      Encryption: Encryption & { RoleArn: string };
+    })[];
+    FlowArn: string;
+    Name: string;
+    Outputs: (Output & {
+      Name: string;
+      OutputArn: string;
+      Encryption: Encryption & { RoleArn: string };
+      MediaStreamOutputConfigurations: (MediaStreamOutputConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        DestinationConfigurations: (DestinationConfiguration & {
+          DestinationIp: string;
+          DestinationPort: number;
+          Interface: Interface & { Name: string };
+          OutboundIp: string;
+        })[];
+        EncodingParameters: EncodingParameters & {
+          CompressionFactor: number;
+          EncoderProfile: EncoderProfile;
+        };
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+    })[];
+    Source: Source & {
+      Name: string;
+      SourceArn: string;
+      Decryption: Encryption & { RoleArn: string };
+      MediaStreamSourceConfigurations: (MediaStreamSourceConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        InputConfigurations: (InputConfiguration & {
+          InputIp: string;
+          InputPort: number;
+          Interface: Interface & { Name: string };
+        })[];
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+      GatewayBridgeSource: GatewayBridgeSource & { BridgeArn: string };
+    };
+    Status: Status;
+    MediaStreams: (MediaStream & {
+      Fmt: number;
+      MediaStreamId: number;
+      MediaStreamName: string;
+      MediaStreamType: MediaStreamType;
+      Attributes: MediaStreamAttributes & { Fmtp: Fmtp };
+    })[];
+    Sources: (Source & {
+      Name: string;
+      SourceArn: string;
+      Decryption: Encryption & { RoleArn: string };
+      MediaStreamSourceConfigurations: (MediaStreamSourceConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        InputConfigurations: (InputConfiguration & {
+          InputIp: string;
+          InputPort: number;
+          Interface: Interface & { Name: string };
+        })[];
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+      GatewayBridgeSource: GatewayBridgeSource & { BridgeArn: string };
+    })[];
+    VpcInterfaces: (VpcInterface & {
+      Name: string;
+      NetworkInterfaceIds: __listOfString;
+      NetworkInterfaceType: NetworkInterfaceType;
+      RoleArn: string;
+      SecurityGroupIds: __listOfString;
+      SubnetId: string;
+    })[];
+    NdiConfig: NdiConfig & {
+      NdiDiscoveryServers: (NdiDiscoveryServerConfig & {
+        DiscoveryServerAddress: string;
+        VpcInterfaceAdapter: string;
+      })[];
+    };
+  };
 }
 export const UpdateFlowResponse = S.suspend(() =>
   S.Struct({
@@ -5593,7 +5779,14 @@ export const UpdateFlowResponse = S.suspend(() =>
   identifier: "UpdateFlowResponse",
 }) as any as S.Schema<UpdateFlowResponse>;
 export interface ListFlowsResponse {
-  Flows?: ListedFlow[];
+  Flows?: (ListedFlow & {
+    AvailabilityZone: string;
+    Description: string;
+    FlowArn: string;
+    Name: string;
+    SourceType: SourceType;
+    Status: Status;
+  })[];
   NextToken?: string;
 }
 export const ListFlowsResponse = S.suspend(() =>
@@ -5606,7 +5799,14 @@ export const ListFlowsResponse = S.suspend(() =>
 }) as any as S.Schema<ListFlowsResponse>;
 export interface AddFlowVpcInterfacesResponse {
   FlowArn?: string;
-  VpcInterfaces?: VpcInterface[];
+  VpcInterfaces?: (VpcInterface & {
+    Name: string;
+    NetworkInterfaceIds: __listOfString;
+    NetworkInterfaceType: NetworkInterfaceType;
+    RoleArn: string;
+    SecurityGroupIds: __listOfString;
+    SubnetId: string;
+  })[];
 }
 export const AddFlowVpcInterfacesResponse = S.suspend(() =>
   S.Struct({
@@ -5619,7 +5819,10 @@ export const AddFlowVpcInterfacesResponse = S.suspend(() =>
   identifier: "AddFlowVpcInterfacesResponse",
 }) as any as S.Schema<AddFlowVpcInterfacesResponse>;
 export interface DescribeFlowSourceThumbnailResponse {
-  ThumbnailDetails?: ThumbnailDetails;
+  ThumbnailDetails?: ThumbnailDetails & {
+    FlowArn: string;
+    ThumbnailMessages: (MessageDetail & { Code: string; Message: string })[];
+  };
 }
 export const DescribeFlowSourceThumbnailResponse = S.suspend(() =>
   S.Struct({
@@ -5631,7 +5834,12 @@ export const DescribeFlowSourceThumbnailResponse = S.suspend(() =>
   identifier: "DescribeFlowSourceThumbnailResponse",
 }) as any as S.Schema<DescribeFlowSourceThumbnailResponse>;
 export interface GrantFlowEntitlementsResponse {
-  Entitlements?: Entitlement[];
+  Entitlements?: (Entitlement & {
+    EntitlementArn: string;
+    Name: string;
+    Subscribers: __listOfString;
+    Encryption: Encryption & { RoleArn: string };
+  })[];
   FlowArn?: string;
 }
 export const GrantFlowEntitlementsResponse = S.suspend(() =>
@@ -5645,7 +5853,12 @@ export const GrantFlowEntitlementsResponse = S.suspend(() =>
   identifier: "GrantFlowEntitlementsResponse",
 }) as any as S.Schema<GrantFlowEntitlementsResponse>;
 export interface UpdateFlowEntitlementResponse {
-  Entitlement?: Entitlement;
+  Entitlement?: Entitlement & {
+    EntitlementArn: string;
+    Name: string;
+    Subscribers: __listOfString;
+    Encryption: Encryption & { RoleArn: string };
+  };
   FlowArn?: string;
 }
 export const UpdateFlowEntitlementResponse = S.suspend(() =>
@@ -5774,7 +5987,16 @@ export const UpdateFlowSourceRequest = S.suspend(() =>
   identifier: "UpdateFlowSourceRequest",
 }) as any as S.Schema<UpdateFlowSourceRequest>;
 export interface DescribeGatewayInstanceResponse {
-  GatewayInstance?: GatewayInstance;
+  GatewayInstance?: GatewayInstance & {
+    BridgePlacement: BridgePlacement;
+    ConnectionStatus: ConnectionStatus;
+    GatewayArn: string;
+    GatewayInstanceArn: string;
+    InstanceId: string;
+    InstanceState: InstanceState;
+    RunningBridgeCount: number;
+    InstanceMessages: (MessageDetail & { Code: string; Message: string })[];
+  };
 }
 export const DescribeGatewayInstanceResponse = S.suspend(() =>
   S.Struct({
@@ -5786,7 +6008,11 @@ export const DescribeGatewayInstanceResponse = S.suspend(() =>
   identifier: "DescribeGatewayInstanceResponse",
 }) as any as S.Schema<DescribeGatewayInstanceResponse>;
 export interface ListGatewayInstancesResponse {
-  Instances?: ListedGatewayInstance[];
+  Instances?: (ListedGatewayInstance & {
+    GatewayArn: string;
+    GatewayInstanceArn: string;
+    InstanceId: string;
+  })[];
   NextToken?: string;
 }
 export const ListGatewayInstancesResponse = S.suspend(() =>
@@ -5800,7 +6026,13 @@ export const ListGatewayInstancesResponse = S.suspend(() =>
   identifier: "ListGatewayInstancesResponse",
 }) as any as S.Schema<ListGatewayInstancesResponse>;
 export interface CreateGatewayResponse {
-  Gateway?: Gateway;
+  Gateway?: Gateway & {
+    EgressCidrBlocks: __listOfString;
+    GatewayArn: string;
+    Name: string;
+    Networks: (GatewayNetwork & { CidrBlock: string; Name: string })[];
+    GatewayMessages: (MessageDetail & { Code: string; Message: string })[];
+  };
 }
 export const CreateGatewayResponse = S.suspend(() =>
   S.Struct({
@@ -5812,7 +6044,13 @@ export const CreateGatewayResponse = S.suspend(() =>
   identifier: "CreateGatewayResponse",
 }) as any as S.Schema<CreateGatewayResponse>;
 export interface DescribeGatewayResponse {
-  Gateway?: Gateway;
+  Gateway?: Gateway & {
+    EgressCidrBlocks: __listOfString;
+    GatewayArn: string;
+    Name: string;
+    Networks: (GatewayNetwork & { CidrBlock: string; Name: string })[];
+    GatewayMessages: (MessageDetail & { Code: string; Message: string })[];
+  };
 }
 export const DescribeGatewayResponse = S.suspend(() =>
   S.Struct({
@@ -5824,7 +6062,11 @@ export const DescribeGatewayResponse = S.suspend(() =>
   identifier: "DescribeGatewayResponse",
 }) as any as S.Schema<DescribeGatewayResponse>;
 export interface ListGatewaysResponse {
-  Gateways?: ListedGateway[];
+  Gateways?: (ListedGateway & {
+    GatewayArn: string;
+    GatewayState: GatewayState;
+    Name: string;
+  })[];
   NextToken?: string;
 }
 export const ListGatewaysResponse = S.suspend(() =>
@@ -5836,7 +6078,23 @@ export const ListGatewaysResponse = S.suspend(() =>
   identifier: "ListGatewaysResponse",
 }) as any as S.Schema<ListGatewaysResponse>;
 export interface PurchaseOfferingResponse {
-  Reservation?: Reservation;
+  Reservation?: Reservation & {
+    CurrencyCode: string;
+    Duration: number;
+    DurationUnits: DurationUnits;
+    End: string;
+    OfferingArn: string;
+    OfferingDescription: string;
+    PricePerUnit: string;
+    PriceUnits: PriceUnits;
+    ReservationArn: string;
+    ReservationName: string;
+    ReservationState: ReservationState;
+    ResourceSpecification: ResourceSpecification & {
+      ResourceType: ResourceType;
+    };
+    Start: string;
+  };
 }
 export const PurchaseOfferingResponse = S.suspend(() =>
   S.Struct({
@@ -6160,7 +6418,43 @@ export const ListedRouterOutput = S.suspend(() =>
 export type ListedRouterOutputList = ListedRouterOutput[];
 export const ListedRouterOutputList = S.Array(ListedRouterOutput);
 export interface CreateBridgeResponse {
-  Bridge?: Bridge;
+  Bridge?: Bridge & {
+    BridgeArn: string;
+    BridgeState: BridgeState;
+    Name: string;
+    PlacementArn: string;
+    BridgeMessages: (MessageDetail & { Code: string; Message: string })[];
+    EgressGatewayBridge: EgressGatewayBridge & { MaxBitrate: number };
+    IngressGatewayBridge: IngressGatewayBridge & {
+      MaxBitrate: number;
+      MaxOutputs: number;
+    };
+    Outputs: (BridgeOutput & {
+      FlowOutput: BridgeFlowOutput & {
+        FlowArn: string;
+        FlowSourceArn: string;
+        Name: string;
+      };
+      NetworkOutput: BridgeNetworkOutput & {
+        IpAddress: string;
+        Name: string;
+        NetworkName: string;
+        Port: number;
+        Protocol: Protocol;
+        Ttl: number;
+      };
+    })[];
+    Sources: (BridgeSource & {
+      FlowSource: BridgeFlowSource & { FlowArn: string; Name: string };
+      NetworkSource: BridgeNetworkSource & {
+        MulticastIp: string;
+        Name: string;
+        NetworkName: string;
+        Port: number;
+        Protocol: Protocol;
+      };
+    })[];
+  };
 }
 export const CreateBridgeResponse = S.suspend(() =>
   S.Struct({
@@ -6172,7 +6466,43 @@ export const CreateBridgeResponse = S.suspend(() =>
   identifier: "CreateBridgeResponse",
 }) as any as S.Schema<CreateBridgeResponse>;
 export interface DescribeBridgeResponse {
-  Bridge?: Bridge;
+  Bridge?: Bridge & {
+    BridgeArn: string;
+    BridgeState: BridgeState;
+    Name: string;
+    PlacementArn: string;
+    BridgeMessages: (MessageDetail & { Code: string; Message: string })[];
+    EgressGatewayBridge: EgressGatewayBridge & { MaxBitrate: number };
+    IngressGatewayBridge: IngressGatewayBridge & {
+      MaxBitrate: number;
+      MaxOutputs: number;
+    };
+    Outputs: (BridgeOutput & {
+      FlowOutput: BridgeFlowOutput & {
+        FlowArn: string;
+        FlowSourceArn: string;
+        Name: string;
+      };
+      NetworkOutput: BridgeNetworkOutput & {
+        IpAddress: string;
+        Name: string;
+        NetworkName: string;
+        Port: number;
+        Protocol: Protocol;
+        Ttl: number;
+      };
+    })[];
+    Sources: (BridgeSource & {
+      FlowSource: BridgeFlowSource & { FlowArn: string; Name: string };
+      NetworkSource: BridgeNetworkSource & {
+        MulticastIp: string;
+        Name: string;
+        NetworkName: string;
+        Port: number;
+        Protocol: Protocol;
+      };
+    })[];
+  };
 }
 export const DescribeBridgeResponse = S.suspend(() =>
   S.Struct({
@@ -6185,7 +6515,21 @@ export const DescribeBridgeResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeBridgeResponse>;
 export interface AddBridgeOutputsResponse {
   BridgeArn?: string;
-  Outputs?: BridgeOutput[];
+  Outputs?: (BridgeOutput & {
+    FlowOutput: BridgeFlowOutput & {
+      FlowArn: string;
+      FlowSourceArn: string;
+      Name: string;
+    };
+    NetworkOutput: BridgeNetworkOutput & {
+      IpAddress: string;
+      Name: string;
+      NetworkName: string;
+      Port: number;
+      Protocol: Protocol;
+      Ttl: number;
+    };
+  })[];
 }
 export const AddBridgeOutputsResponse = S.suspend(() =>
   S.Struct({
@@ -6197,7 +6541,16 @@ export const AddBridgeOutputsResponse = S.suspend(() =>
 }) as any as S.Schema<AddBridgeOutputsResponse>;
 export interface AddBridgeSourcesResponse {
   BridgeArn?: string;
-  Sources?: BridgeSource[];
+  Sources?: (BridgeSource & {
+    FlowSource: BridgeFlowSource & { FlowArn: string; Name: string };
+    NetworkSource: BridgeNetworkSource & {
+      MulticastIp: string;
+      Name: string;
+      NetworkName: string;
+      Port: number;
+      Protocol: Protocol;
+    };
+  })[];
 }
 export const AddBridgeSourcesResponse = S.suspend(() =>
   S.Struct({
@@ -6209,7 +6562,16 @@ export const AddBridgeSourcesResponse = S.suspend(() =>
 }) as any as S.Schema<AddBridgeSourcesResponse>;
 export interface UpdateBridgeSourceResponse {
   BridgeArn?: string;
-  Source?: BridgeSource;
+  Source?: BridgeSource & {
+    FlowSource: BridgeFlowSource & { FlowArn: string; Name: string };
+    NetworkSource: BridgeNetworkSource & {
+      MulticastIp: string;
+      Name: string;
+      NetworkName: string;
+      Port: number;
+      Protocol: Protocol;
+    };
+  };
 }
 export const UpdateBridgeSourceResponse = S.suspend(() =>
   S.Struct({
@@ -6283,8 +6645,92 @@ export const CreateFlowRequest = S.suspend(() =>
   identifier: "CreateFlowRequest",
 }) as any as S.Schema<CreateFlowRequest>;
 export interface DescribeFlowResponse {
-  Flow?: Flow;
-  Messages?: Messages;
+  Flow?: Flow & {
+    AvailabilityZone: string;
+    Entitlements: (Entitlement & {
+      EntitlementArn: string;
+      Name: string;
+      Subscribers: __listOfString;
+      Encryption: Encryption & { RoleArn: string };
+    })[];
+    FlowArn: string;
+    Name: string;
+    Outputs: (Output & {
+      Name: string;
+      OutputArn: string;
+      Encryption: Encryption & { RoleArn: string };
+      MediaStreamOutputConfigurations: (MediaStreamOutputConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        DestinationConfigurations: (DestinationConfiguration & {
+          DestinationIp: string;
+          DestinationPort: number;
+          Interface: Interface & { Name: string };
+          OutboundIp: string;
+        })[];
+        EncodingParameters: EncodingParameters & {
+          CompressionFactor: number;
+          EncoderProfile: EncoderProfile;
+        };
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+    })[];
+    Source: Source & {
+      Name: string;
+      SourceArn: string;
+      Decryption: Encryption & { RoleArn: string };
+      MediaStreamSourceConfigurations: (MediaStreamSourceConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        InputConfigurations: (InputConfiguration & {
+          InputIp: string;
+          InputPort: number;
+          Interface: Interface & { Name: string };
+        })[];
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+      GatewayBridgeSource: GatewayBridgeSource & { BridgeArn: string };
+    };
+    Status: Status;
+    MediaStreams: (MediaStream & {
+      Fmt: number;
+      MediaStreamId: number;
+      MediaStreamName: string;
+      MediaStreamType: MediaStreamType;
+      Attributes: MediaStreamAttributes & { Fmtp: Fmtp };
+    })[];
+    Sources: (Source & {
+      Name: string;
+      SourceArn: string;
+      Decryption: Encryption & { RoleArn: string };
+      MediaStreamSourceConfigurations: (MediaStreamSourceConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        InputConfigurations: (InputConfiguration & {
+          InputIp: string;
+          InputPort: number;
+          Interface: Interface & { Name: string };
+        })[];
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+      GatewayBridgeSource: GatewayBridgeSource & { BridgeArn: string };
+    })[];
+    VpcInterfaces: (VpcInterface & {
+      Name: string;
+      NetworkInterfaceIds: __listOfString;
+      NetworkInterfaceType: NetworkInterfaceType;
+      RoleArn: string;
+      SecurityGroupIds: __listOfString;
+      SubnetId: string;
+    })[];
+    NdiConfig: NdiConfig & {
+      NdiDiscoveryServers: (NdiDiscoveryServerConfig & {
+        DiscoveryServerAddress: string;
+        VpcInterfaceAdapter: string;
+      })[];
+    };
+  };
+  Messages?: Messages & { Errors: __listOfString };
 }
 export const DescribeFlowResponse = S.suspend(() =>
   S.Struct({
@@ -6300,7 +6746,13 @@ export const DescribeFlowResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeFlowResponse>;
 export interface UpdateFlowMediaStreamResponse {
   FlowArn?: string;
-  MediaStream?: MediaStream;
+  MediaStream?: MediaStream & {
+    Fmt: number;
+    MediaStreamId: number;
+    MediaStreamName: string;
+    MediaStreamType: MediaStreamType;
+    Attributes: MediaStreamAttributes & { Fmtp: Fmtp };
+  };
 }
 export const UpdateFlowMediaStreamResponse = S.suspend(() =>
   S.Struct({
@@ -6389,7 +6841,22 @@ export const UpdateFlowOutputRequest = S.suspend(() =>
 }) as any as S.Schema<UpdateFlowOutputRequest>;
 export interface UpdateFlowSourceResponse {
   FlowArn?: string;
-  Source?: Source;
+  Source?: Source & {
+    Name: string;
+    SourceArn: string;
+    Decryption: Encryption & { RoleArn: string };
+    MediaStreamSourceConfigurations: (MediaStreamSourceConfiguration & {
+      EncodingName: EncodingName;
+      MediaStreamName: string;
+      InputConfigurations: (InputConfiguration & {
+        InputIp: string;
+        InputPort: number;
+        Interface: Interface & { Name: string };
+      })[];
+    })[];
+    Transport: Transport & { Protocol: Protocol };
+    GatewayBridgeSource: GatewayBridgeSource & { BridgeArn: string };
+  };
 }
 export const UpdateFlowSourceResponse = S.suspend(() =>
   S.Struct({
@@ -6402,7 +6869,18 @@ export const UpdateFlowSourceResponse = S.suspend(() =>
   identifier: "UpdateFlowSourceResponse",
 }) as any as S.Schema<UpdateFlowSourceResponse>;
 export interface DescribeOfferingResponse {
-  Offering?: Offering;
+  Offering?: Offering & {
+    CurrencyCode: string;
+    Duration: number;
+    DurationUnits: DurationUnits;
+    OfferingArn: string;
+    OfferingDescription: string;
+    PricePerUnit: string;
+    PriceUnits: PriceUnits;
+    ResourceSpecification: ResourceSpecification & {
+      ResourceType: ResourceType;
+    };
+  };
 }
 export const DescribeOfferingResponse = S.suspend(() =>
   S.Struct({
@@ -6478,7 +6956,10 @@ export const CreateRouterNetworkInterfaceRequest = S.suspend(() =>
     ),
     RegionName: S.optional(S.String).pipe(T.JsonName("regionName")),
     Tags: S.optional(__mapOfString).pipe(T.JsonName("tags")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/v1/routerNetworkInterface" }),
@@ -6519,7 +7000,91 @@ export const ListRouterOutputsResponse = S.suspend(() =>
   identifier: "ListRouterOutputsResponse",
 }) as any as S.Schema<ListRouterOutputsResponse>;
 export interface CreateFlowResponse {
-  Flow?: Flow;
+  Flow?: Flow & {
+    AvailabilityZone: string;
+    Entitlements: (Entitlement & {
+      EntitlementArn: string;
+      Name: string;
+      Subscribers: __listOfString;
+      Encryption: Encryption & { RoleArn: string };
+    })[];
+    FlowArn: string;
+    Name: string;
+    Outputs: (Output & {
+      Name: string;
+      OutputArn: string;
+      Encryption: Encryption & { RoleArn: string };
+      MediaStreamOutputConfigurations: (MediaStreamOutputConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        DestinationConfigurations: (DestinationConfiguration & {
+          DestinationIp: string;
+          DestinationPort: number;
+          Interface: Interface & { Name: string };
+          OutboundIp: string;
+        })[];
+        EncodingParameters: EncodingParameters & {
+          CompressionFactor: number;
+          EncoderProfile: EncoderProfile;
+        };
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+    })[];
+    Source: Source & {
+      Name: string;
+      SourceArn: string;
+      Decryption: Encryption & { RoleArn: string };
+      MediaStreamSourceConfigurations: (MediaStreamSourceConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        InputConfigurations: (InputConfiguration & {
+          InputIp: string;
+          InputPort: number;
+          Interface: Interface & { Name: string };
+        })[];
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+      GatewayBridgeSource: GatewayBridgeSource & { BridgeArn: string };
+    };
+    Status: Status;
+    MediaStreams: (MediaStream & {
+      Fmt: number;
+      MediaStreamId: number;
+      MediaStreamName: string;
+      MediaStreamType: MediaStreamType;
+      Attributes: MediaStreamAttributes & { Fmtp: Fmtp };
+    })[];
+    Sources: (Source & {
+      Name: string;
+      SourceArn: string;
+      Decryption: Encryption & { RoleArn: string };
+      MediaStreamSourceConfigurations: (MediaStreamSourceConfiguration & {
+        EncodingName: EncodingName;
+        MediaStreamName: string;
+        InputConfigurations: (InputConfiguration & {
+          InputIp: string;
+          InputPort: number;
+          Interface: Interface & { Name: string };
+        })[];
+      })[];
+      Transport: Transport & { Protocol: Protocol };
+      GatewayBridgeSource: GatewayBridgeSource & { BridgeArn: string };
+    })[];
+    VpcInterfaces: (VpcInterface & {
+      Name: string;
+      NetworkInterfaceIds: __listOfString;
+      NetworkInterfaceType: NetworkInterfaceType;
+      RoleArn: string;
+      SecurityGroupIds: __listOfString;
+      SubnetId: string;
+    })[];
+    NdiConfig: NdiConfig & {
+      NdiDiscoveryServers: (NdiDiscoveryServerConfig & {
+        DiscoveryServerAddress: string;
+        VpcInterfaceAdapter: string;
+      })[];
+    };
+  };
 }
 export const CreateFlowResponse = S.suspend(() =>
   S.Struct({
@@ -6532,7 +7097,13 @@ export const CreateFlowResponse = S.suspend(() =>
 }) as any as S.Schema<CreateFlowResponse>;
 export interface AddFlowMediaStreamsResponse {
   FlowArn?: string;
-  MediaStreams?: MediaStream[];
+  MediaStreams?: (MediaStream & {
+    Fmt: number;
+    MediaStreamId: number;
+    MediaStreamName: string;
+    MediaStreamType: MediaStreamType;
+    Attributes: MediaStreamAttributes & { Fmtp: Fmtp };
+  })[];
 }
 export const AddFlowMediaStreamsResponse = S.suspend(() =>
   S.Struct({
@@ -6546,7 +7117,22 @@ export const AddFlowMediaStreamsResponse = S.suspend(() =>
 }) as any as S.Schema<AddFlowMediaStreamsResponse>;
 export interface AddFlowSourcesResponse {
   FlowArn?: string;
-  Sources?: Source[];
+  Sources?: (Source & {
+    Name: string;
+    SourceArn: string;
+    Decryption: Encryption & { RoleArn: string };
+    MediaStreamSourceConfigurations: (MediaStreamSourceConfiguration & {
+      EncodingName: EncodingName;
+      MediaStreamName: string;
+      InputConfigurations: (InputConfiguration & {
+        InputIp: string;
+        InputPort: number;
+        Interface: Interface & { Name: string };
+      })[];
+    })[];
+    Transport: Transport & { Protocol: Protocol };
+    GatewayBridgeSource: GatewayBridgeSource & { BridgeArn: string };
+  })[];
 }
 export const AddFlowSourcesResponse = S.suspend(() =>
   S.Struct({
@@ -6558,7 +7144,26 @@ export const AddFlowSourcesResponse = S.suspend(() =>
 }) as any as S.Schema<AddFlowSourcesResponse>;
 export interface UpdateFlowOutputResponse {
   FlowArn?: string;
-  Output?: Output;
+  Output?: Output & {
+    Name: string;
+    OutputArn: string;
+    Encryption: Encryption & { RoleArn: string };
+    MediaStreamOutputConfigurations: (MediaStreamOutputConfiguration & {
+      EncodingName: EncodingName;
+      MediaStreamName: string;
+      DestinationConfigurations: (DestinationConfiguration & {
+        DestinationIp: string;
+        DestinationPort: number;
+        Interface: Interface & { Name: string };
+        OutboundIp: string;
+      })[];
+      EncodingParameters: EncodingParameters & {
+        CompressionFactor: number;
+        EncoderProfile: EncoderProfile;
+      };
+    })[];
+    Transport: Transport & { Protocol: Protocol };
+  };
 }
 export const UpdateFlowOutputResponse = S.suspend(() =>
   S.Struct({
@@ -6596,7 +7201,26 @@ export const GetRouterOutputResponse = S.suspend(() =>
 }) as any as S.Schema<GetRouterOutputResponse>;
 export interface AddFlowOutputsResponse {
   FlowArn?: string;
-  Outputs?: Output[];
+  Outputs?: (Output & {
+    Name: string;
+    OutputArn: string;
+    Encryption: Encryption & { RoleArn: string };
+    MediaStreamOutputConfigurations: (MediaStreamOutputConfiguration & {
+      EncodingName: EncodingName;
+      MediaStreamName: string;
+      DestinationConfigurations: (DestinationConfiguration & {
+        DestinationIp: string;
+        DestinationPort: number;
+        Interface: Interface & { Name: string };
+        OutboundIp: string;
+      })[];
+      EncodingParameters: EncodingParameters & {
+        CompressionFactor: number;
+        EncoderProfile: EncoderProfile;
+      };
+    })[];
+    Transport: Transport & { Protocol: Protocol };
+  })[];
 }
 export const AddFlowOutputsResponse = S.suspend(() =>
   S.Struct({
@@ -6608,9 +7232,23 @@ export const AddFlowOutputsResponse = S.suspend(() =>
 }) as any as S.Schema<AddFlowOutputsResponse>;
 export interface DescribeFlowSourceMetadataResponse {
   FlowArn?: string;
-  Messages?: MessageDetail[];
+  Messages?: (MessageDetail & { Code: string; Message: string })[];
   Timestamp?: Date;
-  TransportMediaInfo?: TransportMediaInfo;
+  TransportMediaInfo?: TransportMediaInfo & {
+    Programs: (TransportStreamProgram & {
+      PcrPid: number;
+      ProgramNumber: number;
+      ProgramPid: number;
+      Streams: (TransportStream & {
+        Pid: number;
+        StreamType: string;
+        FrameResolution: FrameResolution & {
+          FrameHeight: number;
+          FrameWidth: number;
+        };
+      })[];
+    })[];
+  };
 }
 export const DescribeFlowSourceMetadataResponse = S.suspend(() =>
   S.Struct({
@@ -6655,7 +7293,10 @@ export const CreateRouterInputRequest = S.suspend(() =>
       T.JsonName("maintenanceConfiguration"),
     ),
     Tags: S.optional(__mapOfString).pipe(T.JsonName("tags")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/v1/routerInput" }),
@@ -6706,7 +7347,10 @@ export const CreateRouterOutputRequest = S.suspend(() =>
       T.JsonName("maintenanceConfiguration"),
     ),
     Tags: S.optional(__mapOfString).pipe(T.JsonName("tags")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/v1/routerOutput" }),

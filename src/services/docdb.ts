@@ -91,10 +91,8 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type IntegerOptional = number;
 export type GlobalClusterIdentifier = string;
 export type DBClusterIdentifier = string;
-export type DoubleOptional = number;
 export type ExceptionMessage = string;
 
 //# Schemas

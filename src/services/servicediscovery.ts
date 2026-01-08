@@ -325,7 +325,7 @@ export const RegisterInstanceRequest = S.suspend(() =>
   S.Struct({
     ServiceId: S.String,
     InstanceId: S.String,
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Attributes: Attributes,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -534,7 +534,7 @@ export interface CreateHttpNamespaceRequest {
 export const CreateHttpNamespaceRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     Tags: S.optional(TagList),
   }).pipe(
@@ -663,7 +663,7 @@ export interface UpdateHttpNamespaceRequest {
 export const UpdateHttpNamespaceRequest = S.suspend(() =>
   S.Struct({
     Id: S.String,
-    UpdaterRequestId: S.optional(S.String),
+    UpdaterRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Namespace: HttpNamespaceChange,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -906,7 +906,7 @@ export interface CreatePublicDnsNamespaceRequest {
 export const CreatePublicDnsNamespaceRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     Tags: S.optional(TagList),
     Properties: S.optional(PublicDnsNamespaceProperties),
@@ -931,7 +931,7 @@ export const CreateServiceRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
     NamespaceId: S.optional(S.String),
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     DnsConfig: S.optional(DnsConfig),
     HealthCheckConfig: S.optional(HealthCheckConfig),
@@ -1226,7 +1226,7 @@ export interface CreatePrivateDnsNamespaceRequest {
 export const CreatePrivateDnsNamespaceRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
-    CreatorRequestId: S.optional(S.String),
+    CreatorRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     Vpc: S.String,
     Tags: S.optional(TagList),
@@ -1317,7 +1317,7 @@ export interface UpdatePublicDnsNamespaceRequest {
 export const UpdatePublicDnsNamespaceRequest = S.suspend(() =>
   S.Struct({
     Id: S.String,
-    UpdaterRequestId: S.optional(S.String),
+    UpdaterRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Namespace: PublicDnsNamespaceChange,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1403,7 +1403,7 @@ export interface UpdatePrivateDnsNamespaceRequest {
 export const UpdatePrivateDnsNamespaceRequest = S.suspend(() =>
   S.Struct({
     Id: S.String,
-    UpdaterRequestId: S.optional(S.String),
+    UpdaterRequestId: S.optional(S.String).pipe(T.IdempotencyToken()),
     Namespace: PrivateDnsNamespaceChange,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

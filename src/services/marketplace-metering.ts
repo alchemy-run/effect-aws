@@ -258,7 +258,7 @@ export const MeterUsageRequest = S.suspend(() =>
     UsageQuantity: S.optional(S.Number),
     DryRun: S.optional(S.Boolean),
     UsageAllocations: S.optional(UsageAllocations),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

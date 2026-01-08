@@ -2055,7 +2055,7 @@ export interface StartImportRequest {
 }
 export const StartImportRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     s3BucketSource: S3BucketSource,
     tags: S.optional(TagsMap),
   }).pipe(

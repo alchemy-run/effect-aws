@@ -263,7 +263,7 @@ export const UpdateMeshInput = S.suspend(() =>
   S.Struct({
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: S.optional(MeshSpec),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/v20190125/meshes/{meshName}" }),
@@ -665,7 +665,7 @@ export const UpdateVirtualGatewayInput = S.suspend(() =>
     virtualGatewayName: S.String.pipe(T.HttpLabel("virtualGatewayName")),
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: VirtualGatewaySpec,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -1047,7 +1047,7 @@ export const UpdateGatewayRouteInput = S.suspend(() =>
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     virtualGatewayName: S.String.pipe(T.HttpLabel("virtualGatewayName")),
     spec: GatewayRouteSpec,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -1563,7 +1563,7 @@ export const UpdateVirtualNodeInput = S.suspend(() =>
     virtualNodeName: S.String.pipe(T.HttpLabel("virtualNodeName")),
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: VirtualNodeSpec,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -1691,7 +1691,7 @@ export const UpdateVirtualRouterInput = S.suspend(() =>
     virtualRouterName: S.String.pipe(T.HttpLabel("virtualRouterName")),
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: VirtualRouterSpec,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -2032,7 +2032,7 @@ export const UpdateRouteInput = S.suspend(() =>
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     virtualRouterName: S.String.pipe(T.HttpLabel("virtualRouterName")),
     spec: RouteSpec,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -2177,7 +2177,7 @@ export const UpdateVirtualServiceInput = S.suspend(() =>
     virtualServiceName: S.String.pipe(T.HttpLabel("virtualServiceName")),
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: VirtualServiceSpec,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -2849,7 +2849,7 @@ export const CreateMeshInput = S.suspend(() =>
     meshName: S.String,
     spec: S.optional(MeshSpec),
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/v20190125/meshes" }),
@@ -2919,7 +2919,7 @@ export const CreateVirtualRouterInput = S.suspend(() =>
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: VirtualRouterSpec,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -3080,7 +3080,7 @@ export const CreateVirtualServiceInput = S.suspend(() =>
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: VirtualServiceSpec,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -3138,7 +3138,7 @@ export const CreateRouteInput = S.suspend(() =>
     virtualRouterName: S.String.pipe(T.HttpLabel("virtualRouterName")),
     spec: RouteSpec,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -3172,7 +3172,7 @@ export const CreateGatewayRouteInput = S.suspend(() =>
     virtualGatewayName: S.String.pipe(T.HttpLabel("virtualGatewayName")),
     spec: GatewayRouteSpec,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -3216,7 +3216,7 @@ export const CreateVirtualGatewayInput = S.suspend(() =>
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: VirtualGatewaySpec,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(
@@ -3260,7 +3260,7 @@ export const CreateVirtualNodeInput = S.suspend(() =>
     meshName: S.String.pipe(T.HttpLabel("meshName")),
     spec: VirtualNodeSpec,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     meshOwner: S.optional(S.String).pipe(T.HttpQuery("meshOwner")),
   }).pipe(
     T.all(

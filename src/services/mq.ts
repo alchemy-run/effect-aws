@@ -84,9 +84,8 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type MaxResults = number;
-export type __integer = number;
+export type __timestampIso8601 = Date;
 export type __integerMin5Max100 = number;
 
 //# Schemas
@@ -885,7 +884,10 @@ export const CreateBrokerRequest = S.suspend(() =>
     Configuration: S.optional(ConfigurationId)
       .pipe(T.JsonName("configuration"))
       .annotations({ identifier: "ConfigurationId" }),
-    CreatorRequestId: S.optional(S.String).pipe(T.JsonName("creatorRequestId")),
+    CreatorRequestId: S.optional(S.String).pipe(
+      T.JsonName("creatorRequestId"),
+      T.IdempotencyToken(),
+    ),
     DeploymentMode: S.optional(DeploymentMode).pipe(
       T.JsonName("deploymentMode"),
     ),
@@ -959,7 +961,10 @@ export interface DescribeConfigurationResponse {
   EngineType?: EngineType;
   EngineVersion?: string;
   Id?: string;
-  LatestRevision?: ConfigurationRevision;
+  LatestRevision?: ConfigurationRevision & {
+    Created: __timestampIso8601;
+    Revision: number;
+  };
   Name?: string;
   Tags?: { [key: string]: string };
 }
@@ -1007,7 +1012,10 @@ export interface ListConfigurationRevisionsResponse {
   ConfigurationId?: string;
   MaxResults?: number;
   NextToken?: string;
-  Revisions?: ConfigurationRevision[];
+  Revisions?: (ConfigurationRevision & {
+    Created: __timestampIso8601;
+    Revision: number;
+  })[];
 }
 export const ListConfigurationRevisionsResponse = S.suspend(() =>
   S.Struct({
@@ -1047,7 +1055,7 @@ export interface ListUsersResponse {
   BrokerId?: string;
   MaxResults?: number;
   NextToken?: string;
-  Users?: UserSummary[];
+  Users?: (UserSummary & { Username: string })[];
 }
 export const ListUsersResponse = S.suspend(() =>
   S.Struct({
@@ -1137,16 +1145,38 @@ export interface UpdateBrokerResponse {
   AuthenticationStrategy?: AuthenticationStrategy;
   AutoMinorVersionUpgrade?: boolean;
   BrokerId?: string;
-  Configuration?: ConfigurationId;
+  Configuration?: ConfigurationId & { Id: string };
   EngineVersion?: string;
   HostInstanceType?: string;
-  LdapServerMetadata?: LdapServerMetadataOutput;
+  LdapServerMetadata?: LdapServerMetadataOutput & {
+    Hosts: __listOf__string;
+    RoleBase: string;
+    RoleSearchMatching: string;
+    ServiceAccountUsername: string;
+    UserBase: string;
+    UserSearchMatching: string;
+  };
   Logs?: Logs;
-  MaintenanceWindowStartTime?: WeeklyStartTime;
+  MaintenanceWindowStartTime?: WeeklyStartTime & {
+    DayOfWeek: DayOfWeek;
+    TimeOfDay: string;
+  };
   SecurityGroups?: string[];
-  DataReplicationMetadata?: DataReplicationMetadataOutput;
+  DataReplicationMetadata?: DataReplicationMetadataOutput & {
+    DataReplicationRole: string;
+    DataReplicationCounterpart: DataReplicationCounterpart & {
+      BrokerId: string;
+      Region: string;
+    };
+  };
   DataReplicationMode?: DataReplicationMode;
-  PendingDataReplicationMetadata?: DataReplicationMetadataOutput;
+  PendingDataReplicationMetadata?: DataReplicationMetadataOutput & {
+    DataReplicationRole: string;
+    DataReplicationCounterpart: DataReplicationCounterpart & {
+      BrokerId: string;
+      Region: string;
+    };
+  };
   PendingDataReplicationMode?: DataReplicationMode;
 }
 export const UpdateBrokerResponse = S.suspend(() =>
@@ -1369,7 +1399,10 @@ export interface CreateConfigurationResponse {
   AuthenticationStrategy?: AuthenticationStrategy;
   Created?: Date;
   Id?: string;
-  LatestRevision?: ConfigurationRevision;
+  LatestRevision?: ConfigurationRevision & {
+    Created: __timestampIso8601;
+    Revision: number;
+  };
   Name?: string;
 }
 export const CreateConfigurationResponse = S.suspend(() =>
@@ -1394,7 +1427,7 @@ export interface DescribeUserResponse {
   BrokerId?: string;
   ConsoleAccess?: boolean;
   Groups?: string[];
-  Pending?: UserPendingChanges;
+  Pending?: UserPendingChanges & { PendingChange: ChangeType };
   Username?: string;
   ReplicationUser?: boolean;
 }
@@ -1413,7 +1446,10 @@ export const DescribeUserResponse = S.suspend(() =>
   identifier: "DescribeUserResponse",
 }) as any as S.Schema<DescribeUserResponse>;
 export interface ListBrokersResponse {
-  BrokerSummaries?: BrokerSummary[];
+  BrokerSummaries?: (BrokerSummary & {
+    DeploymentMode: DeploymentMode;
+    EngineType: EngineType;
+  })[];
   NextToken?: string;
 }
 export const ListBrokersResponse = S.suspend(() =>
@@ -1427,7 +1463,20 @@ export const ListBrokersResponse = S.suspend(() =>
   identifier: "ListBrokersResponse",
 }) as any as S.Schema<ListBrokersResponse>;
 export interface ListConfigurationsResponse {
-  Configurations?: Configuration[];
+  Configurations?: (Configuration & {
+    Arn: string;
+    AuthenticationStrategy: AuthenticationStrategy;
+    Created: __timestampIso8601;
+    Description: string;
+    EngineType: EngineType;
+    EngineVersion: string;
+    Id: string;
+    LatestRevision: ConfigurationRevision & {
+      Created: __timestampIso8601;
+      Revision: number;
+    };
+    Name: string;
+  })[];
   MaxResults?: number;
   NextToken?: string;
 }
@@ -1446,9 +1495,12 @@ export interface UpdateConfigurationResponse {
   Arn?: string;
   Created?: Date;
   Id?: string;
-  LatestRevision?: ConfigurationRevision;
+  LatestRevision?: ConfigurationRevision & {
+    Created: __timestampIso8601;
+    Revision: number;
+  };
   Name?: string;
-  Warnings?: SanitizationWarning[];
+  Warnings?: (SanitizationWarning & { Reason: SanitizationWarningReason })[];
 }
 export const UpdateConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -1569,30 +1621,63 @@ export interface DescribeBrokerResponse {
   BrokerInstances?: BrokerInstance[];
   BrokerName?: string;
   BrokerState?: BrokerState;
-  Configurations?: Configurations;
+  Configurations?: Configurations & {
+    Current: ConfigurationId & { Id: string };
+    History: (ConfigurationId & { Id: string })[];
+    Pending: ConfigurationId & { Id: string };
+  };
   Created?: Date;
   DeploymentMode?: DeploymentMode;
-  EncryptionOptions?: EncryptionOptions;
+  EncryptionOptions?: EncryptionOptions & { UseAwsOwnedKey: boolean };
   EngineType?: EngineType;
   EngineVersion?: string;
   HostInstanceType?: string;
-  LdapServerMetadata?: LdapServerMetadataOutput;
-  Logs?: LogsSummary;
-  MaintenanceWindowStartTime?: WeeklyStartTime;
+  LdapServerMetadata?: LdapServerMetadataOutput & {
+    Hosts: __listOf__string;
+    RoleBase: string;
+    RoleSearchMatching: string;
+    ServiceAccountUsername: string;
+    UserBase: string;
+    UserSearchMatching: string;
+  };
+  Logs?: LogsSummary & { General: boolean; GeneralLogGroup: string };
+  MaintenanceWindowStartTime?: WeeklyStartTime & {
+    DayOfWeek: DayOfWeek;
+    TimeOfDay: string;
+  };
   PendingAuthenticationStrategy?: AuthenticationStrategy;
   PendingEngineVersion?: string;
   PendingHostInstanceType?: string;
-  PendingLdapServerMetadata?: LdapServerMetadataOutput;
+  PendingLdapServerMetadata?: LdapServerMetadataOutput & {
+    Hosts: __listOf__string;
+    RoleBase: string;
+    RoleSearchMatching: string;
+    ServiceAccountUsername: string;
+    UserBase: string;
+    UserSearchMatching: string;
+  };
   PendingSecurityGroups?: string[];
   PubliclyAccessible?: boolean;
   SecurityGroups?: string[];
   StorageType?: BrokerStorageType;
   SubnetIds?: string[];
   Tags?: { [key: string]: string };
-  Users?: UserSummary[];
-  DataReplicationMetadata?: DataReplicationMetadataOutput;
+  Users?: (UserSummary & { Username: string })[];
+  DataReplicationMetadata?: DataReplicationMetadataOutput & {
+    DataReplicationRole: string;
+    DataReplicationCounterpart: DataReplicationCounterpart & {
+      BrokerId: string;
+      Region: string;
+    };
+  };
   DataReplicationMode?: DataReplicationMode;
-  PendingDataReplicationMetadata?: DataReplicationMetadataOutput;
+  PendingDataReplicationMetadata?: DataReplicationMetadataOutput & {
+    DataReplicationRole: string;
+    DataReplicationCounterpart: DataReplicationCounterpart & {
+      BrokerId: string;
+      Region: string;
+    };
+  };
   PendingDataReplicationMode?: DataReplicationMode;
 }
 export const DescribeBrokerResponse = S.suspend(() =>

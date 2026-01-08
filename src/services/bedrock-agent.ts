@@ -214,12 +214,14 @@ export type FlowConditionExpression = string | redacted.Redacted<string>;
 export type ErrorMessage = string;
 export type KnowledgeBaseTextPrompt = string | redacted.Redacted<string>;
 export type Url = string;
+export type ByteContentBlob = Uint8Array | redacted.Redacted<Uint8Array>;
 export type Data = string | redacted.Redacted<string>;
 export type AwsDataCatalogTableName = string;
 export type RedshiftDatabase = string;
 export type WorkgroupArn = string;
 export type RedshiftClusterIdentifier = string;
 export type AdditionalModelRequestFieldsKey = string;
+export type AdditionalModelRequestFieldsValue = unknown;
 export type FlowPromptArn = string;
 export type FlowPromptModelIdentifier = string;
 export type FlowS3BucketName = string;
@@ -1715,7 +1717,7 @@ export const CreateFlowRequest = S.suspend(() =>
     executionRoleArn: S.String,
     customerEncryptionKeyArn: S.optional(S.String),
     definition: S.optional(FlowDefinition),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -1977,7 +1979,7 @@ export const CreateFlowVersionRequest = S.suspend(() =>
   S.Struct({
     flowIdentifier: S.String.pipe(T.HttpLabel("flowIdentifier")),
     description: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/flows/{flowIdentifier}/versions" }),
@@ -2102,7 +2104,7 @@ export const StartIngestionJobRequest = S.suspend(() =>
   S.Struct({
     knowledgeBaseId: S.String.pipe(T.HttpLabel("knowledgeBaseId")),
     dataSourceId: S.String.pipe(T.HttpLabel("dataSourceId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     description: S.optional(S.String),
   }).pipe(
     T.all(
@@ -3414,7 +3416,7 @@ export const CreatePromptVersionRequest = S.suspend(() =>
   S.Struct({
     promptIdentifier: S.String.pipe(T.HttpLabel("promptIdentifier")),
     description: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -3766,7 +3768,7 @@ export const AssociateAgentCollaboratorRequest = S.suspend(() =>
     collaboratorName: S.String,
     collaborationInstruction: SensitiveString,
     relayConversationHistory: S.optional(RelayConversationHistory),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3920,7 +3922,7 @@ export const CreateAgentAliasRequest = S.suspend(() =>
   S.Struct({
     agentId: S.String.pipe(T.HttpLabel("agentId")),
     agentAliasName: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     description: S.optional(S.String),
     routingConfiguration: S.optional(AgentAliasRoutingConfiguration),
     tags: S.optional(TagsMap),
@@ -4154,7 +4156,7 @@ export const CreateFlowAliasRequest = S.suspend(() =>
     routingConfiguration: FlowAliasRoutingConfiguration,
     concurrencyConfiguration: S.optional(FlowAliasConcurrencyConfiguration),
     flowIdentifier: S.String.pipe(T.HttpLabel("flowIdentifier")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -5350,7 +5352,7 @@ export const DeleteKnowledgeBaseDocumentsRequest = S.suspend(() =>
   S.Struct({
     knowledgeBaseId: S.String.pipe(T.HttpLabel("knowledgeBaseId")),
     dataSourceId: S.String.pipe(T.HttpLabel("dataSourceId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     documentIdentifiers: DocumentIdentifiers,
   }).pipe(
     T.all(
@@ -5898,7 +5900,7 @@ export interface CreateAgentRequest {
 export const CreateAgentRequest = S.suspend(() =>
   S.Struct({
     agentName: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     instruction: S.optional(SensitiveString),
     foundationModel: S.optional(S.String),
     description: S.optional(S.String),
@@ -6303,7 +6305,7 @@ export const CreateAgentActionGroupRequest = S.suspend(() =>
     agentId: S.String.pipe(T.HttpLabel("agentId")),
     agentVersion: S.String.pipe(T.HttpLabel("agentVersion")),
     actionGroupName: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     description: S.optional(S.String),
     parentActionGroupSignature: S.optional(ActionGroupSignature),
     parentActionGroupSignatureParams: S.optional(ActionGroupSignatureParams),
@@ -6464,7 +6466,7 @@ export const IngestKnowledgeBaseDocumentsRequest = S.suspend(() =>
   S.Struct({
     knowledgeBaseId: S.String.pipe(T.HttpLabel("knowledgeBaseId")),
     dataSourceId: S.String.pipe(T.HttpLabel("dataSourceId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     documents: KnowledgeBaseDocuments,
   }).pipe(
     T.all(
@@ -6512,7 +6514,7 @@ export interface CreateDataSourceRequest {
 export const CreateDataSourceRequest = S.suspend(() =>
   S.Struct({
     knowledgeBaseId: S.String.pipe(T.HttpLabel("knowledgeBaseId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     description: S.optional(S.String),
     dataSourceConfiguration: DataSourceConfiguration,
@@ -6606,7 +6608,7 @@ export interface CreateKnowledgeBaseRequest {
 }
 export const CreateKnowledgeBaseRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     description: S.optional(S.String),
     roleArn: S.String,
@@ -6642,7 +6644,7 @@ export const CreatePromptRequest = S.suspend(() =>
     customerEncryptionKeyArn: S.optional(S.String),
     defaultVariant: S.optional(S.String),
     variants: S.optional(PromptVariantList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagsMap),
   }).pipe(
     T.all(

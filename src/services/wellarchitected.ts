@@ -93,6 +93,7 @@ export type ProfileArn = string;
 export type SharedWith = string;
 export type ClientRequestToken = string;
 export type LensVersion = string;
+export type IsMajorVersion = boolean;
 export type MilestoneName = string;
 export type ProfileName = string;
 export type ProfileDescription = string;
@@ -114,6 +115,7 @@ export type ApplicationArn = string;
 export type ShareId = string;
 export type QuestionId = string;
 export type MilestoneNumber = number;
+export type IncludeSharedResources = boolean;
 export type NextToken = string;
 export type GetConsolidatedReportMaxResults = number;
 export type ProfileVersion = string;
@@ -139,7 +141,9 @@ export type WorkloadArn = string;
 export type ListTemplateSharesMaxResults = number;
 export type ListWorkloadsMaxResults = number;
 export type TagKey = string;
+export type IsApplicable = boolean;
 export type ShareInvitationId = string;
+export type IsReviewOwnerUpdateAcknowledged = boolean;
 export type TagValue = string;
 export type JiraProjectKey = string;
 export type Subdomain = string;
@@ -375,7 +379,7 @@ export const CreateLensShareInput = S.suspend(() =>
   S.Struct({
     LensAlias: S.String.pipe(T.HttpLabel("LensAlias")),
     SharedWith: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/lenses/{LensAlias}/shares" }),
@@ -400,7 +404,7 @@ export const CreateLensVersionInput = S.suspend(() =>
     LensAlias: S.String.pipe(T.HttpLabel("LensAlias")),
     LensVersion: S.optional(S.String),
     IsMajorVersion: S.optional(S.Boolean),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/lenses/{LensAlias}/versions" }),
@@ -423,7 +427,7 @@ export const CreateMilestoneInput = S.suspend(() =>
   S.Struct({
     WorkloadId: S.String.pipe(T.HttpLabel("WorkloadId")),
     MilestoneName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/workloads/{WorkloadId}/milestones" }),
@@ -446,7 +450,7 @@ export const CreateProfileShareInput = S.suspend(() =>
   S.Struct({
     ProfileArn: S.String.pipe(T.HttpLabel("ProfileArn")),
     SharedWith: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/profiles/{ProfileArn}/shares" }),
@@ -477,7 +481,7 @@ export const CreateReviewTemplateInput = S.suspend(() =>
     Lenses: S.optional(ReviewTemplateLenses),
     Notes: S.optional(S.String),
     Tags: S.optional(TagMap),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/reviewTemplates" }),
@@ -500,7 +504,7 @@ export const CreateTemplateShareInput = S.suspend(() =>
   S.Struct({
     TemplateArn: S.String.pipe(T.HttpLabel("TemplateArn")),
     SharedWith: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/templates/shares/{TemplateArn}" }),
@@ -525,7 +529,7 @@ export const CreateWorkloadShareInput = S.suspend(() =>
     WorkloadId: S.String.pipe(T.HttpLabel("WorkloadId")),
     SharedWith: S.optional(S.String),
     PermissionType: S.optional(PermissionType),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/workloads/{WorkloadId}/shares" }),
@@ -549,6 +553,7 @@ export const DeleteLensInput = S.suspend(() =>
     LensAlias: S.String.pipe(T.HttpLabel("LensAlias")),
     ClientRequestToken: S.optional(S.String).pipe(
       T.HttpQuery("ClientRequestToken"),
+      T.IdempotencyToken(),
     ),
     LensStatus: S.optional(LensStatusType).pipe(T.HttpQuery("LensStatus")),
   }).pipe(
@@ -579,6 +584,7 @@ export const DeleteLensShareInput = S.suspend(() =>
     LensAlias: S.String.pipe(T.HttpLabel("LensAlias")),
     ClientRequestToken: S.optional(S.String).pipe(
       T.HttpQuery("ClientRequestToken"),
+      T.IdempotencyToken(),
     ),
   }).pipe(
     T.all(
@@ -608,6 +614,7 @@ export const DeleteProfileInput = S.suspend(() =>
     ProfileArn: S.String.pipe(T.HttpLabel("ProfileArn")),
     ClientRequestToken: S.optional(S.String).pipe(
       T.HttpQuery("ClientRequestToken"),
+      T.IdempotencyToken(),
     ),
   }).pipe(
     T.all(
@@ -637,6 +644,7 @@ export const DeleteProfileShareInput = S.suspend(() =>
     ProfileArn: S.String.pipe(T.HttpLabel("ProfileArn")),
     ClientRequestToken: S.optional(S.String).pipe(
       T.HttpQuery("ClientRequestToken"),
+      T.IdempotencyToken(),
     ),
   }).pipe(
     T.all(
@@ -669,6 +677,7 @@ export const DeleteReviewTemplateInput = S.suspend(() =>
     TemplateArn: S.String.pipe(T.HttpLabel("TemplateArn")),
     ClientRequestToken: S.optional(S.String).pipe(
       T.HttpQuery("ClientRequestToken"),
+      T.IdempotencyToken(),
     ),
   }).pipe(
     T.all(
@@ -700,6 +709,7 @@ export const DeleteTemplateShareInput = S.suspend(() =>
     TemplateArn: S.String.pipe(T.HttpLabel("TemplateArn")),
     ClientRequestToken: S.optional(S.String).pipe(
       T.HttpQuery("ClientRequestToken"),
+      T.IdempotencyToken(),
     ),
   }).pipe(
     T.all(
@@ -732,6 +742,7 @@ export const DeleteWorkloadInput = S.suspend(() =>
     WorkloadId: S.String.pipe(T.HttpLabel("WorkloadId")),
     ClientRequestToken: S.optional(S.String).pipe(
       T.HttpQuery("ClientRequestToken"),
+      T.IdempotencyToken(),
     ),
   }).pipe(
     T.all(
@@ -761,6 +772,7 @@ export const DeleteWorkloadShareInput = S.suspend(() =>
     WorkloadId: S.String.pipe(T.HttpLabel("WorkloadId")),
     ClientRequestToken: S.optional(S.String).pipe(
       T.HttpQuery("ClientRequestToken"),
+      T.IdempotencyToken(),
     ),
   }).pipe(
     T.all(
@@ -1155,7 +1167,7 @@ export const ImportLensInput = S.suspend(() =>
   S.Struct({
     LensAlias: S.optional(S.String),
     JSONString: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -1763,7 +1775,7 @@ export interface UpdateIntegrationInput {
 export const UpdateIntegrationInput = S.suspend(() =>
   S.Struct({
     WorkloadId: S.String.pipe(T.HttpLabel("WorkloadId")),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     IntegratingService: S.optional(IntegratingService),
   }).pipe(
     T.all(
@@ -2141,7 +2153,7 @@ export const UpgradeProfileVersionInput = S.suspend(() =>
     WorkloadId: S.String.pipe(T.HttpLabel("WorkloadId")),
     ProfileArn: S.String.pipe(T.HttpLabel("ProfileArn")),
     MilestoneName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -2289,7 +2301,7 @@ export const CreateProfileInput = S.suspend(() =>
     ProfileName: S.optional(S.String),
     ProfileDescription: S.optional(S.String),
     ProfileQuestions: S.optional(ProfileQuestionUpdates),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -2370,7 +2382,7 @@ export const CreateWorkloadInput = S.suspend(() =>
     Industry: S.optional(S.String),
     Lenses: S.optional(WorkloadLenses),
     Notes: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
     DiscoveryConfig: S.optional(WorkloadDiscoveryConfig),
     Applications: S.optional(WorkloadApplications),

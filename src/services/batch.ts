@@ -812,7 +812,7 @@ export const UpdateConsumableResourceRequest = S.suspend(() =>
     consumableResource: S.optional(S.String),
     operation: S.optional(S.String),
     quantity: S.optional(S.Number),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -1260,8 +1260,8 @@ export const RetryAction = S.Literal("RETRY", "EXIT");
 export type ServiceJobRetryAction = "RETRY" | "EXIT";
 export const ServiceJobRetryAction = S.Literal("RETRY", "EXIT");
 export interface CreateConsumableResourceResponse {
-  consumableResourceName?: string;
-  consumableResourceArn?: string;
+  consumableResourceName: string;
+  consumableResourceArn: string;
 }
 export const CreateConsumableResourceResponse = S.suspend(() =>
   S.Struct({
@@ -1336,8 +1336,8 @@ export const CreateServiceEnvironmentRequest = S.suspend(() =>
   identifier: "CreateServiceEnvironmentRequest",
 }) as any as S.Schema<CreateServiceEnvironmentRequest>;
 export interface DescribeConsumableResourceResponse {
-  consumableResourceName?: string;
-  consumableResourceArn?: string;
+  consumableResourceName: string;
+  consumableResourceArn: string;
   totalQuantity?: number;
   inUseQuantity?: number;
   availableQuantity?: number;
@@ -1424,8 +1424,8 @@ export const UpdateComputeEnvironmentRequest = S.suspend(() =>
   identifier: "UpdateComputeEnvironmentRequest",
 }) as any as S.Schema<UpdateComputeEnvironmentRequest>;
 export interface UpdateConsumableResourceResponse {
-  consumableResourceName?: string;
-  consumableResourceArn?: string;
+  consumableResourceName: string;
+  consumableResourceArn: string;
   totalQuantity?: number;
 }
 export const UpdateConsumableResourceResponse = S.suspend(() =>
@@ -1450,8 +1450,8 @@ export const UpdateJobQueueResponse = S.suspend(() =>
   identifier: "UpdateJobQueueResponse",
 }) as any as S.Schema<UpdateJobQueueResponse>;
 export interface UpdateServiceEnvironmentResponse {
-  serviceEnvironmentName?: string;
-  serviceEnvironmentArn?: string;
+  serviceEnvironmentName: string;
+  serviceEnvironmentArn: string;
 }
 export const UpdateServiceEnvironmentResponse = S.suspend(() =>
   S.Struct({
@@ -2632,8 +2632,8 @@ export const ServiceJobRetryStrategy = S.suspend(() =>
   identifier: "ServiceJobRetryStrategy",
 }) as any as S.Schema<ServiceJobRetryStrategy>;
 export interface CreateJobQueueResponse {
-  jobQueueName?: string;
-  jobQueueArn?: string;
+  jobQueueName: string;
+  jobQueueArn: string;
 }
 export const CreateJobQueueResponse = S.suspend(() =>
   S.Struct({
@@ -2668,8 +2668,8 @@ export const CreateSchedulingPolicyRequest = S.suspend(() =>
   identifier: "CreateSchedulingPolicyRequest",
 }) as any as S.Schema<CreateSchedulingPolicyRequest>;
 export interface CreateServiceEnvironmentResponse {
-  serviceEnvironmentName?: string;
-  serviceEnvironmentArn?: string;
+  serviceEnvironmentName: string;
+  serviceEnvironmentArn: string;
 }
 export const CreateServiceEnvironmentResponse = S.suspend(() =>
   S.Struct({
@@ -2680,7 +2680,20 @@ export const CreateServiceEnvironmentResponse = S.suspend(() =>
   identifier: "CreateServiceEnvironmentResponse",
 }) as any as S.Schema<CreateServiceEnvironmentResponse>;
 export interface DescribeComputeEnvironmentsResponse {
-  computeEnvironments?: ComputeEnvironmentDetail[];
+  computeEnvironments?: (ComputeEnvironmentDetail & {
+    computeEnvironmentName: string;
+    computeEnvironmentArn: string;
+    computeResources: ComputeResource & {
+      type: CRType;
+      maxvCpus: number;
+      subnets: StringList;
+      ec2Configuration: (Ec2Configuration & { imageType: ImageType })[];
+    };
+    eksConfiguration: EksConfiguration & {
+      eksClusterArn: string;
+      kubernetesNamespace: string;
+    };
+  })[];
   nextToken?: string;
 }
 export const DescribeComputeEnvironmentsResponse = S.suspend(() =>
@@ -2692,7 +2705,194 @@ export const DescribeComputeEnvironmentsResponse = S.suspend(() =>
   identifier: "DescribeComputeEnvironmentsResponse",
 }) as any as S.Schema<DescribeComputeEnvironmentsResponse>;
 export interface DescribeJobDefinitionsResponse {
-  jobDefinitions?: JobDefinition[];
+  jobDefinitions?: (JobDefinition & {
+    jobDefinitionName: string;
+    jobDefinitionArn: string;
+    revision: number;
+    type: string;
+    retryStrategy: RetryStrategy & {
+      evaluateOnExit: (EvaluateOnExit & { action: RetryAction })[];
+    };
+    containerProperties: ContainerProperties & {
+      volumes: (Volume & {
+        efsVolumeConfiguration: EFSVolumeConfiguration & {
+          fileSystemId: string;
+        };
+      })[];
+      ulimits: (Ulimit & {
+        hardLimit: number;
+        name: string;
+        softLimit: number;
+      })[];
+      resourceRequirements: (ResourceRequirement & {
+        value: string;
+        type: ResourceType;
+      })[];
+      linuxParameters: LinuxParameters & {
+        devices: (Device & { hostPath: string })[];
+        tmpfs: (Tmpfs & { containerPath: string; size: number })[];
+      };
+      logConfiguration: LogConfiguration & {
+        logDriver: LogDriver;
+        secretOptions: (Secret & { name: string; valueFrom: string })[];
+      };
+      secrets: (Secret & { name: string; valueFrom: string })[];
+      ephemeralStorage: EphemeralStorage & { sizeInGiB: number };
+      repositoryCredentials: RepositoryCredentials & {
+        credentialsParameter: string;
+      };
+    };
+    nodeProperties: NodeProperties & {
+      numNodes: number;
+      mainNode: number;
+      nodeRangeProperties: (NodeRangeProperty & {
+        targetNodes: string;
+        container: ContainerProperties & {
+          volumes: (Volume & {
+            efsVolumeConfiguration: EFSVolumeConfiguration & {
+              fileSystemId: string;
+            };
+          })[];
+          ulimits: (Ulimit & {
+            hardLimit: number;
+            name: string;
+            softLimit: number;
+          })[];
+          resourceRequirements: (ResourceRequirement & {
+            value: string;
+            type: ResourceType;
+          })[];
+          linuxParameters: LinuxParameters & {
+            devices: (Device & { hostPath: string })[];
+            tmpfs: (Tmpfs & { containerPath: string; size: number })[];
+          };
+          logConfiguration: LogConfiguration & {
+            logDriver: LogDriver;
+            secretOptions: (Secret & { name: string; valueFrom: string })[];
+          };
+          secrets: (Secret & { name: string; valueFrom: string })[];
+          ephemeralStorage: EphemeralStorage & { sizeInGiB: number };
+          repositoryCredentials: RepositoryCredentials & {
+            credentialsParameter: string;
+          };
+        };
+        ecsProperties: EcsProperties & {
+          taskProperties: (EcsTaskProperties & {
+            containers: (TaskContainerProperties & {
+              image: string;
+              firelensConfiguration: FirelensConfiguration & {
+                type: FirelensConfigurationType;
+              };
+              linuxParameters: LinuxParameters & {
+                devices: (Device & { hostPath: string })[];
+                tmpfs: (Tmpfs & { containerPath: string; size: number })[];
+              };
+              logConfiguration: LogConfiguration & {
+                logDriver: LogDriver;
+                secretOptions: (Secret & { name: string; valueFrom: string })[];
+              };
+              repositoryCredentials: RepositoryCredentials & {
+                credentialsParameter: string;
+              };
+              resourceRequirements: (ResourceRequirement & {
+                value: string;
+                type: ResourceType;
+              })[];
+              secrets: (Secret & { name: string; valueFrom: string })[];
+              ulimits: (Ulimit & {
+                hardLimit: number;
+                name: string;
+                softLimit: number;
+              })[];
+            })[];
+            ephemeralStorage: EphemeralStorage & { sizeInGiB: number };
+            volumes: (Volume & {
+              efsVolumeConfiguration: EFSVolumeConfiguration & {
+                fileSystemId: string;
+              };
+            })[];
+          })[];
+        };
+        eksProperties: EksProperties & {
+          podProperties: EksPodProperties & {
+            imagePullSecrets: (ImagePullSecret & { name: string })[];
+            containers: (EksContainer & {
+              image: string;
+              env: (EksContainerEnvironmentVariable & { name: string })[];
+            })[];
+            initContainers: (EksContainer & {
+              image: string;
+              env: (EksContainerEnvironmentVariable & { name: string })[];
+            })[];
+            volumes: (EksVolume & {
+              name: string;
+              secret: EksSecret & { secretName: string };
+              persistentVolumeClaim: EksPersistentVolumeClaim & {
+                claimName: string;
+              };
+            })[];
+          };
+        };
+      })[];
+    };
+    ecsProperties: EcsProperties & {
+      taskProperties: (EcsTaskProperties & {
+        containers: (TaskContainerProperties & {
+          image: string;
+          firelensConfiguration: FirelensConfiguration & {
+            type: FirelensConfigurationType;
+          };
+          linuxParameters: LinuxParameters & {
+            devices: (Device & { hostPath: string })[];
+            tmpfs: (Tmpfs & { containerPath: string; size: number })[];
+          };
+          logConfiguration: LogConfiguration & {
+            logDriver: LogDriver;
+            secretOptions: (Secret & { name: string; valueFrom: string })[];
+          };
+          repositoryCredentials: RepositoryCredentials & {
+            credentialsParameter: string;
+          };
+          resourceRequirements: (ResourceRequirement & {
+            value: string;
+            type: ResourceType;
+          })[];
+          secrets: (Secret & { name: string; valueFrom: string })[];
+          ulimits: (Ulimit & {
+            hardLimit: number;
+            name: string;
+            softLimit: number;
+          })[];
+        })[];
+        ephemeralStorage: EphemeralStorage & { sizeInGiB: number };
+        volumes: (Volume & {
+          efsVolumeConfiguration: EFSVolumeConfiguration & {
+            fileSystemId: string;
+          };
+        })[];
+      })[];
+    };
+    eksProperties: EksProperties & {
+      podProperties: EksPodProperties & {
+        imagePullSecrets: (ImagePullSecret & { name: string })[];
+        containers: (EksContainer & {
+          image: string;
+          env: (EksContainerEnvironmentVariable & { name: string })[];
+        })[];
+        initContainers: (EksContainer & {
+          image: string;
+          env: (EksContainerEnvironmentVariable & { name: string })[];
+        })[];
+        volumes: (EksVolume & {
+          name: string;
+          secret: EksSecret & { secretName: string };
+          persistentVolumeClaim: EksPersistentVolumeClaim & {
+            claimName: string;
+          };
+        })[];
+      };
+    };
+  })[];
   nextToken?: string;
 }
 export const DescribeJobDefinitionsResponse = S.suspend(() =>
@@ -2704,7 +2904,26 @@ export const DescribeJobDefinitionsResponse = S.suspend(() =>
   identifier: "DescribeJobDefinitionsResponse",
 }) as any as S.Schema<DescribeJobDefinitionsResponse>;
 export interface DescribeJobQueuesResponse {
-  jobQueues?: JobQueueDetail[];
+  jobQueues?: (JobQueueDetail & {
+    jobQueueName: string;
+    jobQueueArn: string;
+    state: JQState;
+    priority: number;
+    computeEnvironmentOrder: (ComputeEnvironmentOrder & {
+      order: number;
+      computeEnvironment: string;
+    })[];
+    serviceEnvironmentOrder: (ServiceEnvironmentOrder & {
+      order: number;
+      serviceEnvironment: string;
+    })[];
+    jobStateTimeLimitActions: (JobStateTimeLimitAction & {
+      reason: string;
+      state: JobStateTimeLimitActionsState;
+      maxTimeSeconds: number;
+      action: JobStateTimeLimitActionsAction;
+    })[];
+  })[];
   nextToken?: string;
 }
 export const DescribeJobQueuesResponse = S.suspend(() =>
@@ -2716,7 +2935,13 @@ export const DescribeJobQueuesResponse = S.suspend(() =>
   identifier: "DescribeJobQueuesResponse",
 }) as any as S.Schema<DescribeJobQueuesResponse>;
 export interface DescribeSchedulingPoliciesResponse {
-  schedulingPolicies?: SchedulingPolicyDetail[];
+  schedulingPolicies?: (SchedulingPolicyDetail & {
+    name: string;
+    arn: string;
+    fairsharePolicy: FairsharePolicy & {
+      shareDistribution: (ShareAttributes & { shareIdentifier: string })[];
+    };
+  })[];
 }
 export const DescribeSchedulingPoliciesResponse = S.suspend(() =>
   S.Struct({ schedulingPolicies: S.optional(SchedulingPolicyDetailList) }).pipe(
@@ -2726,7 +2951,12 @@ export const DescribeSchedulingPoliciesResponse = S.suspend(() =>
   identifier: "DescribeSchedulingPoliciesResponse",
 }) as any as S.Schema<DescribeSchedulingPoliciesResponse>;
 export interface DescribeServiceEnvironmentsResponse {
-  serviceEnvironments?: ServiceEnvironmentDetail[];
+  serviceEnvironments?: (ServiceEnvironmentDetail & {
+    serviceEnvironmentName: string;
+    serviceEnvironmentArn: string;
+    serviceEnvironmentType: ServiceEnvironmentType;
+    capacityLimits: CapacityLimits;
+  })[];
   nextToken?: string;
 }
 export const DescribeServiceEnvironmentsResponse = S.suspend(() =>
@@ -2738,7 +2968,15 @@ export const DescribeServiceEnvironmentsResponse = S.suspend(() =>
   identifier: "DescribeServiceEnvironmentsResponse",
 }) as any as S.Schema<DescribeServiceEnvironmentsResponse>;
 export interface ListJobsByConsumableResourceResponse {
-  jobs?: ListJobsByConsumableResourceSummary[];
+  jobs: (ListJobsByConsumableResourceSummary & {
+    jobArn: string;
+    jobQueueArn: string;
+    jobName: string;
+    jobStatus: string;
+    quantity: number;
+    createdAt: number;
+    consumableResourceProperties: ConsumableResourceProperties;
+  })[];
   nextToken?: string;
 }
 export const ListJobsByConsumableResourceResponse = S.suspend(() =>
@@ -2750,7 +2988,7 @@ export const ListJobsByConsumableResourceResponse = S.suspend(() =>
   identifier: "ListJobsByConsumableResourceResponse",
 }) as any as S.Schema<ListJobsByConsumableResourceResponse>;
 export interface ListSchedulingPoliciesResponse {
-  schedulingPolicies?: SchedulingPolicyListingDetail[];
+  schedulingPolicies?: (SchedulingPolicyListingDetail & { arn: string })[];
   nextToken?: string;
 }
 export const ListSchedulingPoliciesResponse = S.suspend(() =>
@@ -2762,7 +3000,17 @@ export const ListSchedulingPoliciesResponse = S.suspend(() =>
   identifier: "ListSchedulingPoliciesResponse",
 }) as any as S.Schema<ListSchedulingPoliciesResponse>;
 export interface ListServiceJobsResponse {
-  jobSummaryList?: ServiceJobSummary[];
+  jobSummaryList: (ServiceJobSummary & {
+    jobId: string;
+    jobName: string;
+    serviceJobType: ServiceJobType;
+    latestAttempt: LatestServiceJobAttempt & {
+      serviceResourceId: ServiceResourceId & {
+        name: ServiceResourceIdName;
+        value: string;
+      };
+    };
+  })[];
   nextToken?: string;
 }
 export const ListServiceJobsResponse = S.suspend(() =>
@@ -2796,7 +3044,7 @@ export const SubmitServiceJobRequest = S.suspend(() =>
     shareIdentifier: S.optional(S.String),
     timeoutConfig: S.optional(ServiceJobTimeout),
     tags: S.optional(TagrisTagsMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -3057,8 +3305,8 @@ export const CreateComputeEnvironmentRequest = S.suspend(() =>
   identifier: "CreateComputeEnvironmentRequest",
 }) as any as S.Schema<CreateComputeEnvironmentRequest>;
 export interface CreateSchedulingPolicyResponse {
-  name?: string;
-  arn?: string;
+  name: string;
+  arn: string;
 }
 export const CreateSchedulingPolicyResponse = S.suspend(() =>
   S.Struct({ name: S.optional(S.String), arn: S.optional(S.String) }).pipe(ns),
@@ -3066,21 +3314,31 @@ export const CreateSchedulingPolicyResponse = S.suspend(() =>
   identifier: "CreateSchedulingPolicyResponse",
 }) as any as S.Schema<CreateSchedulingPolicyResponse>;
 export interface DescribeServiceJobResponse {
-  attempts?: ServiceJobAttemptDetail[];
+  attempts?: (ServiceJobAttemptDetail & {
+    serviceResourceId: ServiceResourceId & {
+      name: ServiceResourceIdName;
+      value: string;
+    };
+  })[];
   createdAt?: number;
   isTerminated?: boolean;
   jobArn?: string;
-  jobId?: string;
-  jobName?: string;
-  jobQueue?: string;
-  latestAttempt?: LatestServiceJobAttempt;
-  retryStrategy?: ServiceJobRetryStrategy;
+  jobId: string;
+  jobName: string;
+  jobQueue: string;
+  latestAttempt?: LatestServiceJobAttempt & {
+    serviceResourceId: ServiceResourceId & {
+      name: ServiceResourceIdName;
+      value: string;
+    };
+  };
+  retryStrategy?: ServiceJobRetryStrategy & { attempts: number };
   schedulingPriority?: number;
   serviceRequestPayload?: string;
-  serviceJobType?: ServiceJobType;
+  serviceJobType: ServiceJobType;
   shareIdentifier?: string;
-  startedAt?: number;
-  status?: ServiceJobStatus;
+  startedAt: number;
+  status: ServiceJobStatus;
   statusReason?: string;
   stoppedAt?: number;
   tags?: { [key: string]: string };
@@ -3120,7 +3378,10 @@ export const GetJobQueueSnapshotResponse = S.suspend(() =>
   identifier: "GetJobQueueSnapshotResponse",
 }) as any as S.Schema<GetJobQueueSnapshotResponse>;
 export interface ListConsumableResourcesResponse {
-  consumableResources?: ConsumableResourceSummary[];
+  consumableResources: (ConsumableResourceSummary & {
+    consumableResourceArn: string;
+    consumableResourceName: string;
+  })[];
   nextToken?: string;
 }
 export const ListConsumableResourcesResponse = S.suspend(() =>
@@ -3132,7 +3393,7 @@ export const ListConsumableResourcesResponse = S.suspend(() =>
   identifier: "ListConsumableResourcesResponse",
 }) as any as S.Schema<ListConsumableResourcesResponse>;
 export interface ListJobsResponse {
-  jobSummaryList?: JobSummary[];
+  jobSummaryList: (JobSummary & { jobId: string; jobName: string })[];
   nextToken?: string;
 }
 export const ListJobsResponse = S.suspend(() =>
@@ -3199,8 +3460,8 @@ export const SubmitJobRequest = S.suspend(() =>
 }) as any as S.Schema<SubmitJobRequest>;
 export interface SubmitServiceJobResponse {
   jobArn?: string;
-  jobName?: string;
-  jobId?: string;
+  jobName: string;
+  jobId: string;
 }
 export const SubmitServiceJobResponse = S.suspend(() =>
   S.Struct({
@@ -3523,8 +3784,8 @@ export const CreateComputeEnvironmentResponse = S.suspend(() =>
 }) as any as S.Schema<CreateComputeEnvironmentResponse>;
 export interface SubmitJobResponse {
   jobArn?: string;
-  jobName?: string;
-  jobId?: string;
+  jobName: string;
+  jobId: string;
 }
 export const SubmitJobResponse = S.suspend(() =>
   S.Struct({
@@ -3640,7 +3901,193 @@ export const JobDetail = S.suspend(() =>
 export type JobDetailList = JobDetail[];
 export const JobDetailList = S.Array(JobDetail);
 export interface DescribeJobsResponse {
-  jobs?: JobDetail[];
+  jobs?: (JobDetail & {
+    jobName: string;
+    jobId: string;
+    jobQueue: string;
+    status: JobStatus;
+    startedAt: number;
+    jobDefinition: string;
+    retryStrategy: RetryStrategy & {
+      evaluateOnExit: (EvaluateOnExit & { action: RetryAction })[];
+    };
+    container: ContainerDetail & {
+      volumes: (Volume & {
+        efsVolumeConfiguration: EFSVolumeConfiguration & {
+          fileSystemId: string;
+        };
+      })[];
+      ulimits: (Ulimit & {
+        hardLimit: number;
+        name: string;
+        softLimit: number;
+      })[];
+      resourceRequirements: (ResourceRequirement & {
+        value: string;
+        type: ResourceType;
+      })[];
+      linuxParameters: LinuxParameters & {
+        devices: (Device & { hostPath: string })[];
+        tmpfs: (Tmpfs & { containerPath: string; size: number })[];
+      };
+      logConfiguration: LogConfiguration & {
+        logDriver: LogDriver;
+        secretOptions: (Secret & { name: string; valueFrom: string })[];
+      };
+      secrets: (Secret & { name: string; valueFrom: string })[];
+      ephemeralStorage: EphemeralStorage & { sizeInGiB: number };
+      repositoryCredentials: RepositoryCredentials & {
+        credentialsParameter: string;
+      };
+    };
+    nodeProperties: NodeProperties & {
+      numNodes: number;
+      mainNode: number;
+      nodeRangeProperties: (NodeRangeProperty & {
+        targetNodes: string;
+        container: ContainerProperties & {
+          volumes: (Volume & {
+            efsVolumeConfiguration: EFSVolumeConfiguration & {
+              fileSystemId: string;
+            };
+          })[];
+          ulimits: (Ulimit & {
+            hardLimit: number;
+            name: string;
+            softLimit: number;
+          })[];
+          resourceRequirements: (ResourceRequirement & {
+            value: string;
+            type: ResourceType;
+          })[];
+          linuxParameters: LinuxParameters & {
+            devices: (Device & { hostPath: string })[];
+            tmpfs: (Tmpfs & { containerPath: string; size: number })[];
+          };
+          logConfiguration: LogConfiguration & {
+            logDriver: LogDriver;
+            secretOptions: (Secret & { name: string; valueFrom: string })[];
+          };
+          secrets: (Secret & { name: string; valueFrom: string })[];
+          ephemeralStorage: EphemeralStorage & { sizeInGiB: number };
+          repositoryCredentials: RepositoryCredentials & {
+            credentialsParameter: string;
+          };
+        };
+        ecsProperties: EcsProperties & {
+          taskProperties: (EcsTaskProperties & {
+            containers: (TaskContainerProperties & {
+              image: string;
+              firelensConfiguration: FirelensConfiguration & {
+                type: FirelensConfigurationType;
+              };
+              linuxParameters: LinuxParameters & {
+                devices: (Device & { hostPath: string })[];
+                tmpfs: (Tmpfs & { containerPath: string; size: number })[];
+              };
+              logConfiguration: LogConfiguration & {
+                logDriver: LogDriver;
+                secretOptions: (Secret & { name: string; valueFrom: string })[];
+              };
+              repositoryCredentials: RepositoryCredentials & {
+                credentialsParameter: string;
+              };
+              resourceRequirements: (ResourceRequirement & {
+                value: string;
+                type: ResourceType;
+              })[];
+              secrets: (Secret & { name: string; valueFrom: string })[];
+              ulimits: (Ulimit & {
+                hardLimit: number;
+                name: string;
+                softLimit: number;
+              })[];
+            })[];
+            ephemeralStorage: EphemeralStorage & { sizeInGiB: number };
+            volumes: (Volume & {
+              efsVolumeConfiguration: EFSVolumeConfiguration & {
+                fileSystemId: string;
+              };
+            })[];
+          })[];
+        };
+        eksProperties: EksProperties & {
+          podProperties: EksPodProperties & {
+            imagePullSecrets: (ImagePullSecret & { name: string })[];
+            containers: (EksContainer & {
+              image: string;
+              env: (EksContainerEnvironmentVariable & { name: string })[];
+            })[];
+            initContainers: (EksContainer & {
+              image: string;
+              env: (EksContainerEnvironmentVariable & { name: string })[];
+            })[];
+            volumes: (EksVolume & {
+              name: string;
+              secret: EksSecret & { secretName: string };
+              persistentVolumeClaim: EksPersistentVolumeClaim & {
+                claimName: string;
+              };
+            })[];
+          };
+        };
+      })[];
+    };
+    eksProperties: EksPropertiesDetail & {
+      podProperties: EksPodPropertiesDetail & {
+        imagePullSecrets: (ImagePullSecret & { name: string })[];
+        containers: (EksContainerDetail & {
+          env: (EksContainerEnvironmentVariable & { name: string })[];
+        })[];
+        initContainers: (EksContainerDetail & {
+          env: (EksContainerEnvironmentVariable & { name: string })[];
+        })[];
+        volumes: (EksVolume & {
+          name: string;
+          secret: EksSecret & { secretName: string };
+          persistentVolumeClaim: EksPersistentVolumeClaim & {
+            claimName: string;
+          };
+        })[];
+      };
+    };
+    ecsProperties: EcsPropertiesDetail & {
+      taskProperties: (EcsTaskDetails & {
+        containers: (TaskContainerDetails & {
+          firelensConfiguration: FirelensConfiguration & {
+            type: FirelensConfigurationType;
+          };
+          linuxParameters: LinuxParameters & {
+            devices: (Device & { hostPath: string })[];
+            tmpfs: (Tmpfs & { containerPath: string; size: number })[];
+          };
+          logConfiguration: LogConfiguration & {
+            logDriver: LogDriver;
+            secretOptions: (Secret & { name: string; valueFrom: string })[];
+          };
+          repositoryCredentials: RepositoryCredentials & {
+            credentialsParameter: string;
+          };
+          resourceRequirements: (ResourceRequirement & {
+            value: string;
+            type: ResourceType;
+          })[];
+          secrets: (Secret & { name: string; valueFrom: string })[];
+          ulimits: (Ulimit & {
+            hardLimit: number;
+            name: string;
+            softLimit: number;
+          })[];
+        })[];
+        ephemeralStorage: EphemeralStorage & { sizeInGiB: number };
+        volumes: (Volume & {
+          efsVolumeConfiguration: EFSVolumeConfiguration & {
+            fileSystemId: string;
+          };
+        })[];
+      })[];
+    };
+  })[];
 }
 export const DescribeJobsResponse = S.suspend(() =>
   S.Struct({ jobs: S.optional(JobDetailList) }).pipe(ns),
@@ -3694,9 +4141,9 @@ export const RegisterJobDefinitionRequest = S.suspend(() =>
   identifier: "RegisterJobDefinitionRequest",
 }) as any as S.Schema<RegisterJobDefinitionRequest>;
 export interface RegisterJobDefinitionResponse {
-  jobDefinitionName?: string;
-  jobDefinitionArn?: string;
-  revision?: number;
+  jobDefinitionName: string;
+  jobDefinitionArn: string;
+  revision: number;
 }
 export const RegisterJobDefinitionResponse = S.suspend(() =>
   S.Struct({

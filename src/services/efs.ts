@@ -144,9 +144,11 @@ const rules = T.EndpointResolver((p, _) => {
 export type ClientToken = string;
 export type FileSystemId = string;
 export type CreationToken = string;
+export type Encrypted = boolean;
 export type KmsKeyId = string;
 export type ProvisionedThroughputInMibps = number;
 export type AvailabilityZoneName = string;
+export type Backup = boolean;
 export type SubnetId = string;
 export type IpAddress = string;
 export type Ipv6Address = string;
@@ -160,6 +162,7 @@ export type MaxItems = number;
 export type Marker = string;
 export type ResourceId = string;
 export type Policy = string;
+export type BypassPolicyLockoutSafetyCheck = boolean;
 export type TagValue = string;
 export type Uid = number;
 export type Gid = number;
@@ -232,7 +235,7 @@ export interface CreateFileSystemRequest {
 }
 export const CreateFileSystemRequest = S.suspend(() =>
   S.Struct({
-    CreationToken: S.String,
+    CreationToken: S.String.pipe(T.IdempotencyToken()),
     PerformanceMode: S.optional(PerformanceMode),
     Encrypted: S.optional(S.Boolean),
     KmsKeyId: S.optional(S.String),
@@ -1372,7 +1375,7 @@ export interface CreateAccessPointRequest {
 }
 export const CreateAccessPointRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
     FileSystemId: S.String,
     PosixUser: S.optional(PosixUser),

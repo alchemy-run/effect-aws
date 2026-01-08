@@ -364,7 +364,7 @@ export const ExecuteScheduledQueryRequest = S.suspend(() =>
   S.Struct({
     ScheduledQueryArn: S.String,
     InvocationTime: S.Date.pipe(T.TimestampFormat("epoch-seconds")),
-    ClientToken: S.optional(SensitiveString),
+    ClientToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     QueryInsights: S.optional(ScheduledQueryInsights),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -397,7 +397,7 @@ export interface QueryRequest {
 export const QueryRequest = S.suspend(() =>
   S.Struct({
     QueryString: SensitiveString,
-    ClientToken: S.optional(SensitiveString),
+    ClientToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     NextToken: S.optional(S.String),
     MaxRows: S.optional(S.Number),
     QueryInsights: S.optional(QueryInsights),
@@ -1035,7 +1035,7 @@ export const CreateScheduledQueryRequest = S.suspend(() =>
     ScheduleConfiguration: ScheduleConfiguration,
     NotificationConfiguration: NotificationConfiguration,
     TargetConfiguration: S.optional(TargetConfiguration),
-    ClientToken: S.optional(SensitiveString),
+    ClientToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     ScheduledQueryExecutionRoleArn: S.String,
     Tags: S.optional(TagList),
     KmsKeyId: S.optional(S.String),

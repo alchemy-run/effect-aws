@@ -64,6 +64,7 @@ export type ScopeId = string;
 export type TagValue = string;
 export type AwsRegion = string;
 export type MonitorArn = string;
+export type Iso8601Timestamp = Date;
 export type InstanceId = string;
 export type VpcId = string;
 export type AvailabilityZone = string;
@@ -250,7 +251,7 @@ export const UpdateMonitorInput = S.suspend(() =>
     localResourcesToRemove: S.optional(MonitorLocalResources),
     remoteResourcesToAdd: S.optional(MonitorRemoteResources),
     remoteResourcesToRemove: S.optional(MonitorRemoteResources),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PATCH", uri: "/monitors/{monitorName}" }),
@@ -891,7 +892,7 @@ export const CreateMonitorInput = S.suspend(() =>
     localResources: MonitorLocalResources,
     remoteResources: S.optional(MonitorRemoteResources),
     scopeArn: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -1307,7 +1308,7 @@ export interface CreateScopeInput {
 export const CreateScopeInput = S.suspend(() =>
   S.Struct({
     targets: TargetResourceList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(

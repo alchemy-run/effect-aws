@@ -146,7 +146,7 @@ export interface CreateAppBundleRequest {
 }
 export const CreateAppBundleRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     customerManagedKeyIdentifier: S.optional(S.String),
     tags: S.optional(TagList),
   }).pipe(
@@ -176,7 +176,7 @@ export const CreateIngestionRequest = S.suspend(() =>
     app: S.String,
     tenantId: S.String,
     ingestionType: IngestionType,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -1092,7 +1092,7 @@ export const CreateAppAuthorizationRequest = S.suspend(() =>
     credential: Credential,
     tenant: Tenant,
     authType: AuthType,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -1270,7 +1270,7 @@ export const CreateIngestionDestinationRequest = S.suspend(() =>
     ingestionIdentifier: S.String.pipe(T.HttpLabel("ingestionIdentifier")),
     processingConfiguration: ProcessingConfiguration,
     destinationConfiguration: DestinationConfiguration,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(

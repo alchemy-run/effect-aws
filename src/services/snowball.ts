@@ -94,6 +94,7 @@ export type KmsKeyARN = string;
 export type RoleARN = string;
 export type InitialClusterSize = number;
 export type LongTermPricingId = string;
+export type JavaBoolean = boolean;
 export type ListLimit = number;
 export type SnsTopicARN = string;
 export type PhoneNumber = string | redacted.Redacted<string>;

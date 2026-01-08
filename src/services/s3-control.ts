@@ -1064,7 +1064,9 @@ export type GrantRead = string;
 export type GrantReadACP = string;
 export type GrantWrite = string;
 export type GrantWriteACP = string;
+export type ObjectLockEnabledForBucket = boolean;
 export type NonEmptyMaxLength64String = string;
+export type ConfirmationRequired = boolean;
 export type NonEmptyMaxLength256String = string;
 export type JobPriority = number;
 export type MultiRegionAccessPointClientToken = string;
@@ -1088,29 +1090,35 @@ export type PolicyDocument = string;
 export type Organization = string;
 export type Policy = string;
 export type ObjectLambdaPolicy = string;
+export type ConfirmRemoveSelfBucketAccess = boolean;
 export type MFA = string;
 export type TagKeyString = string;
 export type JobStatusUpdateReason = string;
 export type TagValueString = string;
 export type VpcId = string;
+export type Setting = boolean;
 export type Prefix = string;
 export type ObjectLambdaSupportingAccessPointArn = string;
 export type S3BucketArnString = string;
 export type ReportPrefixString = string;
 export type StorageLensGroupArn = string;
 export type Role = string;
+export type IsEnabled = boolean;
 export type StorageLensArn = string;
 export type StorageLensPrefixLevelDelimiter = string;
 export type RegionName = string;
 export type TrafficDialPercentage = number;
+export type CreationTimestamp = Date;
 export type AccessGrantsInstanceId = string;
 export type AccessGrantsInstanceArn = string;
 export type AccessGrantsLocationArn = string;
 export type ExceptionMessage = string;
 export type AccessGrantArn = string;
 export type AccessPointBucketName = string;
+export type CreationDate = Date;
 export type Alias = string;
 export type S3AccessPointArn = string;
+export type PublicAccessBlockEnabled = boolean;
 export type FunctionArnString = string;
 export type S3RegionalOrS3ExpressBucketArnString = string;
 export type NonEmptyMaxLength2048String = string;
@@ -1125,23 +1133,31 @@ export type BucketIdentifierString = string;
 export type S3AWSRegion = string;
 export type AwsOrgArn = string;
 export type JobArn = string;
+export type JobCreationTime = Date;
+export type JobTerminationDate = Date;
+export type SuspendedDate = Date;
 export type SuspendedCause = string;
+export type AsyncCreationTimestamp = Date;
 export type AsyncRequestStatus = string;
 export type ObjectLambdaAccessPointAliasValue = string;
+export type IsPublic = boolean;
 export type AccessKeyId = string | redacted.Redacted<string>;
 export type SecretAccessKey = string | redacted.Redacted<string>;
 export type SessionToken = string | redacted.Redacted<string>;
+export type Expiration = Date;
 export type MultiRegionAccessPointAlias = string;
 export type ObjectLambdaAccessPointArn = string;
 export type S3RegionalBucketArn = string;
 export type MaxLength1024String = string;
 export type S3ContentLength = number;
 export type ManifestPrefixString = string;
+export type ObjectCreationTime = Date;
 export type ObjectSizeGreaterThanBytes = number;
 export type ObjectSizeLessThanBytes = number;
 export type ObjectAgeValue = number;
 export type ObjectSizeValue = number;
 export type Days = number;
+export type ExpiredObjectDeleteMarker = boolean;
 export type NoncurrentVersionCount = number;
 export type DaysAfterInitiation = number;
 export type Location = string;
@@ -4626,7 +4642,7 @@ export const DeleteMultiRegionAccessPointRequest = S.suspend(() =>
       T.ContextParam("AccountId"),
       T.HostLabel(),
     ),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Details: DeleteMultiRegionAccessPointInput,
   }).pipe(
     T.all(
@@ -5724,7 +5740,7 @@ export const PutMultiRegionAccessPointPolicyRequest = S.suspend(() =>
       T.ContextParam("AccountId"),
       T.HostLabel(),
     ),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Details: PutMultiRegionAccessPointPolicyInput,
   }).pipe(
     T.all(
@@ -6354,7 +6370,7 @@ export const CreateMultiRegionAccessPointRequest = S.suspend(() =>
       T.ContextParam("AccountId"),
       T.HostLabel(),
     ),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Details: CreateMultiRegionAccessPointInput,
   }).pipe(
     T.all(
@@ -7318,7 +7334,7 @@ export const CreateJobRequest = S.suspend(() =>
     ConfirmationRequired: S.optional(S.Boolean),
     Operation: JobOperation,
     Report: JobReport,
-    ClientRequestToken: S.String,
+    ClientRequestToken: S.String.pipe(T.IdempotencyToken()),
     Manifest: S.optional(JobManifest),
     Description: S.optional(S.String),
     Priority: S.Number,

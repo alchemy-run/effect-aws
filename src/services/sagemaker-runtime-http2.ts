@@ -338,6 +338,9 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
+//# Newtypes
+export type SensitiveBlob = Uint8Array | redacted.Redacted<Uint8Array>;
+
 //# Schemas
 export interface RequestPayloadPart {
   Bytes?: Uint8Array | redacted.Redacted<Uint8Array>;

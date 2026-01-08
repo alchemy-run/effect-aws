@@ -87,9 +87,7 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type MaxResults = number;
-export type __integer = number;
 
 //# Schemas
 export type __listOf__string = string[];
@@ -807,12 +805,64 @@ export const MssPackage = S.suspend(() =>
 ).annotations({ identifier: "MssPackage" }) as any as S.Schema<MssPackage>;
 export interface DescribePackagingConfigurationResponse {
   Arn?: string;
-  CmafPackage?: CmafPackage;
+  CmafPackage?: CmafPackage & {
+    HlsManifests: __listOfHlsManifest;
+    Encryption: CmafEncryption & {
+      SpekeKeyProvider: SpekeKeyProvider & {
+        RoleArn: string;
+        SystemIds: __listOf__string;
+        Url: string;
+        EncryptionContractConfiguration: EncryptionContractConfiguration & {
+          PresetSpeke20Audio: PresetSpeke20Audio;
+          PresetSpeke20Video: PresetSpeke20Video;
+        };
+      };
+    };
+  };
   CreatedAt?: string;
-  DashPackage?: DashPackage;
-  HlsPackage?: HlsPackage;
+  DashPackage?: DashPackage & {
+    DashManifests: __listOfDashManifest;
+    Encryption: DashEncryption & {
+      SpekeKeyProvider: SpekeKeyProvider & {
+        RoleArn: string;
+        SystemIds: __listOf__string;
+        Url: string;
+        EncryptionContractConfiguration: EncryptionContractConfiguration & {
+          PresetSpeke20Audio: PresetSpeke20Audio;
+          PresetSpeke20Video: PresetSpeke20Video;
+        };
+      };
+    };
+  };
+  HlsPackage?: HlsPackage & {
+    HlsManifests: __listOfHlsManifest;
+    Encryption: HlsEncryption & {
+      SpekeKeyProvider: SpekeKeyProvider & {
+        RoleArn: string;
+        SystemIds: __listOf__string;
+        Url: string;
+        EncryptionContractConfiguration: EncryptionContractConfiguration & {
+          PresetSpeke20Audio: PresetSpeke20Audio;
+          PresetSpeke20Video: PresetSpeke20Video;
+        };
+      };
+    };
+  };
   Id?: string;
-  MssPackage?: MssPackage;
+  MssPackage?: MssPackage & {
+    MssManifests: __listOfMssManifest;
+    Encryption: MssEncryption & {
+      SpekeKeyProvider: SpekeKeyProvider & {
+        RoleArn: string;
+        SystemIds: __listOf__string;
+        Url: string;
+        EncryptionContractConfiguration: EncryptionContractConfiguration & {
+          PresetSpeke20Audio: PresetSpeke20Audio;
+          PresetSpeke20Video: PresetSpeke20Video;
+        };
+      };
+    };
+  };
   PackagingGroupId?: string;
   Tags?: { [key: string]: string };
 }
@@ -842,7 +892,10 @@ export const DescribePackagingConfigurationResponse = S.suspend(() =>
 export interface DescribePackagingGroupResponse {
   ApproximateAssetCount?: number;
   Arn?: string;
-  Authorization?: Authorization;
+  Authorization?: Authorization & {
+    CdnIdentifierSecret: string;
+    SecretsRoleArn: string;
+  };
   CreatedAt?: string;
   DomainName?: string;
   EgressAccessLogs?: EgressAccessLogs;
@@ -905,7 +958,10 @@ export const TagResourceResponse = S.suspend(() => S.Struct({})).annotations({
 export interface UpdatePackagingGroupResponse {
   ApproximateAssetCount?: number;
   Arn?: string;
-  Authorization?: Authorization;
+  Authorization?: Authorization & {
+    CdnIdentifierSecret: string;
+    SecretsRoleArn: string;
+  };
   CreatedAt?: string;
   DomainName?: string;
   EgressAccessLogs?: EgressAccessLogs;
@@ -1044,7 +1100,10 @@ export type __listOfPackagingGroup = PackagingGroup[];
 export const __listOfPackagingGroup = S.Array(PackagingGroup);
 export interface ConfigureLogsResponse {
   Arn?: string;
-  Authorization?: Authorization;
+  Authorization?: Authorization & {
+    CdnIdentifierSecret: string;
+    SecretsRoleArn: string;
+  };
   CreatedAt?: string;
   DomainName?: string;
   EgressAccessLogs?: EgressAccessLogs;
@@ -1098,7 +1157,10 @@ export const CreateAssetResponse = S.suspend(() =>
 }) as any as S.Schema<CreateAssetResponse>;
 export interface CreatePackagingGroupResponse {
   Arn?: string;
-  Authorization?: Authorization;
+  Authorization?: Authorization & {
+    CdnIdentifierSecret: string;
+    SecretsRoleArn: string;
+  };
   CreatedAt?: string;
   DomainName?: string;
   EgressAccessLogs?: EgressAccessLogs;
@@ -1164,7 +1226,64 @@ export const ListAssetsResponse = S.suspend(() =>
 }) as any as S.Schema<ListAssetsResponse>;
 export interface ListPackagingConfigurationsResponse {
   NextToken?: string;
-  PackagingConfigurations?: PackagingConfiguration[];
+  PackagingConfigurations?: (PackagingConfiguration & {
+    CmafPackage: CmafPackage & {
+      HlsManifests: __listOfHlsManifest;
+      Encryption: CmafEncryption & {
+        SpekeKeyProvider: SpekeKeyProvider & {
+          RoleArn: string;
+          SystemIds: __listOf__string;
+          Url: string;
+          EncryptionContractConfiguration: EncryptionContractConfiguration & {
+            PresetSpeke20Audio: PresetSpeke20Audio;
+            PresetSpeke20Video: PresetSpeke20Video;
+          };
+        };
+      };
+    };
+    DashPackage: DashPackage & {
+      DashManifests: __listOfDashManifest;
+      Encryption: DashEncryption & {
+        SpekeKeyProvider: SpekeKeyProvider & {
+          RoleArn: string;
+          SystemIds: __listOf__string;
+          Url: string;
+          EncryptionContractConfiguration: EncryptionContractConfiguration & {
+            PresetSpeke20Audio: PresetSpeke20Audio;
+            PresetSpeke20Video: PresetSpeke20Video;
+          };
+        };
+      };
+    };
+    HlsPackage: HlsPackage & {
+      HlsManifests: __listOfHlsManifest;
+      Encryption: HlsEncryption & {
+        SpekeKeyProvider: SpekeKeyProvider & {
+          RoleArn: string;
+          SystemIds: __listOf__string;
+          Url: string;
+          EncryptionContractConfiguration: EncryptionContractConfiguration & {
+            PresetSpeke20Audio: PresetSpeke20Audio;
+            PresetSpeke20Video: PresetSpeke20Video;
+          };
+        };
+      };
+    };
+    MssPackage: MssPackage & {
+      MssManifests: __listOfMssManifest;
+      Encryption: MssEncryption & {
+        SpekeKeyProvider: SpekeKeyProvider & {
+          RoleArn: string;
+          SystemIds: __listOf__string;
+          Url: string;
+          EncryptionContractConfiguration: EncryptionContractConfiguration & {
+            PresetSpeke20Audio: PresetSpeke20Audio;
+            PresetSpeke20Video: PresetSpeke20Video;
+          };
+        };
+      };
+    };
+  })[];
 }
 export const ListPackagingConfigurationsResponse = S.suspend(() =>
   S.Struct({
@@ -1178,7 +1297,12 @@ export const ListPackagingConfigurationsResponse = S.suspend(() =>
 }) as any as S.Schema<ListPackagingConfigurationsResponse>;
 export interface ListPackagingGroupsResponse {
   NextToken?: string;
-  PackagingGroups?: PackagingGroup[];
+  PackagingGroups?: (PackagingGroup & {
+    Authorization: Authorization & {
+      CdnIdentifierSecret: string;
+      SecretsRoleArn: string;
+    };
+  })[];
 }
 export const ListPackagingGroupsResponse = S.suspend(() =>
   S.Struct({
@@ -1231,12 +1355,64 @@ export const CreatePackagingConfigurationRequest = S.suspend(() =>
 }) as any as S.Schema<CreatePackagingConfigurationRequest>;
 export interface CreatePackagingConfigurationResponse {
   Arn?: string;
-  CmafPackage?: CmafPackage;
+  CmafPackage?: CmafPackage & {
+    HlsManifests: __listOfHlsManifest;
+    Encryption: CmafEncryption & {
+      SpekeKeyProvider: SpekeKeyProvider & {
+        RoleArn: string;
+        SystemIds: __listOf__string;
+        Url: string;
+        EncryptionContractConfiguration: EncryptionContractConfiguration & {
+          PresetSpeke20Audio: PresetSpeke20Audio;
+          PresetSpeke20Video: PresetSpeke20Video;
+        };
+      };
+    };
+  };
   CreatedAt?: string;
-  DashPackage?: DashPackage;
-  HlsPackage?: HlsPackage;
+  DashPackage?: DashPackage & {
+    DashManifests: __listOfDashManifest;
+    Encryption: DashEncryption & {
+      SpekeKeyProvider: SpekeKeyProvider & {
+        RoleArn: string;
+        SystemIds: __listOf__string;
+        Url: string;
+        EncryptionContractConfiguration: EncryptionContractConfiguration & {
+          PresetSpeke20Audio: PresetSpeke20Audio;
+          PresetSpeke20Video: PresetSpeke20Video;
+        };
+      };
+    };
+  };
+  HlsPackage?: HlsPackage & {
+    HlsManifests: __listOfHlsManifest;
+    Encryption: HlsEncryption & {
+      SpekeKeyProvider: SpekeKeyProvider & {
+        RoleArn: string;
+        SystemIds: __listOf__string;
+        Url: string;
+        EncryptionContractConfiguration: EncryptionContractConfiguration & {
+          PresetSpeke20Audio: PresetSpeke20Audio;
+          PresetSpeke20Video: PresetSpeke20Video;
+        };
+      };
+    };
+  };
   Id?: string;
-  MssPackage?: MssPackage;
+  MssPackage?: MssPackage & {
+    MssManifests: __listOfMssManifest;
+    Encryption: MssEncryption & {
+      SpekeKeyProvider: SpekeKeyProvider & {
+        RoleArn: string;
+        SystemIds: __listOf__string;
+        Url: string;
+        EncryptionContractConfiguration: EncryptionContractConfiguration & {
+          PresetSpeke20Audio: PresetSpeke20Audio;
+          PresetSpeke20Video: PresetSpeke20Video;
+        };
+      };
+    };
+  };
   PackagingGroupId?: string;
   Tags?: { [key: string]: string };
 }

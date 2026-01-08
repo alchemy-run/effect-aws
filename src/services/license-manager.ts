@@ -96,6 +96,7 @@ export type StatusReasonMessage = string;
 export type LicenseAssetResourceName = string;
 export type LicenseAssetResourceDescription = string;
 export type BoxLong = number;
+export type BoxBoolean = boolean;
 export type ReportGeneratorName = string;
 export type ClientRequestToken = string;
 export type TokenString = string;

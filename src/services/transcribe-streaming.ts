@@ -99,6 +99,7 @@ export type PiiEntityTypes = string;
 export type MedicalScribeMediaSampleRateHertz = number;
 export type NumberOfChannels = number;
 export type RequestId = string;
+export type AudioChunk = Uint8Array;
 export type IamRoleArn = string;
 export type ChannelId = number;
 export type MedicalScribeChannelId = number;
@@ -107,6 +108,7 @@ export type NonEmptyString = string;
 export type BucketName = string;
 export type Uri = string;
 export type Confidence = number;
+export type Stable = boolean;
 
 //# Schemas
 export type CallAnalyticsLanguageCode =

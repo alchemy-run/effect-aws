@@ -99,6 +99,7 @@ export type PaginationToken = string;
 export type AmazonResourceName = string;
 export type JobTag = string;
 export type TagKey = string;
+export type ImageBlob = Uint8Array;
 export type HumanLoopName = string;
 export type FlowDefinitionArn = string;
 export type TagValue = string;
@@ -571,7 +572,7 @@ export interface CreateAdapterRequest {
 export const CreateAdapterRequest = S.suspend(() =>
   S.Struct({
     AdapterName: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     FeatureTypes: FeatureTypes,
     AutoUpdate: S.optional(AutoUpdate),
@@ -593,7 +594,7 @@ export interface CreateAdapterVersionRequest {
 export const CreateAdapterVersionRequest = S.suspend(() =>
   S.Struct({
     AdapterId: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DatasetConfig: AdapterVersionDatasetConfig,
     KMSKeyId: S.optional(S.String),
     OutputConfig: OutputConfig,

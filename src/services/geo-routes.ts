@@ -160,6 +160,7 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type TimestampWithTimezoneOffset = string | redacted.Redacted<string>;
+export type SensitiveBoolean = boolean;
 export type GeometryFormat = string;
 export type ApiKey = string | redacted.Redacted<string>;
 export type IsolineOptimizationObjective = string;

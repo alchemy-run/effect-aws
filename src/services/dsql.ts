@@ -53,9 +53,11 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type Arn = string;
 export type TagKey = string;
+export type DeletionProtectionEnabled = boolean;
 export type KmsEncryptionKey = string;
 export type ClientToken = string;
 export type PolicyDocument = string;
+export type BypassPolicyLockoutSafetyCheck = boolean;
 export type ClusterId = string;
 export type MaxResults = number;
 export type NextToken = string;
@@ -63,6 +65,7 @@ export type PolicyVersion = string;
 export type TagValue = string;
 export type Region = string;
 export type ClusterArn = string;
+export type ClusterCreationTime = Date;
 export type Endpoint = string;
 export type ServiceName = string;
 export type ClusterVpcEndpoint = string;
@@ -156,7 +159,7 @@ export const UpdateClusterInput = S.suspend(() =>
     identifier: S.String.pipe(T.HttpLabel("identifier")),
     deletionProtectionEnabled: S.optional(S.Boolean),
     kmsEncryptionKey: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     multiRegionProperties: S.optional(MultiRegionProperties),
   }).pipe(
     T.all(
@@ -178,7 +181,10 @@ export interface DeleteClusterInput {
 export const DeleteClusterInput = S.suspend(() =>
   S.Struct({
     identifier: S.String.pipe(T.HttpLabel("identifier")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("client-token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("client-token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/cluster/{identifier}" }),
@@ -224,7 +230,10 @@ export const DeleteClusterPolicyInput = S.suspend(() =>
     expectedPolicyVersion: S.optional(S.String).pipe(
       T.HttpQuery("expected-policy-version"),
     ),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("client-token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("client-token"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/cluster/{identifier}/policy" }),
@@ -288,7 +297,7 @@ export const PutClusterPolicyInput = S.suspend(() =>
     policy: S.String,
     bypassPolicyLockoutSafetyCheck: S.optional(S.Boolean),
     expectedPolicyVersion: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/cluster/{identifier}/policy" }),
@@ -374,7 +383,7 @@ export const CreateClusterInput = S.suspend(() =>
     deletionProtectionEnabled: S.optional(S.Boolean),
     kmsEncryptionKey: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     multiRegionProperties: S.optional(MultiRegionProperties),
     policy: S.optional(S.String),
     bypassPolicyLockoutSafetyCheck: S.optional(S.Boolean),

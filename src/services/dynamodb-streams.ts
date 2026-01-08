@@ -163,6 +163,9 @@ export type AttributeName = string;
 export type KeySchemaAttributeName = string;
 export type StringAttributeValue = string;
 export type NumberAttributeValue = string;
+export type BinaryAttributeValue = Uint8Array;
+export type NullAttributeValue = boolean;
+export type BooleanAttributeValue = boolean;
 
 //# Schemas
 export type ShardIteratorType =

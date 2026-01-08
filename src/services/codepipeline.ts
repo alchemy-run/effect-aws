@@ -155,6 +155,7 @@ export type PipelineExecutionStatusSummary = string;
 export type WebhookUrl = string;
 export type WebhookErrorMessage = string;
 export type WebhookErrorCode = string;
+export type WebhookLastTriggered = Date;
 export type WebhookArn = string;
 export type ClientId = string;
 export type EncryptionKeyId = string;
@@ -166,7 +167,9 @@ export type ActionNamespace = string;
 export type ActionTimeout = number;
 export type ArtifactName = string;
 export type TriggerDetail = string;
+export type Enabled = boolean;
 export type LastChangedBy = string;
+export type LastChangedAt = Date;
 export type RetryAttempt = number;
 export type RuleProvider = string;
 export type RuleConfigurationKey = string;
@@ -2075,7 +2078,7 @@ export const StartPipelineExecutionInput = S.suspend(() =>
   S.Struct({
     name: S.String,
     variables: S.optional(PipelineVariableList),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     sourceRevisions: S.optional(SourceRevisionOverrideList),
   }).pipe(
     T.all(

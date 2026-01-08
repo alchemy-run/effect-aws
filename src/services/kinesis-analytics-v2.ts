@@ -130,6 +130,7 @@ export type MinPauseBetweenCheckpoints = number;
 export type Parallelism = number;
 export type ParallelismPerKPU = number;
 export type TextContent = string;
+export type ZipFileContent = Uint8Array;
 export type ParsedInputRecordField = string;
 export type ProcessedInputRecord = string;
 export type RawInputRecord = string;

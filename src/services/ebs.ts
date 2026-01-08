@@ -328,7 +328,7 @@ export const StartSnapshotRequest = S.suspend(() =>
     ParentSnapshotId: S.optional(S.String),
     Tags: S.optional(Tags),
     Description: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Encrypted: S.optional(S.Boolean),
     KmsKeyArn: S.optional(SensitiveString),
     Timeout: S.optional(S.Number),

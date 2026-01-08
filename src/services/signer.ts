@@ -97,6 +97,7 @@ export type RequestedBy = string;
 export type MaxResults = number;
 export type NextToken = string;
 export type RevocationReasonString = string;
+export type Payload = Uint8Array;
 export type ClientRequestToken = string;
 export type TagKey = string;
 export type CertificateArn = string;
@@ -1030,7 +1031,7 @@ export const StartSigningJobRequest = S.suspend(() =>
     source: Source,
     destination: Destination,
     profileName: S.String,
-    clientRequestToken: S.String,
+    clientRequestToken: S.String.pipe(T.IdempotencyToken()),
     profileOwner: S.optional(S.String),
   }).pipe(
     T.all(

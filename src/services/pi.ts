@@ -89,6 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type IdentifierString = string;
+export type ISOTimestamp = Date;
 export type AnalysisReportId = string;
 export type RequestString = string;
 export type SanitizedString = string;

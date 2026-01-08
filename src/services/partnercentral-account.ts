@@ -216,7 +216,7 @@ export interface CreateConnectionInvitationRequest {
 export const CreateConnectionInvitationRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     ConnectionType: ConnectionType,
     Email: S.String,
     Message: S.String,
@@ -272,7 +272,7 @@ export const AcceptConnectionInvitationRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
     Identifier: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -288,7 +288,7 @@ export const CancelConnectionInvitationRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
     Identifier: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -305,7 +305,7 @@ export const RejectConnectionInvitationRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
     Identifier: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Reason: S.optional(S.String),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -385,7 +385,7 @@ export const CancelConnectionRequest = S.suspend(() =>
     Identifier: S.String,
     ConnectionType: ConnectionType,
     Reason: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -426,7 +426,7 @@ export const AssociateAwsTrainingCertificationEmailDomainRequest = S.suspend(
     S.Struct({
       Catalog: S.String,
       Identifier: S.String,
-      ClientToken: S.optional(S.String),
+      ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
       Email: S.String,
       EmailVerificationCode: SensitiveString,
     }).pipe(
@@ -451,7 +451,7 @@ export const CancelProfileUpdateTaskRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
     Identifier: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TaskId: S.String,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -470,7 +470,7 @@ export const DisassociateAwsTrainingCertificationEmailDomainRequest = S.suspend(
     S.Struct({
       Catalog: S.String,
       Identifier: S.String,
-      ClientToken: S.optional(S.String),
+      ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
       DomainName: S.String,
     }).pipe(
       T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -996,7 +996,7 @@ export interface CreatePartnerRequest {
 export const CreatePartnerRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LegalName: SensitiveString,
     PrimarySolutionType: PrimarySolutionType,
     AllianceLeadContact: AllianceLeadContact,
@@ -1343,7 +1343,7 @@ export interface StartVerificationRequest {
 }
 export const StartVerificationRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VerificationDetails: S.optional(VerificationDetails),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1465,7 +1465,7 @@ export const StartProfileUpdateTaskRequest = S.suspend(() =>
   S.Struct({
     Catalog: S.String,
     Identifier: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TaskDetails: TaskDetails,
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

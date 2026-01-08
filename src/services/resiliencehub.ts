@@ -111,9 +111,7 @@ export type String1024 = string;
 export type S3Url = string;
 export type EksNamespace = string;
 export type String500 = string;
-export type LongOptional = number;
 export type Seconds = number;
-export type IntegerOptional = number;
 export type ErrorMessage = string;
 export type EntityId = string;
 export type DocumentName = string;
@@ -235,7 +233,7 @@ export const CreateRecommendationTemplateRequest = S.suspend(() =>
     recommendationTypes: S.optional(RenderRecommendationTypeList),
     assessmentArn: S.String,
     name: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     bucketName: S.optional(S.String),
   }).pipe(
@@ -260,7 +258,7 @@ export const DeleteAppRequest = S.suspend(() =>
   S.Struct({
     appArn: S.String,
     forceDelete: S.optional(S.Boolean),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/delete-app" }),
@@ -279,7 +277,10 @@ export interface DeleteAppAssessmentRequest {
   clientToken?: string;
 }
 export const DeleteAppAssessmentRequest = S.suspend(() =>
-  S.Struct({ assessmentArn: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    assessmentArn: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/delete-app-assessment" }),
       svc,
@@ -301,7 +302,7 @@ export const DeleteAppVersionAppComponentRequest = S.suspend(() =>
   S.Struct({
     appArn: S.String,
     id: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/delete-app-version-app-component" }),
@@ -350,7 +351,7 @@ export const DeleteAppVersionResourceRequest = S.suspend(() =>
     physicalResourceId: S.optional(S.String),
     awsRegion: S.optional(S.String),
     awsAccountId: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/delete-app-version-resource" }),
@@ -371,7 +372,7 @@ export interface DeleteRecommendationTemplateRequest {
 export const DeleteRecommendationTemplateRequest = S.suspend(() =>
   S.Struct({
     recommendationTemplateArn: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/delete-recommendation-template" }),
@@ -390,7 +391,10 @@ export interface DeleteResiliencyPolicyRequest {
   clientToken?: string;
 }
 export const DeleteResiliencyPolicyRequest = S.suspend(() =>
-  S.Struct({ policyArn: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    policyArn: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/delete-resiliency-policy" }),
       svc,
@@ -1241,7 +1245,7 @@ export const StartAppAssessmentRequest = S.suspend(() =>
     appArn: S.String,
     appVersion: S.String,
     assessmentName: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -1263,7 +1267,7 @@ export interface StartMetricsExportRequest {
 export const StartMetricsExportRequest = S.suspend(() =>
   S.Struct({
     bucketName: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/start-metrics-export" }),
@@ -1917,7 +1921,7 @@ export const CreateAppRequest = S.suspend(() =>
     description: S.optional(S.String),
     policyArn: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     assessmentSchedule: S.optional(AppAssessmentScheduleType),
     permissionModel: S.optional(PermissionModel),
     eventSubscriptions: S.optional(EventSubscriptionList),
@@ -1950,7 +1954,7 @@ export const CreateAppVersionAppComponentRequest = S.suspend(() =>
     name: S.String,
     type: S.String,
     additionalInfo: S.optional(AdditionalInfoMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/create-app-version-app-component" }),
@@ -1987,7 +1991,7 @@ export const CreateAppVersionResourceRequest = S.suspend(() =>
     resourceType: S.String,
     appComponents: AppComponentNameList,
     additionalInfo: S.optional(AdditionalInfoMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/create-app-version-resource" }),
@@ -2030,7 +2034,7 @@ export const DeleteAppInputSourceRequest = S.suspend(() =>
     appArn: S.String,
     sourceArn: S.optional(S.String),
     terraformSource: S.optional(TerraformSource),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     eksSourceClusterNamespace: S.optional(EksSourceClusterNamespace),
   }).pipe(
     T.all(
@@ -3296,7 +3300,7 @@ export const CreateResiliencyPolicyRequest = S.suspend(() =>
     dataLocationConstraint: S.optional(DataLocationConstraint),
     tier: ResiliencyPolicyTier,
     policy: DisruptionPolicy,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(

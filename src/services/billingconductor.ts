@@ -145,6 +145,7 @@ export type SearchValue = string;
 export type CustomLineItemChargeValue = number;
 export type CustomLineItemPercentageChargeValue = number;
 export type AttributeValue = string;
+export type TieringActivated = boolean;
 export type RetryAfterSeconds = number;
 export type NumberOfAccounts = number;
 export type BillingGroupStatusReason = string;
@@ -388,7 +389,10 @@ export interface CreatePricingPlanInput {
 }
 export const CreatePricingPlanInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     Name: SensitiveString,
     Description: S.optional(SensitiveString),
     PricingRuleArns: S.optional(PricingRuleArnsInput),
@@ -839,7 +843,10 @@ export interface CreateBillingGroupInput {
 }
 export const CreateBillingGroupInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     Name: SensitiveString,
     AccountGrouping: AccountGrouping,
     ComputationPreference: ComputationPreference,
@@ -1419,7 +1426,10 @@ export interface CreateCustomLineItemInput {
 }
 export const CreateCustomLineItemInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     Name: SensitiveString,
     Description: SensitiveString,
     BillingGroupArn: S.String,
@@ -1527,7 +1537,10 @@ export interface CreatePricingRuleInput {
 }
 export const CreatePricingRuleInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     Name: SensitiveString,
     Description: S.optional(SensitiveString),
     Scope: PricingRuleScope,

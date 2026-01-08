@@ -93,6 +93,7 @@ export type Frequency = string;
 export type Arn = string;
 export type TimestampFormat = string;
 export type TimeZone = string;
+export type UseGeolocationForTimeZone = boolean;
 export type GeolocationFormat = string;
 export type Format = string;
 export type LocalDateTime = string;

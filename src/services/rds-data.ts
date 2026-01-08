@@ -97,6 +97,7 @@ export type TypeHint = string;
 export type DecimalReturnType = string;
 export type LongReturnType = string;
 export type TransactionStatus = string;
+export type BoxedBoolean = boolean;
 export type BoxedLong = number;
 export type BoxedDouble = number;
 export type RecordsUpdated = number;

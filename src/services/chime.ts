@@ -115,6 +115,7 @@ export type JoinTokenString = string | redacted.Redacted<string>;
 export type ClientRequestToken = string | redacted.Redacted<string>;
 export type EmailAddress = string | redacted.Redacted<string>;
 export type CallingName = string | redacted.Redacted<string>;
+export type Iso8601Timestamp = Date;
 export type ProfileServiceMaxResults = number;
 export type ResultMax = number;
 export type Alpha2CountryCode = string;
@@ -388,7 +389,7 @@ export const CreateRoomRequest = S.suspend(() =>
   S.Struct({
     AccountId: S.String.pipe(T.HttpLabel("AccountId")),
     Name: SensitiveString,
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/accounts/{AccountId}/rooms" }),

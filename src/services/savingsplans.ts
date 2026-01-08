@@ -335,7 +335,10 @@ export interface ReturnSavingsPlanRequest {
   clientToken?: string;
 }
 export const ReturnSavingsPlanRequest = S.suspend(() =>
-  S.Struct({ savingsPlanId: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    savingsPlanId: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/ReturnSavingsPlan" }),
       svc,
@@ -535,7 +538,7 @@ export const CreateSavingsPlanRequest = S.suspend(() =>
     commitment: S.String,
     upfrontPaymentAmount: S.optional(S.String),
     purchaseTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(

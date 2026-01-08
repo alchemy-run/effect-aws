@@ -92,6 +92,8 @@ export type TagKey = string;
 export type Name = string;
 export type ScheduleGroupName = string;
 export type ScheduleExpression = string;
+export type StartDate = Date;
+export type EndDate = Date;
 export type Description = string;
 export type ScheduleExpressionTimezone = string;
 export type ScheduleState = string;
@@ -109,6 +111,8 @@ export type TargetInput = string;
 export type FlexibleTimeWindowMode = string;
 export type MaximumWindowInMinutes = number;
 export type ScheduleArn = string;
+export type CreationDate = Date;
+export type LastModificationDate = Date;
 export type ScheduleGroupArn = string;
 export type ScheduleGroupState = string;
 export type ResourceArn = string;
@@ -119,6 +123,8 @@ export type TaskCount = number;
 export type LaunchType = string;
 export type PlatformVersion = string;
 export type Group = string;
+export type EnableECSManagedTags = boolean;
+export type EnableExecuteCommand = boolean;
 export type PropagateTags = string;
 export type ReferenceId = string;
 export type DetailType = string;
@@ -437,7 +443,7 @@ export const UpdateScheduleInput = S.suspend(() =>
     KmsKeyArn: S.optional(S.String),
     Target: Target,
     FlexibleTimeWindow: FlexibleTimeWindow,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ActionAfterCompletion: S.optional(S.String),
   }).pipe(
     T.all(
@@ -461,7 +467,10 @@ export const DeleteScheduleInput = S.suspend(() =>
   S.Struct({
     Name: S.String.pipe(T.HttpLabel("Name")),
     GroupName: S.optional(S.String).pipe(T.HttpQuery("groupName")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/schedules/{Name}" }),
@@ -524,7 +533,7 @@ export const CreateScheduleGroupInput = S.suspend(() =>
   S.Struct({
     Name: S.String.pipe(T.HttpLabel("Name")),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/schedule-groups/{Name}" }),
@@ -562,7 +571,10 @@ export interface DeleteScheduleGroupInput {
 export const DeleteScheduleGroupInput = S.suspend(() =>
   S.Struct({
     Name: S.String.pipe(T.HttpLabel("Name")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/schedule-groups/{Name}" }),
@@ -819,7 +831,7 @@ export const CreateScheduleInput = S.suspend(() =>
     KmsKeyArn: S.optional(S.String),
     Target: Target,
     FlexibleTimeWindow: FlexibleTimeWindow,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ActionAfterCompletion: S.optional(S.String),
   }).pipe(
     T.all(

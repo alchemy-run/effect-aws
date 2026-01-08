@@ -144,6 +144,7 @@ export type EmailAddress = string | redacted.Redacted<string>;
 export type EmailAddressDisplayName = string | redacted.Redacted<string>;
 export type EvaluationFormTitle = string;
 export type EvaluationFormDescription = string;
+export type BoxedBoolean = boolean;
 export type CommonNameLength127 = string;
 export type HoursOfOperationDescription = string;
 export type HoursOfOperationId = string;
@@ -152,6 +153,8 @@ export type CommonHumanReadableDescription = string;
 export type HoursOfOperationOverrideYearMonthDayDateFormat = string;
 export type DirectoryAlias = string | redacted.Redacted<string>;
 export type DirectoryId = string;
+export type InboundCallsEnabled = boolean;
+export type OutboundCallsEnabled = boolean;
 export type URI = string;
 export type SourceApplicationName = string;
 export type PredefinedAttributeName = string;
@@ -274,6 +277,8 @@ export type ValueBoundary = number;
 export type PositiveAndNegativeDouble = number;
 export type PositiveDouble = number;
 export type DisplayName = string;
+export type EnableValueValidationOnAssociation = boolean;
+export type IncludeRawMessage = boolean;
 export type OutboundCallerIdName = string;
 export type Concurrency = number;
 export type SecurityProfilePolicyKey = string;
@@ -286,7 +291,9 @@ export type TaskTemplateSingleSelectOption = string;
 export type AgentFirstName = string | redacted.Redacted<string>;
 export type AgentLastName = string | redacted.Redacted<string>;
 export type Email = string | redacted.Redacted<string>;
+export type AutoAccept = boolean;
 export type AfterContactWorkTimeLimit = number;
+export type PersistentConnection = boolean;
 export type ViewTemplate = string;
 export type ViewAction = string | redacted.Redacted<string>;
 export type RoutingExpression = string;
@@ -361,10 +368,12 @@ export type TotalPauseCount = number;
 export type TotalPauseDurationInSeconds = number;
 export type CustomerId = string;
 export type DataTableVersion = string;
+export type EvaluationFormVersionIsLocked = boolean;
 export type GlobalSignInEndpoint = string;
 export type SecurityProfileName = string;
 export type InstanceArn = string;
 export type HierarchyLevelId = string;
+export type VocabularyLastModifiedTime = Date;
 export type VocabularyFailureReason = string;
 export type MetadataUrl = string;
 export type SecurityToken = string | redacted.Redacted<string>;
@@ -388,6 +397,7 @@ export type EvaluationAnswerDataStringValue = string;
 export type EvaluationAnswerDataNumericValue = number;
 export type DurationInSeconds = number;
 export type ApproximateTotalCount = number;
+export type NewChatCreated = boolean;
 export type ParticipantId = string;
 export type ViewInputSchema = string | redacted.Redacted<string>;
 export type AgentPauseDurationInSeconds = number;
@@ -406,6 +416,7 @@ export type ActiveRegion = string;
 export type OriginRegion = string;
 export type ReplicationStatusReason = string;
 export type PhoneNumberWorkflowMessage = string;
+export type IsReadOnly = boolean;
 export type EvaluationScorePercentage = number;
 export type EvaluationAcknowledgerCommentString = string;
 export type RealTimeContactAnalysisId256 = string;
@@ -435,6 +446,7 @@ export type DurationMillis = number;
 export type FormId = string;
 export type EvaluationArn = string;
 export type ExportLocation = string;
+export type RealTimeContactAnalysisTimeInstant = Date;
 export type RealTimeContactAnalysisCategoryName = string;
 export type AttachmentName = string;
 export type ContentType = string;
@@ -1530,7 +1542,7 @@ export const AssociateApprovedOriginRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     Origin: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/instance/{InstanceId}/approved-origin" }),
@@ -1652,7 +1664,7 @@ export const AssociateLambdaFunctionRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     FunctionArn: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/instance/{InstanceId}/lambda-function" }),
@@ -1688,7 +1700,7 @@ export const AssociateLexBotRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     LexBot: LexBot,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/instance/{InstanceId}/lex-bot" }),
@@ -1781,7 +1793,7 @@ export const AssociateSecurityKeyRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     Key: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/instance/{InstanceId}/security-key" }),
@@ -2284,7 +2296,7 @@ export interface CreateInstanceRequest {
 }
 export const CreateInstanceRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     IdentityManagementType: DirectoryType,
     InstanceAlias: S.optional(SensitiveString),
     DirectoryId: S.optional(S.String),
@@ -2407,7 +2419,7 @@ export const CreateTrafficDistributionGroupRequest = S.suspend(() =>
     Name: S.String,
     Description: S.optional(S.String),
     InstanceId: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -2512,7 +2524,7 @@ export interface CreateVocabularyRequest {
 }
 export const CreateVocabularyRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     VocabularyName: S.String,
     LanguageCode: VocabularyLanguageCode,
@@ -3004,7 +3016,10 @@ export interface DeleteInstanceRequest {
 export const DeleteInstanceRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/instance/{InstanceId}" }),
@@ -4354,7 +4369,10 @@ export const DisassociateApprovedOriginRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     Origin: S.String.pipe(T.HttpQuery("origin")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -4394,7 +4412,7 @@ export const DisassociateBotRequest = S.suspend(() =>
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     LexBot: S.optional(LexBot),
     LexV2Bot: S.optional(LexV2Bot),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/instance/{InstanceId}/bot" }),
@@ -4433,7 +4451,7 @@ export const DisassociateEmailAddressAliasRequest = S.suspend(() =>
     EmailAddressId: S.String.pipe(T.HttpLabel("EmailAddressId")),
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     AliasConfiguration: AliasConfiguration,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -4499,7 +4517,10 @@ export const DisassociateInstanceStorageConfigRequest = S.suspend(() =>
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     AssociationId: S.String.pipe(T.HttpLabel("AssociationId")),
     ResourceType: InstanceStorageResourceType.pipe(T.HttpQuery("resourceType")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -4531,7 +4552,10 @@ export const DisassociateLambdaFunctionRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     FunctionArn: S.String.pipe(T.HttpQuery("functionArn")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -4565,7 +4589,10 @@ export const DisassociateLexBotRequest = S.suspend(() =>
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     BotName: S.String.pipe(T.HttpQuery("botName")),
     LexRegion: S.String.pipe(T.HttpQuery("lexRegion")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/instance/{InstanceId}/lex-bot" }),
@@ -4656,7 +4683,10 @@ export const DisassociateSecurityKeyRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     AssociationId: S.String.pipe(T.HttpLabel("AssociationId")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -5011,7 +5041,7 @@ export const ImportPhoneNumberRequest = S.suspend(() =>
     SourcePhoneNumberArn: S.String,
     PhoneNumberDescription: S.optional(S.String),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/phone-number/import" }),
@@ -6668,7 +6698,7 @@ export const MonitorContactRequest = S.suspend(() =>
     ContactId: S.String,
     UserId: S.String,
     AllowedMonitorCapabilities: S.optional(AllowedMonitorCapabilities),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/contact/monitor" }),
@@ -6743,7 +6773,10 @@ export interface ReleasePhoneNumberRequest {
 export const ReleasePhoneNumberRequest = S.suspend(() =>
   S.Struct({
     PhoneNumberId: S.String.pipe(T.HttpLabel("PhoneNumberId")),
-    ClientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/phone-number/{PhoneNumberId}" }),
@@ -6773,7 +6806,7 @@ export const ReplicateInstanceRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     ReplicaRegion: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ReplicaAlias: SensitiveString,
   }).pipe(
     T.all(
@@ -7037,7 +7070,7 @@ export const StartOutboundEmailContactRequest = S.suspend(() =>
     DestinationEmailAddress: EmailAddressInfo,
     AdditionalRecipients: S.optional(OutboundAdditionalRecipients),
     EmailMessage: OutboundEmailContent,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/contact/outbound-email" }),
@@ -7058,7 +7091,7 @@ export interface StartScreenSharingRequest {
 }
 export const StartScreenSharingRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     InstanceId: S.String,
     ContactId: S.String,
   }).pipe(
@@ -7170,7 +7203,7 @@ export const StartTaskContactRequest = S.suspend(() =>
     Name: SensitiveString,
     References: S.optional(ContactReferences),
     Description: S.optional(SensitiveString),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ScheduledTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
     TaskTemplateId: S.optional(S.String),
     QuickConnectId: S.optional(S.String),
@@ -7347,7 +7380,7 @@ export const TransferContactRequest = S.suspend(() =>
     QueueId: S.optional(S.String),
     UserId: S.optional(S.String),
     ContactFlowId: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/contact/transfer" }),
@@ -8082,7 +8115,7 @@ export const UpdateEvaluationFormRequest = S.suspend(() =>
       EvaluationFormAutoEvaluationConfiguration,
     ),
     AsDraft: S.optional(S.Boolean),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     TargetConfiguration: S.optional(EvaluationFormTargetConfiguration),
     LanguageConfiguration: S.optional(EvaluationFormLanguageConfiguration),
   }).pipe(
@@ -8281,7 +8314,7 @@ export const UpdateInstanceAttributeRequest = S.suspend(() =>
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     AttributeType: InstanceAttributeType.pipe(T.HttpLabel("AttributeType")),
     Value: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -8401,7 +8434,7 @@ export const UpdateInstanceStorageConfigRequest = S.suspend(() =>
     AssociationId: S.String.pipe(T.HttpLabel("AssociationId")),
     ResourceType: InstanceStorageResourceType.pipe(T.HttpQuery("resourceType")),
     StorageConfig: InstanceStorageConfig,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -8471,7 +8504,7 @@ export const UpdatePhoneNumberRequest = S.suspend(() =>
     PhoneNumberId: S.String.pipe(T.HttpLabel("PhoneNumberId")),
     TargetArn: S.optional(S.String),
     InstanceId: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/phone-number/{PhoneNumberId}" }),
@@ -8494,7 +8527,7 @@ export const UpdatePhoneNumberMetadataRequest = S.suspend(() =>
   S.Struct({
     PhoneNumberId: S.String.pipe(T.HttpLabel("PhoneNumberId")),
     PhoneNumberDescription: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/phone-number/{PhoneNumberId}/metadata" }),
@@ -11985,7 +12018,7 @@ export const AssociateBotRequest = S.suspend(() =>
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     LexBot: S.optional(LexBot),
     LexV2Bot: S.optional(LexV2Bot),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/instance/{InstanceId}/bot" }),
@@ -12014,7 +12047,7 @@ export const AssociateEmailAddressAliasRequest = S.suspend(() =>
     EmailAddressId: S.String.pipe(T.HttpLabel("EmailAddressId")),
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     AliasConfiguration: AliasConfiguration,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -12264,7 +12297,7 @@ export const ClaimPhoneNumberRequest = S.suspend(() =>
     PhoneNumber: S.String,
     PhoneNumberDescription: S.optional(S.String),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/phone-number/claim" }),
@@ -12321,7 +12354,7 @@ export const CreateContactFlowModuleRequest = S.suspend(() =>
     Description: S.optional(S.String),
     Content: S.String,
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Settings: S.optional(S.String),
     ExternalInvocationConfiguration: S.optional(
       ExternalInvocationConfiguration,
@@ -12479,7 +12512,7 @@ export interface CreatePushNotificationRegistrationRequest {
 export const CreatePushNotificationRegistrationRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     PinpointAppArn: S.String,
     DeviceToken: S.String,
     DeviceType: DeviceType,
@@ -13848,7 +13881,7 @@ export interface StartAttachedFileUploadRequest {
 }
 export const StartAttachedFileUploadRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     FileName: S.String,
     FileSizeInBytes: S.Number,
@@ -13894,7 +13927,7 @@ export const StartChatContactRequest = S.suspend(() =>
     ParticipantDetails: ParticipantDetails,
     ParticipantConfiguration: S.optional(ParticipantConfiguration),
     InitialMessage: S.optional(ChatMessage),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ChatDurationInMinutes: S.optional(S.Number),
     SupportedMessagingContentTypes: S.optional(SupportedMessagingContentTypes),
     PersistentChat: S.optional(PersistentChat),
@@ -13929,7 +13962,7 @@ export const StartContactEvaluationRequest = S.suspend(() =>
     ContactId: S.String,
     EvaluationFormId: S.String,
     AutoEvaluationConfiguration: S.optional(AutoEvaluationConfiguration),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -13986,7 +14019,7 @@ export const StartContactStreamingRequest = S.suspend(() =>
     InstanceId: S.String,
     ContactId: S.String,
     ChatStreamingConfiguration: ChatStreamingConfiguration,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/contact/start-streaming" }),
@@ -14030,7 +14063,7 @@ export interface StartWebRTCContactRequest {
 export const StartWebRTCContactRequest = S.suspend(() =>
   S.Struct({
     Attributes: S.optional(Attributes),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ContactFlowId: S.String,
     InstanceId: S.String,
     AllowedCapabilities: S.optional(AllowedCapabilities),
@@ -16736,7 +16769,7 @@ export interface BatchPutContactRequest {
 }
 export const BatchPutContactRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     ContactDataRequestList: ContactDataRequestList,
   }).pipe(
@@ -16908,7 +16941,7 @@ export const CreateParticipantRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String,
     ContactId: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ParticipantDetails: ParticipantDetailsToAdd,
   }).pipe(
     T.all(
@@ -17027,7 +17060,7 @@ export const CreateTaskTemplateRequest = S.suspend(() =>
     Defaults: S.optional(TaskTemplateDefaults),
     Status: S.optional(TaskTemplateStatus),
     Fields: TaskTemplateFields,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/instance/{InstanceId}/task/template" }),
@@ -18154,7 +18187,7 @@ export const SendOutboundEmailRequest = S.suspend(() =>
     EmailMessage: OutboundEmailContent,
     TrafficType: TrafficType,
     SourceCampaign: S.optional(SourceCampaign),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/instance/{InstanceId}/outbound-email" }),
@@ -18236,7 +18269,7 @@ export const StartOutboundChatContactRequest = S.suspend(() =>
     InitialTemplatedSystemMessage: S.optional(TemplatedMessageConfig),
     RelatedContactId: S.optional(S.String),
     SupportedMessagingContentTypes: S.optional(SupportedMessagingContentTypes),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/contact/outbound-chat" }),
@@ -19788,7 +19821,7 @@ export const AssociateInstanceStorageConfigRequest = S.suspend(() =>
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
     ResourceType: InstanceStorageResourceType,
     StorageConfig: InstanceStorageConfig,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/instance/{InstanceId}/storage-config" }),
@@ -19857,7 +19890,7 @@ export interface CreateContactRequest {
 export const CreateContactRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     RelatedContactId: S.optional(S.String),
     Attributes: S.optional(Attributes),
     References: S.optional(ContactReferences),
@@ -20386,7 +20419,7 @@ export const StartEmailContactRequest = S.suspend(() =>
     RelatedContactId: S.optional(S.String),
     Attributes: S.optional(Attributes),
     SegmentAttributes: S.optional(SegmentAttributes),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/contact/email" }),
@@ -21188,7 +21221,7 @@ export const CreateRuleRequest = S.suspend(() =>
     Function: S.String,
     Actions: RuleActions,
     PublishStatus: RulePublishStatus,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/rules/{InstanceId}" }),
@@ -22262,7 +22295,7 @@ export const StartOutboundVoiceContactRequest = S.suspend(() =>
     DestinationPhoneNumber: S.String,
     ContactFlowId: S.String,
     InstanceId: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SourcePhoneNumber: S.optional(S.String),
     QueueId: S.optional(S.String),
     Attributes: S.optional(Attributes),
@@ -22782,7 +22815,7 @@ export const CreateEvaluationFormRequest = S.suspend(() =>
     AutoEvaluationConfiguration: S.optional(
       EvaluationFormAutoEvaluationConfiguration,
     ),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     AsDraft: S.optional(S.Boolean),
     Tags: S.optional(TagMap),
     TargetConfiguration: S.optional(EvaluationFormTargetConfiguration),

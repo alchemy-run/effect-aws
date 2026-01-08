@@ -121,6 +121,7 @@ export type CountryCode = string | redacted.Redacted<string>;
 export type ContactInformationPhoneNumber = string | redacted.Redacted<string>;
 export type CompanyName = string | redacted.Redacted<string>;
 export type WebsiteUrl = string | redacted.Redacted<string>;
+export type AccountCreatedDate = Date;
 export type AwsAccountState = string;
 export type PrimaryEmailUpdateStatus = string;
 export type SensitiveString = string | redacted.Redacted<string>;

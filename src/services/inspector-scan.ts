@@ -86,6 +86,9 @@ const rules = T.EndpointResolver((p, _) => {
   return err("Invalid Configuration: Missing Region");
 });
 
+//# Newtypes
+export type Sbom = unknown;
+
 //# Schemas
 export type OutputFormat = "CYCLONE_DX_1_5" | "INSPECTOR" | "INSPECTOR_ALT";
 export const OutputFormat = S.Literal(

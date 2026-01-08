@@ -92,6 +92,7 @@ export type MaxResults = number;
 export type PaginationToken = string;
 export type AsyncInvokeIdempotencyToken = string;
 export type AsyncInvokeIdentifier = string;
+export type ModelInputPayload = unknown;
 export type GuardrailIdentifier = string;
 export type GuardrailVersion = string;
 export type ConversationalModelId = string;
@@ -106,6 +107,8 @@ export type AsyncInvokeMessage = string | redacted.Redacted<string>;
 export type S3Uri = string;
 export type KmsKeyId = string;
 export type AccountId = string;
+export type PartBody = Uint8Array | redacted.Redacted<Uint8Array>;
+export type Body = Uint8Array | redacted.Redacted<Uint8Array>;
 export type ToolUseId = string;
 export type ToolName = string;
 export type NonBlankString = string;
@@ -1183,7 +1186,7 @@ export interface StartAsyncInvokeRequest {
 }
 export const StartAsyncInvokeRequest = S.suspend(() =>
   S.Struct({
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     modelId: S.String,
     modelInput: S.Any,
     outputDataConfig: AsyncInvokeOutputDataConfig,

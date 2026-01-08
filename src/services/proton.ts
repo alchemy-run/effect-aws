@@ -380,7 +380,7 @@ export const CreateComponentInput = S.suspend(() =>
     manifest: SensitiveString,
     serviceSpec: S.optional(SensitiveString),
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -416,7 +416,7 @@ export const UpdateComponentInput = S.suspend(() =>
     serviceInstanceName: S.optional(S.String),
     serviceSpec: S.optional(SensitiveString),
     templateFile: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -516,7 +516,7 @@ export interface CreateEnvironmentAccountConnectionInput {
 }
 export const CreateEnvironmentAccountConnectionInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     managementAccountId: S.String,
     roleArn: S.optional(S.String),
     environmentName: S.String,
@@ -979,7 +979,7 @@ export const CreateServiceInstanceInput = S.suspend(() =>
     templateMajorVersion: S.optional(S.String),
     templateMinorVersion: S.optional(S.String),
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1014,7 +1014,7 @@ export const UpdateServiceInstanceInput = S.suspend(() =>
     spec: S.optional(SensitiveString),
     templateMajorVersion: S.optional(S.String),
     templateMinorVersion: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -2543,7 +2543,7 @@ export interface CreateServiceTemplateVersionInput {
 }
 export const CreateServiceTemplateVersionInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     templateName: S.String,
     description: S.optional(SensitiveString),
     majorVersion: S.optional(S.String),
@@ -3219,7 +3219,7 @@ export interface CreateEnvironmentTemplateVersionInput {
 }
 export const CreateEnvironmentTemplateVersionInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     templateName: S.String,
     description: S.optional(SensitiveString),
     majorVersion: S.optional(S.String),

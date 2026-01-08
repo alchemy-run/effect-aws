@@ -185,6 +185,7 @@ export type AutocompleteFilterPlaceType = string;
 export type GeocodeFilterPlaceType = string | redacted.Redacted<string>;
 export type ReverseGeocodeFilterPlaceType = string;
 export type PlaceType = string | redacted.Redacted<string>;
+export type SensitiveBoolean = boolean;
 export type CountryCode3 = string | redacted.Redacted<string>;
 export type IntersectionStreet = string;
 export type PostalAuthority = string | redacted.Redacted<string>;

@@ -115,6 +115,7 @@ export type VocabularyNames = string;
 export type VocabularyFilterNames = string;
 export type SensitiveString = string | redacted.Redacted<string>;
 export type AudioSampleRateOption = string;
+export type Iso8601Timestamp = Date;
 export type KinesisVideoStreamPoolId = string;
 export type KinesisVideoStreamPoolSize = number;
 export type ExternalUserIdType = string | redacted.Redacted<string>;
@@ -508,7 +509,7 @@ export const StartVoiceToneAnalysisTaskRequest = S.suspend(() =>
     KinesisVideoStreamSourceTaskConfiguration: S.optional(
       KinesisVideoStreamSourceTaskConfiguration,
     ),
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1173,7 +1174,7 @@ export const CreateMediaPipelineKinesisVideoStreamPoolRequest = S.suspend(() =>
   S.Struct({
     StreamConfiguration: KinesisVideoStreamConfiguration,
     PoolName: S.String,
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -1201,7 +1202,7 @@ export const CreateMediaStreamPipelineRequest = S.suspend(() =>
   S.Struct({
     Sources: MediaStreamSourceList,
     Sinks: MediaStreamSinkList,
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -1237,7 +1238,7 @@ export const StartSpeakerSearchTaskRequest = S.suspend(() =>
     KinesisVideoStreamSourceTaskConfiguration: S.optional(
       KinesisVideoStreamSourceTaskConfiguration,
     ),
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1907,7 +1908,7 @@ export const CreateMediaLiveConnectorPipelineRequest = S.suspend(() =>
   S.Struct({
     Sources: LiveConnectorSourceList,
     Sinks: LiveConnectorSinkList,
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -2345,7 +2346,7 @@ export const CreateMediaInsightsPipelineConfigurationRequest = S.suspend(() =>
     RealTimeAlertConfiguration: S.optional(RealTimeAlertConfiguration),
     Elements: MediaInsightsPipelineConfigurationElements,
     Tags: S.optional(TagList),
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -2477,7 +2478,7 @@ export const CreateMediaInsightsPipelineRequest = S.suspend(() =>
       S3RecordingSinkRuntimeConfiguration,
     ),
     Tags: S.optional(TagList),
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/media-insights-pipelines" }),
@@ -2528,7 +2529,7 @@ export const CreateMediaCapturePipelineRequest = S.suspend(() =>
     SourceArn: SensitiveString,
     SinkType: MediaPipelineSinkType,
     SinkArn: SensitiveString,
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     ChimeSdkMeetingConfiguration: S.optional(ChimeSdkMeetingConfiguration),
     SseAwsKeyManagementParams: S.optional(SseAwsKeyManagementParams),
     SinkIamRoleArn: S.optional(SensitiveString),
@@ -2556,7 +2557,7 @@ export const CreateMediaConcatenationPipelineRequest = S.suspend(() =>
   S.Struct({
     Sources: ConcatenationSourceList,
     Sinks: ConcatenationSinkList,
-    ClientRequestToken: S.optional(SensitiveString),
+    ClientRequestToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(

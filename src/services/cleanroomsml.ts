@@ -119,7 +119,7 @@ export type S3Path = string;
 export type AnalysisTemplateArn = string;
 export type MetricName = string;
 export type MetricRegex = string;
-export type ParameterKey = string;
+export type ParameterName = string;
 export type ParameterValue = string;
 export type ColumnName = string;
 export type BudgetedResourceArn = string;
@@ -129,6 +129,8 @@ export type TrainedModelExportsMaxSizeValue = number;
 export type TrainedModelInferenceMaxOutputSizeValue = number;
 export type GlueTableName = string;
 export type GlueDatabaseName = string;
+export type SparkPropertyKey = string;
+export type SparkPropertyValue = string;
 export type SyntheticDataColumnName = string;
 export type CustomDataIdentifier = string;
 
@@ -2733,13 +2735,13 @@ export const ColumnClassificationDetails = S.suspend(() =>
 export interface MLSyntheticDataParameters {
   epsilon: number;
   maxMembershipInferenceAttackScore: number;
-  columnClassification: ColumnClassificationDetails;
+  columnClassification?: ColumnClassificationDetails;
 }
 export const MLSyntheticDataParameters = S.suspend(() =>
   S.Struct({
     epsilon: S.Number,
     maxMembershipInferenceAttackScore: S.Number,
-    columnClassification: ColumnClassificationDetails,
+    columnClassification: S.optional(ColumnClassificationDetails),
   }),
 ).annotations({
   identifier: "MLSyntheticDataParameters",
@@ -3655,18 +3657,6 @@ export type TrainingDatasetList = TrainingDatasetSummary[];
 export const TrainingDatasetList = S.Array(TrainingDatasetSummary);
 export type ParameterMap = { [key: string]: string };
 export const ParameterMap = S.Record({ key: S.String, value: S.String });
-export interface WorkerComputeConfiguration {
-  type?: WorkerComputeType;
-  number?: number;
-}
-export const WorkerComputeConfiguration = S.suspend(() =>
-  S.Struct({
-    type: S.optional(WorkerComputeType),
-    number: S.optional(S.Number),
-  }),
-).annotations({
-  identifier: "WorkerComputeConfiguration",
-}) as any as S.Schema<WorkerComputeConfiguration>;
 export interface ProtectedQuerySQLParameters {
   queryString?: string;
   analysisTemplateArn?: string;
@@ -3681,6 +3671,28 @@ export const ProtectedQuerySQLParameters = S.suspend(() =>
 ).annotations({
   identifier: "ProtectedQuerySQLParameters",
 }) as any as S.Schema<ProtectedQuerySQLParameters>;
+export type SparkProperties = { [key: string]: string };
+export const SparkProperties = S.Record({ key: S.String, value: S.String });
+export type WorkerComputeConfigurationProperties = {
+  spark: { [key: string]: string };
+};
+export const WorkerComputeConfigurationProperties = S.Union(
+  S.Struct({ spark: SparkProperties }),
+);
+export interface WorkerComputeConfiguration {
+  type?: WorkerComputeType;
+  number?: number;
+  properties?: WorkerComputeConfigurationProperties;
+}
+export const WorkerComputeConfiguration = S.suspend(() =>
+  S.Struct({
+    type: S.optional(WorkerComputeType),
+    number: S.optional(S.Number),
+    properties: S.optional(WorkerComputeConfigurationProperties),
+  }),
+).annotations({
+  identifier: "WorkerComputeConfiguration",
+}) as any as S.Schema<WorkerComputeConfiguration>;
 export type ComputeConfiguration = { worker: WorkerComputeConfiguration };
 export const ComputeConfiguration = S.Union(
   S.Struct({ worker: WorkerComputeConfiguration }),
@@ -4155,22 +4167,6 @@ export type InputChannelDataSource = {
 export const InputChannelDataSource = S.Union(
   S.Struct({ protectedQueryInputParameters: ProtectedQueryInputParameters }),
 );
-export interface AudienceGenerationJobDataSource {
-  dataSource?: S3ConfigMap;
-  roleArn: string;
-  sqlParameters?: ProtectedQuerySQLParameters;
-  sqlComputeConfiguration?: ComputeConfiguration;
-}
-export const AudienceGenerationJobDataSource = S.suspend(() =>
-  S.Struct({
-    dataSource: S.optional(S3ConfigMap),
-    roleArn: S.String,
-    sqlParameters: S.optional(ProtectedQuerySQLParameters),
-    sqlComputeConfiguration: S.optional(ComputeConfiguration),
-  }),
-).annotations({
-  identifier: "AudienceGenerationJobDataSource",
-}) as any as S.Schema<AudienceGenerationJobDataSource>;
 export interface AudienceQualityMetrics {
   relevanceMetrics: RelevanceMetric[];
   recallMetric?: number;
@@ -4190,37 +4186,22 @@ export interface InputChannel {
 export const InputChannel = S.suspend(() =>
   S.Struct({ dataSource: InputChannelDataSource, roleArn: S.String }),
 ).annotations({ identifier: "InputChannel" }) as any as S.Schema<InputChannel>;
-export interface StartAudienceGenerationJobRequest {
-  name: string;
-  configuredAudienceModelArn: string;
-  seedAudience: AudienceGenerationJobDataSource;
-  includeSeedInOutput?: boolean;
-  collaborationId?: string;
-  description?: string;
-  tags?: { [key: string]: string };
+export interface AudienceGenerationJobDataSource {
+  dataSource?: S3ConfigMap;
+  roleArn: string;
+  sqlParameters?: ProtectedQuerySQLParameters;
+  sqlComputeConfiguration?: ComputeConfiguration;
 }
-export const StartAudienceGenerationJobRequest = S.suspend(() =>
+export const AudienceGenerationJobDataSource = S.suspend(() =>
   S.Struct({
-    name: S.String,
-    configuredAudienceModelArn: S.String,
-    seedAudience: AudienceGenerationJobDataSource,
-    includeSeedInOutput: S.optional(S.Boolean),
-    collaborationId: S.optional(S.String),
-    description: S.optional(S.String),
-    tags: S.optional(TagMap),
-  }).pipe(
-    T.all(
-      T.Http({ method: "POST", uri: "/audience-generation-job" }),
-      svc,
-      auth,
-      proto,
-      ver,
-      rules,
-    ),
-  ),
+    dataSource: S.optional(S3ConfigMap),
+    roleArn: S.String,
+    sqlParameters: S.optional(ProtectedQuerySQLParameters),
+    sqlComputeConfiguration: S.optional(ComputeConfiguration),
+  }),
 ).annotations({
-  identifier: "StartAudienceGenerationJobRequest",
-}) as any as S.Schema<StartAudienceGenerationJobRequest>;
+  identifier: "AudienceGenerationJobDataSource",
+}) as any as S.Schema<AudienceGenerationJobDataSource>;
 export interface GetAudienceGenerationJobResponse {
   createTime: Date;
   updateTime: Date;
@@ -4320,14 +4301,6 @@ export const StartTrainedModelInferenceJobResponse = S.suspend(() =>
 ).annotations({
   identifier: "StartTrainedModelInferenceJobResponse",
 }) as any as S.Schema<StartTrainedModelInferenceJobResponse>;
-export interface StartAudienceGenerationJobResponse {
-  audienceGenerationJobArn: string;
-}
-export const StartAudienceGenerationJobResponse = S.suspend(() =>
-  S.Struct({ audienceGenerationJobArn: S.String }),
-).annotations({
-  identifier: "StartAudienceGenerationJobResponse",
-}) as any as S.Schema<StartAudienceGenerationJobResponse>;
 export interface CreateMLInputChannelResponse {
   mlInputChannelArn: string;
 }
@@ -4363,6 +4336,37 @@ export const CreateTrainingDatasetRequest = S.suspend(() =>
 ).annotations({
   identifier: "CreateTrainingDatasetRequest",
 }) as any as S.Schema<CreateTrainingDatasetRequest>;
+export interface StartAudienceGenerationJobRequest {
+  name: string;
+  configuredAudienceModelArn: string;
+  seedAudience: AudienceGenerationJobDataSource;
+  includeSeedInOutput?: boolean;
+  collaborationId?: string;
+  description?: string;
+  tags?: { [key: string]: string };
+}
+export const StartAudienceGenerationJobRequest = S.suspend(() =>
+  S.Struct({
+    name: S.String,
+    configuredAudienceModelArn: S.String,
+    seedAudience: AudienceGenerationJobDataSource,
+    includeSeedInOutput: S.optional(S.Boolean),
+    collaborationId: S.optional(S.String),
+    description: S.optional(S.String),
+    tags: S.optional(TagMap),
+  }).pipe(
+    T.all(
+      T.Http({ method: "POST", uri: "/audience-generation-job" }),
+      svc,
+      auth,
+      proto,
+      ver,
+      rules,
+    ),
+  ),
+).annotations({
+  identifier: "StartAudienceGenerationJobRequest",
+}) as any as S.Schema<StartAudienceGenerationJobRequest>;
 export interface GetMLInputChannelResponse {
   membershipIdentifier: string;
   collaborationIdentifier: string;
@@ -4420,6 +4424,14 @@ export const CreateTrainingDatasetResponse = S.suspend(() =>
 ).annotations({
   identifier: "CreateTrainingDatasetResponse",
 }) as any as S.Schema<CreateTrainingDatasetResponse>;
+export interface StartAudienceGenerationJobResponse {
+  audienceGenerationJobArn: string;
+}
+export const StartAudienceGenerationJobResponse = S.suspend(() =>
+  S.Struct({ audienceGenerationJobArn: S.String }),
+).annotations({
+  identifier: "StartAudienceGenerationJobResponse",
+}) as any as S.Schema<StartAudienceGenerationJobResponse>;
 export interface CreateConfiguredModelAlgorithmAssociationRequest {
   membershipIdentifier: string;
   configuredModelAlgorithmArn: string;
@@ -6045,33 +6057,6 @@ export const createAudienceModel: (
   ],
 }));
 /**
- * Information necessary to start the audience generation job.
- */
-export const startAudienceGenerationJob: (
-  input: StartAudienceGenerationJobRequest,
-) => effect.Effect<
-  StartAudienceGenerationJobResponse,
-  | AccessDeniedException
-  | ConflictException
-  | ResourceNotFoundException
-  | ServiceQuotaExceededException
-  | ThrottlingException
-  | ValidationException
-  | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
-> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: StartAudienceGenerationJobRequest,
-  output: StartAudienceGenerationJobResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
-/**
  * Provides the information to create an ML input channel. An ML input channel is the result of a query that can be used for ML modeling.
  */
 export const createMLInputChannel: (
@@ -6137,6 +6122,33 @@ export const createTrainingDataset: (
   input: CreateTrainingDatasetRequest,
   output: CreateTrainingDatasetResponse,
   errors: [AccessDeniedException, ConflictException, ValidationException],
+}));
+/**
+ * Information necessary to start the audience generation job.
+ */
+export const startAudienceGenerationJob: (
+  input: StartAudienceGenerationJobRequest,
+) => effect.Effect<
+  StartAudienceGenerationJobResponse,
+  | AccessDeniedException
+  | ConflictException
+  | ResourceNotFoundException
+  | ServiceQuotaExceededException
+  | ThrottlingException
+  | ValidationException
+  | CommonErrors,
+  Credentials | Region | HttpClient.HttpClient
+> = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  input: StartAudienceGenerationJobRequest,
+  output: StartAudienceGenerationJobResponse,
+  errors: [
+    AccessDeniedException,
+    ConflictException,
+    ResourceNotFoundException,
+    ServiceQuotaExceededException,
+    ThrottlingException,
+    ValidationException,
+  ],
 }));
 /**
  * Associates a configured model algorithm to a collaboration for use by any member of the collaboration.

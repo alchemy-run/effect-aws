@@ -104,6 +104,7 @@ export type ClientRequestToken = string;
 export type SessionId = string;
 export type WorkGroupDescriptionString = string;
 export type NotebookId = string;
+export type BoxedBoolean = boolean;
 export type CalculationExecutionId = string;
 export type Token = string;
 export type MaxQueryResults = number;
@@ -301,7 +302,7 @@ export const CreateNamedQueryInput = S.suspend(() =>
     Description: S.optional(S.String),
     Database: S.String,
     QueryString: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     WorkGroup: S.optional(S.String),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -390,7 +391,7 @@ export interface DeleteNamedQueryInput {
   NamedQueryId: string;
 }
 export const DeleteNamedQueryInput = S.suspend(() =>
-  S.Struct({ NamedQueryId: S.String }).pipe(
+  S.Struct({ NamedQueryId: S.String.pipe(T.IdempotencyToken()) }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
 ).annotations({
@@ -955,7 +956,7 @@ export interface StopQueryExecutionInput {
   QueryExecutionId: string;
 }
 export const StopQueryExecutionInput = S.suspend(() =>
-  S.Struct({ QueryExecutionId: S.String }).pipe(
+  S.Struct({ QueryExecutionId: S.String.pipe(T.IdempotencyToken()) }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
 ).annotations({
@@ -2866,7 +2867,7 @@ export interface StartQueryExecutionInput {
 export const StartQueryExecutionInput = S.suspend(() =>
   S.Struct({
     QueryString: S.String,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     QueryExecutionContext: S.optional(QueryExecutionContext),
     ResultConfiguration: S.optional(ResultConfiguration),
     WorkGroup: S.optional(S.String),

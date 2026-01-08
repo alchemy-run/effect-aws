@@ -143,7 +143,7 @@ export const CopyBlueprintStageRequest = S.suspend(() =>
     blueprintArn: S.String.pipe(T.HttpLabel("blueprintArn")),
     sourceStage: BlueprintStage,
     targetStage: BlueprintStage,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/blueprints/{blueprintArn}/copy-stage" }),
@@ -170,7 +170,7 @@ export interface CreateBlueprintVersionRequest {
 export const CreateBlueprintVersionRequest = S.suspend(() =>
   S.Struct({
     blueprintArn: S.String.pipe(T.HttpLabel("blueprintArn")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/blueprints/{blueprintArn}/versions/" }),
@@ -284,7 +284,7 @@ export const CreateBlueprintRequest = S.suspend(() =>
     type: Type,
     blueprintStage: S.optional(BlueprintStage),
     schema: SensitiveString,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     encryptionConfiguration: S.optional(EncryptionConfiguration),
     tags: S.optional(TagList),
   }).pipe(
@@ -1580,7 +1580,7 @@ export const CreateDataAutomationProjectRequest = S.suspend(() =>
     standardOutputConfiguration: StandardOutputConfiguration,
     customOutputConfiguration: S.optional(CustomOutputConfiguration),
     overrideConfiguration: S.optional(OverrideConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     encryptionConfiguration: S.optional(EncryptionConfiguration),
     tags: S.optional(TagList),
   }).pipe(

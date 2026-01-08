@@ -98,7 +98,6 @@ export type Name = string;
 export type Type = string;
 export type __stringMin0Max16384 = string;
 export type DataGrantId = string;
-export type __string = string;
 export type MaxResults = number;
 export type AcceptanceStateFilterValue = string;
 export type __stringMin10Max512 = string;
@@ -121,7 +120,6 @@ export type AwsAccountId = string;
 export type RoleArn = string;
 export type Code = string;
 export type JobErrorLimitName = string;
-export type __double = number;
 export type JobErrorResourceTypes = string;
 export type ServerSideEncryptionTypes = string;
 export type DatabaseLFTagPolicyPermission = string;
@@ -2503,7 +2501,7 @@ export interface SendDataSetNotificationRequest {
 export const SendDataSetNotificationRequest = S.suspend(() =>
   S.Struct({
     Scope: S.optional(ScopeDetails),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Comment: S.optional(S.String),
     DataSetId: S.String.pipe(T.HttpLabel("DataSetId")),
     Details: S.optional(NotificationDetails),

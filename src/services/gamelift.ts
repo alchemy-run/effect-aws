@@ -124,12 +124,14 @@ export type CustomInputLocationStringModel = string;
 export type ArnStringModel = string;
 export type MatchmakingRequestTimeoutInteger = number;
 export type MatchmakingAcceptanceTimeoutInteger = number;
+export type BooleanModel = boolean;
 export type MatchmakingRuleSetName = string;
 export type SnsArnStringModel = string;
 export type CustomEventData = string;
 export type GameSessionData = string;
 export type RuleSetBody = string;
 export type PlayerData = string;
+export type ZipBlob = Uint8Array;
 export type FleetId = string;
 export type GameSessionQueueNameOrArn = string;
 export type CustomLocationNameOrArnModel = string;
@@ -5739,7 +5741,12 @@ export const DescribeFleetLocationCapacityOutput = S.suspend(() =>
 export interface DescribeFleetPortSettingsOutput {
   FleetId?: string;
   FleetArn?: string;
-  InboundPermissions?: IpPermission[];
+  InboundPermissions?: (IpPermission & {
+    FromPort: PortNumber;
+    ToPort: PortNumber;
+    IpRange: IpRange;
+    Protocol: IpProtocol;
+  })[];
   UpdateStatus?: LocationUpdateStatus;
   Location?: string;
 }
@@ -5767,7 +5774,11 @@ export const DescribeFleetUtilizationOutput = S.suspend(() =>
   identifier: "DescribeFleetUtilizationOutput",
 }) as any as S.Schema<DescribeFleetUtilizationOutput>;
 export interface DescribeGameServerGroupOutput {
-  GameServerGroup?: GameServerGroup;
+  GameServerGroup?: GameServerGroup & {
+    InstanceDefinitions: (InstanceDefinition & {
+      InstanceType: GameServerGroupInstanceType;
+    })[];
+  };
 }
 export const DescribeGameServerGroupOutput = S.suspend(() =>
   S.Struct({ GameServerGroup: S.optional(GameServerGroup) }).pipe(ns),
@@ -5775,7 +5786,12 @@ export const DescribeGameServerGroupOutput = S.suspend(() =>
   identifier: "DescribeGameServerGroupOutput",
 }) as any as S.Schema<DescribeGameServerGroupOutput>;
 export interface DescribeMatchmakingConfigurationsOutput {
-  Configurations?: MatchmakingConfiguration[];
+  Configurations?: (MatchmakingConfiguration & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeMatchmakingConfigurationsOutput = S.suspend(() =>
@@ -5787,7 +5803,7 @@ export const DescribeMatchmakingConfigurationsOutput = S.suspend(() =>
   identifier: "DescribeMatchmakingConfigurationsOutput",
 }) as any as S.Schema<DescribeMatchmakingConfigurationsOutput>;
 export interface DescribeMatchmakingRuleSetsOutput {
-  RuleSets?: MatchmakingRuleSet[];
+  RuleSets: (MatchmakingRuleSet & { RuleSetBody: RuleSetBody })[];
   NextToken?: string;
 }
 export const DescribeMatchmakingRuleSetsOutput = S.suspend(() =>
@@ -5811,7 +5827,12 @@ export const DescribePlayerSessionsOutput = S.suspend(() =>
   identifier: "DescribePlayerSessionsOutput",
 }) as any as S.Schema<DescribePlayerSessionsOutput>;
 export interface DescribeRuntimeConfigurationOutput {
-  RuntimeConfiguration?: RuntimeConfiguration;
+  RuntimeConfiguration?: RuntimeConfiguration & {
+    ServerProcesses: (ServerProcess & {
+      LaunchPath: LaunchPathStringModel;
+      ConcurrentExecutions: PositiveInteger;
+    })[];
+  };
 }
 export const DescribeRuntimeConfigurationOutput = S.suspend(() =>
   S.Struct({ RuntimeConfiguration: S.optional(RuntimeConfiguration) }).pipe(ns),
@@ -5903,7 +5924,18 @@ export const ListComputeOutput = S.suspend(() =>
   identifier: "ListComputeOutput",
 }) as any as S.Schema<ListComputeOutput>;
 export interface ListContainerFleetsOutput {
-  ContainerFleets?: ContainerFleet[];
+  ContainerFleets?: (ContainerFleet & {
+    InstanceConnectionPortRange: ConnectionPortRange & {
+      FromPort: PortNumber;
+      ToPort: PortNumber;
+    };
+    InstanceInboundPermissions: (IpPermission & {
+      FromPort: PortNumber;
+      ToPort: PortNumber;
+      IpRange: IpRange;
+      Protocol: IpProtocol;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const ListContainerFleetsOutput = S.suspend(() =>
@@ -5915,7 +5947,52 @@ export const ListContainerFleetsOutput = S.suspend(() =>
   identifier: "ListContainerFleetsOutput",
 }) as any as S.Schema<ListContainerFleetsOutput>;
 export interface ListContainerGroupDefinitionsOutput {
-  ContainerGroupDefinitions?: ContainerGroupDefinition[];
+  ContainerGroupDefinitions?: (ContainerGroupDefinition & {
+    Name: ContainerGroupDefinitionName;
+    GameServerContainerDefinition: GameServerContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    };
+    SupportContainerDefinitions: (SupportContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      HealthCheck: ContainerHealthCheck & {
+        Command: ContainerCommandStringList;
+      };
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    })[];
+  })[];
   NextToken?: string;
 }
 export const ListContainerGroupDefinitionsOutput = S.suspend(() =>
@@ -5927,7 +6004,52 @@ export const ListContainerGroupDefinitionsOutput = S.suspend(() =>
   identifier: "ListContainerGroupDefinitionsOutput",
 }) as any as S.Schema<ListContainerGroupDefinitionsOutput>;
 export interface ListContainerGroupDefinitionVersionsOutput {
-  ContainerGroupDefinitions?: ContainerGroupDefinition[];
+  ContainerGroupDefinitions?: (ContainerGroupDefinition & {
+    Name: ContainerGroupDefinitionName;
+    GameServerContainerDefinition: GameServerContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    };
+    SupportContainerDefinitions: (SupportContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      HealthCheck: ContainerHealthCheck & {
+        Command: ContainerCommandStringList;
+      };
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    })[];
+  })[];
   NextToken?: string;
 }
 export const ListContainerGroupDefinitionVersionsOutput = S.suspend(() =>
@@ -5963,7 +6085,11 @@ export const ListFleetsOutput = S.suspend(() =>
   identifier: "ListFleetsOutput",
 }) as any as S.Schema<ListFleetsOutput>;
 export interface ListGameServerGroupsOutput {
-  GameServerGroups?: GameServerGroup[];
+  GameServerGroups?: (GameServerGroup & {
+    InstanceDefinitions: (InstanceDefinition & {
+      InstanceType: GameServerGroupInstanceType;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const ListGameServerGroupsOutput = S.suspend(() =>
@@ -6011,7 +6137,7 @@ export const ListScriptsOutput = S.suspend(() =>
   identifier: "ListScriptsOutput",
 }) as any as S.Schema<ListScriptsOutput>;
 export interface ListTagsForResourceResponse {
-  Tags?: Tag[];
+  Tags?: (Tag & { Key: TagKey; Value: TagValue })[];
 }
 export const ListTagsForResourceResponse = S.suspend(() =>
   S.Struct({ Tags: S.optional(TagList) }).pipe(ns),
@@ -6111,7 +6237,11 @@ export const ResolveAliasOutput = S.suspend(() =>
   identifier: "ResolveAliasOutput",
 }) as any as S.Schema<ResolveAliasOutput>;
 export interface ResumeGameServerGroupOutput {
-  GameServerGroup?: GameServerGroup;
+  GameServerGroup?: GameServerGroup & {
+    InstanceDefinitions: (InstanceDefinition & {
+      InstanceType: GameServerGroupInstanceType;
+    })[];
+  };
 }
 export const ResumeGameServerGroupOutput = S.suspend(() =>
   S.Struct({ GameServerGroup: S.optional(GameServerGroup) }).pipe(ns),
@@ -6189,7 +6319,12 @@ export const GameSession = S.suspend(() =>
 export type GameSessionList = GameSession[];
 export const GameSessionList = S.Array(GameSession);
 export interface SearchGameSessionsOutput {
-  GameSessions?: GameSession[];
+  GameSessions?: (GameSession & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const SearchGameSessionsOutput = S.suspend(() =>
@@ -6423,7 +6558,15 @@ export const GameSessionPlacement = S.suspend(() =>
   identifier: "GameSessionPlacement",
 }) as any as S.Schema<GameSessionPlacement>;
 export interface StopGameSessionPlacementOutput {
-  GameSessionPlacement?: GameSessionPlacement;
+  GameSessionPlacement?: GameSessionPlacement & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+    PriorityConfigurationOverride: PriorityConfigurationOverride & {
+      LocationOrder: LocationOrderOverrideList;
+    };
+  };
 }
 export const StopGameSessionPlacementOutput = S.suspend(() =>
   S.Struct({ GameSessionPlacement: S.optional(GameSessionPlacement) }).pipe(ns),
@@ -6431,7 +6574,11 @@ export const StopGameSessionPlacementOutput = S.suspend(() =>
   identifier: "StopGameSessionPlacementOutput",
 }) as any as S.Schema<StopGameSessionPlacementOutput>;
 export interface SuspendGameServerGroupOutput {
-  GameServerGroup?: GameServerGroup;
+  GameServerGroup?: GameServerGroup & {
+    InstanceDefinitions: (InstanceDefinition & {
+      InstanceType: GameServerGroupInstanceType;
+    })[];
+  };
 }
 export const SuspendGameServerGroupOutput = S.suspend(() =>
   S.Struct({ GameServerGroup: S.optional(GameServerGroup) }).pipe(ns),
@@ -6439,7 +6586,12 @@ export const SuspendGameServerGroupOutput = S.suspend(() =>
   identifier: "SuspendGameServerGroupOutput",
 }) as any as S.Schema<SuspendGameServerGroupOutput>;
 export interface TerminateGameSessionOutput {
-  GameSession?: GameSession;
+  GameSession?: GameSession & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+  };
 }
 export const TerminateGameSessionOutput = S.suspend(() =>
   S.Struct({ GameSession: S.optional(GameSession) }).pipe(ns),
@@ -6509,7 +6661,52 @@ export const UpdateContainerFleetInput = S.suspend(() =>
   identifier: "UpdateContainerFleetInput",
 }) as any as S.Schema<UpdateContainerFleetInput>;
 export interface UpdateContainerGroupDefinitionOutput {
-  ContainerGroupDefinition?: ContainerGroupDefinition;
+  ContainerGroupDefinition?: ContainerGroupDefinition & {
+    Name: ContainerGroupDefinitionName;
+    GameServerContainerDefinition: GameServerContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    };
+    SupportContainerDefinitions: (SupportContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      HealthCheck: ContainerHealthCheck & {
+        Command: ContainerCommandStringList;
+      };
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    })[];
+  };
 }
 export const UpdateContainerGroupDefinitionOutput = S.suspend(() =>
   S.Struct({
@@ -6565,7 +6762,11 @@ export const UpdateGameServerOutput = S.suspend(() =>
   identifier: "UpdateGameServerOutput",
 }) as any as S.Schema<UpdateGameServerOutput>;
 export interface UpdateGameServerGroupOutput {
-  GameServerGroup?: GameServerGroup;
+  GameServerGroup?: GameServerGroup & {
+    InstanceDefinitions: (InstanceDefinition & {
+      InstanceType: GameServerGroupInstanceType;
+    })[];
+  };
 }
 export const UpdateGameServerGroupOutput = S.suspend(() =>
   S.Struct({ GameServerGroup: S.optional(GameServerGroup) }).pipe(ns),
@@ -6573,7 +6774,12 @@ export const UpdateGameServerGroupOutput = S.suspend(() =>
   identifier: "UpdateGameServerGroupOutput",
 }) as any as S.Schema<UpdateGameServerGroupOutput>;
 export interface UpdateGameSessionOutput {
-  GameSession?: GameSession;
+  GameSession?: GameSession & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+  };
 }
 export const UpdateGameSessionOutput = S.suspend(() =>
   S.Struct({ GameSession: S.optional(GameSession) }).pipe(ns),
@@ -6615,7 +6821,12 @@ export const UpdateGameSessionQueueOutput = S.suspend(() =>
   identifier: "UpdateGameSessionQueueOutput",
 }) as any as S.Schema<UpdateGameSessionQueueOutput>;
 export interface UpdateMatchmakingConfigurationOutput {
-  Configuration?: MatchmakingConfiguration;
+  Configuration?: MatchmakingConfiguration & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+  };
 }
 export const UpdateMatchmakingConfigurationOutput = S.suspend(() =>
   S.Struct({ Configuration: S.optional(MatchmakingConfiguration) }).pipe(ns),
@@ -6623,7 +6834,12 @@ export const UpdateMatchmakingConfigurationOutput = S.suspend(() =>
   identifier: "UpdateMatchmakingConfigurationOutput",
 }) as any as S.Schema<UpdateMatchmakingConfigurationOutput>;
 export interface UpdateRuntimeConfigurationOutput {
-  RuntimeConfiguration?: RuntimeConfiguration;
+  RuntimeConfiguration?: RuntimeConfiguration & {
+    ServerProcesses: (ServerProcess & {
+      LaunchPath: LaunchPathStringModel;
+      ConcurrentExecutions: PositiveInteger;
+    })[];
+  };
 }
 export const UpdateRuntimeConfigurationOutput = S.suspend(() =>
   S.Struct({ RuntimeConfiguration: S.optional(RuntimeConfiguration) }).pipe(ns),
@@ -7059,7 +7275,18 @@ export const CreateBuildOutput = S.suspend(() =>
   identifier: "CreateBuildOutput",
 }) as any as S.Schema<CreateBuildOutput>;
 export interface CreateContainerFleetOutput {
-  ContainerFleet?: ContainerFleet;
+  ContainerFleet?: ContainerFleet & {
+    InstanceConnectionPortRange: ConnectionPortRange & {
+      FromPort: PortNumber;
+      ToPort: PortNumber;
+    };
+    InstanceInboundPermissions: (IpPermission & {
+      FromPort: PortNumber;
+      ToPort: PortNumber;
+      IpRange: IpRange;
+      Protocol: IpProtocol;
+    })[];
+  };
 }
 export const CreateContainerFleetOutput = S.suspend(() =>
   S.Struct({ ContainerFleet: S.optional(ContainerFleet) }).pipe(ns),
@@ -7187,7 +7414,12 @@ export const CreateGameServerGroupInput = S.suspend(() =>
   identifier: "CreateGameServerGroupInput",
 }) as any as S.Schema<CreateGameServerGroupInput>;
 export interface CreateGameSessionOutput {
-  GameSession?: GameSession;
+  GameSession?: GameSession & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+  };
 }
 export const CreateGameSessionOutput = S.suspend(() =>
   S.Struct({ GameSession: S.optional(GameSession) }).pipe(ns),
@@ -7203,7 +7435,12 @@ export const CreateGameSessionQueueOutput = S.suspend(() =>
   identifier: "CreateGameSessionQueueOutput",
 }) as any as S.Schema<CreateGameSessionQueueOutput>;
 export interface CreateMatchmakingConfigurationOutput {
-  Configuration?: MatchmakingConfiguration;
+  Configuration?: MatchmakingConfiguration & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+  };
 }
 export const CreateMatchmakingConfigurationOutput = S.suspend(() =>
   S.Struct({ Configuration: S.optional(MatchmakingConfiguration) }).pipe(ns),
@@ -7211,7 +7448,7 @@ export const CreateMatchmakingConfigurationOutput = S.suspend(() =>
   identifier: "CreateMatchmakingConfigurationOutput",
 }) as any as S.Schema<CreateMatchmakingConfigurationOutput>;
 export interface CreateMatchmakingRuleSetOutput {
-  RuleSet?: MatchmakingRuleSet;
+  RuleSet: MatchmakingRuleSet & { RuleSetBody: RuleSetBody };
 }
 export const CreateMatchmakingRuleSetOutput = S.suspend(() =>
   S.Struct({ RuleSet: S.optional(MatchmakingRuleSet) }).pipe(ns),
@@ -7243,7 +7480,11 @@ export const CreateScriptOutput = S.suspend(() =>
   identifier: "CreateScriptOutput",
 }) as any as S.Schema<CreateScriptOutput>;
 export interface DeleteGameServerGroupOutput {
-  GameServerGroup?: GameServerGroup;
+  GameServerGroup?: GameServerGroup & {
+    InstanceDefinitions: (InstanceDefinition & {
+      InstanceType: GameServerGroupInstanceType;
+    })[];
+  };
 }
 export const DeleteGameServerGroupOutput = S.suspend(() =>
   S.Struct({ GameServerGroup: S.optional(GameServerGroup) }).pipe(ns),
@@ -7275,7 +7516,14 @@ export const DescribeEC2InstanceLimitsOutput = S.suspend(() =>
   identifier: "DescribeEC2InstanceLimitsOutput",
 }) as any as S.Schema<DescribeEC2InstanceLimitsOutput>;
 export interface DescribeFleetAttributesOutput {
-  FleetAttributes?: FleetAttributes[];
+  FleetAttributes?: (FleetAttributes & {
+    CertificateConfiguration: CertificateConfiguration & {
+      CertificateType: CertificateType;
+    };
+    AnywhereConfiguration: AnywhereConfiguration & {
+      Cost: NonNegativeLimitedLengthDouble;
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeFleetAttributesOutput = S.suspend(() =>
@@ -7343,7 +7591,14 @@ export const DescribeGameServerInstancesOutput = S.suspend(() =>
   identifier: "DescribeGameServerInstancesOutput",
 }) as any as S.Schema<DescribeGameServerInstancesOutput>;
 export interface DescribeGameSessionDetailsOutput {
-  GameSessionDetails?: GameSessionDetail[];
+  GameSessionDetails?: (GameSessionDetail & {
+    GameSession: GameSession & {
+      GameProperties: (GameProperty & {
+        Key: GamePropertyKey;
+        Value: GamePropertyValue;
+      })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeGameSessionDetailsOutput = S.suspend(() =>
@@ -7367,7 +7622,12 @@ export const DescribeGameSessionQueuesOutput = S.suspend(() =>
   identifier: "DescribeGameSessionQueuesOutput",
 }) as any as S.Schema<DescribeGameSessionQueuesOutput>;
 export interface DescribeGameSessionsOutput {
-  GameSessions?: GameSession[];
+  GameSessions?: (GameSession & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeGameSessionsOutput = S.suspend(() =>
@@ -7391,7 +7651,9 @@ export const DescribeInstancesOutput = S.suspend(() =>
   identifier: "DescribeInstancesOutput",
 }) as any as S.Schema<DescribeInstancesOutput>;
 export interface DescribeScalingPoliciesOutput {
-  ScalingPolicies?: ScalingPolicy[];
+  ScalingPolicies?: (ScalingPolicy & {
+    TargetConfiguration: TargetConfiguration & { TargetValue: number };
+  })[];
   NextToken?: string;
 }
 export const DescribeScalingPoliciesOutput = S.suspend(() =>
@@ -7433,7 +7695,15 @@ export const PutScalingPolicyOutput = S.suspend(() =>
   identifier: "PutScalingPolicyOutput",
 }) as any as S.Schema<PutScalingPolicyOutput>;
 export interface StartGameSessionPlacementOutput {
-  GameSessionPlacement?: GameSessionPlacement;
+  GameSessionPlacement?: GameSessionPlacement & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+    PriorityConfigurationOverride: PriorityConfigurationOverride & {
+      LocationOrder: LocationOrderOverrideList;
+    };
+  };
 }
 export const StartGameSessionPlacementOutput = S.suspend(() =>
   S.Struct({ GameSessionPlacement: S.optional(GameSessionPlacement) }).pipe(ns),
@@ -7441,7 +7711,18 @@ export const StartGameSessionPlacementOutput = S.suspend(() =>
   identifier: "StartGameSessionPlacementOutput",
 }) as any as S.Schema<StartGameSessionPlacementOutput>;
 export interface UpdateContainerFleetOutput {
-  ContainerFleet?: ContainerFleet;
+  ContainerFleet?: ContainerFleet & {
+    InstanceConnectionPortRange: ConnectionPortRange & {
+      FromPort: PortNumber;
+      ToPort: PortNumber;
+    };
+    InstanceInboundPermissions: (IpPermission & {
+      FromPort: PortNumber;
+      ToPort: PortNumber;
+      IpRange: IpRange;
+      Protocol: IpProtocol;
+    })[];
+  };
 }
 export const UpdateContainerFleetOutput = S.suspend(() =>
   S.Struct({ ContainerFleet: S.optional(ContainerFleet) }).pipe(ns),
@@ -7564,7 +7845,14 @@ export const CreateContainerGroupDefinitionInput = S.suspend(() =>
   identifier: "CreateContainerGroupDefinitionInput",
 }) as any as S.Schema<CreateContainerGroupDefinitionInput>;
 export interface CreateFleetOutput {
-  FleetAttributes?: FleetAttributes;
+  FleetAttributes?: FleetAttributes & {
+    CertificateConfiguration: CertificateConfiguration & {
+      CertificateType: CertificateType;
+    };
+    AnywhereConfiguration: AnywhereConfiguration & {
+      Cost: NonNegativeLimitedLengthDouble;
+    };
+  };
   LocationStates?: LocationState[];
 }
 export const CreateFleetOutput = S.suspend(() =>
@@ -7576,7 +7864,11 @@ export const CreateFleetOutput = S.suspend(() =>
   identifier: "CreateFleetOutput",
 }) as any as S.Schema<CreateFleetOutput>;
 export interface CreateGameServerGroupOutput {
-  GameServerGroup?: GameServerGroup;
+  GameServerGroup?: GameServerGroup & {
+    InstanceDefinitions: (InstanceDefinition & {
+      InstanceType: GameServerGroupInstanceType;
+    })[];
+  };
 }
 export const CreateGameServerGroupOutput = S.suspend(() =>
   S.Struct({ GameServerGroup: S.optional(GameServerGroup) }).pipe(ns),
@@ -7592,7 +7884,18 @@ export const DescribeComputeOutput = S.suspend(() =>
   identifier: "DescribeComputeOutput",
 }) as any as S.Schema<DescribeComputeOutput>;
 export interface DescribeContainerFleetOutput {
-  ContainerFleet?: ContainerFleet;
+  ContainerFleet?: ContainerFleet & {
+    InstanceConnectionPortRange: ConnectionPortRange & {
+      FromPort: PortNumber;
+      ToPort: PortNumber;
+    };
+    InstanceInboundPermissions: (IpPermission & {
+      FromPort: PortNumber;
+      ToPort: PortNumber;
+      IpRange: IpRange;
+      Protocol: IpProtocol;
+    })[];
+  };
 }
 export const DescribeContainerFleetOutput = S.suspend(() =>
   S.Struct({ ContainerFleet: S.optional(ContainerFleet) }).pipe(ns),
@@ -7600,7 +7903,52 @@ export const DescribeContainerFleetOutput = S.suspend(() =>
   identifier: "DescribeContainerFleetOutput",
 }) as any as S.Schema<DescribeContainerFleetOutput>;
 export interface DescribeContainerGroupDefinitionOutput {
-  ContainerGroupDefinition?: ContainerGroupDefinition;
+  ContainerGroupDefinition?: ContainerGroupDefinition & {
+    Name: ContainerGroupDefinitionName;
+    GameServerContainerDefinition: GameServerContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    };
+    SupportContainerDefinitions: (SupportContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      HealthCheck: ContainerHealthCheck & {
+        Command: ContainerCommandStringList;
+      };
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    })[];
+  };
 }
 export const DescribeContainerGroupDefinitionOutput = S.suspend(() =>
   S.Struct({
@@ -7634,7 +7982,15 @@ export const DescribeFleetDeploymentOutput = S.suspend(() =>
   identifier: "DescribeFleetDeploymentOutput",
 }) as any as S.Schema<DescribeFleetDeploymentOutput>;
 export interface DescribeGameSessionPlacementOutput {
-  GameSessionPlacement?: GameSessionPlacement;
+  GameSessionPlacement?: GameSessionPlacement & {
+    GameProperties: (GameProperty & {
+      Key: GamePropertyKey;
+      Value: GamePropertyValue;
+    })[];
+    PriorityConfigurationOverride: PriorityConfigurationOverride & {
+      LocationOrder: LocationOrderOverrideList;
+    };
+  };
 }
 export const DescribeGameSessionPlacementOutput = S.suspend(() =>
   S.Struct({ GameSessionPlacement: S.optional(GameSessionPlacement) }).pipe(ns),
@@ -7662,7 +8018,52 @@ export const GetInstanceAccessOutput = S.suspend(() =>
 export type MatchmakingTicketList = MatchmakingTicket[];
 export const MatchmakingTicketList = S.Array(MatchmakingTicket);
 export interface CreateContainerGroupDefinitionOutput {
-  ContainerGroupDefinition?: ContainerGroupDefinition;
+  ContainerGroupDefinition?: ContainerGroupDefinition & {
+    Name: ContainerGroupDefinitionName;
+    GameServerContainerDefinition: GameServerContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    };
+    SupportContainerDefinitions: (SupportContainerDefinition & {
+      DependsOn: (ContainerDependency & {
+        ContainerName: NonZeroAnd128MaxAsciiString;
+        Condition: ContainerDependencyCondition;
+      })[];
+      MountPoints: (ContainerMountPoint & {
+        InstancePath: InstancePathString;
+      })[];
+      EnvironmentOverride: (ContainerEnvironment & {
+        Name: NonZeroAnd255MaxString;
+        Value: NonZeroAnd255MaxString;
+      })[];
+      HealthCheck: ContainerHealthCheck & {
+        Command: ContainerCommandStringList;
+      };
+      PortConfiguration: ContainerPortConfiguration & {
+        ContainerPortRanges: (ContainerPortRange & {
+          FromPort: PortNumber;
+          ToPort: PortNumber;
+          Protocol: IpProtocol;
+        })[];
+      };
+    })[];
+  };
 }
 export const CreateContainerGroupDefinitionOutput = S.suspend(() =>
   S.Struct({

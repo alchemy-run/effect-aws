@@ -738,7 +738,7 @@ export interface AssociateRepositoryRequest {
 export const AssociateRepositoryRequest = S.suspend(() =>
   S.Struct({
     Repository: Repository,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
     KMSKeyDetails: S.optional(KMSKeyDetails),
   }).pipe(
@@ -1102,7 +1102,7 @@ export const CreateCodeReviewRequest = S.suspend(() =>
     Name: S.String,
     RepositoryAssociationArn: S.String,
     Type: CodeReviewType,
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/codereviews" }),

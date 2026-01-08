@@ -110,6 +110,7 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type TunnelId = string;
+export type DeleteFlag = boolean;
 export type AmazonResourceName = string;
 export type ThingName = string;
 export type MaxResults = number;

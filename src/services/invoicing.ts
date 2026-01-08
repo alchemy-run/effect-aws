@@ -69,6 +69,7 @@ const rules = T.EndpointResolver((p, _) => {
 export type AccountIdString = string;
 export type InvoiceUnitName = string;
 export type DescriptionString = string;
+export type TaxInheritanceDisabledFlag = boolean;
 export type BasicStringWithoutSpace = string;
 export type SensitiveBasicStringWithoutSpace =
   | string
@@ -76,6 +77,7 @@ export type SensitiveBasicStringWithoutSpace =
 export type InvoiceUnitArnString = string;
 export type ProcurementPortalPreferenceArnString = string;
 export type StringWithoutNewLine = string;
+export type AsOfTimestamp = Date;
 export type NextTokenString = string;
 export type InvoiceSummariesMaxResults = number;
 export type MaxResultsInteger = number;
@@ -85,6 +87,7 @@ export type ResourceTagKey = string;
 export type BasicString = string;
 export type ResourceTagValue = string;
 export type EmailString = string;
+export type LastModifiedTimestamp = Date;
 export type Month = number;
 export type Year = number;
 export type CurrencyCode = string;
@@ -716,7 +719,7 @@ export const CreateProcurementPortalPreferenceRequest = S.suspend(() =>
     PurchaseOrderRetrievalEnabled: S.Boolean,
     Contacts: Contacts,
     ResourceTags: S.optional(ResourceTagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

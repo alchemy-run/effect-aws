@@ -416,7 +416,7 @@ export const CreateTaskInput = S.suspend(() =>
     command: Command,
     description: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/task" }),

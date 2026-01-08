@@ -214,7 +214,7 @@ export const CreateKxDatabaseRequest = S.suspend(() =>
     databaseName: S.String,
     description: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -244,7 +244,7 @@ export const CreateKxEnvironmentRequest = S.suspend(() =>
     description: S.optional(S.String),
     kmsKeyId: S.String,
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/kx/environments" }),
@@ -268,7 +268,7 @@ export interface CreateKxScalingGroupRequest {
 }
 export const CreateKxScalingGroupRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     scalingGroupName: S.String,
     hostType: S.String,
@@ -303,7 +303,7 @@ export const CreateKxUserRequest = S.suspend(() =>
     userName: S.String,
     iamRole: S.String,
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/kx/environments/{environmentId}/users" }),
@@ -349,7 +349,10 @@ export const DeleteKxClusterRequest = S.suspend(() =>
   S.Struct({
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -413,7 +416,10 @@ export const DeleteKxDatabaseRequest = S.suspend(() =>
   S.Struct({
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     databaseName: S.String.pipe(T.HttpLabel("databaseName")),
-    clientToken: S.String.pipe(T.HttpQuery("clientToken")),
+    clientToken: S.String.pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -447,7 +453,10 @@ export const DeleteKxDataviewRequest = S.suspend(() =>
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     databaseName: S.String.pipe(T.HttpLabel("databaseName")),
     dataviewName: S.String.pipe(T.HttpLabel("dataviewName")),
-    clientToken: S.String.pipe(T.HttpQuery("clientToken")),
+    clientToken: S.String.pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -477,7 +486,10 @@ export interface DeleteKxEnvironmentRequest {
 export const DeleteKxEnvironmentRequest = S.suspend(() =>
   S.Struct({
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/kx/environments/{environmentId}" }),
@@ -506,7 +518,10 @@ export const DeleteKxScalingGroupRequest = S.suspend(() =>
   S.Struct({
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     scalingGroupName: S.String.pipe(T.HttpLabel("scalingGroupName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -538,7 +553,10 @@ export const DeleteKxUserRequest = S.suspend(() =>
   S.Struct({
     userName: S.String.pipe(T.HttpLabel("userName")),
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -568,7 +586,10 @@ export const DeleteKxVolumeRequest = S.suspend(() =>
   S.Struct({
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     volumeName: S.String.pipe(T.HttpLabel("volumeName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -1205,7 +1226,7 @@ export const UpdateKxDatabaseRequest = S.suspend(() =>
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     databaseName: S.String.pipe(T.HttpLabel("databaseName")),
     description: S.optional(S.String),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1260,7 +1281,7 @@ export const UpdateKxDataviewRequest = S.suspend(() =>
     description: S.optional(S.String),
     changesetId: S.optional(S.String),
     segmentConfigurations: S.optional(KxDataviewSegmentConfigurationList),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1288,7 +1309,7 @@ export const UpdateKxEnvironmentRequest = S.suspend(() =>
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     name: S.optional(S.String),
     description: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/kx/environments/{environmentId}" }),
@@ -1313,7 +1334,7 @@ export const UpdateKxUserRequest = S.suspend(() =>
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     userName: S.String.pipe(T.HttpLabel("userName")),
     iamRole: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1353,7 +1374,7 @@ export const UpdateKxVolumeRequest = S.suspend(() =>
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     volumeName: S.String.pipe(T.HttpLabel("volumeName")),
     description: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     nas1Configuration: S.optional(KxNAS1Configuration),
   }).pipe(
     T.all(
@@ -1755,7 +1776,7 @@ export const CreateKxChangesetRequest = S.suspend(() =>
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     databaseName: S.String.pipe(T.HttpLabel("databaseName")),
     changeRequests: ChangeRequests,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1823,7 +1844,7 @@ export const CreateKxDataviewRequest = S.suspend(() =>
     readWrite: S.optional(S.Boolean),
     description: S.optional(S.String),
     tags: S.optional(TagMap),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1919,7 +1940,7 @@ export interface CreateKxVolumeRequest {
 }
 export const CreateKxVolumeRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     volumeType: KxVolumeType,
     volumeName: S.String,
@@ -2167,7 +2188,7 @@ export const UpdateKxClusterCodeConfigurationRequest = S.suspend(() =>
   S.Struct({
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     code: CodeConfiguration,
     initializationScript: S.optional(S.String),
     commandLineArguments: S.optional(KxCommandLineArguments),
@@ -2259,7 +2280,7 @@ export const UpdateKxClusterDatabasesRequest = S.suspend(() =>
   S.Struct({
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     databases: KxDatabaseConfigurations,
     deploymentConfiguration: S.optional(KxDeploymentConfiguration),
   }).pipe(
@@ -2885,7 +2906,7 @@ export interface CreateKxClusterRequest {
 }
 export const CreateKxClusterRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     clusterName: S.String,
     clusterType: KxClusterType,
@@ -3360,7 +3381,7 @@ export const UpdateKxEnvironmentNetworkRequest = S.suspend(() =>
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
     transitGatewayConfiguration: S.optional(TransitGatewayConfiguration),
     customDNSConfiguration: S.optional(CustomDNSConfiguration),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({

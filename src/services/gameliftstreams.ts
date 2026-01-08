@@ -181,7 +181,7 @@ export interface CreateStreamSessionConnectionInput {
 }
 export const CreateStreamSessionConnectionInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Identifier: S.String.pipe(T.HttpLabel("Identifier")),
     StreamSessionIdentifier: S.String.pipe(
       T.HttpLabel("StreamSessionIdentifier"),
@@ -570,7 +570,7 @@ export const CreateStreamGroupInput = S.suspend(() =>
     DefaultApplicationIdentifier: S.optional(S.String),
     LocationConfigurations: S.optional(LocationConfigurations),
     Tags: S.optional(Tags),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/streamgroups" }),
@@ -887,7 +887,7 @@ export interface StartStreamSessionInput {
 }
 export const StartStreamSessionInput = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     Identifier: S.String.pipe(T.HttpLabel("Identifier")),
     Protocol: Protocol,
@@ -960,7 +960,7 @@ export const CreateApplicationInput = S.suspend(() =>
     ApplicationLogPaths: S.optional(FilePaths),
     ApplicationLogOutputUri: S.optional(S.String),
     Tags: S.optional(Tags),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/applications" }),

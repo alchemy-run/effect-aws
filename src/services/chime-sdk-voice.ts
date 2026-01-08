@@ -105,6 +105,7 @@ export type SensitiveNonEmptyString = string | redacted.Redacted<string>;
 export type SensitiveString = string | redacted.Redacted<string>;
 export type GuidString = string;
 export type CallingName = string | redacted.Redacted<string>;
+export type Iso8601Timestamp = Date;
 export type ResultMax = number;
 export type NextTokenString = string;
 export type Arn = string | redacted.Redacted<string>;

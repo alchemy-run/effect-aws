@@ -139,7 +139,10 @@ export interface DeleteDeviceRequest {
 export const DeleteDeviceRequest = S.suspend(() =>
   S.Struct({
     id: S.String.pipe(T.HttpLabel("id")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/devices/{id}" }),
@@ -164,7 +167,10 @@ export interface DeleteEnvironmentRequest {
 export const DeleteEnvironmentRequest = S.suspend(() =>
   S.Struct({
     id: S.String.pipe(T.HttpLabel("id")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/environments/{id}" }),
@@ -193,7 +199,7 @@ export const DeregisterDeviceRequest = S.suspend(() =>
   S.Struct({
     id: S.String.pipe(T.HttpLabel("id")),
     targetDeviceStatus: S.optional(TargetDeviceStatus),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/deregister-device/{id}" }),
@@ -556,7 +562,7 @@ export const CreateEnvironmentRequest = S.suspend(() =>
     softwareSetUpdateMode: S.optional(SoftwareSetUpdateMode),
     desiredSoftwareSetId: S.optional(S.String),
     kmsKeyArn: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagsMap),
     deviceCreationTags: S.optional(DeviceCreationTagsMap),
   }).pipe(

@@ -100,6 +100,7 @@ export type QueueId = string;
 export type TagValue = string;
 export type ClientToken = string;
 export type DestinationPhoneNumber = string | redacted.Redacted<string>;
+export type Enabled = boolean;
 export type EncryptionType = string;
 export type EncryptionKey = string;
 export type XAmazonErrorType = string;

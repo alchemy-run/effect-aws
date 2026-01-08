@@ -99,6 +99,8 @@ export type MaxResultsGetComplianceSummary = number;
 export type PaginationToken = string;
 export type ResourcesPerPage = number;
 export type TagsPerPage = number;
+export type IncludeComplianceDetails = boolean;
+export type ExcludeCompliantResources = boolean;
 export type ResourceARN = string;
 export type MaxResultsForListRequiredTags = number;
 export type S3Bucket = string;
@@ -109,6 +111,7 @@ export type NonCompliantResources = number;
 export type ResourceType = string;
 export type CloudFormationResourceType = string;
 export type StatusCode = number;
+export type ComplianceStatus = boolean;
 
 //# Schemas
 export interface DescribeReportCreationInput {}

@@ -106,8 +106,6 @@ export type BoundedLengthString = string;
 export type EncryptionKeyID = string;
 export type Message = string;
 export type ErrorMessage = string;
-export type GenericLong = number;
-export type GenericDouble = number;
 
 //# Schemas
 export type FHIRVersion = "R4";
@@ -532,7 +530,7 @@ export const StartFHIRImportJobRequest = S.suspend(() =>
     JobOutputDataConfig: OutputDataConfig,
     DatastoreId: S.String,
     DataAccessRoleArn: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ValidationLevel: S.optional(ValidationLevel),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -619,7 +617,7 @@ export const CreateFHIRDatastoreRequest = S.suspend(() =>
     DatastoreTypeVersion: FHIRVersion,
     SseConfiguration: S.optional(SseConfiguration),
     PreloadDataConfig: S.optional(PreloadDataConfig),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
     IdentityProviderConfiguration: S.optional(IdentityProviderConfiguration),
   }).pipe(
@@ -661,7 +659,7 @@ export const StartFHIRExportJobRequest = S.suspend(() =>
     OutputDataConfig: OutputDataConfig,
     DatastoreId: S.String,
     DataAccessRoleArn: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

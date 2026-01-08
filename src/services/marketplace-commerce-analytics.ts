@@ -87,10 +87,12 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
+export type DataSetPublicationDate = Date;
 export type RoleNameArn = string;
 export type DestinationS3BucketName = string;
 export type DestinationS3Prefix = string;
 export type SnsTopicArn = string;
+export type FromDate = Date;
 export type OptionalKey = string;
 export type OptionalValue = string;
 export type DataSetRequestId = string;

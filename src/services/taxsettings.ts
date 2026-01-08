@@ -104,7 +104,6 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type AccountId = string;
-export type GenericString = string;
 export type MaxResults = number;
 export type PaginationTokenString = string;
 export type RegistrationId = string;
@@ -118,6 +117,7 @@ export type TaxDocumentName = string;
 export type CountryCode = string;
 export type State = string;
 export type ExemptionDocumentName = string;
+export type ExemptionFileBlob = Uint8Array;
 export type ErrorMessage = string | redacted.Redacted<string>;
 export type ErrorCode = string;
 export type AddressLine1 = string;
@@ -159,6 +159,7 @@ export type InheritanceObtainedReason = string;
 export type AccountName = string;
 export type Seller = string;
 export type S3Key = string;
+export type FileBlob = Uint8Array;
 export type FieldName = string;
 export type CcmCode = string;
 export type LegalNatureCode = string;

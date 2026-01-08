@@ -94,17 +94,14 @@ export type ProjectName = string;
 export type ProjectDescription = string;
 export type BuildTimeOut = number;
 export type TimeOut = number;
-export type WrapperInt = number;
 export type ReportGroupName = string;
 export type PageSize = number;
 export type Percentage = number;
 export type SensitiveNonEmptyString = string | redacted.Redacted<string>;
 export type SensitiveString = string | redacted.Redacted<string>;
 export type GitCloneDepth = number;
-export type WrapperLong = number;
 export type KeyInput = string;
 export type ValueInput = string;
-export type WrapperDouble = number;
 export type NonNegativeInt = number;
 
 //# Schemas

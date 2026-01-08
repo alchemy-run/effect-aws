@@ -198,6 +198,7 @@ export type ApiKeyCredentialPrefix = string;
 export type DiscoveryUrlType = string;
 export type MemoryStrategyId = string;
 export type ModelId = string;
+export type AdditionalModelRequestFields = unknown;
 export type S3BucketUri = string;
 export type AwsAccountId = string;
 export type OAuthCustomParametersKey = string;
@@ -423,7 +424,7 @@ export const CreateAgentRuntimeEndpointRequest = S.suspend(() =>
     name: SensitiveString,
     agentRuntimeVersion: S.optional(S.String),
     description: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -478,7 +479,7 @@ export const UpdateAgentRuntimeEndpointRequest = S.suspend(() =>
     endpointName: SensitiveString.pipe(T.HttpLabel("endpointName")),
     agentRuntimeVersion: S.optional(S.String),
     description: S.optional(S.String),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -504,7 +505,10 @@ export const DeleteAgentRuntimeEndpointRequest = S.suspend(() =>
   S.Struct({
     agentRuntimeId: S.String.pipe(T.HttpLabel("agentRuntimeId")),
     endpointName: SensitiveString.pipe(T.HttpLabel("endpointName")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -782,7 +786,7 @@ export const UpdateAgentRuntimeRequest = S.suspend(() =>
     protocolConfiguration: S.optional(ProtocolConfiguration),
     lifecycleConfiguration: S.optional(LifecycleConfiguration),
     environmentVariables: S.optional(EnvironmentVariablesMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/runtimes/{agentRuntimeId}/" }),
@@ -803,7 +807,10 @@ export interface DeleteAgentRuntimeRequest {
 export const DeleteAgentRuntimeRequest = S.suspend(() =>
   S.Struct({
     agentRuntimeId: S.String.pipe(T.HttpLabel("agentRuntimeId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/runtimes/{agentRuntimeId}/" }),
@@ -1002,7 +1009,10 @@ export interface DeleteBrowserRequest {
 export const DeleteBrowserRequest = S.suspend(() =>
   S.Struct({
     browserId: S.String.pipe(T.HttpLabel("browserId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({ method: "DELETE", uri: "/browsers/{browserId}" }),
@@ -1065,7 +1075,10 @@ export interface DeleteCodeInterpreterRequest {
 export const DeleteCodeInterpreterRequest = S.suspend(() =>
   S.Struct({
     codeInterpreterId: S.String.pipe(T.HttpLabel("codeInterpreterId")),
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
   }).pipe(
     T.all(
       T.Http({
@@ -1217,7 +1230,7 @@ export interface UpdateEvaluatorRequest {
 }
 export const UpdateEvaluatorRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     evaluatorId: S.String.pipe(T.HttpLabel("evaluatorId")),
     description: S.optional(SensitiveString),
     evaluatorConfig: S.optional(EvaluatorConfig),
@@ -1900,7 +1913,10 @@ export interface DeleteMemoryInput {
 }
 export const DeleteMemoryInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String).pipe(T.HttpQuery("clientToken")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     memoryId: S.String.pipe(T.HttpLabel("memoryId")),
   }).pipe(
     T.all(
@@ -2314,7 +2330,7 @@ export interface UpdateOnlineEvaluationConfigRequest {
 }
 export const UpdateOnlineEvaluationConfigRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     onlineEvaluationConfigId: S.String.pipe(
       T.HttpLabel("onlineEvaluationConfigId"),
     ),
@@ -2394,7 +2410,7 @@ export const CreatePolicyEngineRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
     description: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/policy-engines" }),
@@ -3339,7 +3355,7 @@ export const CreateCodeInterpreterRequest = S.suspend(() =>
     description: S.optional(SensitiveString),
     executionRoleArn: S.optional(S.String),
     networkConfiguration: CodeInterpreterNetworkConfiguration,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -3928,7 +3944,7 @@ export const StartPolicyGenerationRequest = S.suspend(() =>
     resource: Resource,
     content: Content,
     name: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -4730,7 +4746,7 @@ export const CreateBrowserRequest = S.suspend(() =>
     networkConfiguration: BrowserNetworkConfiguration,
     recording: S.optional(RecordingConfig),
     browserSigning: S.optional(BrowserSigningConfigInput),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -4952,7 +4968,7 @@ export const CreatePolicyRequest = S.suspend(() =>
     description: S.optional(SensitiveString),
     validationMode: S.optional(PolicyValidationMode),
     policyEngineId: S.String.pipe(T.HttpLabel("policyEngineId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -5098,7 +5114,7 @@ export const CreateGatewayRequest = S.suspend(() =>
   S.Struct({
     name: SensitiveString,
     description: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     roleArn: S.String,
     protocolType: GatewayProtocolType,
     protocolConfiguration: S.optional(GatewayProtocolConfiguration),
@@ -5315,7 +5331,7 @@ export interface CreateOnlineEvaluationConfigRequest {
 }
 export const CreateOnlineEvaluationConfigRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     onlineEvaluationConfigName: S.String,
     description: S.optional(SensitiveString),
     rule: Rule,
@@ -5911,7 +5927,7 @@ export const CreateAgentRuntimeRequest = S.suspend(() =>
     agentRuntimeArtifact: AgentRuntimeArtifact,
     roleArn: S.String,
     networkConfiguration: NetworkConfiguration,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     description: S.optional(SensitiveString),
     authorizerConfiguration: S.optional(AuthorizerConfiguration),
     requestHeaderConfiguration: S.optional(RequestHeaderConfiguration),
@@ -5941,7 +5957,7 @@ export interface CreateEvaluatorRequest {
 }
 export const CreateEvaluatorRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     evaluatorName: S.String,
     description: S.optional(SensitiveString),
     evaluatorConfig: EvaluatorConfig,
@@ -6010,7 +6026,7 @@ export interface UpdateMemoryInput {
 }
 export const UpdateMemoryInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     memoryId: S.String.pipe(T.HttpLabel("memoryId")),
     description: S.optional(SensitiveString),
     eventExpiryDuration: S.optional(S.Number),
@@ -6150,7 +6166,7 @@ export interface CreateMemoryInput {
 }
 export const CreateMemoryInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     description: S.optional(SensitiveString),
     encryptionKeyArn: S.optional(S.String),
@@ -6251,7 +6267,7 @@ export const CreateGatewayTargetRequest = S.suspend(() =>
     gatewayIdentifier: S.String.pipe(T.HttpLabel("gatewayIdentifier")),
     name: SensitiveString,
     description: S.optional(SensitiveString),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     targetConfiguration: TargetConfiguration,
     credentialProviderConfigurations: S.optional(
       CredentialProviderConfigurations,

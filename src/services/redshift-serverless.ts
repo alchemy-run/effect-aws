@@ -670,7 +670,7 @@ export const CreateReservationRequest = S.suspend(() =>
   S.Struct({
     capacity: S.Number,
     offeringId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

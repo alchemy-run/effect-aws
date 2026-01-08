@@ -185,7 +185,6 @@ export type BudgetName = string;
 export type RoleArn = string;
 export type ActionId = string;
 export type MaxResults = number;
-export type GenericString = string;
 export type MaxResultsBudgetNotifications = number;
 export type MaxResultsDescribeBudgets = number;
 export type AmazonResourceName = string;

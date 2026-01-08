@@ -254,7 +254,7 @@ export interface CancelQuantumTaskRequest {
 export const CancelQuantumTaskRequest = S.suspend(() =>
   S.Struct({
     quantumTaskArn: S.String.pipe(T.HttpLabel("quantumTaskArn")),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/quantum-task/{quantumTaskArn}/cancel" }),
@@ -287,7 +287,7 @@ export interface UpdateSpendingLimitRequest {
 export const UpdateSpendingLimitRequest = S.suspend(() =>
   S.Struct({
     spendingLimitArn: S.String.pipe(T.HttpLabel("spendingLimitArn")),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     spendingLimit: S.optional(S.String),
     timePeriod: S.optional(TimePeriod),
   }).pipe(
@@ -557,7 +557,7 @@ export interface CreateQuantumTaskRequest {
 }
 export const CreateQuantumTaskRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     deviceArn: S.String,
     deviceParameters: S.optional(S.String),
     shots: S.Number,
@@ -622,7 +622,7 @@ export interface CreateSpendingLimitRequest {
 }
 export const CreateSpendingLimitRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     deviceArn: S.String,
     spendingLimit: S.String,
     timePeriod: S.optional(TimePeriod),
@@ -1057,7 +1057,7 @@ export interface CreateJobRequest {
 }
 export const CreateJobRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     algorithmSpecification: AlgorithmSpecification,
     inputDataConfig: S.optional(InputConfigList),
     outputDataConfig: JobOutputDataConfig,

@@ -94,11 +94,13 @@ export type TaskId = string;
 export type SourceBackupId = string;
 export type Region = string;
 export type KmsKeyId = string;
+export type Flag = boolean;
 export type VolumeId = string;
 export type ResourceARN = string;
 export type S3AccessPointAttachmentName = string;
 export type Namespace = string;
 export type ArchivePath = string;
+export type BatchImportMetaDataOnCreate = boolean;
 export type Megabytes = number;
 export type DataRepositoryTaskPath = string;
 export type CapacityToRelease = number;
@@ -106,12 +108,14 @@ export type FileSystemTypeVersion = string;
 export type StorageCapacity = number;
 export type SubnetId = string;
 export type SecurityGroupId = string;
+export type CopyTagsToDataRepositoryAssociations = boolean;
 export type BackupId = string;
 export type SnapshotName = string;
 export type StorageVirtualMachineName = string;
 export type AdminPassword = string | redacted.Redacted<string>;
 export type VolumeName = string;
 export type DataRepositoryAssociationId = string;
+export type DeleteDataInFileSystem = boolean;
 export type FileCacheId = string;
 export type SnapshotId = string;
 export type StorageVirtualMachineId = string;
@@ -119,6 +123,7 @@ export type MaxResults = number;
 export type NextToken = string;
 export type LimitedMaxResults = number;
 export type VerboseFlag = string;
+export type IncludeShared = boolean;
 export type TagKey = string;
 export type TagValue = string;
 export type AccessPointPolicy = string;
@@ -141,6 +146,7 @@ export type SnapshotPolicy = string;
 export type VolumeCapacityBytes = number;
 export type IntegerNoMaxFromNegativeOne = number;
 export type IntegerRecordSizeKiB = number;
+export type ReadOnly = boolean;
 export type FilterValue = string;
 export type DataRepositoryTaskFilterValue = string;
 export type S3AccessPointAttachmentsFilterValue = string;
@@ -168,8 +174,10 @@ export type Aggregate = string;
 export type AggregateListMultiplier = number;
 export type IntegerNoMax = number;
 export type ProgressPercent = number;
+export type RequestTime = Date;
 export type TotalTransferBytes = number;
 export type RemainingTransferBytes = number;
+export type CreationTime = Date;
 export type AWSAccountId = string;
 export type SizeInBytes = number;
 export type NetworkInterfaceId = string;
@@ -185,10 +193,13 @@ export type LustreFileSystemMountName = string;
 export type UUID = string;
 export type VolumePath = string;
 export type RetentionPeriodValue = number;
+export type StartTime = Date;
+export type EndTime = Date;
 export type TotalConstituents = number;
 export type TotalCount = number;
 export type SucceededCount = number;
 export type FailedCount = number;
+export type LastUpdatedTime = Date;
 export type ReleasedCapacity = number;
 export type S3AccessPointAlias = string;
 export type ErrorCode = string;
@@ -300,7 +311,7 @@ export interface AssociateFileSystemAliasesRequest {
 }
 export const AssociateFileSystemAliasesRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FileSystemId: S.optional(S.String),
     Aliases: S.optional(AlternateDNSNames),
   }).pipe(
@@ -328,7 +339,7 @@ export interface CopySnapshotAndUpdateVolumeRequest {
 }
 export const CopySnapshotAndUpdateVolumeRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeId: S.optional(S.String),
     SourceSnapshotARN: S.optional(S.String),
     CopyStrategy: S.optional(OpenZFSCopyStrategy),
@@ -357,7 +368,7 @@ export interface CreateBackupRequest {
 export const CreateBackupRequest = S.suspend(() =>
   S.Struct({
     FileSystemId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
     VolumeId: S.optional(S.String),
   }).pipe(
@@ -792,7 +803,7 @@ export interface CreateFileSystemFromBackupRequest {
 export const CreateFileSystemFromBackupRequest = S.suspend(() =>
   S.Struct({
     BackupId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SubnetIds: S.optional(SubnetIds),
     SecurityGroupIds: S.optional(SecurityGroupIds),
     Tags: S.optional(Tags),
@@ -818,7 +829,7 @@ export interface CreateSnapshotRequest {
 }
 export const CreateSnapshotRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Name: S.optional(S.String),
     VolumeId: S.optional(S.String),
     Tags: S.optional(Tags),
@@ -1011,7 +1022,7 @@ export interface CreateVolumeFromBackupRequest {
 export const CreateVolumeFromBackupRequest = S.suspend(() =>
   S.Struct({
     BackupId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Name: S.optional(S.String),
     OntapConfiguration: S.optional(CreateOntapVolumeConfiguration),
     Tags: S.optional(Tags),
@@ -1028,7 +1039,7 @@ export interface DeleteBackupRequest {
 export const DeleteBackupRequest = S.suspend(() =>
   S.Struct({
     BackupId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1043,7 +1054,7 @@ export interface DeleteDataRepositoryAssociationRequest {
 export const DeleteDataRepositoryAssociationRequest = S.suspend(() =>
   S.Struct({
     AssociationId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     DeleteDataInFileSystem: S.optional(S.Boolean),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1058,7 +1069,7 @@ export interface DeleteFileCacheRequest {
 export const DeleteFileCacheRequest = S.suspend(() =>
   S.Struct({
     FileCacheId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1071,7 +1082,7 @@ export interface DeleteSnapshotRequest {
 }
 export const DeleteSnapshotRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SnapshotId: S.optional(S.String),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1085,7 +1096,7 @@ export interface DeleteStorageVirtualMachineRequest {
 }
 export const DeleteStorageVirtualMachineRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     StorageVirtualMachineId: S.optional(S.String),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1163,7 +1174,7 @@ export interface DescribeFileSystemAliasesRequest {
 }
 export const DescribeFileSystemAliasesRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FileSystemId: S.optional(S.String),
     MaxResults: S.optional(S.Number),
     NextToken: S.optional(S.String),
@@ -1205,7 +1216,7 @@ export interface DetachAndDeleteS3AccessPointRequest {
 }
 export const DetachAndDeleteS3AccessPointRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Name: S.optional(S.String),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1220,7 +1231,7 @@ export interface DisassociateFileSystemAliasesRequest {
 }
 export const DisassociateFileSystemAliasesRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FileSystemId: S.optional(S.String),
     Aliases: S.optional(AlternateDNSNames),
   }).pipe(
@@ -1252,7 +1263,7 @@ export interface ReleaseFileSystemNfsV3LocksRequest {
 export const ReleaseFileSystemNfsV3LocksRequest = S.suspend(() =>
   S.Struct({
     FileSystemId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1267,7 +1278,7 @@ export interface RestoreVolumeFromSnapshotRequest {
 }
 export const RestoreVolumeFromSnapshotRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeId: S.optional(S.String),
     SnapshotId: S.optional(S.String),
     Options: S.optional(RestoreOpenZFSVolumeOptions),
@@ -1283,7 +1294,7 @@ export interface StartMisconfiguredStateRecoveryRequest {
 }
 export const StartMisconfiguredStateRecoveryRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FileSystemId: S.optional(S.String),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -1365,7 +1376,7 @@ export interface UpdateDataRepositoryAssociationRequest {
 export const UpdateDataRepositoryAssociationRequest = S.suspend(() =>
   S.Struct({
     AssociationId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ImportedFileChunkSize: S.optional(S.Number),
     S3: S.optional(S3DataRepositoryConfiguration),
   }).pipe(
@@ -1381,7 +1392,7 @@ export interface UpdateSharedVpcConfigurationRequest {
 export const UpdateSharedVpcConfigurationRequest = S.suspend(() =>
   S.Struct({
     EnableFsxRouteTableUpdatesFromParticipantAccounts: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1395,7 +1406,7 @@ export interface UpdateSnapshotRequest {
 }
 export const UpdateSnapshotRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Name: S.optional(S.String),
     SnapshotId: S.optional(S.String),
   }).pipe(
@@ -2346,7 +2357,7 @@ export interface CopyBackupRequest {
 }
 export const CopyBackupRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     SourceBackupId: S.optional(S.String),
     SourceRegion: S.optional(S.String),
     KmsKeyId: S.optional(S.String),
@@ -2372,7 +2383,7 @@ export const CreateStorageVirtualMachineRequest = S.suspend(() =>
     ActiveDirectoryConfiguration: S.optional(
       CreateSvmActiveDirectoryConfiguration,
     ),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FileSystemId: S.optional(S.String),
     Name: S.optional(S.String),
     SvmAdminPassword: S.optional(SensitiveString),
@@ -2434,7 +2445,7 @@ export interface DeleteFileSystemRequest {
 export const DeleteFileSystemRequest = S.suspend(() =>
   S.Struct({
     FileSystemId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     WindowsConfiguration: S.optional(DeleteFileSystemWindowsConfiguration),
     LustreConfiguration: S.optional(DeleteFileSystemLustreConfiguration),
     OpenZFSConfiguration: S.optional(DeleteFileSystemOpenZFSConfiguration),
@@ -2476,7 +2487,7 @@ export interface DeleteVolumeRequest {
 }
 export const DeleteVolumeRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeId: S.optional(S.String),
     OntapConfiguration: S.optional(DeleteVolumeOntapConfiguration),
     OpenZFSConfiguration: S.optional(DeleteVolumeOpenZFSConfiguration),
@@ -2532,7 +2543,57 @@ export const DescribeFileSystemAliasesResponse = S.suspend(() =>
   identifier: "DescribeFileSystemAliasesResponse",
 }) as any as S.Schema<DescribeFileSystemAliasesResponse>;
 export interface DescribeFileSystemsResponse {
-  FileSystems?: FileSystem[];
+  FileSystems?: (FileSystem & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    WindowsConfiguration: WindowsFileSystemConfiguration & {
+      AuditLogConfiguration: WindowsAuditLogConfiguration & {
+        FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+      };
+      FsrmConfiguration: WindowsFsrmConfiguration & {
+        FsrmServiceEnabled: Flag;
+      };
+    };
+    LustreConfiguration: LustreFileSystemConfiguration & {
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+      MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+        Mode: MetadataConfigurationMode;
+      };
+    };
+    AdministrativeActions: (AdministrativeAction & {
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeFileSystemsResponse = S.suspend(() =>
@@ -2638,7 +2699,7 @@ export const DisassociateFileSystemAliasesResponse = S.suspend(() =>
   identifier: "DisassociateFileSystemAliasesResponse",
 }) as any as S.Schema<DisassociateFileSystemAliasesResponse>;
 export interface ListTagsForResourceResponse {
-  Tags?: Tag[];
+  Tags?: (Tag & { Key: TagKey; Value: TagValue })[];
   NextToken?: string;
 }
 export const ListTagsForResourceResponse = S.suspend(() =>
@@ -2647,7 +2708,57 @@ export const ListTagsForResourceResponse = S.suspend(() =>
   identifier: "ListTagsForResourceResponse",
 }) as any as S.Schema<ListTagsForResourceResponse>;
 export interface ReleaseFileSystemNfsV3LocksResponse {
-  FileSystem?: FileSystem;
+  FileSystem?: FileSystem & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    WindowsConfiguration: WindowsFileSystemConfiguration & {
+      AuditLogConfiguration: WindowsAuditLogConfiguration & {
+        FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+      };
+      FsrmConfiguration: WindowsFsrmConfiguration & {
+        FsrmServiceEnabled: Flag;
+      };
+    };
+    LustreConfiguration: LustreFileSystemConfiguration & {
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+      MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+        Mode: MetadataConfigurationMode;
+      };
+    };
+    AdministrativeActions: (AdministrativeAction & {
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+  };
 }
 export const ReleaseFileSystemNfsV3LocksResponse = S.suspend(() =>
   S.Struct({ FileSystem: S.optional(FileSystem) }),
@@ -2663,7 +2774,57 @@ export const AdministrativeActions = S.Array(
 export interface RestoreVolumeFromSnapshotResponse {
   VolumeId?: string;
   Lifecycle?: VolumeLifecycle;
-  AdministrativeActions?: AdministrativeAction[];
+  AdministrativeActions?: (AdministrativeAction & {
+    TargetFileSystemValues: FileSystem & {
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      WindowsConfiguration: WindowsFileSystemConfiguration & {
+        AuditLogConfiguration: WindowsAuditLogConfiguration & {
+          FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        };
+        FsrmConfiguration: WindowsFsrmConfiguration & {
+          FsrmServiceEnabled: Flag;
+        };
+      };
+      LustreConfiguration: LustreFileSystemConfiguration & {
+        LogConfiguration: LustreLogConfiguration & {
+          Level: LustreAccessAuditLogLevel;
+        };
+        MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+          Mode: MetadataConfigurationMode;
+        };
+      };
+    };
+    TargetVolumeValues: Volume & {
+      OntapConfiguration: OntapVolumeConfiguration & {
+        SnaplockConfiguration: SnaplockConfiguration & {
+          AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+          RetentionPeriod: SnaplockRetentionPeriod & {
+            DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          };
+        };
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+        NfsExports: (OpenZFSNfsExport & {
+          ClientConfigurations: (OpenZFSClientConfiguration & {
+            Clients: OpenZFSClients;
+            Options: OpenZFSNfsExportOptions;
+          })[];
+        })[];
+        UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+          Type: OpenZFSQuotaType;
+          Id: IntegerNoMax;
+          StorageCapacityQuotaGiB: IntegerNoMax;
+        })[];
+      };
+    };
+    TargetSnapshotValues: Snapshot & {
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+  })[];
 }
 export const RestoreVolumeFromSnapshotResponse = S.suspend(() =>
   S.Struct({
@@ -2675,7 +2836,57 @@ export const RestoreVolumeFromSnapshotResponse = S.suspend(() =>
   identifier: "RestoreVolumeFromSnapshotResponse",
 }) as any as S.Schema<RestoreVolumeFromSnapshotResponse>;
 export interface StartMisconfiguredStateRecoveryResponse {
-  FileSystem?: FileSystem;
+  FileSystem?: FileSystem & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    WindowsConfiguration: WindowsFileSystemConfiguration & {
+      AuditLogConfiguration: WindowsAuditLogConfiguration & {
+        FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+      };
+      FsrmConfiguration: WindowsFsrmConfiguration & {
+        FsrmServiceEnabled: Flag;
+      };
+    };
+    LustreConfiguration: LustreFileSystemConfiguration & {
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+      MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+        Mode: MetadataConfigurationMode;
+      };
+    };
+    AdministrativeActions: (AdministrativeAction & {
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+  };
 }
 export const StartMisconfiguredStateRecoveryResponse = S.suspend(() =>
   S.Struct({ FileSystem: S.optional(FileSystem) }),
@@ -2737,7 +2948,10 @@ export const DataRepositoryAssociation = S.suspend(() =>
   identifier: "DataRepositoryAssociation",
 }) as any as S.Schema<DataRepositoryAssociation>;
 export interface UpdateDataRepositoryAssociationResponse {
-  Association?: DataRepositoryAssociation;
+  Association?: DataRepositoryAssociation & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    NFS: NFSDataRepositoryConfiguration & { Version: NfsVersion };
+  };
 }
 export const UpdateDataRepositoryAssociationResponse = S.suspend(() =>
   S.Struct({ Association: S.optional(DataRepositoryAssociation) }),
@@ -2752,7 +2966,7 @@ export interface UpdateFileCacheRequest {
 export const UpdateFileCacheRequest = S.suspend(() =>
   S.Struct({
     FileCacheId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     LustreConfiguration: S.optional(UpdateFileCacheLustreConfiguration),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -2807,7 +3021,57 @@ export const Snapshot = S.suspend(() =>
   }),
 ).annotations({ identifier: "Snapshot" }) as any as S.Schema<Snapshot>;
 export interface UpdateSnapshotResponse {
-  Snapshot?: Snapshot;
+  Snapshot?: Snapshot & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    AdministrativeActions: (AdministrativeAction & {
+      TargetFileSystemValues: FileSystem & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        WindowsConfiguration: WindowsFileSystemConfiguration & {
+          AuditLogConfiguration: WindowsAuditLogConfiguration & {
+            FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          };
+          FsrmConfiguration: WindowsFsrmConfiguration & {
+            FsrmServiceEnabled: Flag;
+          };
+        };
+        LustreConfiguration: LustreFileSystemConfiguration & {
+          LogConfiguration: LustreLogConfiguration & {
+            Level: LustreAccessAuditLogLevel;
+          };
+          MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+            Mode: MetadataConfigurationMode;
+          };
+        };
+      };
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+    })[];
+  };
 }
 export const UpdateSnapshotResponse = S.suspend(() =>
   S.Struct({ Snapshot: S.optional(Snapshot) }),
@@ -2825,7 +3089,7 @@ export const UpdateStorageVirtualMachineRequest = S.suspend(() =>
     ActiveDirectoryConfiguration: S.optional(
       UpdateSvmActiveDirectoryConfiguration,
     ),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     StorageVirtualMachineId: S.optional(S.String),
     SvmAdminPassword: S.optional(SensitiveString),
   }).pipe(
@@ -3486,7 +3750,123 @@ export const AssociateFileSystemAliasesResponse = S.suspend(() =>
   identifier: "AssociateFileSystemAliasesResponse",
 }) as any as S.Schema<AssociateFileSystemAliasesResponse>;
 export interface CopyBackupResponse {
-  Backup?: Backup;
+  Backup?: Backup & {
+    BackupId: BackupId;
+    Lifecycle: BackupLifecycle;
+    Type: BackupType;
+    CreationTime: CreationTime;
+    FileSystem: FileSystem & {
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      WindowsConfiguration: WindowsFileSystemConfiguration & {
+        AuditLogConfiguration: WindowsAuditLogConfiguration & {
+          FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        };
+        FsrmConfiguration: WindowsFsrmConfiguration & {
+          FsrmServiceEnabled: Flag;
+        };
+      };
+      LustreConfiguration: LustreFileSystemConfiguration & {
+        LogConfiguration: LustreLogConfiguration & {
+          Level: LustreAccessAuditLogLevel;
+        };
+        MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+          Mode: MetadataConfigurationMode;
+        };
+      };
+      AdministrativeActions: (AdministrativeAction & {
+        TargetVolumeValues: Volume & {
+          OntapConfiguration: OntapVolumeConfiguration & {
+            SnaplockConfiguration: SnaplockConfiguration & {
+              AutocommitPeriod: AutocommitPeriod & {
+                Type: AutocommitPeriodType;
+              };
+              RetentionPeriod: SnaplockRetentionPeriod & {
+                DefaultRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+                MinimumRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+                MaximumRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+              };
+            };
+          };
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+          OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+            NfsExports: (OpenZFSNfsExport & {
+              ClientConfigurations: (OpenZFSClientConfiguration & {
+                Clients: OpenZFSClients;
+                Options: OpenZFSNfsExportOptions;
+              })[];
+            })[];
+            UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+              Type: OpenZFSQuotaType;
+              Id: IntegerNoMax;
+              StorageCapacityQuotaGiB: IntegerNoMax;
+            })[];
+          };
+        };
+        TargetSnapshotValues: Snapshot & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+      })[];
+    };
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    Volume: Volume & {
+      OntapConfiguration: OntapVolumeConfiguration & {
+        SnaplockConfiguration: SnaplockConfiguration & {
+          AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+          RetentionPeriod: SnaplockRetentionPeriod & {
+            DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          };
+        };
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      AdministrativeActions: (AdministrativeAction & {
+        TargetFileSystemValues: FileSystem & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+          WindowsConfiguration: WindowsFileSystemConfiguration & {
+            AuditLogConfiguration: WindowsAuditLogConfiguration & {
+              FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+              FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            };
+            FsrmConfiguration: WindowsFsrmConfiguration & {
+              FsrmServiceEnabled: Flag;
+            };
+          };
+          LustreConfiguration: LustreFileSystemConfiguration & {
+            LogConfiguration: LustreLogConfiguration & {
+              Level: LustreAccessAuditLogLevel;
+            };
+            MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+              Mode: MetadataConfigurationMode;
+            };
+          };
+        };
+        TargetSnapshotValues: Snapshot & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+      })[];
+      OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+        NfsExports: (OpenZFSNfsExport & {
+          ClientConfigurations: (OpenZFSClientConfiguration & {
+            Clients: OpenZFSClients;
+            Options: OpenZFSNfsExportOptions;
+          })[];
+        })[];
+        UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+          Type: OpenZFSQuotaType;
+          Id: IntegerNoMax;
+          StorageCapacityQuotaGiB: IntegerNoMax;
+        })[];
+      };
+    };
+  };
 }
 export const CopyBackupResponse = S.suspend(() =>
   S.Struct({ Backup: S.optional(Backup) }),
@@ -3511,7 +3891,7 @@ export const CreateDataRepositoryAssociationRequest = S.suspend(() =>
     BatchImportMetaDataOnCreate: S.optional(S.Boolean),
     ImportedFileChunkSize: S.optional(S.Number),
     S3: S.optional(S3DataRepositoryConfiguration),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -3535,7 +3915,7 @@ export const CreateDataRepositoryTaskRequest = S.suspend(() =>
     Paths: S.optional(DataRepositoryTaskPaths),
     FileSystemId: S.optional(S.String),
     Report: S.optional(CompletionReport),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
     CapacityToRelease: S.optional(S.Number),
     ReleaseConfiguration: S.optional(ReleaseConfiguration),
@@ -3560,7 +3940,7 @@ export interface CreateFileCacheRequest {
 }
 export const CreateFileCacheRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FileCacheType: S.optional(FileCacheType),
     FileCacheTypeVersion: S.optional(S.String),
     StorageCapacity: S.optional(S.Number),
@@ -3597,7 +3977,7 @@ export interface CreateFileSystemRequest {
 }
 export const CreateFileSystemRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FileSystemType: S.optional(FileSystemType),
     StorageCapacity: S.optional(S.Number),
     StorageType: S.optional(StorageType),
@@ -3618,7 +3998,123 @@ export const CreateFileSystemRequest = S.suspend(() =>
   identifier: "CreateFileSystemRequest",
 }) as any as S.Schema<CreateFileSystemRequest>;
 export interface DescribeBackupsResponse {
-  Backups?: Backup[];
+  Backups?: (Backup & {
+    BackupId: BackupId;
+    Lifecycle: BackupLifecycle;
+    Type: BackupType;
+    CreationTime: CreationTime;
+    FileSystem: FileSystem & {
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      WindowsConfiguration: WindowsFileSystemConfiguration & {
+        AuditLogConfiguration: WindowsAuditLogConfiguration & {
+          FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        };
+        FsrmConfiguration: WindowsFsrmConfiguration & {
+          FsrmServiceEnabled: Flag;
+        };
+      };
+      LustreConfiguration: LustreFileSystemConfiguration & {
+        LogConfiguration: LustreLogConfiguration & {
+          Level: LustreAccessAuditLogLevel;
+        };
+        MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+          Mode: MetadataConfigurationMode;
+        };
+      };
+      AdministrativeActions: (AdministrativeAction & {
+        TargetVolumeValues: Volume & {
+          OntapConfiguration: OntapVolumeConfiguration & {
+            SnaplockConfiguration: SnaplockConfiguration & {
+              AutocommitPeriod: AutocommitPeriod & {
+                Type: AutocommitPeriodType;
+              };
+              RetentionPeriod: SnaplockRetentionPeriod & {
+                DefaultRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+                MinimumRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+                MaximumRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+              };
+            };
+          };
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+          OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+            NfsExports: (OpenZFSNfsExport & {
+              ClientConfigurations: (OpenZFSClientConfiguration & {
+                Clients: OpenZFSClients;
+                Options: OpenZFSNfsExportOptions;
+              })[];
+            })[];
+            UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+              Type: OpenZFSQuotaType;
+              Id: IntegerNoMax;
+              StorageCapacityQuotaGiB: IntegerNoMax;
+            })[];
+          };
+        };
+        TargetSnapshotValues: Snapshot & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+      })[];
+    };
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    Volume: Volume & {
+      OntapConfiguration: OntapVolumeConfiguration & {
+        SnaplockConfiguration: SnaplockConfiguration & {
+          AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+          RetentionPeriod: SnaplockRetentionPeriod & {
+            DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          };
+        };
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      AdministrativeActions: (AdministrativeAction & {
+        TargetFileSystemValues: FileSystem & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+          WindowsConfiguration: WindowsFileSystemConfiguration & {
+            AuditLogConfiguration: WindowsAuditLogConfiguration & {
+              FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+              FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            };
+            FsrmConfiguration: WindowsFsrmConfiguration & {
+              FsrmServiceEnabled: Flag;
+            };
+          };
+          LustreConfiguration: LustreFileSystemConfiguration & {
+            LogConfiguration: LustreLogConfiguration & {
+              Level: LustreAccessAuditLogLevel;
+            };
+            MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+              Mode: MetadataConfigurationMode;
+            };
+          };
+        };
+        TargetSnapshotValues: Snapshot & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+      })[];
+      OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+        NfsExports: (OpenZFSNfsExport & {
+          ClientConfigurations: (OpenZFSClientConfiguration & {
+            Clients: OpenZFSClients;
+            Options: OpenZFSNfsExportOptions;
+          })[];
+        })[];
+        UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+          Type: OpenZFSQuotaType;
+          Id: IntegerNoMax;
+          StorageCapacityQuotaGiB: IntegerNoMax;
+        })[];
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeBackupsResponse = S.suspend(() =>
@@ -3627,7 +4123,57 @@ export const DescribeBackupsResponse = S.suspend(() =>
   identifier: "DescribeBackupsResponse",
 }) as any as S.Schema<DescribeBackupsResponse>;
 export interface DescribeSnapshotsResponse {
-  Snapshots?: Snapshot[];
+  Snapshots?: (Snapshot & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    AdministrativeActions: (AdministrativeAction & {
+      TargetFileSystemValues: FileSystem & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        WindowsConfiguration: WindowsFileSystemConfiguration & {
+          AuditLogConfiguration: WindowsAuditLogConfiguration & {
+            FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          };
+          FsrmConfiguration: WindowsFsrmConfiguration & {
+            FsrmServiceEnabled: Flag;
+          };
+        };
+        LustreConfiguration: LustreFileSystemConfiguration & {
+          LogConfiguration: LustreLogConfiguration & {
+            Level: LustreAccessAuditLogLevel;
+          };
+          MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+            Mode: MetadataConfigurationMode;
+          };
+        };
+      };
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+    })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeSnapshotsResponse = S.suspend(() =>
@@ -3639,7 +4185,9 @@ export const DescribeSnapshotsResponse = S.suspend(() =>
   identifier: "DescribeSnapshotsResponse",
 }) as any as S.Schema<DescribeSnapshotsResponse>;
 export interface DescribeStorageVirtualMachinesResponse {
-  StorageVirtualMachines?: StorageVirtualMachine[];
+  StorageVirtualMachines?: (StorageVirtualMachine & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+  })[];
   NextToken?: string;
 }
 export const DescribeStorageVirtualMachinesResponse = S.suspend(() =>
@@ -3651,7 +4199,57 @@ export const DescribeStorageVirtualMachinesResponse = S.suspend(() =>
   identifier: "DescribeStorageVirtualMachinesResponse",
 }) as any as S.Schema<DescribeStorageVirtualMachinesResponse>;
 export interface DescribeVolumesResponse {
-  Volumes?: Volume[];
+  Volumes?: (Volume & {
+    OntapConfiguration: OntapVolumeConfiguration & {
+      SnaplockConfiguration: SnaplockConfiguration & {
+        AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+        RetentionPeriod: SnaplockRetentionPeriod & {
+          DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+        };
+      };
+    };
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    AdministrativeActions: (AdministrativeAction & {
+      TargetFileSystemValues: FileSystem & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        WindowsConfiguration: WindowsFileSystemConfiguration & {
+          AuditLogConfiguration: WindowsAuditLogConfiguration & {
+            FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          };
+          FsrmConfiguration: WindowsFsrmConfiguration & {
+            FsrmServiceEnabled: Flag;
+          };
+        };
+        LustreConfiguration: LustreFileSystemConfiguration & {
+          LogConfiguration: LustreLogConfiguration & {
+            Level: LustreAccessAuditLogLevel;
+          };
+          MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+            Mode: MetadataConfigurationMode;
+          };
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+    OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+      NfsExports: (OpenZFSNfsExport & {
+        ClientConfigurations: (OpenZFSClientConfiguration & {
+          Clients: OpenZFSClients;
+          Options: OpenZFSNfsExportOptions;
+        })[];
+      })[];
+      UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+        Type: OpenZFSQuotaType;
+        Id: IntegerNoMax;
+        StorageCapacityQuotaGiB: IntegerNoMax;
+      })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeVolumesResponse = S.suspend(() =>
@@ -3726,7 +4324,16 @@ export const FileCache = S.suspend(() =>
   }),
 ).annotations({ identifier: "FileCache" }) as any as S.Schema<FileCache>;
 export interface UpdateFileCacheResponse {
-  FileCache?: FileCache;
+  FileCache?: FileCache & {
+    LustreConfiguration: FileCacheLustreConfiguration & {
+      MetadataConfiguration: FileCacheLustreMetadataConfiguration & {
+        StorageCapacity: MetadataStorageCapacity;
+      };
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+    };
+  };
 }
 export const UpdateFileCacheResponse = S.suspend(() =>
   S.Struct({ FileCache: S.optional(FileCache) }),
@@ -3748,7 +4355,7 @@ export interface UpdateFileSystemRequest {
 export const UpdateFileSystemRequest = S.suspend(() =>
   S.Struct({
     FileSystemId: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     StorageCapacity: S.optional(S.Number),
     WindowsConfiguration: S.optional(UpdateFileSystemWindowsConfiguration),
     LustreConfiguration: S.optional(UpdateFileSystemLustreConfiguration),
@@ -3764,7 +4371,9 @@ export const UpdateFileSystemRequest = S.suspend(() =>
   identifier: "UpdateFileSystemRequest",
 }) as any as S.Schema<UpdateFileSystemRequest>;
 export interface UpdateStorageVirtualMachineResponse {
-  StorageVirtualMachine?: StorageVirtualMachine;
+  StorageVirtualMachine?: StorageVirtualMachine & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+  };
 }
 export const UpdateStorageVirtualMachineResponse = S.suspend(() =>
   S.Struct({ StorageVirtualMachine: S.optional(StorageVirtualMachine) }),
@@ -3780,7 +4389,7 @@ export interface UpdateVolumeRequest {
 }
 export const UpdateVolumeRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeId: S.optional(S.String),
     OntapConfiguration: S.optional(UpdateOntapVolumeConfiguration),
     Name: S.optional(S.String),
@@ -3997,7 +4606,57 @@ export const ServiceLimit = S.Literal(
 export interface CopySnapshotAndUpdateVolumeResponse {
   VolumeId?: string;
   Lifecycle?: VolumeLifecycle;
-  AdministrativeActions?: AdministrativeAction[];
+  AdministrativeActions?: (AdministrativeAction & {
+    TargetFileSystemValues: FileSystem & {
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      WindowsConfiguration: WindowsFileSystemConfiguration & {
+        AuditLogConfiguration: WindowsAuditLogConfiguration & {
+          FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        };
+        FsrmConfiguration: WindowsFsrmConfiguration & {
+          FsrmServiceEnabled: Flag;
+        };
+      };
+      LustreConfiguration: LustreFileSystemConfiguration & {
+        LogConfiguration: LustreLogConfiguration & {
+          Level: LustreAccessAuditLogLevel;
+        };
+        MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+          Mode: MetadataConfigurationMode;
+        };
+      };
+    };
+    TargetVolumeValues: Volume & {
+      OntapConfiguration: OntapVolumeConfiguration & {
+        SnaplockConfiguration: SnaplockConfiguration & {
+          AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+          RetentionPeriod: SnaplockRetentionPeriod & {
+            DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          };
+        };
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+        NfsExports: (OpenZFSNfsExport & {
+          ClientConfigurations: (OpenZFSClientConfiguration & {
+            Clients: OpenZFSClients;
+            Options: OpenZFSNfsExportOptions;
+          })[];
+        })[];
+        UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+          Type: OpenZFSQuotaType;
+          Id: IntegerNoMax;
+          StorageCapacityQuotaGiB: IntegerNoMax;
+        })[];
+      };
+    };
+    TargetSnapshotValues: Snapshot & {
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    };
+  })[];
 }
 export const CopySnapshotAndUpdateVolumeResponse = S.suspend(() =>
   S.Struct({
@@ -4018,7 +4677,7 @@ export interface CreateAndAttachS3AccessPointRequest {
 }
 export const CreateAndAttachS3AccessPointRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Name: S.optional(S.String),
     Type: S.optional(S3AccessPointAttachmentType),
     OpenZFSConfiguration: S.optional(
@@ -4035,7 +4694,123 @@ export const CreateAndAttachS3AccessPointRequest = S.suspend(() =>
   identifier: "CreateAndAttachS3AccessPointRequest",
 }) as any as S.Schema<CreateAndAttachS3AccessPointRequest>;
 export interface CreateBackupResponse {
-  Backup?: Backup;
+  Backup?: Backup & {
+    BackupId: BackupId;
+    Lifecycle: BackupLifecycle;
+    Type: BackupType;
+    CreationTime: CreationTime;
+    FileSystem: FileSystem & {
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      WindowsConfiguration: WindowsFileSystemConfiguration & {
+        AuditLogConfiguration: WindowsAuditLogConfiguration & {
+          FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        };
+        FsrmConfiguration: WindowsFsrmConfiguration & {
+          FsrmServiceEnabled: Flag;
+        };
+      };
+      LustreConfiguration: LustreFileSystemConfiguration & {
+        LogConfiguration: LustreLogConfiguration & {
+          Level: LustreAccessAuditLogLevel;
+        };
+        MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+          Mode: MetadataConfigurationMode;
+        };
+      };
+      AdministrativeActions: (AdministrativeAction & {
+        TargetVolumeValues: Volume & {
+          OntapConfiguration: OntapVolumeConfiguration & {
+            SnaplockConfiguration: SnaplockConfiguration & {
+              AutocommitPeriod: AutocommitPeriod & {
+                Type: AutocommitPeriodType;
+              };
+              RetentionPeriod: SnaplockRetentionPeriod & {
+                DefaultRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+                MinimumRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+                MaximumRetention: RetentionPeriod & {
+                  Type: RetentionPeriodType;
+                };
+              };
+            };
+          };
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+          OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+            NfsExports: (OpenZFSNfsExport & {
+              ClientConfigurations: (OpenZFSClientConfiguration & {
+                Clients: OpenZFSClients;
+                Options: OpenZFSNfsExportOptions;
+              })[];
+            })[];
+            UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+              Type: OpenZFSQuotaType;
+              Id: IntegerNoMax;
+              StorageCapacityQuotaGiB: IntegerNoMax;
+            })[];
+          };
+        };
+        TargetSnapshotValues: Snapshot & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+      })[];
+    };
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    Volume: Volume & {
+      OntapConfiguration: OntapVolumeConfiguration & {
+        SnaplockConfiguration: SnaplockConfiguration & {
+          AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+          RetentionPeriod: SnaplockRetentionPeriod & {
+            DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          };
+        };
+      };
+      Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      AdministrativeActions: (AdministrativeAction & {
+        TargetFileSystemValues: FileSystem & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+          WindowsConfiguration: WindowsFileSystemConfiguration & {
+            AuditLogConfiguration: WindowsAuditLogConfiguration & {
+              FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+              FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            };
+            FsrmConfiguration: WindowsFsrmConfiguration & {
+              FsrmServiceEnabled: Flag;
+            };
+          };
+          LustreConfiguration: LustreFileSystemConfiguration & {
+            LogConfiguration: LustreLogConfiguration & {
+              Level: LustreAccessAuditLogLevel;
+            };
+            MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+              Mode: MetadataConfigurationMode;
+            };
+          };
+        };
+        TargetSnapshotValues: Snapshot & {
+          Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        };
+      })[];
+      OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+        NfsExports: (OpenZFSNfsExport & {
+          ClientConfigurations: (OpenZFSClientConfiguration & {
+            Clients: OpenZFSClients;
+            Options: OpenZFSNfsExportOptions;
+          })[];
+        })[];
+        UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+          Type: OpenZFSQuotaType;
+          Id: IntegerNoMax;
+          StorageCapacityQuotaGiB: IntegerNoMax;
+        })[];
+      };
+    };
+  };
 }
 export const CreateBackupResponse = S.suspend(() =>
   S.Struct({ Backup: S.optional(Backup) }),
@@ -4043,7 +4818,10 @@ export const CreateBackupResponse = S.suspend(() =>
   identifier: "CreateBackupResponse",
 }) as any as S.Schema<CreateBackupResponse>;
 export interface CreateDataRepositoryAssociationResponse {
-  Association?: DataRepositoryAssociation;
+  Association?: DataRepositoryAssociation & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    NFS: NFSDataRepositoryConfiguration & { Version: NfsVersion };
+  };
 }
 export const CreateDataRepositoryAssociationResponse = S.suspend(() =>
   S.Struct({ Association: S.optional(DataRepositoryAssociation) }),
@@ -4119,7 +4897,14 @@ export const DataRepositoryTask = S.suspend(() =>
   identifier: "DataRepositoryTask",
 }) as any as S.Schema<DataRepositoryTask>;
 export interface CreateDataRepositoryTaskResponse {
-  DataRepositoryTask?: DataRepositoryTask;
+  DataRepositoryTask?: DataRepositoryTask & {
+    TaskId: TaskId;
+    Lifecycle: DataRepositoryTaskLifecycle;
+    Type: DataRepositoryTaskType;
+    CreationTime: CreationTime;
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    Report: CompletionReport & { Enabled: Flag };
+  };
 }
 export const CreateDataRepositoryTaskResponse = S.suspend(() =>
   S.Struct({ DataRepositoryTask: S.optional(DataRepositoryTask) }),
@@ -4127,7 +4912,57 @@ export const CreateDataRepositoryTaskResponse = S.suspend(() =>
   identifier: "CreateDataRepositoryTaskResponse",
 }) as any as S.Schema<CreateDataRepositoryTaskResponse>;
 export interface CreateFileSystemResponse {
-  FileSystem?: FileSystem;
+  FileSystem?: FileSystem & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    WindowsConfiguration: WindowsFileSystemConfiguration & {
+      AuditLogConfiguration: WindowsAuditLogConfiguration & {
+        FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+      };
+      FsrmConfiguration: WindowsFsrmConfiguration & {
+        FsrmServiceEnabled: Flag;
+      };
+    };
+    LustreConfiguration: LustreFileSystemConfiguration & {
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+      MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+        Mode: MetadataConfigurationMode;
+      };
+    };
+    AdministrativeActions: (AdministrativeAction & {
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+  };
 }
 export const CreateFileSystemResponse = S.suspend(() =>
   S.Struct({ FileSystem: S.optional(FileSystem) }),
@@ -4135,7 +4970,57 @@ export const CreateFileSystemResponse = S.suspend(() =>
   identifier: "CreateFileSystemResponse",
 }) as any as S.Schema<CreateFileSystemResponse>;
 export interface CreateSnapshotResponse {
-  Snapshot?: Snapshot;
+  Snapshot?: Snapshot & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    AdministrativeActions: (AdministrativeAction & {
+      TargetFileSystemValues: FileSystem & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        WindowsConfiguration: WindowsFileSystemConfiguration & {
+          AuditLogConfiguration: WindowsAuditLogConfiguration & {
+            FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          };
+          FsrmConfiguration: WindowsFsrmConfiguration & {
+            FsrmServiceEnabled: Flag;
+          };
+        };
+        LustreConfiguration: LustreFileSystemConfiguration & {
+          LogConfiguration: LustreLogConfiguration & {
+            Level: LustreAccessAuditLogLevel;
+          };
+          MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+            Mode: MetadataConfigurationMode;
+          };
+        };
+      };
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+    })[];
+  };
 }
 export const CreateSnapshotResponse = S.suspend(() =>
   S.Struct({ Snapshot: S.optional(Snapshot) }),
@@ -4145,9 +5030,15 @@ export const CreateSnapshotResponse = S.suspend(() =>
 export interface DeleteFileSystemResponse {
   FileSystemId?: string;
   Lifecycle?: FileSystemLifecycle;
-  WindowsResponse?: DeleteFileSystemWindowsResponse;
-  LustreResponse?: DeleteFileSystemLustreResponse;
-  OpenZFSResponse?: DeleteFileSystemOpenZFSResponse;
+  WindowsResponse?: DeleteFileSystemWindowsResponse & {
+    FinalBackupTags: (Tag & { Key: TagKey; Value: TagValue })[];
+  };
+  LustreResponse?: DeleteFileSystemLustreResponse & {
+    FinalBackupTags: (Tag & { Key: TagKey; Value: TagValue })[];
+  };
+  OpenZFSResponse?: DeleteFileSystemOpenZFSResponse & {
+    FinalBackupTags: (Tag & { Key: TagKey; Value: TagValue })[];
+  };
 }
 export const DeleteFileSystemResponse = S.suspend(() =>
   S.Struct({
@@ -4163,7 +5054,9 @@ export const DeleteFileSystemResponse = S.suspend(() =>
 export interface DeleteVolumeResponse {
   VolumeId?: string;
   Lifecycle?: VolumeLifecycle;
-  OntapResponse?: DeleteVolumeOntapResponse;
+  OntapResponse?: DeleteVolumeOntapResponse & {
+    FinalBackupTags: (Tag & { Key: TagKey; Value: TagValue })[];
+  };
 }
 export const DeleteVolumeResponse = S.suspend(() =>
   S.Struct({
@@ -4175,7 +5068,10 @@ export const DeleteVolumeResponse = S.suspend(() =>
   identifier: "DeleteVolumeResponse",
 }) as any as S.Schema<DeleteVolumeResponse>;
 export interface DescribeDataRepositoryAssociationsResponse {
-  Associations?: DataRepositoryAssociation[];
+  Associations?: (DataRepositoryAssociation & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    NFS: NFSDataRepositoryConfiguration & { Version: NfsVersion };
+  })[];
   NextToken?: string;
 }
 export const DescribeDataRepositoryAssociationsResponse = S.suspend(() =>
@@ -4187,7 +5083,16 @@ export const DescribeDataRepositoryAssociationsResponse = S.suspend(() =>
   identifier: "DescribeDataRepositoryAssociationsResponse",
 }) as any as S.Schema<DescribeDataRepositoryAssociationsResponse>;
 export interface DescribeFileCachesResponse {
-  FileCaches?: FileCache[];
+  FileCaches?: (FileCache & {
+    LustreConfiguration: FileCacheLustreConfiguration & {
+      MetadataConfiguration: FileCacheLustreMetadataConfiguration & {
+        StorageCapacity: MetadataStorageCapacity;
+      };
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeFileCachesResponse = S.suspend(() =>
@@ -4199,7 +5104,57 @@ export const DescribeFileCachesResponse = S.suspend(() =>
   identifier: "DescribeFileCachesResponse",
 }) as any as S.Schema<DescribeFileCachesResponse>;
 export interface UpdateFileSystemResponse {
-  FileSystem?: FileSystem;
+  FileSystem?: FileSystem & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    WindowsConfiguration: WindowsFileSystemConfiguration & {
+      AuditLogConfiguration: WindowsAuditLogConfiguration & {
+        FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+      };
+      FsrmConfiguration: WindowsFsrmConfiguration & {
+        FsrmServiceEnabled: Flag;
+      };
+    };
+    LustreConfiguration: LustreFileSystemConfiguration & {
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+      MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+        Mode: MetadataConfigurationMode;
+      };
+    };
+    AdministrativeActions: (AdministrativeAction & {
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+  };
 }
 export const UpdateFileSystemResponse = S.suspend(() =>
   S.Struct({ FileSystem: S.optional(FileSystem) }),
@@ -4207,7 +5162,57 @@ export const UpdateFileSystemResponse = S.suspend(() =>
   identifier: "UpdateFileSystemResponse",
 }) as any as S.Schema<UpdateFileSystemResponse>;
 export interface UpdateVolumeResponse {
-  Volume?: Volume;
+  Volume?: Volume & {
+    OntapConfiguration: OntapVolumeConfiguration & {
+      SnaplockConfiguration: SnaplockConfiguration & {
+        AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+        RetentionPeriod: SnaplockRetentionPeriod & {
+          DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+        };
+      };
+    };
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    AdministrativeActions: (AdministrativeAction & {
+      TargetFileSystemValues: FileSystem & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        WindowsConfiguration: WindowsFileSystemConfiguration & {
+          AuditLogConfiguration: WindowsAuditLogConfiguration & {
+            FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          };
+          FsrmConfiguration: WindowsFsrmConfiguration & {
+            FsrmServiceEnabled: Flag;
+          };
+        };
+        LustreConfiguration: LustreFileSystemConfiguration & {
+          LogConfiguration: LustreLogConfiguration & {
+            Level: LustreAccessAuditLogLevel;
+          };
+          MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+            Mode: MetadataConfigurationMode;
+          };
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+    OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+      NfsExports: (OpenZFSNfsExport & {
+        ClientConfigurations: (OpenZFSClientConfiguration & {
+          Clients: OpenZFSClients;
+          Options: OpenZFSNfsExportOptions;
+        })[];
+      })[];
+      UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+        Type: OpenZFSQuotaType;
+        Id: IntegerNoMax;
+        StorageCapacityQuotaGiB: IntegerNoMax;
+      })[];
+    };
+  };
 }
 export const UpdateVolumeResponse = S.suspend(() =>
   S.Struct({ Volume: S.optional(Volume) }),
@@ -4338,7 +5343,26 @@ export const S3AccessPointAttachment = S.suspend(() =>
 export type S3AccessPointAttachments = S3AccessPointAttachment[];
 export const S3AccessPointAttachments = S.Array(S3AccessPointAttachment);
 export interface CreateAndAttachS3AccessPointResponse {
-  S3AccessPointAttachment?: S3AccessPointAttachment;
+  S3AccessPointAttachment?: S3AccessPointAttachment & {
+    OpenZFSConfiguration: S3AccessPointOpenZFSConfiguration & {
+      FileSystemIdentity: OpenZFSFileSystemIdentity & {
+        Type: OpenZFSFileSystemUserType;
+        PosixUser: OpenZFSPosixFileSystemUser & {
+          Uid: FileSystemUID;
+          Gid: FileSystemGID;
+        };
+      };
+    };
+    OntapConfiguration: S3AccessPointOntapConfiguration & {
+      FileSystemIdentity: OntapFileSystemIdentity & {
+        Type: OntapFileSystemUserType;
+        UnixUser: OntapUnixFileSystemUser & { Name: OntapFileSystemUserName };
+        WindowsUser: OntapWindowsFileSystemUser & {
+          Name: OntapFileSystemUserName;
+        };
+      };
+    };
+  };
 }
 export const CreateAndAttachS3AccessPointResponse = S.suspend(() =>
   S.Struct({ S3AccessPointAttachment: S.optional(S3AccessPointAttachment) }),
@@ -4346,7 +5370,17 @@ export const CreateAndAttachS3AccessPointResponse = S.suspend(() =>
   identifier: "CreateAndAttachS3AccessPointResponse",
 }) as any as S.Schema<CreateAndAttachS3AccessPointResponse>;
 export interface CreateFileCacheResponse {
-  FileCache?: FileCacheCreating;
+  FileCache?: FileCacheCreating & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    LustreConfiguration: FileCacheLustreConfiguration & {
+      MetadataConfiguration: FileCacheLustreMetadataConfiguration & {
+        StorageCapacity: MetadataStorageCapacity;
+      };
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+    };
+  };
 }
 export const CreateFileCacheResponse = S.suspend(() =>
   S.Struct({ FileCache: S.optional(FileCacheCreating) }),
@@ -4363,7 +5397,7 @@ export interface CreateVolumeRequest {
 }
 export const CreateVolumeRequest = S.suspend(() =>
   S.Struct({
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     VolumeType: S.optional(VolumeType),
     Name: S.optional(S.String),
     OntapConfiguration: S.optional(CreateOntapVolumeConfiguration),
@@ -4376,7 +5410,57 @@ export const CreateVolumeRequest = S.suspend(() =>
   identifier: "CreateVolumeRequest",
 }) as any as S.Schema<CreateVolumeRequest>;
 export interface CreateVolumeFromBackupResponse {
-  Volume?: Volume;
+  Volume?: Volume & {
+    OntapConfiguration: OntapVolumeConfiguration & {
+      SnaplockConfiguration: SnaplockConfiguration & {
+        AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+        RetentionPeriod: SnaplockRetentionPeriod & {
+          DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+        };
+      };
+    };
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    AdministrativeActions: (AdministrativeAction & {
+      TargetFileSystemValues: FileSystem & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        WindowsConfiguration: WindowsFileSystemConfiguration & {
+          AuditLogConfiguration: WindowsAuditLogConfiguration & {
+            FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          };
+          FsrmConfiguration: WindowsFsrmConfiguration & {
+            FsrmServiceEnabled: Flag;
+          };
+        };
+        LustreConfiguration: LustreFileSystemConfiguration & {
+          LogConfiguration: LustreLogConfiguration & {
+            Level: LustreAccessAuditLogLevel;
+          };
+          MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+            Mode: MetadataConfigurationMode;
+          };
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+    OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+      NfsExports: (OpenZFSNfsExport & {
+        ClientConfigurations: (OpenZFSClientConfiguration & {
+          Clients: OpenZFSClients;
+          Options: OpenZFSNfsExportOptions;
+        })[];
+      })[];
+      UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+        Type: OpenZFSQuotaType;
+        Id: IntegerNoMax;
+        StorageCapacityQuotaGiB: IntegerNoMax;
+      })[];
+    };
+  };
 }
 export const CreateVolumeFromBackupResponse = S.suspend(() =>
   S.Struct({ Volume: S.optional(Volume) }),
@@ -4384,7 +5468,14 @@ export const CreateVolumeFromBackupResponse = S.suspend(() =>
   identifier: "CreateVolumeFromBackupResponse",
 }) as any as S.Schema<CreateVolumeFromBackupResponse>;
 export interface DescribeDataRepositoryTasksResponse {
-  DataRepositoryTasks?: DataRepositoryTask[];
+  DataRepositoryTasks?: (DataRepositoryTask & {
+    TaskId: TaskId;
+    Lifecycle: DataRepositoryTaskLifecycle;
+    Type: DataRepositoryTaskType;
+    CreationTime: CreationTime;
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    Report: CompletionReport & { Enabled: Flag };
+  })[];
   NextToken?: string;
 }
 export const DescribeDataRepositoryTasksResponse = S.suspend(() =>
@@ -4396,7 +5487,26 @@ export const DescribeDataRepositoryTasksResponse = S.suspend(() =>
   identifier: "DescribeDataRepositoryTasksResponse",
 }) as any as S.Schema<DescribeDataRepositoryTasksResponse>;
 export interface DescribeS3AccessPointAttachmentsResponse {
-  S3AccessPointAttachments?: S3AccessPointAttachment[];
+  S3AccessPointAttachments?: (S3AccessPointAttachment & {
+    OpenZFSConfiguration: S3AccessPointOpenZFSConfiguration & {
+      FileSystemIdentity: OpenZFSFileSystemIdentity & {
+        Type: OpenZFSFileSystemUserType;
+        PosixUser: OpenZFSPosixFileSystemUser & {
+          Uid: FileSystemUID;
+          Gid: FileSystemGID;
+        };
+      };
+    };
+    OntapConfiguration: S3AccessPointOntapConfiguration & {
+      FileSystemIdentity: OntapFileSystemIdentity & {
+        Type: OntapFileSystemUserType;
+        UnixUser: OntapUnixFileSystemUser & { Name: OntapFileSystemUserName };
+        WindowsUser: OntapWindowsFileSystemUser & {
+          Name: OntapFileSystemUserName;
+        };
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeS3AccessPointAttachmentsResponse = S.suspend(() =>
@@ -4408,7 +5518,57 @@ export const DescribeS3AccessPointAttachmentsResponse = S.suspend(() =>
   identifier: "DescribeS3AccessPointAttachmentsResponse",
 }) as any as S.Schema<DescribeS3AccessPointAttachmentsResponse>;
 export interface CreateFileSystemFromBackupResponse {
-  FileSystem?: FileSystem;
+  FileSystem?: FileSystem & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    WindowsConfiguration: WindowsFileSystemConfiguration & {
+      AuditLogConfiguration: WindowsAuditLogConfiguration & {
+        FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+        FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+      };
+      FsrmConfiguration: WindowsFsrmConfiguration & {
+        FsrmServiceEnabled: Flag;
+      };
+    };
+    LustreConfiguration: LustreFileSystemConfiguration & {
+      LogConfiguration: LustreLogConfiguration & {
+        Level: LustreAccessAuditLogLevel;
+      };
+      MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+        Mode: MetadataConfigurationMode;
+      };
+    };
+    AdministrativeActions: (AdministrativeAction & {
+      TargetVolumeValues: Volume & {
+        OntapConfiguration: OntapVolumeConfiguration & {
+          SnaplockConfiguration: SnaplockConfiguration & {
+            AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+            RetentionPeriod: SnaplockRetentionPeriod & {
+              DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+              MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+            };
+          };
+        };
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+          NfsExports: (OpenZFSNfsExport & {
+            ClientConfigurations: (OpenZFSClientConfiguration & {
+              Clients: OpenZFSClients;
+              Options: OpenZFSNfsExportOptions;
+            })[];
+          })[];
+          UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+            Type: OpenZFSQuotaType;
+            Id: IntegerNoMax;
+            StorageCapacityQuotaGiB: IntegerNoMax;
+          })[];
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+  };
 }
 export const CreateFileSystemFromBackupResponse = S.suspend(() =>
   S.Struct({ FileSystem: S.optional(FileSystem) }),
@@ -4416,7 +5576,9 @@ export const CreateFileSystemFromBackupResponse = S.suspend(() =>
   identifier: "CreateFileSystemFromBackupResponse",
 }) as any as S.Schema<CreateFileSystemFromBackupResponse>;
 export interface CreateStorageVirtualMachineResponse {
-  StorageVirtualMachine?: StorageVirtualMachine;
+  StorageVirtualMachine?: StorageVirtualMachine & {
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+  };
 }
 export const CreateStorageVirtualMachineResponse = S.suspend(() =>
   S.Struct({ StorageVirtualMachine: S.optional(StorageVirtualMachine) }),
@@ -4424,7 +5586,57 @@ export const CreateStorageVirtualMachineResponse = S.suspend(() =>
   identifier: "CreateStorageVirtualMachineResponse",
 }) as any as S.Schema<CreateStorageVirtualMachineResponse>;
 export interface CreateVolumeResponse {
-  Volume?: Volume;
+  Volume?: Volume & {
+    OntapConfiguration: OntapVolumeConfiguration & {
+      SnaplockConfiguration: SnaplockConfiguration & {
+        AutocommitPeriod: AutocommitPeriod & { Type: AutocommitPeriodType };
+        RetentionPeriod: SnaplockRetentionPeriod & {
+          DefaultRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          MinimumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+          MaximumRetention: RetentionPeriod & { Type: RetentionPeriodType };
+        };
+      };
+    };
+    Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+    AdministrativeActions: (AdministrativeAction & {
+      TargetFileSystemValues: FileSystem & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+        WindowsConfiguration: WindowsFileSystemConfiguration & {
+          AuditLogConfiguration: WindowsAuditLogConfiguration & {
+            FileAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+            FileShareAccessAuditLogLevel: WindowsAccessAuditLogLevel;
+          };
+          FsrmConfiguration: WindowsFsrmConfiguration & {
+            FsrmServiceEnabled: Flag;
+          };
+        };
+        LustreConfiguration: LustreFileSystemConfiguration & {
+          LogConfiguration: LustreLogConfiguration & {
+            Level: LustreAccessAuditLogLevel;
+          };
+          MetadataConfiguration: FileSystemLustreMetadataConfiguration & {
+            Mode: MetadataConfigurationMode;
+          };
+        };
+      };
+      TargetSnapshotValues: Snapshot & {
+        Tags: (Tag & { Key: TagKey; Value: TagValue })[];
+      };
+    })[];
+    OpenZFSConfiguration: OpenZFSVolumeConfiguration & {
+      NfsExports: (OpenZFSNfsExport & {
+        ClientConfigurations: (OpenZFSClientConfiguration & {
+          Clients: OpenZFSClients;
+          Options: OpenZFSNfsExportOptions;
+        })[];
+      })[];
+      UserAndGroupQuotas: (OpenZFSUserOrGroupQuota & {
+        Type: OpenZFSQuotaType;
+        Id: IntegerNoMax;
+        StorageCapacityQuotaGiB: IntegerNoMax;
+      })[];
+    };
+  };
 }
 export const CreateVolumeResponse = S.suspend(() =>
   S.Struct({ Volume: S.optional(Volume) }),

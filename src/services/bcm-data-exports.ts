@@ -98,7 +98,6 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type Arn = string;
-export type GenericString = string;
 export type TableName = string;
 export type MaxResults = number;
 export type NextPageToken = string;

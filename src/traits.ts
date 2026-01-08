@@ -583,6 +583,26 @@ export const S3UnwrappedXmlOutput = () =>
   makeAnnotation(s3UnwrappedXmlOutputSymbol, true);
 
 // =============================================================================
+// Idempotency Token Trait (smithy.api#idempotencyToken)
+// =============================================================================
+
+/**
+ * smithy.api#idempotencyToken - Marks a member as an idempotency token.
+ * When set, the SDK will automatically generate a UUID if the value is not provided.
+ */
+export const idempotencyTokenSymbol = Symbol.for("itty-aws/idempotency-token");
+export const IdempotencyToken = () =>
+  makeAnnotation(idempotencyTokenSymbol, true);
+
+/** Check if a PropertySignature has the idempotencyToken annotation */
+export const hasIdempotencyToken = (prop: AST.PropertySignature): boolean =>
+  hasPropAnnotation(prop, idempotencyTokenSymbol);
+
+/** Check if an AST has the idempotencyToken annotation */
+export const isIdempotencyToken = (ast: AST.AST): boolean =>
+  hasAnnotation(ast, idempotencyTokenSymbol);
+
+// =============================================================================
 // Blob Type (smithy.api#blob without @streaming)
 // =============================================================================
 

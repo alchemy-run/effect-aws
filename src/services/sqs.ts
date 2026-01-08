@@ -93,6 +93,7 @@ export type MessageAttributeName = string;
 export type TagKey = string;
 export type TagValue = string;
 export type ExceptionMessage = string;
+export type Binary = Uint8Array;
 
 //# Schemas
 export type AWSAccountIdList = string[];
@@ -1557,7 +1558,7 @@ export const listDeadLetterSourceQueues: {
   items: (
     input: ListDeadLetterSourceQueuesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | InvalidAddress
     | InvalidSecurity
     | QueueDoesNotExist
@@ -1862,7 +1863,7 @@ export const listQueues: {
   items: (
     input: ListQueuesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | InvalidAddress
     | InvalidSecurity
     | RequestThrottled

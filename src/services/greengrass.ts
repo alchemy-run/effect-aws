@@ -123,9 +123,7 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type S3UrlSignerRole = string;
-export type __integer = number;
 
 //# Schemas
 export interface DisassociateServiceRoleFromAccountRequest {}
@@ -2971,7 +2969,9 @@ export const GetConnectorDefinitionResponse = S.suspend(() =>
 export interface GetConnectorDefinitionVersionResponse {
   Arn?: string;
   CreationTimestamp?: string;
-  Definition?: ConnectorDefinitionVersion;
+  Definition?: ConnectorDefinitionVersion & {
+    Connectors: (Connector & { ConnectorArn: string; Id: string })[];
+  };
   Id?: string;
   NextToken?: string;
   Version?: string;
@@ -3015,7 +3015,9 @@ export const GetCoreDefinitionResponse = S.suspend(() =>
 export interface GetCoreDefinitionVersionResponse {
   Arn?: string;
   CreationTimestamp?: string;
-  Definition?: CoreDefinitionVersion;
+  Definition?: CoreDefinitionVersion & {
+    Cores: (Core & { CertificateArn: string; Id: string; ThingArn: string })[];
+  };
   Id?: string;
   NextToken?: string;
   Version?: string;
@@ -3089,7 +3091,13 @@ export const GetDeviceDefinitionResponse = S.suspend(() =>
 export interface GetDeviceDefinitionVersionResponse {
   Arn?: string;
   CreationTimestamp?: string;
-  Definition?: DeviceDefinitionVersion;
+  Definition?: DeviceDefinitionVersion & {
+    Devices: (Device & {
+      CertificateArn: string;
+      Id: string;
+      ThingArn: string;
+    })[];
+  };
   Id?: string;
   NextToken?: string;
   Version?: string;
@@ -3133,7 +3141,18 @@ export const GetFunctionDefinitionResponse = S.suspend(() =>
 export interface GetFunctionDefinitionVersionResponse {
   Arn?: string;
   CreationTimestamp?: string;
-  Definition?: FunctionDefinitionVersion;
+  Definition?: FunctionDefinitionVersion & {
+    Functions: (Function & {
+      Id: string;
+      FunctionConfiguration: FunctionConfiguration & {
+        Environment: FunctionConfigurationEnvironment & {
+          ResourceAccessPolicies: (ResourceAccessPolicy & {
+            ResourceId: string;
+          })[];
+        };
+      };
+    })[];
+  };
   Id?: string;
   NextToken?: string;
   Version?: string;
@@ -3247,7 +3266,14 @@ export const GetLoggerDefinitionResponse = S.suspend(() =>
 export interface GetLoggerDefinitionVersionResponse {
   Arn?: string;
   CreationTimestamp?: string;
-  Definition?: LoggerDefinitionVersion;
+  Definition?: LoggerDefinitionVersion & {
+    Loggers: (Logger & {
+      Component: LoggerComponent;
+      Id: string;
+      Level: LoggerLevel;
+      Type: LoggerType;
+    })[];
+  };
   Id?: string;
   Version?: string;
 }
@@ -3289,7 +3315,26 @@ export const GetResourceDefinitionResponse = S.suspend(() =>
 export interface GetResourceDefinitionVersionResponse {
   Arn?: string;
   CreationTimestamp?: string;
-  Definition?: ResourceDefinitionVersion;
+  Definition?: ResourceDefinitionVersion & {
+    Resources: (Resource & {
+      Id: string;
+      Name: string;
+      ResourceDataContainer: ResourceDataContainer & {
+        S3MachineLearningModelResourceData: S3MachineLearningModelResourceData & {
+          OwnerSetting: ResourceDownloadOwnerSetting & {
+            GroupOwner: string;
+            GroupPermission: Permission;
+          };
+        };
+        SageMakerMachineLearningModelResourceData: SageMakerMachineLearningModelResourceData & {
+          OwnerSetting: ResourceDownloadOwnerSetting & {
+            GroupOwner: string;
+            GroupPermission: Permission;
+          };
+        };
+      };
+    })[];
+  };
   Id?: string;
   Version?: string;
 }
@@ -3331,7 +3376,14 @@ export const GetSubscriptionDefinitionResponse = S.suspend(() =>
 export interface GetSubscriptionDefinitionVersionResponse {
   Arn?: string;
   CreationTimestamp?: string;
-  Definition?: SubscriptionDefinitionVersion;
+  Definition?: SubscriptionDefinitionVersion & {
+    Subscriptions: (Subscription & {
+      Id: string;
+      Source: string;
+      Subject: string;
+      Target: string;
+    })[];
+  };
   Id?: string;
   NextToken?: string;
   Version?: string;
@@ -4186,7 +4238,9 @@ export const CreateConnectorDefinitionVersionResponse = S.suspend(() =>
   identifier: "CreateConnectorDefinitionVersionResponse",
 }) as any as S.Schema<CreateConnectorDefinitionVersionResponse>;
 export interface GetThingRuntimeConfigurationResponse {
-  RuntimeConfiguration?: RuntimeConfiguration;
+  RuntimeConfiguration?: RuntimeConfiguration & {
+    TelemetryConfiguration: TelemetryConfiguration & { Telemetry: Telemetry };
+  };
 }
 export const GetThingRuntimeConfigurationResponse = S.suspend(() =>
   S.Struct({ RuntimeConfiguration: S.optional(RuntimeConfiguration) }),

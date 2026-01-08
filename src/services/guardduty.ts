@@ -405,7 +405,10 @@ export const CreateIPSetRequest = S.suspend(() =>
     Format: S.optional(IpSetFormat).pipe(T.JsonName("format")),
     Location: S.optional(S.String).pipe(T.JsonName("location")),
     Activate: S.optional(S.Boolean).pipe(T.JsonName("activate")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
     ExpectedBucketOwner: S.optional(S.String).pipe(
       T.JsonName("expectedBucketOwner"),
@@ -476,7 +479,10 @@ export const CreateThreatEntitySetRequest = S.suspend(() =>
       T.JsonName("expectedBucketOwner"),
     ),
     Activate: S.optional(S.Boolean).pipe(T.JsonName("activate")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
   }).pipe(
     T.all(
@@ -511,7 +517,10 @@ export const CreateThreatIntelSetRequest = S.suspend(() =>
     Format: S.optional(ThreatIntelSetFormat).pipe(T.JsonName("format")),
     Location: S.optional(S.String).pipe(T.JsonName("location")),
     Activate: S.optional(S.Boolean).pipe(T.JsonName("activate")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
     ExpectedBucketOwner: S.optional(S.String).pipe(
       T.JsonName("expectedBucketOwner"),
@@ -552,7 +561,10 @@ export const CreateTrustedEntitySetRequest = S.suspend(() =>
       T.JsonName("expectedBucketOwner"),
     ),
     Activate: S.optional(S.Boolean).pipe(T.JsonName("activate")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
   }).pipe(
     T.all(
@@ -3047,7 +3059,7 @@ export const OrgFeatureAdditionalConfiguration = S.Literal(
   "EC2_AGENT_MANAGEMENT",
 );
 export interface CreateIPSetResponse {
-  IpSetId?: string;
+  IpSetId: string;
 }
 export const CreateIPSetResponse = S.suspend(() =>
   S.Struct({ IpSetId: S.optional(S.String).pipe(T.JsonName("ipSetId")) }),
@@ -3099,7 +3111,10 @@ export const CreatePublishingDestinationRequest = S.suspend(() =>
     DestinationProperties: S.optional(DestinationProperties)
       .pipe(T.JsonName("destinationProperties"))
       .annotations({ identifier: "DestinationProperties" }),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
   }).pipe(
     T.all(
@@ -3118,7 +3133,7 @@ export const CreatePublishingDestinationRequest = S.suspend(() =>
   identifier: "CreatePublishingDestinationRequest",
 }) as any as S.Schema<CreatePublishingDestinationRequest>;
 export interface CreateThreatEntitySetResponse {
-  ThreatEntitySetId?: string;
+  ThreatEntitySetId: string;
 }
 export const CreateThreatEntitySetResponse = S.suspend(() =>
   S.Struct({
@@ -3130,7 +3145,7 @@ export const CreateThreatEntitySetResponse = S.suspend(() =>
   identifier: "CreateThreatEntitySetResponse",
 }) as any as S.Schema<CreateThreatEntitySetResponse>;
 export interface CreateThreatIntelSetResponse {
-  ThreatIntelSetId?: string;
+  ThreatIntelSetId: string;
 }
 export const CreateThreatIntelSetResponse = S.suspend(() =>
   S.Struct({
@@ -3140,7 +3155,7 @@ export const CreateThreatIntelSetResponse = S.suspend(() =>
   identifier: "CreateThreatIntelSetResponse",
 }) as any as S.Schema<CreateThreatIntelSetResponse>;
 export interface CreateTrustedEntitySetResponse {
-  TrustedEntitySetId?: string;
+  TrustedEntitySetId: string;
 }
 export const CreateTrustedEntitySetResponse = S.suspend(() =>
   S.Struct({
@@ -3166,7 +3181,10 @@ export const UnprocessedAccount = S.suspend(() =>
 export type UnprocessedAccounts = UnprocessedAccount[];
 export const UnprocessedAccounts = S.Array(UnprocessedAccount);
 export interface DeleteInvitationsResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const DeleteInvitationsResponse = S.suspend(() =>
   S.Struct({
@@ -3178,7 +3196,10 @@ export const DeleteInvitationsResponse = S.suspend(() =>
   identifier: "DeleteInvitationsResponse",
 }) as any as S.Schema<DeleteInvitationsResponse>;
 export interface DeleteMembersResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const DeleteMembersResponse = S.suspend(() =>
   S.Struct({
@@ -3190,11 +3211,11 @@ export const DeleteMembersResponse = S.suspend(() =>
   identifier: "DeleteMembersResponse",
 }) as any as S.Schema<DeleteMembersResponse>;
 export interface DescribePublishingDestinationResponse {
-  DestinationId?: string;
-  DestinationType?: DestinationType;
-  Status?: PublishingStatus;
-  PublishingFailureStartTimestamp?: number;
-  DestinationProperties?: DestinationProperties;
+  DestinationId: string;
+  DestinationType: DestinationType;
+  Status: PublishingStatus;
+  PublishingFailureStartTimestamp: number;
+  DestinationProperties: DestinationProperties;
   Tags?: { [key: string]: string };
 }
 export const DescribePublishingDestinationResponse = S.suspend(() =>
@@ -3216,7 +3237,10 @@ export const DescribePublishingDestinationResponse = S.suspend(() =>
   identifier: "DescribePublishingDestinationResponse",
 }) as any as S.Schema<DescribePublishingDestinationResponse>;
 export interface DisassociateMembersResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const DisassociateMembersResponse = S.suspend(() =>
   S.Struct({
@@ -3228,11 +3252,11 @@ export const DisassociateMembersResponse = S.suspend(() =>
   identifier: "DisassociateMembersResponse",
 }) as any as S.Schema<DisassociateMembersResponse>;
 export interface GetFilterResponse {
-  Name?: string;
+  Name: string;
   Description?: string;
-  Action?: FilterAction;
+  Action: FilterAction;
   Rank?: number;
-  FindingCriteria?: FindingCriteria;
+  FindingCriteria: FindingCriteria;
   Tags?: { [key: string]: string };
 }
 export const GetFilterResponse = S.suspend(() =>
@@ -3250,10 +3274,10 @@ export const GetFilterResponse = S.suspend(() =>
   identifier: "GetFilterResponse",
 }) as any as S.Schema<GetFilterResponse>;
 export interface GetIPSetResponse {
-  Name?: string;
-  Format?: IpSetFormat;
-  Location?: string;
-  Status?: IpSetStatus;
+  Name: string;
+  Format: IpSetFormat;
+  Location: string;
+  Status: IpSetStatus;
   Tags?: { [key: string]: string };
   ExpectedBucketOwner?: string;
 }
@@ -3310,7 +3334,18 @@ export const ScanResourceCriteria = S.suspend(() =>
   identifier: "ScanResourceCriteria",
 }) as any as S.Schema<ScanResourceCriteria>;
 export interface GetMalwareScanSettingsResponse {
-  ScanResourceCriteria?: ScanResourceCriteria;
+  ScanResourceCriteria?: ScanResourceCriteria & {
+    Include: {
+      [key: string]: ScanCondition & {
+        MapEquals: (ScanConditionPair & { Key: TagKey })[];
+      };
+    };
+    Exclude: {
+      [key: string]: ScanCondition & {
+        MapEquals: (ScanConditionPair & { Key: TagKey })[];
+      };
+    };
+  };
   EbsSnapshotPreservation?: EbsSnapshotPreservation;
 }
 export const GetMalwareScanSettingsResponse = S.suspend(() =>
@@ -3326,11 +3361,11 @@ export const GetMalwareScanSettingsResponse = S.suspend(() =>
   identifier: "GetMalwareScanSettingsResponse",
 }) as any as S.Schema<GetMalwareScanSettingsResponse>;
 export interface GetThreatEntitySetResponse {
-  Name?: string;
-  Format?: ThreatEntitySetFormat;
-  Location?: string;
+  Name: string;
+  Format: ThreatEntitySetFormat;
+  Location: string;
   ExpectedBucketOwner?: string;
-  Status?: ThreatEntitySetStatus;
+  Status: ThreatEntitySetStatus;
   Tags?: { [key: string]: string };
   CreatedAt?: Date;
   UpdatedAt?: Date;
@@ -3358,10 +3393,10 @@ export const GetThreatEntitySetResponse = S.suspend(() =>
   identifier: "GetThreatEntitySetResponse",
 }) as any as S.Schema<GetThreatEntitySetResponse>;
 export interface GetThreatIntelSetResponse {
-  Name?: string;
-  Format?: ThreatIntelSetFormat;
-  Location?: string;
-  Status?: ThreatIntelSetStatus;
+  Name: string;
+  Format: ThreatIntelSetFormat;
+  Location: string;
+  Status: ThreatIntelSetStatus;
   Tags?: { [key: string]: string };
   ExpectedBucketOwner?: string;
 }
@@ -3380,11 +3415,11 @@ export const GetThreatIntelSetResponse = S.suspend(() =>
   identifier: "GetThreatIntelSetResponse",
 }) as any as S.Schema<GetThreatIntelSetResponse>;
 export interface GetTrustedEntitySetResponse {
-  Name?: string;
-  Format?: TrustedEntitySetFormat;
-  Location?: string;
+  Name: string;
+  Format: TrustedEntitySetFormat;
+  Location: string;
   ExpectedBucketOwner?: string;
-  Status?: TrustedEntitySetStatus;
+  Status: TrustedEntitySetStatus;
   Tags?: { [key: string]: string };
   CreatedAt?: Date;
   UpdatedAt?: Date;
@@ -3451,7 +3486,10 @@ export const GetUsageStatisticsRequest = S.suspend(() =>
   identifier: "GetUsageStatisticsRequest",
 }) as any as S.Schema<GetUsageStatisticsRequest>;
 export interface InviteMembersResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const InviteMembersResponse = S.suspend(() =>
   S.Struct({
@@ -3539,7 +3577,7 @@ export const ListCoverageRequest = S.suspend(() =>
   identifier: "ListCoverageRequest",
 }) as any as S.Schema<ListCoverageRequest>;
 export interface ListDetectorsResponse {
-  DetectorIds?: string[];
+  DetectorIds: string[];
   NextToken?: string;
 }
 export const ListDetectorsResponse = S.suspend(() =>
@@ -3551,7 +3589,7 @@ export const ListDetectorsResponse = S.suspend(() =>
   identifier: "ListDetectorsResponse",
 }) as any as S.Schema<ListDetectorsResponse>;
 export interface ListFiltersResponse {
-  FilterNames?: string[];
+  FilterNames: string[];
   NextToken?: string;
 }
 export const ListFiltersResponse = S.suspend(() =>
@@ -3563,7 +3601,7 @@ export const ListFiltersResponse = S.suspend(() =>
   identifier: "ListFiltersResponse",
 }) as any as S.Schema<ListFiltersResponse>;
 export interface ListFindingsResponse {
-  FindingIds?: string[];
+  FindingIds: string[];
   NextToken?: string;
 }
 export const ListFindingsResponse = S.suspend(() =>
@@ -3575,7 +3613,7 @@ export const ListFindingsResponse = S.suspend(() =>
   identifier: "ListFindingsResponse",
 }) as any as S.Schema<ListFindingsResponse>;
 export interface ListIPSetsResponse {
-  IpSetIds?: string[];
+  IpSetIds: string[];
   NextToken?: string;
 }
 export const ListIPSetsResponse = S.suspend(() =>
@@ -3613,7 +3651,13 @@ export const Member = S.suspend(() =>
 export type Members = Member[];
 export const Members = S.Array(Member);
 export interface ListMembersResponse {
-  Members?: Member[];
+  Members?: (Member & {
+    AccountId: AccountId;
+    MasterId: string;
+    Email: Email;
+    RelationshipStatus: string;
+    UpdatedAt: string;
+  })[];
   NextToken?: string;
 }
 export const ListMembersResponse = S.suspend(() =>
@@ -3633,7 +3677,7 @@ export const ListTagsForResourceResponse = S.suspend(() =>
   identifier: "ListTagsForResourceResponse",
 }) as any as S.Schema<ListTagsForResourceResponse>;
 export interface ListThreatEntitySetsResponse {
-  ThreatEntitySetIds?: string[];
+  ThreatEntitySetIds: string[];
   NextToken?: string;
 }
 export const ListThreatEntitySetsResponse = S.suspend(() =>
@@ -3647,7 +3691,7 @@ export const ListThreatEntitySetsResponse = S.suspend(() =>
   identifier: "ListThreatEntitySetsResponse",
 }) as any as S.Schema<ListThreatEntitySetsResponse>;
 export interface ListThreatIntelSetsResponse {
-  ThreatIntelSetIds?: string[];
+  ThreatIntelSetIds: string[];
   NextToken?: string;
 }
 export const ListThreatIntelSetsResponse = S.suspend(() =>
@@ -3661,7 +3705,7 @@ export const ListThreatIntelSetsResponse = S.suspend(() =>
   identifier: "ListThreatIntelSetsResponse",
 }) as any as S.Schema<ListThreatIntelSetsResponse>;
 export interface ListTrustedEntitySetsResponse {
-  TrustedEntitySetIds?: string[];
+  TrustedEntitySetIds: string[];
   NextToken?: string;
 }
 export const ListTrustedEntitySetsResponse = S.suspend(() =>
@@ -3702,7 +3746,10 @@ export const SendObjectMalwareScanResponse = S.suspend(() =>
   identifier: "SendObjectMalwareScanResponse",
 }) as any as S.Schema<SendObjectMalwareScanResponse>;
 export interface StartMonitoringMembersResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const StartMonitoringMembersResponse = S.suspend(() =>
   S.Struct({
@@ -3714,7 +3761,10 @@ export const StartMonitoringMembersResponse = S.suspend(() =>
   identifier: "StartMonitoringMembersResponse",
 }) as any as S.Schema<StartMonitoringMembersResponse>;
 export interface StopMonitoringMembersResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const StopMonitoringMembersResponse = S.suspend(() =>
   S.Struct({
@@ -3726,7 +3776,7 @@ export const StopMonitoringMembersResponse = S.suspend(() =>
   identifier: "StopMonitoringMembersResponse",
 }) as any as S.Schema<StopMonitoringMembersResponse>;
 export interface UpdateFilterResponse {
-  Name?: string;
+  Name: string;
 }
 export const UpdateFilterResponse = S.suspend(() =>
   S.Struct({ Name: S.optional(S.String).pipe(T.JsonName("name")) }),
@@ -4172,7 +4222,10 @@ export interface CreateMalwareProtectionPlanRequest {
 }
 export const CreateMalwareProtectionPlanRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     Role: S.optional(S.String).pipe(T.JsonName("role")),
     ProtectedResource: S.optional(CreateProtectedResource)
       .pipe(T.JsonName("protectedResource"))
@@ -4195,7 +4248,10 @@ export const CreateMalwareProtectionPlanRequest = S.suspend(() =>
   identifier: "CreateMalwareProtectionPlanRequest",
 }) as any as S.Schema<CreateMalwareProtectionPlanRequest>;
 export interface CreateMembersResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const CreateMembersResponse = S.suspend(() =>
   S.Struct({
@@ -4207,7 +4263,7 @@ export const CreateMembersResponse = S.suspend(() =>
   identifier: "CreateMembersResponse",
 }) as any as S.Schema<CreateMembersResponse>;
 export interface CreatePublishingDestinationResponse {
-  DestinationId?: string;
+  DestinationId: string;
 }
 export const CreatePublishingDestinationResponse = S.suspend(() =>
   S.Struct({
@@ -4217,7 +4273,10 @@ export const CreatePublishingDestinationResponse = S.suspend(() =>
   identifier: "CreatePublishingDestinationResponse",
 }) as any as S.Schema<CreatePublishingDestinationResponse>;
 export interface DeclineInvitationsResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const DeclineInvitationsResponse = S.suspend(() =>
   S.Struct({
@@ -4229,7 +4288,7 @@ export const DeclineInvitationsResponse = S.suspend(() =>
   identifier: "DeclineInvitationsResponse",
 }) as any as S.Schema<DeclineInvitationsResponse>;
 export interface GetAdministratorAccountResponse {
-  Administrator?: Administrator;
+  Administrator: Administrator;
 }
 export const GetAdministratorAccountResponse = S.suspend(() =>
   S.Struct({
@@ -4273,7 +4332,7 @@ export const GetMalwareProtectionPlanResponse = S.suspend(() =>
   identifier: "GetMalwareProtectionPlanResponse",
 }) as any as S.Schema<GetMalwareProtectionPlanResponse>;
 export interface GetMasterAccountResponse {
-  Master?: Master;
+  Master: Master;
 }
 export const GetMasterAccountResponse = S.suspend(() =>
   S.Struct({
@@ -4285,8 +4344,17 @@ export const GetMasterAccountResponse = S.suspend(() =>
   identifier: "GetMasterAccountResponse",
 }) as any as S.Schema<GetMasterAccountResponse>;
 export interface GetMembersResponse {
-  Members?: Member[];
-  UnprocessedAccounts?: UnprocessedAccount[];
+  Members: (Member & {
+    AccountId: AccountId;
+    MasterId: string;
+    Email: Email;
+    RelationshipStatus: string;
+    UpdatedAt: string;
+  })[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const GetMembersResponse = S.suspend(() =>
   S.Struct({
@@ -4372,7 +4440,11 @@ export const ListOrganizationAdminAccountsResponse = S.suspend(() =>
   identifier: "ListOrganizationAdminAccountsResponse",
 }) as any as S.Schema<ListOrganizationAdminAccountsResponse>;
 export interface ListPublishingDestinationsResponse {
-  Destinations?: Destination[];
+  Destinations: (Destination & {
+    DestinationId: string;
+    DestinationType: DestinationType;
+    Status: PublishingStatus;
+  })[];
   NextToken?: string;
 }
 export const ListPublishingDestinationsResponse = S.suspend(() =>
@@ -4391,7 +4463,10 @@ export interface StartMalwareScanRequest {
 export const StartMalwareScanRequest = S.suspend(() =>
   S.Struct({
     ResourceArn: S.optional(S.String).pipe(T.JsonName("resourceArn")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     ScanConfiguration: S.optional(StartMalwareScanConfiguration)
       .pipe(T.JsonName("scanConfiguration"))
       .annotations({ identifier: "StartMalwareScanConfiguration" }),
@@ -5223,7 +5298,10 @@ export interface CreateDetectorRequest {
 export const CreateDetectorRequest = S.suspend(() =>
   S.Struct({
     Enable: S.optional(S.Boolean).pipe(T.JsonName("enable")),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     FindingPublishingFrequency: S.optional(FindingPublishingFrequency).pipe(
       T.JsonName("findingPublishingFrequency"),
     ),
@@ -5270,7 +5348,10 @@ export const CreateFilterRequest = S.suspend(() =>
     FindingCriteria: S.optional(FindingCriteria)
       .pipe(T.JsonName("findingCriteria"))
       .annotations({ identifier: "FindingCriteria" }),
-    ClientToken: S.optional(S.String).pipe(T.JsonName("clientToken")),
+    ClientToken: S.optional(S.String).pipe(
+      T.JsonName("clientToken"),
+      T.IdempotencyToken(),
+    ),
     Tags: S.optional(TagMap).pipe(T.JsonName("tags")),
   }).pipe(
     T.all(
@@ -5433,7 +5514,7 @@ export const MemoryRegionsList = S.Array(S.String);
 export type AdditionalSequenceTypes = string[];
 export const AdditionalSequenceTypes = S.Array(S.String);
 export interface GetFindingsStatisticsResponse {
-  FindingStatistics?: FindingStatistics;
+  FindingStatistics: FindingStatistics;
   NextToken?: string;
 }
 export const GetFindingsStatisticsResponse = S.suspend(() =>
@@ -5455,7 +5536,10 @@ export const StartMalwareScanResponse = S.suspend(() =>
   identifier: "StartMalwareScanResponse",
 }) as any as S.Schema<StartMalwareScanResponse>;
 export interface UpdateMemberDetectorsResponse {
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const UpdateMemberDetectorsResponse = S.suspend(() =>
   S.Struct({
@@ -6599,7 +6683,7 @@ export const UsageTopAccountResult = S.suspend(() =>
 export type UsageTopAccountsByFeatureList = UsageTopAccountResult[];
 export const UsageTopAccountsByFeatureList = S.Array(UsageTopAccountResult);
 export interface CreateFilterResponse {
-  Name?: string;
+  Name: string;
 }
 export const CreateFilterResponse = S.suspend(() =>
   S.Struct({ Name: S.optional(S.String).pipe(T.JsonName("name")) }),
@@ -6845,8 +6929,24 @@ export const ItemPath = S.suspend(() =>
 export type ItemPaths = ItemPath[];
 export const ItemPaths = S.Array(ItemPath);
 export interface GetMemberDetectorsResponse {
-  MemberDataSourceConfigurations?: MemberDataSourceConfiguration[];
-  UnprocessedAccounts?: UnprocessedAccount[];
+  MemberDataSourceConfigurations: (MemberDataSourceConfiguration & {
+    AccountId: AccountId;
+    DataSources: DataSourceConfigurationsResult & {
+      CloudTrail: CloudTrailConfigurationResult & { Status: DataSourceStatus };
+      DNSLogs: DNSLogsConfigurationResult & { Status: DataSourceStatus };
+      FlowLogs: FlowLogsConfigurationResult & { Status: DataSourceStatus };
+      S3Logs: S3LogsConfigurationResult & { Status: DataSourceStatus };
+      Kubernetes: KubernetesConfigurationResult & {
+        AuditLogs: KubernetesAuditLogsConfigurationResult & {
+          Status: DataSourceStatus;
+        };
+      };
+    };
+  })[];
+  UnprocessedAccounts: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const GetMemberDetectorsResponse = S.suspend(() =>
   S.Struct({
@@ -6874,7 +6974,10 @@ export const GetOrganizationStatisticsResponse = S.suspend(() =>
 }) as any as S.Schema<GetOrganizationStatisticsResponse>;
 export interface GetRemainingFreeTrialDaysResponse {
   Accounts?: AccountFreeTrialInfo[];
-  UnprocessedAccounts?: UnprocessedAccount[];
+  UnprocessedAccounts?: (UnprocessedAccount & {
+    AccountId: AccountId;
+    Result: string;
+  })[];
 }
 export const GetRemainingFreeTrialDaysResponse = S.suspend(() =>
   S.Struct({
@@ -6889,7 +6992,7 @@ export const GetRemainingFreeTrialDaysResponse = S.suspend(() =>
 export type Issues = string[];
 export const Issues = S.Array(S.String);
 export interface ListMalwareScansResponse {
-  Scans?: MalwareScan[];
+  Scans: MalwareScan[];
   NextToken?: string;
 }
 export const ListMalwareScansResponse = S.suspend(() =>
@@ -7676,8 +7779,15 @@ export const CreateDetectorResponse = S.suspend(() =>
 }) as any as S.Schema<CreateDetectorResponse>;
 export interface DescribeOrganizationConfigurationResponse {
   AutoEnable?: boolean;
-  MemberAccountLimitReached?: boolean;
-  DataSources?: OrganizationDataSourceConfigurationsResult;
+  MemberAccountLimitReached: boolean;
+  DataSources?: OrganizationDataSourceConfigurationsResult & {
+    S3Logs: OrganizationS3LogsConfigurationResult & { AutoEnable: boolean };
+    Kubernetes: OrganizationKubernetesConfigurationResult & {
+      AuditLogs: OrganizationKubernetesAuditLogsConfigurationResult & {
+        AutoEnable: boolean;
+      };
+    };
+  };
   Features?: OrganizationFeatureConfigurationResult[];
   NextToken?: string;
   AutoEnableOrganizationMembers?: AutoEnableMembers;
@@ -7707,10 +7817,20 @@ export const DescribeOrganizationConfigurationResponse = S.suspend(() =>
 export interface GetDetectorResponse {
   CreatedAt?: string;
   FindingPublishingFrequency?: FindingPublishingFrequency;
-  ServiceRole?: string;
-  Status?: DetectorStatus;
+  ServiceRole: string;
+  Status: DetectorStatus;
   UpdatedAt?: string;
-  DataSources?: DataSourceConfigurationsResult;
+  DataSources?: DataSourceConfigurationsResult & {
+    CloudTrail: CloudTrailConfigurationResult & { Status: DataSourceStatus };
+    DNSLogs: DNSLogsConfigurationResult & { Status: DataSourceStatus };
+    FlowLogs: FlowLogsConfigurationResult & { Status: DataSourceStatus };
+    S3Logs: S3LogsConfigurationResult & { Status: DataSourceStatus };
+    Kubernetes: KubernetesConfigurationResult & {
+      AuditLogs: KubernetesAuditLogsConfigurationResult & {
+        Status: DataSourceStatus;
+      };
+    };
+  };
   Tags?: { [key: string]: string };
   Features?: DetectorFeatureConfigurationResult[];
 }
@@ -7774,7 +7894,11 @@ export interface GetMalwareScanResponse {
   SkippedResourcesCount?: number;
   FailedResourcesCount?: number;
   ScannedResources?: ScannedResource[];
-  ScanConfiguration?: ScanConfiguration;
+  ScanConfiguration?: ScanConfiguration & {
+    IncrementalScanDetails: IncrementalScanDetails & {
+      BaselineResourceArn: NonEmptyString;
+    };
+  };
   ScanCategory?: ScanCategory;
   ScanStatus?: MalwareProtectionScanStatus;
   ScanStatusReason?: ScanStatusReason;
@@ -8518,7 +8642,7 @@ export const PublicAccessConfiguration = S.suspend(() =>
   identifier: "PublicAccessConfiguration",
 }) as any as S.Schema<PublicAccessConfiguration>;
 export interface DescribeMalwareScansResponse {
-  Scans?: Scan[];
+  Scans: Scan[];
   NextToken?: string;
 }
 export const DescribeMalwareScansResponse = S.suspend(() =>
@@ -8606,7 +8730,7 @@ export const Actor = S.suspend(() =>
 export type Actors = Actor[];
 export const Actors = S.Array(Actor);
 export interface ListCoverageResponse {
-  Resources?: CoverageResource[];
+  Resources: CoverageResource[];
   NextToken?: string;
 }
 export const ListCoverageResponse = S.suspend(() =>
@@ -9092,7 +9216,76 @@ export const Finding = S.suspend(() =>
 export type Findings = Finding[];
 export const Findings = S.Array(Finding);
 export interface GetFindingsResponse {
-  Findings?: Finding[];
+  Findings: (Finding & {
+    AccountId: string;
+    Arn: string;
+    CreatedAt: string;
+    Id: string;
+    Region: string;
+    Resource: Resource;
+    SchemaVersion: string;
+    Severity: number;
+    Type: FindingType;
+    UpdatedAt: string;
+    Service: Service & {
+      Detection: Detection & {
+        Sequence: Sequence & {
+          Uid: string;
+          Description: SequenceDescription;
+          Signals: (Signal & {
+            Uid: string;
+            Type: SignalType;
+            Name: string;
+            CreatedAt: Date;
+            UpdatedAt: Date;
+            FirstSeenAt: Date;
+            LastSeenAt: Date;
+            Count: number;
+            SignalIndicators: (Indicator & { Key: IndicatorType })[];
+          })[];
+          Actors: (Actor & {
+            Id: string;
+            User: User & {
+              Name: string;
+              Uid: string;
+              Type: string;
+              Account: Account & { Uid: string };
+            };
+            Process: ActorProcess & { Name: ProcessName; Path: ProcessPath };
+          })[];
+          Resources: (ResourceV2 & {
+            Uid: string;
+            ResourceType: FindingResourceType;
+            Data: ResourceData & {
+              Container: ContainerFindingResource & { Image: string };
+            };
+          })[];
+          Endpoints: (NetworkEndpoint & {
+            Id: string;
+            Location: NetworkGeoLocation & {
+              City: string;
+              Country: string;
+              Latitude: number;
+              Longitude: number;
+            };
+            AutonomousSystem: AutonomousSystem & {
+              Name: string;
+              Number: number;
+            };
+            Connection: NetworkConnection & { Direction: NetworkDirection };
+          })[];
+          SequenceIndicators: (Indicator & { Key: IndicatorType })[];
+        };
+      };
+      MalwareScanDetails: MalwareScanDetails & {
+        ScanConfiguration: MalwareProtectionFindingsScanConfiguration & {
+          IncrementalScanDetails: IncrementalScanDetails & {
+            BaselineResourceArn: NonEmptyString;
+          };
+        };
+      };
+    };
+  })[];
 }
 export const GetFindingsResponse = S.suspend(() =>
   S.Struct({ Findings: S.optional(Findings).pipe(T.JsonName("findings")) }),
@@ -9796,7 +9989,7 @@ export const listIPSets: {
   items: (
     input: ListIPSetsRequest,
   ) => stream.Stream<
-    String,
+    string,
     BadRequestException | InternalServerErrorException | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
   >;
@@ -9895,7 +10088,7 @@ export const listThreatEntitySets: {
   items: (
     input: ListThreatEntitySetsRequest,
   ) => stream.Stream<
-    String,
+    string,
     BadRequestException | InternalServerErrorException | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
   >;
@@ -9933,7 +10126,7 @@ export const listThreatIntelSets: {
   items: (
     input: ListThreatIntelSetsRequest,
   ) => stream.Stream<
-    String,
+    string,
     BadRequestException | InternalServerErrorException | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
   >;
@@ -9971,7 +10164,7 @@ export const listTrustedEntitySets: {
   items: (
     input: ListTrustedEntitySetsRequest,
   ) => stream.Stream<
-    String,
+    string,
     BadRequestException | InternalServerErrorException | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
   >;

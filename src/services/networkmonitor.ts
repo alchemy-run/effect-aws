@@ -99,6 +99,7 @@ export type Port = number;
 export type PacketSize = number;
 export type TagValue = string;
 export type MonitorArn = string;
+export type Iso8601Timestamp = Date;
 export type VpcId = string;
 
 //# Schemas
@@ -433,7 +434,7 @@ export const CreateMonitorInput = S.suspend(() =>
     monitorName: S.String,
     probes: S.optional(CreateMonitorProbeInputList),
     aggregationPeriod: S.optional(S.Number),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -476,7 +477,7 @@ export const CreateProbeInput = S.suspend(() =>
   S.Struct({
     monitorName: S.String.pipe(T.HttpLabel("monitorName")),
     probe: ProbeInput,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(

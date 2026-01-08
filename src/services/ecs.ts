@@ -89,6 +89,7 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type BoxedInteger = number;
+export type BoxedBoolean = boolean;
 export type TagKey = string;
 export type TagValue = string;
 export type CapacityProviderStrategyItemWeight = number;
@@ -98,6 +99,7 @@ export type IAMRoleArn = string;
 export type ManagedScalingTargetCapacity = number;
 export type ManagedScalingStepSize = number;
 export type ManagedScalingInstanceWarmupPeriod = number;
+export type HookDetails = unknown;
 export type PortNumber = number;
 export type EBSKMSKeyId = string;
 export type EBSVolumeType = string;
@@ -5598,7 +5600,7 @@ export const RunTaskRequest = S.suspend(() =>
     startedBy: S.optional(S.String),
     tags: S.optional(Tags),
     taskDefinition: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     volumeConfigurations: S.optional(TaskVolumeConfigurations),
   }).pipe(
     T.all(
@@ -6333,7 +6335,7 @@ export const listClusters: {
   items: (
     input: ListClustersRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | ServerException
@@ -6385,7 +6387,7 @@ export const listTaskDefinitionFamilies: {
   items: (
     input: ListTaskDefinitionFamiliesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | ServerException
@@ -6432,7 +6434,7 @@ export const listTaskDefinitions: {
   items: (
     input: ListTaskDefinitionsRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | ServerException
@@ -6833,7 +6835,7 @@ export const listContainerInstances: {
   items: (
     input: ListContainerInstancesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | ClusterNotFoundException
     | InvalidParameterException
@@ -6887,7 +6889,7 @@ export const listServices: {
   items: (
     input: ListServicesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | ClusterNotFoundException
     | InvalidParameterException
@@ -7058,7 +7060,7 @@ export const listServicesByNamespace: {
   items: (
     input: ListServicesByNamespaceRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | NamespaceNotFoundException
@@ -7168,7 +7170,7 @@ export const listTasks: {
   items: (
     input: ListTasksRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | ClusterNotFoundException
     | InvalidParameterException

@@ -93,6 +93,9 @@ class SdkFile extends Context.Tag("SdkFile")<
       | undefined;
     // Spec patches from spec/{service}.json for additional errors
     serviceSpec: ServiceSpec;
+    // Map of structure names to their "soft required" members
+    // (members with @clientOptional + @required that should appear required in output types)
+    softRequiredMembers: Map<string, { memberName: string; tsType: string }[]>;
   }
 >() {}
 
@@ -228,6 +231,11 @@ function collectSerializationTraits(
   // in the structure member processing code, since it needs to be on the inner
   // type, not as an outer pipe on optional wrappers.
 
+  // smithy.api#idempotencyToken
+  if (traits["smithy.api#idempotencyToken"] != null) {
+    pipes.push(`T.IdempotencyToken()`);
+  }
+
   // smithy.rules#contextParam
   if (traits["smithy.rules#contextParam"] != null) {
     const contextParam = traits["smithy.rules#contextParam"] as {
@@ -355,6 +363,101 @@ function formatName(shapeId: string, lowercase = false) {
 function sanitizeErrorName(name: string): string {
   return name.replace(/\./g, "");
 }
+
+// Reserved names that should not be generated as newtypes
+// These either shadow built-in types or are trivial primitive aliases
+const reservedNewtypeNames = new Set([
+  // Wrapper types that shadow primitives
+  "String",
+  "Number",
+  "Boolean",
+  "Object",
+  "Array",
+  "Date",
+  "Error",
+  "Function",
+  "Symbol",
+  "BigInt",
+  // Lowercase primitives (TypeScript keywords)
+  "string",
+  "number",
+  "boolean",
+  "object",
+  "symbol",
+  "bigint",
+  "undefined",
+  "null",
+  "never",
+  "unknown",
+  "any",
+  "void",
+  // Trivial primitive-like names (just alias the primitive with no meaning)
+  "Integer",
+  "Long",
+  "Double",
+  "Float",
+  "Short",
+  "Byte",
+  "Blob",
+  "Timestamp",
+  // Nullable{X} pattern
+  "NullableInteger",
+  "NullableLong",
+  "NullableDouble",
+  "NullableFloat",
+  "NullableBoolean",
+  // Underscore-prefixed generic primitives
+  "__boolean",
+  "__integer",
+  "__long",
+  "__string",
+  "__double",
+  "__float",
+  // Wrapper{X} pattern - generic wrappers around primitives
+  "WrapperBoolean",
+  "WrapperInt",
+  "WrapperInteger",
+  "WrapperLong",
+  "WrapperDouble",
+  "WrapperFloat",
+  "WrapperString",
+  // {X}Optional pattern - optional primitives
+  "BooleanOptional",
+  "IntegerOptional",
+  "LongOptional",
+  "DoubleOptional",
+  "FloatOptional",
+  "StringOptional",
+  // Generic{X} pattern - generic primitives
+  "GenericTimestamp",
+  "GenericTimeStamp",
+  "GenericBoolean",
+  "GenericInteger",
+  "GenericLong",
+  "GenericDouble",
+  "GenericFloat",
+  "GenericString",
+  // Trivial boolean aliases
+  "BooleanObject",
+  "BooleanType",
+  "BooleanValue",
+  "Bool",
+  "Boolean2",
+  "booleanValue",
+  "bool",
+  // Lowercase primitives
+  "long",
+  "timestamp",
+  "dateType",
+  // Trivial timestamp aliases
+  "DateTime",
+  "TimeStamp",
+  "TStamp",
+  "Time",
+  "DateType",
+  "DateTimestamp",
+  "TimestampType",
+]);
 
 /**
  * Convert a Smithy shape target to its TypeScript type string.
@@ -915,6 +1018,186 @@ function collectSensitiveShapeIds(model: SmithyModel): Set<string> {
   return sensitiveShapeIds;
 }
 
+// Collect members that have both @clientOptional and @required traits
+// These are "soft required" - optional for inputs but should appear required in output types
+function collectSoftRequiredMembers(
+  model: SmithyModel,
+): Map<string, { memberName: string; tsType: string }[]> {
+  const result = new Map<string, { memberName: string; tsType: string }[]>();
+
+  for (const [shapeId, shape] of Object.entries(model.shapes)) {
+    if (shape.type !== "structure" || !shape.members) continue;
+
+    const softRequiredMembers: { memberName: string; tsType: string }[] = [];
+
+    for (const [memberName, member] of Object.entries(shape.members)) {
+      const hasClientOptional =
+        member.traits?.["smithy.api#clientOptional"] != null;
+      const hasRequired = member.traits?.["smithy.api#required"] != null;
+
+      if (hasClientOptional && hasRequired) {
+        // Get the TypeScript type for this member
+        const memberTargetShape = model.shapes[member.target];
+        const shapeName = formatName(member.target);
+        let tsType: string;
+
+        // Map smithy.api# primitives to TypeScript types
+        if (member.target.startsWith("smithy.api#")) {
+          const primitiveMap: Record<string, string> = {
+            "smithy.api#String": "string",
+            "smithy.api#Boolean": "boolean",
+            "smithy.api#Integer": "number",
+            "smithy.api#Long": "number",
+            "smithy.api#Short": "number",
+            "smithy.api#Byte": "number",
+            "smithy.api#Float": "number",
+            "smithy.api#Double": "number",
+            "smithy.api#BigInteger": "bigint",
+            "smithy.api#BigDecimal": "number",
+            "smithy.api#Timestamp": "Date",
+            "smithy.api#Blob": "Uint8Array",
+            "smithy.api#Document": "unknown",
+          };
+          tsType = primitiveMap[member.target] ?? "unknown";
+        } else if (reservedNewtypeNames.has(shapeName)) {
+          // Reserved names fall back to TS primitives
+          const typeMap: Record<string, string> = {
+            boolean: "boolean",
+            string: "string",
+            integer: "number",
+            long: "number",
+            double: "number",
+            float: "number",
+            short: "number",
+            byte: "number",
+            timestamp: "Date",
+            blob: "Uint8Array",
+            document: "unknown",
+          };
+          tsType =
+            (memberTargetShape && typeMap[memberTargetShape.type]) ?? "unknown";
+        } else {
+          // Use the newtype name (e.g., AcceptEula, ResourceConfig)
+          tsType = shapeName;
+        }
+
+        softRequiredMembers.push({ memberName, tsType });
+      }
+    }
+
+    if (softRequiredMembers.length > 0) {
+      const structName = formatName(shapeId);
+      result.set(structName, softRequiredMembers);
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Compute the output type for a shape, including deep intersections for soft-required members.
+ *
+ * This handles cases like:
+ * - Direct soft-required: `Api & { Name: string }`
+ * - Nested: `Config & { Item: ItemType & { Name: string } }`
+ * - Lists: `(Api & { Name: string })[]`
+ * - Maps: `{ [key: string]: (Item & { Name: string }) }`
+ *
+ * Returns null if no intersection is needed.
+ */
+function computeOutputIntersection(
+  shapeId: string,
+  model: SmithyModel,
+  softRequiredMembers: Map<string, { memberName: string; tsType: string }[]>,
+  visited: Set<string> = new Set(),
+): string | null {
+  // Prevent infinite recursion
+  if (visited.has(shapeId)) return null;
+  visited.add(shapeId);
+
+  const shape = model.shapes[shapeId] as GenericShape | undefined;
+  if (!shape) return null;
+
+  const typeName = formatName(shapeId);
+
+  if (shape.type === "structure") {
+    // Check for direct soft-required members
+    const directSoftRequired = softRequiredMembers.get(typeName);
+
+    // Build a map of member name -> intersection field string
+    // This prevents duplicates when a member is both soft-required AND has nested soft-required
+    const fieldMap = new Map<string, string>();
+
+    // First, add direct soft-required members (just their type, no nested intersection)
+    if (directSoftRequired && directSoftRequired.length > 0) {
+      for (const m of directSoftRequired) {
+        fieldMap.set(m.memberName, m.tsType);
+      }
+    }
+
+    // Then check for nested soft-required and merge with or add to existing
+    if (shape.members) {
+      for (const [memberName, member] of Object.entries(shape.members)) {
+        const memberIntersection = computeOutputIntersection(
+          member.target,
+          model,
+          softRequiredMembers,
+          new Set(visited),
+        );
+        if (memberIntersection) {
+          // If this member is already in fieldMap (it's soft-required itself),
+          // replace its type with the nested intersection type
+          // Otherwise, add it as a new field
+          fieldMap.set(memberName, memberIntersection);
+        }
+      }
+    }
+
+    if (fieldMap.size > 0) {
+      const fields = Array.from(fieldMap.entries())
+        .map(([name, type]) => `${name}: ${type}`)
+        .join("; ");
+      return `(${typeName} & { ${fields} })`;
+    }
+
+    return null;
+  }
+
+  if (shape.type === "list") {
+    const listMember = (shape as any).member;
+    if (listMember?.target) {
+      const elementIntersection = computeOutputIntersection(
+        listMember.target,
+        model,
+        softRequiredMembers,
+        new Set(visited),
+      );
+      if (elementIntersection) {
+        return `${elementIntersection}[]`;
+      }
+    }
+    return null;
+  }
+
+  if (shape.type === "map") {
+    const mapValue = (shape as any).value;
+    if (mapValue?.target) {
+      const valueIntersection = computeOutputIntersection(
+        mapValue.target,
+        model,
+        softRequiredMembers,
+        new Set(visited),
+      );
+      if (valueIntersection) {
+        return `{ [key: string]: ${valueIntersection} }`;
+      }
+    }
+    return null;
+  }
+
+  return null;
+}
+
 const convertShapeToSchema: (
   args_0: string,
 ) => Effect.Effect<
@@ -1087,6 +1370,19 @@ const convertShapeToSchema: (
                 const sdkFile = yield* SdkFile;
                 const isSensitive =
                   sdkFile.sensitiveShapeIds.has(targetShapeId);
+                // Track this as a newtype (e.g., type BinaryData = Uint8Array)
+                // Only for non-Smithy primitives (service-defined newtypes)
+                if (!targetShapeId.startsWith("smithy.api#")) {
+                  const name = formatName(targetShapeId);
+                  yield* Ref.update(sdkFile.newtypes, (m) =>
+                    new Map(m).set(
+                      name,
+                      isSensitive
+                        ? "Uint8Array | redacted.Redacted<Uint8Array>"
+                        : "Uint8Array",
+                    ),
+                  );
+                }
                 if (isSensitive) {
                   return "SensitiveBlob";
                 }
@@ -1095,13 +1391,33 @@ const convertShapeToSchema: (
           ),
           Match.when(
             (s) => s.type === "boolean",
-            () => Effect.succeed("S.Boolean"),
+            () =>
+              Effect.gen(function* () {
+                // Track this as a newtype (e.g., type AcceptEula = boolean)
+                // Only for non-Smithy primitives (service-defined newtypes)
+                if (!targetShapeId.startsWith("smithy.api#")) {
+                  const sdkFile = yield* SdkFile;
+                  const name = formatName(targetShapeId);
+                  yield* Ref.update(sdkFile.newtypes, (m) =>
+                    new Map(m).set(name, "boolean"),
+                  );
+                }
+                return "S.Boolean";
+              }),
           ),
           Match.when(
             (s) => s.type === "timestamp",
             (s) =>
               Effect.gen(function* () {
                 const sdkFile = yield* SdkFile;
+                // Track this as a newtype (e.g., type CreatedAt = Date)
+                // Only for non-Smithy primitives (service-defined newtypes)
+                if (!targetShapeId.startsWith("smithy.api#")) {
+                  const name = formatName(targetShapeId);
+                  yield* Ref.update(sdkFile.newtypes, (m) =>
+                    new Map(m).set(name, "Date"),
+                  );
+                }
                 // Check for timestampFormat trait on the timestamp shape itself
                 const format = s.traits?.["smithy.api#timestampFormat"] as
                   | string
@@ -1132,7 +1448,19 @@ const convertShapeToSchema: (
           Match.when(
             (s) => s.type === "document",
             // TODO(sam): should we add our own JsonValue schema to handle documents? What are Documents?
-            () => Effect.succeed("S.Any"),
+            () =>
+              Effect.gen(function* () {
+                // Track this as a newtype (e.g., type ResourceConfig = unknown)
+                // Only for non-Smithy primitives (service-defined newtypes)
+                if (!targetShapeId.startsWith("smithy.api#")) {
+                  const sdkFile = yield* SdkFile;
+                  const name = formatName(targetShapeId);
+                  yield* Ref.update(sdkFile.newtypes, (m) =>
+                    new Map(m).set(name, "unknown"),
+                  );
+                }
+                return "S.Any";
+              }),
           ),
           Match.when(
             (s) => s.type === "enum",
@@ -1279,6 +1607,9 @@ const convertShapeToSchema: (
                 schemaExpr: string;
                 tsType: string;
                 isOptional: boolean;
+                // True if this member has @clientOptional + @required
+                // In output contexts, these should appear required in the interface
+                isSoftRequired: boolean;
               }
 
               const membersEffect = Effect.all(
@@ -1409,14 +1740,33 @@ const convertShapeToSchema: (
                       sdkFile.serviceSpec.structures?.[currentSchemaName];
                     const memberOverride =
                       structureOverride?.members?.[memberName];
+                    // Check if this member is "soft required" (@clientOptional + @required)
+                    const hasClientOptional =
+                      member.traits?.["smithy.api#clientOptional"] != null;
+                    const hasRequired =
+                      member.traits?.["smithy.api#required"] != null;
+                    const isSoftRequired = hasClientOptional && hasRequired;
                     // Override takes precedence, then check @clientOptional (treat as optional even if @required),
                     // finally fall back to checking if @required is absent
                     const isOptional =
                       memberOverride?.optional ??
-                      (member.traits?.["smithy.api#clientOptional"] != null ||
-                        member.traits?.["smithy.api#required"] == null);
+                      (hasClientOptional || !hasRequired);
                     if (isOptional) {
                       schema = `S.optional(${schema})`;
+                    }
+
+                    // For output structures, apply intersection types for nested structures
+                    // that have soft-required members (to show them as required in the type)
+                    // This handles deeply nested cases recursively
+                    if (isOperationOutput) {
+                      const intersectionType = computeOutputIntersection(
+                        member.target,
+                        model,
+                        sdkFile.softRequiredMembers,
+                      );
+                      if (intersectionType) {
+                        tsType = intersectionType;
+                      }
                     }
 
                     // Apply serialization traits using unified function
@@ -1436,6 +1786,7 @@ const convertShapeToSchema: (
                       schemaExpr: schema,
                       tsType,
                       isOptional,
+                      isSoftRequired,
                     };
                   }),
                 ),
@@ -1484,11 +1835,15 @@ const convertShapeToSchema: (
                 membersEffect.pipe(
                   Effect.map((members) => {
                     // Build interface fields: name?: Type
+                    // For output structures, soft-required members should NOT have ? (they're required in output)
                     const interfaceFields = members
-                      .map(
-                        (m) =>
-                          `${m.name}${m.isOptional ? "?" : ""}: ${m.tsType}`,
-                      )
+                      .map((m) => {
+                        // In output context, soft-required members are shown as required
+                        const showOptional =
+                          m.isOptional &&
+                          !(isOperationOutput && m.isSoftRequired);
+                        return `${m.name}${showOptional ? "?" : ""}: ${m.tsType}`;
+                      })
                       .join("; ");
 
                     // Build schema struct fields: name: schemaExpr
@@ -2269,8 +2624,20 @@ const generateClient = Effect.fn(function* (
                       memberShape.type === "float" ||
                       memberShape.type === "double"
                     ) {
-                      // Simple type newtypes - we generate type aliases for these
-                      itemType = memberName;
+                      // Simple type newtypes - use primitive if reserved, otherwise use newtype
+                      if (reservedNewtypeNames.has(memberName)) {
+                        const typeMap: Record<string, string> = {
+                          string: "string",
+                          boolean: "boolean",
+                          integer: "number",
+                          long: "number",
+                          float: "number",
+                          double: "number",
+                        };
+                        itemType = typeMap[memberShape.type] ?? "unknown";
+                      } else {
+                        itemType = memberName;
+                      }
                     } else if (memberShape.type === "enum") {
                       // Enums are generated as literal unions with type aliases
                       itemType = memberName;
@@ -2362,51 +2729,10 @@ const generateClient = Effect.fn(function* (
     const errorDefinitions = errors.map((s) => s.definition).join("\n");
 
     // Generate type aliases for newtypes (e.g., type PhoneNumber = string)
-    // Skip names that would shadow built-in types, TypeScript keywords,
-    // or trivial primitive-like names that add no meaning
-    const reservedNames = new Set([
-      // Wrapper types that shadow primitives
-      "String",
-      "Number",
-      "Boolean",
-      "Object",
-      "Array",
-      "Date",
-      "Error",
-      "Function",
-      "Symbol",
-      "BigInt",
-      // Lowercase primitives (TypeScript keywords)
-      "string",
-      "number",
-      "boolean",
-      "object",
-      "symbol",
-      "bigint",
-      "undefined",
-      "null",
-      "never",
-      "unknown",
-      "any",
-      "void",
-      // Trivial primitive-like names (just alias the primitive with no meaning)
-      "Integer",
-      "Long",
-      "Double",
-      "Float",
-      "Short",
-      "Byte",
-      "Blob",
-      "Timestamp",
-      "NullableInteger",
-      "NullableLong",
-      "NullableDouble",
-      "NullableFloat",
-      "NullableBoolean",
-    ]);
+    // Skip names in reservedNewtypeNames (shadows built-in types or trivial primitive aliases)
     const newtypes = yield* Ref.get(sdkFile.newtypes);
     const newtypeDefinitions = [...newtypes.entries()]
-      .filter(([name]) => !reservedNames.has(name))
+      .filter(([name]) => !reservedNewtypeNames.has(name))
       .map(([name, tsType]) => `export type ${name} = ${tsType};`)
       .join("\n");
 
@@ -2625,6 +2951,7 @@ const generateClient = Effect.fn(function* (
       serviceSpec,
       inputEventStreamShapeIds,
       sensitiveShapeIds,
+      softRequiredMembers: collectSoftRequiredMembers(model),
     }),
     Effect.provideService(ModelService, model),
   );

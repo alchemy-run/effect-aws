@@ -243,7 +243,7 @@ export const BatchGetRecordRequest = S.suspend(() =>
   identifier: "BatchGetRecordRequest",
 }) as any as S.Schema<BatchGetRecordRequest>;
 export interface GetRecordResponse {
-  Record?: FeatureValue[];
+  Record?: (FeatureValue & { FeatureName: FeatureName })[];
   ExpiresAt?: string;
 }
 export const GetRecordResponse = S.suspend(() =>
@@ -319,9 +319,21 @@ export const BatchGetRecordError = S.suspend(() =>
 export type BatchGetRecordErrors = BatchGetRecordError[];
 export const BatchGetRecordErrors = S.Array(BatchGetRecordError);
 export interface BatchGetRecordResponse {
-  Records?: BatchGetRecordResultDetail[];
-  Errors?: BatchGetRecordError[];
-  UnprocessedIdentifiers?: BatchGetRecordIdentifier[];
+  Records: (BatchGetRecordResultDetail & {
+    FeatureGroupName: ValueAsString;
+    RecordIdentifierValueAsString: ValueAsString;
+    Record: (FeatureValue & { FeatureName: FeatureName })[];
+  })[];
+  Errors: (BatchGetRecordError & {
+    FeatureGroupName: ValueAsString;
+    RecordIdentifierValueAsString: ValueAsString;
+    ErrorCode: ValueAsString;
+    ErrorMessage: Message;
+  })[];
+  UnprocessedIdentifiers: (BatchGetRecordIdentifier & {
+    FeatureGroupName: FeatureGroupNameOrArn;
+    RecordIdentifiersValueAsString: RecordIdentifiers;
+  })[];
 }
 export const BatchGetRecordResponse = S.suspend(() =>
   S.Struct({

@@ -87,7 +87,7 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
+export type __timestampIso8601 = Date;
 
 //# Schemas
 export interface DeleteConnectionRequest {
@@ -169,7 +169,7 @@ export const Identity = S.suspend(() =>
 ).annotations({ identifier: "Identity" }) as any as S.Schema<Identity>;
 export interface GetConnectionResponse {
   ConnectedAt?: Date;
-  Identity?: Identity;
+  Identity?: Identity & { SourceIp: string; UserAgent: string };
   LastActiveAt?: Date;
 }
 export const GetConnectionResponse = S.suspend(() =>

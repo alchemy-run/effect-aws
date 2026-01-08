@@ -105,6 +105,8 @@ export type AccountId = string;
 export type SizeBytes = number;
 export type AwsIamRoleAssumeRolePolicyDocument = string;
 export type AwsLambdaLayerVersionNumber = number;
+export type OcsfFinding = unknown;
+export type ResourceConfig = unknown;
 export type TrendsValueCount = number;
 
 //# Schemas
@@ -506,7 +508,7 @@ export const CreateTicketV2Request = S.suspend(() =>
   S.Struct({
     ConnectorId: S.optional(S.String),
     FindingMetadataUid: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Mode: S.optional(TicketCreationMode),
   }).pipe(
     T.all(
@@ -3449,7 +3451,7 @@ export const BatchUpdateStandardsControlAssociationsRequest = S.suspend(() =>
   identifier: "BatchUpdateStandardsControlAssociationsRequest",
 }) as any as S.Schema<BatchUpdateStandardsControlAssociationsRequest>;
 export interface CreateActionTargetResponse {
-  ActionTargetArn?: string;
+  ActionTargetArn: string;
 }
 export const CreateActionTargetResponse = S.suspend(() =>
   S.Struct({ ActionTargetArn: S.optional(S.String) }),
@@ -3467,7 +3469,7 @@ export const CreateAggregatorV2Request = S.suspend(() =>
     RegionLinkingMode: S.optional(S.String),
     LinkedRegions: S.optional(StringList),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/aggregatorv2/create" }),
@@ -3515,7 +3517,7 @@ export const CreateMembersRequest = S.suspend(() =>
   identifier: "CreateMembersRequest",
 }) as any as S.Schema<CreateMembersRequest>;
 export interface CreateTicketV2Response {
-  TicketId?: string;
+  TicketId: string;
   TicketSrcUrl?: string;
 }
 export const CreateTicketV2Response = S.suspend(() =>
@@ -3527,7 +3529,7 @@ export const CreateTicketV2Response = S.suspend(() =>
   identifier: "CreateTicketV2Response",
 }) as any as S.Schema<CreateTicketV2Response>;
 export interface DeleteActionTargetResponse {
-  ActionTargetArn?: string;
+  ActionTargetArn: string;
 }
 export const DeleteActionTargetResponse = S.suspend(() =>
   S.Struct({ ActionTargetArn: S.optional(S.String) }),
@@ -3535,7 +3537,7 @@ export const DeleteActionTargetResponse = S.suspend(() =>
   identifier: "DeleteActionTargetResponse",
 }) as any as S.Schema<DeleteActionTargetResponse>;
 export interface DeleteInsightResponse {
-  InsightArn?: string;
+  InsightArn: string;
 }
 export const DeleteInsightResponse = S.suspend(() =>
   S.Struct({ InsightArn: S.optional(S.String) }),
@@ -3662,7 +3664,7 @@ export interface GetAutomationRuleV2Response {
   RuleStatus?: RuleStatusV2;
   Description?: string;
   Criteria?: Criteria;
-  Actions?: AutomationRulesActionV2[];
+  Actions?: (AutomationRulesActionV2 & { Type: AutomationRulesActionTypeV2 })[];
   CreatedAt?: Date;
   UpdatedAt?: Date;
 }
@@ -3786,7 +3788,15 @@ export const StandardsSubscription = S.suspend(() =>
 export type StandardsSubscriptions = StandardsSubscription[];
 export const StandardsSubscriptions = S.Array(StandardsSubscription);
 export interface GetEnabledStandardsResponse {
-  StandardsSubscriptions?: StandardsSubscription[];
+  StandardsSubscriptions?: (StandardsSubscription & {
+    StandardsSubscriptionArn: NonEmptyString;
+    StandardsArn: NonEmptyString;
+    StandardsInput: StandardsInputParameterMap;
+    StandardsStatus: StandardsStatus;
+    StandardsStatusReason: StandardsStatusReason & {
+      StatusReasonCode: StatusReasonCode;
+    };
+  })[];
   NextToken?: string;
 }
 export const GetEnabledStandardsResponse = S.suspend(() =>
@@ -3974,7 +3984,20 @@ export const ListMembersResponse = S.suspend(() =>
   identifier: "ListMembersResponse",
 }) as any as S.Schema<ListMembersResponse>;
 export interface ListSecurityControlDefinitionsResponse {
-  SecurityControlDefinitions?: SecurityControlDefinition[];
+  SecurityControlDefinitions: (SecurityControlDefinition & {
+    SecurityControlId: NonEmptyString;
+    Title: NonEmptyString;
+    Description: NonEmptyString;
+    RemediationUrl: NonEmptyString;
+    SeverityRating: SeverityRating;
+    CurrentRegionAvailability: RegionAvailabilityStatus;
+    ParameterDefinitions: {
+      [key: string]: ParameterDefinition & {
+        Description: NonEmptyString;
+        ConfigurationOptions: ConfigurationOptions;
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListSecurityControlDefinitionsResponse = S.suspend(() =>
@@ -3995,7 +4018,7 @@ export const ListTagsForResourceResponse = S.suspend(() =>
 }) as any as S.Schema<ListTagsForResourceResponse>;
 export interface RegisterConnectorV2Response {
   ConnectorArn?: string;
-  ConnectorId?: string;
+  ConnectorId: string;
 }
 export const RegisterConnectorV2Response = S.suspend(() =>
   S.Struct({
@@ -16402,7 +16425,17 @@ export const BatchEnableStandardsRequest = S.suspend(() =>
   identifier: "BatchEnableStandardsRequest",
 }) as any as S.Schema<BatchEnableStandardsRequest>;
 export interface BatchGetAutomationRulesResponse {
-  Rules?: AutomationRulesConfig[];
+  Rules?: (AutomationRulesConfig & {
+    Actions: (AutomationRulesAction & {
+      FindingFieldsUpdate: AutomationRulesFindingFieldsUpdate & {
+        Note: NoteUpdate & { Text: NonEmptyString; UpdatedBy: NonEmptyString };
+        RelatedFindings: (RelatedFinding & {
+          ProductArn: NonEmptyString;
+          Id: NonEmptyString;
+        })[];
+      };
+    })[];
+  })[];
   UnprocessedAutomationRules?: UnprocessedAutomationRule[];
 }
 export const BatchGetAutomationRulesResponse = S.suspend(() =>
@@ -16414,8 +16447,22 @@ export const BatchGetAutomationRulesResponse = S.suspend(() =>
   identifier: "BatchGetAutomationRulesResponse",
 }) as any as S.Schema<BatchGetAutomationRulesResponse>;
 export interface BatchGetSecurityControlsResponse {
-  SecurityControls?: SecurityControl[];
-  UnprocessedIds?: UnprocessedSecurityControl[];
+  SecurityControls: (SecurityControl & {
+    SecurityControlId: NonEmptyString;
+    SecurityControlArn: NonEmptyString;
+    Title: NonEmptyString;
+    Description: NonEmptyString;
+    RemediationUrl: NonEmptyString;
+    SeverityRating: SeverityRating;
+    SecurityControlStatus: ControlStatus;
+    Parameters: {
+      [key: string]: ParameterConfiguration & { ValueType: ParameterValueType };
+    };
+  })[];
+  UnprocessedIds?: (UnprocessedSecurityControl & {
+    SecurityControlId: NonEmptyString;
+    ErrorCode: UnprocessedErrorCode;
+  })[];
 }
 export const BatchGetSecurityControlsResponse = S.suspend(() =>
   S.Struct({
@@ -16472,7 +16519,7 @@ export const CreateAutomationRuleV2Request = S.suspend(() =>
     Criteria: S.optional(Criteria),
     Actions: S.optional(AutomationRulesActionListV2),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/automationrulesv2/create" }),
@@ -16501,7 +16548,7 @@ export const CreateConnectorV2Request = S.suspend(() =>
     Provider: S.optional(ProviderConfiguration),
     KmsKeyArn: S.optional(S.String),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/connectorsv2" }),
@@ -16555,7 +16602,11 @@ export const DeclineInvitationsResponse = S.suspend(() =>
   identifier: "DeclineInvitationsResponse",
 }) as any as S.Schema<DeclineInvitationsResponse>;
 export interface DescribeActionTargetsResponse {
-  ActionTargets?: ActionTarget[];
+  ActionTargets: (ActionTarget & {
+    ActionTargetArn: NonEmptyString;
+    Name: NonEmptyString;
+    Description: NonEmptyString;
+  })[];
   NextToken?: string;
 }
 export const DescribeActionTargetsResponse = S.suspend(() =>
@@ -16567,7 +16618,7 @@ export const DescribeActionTargetsResponse = S.suspend(() =>
   identifier: "DescribeActionTargetsResponse",
 }) as any as S.Schema<DescribeActionTargetsResponse>;
 export interface DescribeProductsResponse {
-  Products?: Product[];
+  Products: (Product & { ProductArn: NonEmptyString })[];
   NextToken?: string;
 }
 export const DescribeProductsResponse = S.suspend(() =>
@@ -16579,7 +16630,7 @@ export const DescribeProductsResponse = S.suspend(() =>
   identifier: "DescribeProductsResponse",
 }) as any as S.Schema<DescribeProductsResponse>;
 export interface DescribeProductsV2Response {
-  ProductsV2?: ProductV2[];
+  ProductsV2: ProductV2[];
   NextToken?: string;
 }
 export const DescribeProductsV2Response = S.suspend(() =>
@@ -16625,7 +16676,42 @@ export const GetConfigurationPolicyAssociationResponse = S.suspend(() =>
   identifier: "GetConfigurationPolicyAssociationResponse",
 }) as any as S.Schema<GetConfigurationPolicyAssociationResponse>;
 export interface GetFindingsResponse {
-  Findings?: AwsSecurityFinding[];
+  Findings: (AwsSecurityFinding & {
+    SchemaVersion: NonEmptyString;
+    Id: NonEmptyString;
+    ProductArn: NonEmptyString;
+    GeneratorId: NonEmptyString;
+    AwsAccountId: NonEmptyString;
+    CreatedAt: NonEmptyString;
+    UpdatedAt: NonEmptyString;
+    Title: NonEmptyString;
+    Description: NonEmptyString;
+    Resources: (Resource & { Type: NonEmptyString; Id: NonEmptyString })[];
+    Malware: (Malware & { Name: NonEmptyString })[];
+    Compliance: Compliance & {
+      StatusReasons: (StatusReason & { ReasonCode: NonEmptyString })[];
+    };
+    RelatedFindings: (RelatedFinding & {
+      ProductArn: NonEmptyString;
+      Id: NonEmptyString;
+    })[];
+    Note: Note & {
+      Text: NonEmptyString;
+      UpdatedBy: NonEmptyString;
+      UpdatedAt: NonEmptyString;
+    };
+    Vulnerabilities: (Vulnerability & {
+      Id: NonEmptyString;
+      Vendor: VulnerabilityVendor & { Name: NonEmptyString };
+    })[];
+    PatchSummary: PatchSummary & { Id: NonEmptyString };
+    FindingProviderFields: FindingProviderFields & {
+      RelatedFindings: (RelatedFinding & {
+        ProductArn: NonEmptyString;
+        Id: NonEmptyString;
+      })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const GetFindingsResponse = S.suspend(() =>
@@ -16637,7 +16723,12 @@ export const GetFindingsResponse = S.suspend(() =>
   identifier: "GetFindingsResponse",
 }) as any as S.Schema<GetFindingsResponse>;
 export interface GetInsightsResponse {
-  Insights?: Insight[];
+  Insights: (Insight & {
+    InsightArn: NonEmptyString;
+    Name: NonEmptyString;
+    Filters: AwsSecurityFindingFilters;
+    GroupByAttribute: NonEmptyString;
+  })[];
   NextToken?: string;
 }
 export const GetInsightsResponse = S.suspend(() =>
@@ -16684,7 +16775,7 @@ export const GroupByResult = S.suspend(() =>
 export type GroupByResults = GroupByResult[];
 export const GroupByResults = S.Array(GroupByResult);
 export interface GetResourcesStatisticsV2Response {
-  GroupByResults?: GroupByResult[];
+  GroupByResults: GroupByResult[];
 }
 export const GetResourcesStatisticsV2Response = S.suspend(() =>
   S.Struct({ GroupByResults: S.optional(GroupByResults) }),
@@ -16768,7 +16859,12 @@ export const ListOrganizationAdminAccountsResponse = S.suspend(() =>
   identifier: "ListOrganizationAdminAccountsResponse",
 }) as any as S.Schema<ListOrganizationAdminAccountsResponse>;
 export interface ListStandardsControlAssociationsResponse {
-  StandardsControlAssociationSummaries?: StandardsControlAssociationSummary[];
+  StandardsControlAssociationSummaries: (StandardsControlAssociationSummary & {
+    StandardsArn: NonEmptyString;
+    SecurityControlId: NonEmptyString;
+    SecurityControlArn: NonEmptyString;
+    AssociationStatus: AssociationStatus;
+  })[];
   NextToken?: string;
 }
 export const ListStandardsControlAssociationsResponse = S.suspend(() =>
@@ -17326,7 +17422,15 @@ export const ConnectorSummary = S.suspend(() =>
 export type ConnectorSummaryList = ConnectorSummary[];
 export const ConnectorSummaryList = S.Array(ConnectorSummary);
 export interface BatchDisableStandardsResponse {
-  StandardsSubscriptions?: StandardsSubscription[];
+  StandardsSubscriptions?: (StandardsSubscription & {
+    StandardsSubscriptionArn: NonEmptyString;
+    StandardsArn: NonEmptyString;
+    StandardsInput: StandardsInputParameterMap;
+    StandardsStatus: StandardsStatus;
+    StandardsStatusReason: StandardsStatusReason & {
+      StatusReasonCode: StatusReasonCode;
+    };
+  })[];
 }
 export const BatchDisableStandardsResponse = S.suspend(() =>
   S.Struct({ StandardsSubscriptions: S.optional(StandardsSubscriptions) }),
@@ -17334,7 +17438,15 @@ export const BatchDisableStandardsResponse = S.suspend(() =>
   identifier: "BatchDisableStandardsResponse",
 }) as any as S.Schema<BatchDisableStandardsResponse>;
 export interface BatchEnableStandardsResponse {
-  StandardsSubscriptions?: StandardsSubscription[];
+  StandardsSubscriptions?: (StandardsSubscription & {
+    StandardsSubscriptionArn: NonEmptyString;
+    StandardsArn: NonEmptyString;
+    StandardsInput: StandardsInputParameterMap;
+    StandardsStatus: StandardsStatus;
+    StandardsStatusReason: StandardsStatusReason & {
+      StatusReasonCode: StatusReasonCode;
+    };
+  })[];
 }
 export const BatchEnableStandardsResponse = S.suspend(() =>
   S.Struct({ StandardsSubscriptions: S.optional(StandardsSubscriptions) }),
@@ -17358,8 +17470,19 @@ export const BatchGetConfigurationPolicyAssociationsResponse = S.suspend(() =>
   identifier: "BatchGetConfigurationPolicyAssociationsResponse",
 }) as any as S.Schema<BatchGetConfigurationPolicyAssociationsResponse>;
 export interface BatchGetStandardsControlAssociationsResponse {
-  StandardsControlAssociationDetails?: StandardsControlAssociationDetail[];
-  UnprocessedAssociations?: UnprocessedStandardsControlAssociation[];
+  StandardsControlAssociationDetails: (StandardsControlAssociationDetail & {
+    StandardsArn: NonEmptyString;
+    SecurityControlId: NonEmptyString;
+    SecurityControlArn: NonEmptyString;
+    AssociationStatus: AssociationStatus;
+  })[];
+  UnprocessedAssociations?: (UnprocessedStandardsControlAssociation & {
+    StandardsControlAssociationId: StandardsControlAssociationId & {
+      SecurityControlId: NonEmptyString;
+      StandardsArn: NonEmptyString;
+    };
+    ErrorCode: UnprocessedErrorCode;
+  })[];
 }
 export const BatchGetStandardsControlAssociationsResponse = S.suspend(() =>
   S.Struct({
@@ -17374,8 +17497,18 @@ export const BatchGetStandardsControlAssociationsResponse = S.suspend(() =>
   identifier: "BatchGetStandardsControlAssociationsResponse",
 }) as any as S.Schema<BatchGetStandardsControlAssociationsResponse>;
 export interface BatchUpdateFindingsResponse {
-  ProcessedFindings?: AwsSecurityFindingIdentifier[];
-  UnprocessedFindings?: BatchUpdateFindingsUnprocessedFinding[];
+  ProcessedFindings: (AwsSecurityFindingIdentifier & {
+    Id: NonEmptyString;
+    ProductArn: NonEmptyString;
+  })[];
+  UnprocessedFindings: (BatchUpdateFindingsUnprocessedFinding & {
+    FindingIdentifier: AwsSecurityFindingIdentifier & {
+      Id: NonEmptyString;
+      ProductArn: NonEmptyString;
+    };
+    ErrorCode: NonEmptyString;
+    ErrorMessage: NonEmptyString;
+  })[];
 }
 export const BatchUpdateFindingsResponse = S.suspend(() =>
   S.Struct({
@@ -17386,8 +17519,20 @@ export const BatchUpdateFindingsResponse = S.suspend(() =>
   identifier: "BatchUpdateFindingsResponse",
 }) as any as S.Schema<BatchUpdateFindingsResponse>;
 export interface BatchUpdateFindingsV2Response {
-  ProcessedFindings?: BatchUpdateFindingsV2ProcessedFinding[];
-  UnprocessedFindings?: BatchUpdateFindingsV2UnprocessedFinding[];
+  ProcessedFindings: (BatchUpdateFindingsV2ProcessedFinding & {
+    FindingIdentifier: OcsfFindingIdentifier & {
+      CloudAccountUid: NonEmptyString;
+      FindingInfoUid: NonEmptyString;
+      MetadataProductUid: NonEmptyString;
+    };
+  })[];
+  UnprocessedFindings: (BatchUpdateFindingsV2UnprocessedFinding & {
+    FindingIdentifier: OcsfFindingIdentifier & {
+      CloudAccountUid: NonEmptyString;
+      FindingInfoUid: NonEmptyString;
+      MetadataProductUid: NonEmptyString;
+    };
+  })[];
 }
 export const BatchUpdateFindingsV2Response = S.suspend(() =>
   S.Struct({
@@ -17400,7 +17545,14 @@ export const BatchUpdateFindingsV2Response = S.suspend(() =>
   identifier: "BatchUpdateFindingsV2Response",
 }) as any as S.Schema<BatchUpdateFindingsV2Response>;
 export interface BatchUpdateStandardsControlAssociationsResponse {
-  UnprocessedAssociationUpdates?: UnprocessedStandardsControlAssociationUpdate[];
+  UnprocessedAssociationUpdates?: (UnprocessedStandardsControlAssociationUpdate & {
+    StandardsControlAssociationUpdate: StandardsControlAssociationUpdate & {
+      StandardsArn: NonEmptyString;
+      SecurityControlId: NonEmptyString;
+      AssociationStatus: AssociationStatus;
+    };
+    ErrorCode: UnprocessedErrorCode;
+  })[];
 }
 export const BatchUpdateStandardsControlAssociationsResponse = S.suspend(() =>
   S.Struct({
@@ -17454,8 +17606,8 @@ export const CreateAutomationRuleV2Response = S.suspend(() =>
   identifier: "CreateAutomationRuleV2Response",
 }) as any as S.Schema<CreateAutomationRuleV2Response>;
 export interface CreateConnectorV2Response {
-  ConnectorArn?: string;
-  ConnectorId?: string;
+  ConnectorArn: string;
+  ConnectorId: string;
   AuthUrl?: string;
   ConnectorStatus?: ConnectorStatus;
 }
@@ -17470,7 +17622,7 @@ export const CreateConnectorV2Response = S.suspend(() =>
   identifier: "CreateConnectorV2Response",
 }) as any as S.Schema<CreateConnectorV2Response>;
 export interface CreateInsightResponse {
-  InsightArn?: string;
+  InsightArn: string;
 }
 export const CreateInsightResponse = S.suspend(() =>
   S.Struct({ InsightArn: S.optional(S.String) }),
@@ -17491,14 +17643,17 @@ export const DescribeStandardsResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeStandardsResponse>;
 export interface GetConnectorV2Response {
   ConnectorArn?: string;
-  ConnectorId?: string;
-  Name?: string;
+  ConnectorId: string;
+  Name: string;
   Description?: string;
   KmsKeyArn?: string;
-  CreatedAt?: Date;
-  LastUpdatedAt?: Date;
-  Health?: HealthCheck;
-  ProviderDetail?: ProviderDetail;
+  CreatedAt: Date;
+  LastUpdatedAt: Date;
+  Health: HealthCheck & {
+    ConnectorStatus: ConnectorStatus;
+    LastCheckedAt: Date;
+  };
+  ProviderDetail: ProviderDetail;
 }
 export const GetConnectorV2Response = S.suspend(() =>
   S.Struct({
@@ -17516,7 +17671,12 @@ export const GetConnectorV2Response = S.suspend(() =>
   identifier: "GetConnectorV2Response",
 }) as any as S.Schema<GetConnectorV2Response>;
 export interface GetFindingHistoryResponse {
-  Records?: FindingHistoryRecord[];
+  Records?: (FindingHistoryRecord & {
+    FindingIdentifier: AwsSecurityFindingIdentifier & {
+      Id: NonEmptyString;
+      ProductArn: NonEmptyString;
+    };
+  })[];
   NextToken?: string;
 }
 export const GetFindingHistoryResponse = S.suspend(() =>
@@ -17580,7 +17740,14 @@ export const GetFindingsV2Request = S.suspend(() =>
   identifier: "GetFindingsV2Request",
 }) as any as S.Schema<GetFindingsV2Request>;
 export interface GetInsightResultsResponse {
-  InsightResults?: InsightResults;
+  InsightResults: InsightResults & {
+    InsightArn: NonEmptyString;
+    GroupByAttribute: NonEmptyString;
+    ResultValues: (InsightResultValue & {
+      GroupByAttributeValue: NonEmptyString;
+      Count: number;
+    })[];
+  };
 }
 export const GetInsightResultsResponse = S.suspend(() =>
   S.Struct({ InsightResults: S.optional(InsightResults) }),
@@ -17653,7 +17820,12 @@ export const ListAutomationRulesV2Response = S.suspend(() =>
 }) as any as S.Schema<ListAutomationRulesV2Response>;
 export interface ListConnectorsV2Response {
   NextToken?: string;
-  Connectors?: ConnectorSummary[];
+  Connectors: (ConnectorSummary & {
+    ConnectorId: NonEmptyString;
+    Name: NonEmptyString;
+    ProviderSummary: ProviderSummary;
+    CreatedAt: Date;
+  })[];
 }
 export const ListConnectorsV2Response = S.suspend(() =>
   S.Struct({
@@ -17856,7 +18028,20 @@ export const ResourceSeverityBreakdown = S.suspend(() =>
   identifier: "ResourceSeverityBreakdown",
 }) as any as S.Schema<ResourceSeverityBreakdown>;
 export interface GetSecurityControlDefinitionResponse {
-  SecurityControlDefinition?: SecurityControlDefinition;
+  SecurityControlDefinition: SecurityControlDefinition & {
+    SecurityControlId: NonEmptyString;
+    Title: NonEmptyString;
+    Description: NonEmptyString;
+    RemediationUrl: NonEmptyString;
+    SeverityRating: SeverityRating;
+    CurrentRegionAvailability: RegionAvailabilityStatus;
+    ParameterDefinitions: {
+      [key: string]: ParameterDefinition & {
+        Description: NonEmptyString;
+        ConfigurationOptions: ConfigurationOptions;
+      };
+    };
+  };
 }
 export const GetSecurityControlDefinitionResponse = S.suspend(() =>
   S.Struct({
@@ -17960,8 +18145,22 @@ export const ResourceResult = S.suspend(() =>
 export type Resources = ResourceResult[];
 export const Resources = S.Array(ResourceResult);
 export interface GetFindingsTrendsV2Response {
-  Granularity?: GranularityField;
-  TrendsMetrics?: TrendsMetricsResult[];
+  Granularity: GranularityField;
+  TrendsMetrics: (TrendsMetricsResult & {
+    Timestamp: Date;
+    TrendsValues: TrendsValues & {
+      SeverityTrends: SeverityTrendsCount & {
+        Unknown: TrendsValueCount;
+        Informational: TrendsValueCount;
+        Low: TrendsValueCount;
+        Medium: TrendsValueCount;
+        High: TrendsValueCount;
+        Critical: TrendsValueCount;
+        Fatal: TrendsValueCount;
+        Other: TrendsValueCount;
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const GetFindingsTrendsV2Response = S.suspend(() =>
@@ -17974,8 +18173,13 @@ export const GetFindingsTrendsV2Response = S.suspend(() =>
   identifier: "GetFindingsTrendsV2Response",
 }) as any as S.Schema<GetFindingsTrendsV2Response>;
 export interface GetResourcesTrendsV2Response {
-  Granularity?: GranularityField;
-  TrendsMetrics?: ResourcesTrendsMetricsResult[];
+  Granularity: GranularityField;
+  TrendsMetrics: (ResourcesTrendsMetricsResult & {
+    Timestamp: Date;
+    TrendsValues: ResourcesTrendsValues & {
+      ResourcesCount: ResourcesCount & { AllResources: TrendsValueCount };
+    };
+  })[];
   NextToken?: string;
 }
 export const GetResourcesTrendsV2Response = S.suspend(() =>
@@ -17988,7 +18192,22 @@ export const GetResourcesTrendsV2Response = S.suspend(() =>
   identifier: "GetResourcesTrendsV2Response",
 }) as any as S.Schema<GetResourcesTrendsV2Response>;
 export interface GetResourcesV2Response {
-  Resources?: ResourceResult[];
+  Resources: (ResourceResult & {
+    ResourceId: NonEmptyString;
+    AccountId: NonEmptyString;
+    Region: NonEmptyString;
+    ResourceDetailCaptureTimeDt: NonEmptyString;
+    ResourceConfig: ResourceConfig;
+    FindingsSummary: (ResourceFindingsSummary & {
+      FindingType: NonEmptyString;
+      ProductName: NonEmptyString;
+      TotalFindings: number;
+    })[];
+    ResourceTags: (ResourceTag & {
+      Key: NonEmptyString;
+      Value: NonEmptyString;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const GetResourcesV2Response = S.suspend(() =>
@@ -18038,9 +18257,13 @@ export const ImportFindingsError = S.suspend(() =>
 export type ImportFindingsErrorList = ImportFindingsError[];
 export const ImportFindingsErrorList = S.Array(ImportFindingsError);
 export interface BatchImportFindingsResponse {
-  FailedCount?: number;
-  SuccessCount?: number;
-  FailedFindings?: ImportFindingsError[];
+  FailedCount: number;
+  SuccessCount: number;
+  FailedFindings?: (ImportFindingsError & {
+    Id: NonEmptyString;
+    ErrorCode: NonEmptyString;
+    ErrorMessage: NonEmptyString;
+  })[];
 }
 export const BatchImportFindingsResponse = S.suspend(() =>
   S.Struct({

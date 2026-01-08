@@ -759,7 +759,7 @@ export const CreateEventIntegrationRequest = S.suspend(() =>
     Description: S.optional(S.String),
     EventFilter: EventFilter,
     EventBridgeBus: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -1017,7 +1017,7 @@ export const CreateApplicationRequest = S.suspend(() =>
     ApplicationSourceConfig: ApplicationSourceConfig,
     Subscriptions: S.optional(SubscriptionList),
     Publications: S.optional(PublicationList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagMap),
     Permissions: S.optional(PermissionList),
     IsService: S.optional(S.Boolean),
@@ -1057,7 +1057,7 @@ export const CreateDataIntegrationRequest = S.suspend(() =>
     SourceURI: S.optional(S.String),
     ScheduleConfig: S.optional(ScheduleConfiguration),
     Tags: S.optional(TagMap),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     FileConfiguration: S.optional(FileConfiguration),
     ObjectConfiguration: S.optional(ObjectConfiguration),
   }).pipe(
@@ -1091,7 +1091,7 @@ export const CreateDataIntegrationAssociationRequest = S.suspend(() =>
     ObjectConfiguration: S.optional(ObjectConfiguration),
     DestinationURI: S.optional(S.String),
     ClientAssociationMetadata: S.optional(ClientAssociationMetadata),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ExecutionConfiguration: S.optional(ExecutionConfiguration),
   }).pipe(
     T.all(

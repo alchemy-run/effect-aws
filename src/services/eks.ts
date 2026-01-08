@@ -95,6 +95,7 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type ClusterName = string;
 export type RoleArn = string;
+export type BoxedBoolean = boolean;
 export type EksAnywhereSubscriptionName = string;
 export type BoxedInteger = number;
 export type DescribeAddonVersionsRequestMaxResults = number;
@@ -239,7 +240,7 @@ export const CreateAccessEntryRequest = S.suspend(() =>
     principalArn: S.String,
     kubernetesGroups: S.optional(StringList),
     tags: S.optional(TagMap),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     username: S.optional(S.String),
     type: S.optional(S.String),
   }).pipe(
@@ -271,7 +272,7 @@ export const CreatePodIdentityAssociationRequest = S.suspend(() =>
     namespace: S.String,
     serviceAccount: S.String,
     roleArn: S.String,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     disableSessionTags: S.optional(S.Boolean),
     targetRoleArn: S.optional(S.String),
@@ -879,7 +880,7 @@ export const DisassociateIdentityProviderConfigRequest = S.suspend(() =>
   S.Struct({
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
     identityProviderConfig: IdentityProviderConfig,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1299,7 +1300,7 @@ export const UpdateAccessEntryRequest = S.suspend(() =>
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
     principalArn: S.String.pipe(T.HttpLabel("principalArn")),
     kubernetesGroups: S.optional(StringList),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     username: S.optional(S.String),
   }).pipe(
     T.all(
@@ -1347,7 +1348,7 @@ export const UpdateAddonRequest = S.suspend(() =>
     addonVersion: S.optional(S.String),
     serviceAccountRoleArn: S.optional(S.String),
     resolveConflicts: S.optional(ResolveConflicts),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     configurationValues: S.optional(S.String),
     podIdentityAssociations: S.optional(AddonPodIdentityAssociationsList),
   }).pipe(
@@ -1376,7 +1377,7 @@ export const UpdateClusterVersionRequest = S.suspend(() =>
   S.Struct({
     name: S.String.pipe(T.HttpLabel("name")),
     version: S.String,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     force: S.optional(S.Boolean),
   }).pipe(
     T.all(
@@ -1400,7 +1401,7 @@ export const UpdateEksAnywhereSubscriptionRequest = S.suspend(() =>
   S.Struct({
     id: S.String.pipe(T.HttpLabel("id")),
     autoRenew: S.Boolean,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/eks-anywhere-subscriptions/{id}" }),
@@ -1445,7 +1446,7 @@ export const UpdateNodegroupVersionRequest = S.suspend(() =>
     releaseVersion: S.optional(S.String),
     launchTemplate: S.optional(LaunchTemplateSpecification),
     force: S.optional(S.Boolean),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -1475,7 +1476,7 @@ export const UpdatePodIdentityAssociationRequest = S.suspend(() =>
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
     associationId: S.String.pipe(T.HttpLabel("associationId")),
     roleArn: S.optional(S.String),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     disableSessionTags: S.optional(S.Boolean),
     targetRoleArn: S.optional(S.String),
   }).pipe(
@@ -1889,7 +1890,7 @@ export const CreateAddonRequest = S.suspend(() =>
     addonVersion: S.optional(S.String),
     serviceAccountRoleArn: S.optional(S.String),
     resolveConflicts: S.optional(ResolveConflicts),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     configurationValues: S.optional(S.String),
     podIdentityAssociations: S.optional(AddonPodIdentityAssociationsList),
@@ -1923,7 +1924,7 @@ export const CreateEksAnywhereSubscriptionRequest = S.suspend(() =>
     licenseQuantity: S.optional(S.Number),
     licenseType: S.optional(EksAnywhereSubscriptionLicenseType),
     autoRenew: S.optional(S.Boolean),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -3420,7 +3421,7 @@ export const RegisterClusterRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
     connectorConfig: ConnectorConfigRequest,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -3517,7 +3518,7 @@ export const UpdateClusterConfigRequest = S.suspend(() =>
     name: S.String.pipe(T.HttpLabel("name")),
     resourcesVpcConfig: S.optional(VpcConfigRequest),
     logging: S.optional(Logging),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     accessConfig: S.optional(UpdateAccessConfigRequest),
     upgradePolicy: S.optional(UpgradePolicyRequest),
     zonalShiftConfig: S.optional(ZonalShiftConfigRequest),
@@ -3575,7 +3576,7 @@ export const UpdateNodegroupConfigRequest = S.suspend(() =>
     scalingConfig: S.optional(NodegroupScalingConfig),
     updateConfig: S.optional(NodegroupUpdateConfig),
     nodeRepairConfig: S.optional(NodeRepairConfig),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3833,7 +3834,7 @@ export const AssociateEncryptionConfigRequest = S.suspend(() =>
   S.Struct({
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
     encryptionConfig: EncryptionConfigList,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3861,7 +3862,7 @@ export const AssociateIdentityProviderConfigRequest = S.suspend(() =>
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
     oidc: OidcIdentityProviderConfigRequest,
     tags: S.optional(TagMap),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({
@@ -3923,7 +3924,7 @@ export const CreateClusterRequest = S.suspend(() =>
     resourcesVpcConfig: VpcConfigRequest,
     kubernetesNetworkConfig: S.optional(KubernetesNetworkConfigRequest),
     logging: S.optional(Logging),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
     encryptionConfig: S.optional(EncryptionConfigList),
     outpostConfig: S.optional(OutpostConfigRequest),
@@ -3973,7 +3974,7 @@ export const CreateFargateProfileRequest = S.suspend(() =>
     podExecutionRoleArn: S.String,
     subnets: S.optional(StringList),
     selectors: S.optional(FargateProfileSelectors),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagMap),
   }).pipe(
     T.all(
@@ -4026,7 +4027,7 @@ export const CreateNodegroupRequest = S.suspend(() =>
     labels: S.optional(labelsMap),
     taints: S.optional(taintsList),
     tags: S.optional(TagMap),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     launchTemplate: S.optional(LaunchTemplateSpecification),
     updateConfig: S.optional(NodegroupUpdateConfig),
     nodeRepairConfig: S.optional(NodeRepairConfig),
@@ -4353,7 +4354,7 @@ export const UpdateCapabilityRequest = S.suspend(() =>
     capabilityName: S.String.pipe(T.HttpLabel("capabilityName")),
     roleArn: S.optional(S.String),
     configuration: S.optional(UpdateCapabilityConfiguration),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     deletePropagationPolicy: S.optional(CapabilityDeletePropagationPolicy),
   }).pipe(
     T.all(
@@ -4529,7 +4530,7 @@ export const CreateCapabilityRequest = S.suspend(() =>
   S.Struct({
     capabilityName: S.String,
     clusterName: S.String.pipe(T.HttpLabel("clusterName")),
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     type: CapabilityType,
     roleArn: S.String,
     configuration: S.optional(CapabilityConfigurationRequest),
@@ -5375,7 +5376,7 @@ export const listAccessEntries: {
   items: (
     input: ListAccessEntriesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | InvalidParameterException
     | InvalidRequestException
     | ResourceNotFoundException
@@ -5588,7 +5589,7 @@ export const listAddons: {
   items: (
     input: ListAddonsRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | InvalidRequestException
@@ -5644,7 +5645,7 @@ export const listFargateProfiles: {
   items: (
     input: ListFargateProfilesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | ResourceNotFoundException
@@ -5698,7 +5699,7 @@ export const listUpdates: {
   items: (
     input: ListUpdatesRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | ResourceNotFoundException
@@ -6279,7 +6280,7 @@ export const listClusters: {
   items: (
     input: ListClustersRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | ServerException
@@ -6445,7 +6446,7 @@ export const listNodegroups: {
   items: (
     input: ListNodegroupsRequest,
   ) => stream.Stream<
-    String,
+    string,
     | ClientException
     | InvalidParameterException
     | ResourceNotFoundException

@@ -114,6 +114,7 @@ export type SubnetString = string;
 export type SecurityGroupString = string;
 export type ImageUri = string;
 export type String1024 = string;
+export type EncryptionKeyArn = string;
 export type IdentityCenterInstanceArn = string;
 export type PolicyDocument = string;
 export type Arn = string;
@@ -122,10 +123,11 @@ export type WorkerCounts = number;
 export type ConfigurationPropertyKey = string;
 export type ConfigurationPropertyValue = string;
 export type UriString = string;
-export type EncryptionKeyArn = string;
 export type LogGroupName = string;
 export type LogStreamNamePrefix = string;
 export type PrometheusUrlString = string;
+export type EncryptionContextKey = string;
+export type EncryptionContextValue = string;
 export type EntryPointPath = string | redacted.Redacted<string>;
 export type EntryPointArgument = string | redacted.Redacted<string>;
 export type SparkSubmitParameters = string | redacted.Redacted<string>;
@@ -401,6 +403,20 @@ export const MonitoringConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "MonitoringConfiguration",
 }) as any as S.Schema<MonitoringConfiguration>;
+export type EncryptionContext = { [key: string]: string };
+export const EncryptionContext = S.Record({ key: S.String, value: S.String });
+export interface DiskEncryptionConfiguration {
+  encryptionContext?: { [key: string]: string };
+  encryptionKeyArn?: string;
+}
+export const DiskEncryptionConfiguration = S.suspend(() =>
+  S.Struct({
+    encryptionContext: S.optional(EncryptionContext),
+    encryptionKeyArn: S.optional(S.String),
+  }),
+).annotations({
+  identifier: "DiskEncryptionConfiguration",
+}) as any as S.Schema<DiskEncryptionConfiguration>;
 export interface SchedulerConfiguration {
   queueTimeoutMinutes?: number;
   maxConcurrentRuns?: number;
@@ -448,6 +464,7 @@ export interface UpdateApplicationRequest {
   releaseLabel?: string;
   runtimeConfiguration?: Configuration[];
   monitoringConfiguration?: MonitoringConfiguration;
+  diskEncryptionConfiguration?: DiskEncryptionConfiguration;
   schedulerConfiguration?: SchedulerConfiguration;
   identityCenterConfiguration?: IdentityCenterConfigurationInput;
   jobLevelCostAllocationConfiguration?: JobLevelCostAllocationConfiguration;
@@ -455,7 +472,7 @@ export interface UpdateApplicationRequest {
 export const UpdateApplicationRequest = S.suspend(() =>
   S.Struct({
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     initialCapacity: S.optional(InitialCapacityConfigMap),
     maximumCapacity: S.optional(MaximumAllowedResources),
     autoStartConfiguration: S.optional(AutoStartConfig),
@@ -468,6 +485,7 @@ export const UpdateApplicationRequest = S.suspend(() =>
     releaseLabel: S.optional(S.String),
     runtimeConfiguration: S.optional(ConfigurationList),
     monitoringConfiguration: S.optional(MonitoringConfiguration),
+    diskEncryptionConfiguration: S.optional(DiskEncryptionConfiguration),
     schedulerConfiguration: S.optional(SchedulerConfiguration),
     identityCenterConfiguration: S.optional(IdentityCenterConfigurationInput),
     jobLevelCostAllocationConfiguration: S.optional(
@@ -744,11 +762,13 @@ export const JobRunExecutionIamPolicy = S.suspend(() =>
 export interface ConfigurationOverrides {
   applicationConfiguration?: Configuration[];
   monitoringConfiguration?: MonitoringConfiguration;
+  diskEncryptionConfiguration?: DiskEncryptionConfiguration;
 }
 export const ConfigurationOverrides = S.suspend(() =>
   S.Struct({
     applicationConfiguration: S.optional(ConfigurationList),
     monitoringConfiguration: S.optional(MonitoringConfiguration),
+    diskEncryptionConfiguration: S.optional(DiskEncryptionConfiguration),
   }),
 ).annotations({
   identifier: "ConfigurationOverrides",
@@ -857,6 +877,7 @@ export interface Application {
   workerTypeSpecifications?: { [key: string]: WorkerTypeSpecification };
   runtimeConfiguration?: Configuration[];
   monitoringConfiguration?: MonitoringConfiguration;
+  diskEncryptionConfiguration?: DiskEncryptionConfiguration;
   interactiveConfiguration?: InteractiveConfiguration;
   schedulerConfiguration?: SchedulerConfiguration;
   identityCenterConfiguration?: IdentityCenterConfiguration;
@@ -884,6 +905,7 @@ export const Application = S.suspend(() =>
     workerTypeSpecifications: S.optional(WorkerTypeSpecificationMap),
     runtimeConfiguration: S.optional(ConfigurationList),
     monitoringConfiguration: S.optional(MonitoringConfiguration),
+    diskEncryptionConfiguration: S.optional(DiskEncryptionConfiguration),
     interactiveConfiguration: S.optional(InteractiveConfiguration),
     schedulerConfiguration: S.optional(SchedulerConfiguration),
     identityCenterConfiguration: S.optional(IdentityCenterConfiguration),
@@ -1110,7 +1132,7 @@ export interface StartJobRunRequest {
 export const StartJobRunRequest = S.suspend(() =>
   S.Struct({
     applicationId: S.String.pipe(T.HttpLabel("applicationId")),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     executionRoleArn: S.String,
     executionIamPolicy: S.optional(JobRunExecutionIamPolicy),
     jobDriver: S.optional(JobDriver),
@@ -1261,6 +1283,7 @@ export interface CreateApplicationRequest {
   workerTypeSpecifications?: { [key: string]: WorkerTypeSpecificationInput };
   runtimeConfiguration?: Configuration[];
   monitoringConfiguration?: MonitoringConfiguration;
+  diskEncryptionConfiguration?: DiskEncryptionConfiguration;
   interactiveConfiguration?: InteractiveConfiguration;
   schedulerConfiguration?: SchedulerConfiguration;
   identityCenterConfiguration?: IdentityCenterConfigurationInput;
@@ -1271,7 +1294,7 @@ export const CreateApplicationRequest = S.suspend(() =>
     name: S.optional(S.String),
     releaseLabel: S.String,
     type: S.String,
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     initialCapacity: S.optional(InitialCapacityConfigMap),
     maximumCapacity: S.optional(MaximumAllowedResources),
     tags: S.optional(TagMap),
@@ -1283,6 +1306,7 @@ export const CreateApplicationRequest = S.suspend(() =>
     workerTypeSpecifications: S.optional(WorkerTypeSpecificationInputMap),
     runtimeConfiguration: S.optional(ConfigurationList),
     monitoringConfiguration: S.optional(MonitoringConfiguration),
+    diskEncryptionConfiguration: S.optional(DiskEncryptionConfiguration),
     interactiveConfiguration: S.optional(InteractiveConfiguration),
     schedulerConfiguration: S.optional(SchedulerConfiguration),
     identityCenterConfiguration: S.optional(IdentityCenterConfigurationInput),

@@ -93,6 +93,7 @@ export type SSHPublicKey = string;
 export type InstanceOSUser = string;
 export type AvailabilityZone = string;
 export type RequestId = string;
+export type Success = boolean;
 
 //# Schemas
 export interface SendSerialConsoleSSHPublicKeyRequest {

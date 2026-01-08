@@ -150,7 +150,7 @@ export interface AssociateAccountsRequest {
 export const AssociateAccountsRequest = S.suspend(() =>
   S.Struct({
     accountIds: AccountIdList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -166,7 +166,7 @@ export const DeleteAutomationRuleRequest = S.suspend(() =>
   S.Struct({
     ruleArn: S.String,
     ruleRevision: S.Number,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -186,7 +186,7 @@ export interface DisassociateAccountsRequest {
 export const DisassociateAccountsRequest = S.suspend(() =>
   S.Struct({
     accountIds: AccountIdList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -483,7 +483,10 @@ export interface RollbackAutomationEventRequest {
   clientToken?: string;
 }
 export const RollbackAutomationEventRequest = S.suspend(() =>
-  S.Struct({ eventId: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    eventId: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
 ).annotations({
@@ -496,7 +499,7 @@ export interface StartAutomationEventRequest {
 export const StartAutomationEventRequest = S.suspend(() =>
   S.Struct({
     recommendedActionId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -523,7 +526,7 @@ export const TagResourceRequest = S.suspend(() =>
     resourceArn: S.String,
     ruleRevision: S.Number,
     tags: TagList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -545,7 +548,7 @@ export const UntagResourceRequest = S.suspend(() =>
     resourceArn: S.String,
     ruleRevision: S.Number,
     tagKeys: TagKeyList,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -612,7 +615,7 @@ export const UpdateAutomationRuleRequest = S.suspend(() =>
     criteria: S.optional(Criteria),
     schedule: S.optional(Schedule),
     status: S.optional(RuleStatus),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -626,7 +629,7 @@ export interface UpdateEnrollmentConfigurationRequest {
 export const UpdateEnrollmentConfigurationRequest = S.suspend(() =>
   S.Struct({
     status: EnrollmentStatus,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1016,7 +1019,7 @@ export const CreateAutomationRuleRequest = S.suspend(() =>
     schedule: Schedule,
     status: RuleStatus,
     tags: S.optional(TagList),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

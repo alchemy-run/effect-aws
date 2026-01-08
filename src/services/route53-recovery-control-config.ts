@@ -130,10 +130,8 @@ const rules = T.EndpointResolver((p, _) => {
 //# Newtypes
 export type __stringMin1Max64PatternS = string;
 export type __stringMin1Max256PatternAZaZ09 = string;
-export type __string = string;
 export type MaxResults = number;
 export type __stringMin0Max256PatternS = string;
-export type __integer = number;
 export type __policy = string;
 export type __stringMax36PatternS = string;
 export type __stringMin1Max8096PatternS = string;
@@ -159,7 +157,7 @@ export interface CreateControlPanelRequest {
 }
 export const CreateControlPanelRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ClusterArn: S.optional(S.String),
     ControlPanelName: S.optional(S.String),
     Tags: S.optional(__mapOf__stringMin0Max256PatternS),
@@ -184,7 +182,7 @@ export interface CreateRoutingControlRequest {
 }
 export const CreateRoutingControlRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ClusterArn: S.optional(S.String),
     ControlPanelArn: S.optional(S.String),
     RoutingControlName: S.optional(S.String),
@@ -785,7 +783,7 @@ export interface CreateClusterRequest {
 }
 export const CreateClusterRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ClusterName: S.optional(S.String),
     Tags: S.optional(__mapOf__stringMin0Max256PatternS),
     NetworkType: S.optional(NetworkType),
@@ -1038,7 +1036,7 @@ export interface CreateSafetyRuleRequest {
 export const CreateSafetyRuleRequest = S.suspend(() =>
   S.Struct({
     AssertionRule: S.optional(NewAssertionRule),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     GatingRule: S.optional(NewGatingRule),
     Tags: S.optional(__mapOf__stringMin0Max256PatternS),
   }).pipe(
@@ -1055,8 +1053,33 @@ export const CreateSafetyRuleRequest = S.suspend(() =>
   identifier: "CreateSafetyRuleRequest",
 }) as any as S.Schema<CreateSafetyRuleRequest>;
 export interface DescribeSafetyRuleResponse {
-  AssertionRule?: AssertionRule;
-  GatingRule?: GatingRule;
+  AssertionRule?: AssertionRule & {
+    AssertedControls: __listOf__stringMin1Max256PatternAZaZ09;
+    ControlPanelArn: __stringMin1Max256PatternAZaZ09;
+    Name: __stringMin1Max64PatternS;
+    RuleConfig: RuleConfig & {
+      Inverted: boolean;
+      Threshold: number;
+      Type: RuleType;
+    };
+    SafetyRuleArn: __stringMin1Max256PatternAZaZ09;
+    Status: Status;
+    WaitPeriodMs: number;
+  };
+  GatingRule?: GatingRule & {
+    ControlPanelArn: __stringMin1Max256PatternAZaZ09;
+    GatingControls: __listOf__stringMin1Max256PatternAZaZ09;
+    Name: __stringMin1Max64PatternS;
+    RuleConfig: RuleConfig & {
+      Inverted: boolean;
+      Threshold: number;
+      Type: RuleType;
+    };
+    SafetyRuleArn: __stringMin1Max256PatternAZaZ09;
+    Status: Status;
+    TargetControls: __listOf__stringMin1Max256PatternAZaZ09;
+    WaitPeriodMs: number;
+  };
 }
 export const DescribeSafetyRuleResponse = S.suspend(() =>
   S.Struct({
@@ -1068,7 +1091,35 @@ export const DescribeSafetyRuleResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeSafetyRuleResponse>;
 export interface ListSafetyRulesResponse {
   NextToken?: string;
-  SafetyRules?: Rule[];
+  SafetyRules?: (Rule & {
+    ASSERTION: AssertionRule & {
+      AssertedControls: __listOf__stringMin1Max256PatternAZaZ09;
+      ControlPanelArn: __stringMin1Max256PatternAZaZ09;
+      Name: __stringMin1Max64PatternS;
+      RuleConfig: RuleConfig & {
+        Inverted: boolean;
+        Threshold: number;
+        Type: RuleType;
+      };
+      SafetyRuleArn: __stringMin1Max256PatternAZaZ09;
+      Status: Status;
+      WaitPeriodMs: number;
+    };
+    GATING: GatingRule & {
+      ControlPanelArn: __stringMin1Max256PatternAZaZ09;
+      GatingControls: __listOf__stringMin1Max256PatternAZaZ09;
+      Name: __stringMin1Max64PatternS;
+      RuleConfig: RuleConfig & {
+        Inverted: boolean;
+        Threshold: number;
+        Type: RuleType;
+      };
+      SafetyRuleArn: __stringMin1Max256PatternAZaZ09;
+      Status: Status;
+      TargetControls: __listOf__stringMin1Max256PatternAZaZ09;
+      WaitPeriodMs: number;
+    };
+  })[];
 }
 export const ListSafetyRulesResponse = S.suspend(() =>
   S.Struct({
@@ -1079,8 +1130,33 @@ export const ListSafetyRulesResponse = S.suspend(() =>
   identifier: "ListSafetyRulesResponse",
 }) as any as S.Schema<ListSafetyRulesResponse>;
 export interface UpdateSafetyRuleResponse {
-  AssertionRule?: AssertionRule;
-  GatingRule?: GatingRule;
+  AssertionRule?: AssertionRule & {
+    AssertedControls: __listOf__stringMin1Max256PatternAZaZ09;
+    ControlPanelArn: __stringMin1Max256PatternAZaZ09;
+    Name: __stringMin1Max64PatternS;
+    RuleConfig: RuleConfig & {
+      Inverted: boolean;
+      Threshold: number;
+      Type: RuleType;
+    };
+    SafetyRuleArn: __stringMin1Max256PatternAZaZ09;
+    Status: Status;
+    WaitPeriodMs: number;
+  };
+  GatingRule?: GatingRule & {
+    ControlPanelArn: __stringMin1Max256PatternAZaZ09;
+    GatingControls: __listOf__stringMin1Max256PatternAZaZ09;
+    Name: __stringMin1Max64PatternS;
+    RuleConfig: RuleConfig & {
+      Inverted: boolean;
+      Threshold: number;
+      Type: RuleType;
+    };
+    SafetyRuleArn: __stringMin1Max256PatternAZaZ09;
+    Status: Status;
+    TargetControls: __listOf__stringMin1Max256PatternAZaZ09;
+    WaitPeriodMs: number;
+  };
 }
 export const UpdateSafetyRuleResponse = S.suspend(() =>
   S.Struct({
@@ -1091,8 +1167,33 @@ export const UpdateSafetyRuleResponse = S.suspend(() =>
   identifier: "UpdateSafetyRuleResponse",
 }) as any as S.Schema<UpdateSafetyRuleResponse>;
 export interface CreateSafetyRuleResponse {
-  AssertionRule?: AssertionRule;
-  GatingRule?: GatingRule;
+  AssertionRule?: AssertionRule & {
+    AssertedControls: __listOf__stringMin1Max256PatternAZaZ09;
+    ControlPanelArn: __stringMin1Max256PatternAZaZ09;
+    Name: __stringMin1Max64PatternS;
+    RuleConfig: RuleConfig & {
+      Inverted: boolean;
+      Threshold: number;
+      Type: RuleType;
+    };
+    SafetyRuleArn: __stringMin1Max256PatternAZaZ09;
+    Status: Status;
+    WaitPeriodMs: number;
+  };
+  GatingRule?: GatingRule & {
+    ControlPanelArn: __stringMin1Max256PatternAZaZ09;
+    GatingControls: __listOf__stringMin1Max256PatternAZaZ09;
+    Name: __stringMin1Max64PatternS;
+    RuleConfig: RuleConfig & {
+      Inverted: boolean;
+      Threshold: number;
+      Type: RuleType;
+    };
+    SafetyRuleArn: __stringMin1Max256PatternAZaZ09;
+    Status: Status;
+    TargetControls: __listOf__stringMin1Max256PatternAZaZ09;
+    WaitPeriodMs: number;
+  };
 }
 export const CreateSafetyRuleResponse = S.suspend(() =>
   S.Struct({

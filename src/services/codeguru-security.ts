@@ -394,7 +394,7 @@ export interface CreateScanRequest {
 }
 export const CreateScanRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     resourceId: ResourceId,
     scanName: S.String,
     scanType: S.optional(ScanType),

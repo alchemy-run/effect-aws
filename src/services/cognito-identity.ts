@@ -106,6 +106,8 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type IdentityPoolName = string;
+export type IdentityPoolUnauthenticated = boolean;
+export type ClassicFlow = boolean;
 export type DeveloperProviderName = string;
 export type ARNString = string;
 export type IdentityId = string;
@@ -115,11 +117,14 @@ export type TokenDuration = number;
 export type IdentityProviderName = string;
 export type QueryLimit = number;
 export type PaginationKey = string;
+export type HideDisabled = boolean;
 export type DeveloperUserIdentifier = string;
+export type UseDefaults = boolean;
 export type TagKeysType = string;
 export type IdentityProviderId = string;
 export type CognitoIdentityProviderName = string;
 export type CognitoIdentityProviderClientId = string;
+export type CognitoIdentityProviderTokenCheck = boolean;
 export type TagValueType = string;
 export type IdentityProviderToken = string | redacted.Redacted<string>;
 export type PrincipalTagID = string;

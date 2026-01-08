@@ -61,6 +61,7 @@ export type Cidr = string;
 export type ClientToken = string;
 export type ResourceNameShort = string;
 export type ResourceId = string;
+export type ISO8601TimeString = Date;
 export type ResourceName = string;
 export type ResourceDescription = string;
 export type Domain = string;
@@ -182,7 +183,7 @@ export interface CreateAccessSourceInput {
 export const CreateAccessSourceInput = S.suspend(() =>
   S.Struct({
     cidr: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ipAddressType: S.optional(IpAddressType),
     name: S.optional(S.String),
     dnsViewId: S.String,
@@ -275,7 +276,7 @@ export interface CreateAccessTokenInput {
 }
 export const CreateAccessTokenInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     dnsViewId: S.String.pipe(T.HttpLabel("dnsViewId")),
     expiresAt: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
     name: S.optional(S.String),
@@ -390,7 +391,7 @@ export interface CreateDNSViewInput {
 export const CreateDNSViewInput = S.suspend(() =>
   S.Struct({
     globalResolverId: S.String.pipe(T.HttpLabel("globalResolverId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     name: S.String,
     dnssecValidation: S.optional(DnsSecValidationType),
     ednsClientSubnet: S.optional(EdnsClientSubnetType),
@@ -539,7 +540,7 @@ export interface CreateFirewallDomainListInput {
 }
 export const CreateFirewallDomainListInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     globalResolverId: S.String.pipe(T.HttpLabel("globalResolverId")),
     description: S.optional(S.String),
     name: S.String,
@@ -730,7 +731,7 @@ export const CreateFirewallRuleInput = S.suspend(() =>
     blockOverrideDomain: S.optional(S.String),
     blockOverrideTtl: S.optional(S.Number),
     blockResponse: S.optional(FirewallBlockResponse),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     confidenceThreshold: S.optional(ConfidenceThreshold),
     description: S.optional(S.String),
     dnsAdvancedProtection: S.optional(DnsAdvancedProtection),
@@ -792,7 +793,7 @@ export const UpdateFirewallRuleInput = S.suspend(() =>
     blockOverrideDomain: S.optional(S.String),
     blockOverrideTtl: S.optional(S.Number),
     blockResponse: S.optional(FirewallBlockResponse),
-    clientToken: S.String,
+    clientToken: S.String.pipe(T.IdempotencyToken()),
     confidenceThreshold: S.optional(ConfidenceThreshold),
     description: S.optional(S.String),
     dnsAdvancedProtection: S.optional(DnsAdvancedProtection),
@@ -866,7 +867,7 @@ export interface CreateGlobalResolverInput {
 }
 export const CreateGlobalResolverInput = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     description: S.optional(S.String),
     name: S.String,
     observabilityRegion: S.optional(S.String),

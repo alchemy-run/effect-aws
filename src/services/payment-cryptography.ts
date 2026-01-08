@@ -560,7 +560,7 @@ export const GetPublicKeyCertificateOutput = S.suspend(() =>
   identifier: "GetPublicKeyCertificateOutput",
 }) as any as S.Schema<GetPublicKeyCertificateOutput>;
 export interface ListTagsForResourceOutput {
-  Tags: Tag[];
+  Tags: (Tag & { Value: TagValue })[];
   NextToken?: string;
 }
 export const ListTagsForResourceOutput = S.suspend(() =>

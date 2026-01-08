@@ -94,12 +94,15 @@ const rules = T.EndpointResolver((p, _) => {
 export type Name = string;
 export type Definition = string | redacted.Redacted<string>;
 export type Arn = string;
+export type Publish = boolean;
 export type VersionDescription = string | redacted.Redacted<string>;
 export type AliasDescription = string | redacted.Redacted<string>;
 export type CharacterRestrictedName = string;
 export type LongArn = string;
 export type PageSize = number;
+export type ReverseOrder = boolean;
 export type PageToken = string;
+export type IncludeExecutionDataGetExecutionHistory = boolean;
 export type ListExecutionsPageToken = string;
 export type RevisionId = string;
 export type ClientToken = string;
@@ -108,6 +111,7 @@ export type SensitiveError = string | redacted.Redacted<string>;
 export type SensitiveCause = string | redacted.Redacted<string>;
 export type SensitiveData = string | redacted.Redacted<string>;
 export type TraceHeader = string;
+export type RevealSecrets = boolean;
 export type TestStateStateName = string | redacted.Redacted<string>;
 export type TagKey = string;
 export type MaxConcurrency = number;
@@ -117,6 +121,8 @@ export type ValidateStateMachineDefinitionMaxResult = number;
 export type TagValue = string;
 export type KmsKeyId = string;
 export type KmsDataKeyReusePeriodSeconds = number;
+export type IncludeExecutionData = boolean;
+export type Enabled = boolean;
 export type VersionWeight = number;
 export type RetrierRetryCount = number;
 export type MapIterationFailureCount = number;
@@ -124,6 +130,8 @@ export type ErrorMessage = string;
 export type RedriveCount = number;
 export type MapRunLabel = string;
 export type SensitiveDataJobInput = string | redacted.Redacted<string>;
+export type ValidateStateMachineDefinitionTruncated = boolean;
+export type includedDetails = boolean;
 export type UnsignedLong = number;
 export type LongObject = number;
 export type StateName = string;
@@ -145,6 +153,7 @@ export type TimeoutInSeconds = number;
 export type Identity = string;
 export type ConnectorParameters = string | redacted.Redacted<string>;
 export type EvaluationFailureLocation = string | redacted.Redacted<string>;
+export type truncated = boolean;
 export type VariableValue = string | redacted.Redacted<string>;
 export type InspectionToleratedFailureCount = number;
 export type InspectionToleratedFailurePercentage = number;
@@ -646,7 +655,10 @@ export interface RedriveExecutionInput {
   clientToken?: string;
 }
 export const RedriveExecutionInput = S.suspend(() =>
-  S.Struct({ executionArn: S.String, clientToken: S.optional(S.String) }).pipe(
+  S.Struct({
+    executionArn: S.String,
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
+  }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),

@@ -106,7 +106,6 @@ const rules = T.EndpointResolver((p, _) => {
 export type TargetBucket = string;
 export type KmsKeyId = string;
 export type UserName = string;
-export type IntegerOptional = number;
 export type ACLName = string;
 export type AccessString = string;
 export type FilterName = string;

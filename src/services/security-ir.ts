@@ -219,7 +219,7 @@ export interface CreateCaseCommentRequest {
 export const CreateCaseCommentRequest = S.suspend(() =>
   S.Struct({
     caseId: S.String.pipe(T.HttpLabel("caseId")),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     body: SensitiveString,
   }).pipe(
     T.all(
@@ -269,7 +269,7 @@ export const GetCaseAttachmentUploadUrlRequest = S.suspend(() =>
     caseId: S.String.pipe(T.HttpLabel("caseId")),
     fileName: SensitiveString,
     contentLength: S.Number,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/v1/cases/{caseId}/get-presigned-url" }),
@@ -822,7 +822,7 @@ export interface CreateCaseRequest {
 }
 export const CreateCaseRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     resolverType: ResolverType,
     title: SensitiveString,
     description: SensitiveString,
@@ -983,7 +983,7 @@ export interface CreateMembershipRequest {
 }
 export const CreateMembershipRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     membershipName: SensitiveString,
     incidentResponseTeam: IncidentResponseTeam,
     optInFeatures: S.optional(OptInFeatures),

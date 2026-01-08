@@ -87,12 +87,10 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __integer = number;
-export type __string = string;
 export type MaxResults = number;
 export type __integerMin1 = number;
 export type __integerMin1Max100 = number;
-export type __long = number;
+export type __timestampUnix = Date;
 
 //# Schemas
 export type LoggingStrategy = "VENDED_LOGS" | "LEGACY_CLOUDWATCH";
@@ -2585,7 +2583,9 @@ export interface GetPlaybackConfigurationResponse {
   HlsConfiguration?: HlsConfiguration;
   InsertionMode?: InsertionMode;
   LivePreRollConfiguration?: LivePreRollConfiguration;
-  LogConfiguration?: LogConfiguration;
+  LogConfiguration?: LogConfiguration & {
+    EnabledLoggingStrategies: __listOfLoggingStrategies;
+  };
   ManifestProcessingRules?: ManifestProcessingRules;
   Name?: string;
   PersonalizationThresholdSeconds?: number;
@@ -2628,7 +2628,11 @@ export const GetPlaybackConfigurationResponse = S.suspend(() =>
   identifier: "GetPlaybackConfigurationResponse",
 }) as any as S.Schema<GetPlaybackConfigurationResponse>;
 export interface ListPlaybackConfigurationsResponse {
-  Items?: PlaybackConfiguration[];
+  Items?: (PlaybackConfiguration & {
+    LogConfiguration: LogConfiguration & {
+      EnabledLoggingStrategies: __listOfLoggingStrategies;
+    };
+  })[];
   NextToken?: string;
 }
 export const ListPlaybackConfigurationsResponse = S.suspend(() =>
@@ -3091,7 +3095,9 @@ export interface PutPlaybackConfigurationResponse {
   HlsConfiguration?: HlsConfiguration;
   InsertionMode?: InsertionMode;
   LivePreRollConfiguration?: LivePreRollConfiguration;
-  LogConfiguration?: LogConfiguration;
+  LogConfiguration?: LogConfiguration & {
+    EnabledLoggingStrategies: __listOfLoggingStrategies;
+  };
   ManifestProcessingRules?: ManifestProcessingRules;
   Name?: string;
   PersonalizationThresholdSeconds?: number;

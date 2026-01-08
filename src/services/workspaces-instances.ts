@@ -382,7 +382,7 @@ export interface CreateVolumeRequest {
 export const CreateVolumeRequest = S.suspend(() =>
   S.Struct({
     AvailabilityZone: S.String,
-    ClientToken: S.optional(SensitiveString),
+    ClientToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     Encrypted: S.optional(S.Boolean),
     Iops: S.optional(S.Number),
     KmsKeyId: S.optional(SensitiveString),
@@ -1003,7 +1003,7 @@ export interface CreateWorkspaceInstanceRequest {
 }
 export const CreateWorkspaceInstanceRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(SensitiveString),
+    ClientToken: S.optional(SensitiveString).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
     ManagedInstance: ManagedInstanceRequest,
   }).pipe(

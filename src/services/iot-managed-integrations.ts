@@ -91,6 +91,7 @@ export type SmartHomeResourceType = string;
 export type SmartHomeResourceId = string;
 export type LogConfigurationId = string;
 export type HubTokenTimerExpirySettingInSeconds = number;
+export type HubConfigurationUpdatedAt = Date;
 export type KmsKeyArn = string;
 export type Owner = string | redacted.Redacted<string>;
 export type AuthMaterialString = string | redacted.Redacted<string>;
@@ -119,6 +120,7 @@ export type SchemaId = string;
 export type SchemaVersionNamespaceName = string;
 export type SchemaVersionVersion = string;
 export type ConnectorDeviceName = string | redacted.Redacted<string>;
+export type DeviceMetadata = unknown;
 export type TagValue = string;
 export type SecretsManagerArn = string;
 export type SecretsManagerVersionId = string;
@@ -128,6 +130,7 @@ export type CapabilityReportVersion = string;
 export type NodeId = string;
 export type ExtrinsicSchemaId = string;
 export type MatterCapabilityReportClusterRevisionId = number;
+export type ValidationSchema = unknown;
 export type AttributeName = string;
 export type AttributeValue = string;
 export type EndTime = string;
@@ -135,27 +138,44 @@ export type ScheduleStartTime = string;
 export type LocalStoreLocation = string;
 export type LocalStoreFileRotationMaxFiles = number;
 export type LocalStoreFileRotationMaxBytes = number;
+export type UploadLog = boolean;
 export type UploadPeriodMinutes = number;
+export type DeleteLocalStoreAfterUpload = boolean;
 export type ErrorMessage = string;
 export type OAuthAuthorizationUrl = string | redacted.Redacted<string>;
 export type AccountAssociationArn = string;
 export type AccountAssociationErrorMessage = string;
 export type OAuthCompleteRedirectUrl = string;
 export type CredentialLockerArn = string;
+export type CredentialLockerCreatedAt = Date;
+export type DestinationCreatedAt = Date;
+export type DestinationUpdatedAt = Date;
 export type DeviceDiscoveryArn = string;
+export type DiscoveryStartedAt = Date;
+export type DiscoveryFinishedAt = Date;
 export type ManagedThingArn = string;
 export type AdvertisedProductId = string;
 export type UniversalProductCode = string | redacted.Redacted<string>;
 export type InternationalArticleNumber = string | redacted.Redacted<string>;
 export type DeviceSpecificKey = string | redacted.Redacted<string>;
 export type MacAddress = string | redacted.Redacted<string>;
+export type CreatedAt = Date;
+export type UpdatedAt = Date;
+export type SetupAt = Date;
 export type CertificatePem = string;
+export type ConnectivityStatus = boolean;
+export type ConnectivityTimestamp = Date;
+export type NotificationConfigurationCreatedAt = Date;
+export type NotificationConfigurationUpdatedAt = Date;
 export type OtaTaskArn = string;
+export type LastUpdatedAt = Date;
 export type ProvisioningProfileArn = string;
 export type ClaimCertificate = string | redacted.Redacted<string>;
 export type ClaimCertificatePrivateKey = string | redacted.Redacted<string>;
 export type SchemaVersionDescription = string;
+export type SchemaVersionSchema = unknown;
 export type ClusterId = string;
+export type MatterAttributes = unknown;
 export type AuthUrl = string;
 export type TokenUrl = string;
 export type ConfigurationErrorCode = string;
@@ -168,12 +188,15 @@ export type InProgressTimeoutInMinutes = number;
 export type DurationInMinutes = number;
 export type StartTime = string;
 export type MinNumberOfRetries = number;
+export type DiscoveredAt = Date;
 export type EndpointSemanticTag = string;
 export type MatterCommandId = string;
+export type MatterFields = unknown;
 export type MatterEventId = string;
 export type CapabilityActionName = string;
 export type ActionReference = string;
 export type ActionTraceId = string;
+export type CapabilityProperties = unknown;
 export type PropertyName = string;
 export type ActionName = string;
 export type EventName = string;
@@ -182,7 +205,9 @@ export type ThresholdPercentage = number;
 export type BaseRatePerMinute = number;
 export type IncrementFactor = number;
 export type ExecutionNumber = number;
+export type QueuedAt = Date;
 export type RetryAttempt = number;
+export type StartedAt = Date;
 export type SpecVersion = string;
 export type MatterCapabilityReportFeatureMap = number;
 export type MatterCapabilityReportFabricIndex = number;
@@ -191,6 +216,7 @@ export type NumberOfSucceededThings = number;
 export type ErrorResourceId = string;
 export type ErrorResourceType = string;
 export type MatterAttributeId = string;
+export type MatterCapabilityReportAttributeValue = unknown;
 
 //# Schemas
 export interface GetCustomEndpointRequest {}
@@ -442,7 +468,7 @@ export interface CreateAccountAssociationRequest {
 }
 export const CreateAccountAssociationRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ConnectorDestinationId: S.String,
     Name: S.optional(S.String),
     Description: S.optional(S.String),
@@ -756,7 +782,7 @@ export interface CreateCredentialLockerRequest {
 export const CreateCredentialLockerRequest = S.suspend(() =>
   S.Struct({
     Name: S.optional(SensitiveString),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -847,7 +873,7 @@ export const CreateDestinationRequest = S.suspend(() =>
     DeliveryDestinationType: DeliveryDestinationType,
     Name: S.String,
     RoleArn: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Description: S.optional(S.String),
     Tags: S.optional(TagsMap),
   }).pipe(
@@ -1038,7 +1064,7 @@ export const CreateEventLogConfigurationRequest = S.suspend(() =>
     ResourceType: S.String,
     ResourceId: S.optional(S.String),
     EventLogLevel: LogLevel,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/event-log-configurations" }),
@@ -1629,7 +1655,7 @@ export const CreateNotificationConfigurationRequest = S.suspend(() =>
   S.Struct({
     EventType: EventType,
     DestinationName: S.String,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -1926,7 +1952,7 @@ export const CreateProvisioningProfileRequest = S.suspend(() =>
     ProvisioningType: ProvisioningType,
     CaCertificate: S.optional(SensitiveString),
     Name: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(TagsMap),
   }).pipe(
     T.all(
@@ -3509,7 +3535,7 @@ export const CreateCloudConnectorRequest = S.suspend(() =>
     EndpointConfig: EndpointConfig,
     Description: S.optional(S.String),
     EndpointType: S.optional(EndpointType),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/cloud-connectors" }),
@@ -3754,7 +3780,7 @@ export const CreateOtaTaskRequest = S.suspend(() =>
     OtaMechanism: S.optional(OtaMechanism),
     OtaType: OtaType,
     OtaTargetQueryString: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     OtaSchedulingConfig: S.optional(OtaTaskSchedulingConfig),
     OtaTaskExecutionRetryConfig: S.optional(OtaTaskExecutionRetryConfig),
     Tags: S.optional(TagsMap),
@@ -4015,7 +4041,7 @@ export const CreateConnectorDestinationRequest = S.suspend(() =>
     AuthType: AuthType,
     AuthConfig: AuthConfig,
     SecretsManager: SecretsManager,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/connector-destinations" }),
@@ -4089,7 +4115,7 @@ export const CreateManagedThingRequest = S.suspend(() =>
     CapabilityReport: S.optional(CapabilityReport),
     CapabilitySchemas: S.optional(CapabilitySchemas),
     Capabilities: S.optional(S.String),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Classification: S.optional(SensitiveString),
     Tags: S.optional(TagsMap),
     MetaData: S.optional(MetaData),
@@ -4239,7 +4265,7 @@ export const CreateOtaTaskConfigurationRequest = S.suspend(() =>
     Description: S.optional(S.String),
     Name: S.optional(SensitiveString),
     PushConfig: S.optional(PushConfig),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/ota-task-configurations" }),

@@ -149,7 +149,7 @@ export interface DeleteClusterRequest {
 export const DeleteClusterRequest = S.suspend(() =>
   S.Struct({
     clusterIdentifier: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -204,7 +204,7 @@ export const DeleteComputeNodeGroupRequest = S.suspend(() =>
   S.Struct({
     clusterIdentifier: S.String,
     computeNodeGroupIdentifier: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -256,7 +256,7 @@ export const DeleteQueueRequest = S.suspend(() =>
   S.Struct({
     clusterIdentifier: S.String,
     queueIdentifier: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -472,7 +472,7 @@ export const CreateComputeNodeGroupRequest = S.suspend(() =>
     instanceConfigs: InstanceList,
     spotOptions: S.optional(SpotOptions),
     slurmConfiguration: S.optional(ComputeNodeGroupSlurmConfigurationRequest),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(RequestTagMap),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -507,7 +507,7 @@ export const UpdateComputeNodeGroupRequest = S.suspend(() =>
     slurmConfiguration: S.optional(
       UpdateComputeNodeGroupSlurmConfigurationRequest,
     ),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -530,7 +530,7 @@ export const CreateQueueRequest = S.suspend(() =>
       ComputeNodeGroupConfigurationList,
     ),
     slurmConfiguration: S.optional(QueueSlurmConfigurationRequest),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(RequestTagMap),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -553,7 +553,7 @@ export const UpdateQueueRequest = S.suspend(() =>
       ComputeNodeGroupConfigurationList,
     ),
     slurmConfiguration: S.optional(UpdateQueueSlurmConfigurationRequest),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -811,7 +811,7 @@ export const CreateClusterRequest = S.suspend(() =>
     size: Size,
     networking: NetworkingRequest,
     slurmConfiguration: S.optional(ClusterSlurmConfigurationRequest),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(RequestTagMap),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -827,7 +827,7 @@ export interface UpdateClusterRequest {
 export const UpdateClusterRequest = S.suspend(() =>
   S.Struct({
     clusterIdentifier: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     slurmConfiguration: S.optional(UpdateClusterSlurmConfigurationRequest),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

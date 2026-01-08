@@ -204,6 +204,7 @@ export type TagKey = string;
 export type NonPartnerEventBusArn = string;
 export type ResourceArn = string;
 export type TagValue = string;
+export type EventTime = Date;
 export type EventResource = string;
 export type NonPartnerEventBusNameOrArn = string;
 export type TraceHeader = string;

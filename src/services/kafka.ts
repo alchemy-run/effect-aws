@@ -87,20 +87,18 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type __string = string;
 export type __stringMin1Max64 = string;
 export type __stringMin1Max128 = string;
 export type __integerMin1Max15 = number;
+export type __blob = Uint8Array;
 export type __stringMax1024 = string;
 export type __stringMin1Max128Pattern09AZaZ09AZaZ0 = string;
-export type __long = number;
 export type MaxResults = number;
-export type __integer = number;
 export type __stringMin5Max32 = string;
 export type __stringMax256 = string;
 export type __stringMax249 = string;
+export type __timestampIso8601 = Date;
 export type __integerMin1Max16384 = number;
-export type __double = number;
 
 //# Schemas
 export type __listOf__string = string[];
@@ -2483,7 +2481,10 @@ export interface DescribeConfigurationResponse {
   CreationTime?: Date;
   Description?: string;
   KafkaVersions?: string[];
-  LatestRevision?: ConfigurationRevision;
+  LatestRevision?: ConfigurationRevision & {
+    CreationTime: __timestampIso8601;
+    Revision: number;
+  };
   Name?: string;
   State?: ConfigurationState;
 }
@@ -2639,7 +2640,52 @@ export const GetClusterPolicyResponse = S.suspend(() =>
   identifier: "GetClusterPolicyResponse",
 }) as any as S.Schema<GetClusterPolicyResponse>;
 export interface ListClusterOperationsResponse {
-  ClusterOperationInfoList?: ClusterOperationInfo[];
+  ClusterOperationInfoList?: (ClusterOperationInfo & {
+    SourceClusterInfo: MutableClusterInfo & {
+      BrokerEBSVolumeInfo: (BrokerEBSVolumeInfo & {
+        KafkaBrokerNodeId: string;
+      })[];
+      ConfigurationInfo: ConfigurationInfo & { Arn: string; Revision: number };
+      OpenMonitoring: OpenMonitoring & {
+        Prometheus: Prometheus & {
+          JmxExporter: JmxExporter & { EnabledInBroker: boolean };
+          NodeExporter: NodeExporter & { EnabledInBroker: boolean };
+        };
+      };
+      LoggingInfo: LoggingInfo & {
+        BrokerLogs: BrokerLogs & {
+          CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+          Firehose: Firehose & { Enabled: boolean };
+          S3: S3 & { Enabled: boolean };
+        };
+      };
+      EncryptionInfo: EncryptionInfo & {
+        EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+      };
+    };
+    TargetClusterInfo: MutableClusterInfo & {
+      BrokerEBSVolumeInfo: (BrokerEBSVolumeInfo & {
+        KafkaBrokerNodeId: string;
+      })[];
+      ConfigurationInfo: ConfigurationInfo & { Arn: string; Revision: number };
+      OpenMonitoring: OpenMonitoring & {
+        Prometheus: Prometheus & {
+          JmxExporter: JmxExporter & { EnabledInBroker: boolean };
+          NodeExporter: NodeExporter & { EnabledInBroker: boolean };
+        };
+      };
+      LoggingInfo: LoggingInfo & {
+        BrokerLogs: BrokerLogs & {
+          CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+          Firehose: Firehose & { Enabled: boolean };
+          S3: S3 & { Enabled: boolean };
+        };
+      };
+      EncryptionInfo: EncryptionInfo & {
+        EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListClusterOperationsResponse = S.suspend(() =>
@@ -2653,7 +2699,28 @@ export const ListClusterOperationsResponse = S.suspend(() =>
   identifier: "ListClusterOperationsResponse",
 }) as any as S.Schema<ListClusterOperationsResponse>;
 export interface ListClustersResponse {
-  ClusterInfoList?: ClusterInfo[];
+  ClusterInfoList?: (ClusterInfo & {
+    BrokerNodeGroupInfo: BrokerNodeGroupInfo & {
+      ClientSubnets: __listOf__string;
+      InstanceType: __stringMin5Max32;
+    };
+    EncryptionInfo: EncryptionInfo & {
+      EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+    };
+    OpenMonitoring: OpenMonitoring & {
+      Prometheus: Prometheus & {
+        JmxExporter: JmxExporter & { EnabledInBroker: boolean };
+        NodeExporter: NodeExporter & { EnabledInBroker: boolean };
+      };
+    };
+    LoggingInfo: LoggingInfo & {
+      BrokerLogs: BrokerLogs & {
+        CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+        Firehose: Firehose & { Enabled: boolean };
+        S3: S3 & { Enabled: boolean };
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const ListClustersResponse = S.suspend(() =>
@@ -2667,7 +2734,34 @@ export const ListClustersResponse = S.suspend(() =>
   identifier: "ListClustersResponse",
 }) as any as S.Schema<ListClustersResponse>;
 export interface ListClustersV2Response {
-  ClusterInfoList?: Cluster[];
+  ClusterInfoList?: (Cluster & {
+    Provisioned: Provisioned & {
+      BrokerNodeGroupInfo: BrokerNodeGroupInfo & {
+        ClientSubnets: __listOf__string;
+        InstanceType: __stringMin5Max32;
+      };
+      NumberOfBrokerNodes: __integerMin1Max15;
+      EncryptionInfo: EncryptionInfo & {
+        EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+      };
+      OpenMonitoring: OpenMonitoringInfo & {
+        Prometheus: PrometheusInfo & {
+          JmxExporter: JmxExporterInfo & { EnabledInBroker: boolean };
+          NodeExporter: NodeExporterInfo & { EnabledInBroker: boolean };
+        };
+      };
+      LoggingInfo: LoggingInfo & {
+        BrokerLogs: BrokerLogs & {
+          CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+          Firehose: Firehose & { Enabled: boolean };
+          S3: S3 & { Enabled: boolean };
+        };
+      };
+    };
+    Serverless: Serverless & {
+      VpcConfigs: (VpcConfig & { SubnetIds: __listOf__string })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const ListClustersV2Response = S.suspend(() =>
@@ -2682,7 +2776,10 @@ export const ListClustersV2Response = S.suspend(() =>
 }) as any as S.Schema<ListClustersV2Response>;
 export interface ListConfigurationRevisionsResponse {
   NextToken?: string;
-  Revisions?: ConfigurationRevision[];
+  Revisions?: (ConfigurationRevision & {
+    CreationTime: __timestampIso8601;
+    Revision: number;
+  })[];
 }
 export const ListConfigurationRevisionsResponse = S.suspend(() =>
   S.Struct({
@@ -2823,7 +2920,10 @@ export const UpdateClusterKafkaVersionResponse = S.suspend(() =>
 }) as any as S.Schema<UpdateClusterKafkaVersionResponse>;
 export interface UpdateConfigurationResponse {
   Arn?: string;
-  LatestRevision?: ConfigurationRevision;
+  LatestRevision?: ConfigurationRevision & {
+    CreationTime: __timestampIso8601;
+    Revision: number;
+  };
 }
 export const UpdateConfigurationResponse = S.suspend(() =>
   S.Struct({
@@ -3340,7 +3440,10 @@ export const BatchAssociateScramSecretResponse = S.suspend(() =>
 export interface CreateConfigurationResponse {
   Arn?: string;
   CreationTime?: Date;
-  LatestRevision?: ConfigurationRevision;
+  LatestRevision?: ConfigurationRevision & {
+    CreationTime: __timestampIso8601;
+    Revision: number;
+  };
   Name?: string;
   State?: ConfigurationState;
 }
@@ -3363,8 +3466,18 @@ export interface DescribeReplicatorResponse {
   CreationTime?: Date;
   CurrentVersion?: string;
   IsReplicatorReference?: boolean;
-  KafkaClusters?: KafkaClusterDescription[];
-  ReplicationInfoList?: ReplicationInfoDescription[];
+  KafkaClusters?: (KafkaClusterDescription & {
+    AmazonMskCluster: AmazonMskCluster & { MskClusterArn: string };
+    VpcConfig: KafkaClusterClientVpcConfig & { SubnetIds: __listOf__string };
+  })[];
+  ReplicationInfoList?: (ReplicationInfoDescription & {
+    ConsumerGroupReplication: ConsumerGroupReplication & {
+      ConsumerGroupsToReplicate: __listOf__stringMax256;
+    };
+    TopicReplication: TopicReplication & {
+      TopicsToReplicate: __listOf__stringMax249;
+    };
+  })[];
   ReplicatorArn?: string;
   ReplicatorDescription?: string;
   ReplicatorName?: string;
@@ -3438,7 +3551,7 @@ export const GetCompatibleKafkaVersionsResponse = S.suspend(() =>
   identifier: "GetCompatibleKafkaVersionsResponse",
 }) as any as S.Schema<GetCompatibleKafkaVersionsResponse>;
 export interface ListClientVpcConnectionsResponse {
-  ClientVpcConnections?: ClientVpcConnection[];
+  ClientVpcConnections?: (ClientVpcConnection & { VpcConnectionArn: string })[];
   NextToken?: string;
 }
 export const ListClientVpcConnectionsResponse = S.suspend(() =>
@@ -3466,7 +3579,18 @@ export const ListClusterOperationsV2Response = S.suspend(() =>
   identifier: "ListClusterOperationsV2Response",
 }) as any as S.Schema<ListClusterOperationsV2Response>;
 export interface ListConfigurationsResponse {
-  Configurations?: Configuration[];
+  Configurations?: (Configuration & {
+    Arn: string;
+    CreationTime: __timestampIso8601;
+    Description: string;
+    KafkaVersions: __listOf__string;
+    LatestRevision: ConfigurationRevision & {
+      CreationTime: __timestampIso8601;
+      Revision: number;
+    };
+    Name: string;
+    State: ConfigurationState;
+  })[];
   NextToken?: string;
 }
 export const ListConfigurationsResponse = S.suspend(() =>
@@ -3506,7 +3630,10 @@ export const ListTopicsResponse = S.suspend(() =>
   identifier: "ListTopicsResponse",
 }) as any as S.Schema<ListTopicsResponse>;
 export interface ListVpcConnectionsResponse {
-  VpcConnections?: VpcConnection[];
+  VpcConnections?: (VpcConnection & {
+    VpcConnectionArn: string;
+    TargetClusterArn: string;
+  })[];
   NextToken?: string;
 }
 export const ListVpcConnectionsResponse = S.suspend(() =>
@@ -3935,7 +4062,34 @@ export const CreateReplicatorRequest = S.suspend(() =>
   identifier: "CreateReplicatorRequest",
 }) as any as S.Schema<CreateReplicatorRequest>;
 export interface DescribeClusterV2Response {
-  ClusterInfo?: Cluster;
+  ClusterInfo?: Cluster & {
+    Provisioned: Provisioned & {
+      BrokerNodeGroupInfo: BrokerNodeGroupInfo & {
+        ClientSubnets: __listOf__string;
+        InstanceType: __stringMin5Max32;
+      };
+      NumberOfBrokerNodes: __integerMin1Max15;
+      EncryptionInfo: EncryptionInfo & {
+        EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+      };
+      OpenMonitoring: OpenMonitoringInfo & {
+        Prometheus: PrometheusInfo & {
+          JmxExporter: JmxExporterInfo & { EnabledInBroker: boolean };
+          NodeExporter: NodeExporterInfo & { EnabledInBroker: boolean };
+        };
+      };
+      LoggingInfo: LoggingInfo & {
+        BrokerLogs: BrokerLogs & {
+          CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+          Firehose: Firehose & { Enabled: boolean };
+          S3: S3 & { Enabled: boolean };
+        };
+      };
+    };
+    Serverless: Serverless & {
+      VpcConfigs: (VpcConfig & { SubnetIds: __listOf__string })[];
+    };
+  };
 }
 export const DescribeClusterV2Response = S.suspend(() =>
   S.Struct({
@@ -3960,7 +4114,11 @@ export const ListNodesResponse = S.suspend(() =>
 }) as any as S.Schema<ListNodesResponse>;
 export interface ListReplicatorsResponse {
   NextToken?: string;
-  Replicators?: ReplicatorSummary[];
+  Replicators?: (ReplicatorSummary & {
+    KafkaClustersSummary: (KafkaClusterSummary & {
+      AmazonMskCluster: AmazonMskCluster & { MskClusterArn: string };
+    })[];
+  })[];
 }
 export const ListReplicatorsResponse = S.suspend(() =>
   S.Struct({
@@ -4069,7 +4227,52 @@ export const CreateReplicatorResponse = S.suspend(() =>
   identifier: "CreateReplicatorResponse",
 }) as any as S.Schema<CreateReplicatorResponse>;
 export interface DescribeClusterOperationResponse {
-  ClusterOperationInfo?: ClusterOperationInfo;
+  ClusterOperationInfo?: ClusterOperationInfo & {
+    SourceClusterInfo: MutableClusterInfo & {
+      BrokerEBSVolumeInfo: (BrokerEBSVolumeInfo & {
+        KafkaBrokerNodeId: string;
+      })[];
+      ConfigurationInfo: ConfigurationInfo & { Arn: string; Revision: number };
+      OpenMonitoring: OpenMonitoring & {
+        Prometheus: Prometheus & {
+          JmxExporter: JmxExporter & { EnabledInBroker: boolean };
+          NodeExporter: NodeExporter & { EnabledInBroker: boolean };
+        };
+      };
+      LoggingInfo: LoggingInfo & {
+        BrokerLogs: BrokerLogs & {
+          CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+          Firehose: Firehose & { Enabled: boolean };
+          S3: S3 & { Enabled: boolean };
+        };
+      };
+      EncryptionInfo: EncryptionInfo & {
+        EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+      };
+    };
+    TargetClusterInfo: MutableClusterInfo & {
+      BrokerEBSVolumeInfo: (BrokerEBSVolumeInfo & {
+        KafkaBrokerNodeId: string;
+      })[];
+      ConfigurationInfo: ConfigurationInfo & { Arn: string; Revision: number };
+      OpenMonitoring: OpenMonitoring & {
+        Prometheus: Prometheus & {
+          JmxExporter: JmxExporter & { EnabledInBroker: boolean };
+          NodeExporter: NodeExporter & { EnabledInBroker: boolean };
+        };
+      };
+      LoggingInfo: LoggingInfo & {
+        BrokerLogs: BrokerLogs & {
+          CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+          Firehose: Firehose & { Enabled: boolean };
+          S3: S3 & { Enabled: boolean };
+        };
+      };
+      EncryptionInfo: EncryptionInfo & {
+        EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+      };
+    };
+  };
 }
 export const DescribeClusterOperationResponse = S.suspend(() =>
   S.Struct({
@@ -4081,7 +4284,60 @@ export const DescribeClusterOperationResponse = S.suspend(() =>
   identifier: "DescribeClusterOperationResponse",
 }) as any as S.Schema<DescribeClusterOperationResponse>;
 export interface DescribeClusterOperationV2Response {
-  ClusterOperationInfo?: ClusterOperationV2;
+  ClusterOperationInfo?: ClusterOperationV2 & {
+    Provisioned: ClusterOperationV2Provisioned & {
+      SourceClusterInfo: MutableClusterInfo & {
+        BrokerEBSVolumeInfo: (BrokerEBSVolumeInfo & {
+          KafkaBrokerNodeId: string;
+        })[];
+        ConfigurationInfo: ConfigurationInfo & {
+          Arn: string;
+          Revision: number;
+        };
+        OpenMonitoring: OpenMonitoring & {
+          Prometheus: Prometheus & {
+            JmxExporter: JmxExporter & { EnabledInBroker: boolean };
+            NodeExporter: NodeExporter & { EnabledInBroker: boolean };
+          };
+        };
+        LoggingInfo: LoggingInfo & {
+          BrokerLogs: BrokerLogs & {
+            CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+            Firehose: Firehose & { Enabled: boolean };
+            S3: S3 & { Enabled: boolean };
+          };
+        };
+        EncryptionInfo: EncryptionInfo & {
+          EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+        };
+      };
+      TargetClusterInfo: MutableClusterInfo & {
+        BrokerEBSVolumeInfo: (BrokerEBSVolumeInfo & {
+          KafkaBrokerNodeId: string;
+        })[];
+        ConfigurationInfo: ConfigurationInfo & {
+          Arn: string;
+          Revision: number;
+        };
+        OpenMonitoring: OpenMonitoring & {
+          Prometheus: Prometheus & {
+            JmxExporter: JmxExporter & { EnabledInBroker: boolean };
+            NodeExporter: NodeExporter & { EnabledInBroker: boolean };
+          };
+        };
+        LoggingInfo: LoggingInfo & {
+          BrokerLogs: BrokerLogs & {
+            CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+            Firehose: Firehose & { Enabled: boolean };
+            S3: S3 & { Enabled: boolean };
+          };
+        };
+        EncryptionInfo: EncryptionInfo & {
+          EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+        };
+      };
+    };
+  };
 }
 export const DescribeClusterOperationV2Response = S.suspend(() =>
   S.Struct({
@@ -4093,7 +4349,28 @@ export const DescribeClusterOperationV2Response = S.suspend(() =>
   identifier: "DescribeClusterOperationV2Response",
 }) as any as S.Schema<DescribeClusterOperationV2Response>;
 export interface DescribeClusterResponse {
-  ClusterInfo?: ClusterInfo;
+  ClusterInfo?: ClusterInfo & {
+    BrokerNodeGroupInfo: BrokerNodeGroupInfo & {
+      ClientSubnets: __listOf__string;
+      InstanceType: __stringMin5Max32;
+    };
+    EncryptionInfo: EncryptionInfo & {
+      EncryptionAtRest: EncryptionAtRest & { DataVolumeKMSKeyId: string };
+    };
+    OpenMonitoring: OpenMonitoring & {
+      Prometheus: Prometheus & {
+        JmxExporter: JmxExporter & { EnabledInBroker: boolean };
+        NodeExporter: NodeExporter & { EnabledInBroker: boolean };
+      };
+    };
+    LoggingInfo: LoggingInfo & {
+      BrokerLogs: BrokerLogs & {
+        CloudWatchLogs: CloudWatchLogs & { Enabled: boolean };
+        Firehose: Firehose & { Enabled: boolean };
+        S3: S3 & { Enabled: boolean };
+      };
+    };
+  };
 }
 export const DescribeClusterResponse = S.suspend(() =>
   S.Struct({
@@ -5470,7 +5747,7 @@ export const listScramSecrets: {
   items: (
     input: ListScramSecretsRequest,
   ) => stream.Stream<
-    __string,
+    string,
     | BadRequestException
     | ForbiddenException
     | InternalServerErrorException

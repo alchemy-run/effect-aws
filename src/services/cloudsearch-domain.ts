@@ -93,6 +93,7 @@ export type Expr = string;
 export type Facet = string;
 export type FilterQuery = string;
 export type Highlight = string;
+export type Partial = boolean;
 export type Query = string;
 export type QueryOptions = string;
 export type Return = string;

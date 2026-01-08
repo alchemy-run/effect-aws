@@ -95,6 +95,7 @@ export type BoxedInteger = number;
 export type PriceListArn = string;
 export type FileFormat = string;
 export type ServiceCode = string;
+export type EffectiveDate = Date;
 export type RegionCode = string;
 export type CurrencyCode = string;
 export type MaxResults = number;

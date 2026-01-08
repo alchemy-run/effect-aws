@@ -91,31 +91,39 @@ export type ExecutionRoleArn = string;
 export type PolicyDescription = string;
 export type CreateInterval = number;
 export type RetainInterval = number;
+export type CopyTagsNullable = boolean;
+export type ExtendDeletion = boolean;
 export type PolicyId = string;
 export type TagFilter = string;
 export type PolicyArn = string;
 export type TagKey = string;
 export type TagValue = string;
 export type TargetRegion = string;
+export type ExcludeBootVolumes = boolean;
 export type VolumeTypeValues = string;
 export type ErrorMessage = string;
 export type ErrorCode = string;
 export type ScheduleName = string;
+export type CopyTags = boolean;
+export type ExcludeBootVolume = boolean;
+export type NoReboot = boolean;
 export type ActionName = string;
+export type DefaultPolicy = boolean;
 export type StatusMessage = string;
 export type Interval = number;
-export type Time = string;
 export type CronExpression = string;
 export type StandardTierRetainRuleCount = number;
 export type StandardTierRetainRuleInterval = number;
 export type Count = number;
 export type AvailabilityZone = string;
 export type Target = string;
+export type Encrypted = boolean;
 export type CmkArn = string;
 export type AwsAccountId = string;
 export type DescriptionRegex = string;
 export type Parameter = string;
 export type ExecutionHandler = string;
+export type ExecuteOperationOnScriptFailure = boolean;
 export type ScriptExecutionTimeout = number;
 export type ScriptMaximumRetryCount = number;
 
@@ -806,7 +814,53 @@ export const GetLifecyclePoliciesResponse = S.suspend(() =>
   identifier: "GetLifecyclePoliciesResponse",
 }) as any as S.Schema<GetLifecyclePoliciesResponse>;
 export interface GetLifecyclePolicyResponse {
-  Policy?: LifecyclePolicy;
+  Policy?: LifecyclePolicy & {
+    PolicyDetails: PolicyDetails & {
+      TargetTags: (Tag & { Key: string; Value: string })[];
+      Schedules: (Schedule & {
+        TagsToAdd: (Tag & { Key: string; Value: string })[];
+        VariableTags: (Tag & { Key: string; Value: string })[];
+        CreateRule: CreateRule & {
+          Scripts: (Script & { ExecutionHandler: ExecutionHandler })[];
+        };
+        FastRestoreRule: FastRestoreRule & {
+          AvailabilityZones: AvailabilityZoneList;
+        };
+        CrossRegionCopyRules: (CrossRegionCopyRule & {
+          Encrypted: Encrypted;
+        })[];
+        ShareRules: (ShareRule & { TargetAccounts: ShareTargetAccountList })[];
+        ArchiveRule: ArchiveRule & {
+          RetainRule: ArchiveRetainRule & {
+            RetentionArchiveTier: RetentionArchiveTier;
+          };
+        };
+      })[];
+      Parameters: Parameters & {
+        ExcludeDataVolumeTags: (Tag & { Key: string; Value: string })[];
+      };
+      EventSource: EventSource & {
+        Type: EventSourceValues;
+        Parameters: EventParameters & {
+          EventType: EventTypeValues;
+          SnapshotOwner: SnapshotOwnerList;
+          DescriptionRegex: DescriptionRegex;
+        };
+      };
+      Actions: (Action & {
+        Name: ActionName;
+        CrossRegionCopy: (CrossRegionCopyAction & {
+          Target: Target;
+          EncryptionConfiguration: EncryptionConfiguration & {
+            Encrypted: Encrypted;
+          };
+        })[];
+      })[];
+      Exclusions: Exclusions & {
+        ExcludeTags: (Tag & { Key: string; Value: string })[];
+      };
+    };
+  };
 }
 export const GetLifecyclePolicyResponse = S.suspend(() =>
   S.Struct({ Policy: S.optional(LifecyclePolicy) }),

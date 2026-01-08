@@ -94,6 +94,7 @@ const rules = T.EndpointResolver((p, _) => {
 export type XmlStringMaxLen19 = string;
 export type XmlStringMaxLen255 = string;
 export type XmlStringMaxLen511 = string;
+export type SkipZonalShiftValidation = boolean;
 export type AsciiStringMaxLen255 = string;
 export type ResourceName = string;
 export type LifecycleActionToken = string;
@@ -106,18 +107,27 @@ export type XmlStringMaxLen32 = string;
 export type HealthCheckGracePeriod = number;
 export type XmlStringMaxLen5000 = string;
 export type XmlStringMaxLen1600 = string;
+export type InstanceProtected = boolean;
+export type CapacityRebalanceEnabled = boolean;
 export type MaxInstanceLifetime = number;
 export type Context = string;
 export type DefaultInstanceWarmup = number;
 export type XmlString = string;
 export type XmlStringUserData = string;
 export type SpotPrice = string;
+export type EbsOptimized = boolean;
+export type AssociatePublicIpAddress = boolean;
 export type XmlStringMaxLen64 = string;
+export type ForceDelete = boolean;
 export type MaxNumberOfAutoScalingGroups = number;
 export type MaxNumberOfLaunchConfigurations = number;
 export type NumberOfAutoScalingGroups = number;
 export type NumberOfLaunchConfigurations = number;
+export type IncludeInstances = boolean;
 export type MaxRecords = number;
+export type IncludeDeletedGroups = boolean;
+export type ShouldDecrementDesiredCapacity = boolean;
+export type HonorCooldown = boolean;
 export type MetricScale = number;
 export type RequestedCapacity = number;
 export type ClientToken = string;
@@ -129,21 +139,32 @@ export type MinAdjustmentStep = number;
 export type MinAdjustmentMagnitude = number;
 export type PolicyIncrement = number;
 export type EstimatedInstanceWarmup = number;
+export type ScalingPolicyEnabled = boolean;
 export type MaxGroupPreparedCapacity = number;
 export type WarmPoolMinSize = number;
+export type ShouldRespectGracePeriod = boolean;
+export type ProtectedFromScaleIn = boolean;
 export type UpdatePlacementGroupParam = string;
 export type LaunchTemplateName = string;
 export type TagKey = string;
 export type TagValue = string;
+export type PropagateAtLaunch = boolean;
 export type IntPercentResettable = number;
 export type IntPercent100To200Resettable = number;
+export type ZonalShiftEnabled = boolean;
+export type NoDevice = boolean;
+export type MonitoringEnabled = boolean;
 export type InstanceMetadataHttpPutResponseHopLimit = number;
+export type DisableScaleIn = boolean;
 export type PredictiveScalingSchedulingBufferTime = number;
 export type PredictiveScalingMaxCapacityBuffer = number;
+export type ReuseOnScaleIn = boolean;
 export type IntPercent = number;
 export type RefreshInstanceWarmup = number;
 export type NonZeroIntPercent = number;
 export type CheckpointDelay = number;
+export type SkipMatching = boolean;
+export type AutoRollback = boolean;
 export type IntPercent100To200 = number;
 export type BakeTime = number;
 export type OnDemandBaseCapacity = number;
@@ -152,7 +173,9 @@ export type SpotInstancePools = number;
 export type MixedInstanceSpotPrice = string;
 export type BlockDeviceEbsVolumeSize = number;
 export type BlockDeviceEbsVolumeType = string;
+export type BlockDeviceEbsDeleteOnTermination = boolean;
 export type BlockDeviceEbsIops = number;
+export type BlockDeviceEbsEncrypted = boolean;
 export type BlockDeviceEbsThroughput = number;
 export type XmlStringMaxLen1023 = string;
 export type MetricName = string;
@@ -168,6 +191,7 @@ export type MetricDimensionName = string;
 export type MetricDimensionValue = string;
 export type XmlStringMaxLen2047 = string;
 export type XmlStringMetricLabel = string;
+export type ReturnData = boolean;
 export type ExcludedInstance = string;
 export type NullablePositiveInteger = number;
 export type AllowedInstanceType = string;
@@ -1447,7 +1471,7 @@ export const LaunchInstancesRequest = S.suspend(() =>
   S.Struct({
     AutoScalingGroupName: S.optional(S.String),
     RequestedCapacity: S.optional(S.Number),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     AvailabilityZones: S.optional(AvailabilityZonesLimit1),
     AvailabilityZoneIds: S.optional(AvailabilityZoneIdsLimit1),
     SubnetIds: S.optional(SubnetIdsLimit1),
@@ -2589,7 +2613,7 @@ export const DescribeMetricCollectionTypesAnswer = S.suspend(() =>
   identifier: "DescribeMetricCollectionTypesAnswer",
 }) as any as S.Schema<DescribeMetricCollectionTypesAnswer>;
 export interface ProcessesType {
-  Processes?: ProcessType[];
+  Processes?: (ProcessType & { ProcessName: XmlStringMaxLen255 })[];
 }
 export const ProcessesType = S.suspend(() =>
   S.Struct({ Processes: S.optional(Processes) }).pipe(ns),
@@ -2664,7 +2688,13 @@ export const Activity = S.suspend(() =>
 export type Activities = Activity[];
 export const Activities = S.Array(Activity);
 export interface DetachInstancesAnswer {
-  Activities?: Activity[];
+  Activities?: (Activity & {
+    ActivityId: XmlString;
+    AutoScalingGroupName: XmlStringMaxLen255;
+    Cause: XmlStringMaxLen1023;
+    StartTime: Date;
+    StatusCode: ScalingActivityStatusCode;
+  })[];
 }
 export const DetachInstancesAnswer = S.suspend(() =>
   S.Struct({ Activities: S.optional(Activities) }).pipe(ns),
@@ -2672,7 +2702,13 @@ export const DetachInstancesAnswer = S.suspend(() =>
   identifier: "DetachInstancesAnswer",
 }) as any as S.Schema<DetachInstancesAnswer>;
 export interface EnterStandbyAnswer {
-  Activities?: Activity[];
+  Activities?: (Activity & {
+    ActivityId: XmlString;
+    AutoScalingGroupName: XmlStringMaxLen255;
+    Cause: XmlStringMaxLen1023;
+    StartTime: Date;
+    StatusCode: ScalingActivityStatusCode;
+  })[];
 }
 export const EnterStandbyAnswer = S.suspend(() =>
   S.Struct({ Activities: S.optional(Activities) }).pipe(ns),
@@ -2680,7 +2716,13 @@ export const EnterStandbyAnswer = S.suspend(() =>
   identifier: "EnterStandbyAnswer",
 }) as any as S.Schema<EnterStandbyAnswer>;
 export interface ExitStandbyAnswer {
-  Activities?: Activity[];
+  Activities?: (Activity & {
+    ActivityId: XmlString;
+    AutoScalingGroupName: XmlStringMaxLen255;
+    Cause: XmlStringMaxLen1023;
+    StartTime: Date;
+    StatusCode: ScalingActivityStatusCode;
+  })[];
 }
 export const ExitStandbyAnswer = S.suspend(() =>
   S.Struct({ Activities: S.optional(Activities) }).pipe(ns),
@@ -2730,7 +2772,13 @@ export const RollbackInstanceRefreshAnswer = S.suspend(() =>
   identifier: "RollbackInstanceRefreshAnswer",
 }) as any as S.Schema<RollbackInstanceRefreshAnswer>;
 export interface ActivityType {
-  Activity?: Activity;
+  Activity?: Activity & {
+    ActivityId: XmlString;
+    AutoScalingGroupName: XmlStringMaxLen255;
+    Cause: XmlStringMaxLen1023;
+    StartTime: Date;
+    StatusCode: ScalingActivityStatusCode;
+  };
 }
 export const ActivityType = S.suspend(() =>
   S.Struct({ Activity: S.optional(Activity) }).pipe(ns),
@@ -3449,7 +3497,9 @@ export const RefreshPreferences = S.suspend(() =>
   identifier: "RefreshPreferences",
 }) as any as S.Schema<RefreshPreferences>;
 export interface BatchDeleteScheduledActionAnswer {
-  FailedScheduledActions?: FailedScheduledUpdateGroupActionRequest[];
+  FailedScheduledActions?: (FailedScheduledUpdateGroupActionRequest & {
+    ScheduledActionName: XmlStringMaxLen255;
+  })[];
 }
 export const BatchDeleteScheduledActionAnswer = S.suspend(() =>
   S.Struct({
@@ -3461,7 +3511,9 @@ export const BatchDeleteScheduledActionAnswer = S.suspend(() =>
   identifier: "BatchDeleteScheduledActionAnswer",
 }) as any as S.Schema<BatchDeleteScheduledActionAnswer>;
 export interface BatchPutScheduledUpdateGroupActionAnswer {
-  FailedScheduledUpdateGroupActions?: FailedScheduledUpdateGroupActionRequest[];
+  FailedScheduledUpdateGroupActions?: (FailedScheduledUpdateGroupActionRequest & {
+    ScheduledActionName: XmlStringMaxLen255;
+  })[];
 }
 export const BatchPutScheduledUpdateGroupActionAnswer = S.suspend(() =>
   S.Struct({
@@ -3535,7 +3587,14 @@ export const CreateLaunchConfigurationResponse = S.suspend(() =>
   identifier: "CreateLaunchConfigurationResponse",
 }) as any as S.Schema<CreateLaunchConfigurationResponse>;
 export interface AutoScalingInstancesType {
-  AutoScalingInstances?: AutoScalingInstanceDetails[];
+  AutoScalingInstances?: (AutoScalingInstanceDetails & {
+    InstanceId: XmlStringMaxLen19;
+    AutoScalingGroupName: XmlStringMaxLen255;
+    AvailabilityZone: XmlStringMaxLen255;
+    LifecycleState: XmlStringMaxLen32;
+    HealthStatus: XmlStringMaxLen32;
+    ProtectedFromScaleIn: InstanceProtected;
+  })[];
   NextToken?: string;
 }
 export const AutoScalingInstancesType = S.suspend(() =>
@@ -3547,7 +3606,15 @@ export const AutoScalingInstancesType = S.suspend(() =>
   identifier: "AutoScalingInstancesType",
 }) as any as S.Schema<AutoScalingInstancesType>;
 export interface LaunchConfigurationsType {
-  LaunchConfigurations?: LaunchConfiguration[];
+  LaunchConfigurations: (LaunchConfiguration & {
+    LaunchConfigurationName: XmlStringMaxLen255;
+    ImageId: XmlStringMaxLen255;
+    InstanceType: XmlStringMaxLen255;
+    CreatedTime: Date;
+    BlockDeviceMappings: (BlockDeviceMapping & {
+      DeviceName: XmlStringMaxLen255;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const LaunchConfigurationsType = S.suspend(() =>
@@ -3591,7 +3658,7 @@ export const DescribeLoadBalancerTargetGroupsResponse = S.suspend(() =>
   identifier: "DescribeLoadBalancerTargetGroupsResponse",
 }) as any as S.Schema<DescribeLoadBalancerTargetGroupsResponse>;
 export interface DescribeNotificationConfigurationsAnswer {
-  NotificationConfigurations?: NotificationConfiguration[];
+  NotificationConfigurations: NotificationConfiguration[];
   NextToken?: string;
 }
 export const DescribeNotificationConfigurationsAnswer = S.suspend(() =>
@@ -3603,7 +3670,13 @@ export const DescribeNotificationConfigurationsAnswer = S.suspend(() =>
   identifier: "DescribeNotificationConfigurationsAnswer",
 }) as any as S.Schema<DescribeNotificationConfigurationsAnswer>;
 export interface ActivitiesType {
-  Activities?: Activity[];
+  Activities: (Activity & {
+    ActivityId: XmlString;
+    AutoScalingGroupName: XmlStringMaxLen255;
+    Cause: XmlStringMaxLen1023;
+    StartTime: Date;
+    StatusCode: ScalingActivityStatusCode;
+  })[];
   NextToken?: string;
 }
 export const ActivitiesType = S.suspend(() =>
@@ -3650,7 +3723,13 @@ export const DescribeTrafficSourcesResponse = S.suspend(() =>
 }) as any as S.Schema<DescribeTrafficSourcesResponse>;
 export interface DescribeWarmPoolAnswer {
   WarmPoolConfiguration?: WarmPoolConfiguration;
-  Instances?: Instance[];
+  Instances?: (Instance & {
+    InstanceId: XmlStringMaxLen19;
+    AvailabilityZone: XmlStringMaxLen255;
+    LifecycleState: LifecycleState;
+    HealthStatus: XmlStringMaxLen32;
+    ProtectedFromScaleIn: InstanceProtected;
+  })[];
   NextToken?: string;
 }
 export const DescribeWarmPoolAnswer = S.suspend(() =>
@@ -3663,9 +3742,75 @@ export const DescribeWarmPoolAnswer = S.suspend(() =>
   identifier: "DescribeWarmPoolAnswer",
 }) as any as S.Schema<DescribeWarmPoolAnswer>;
 export interface GetPredictiveScalingForecastAnswer {
-  LoadForecast?: LoadForecast[];
-  CapacityForecast?: CapacityForecast;
-  UpdateTime?: Date;
+  LoadForecast: (LoadForecast & {
+    Timestamps: PredictiveScalingForecastTimestamps;
+    Values: PredictiveScalingForecastValues;
+    MetricSpecification: PredictiveScalingMetricSpecification & {
+      TargetValue: MetricScale;
+      PredefinedMetricPairSpecification: PredictiveScalingPredefinedMetricPair & {
+        PredefinedMetricType: PredefinedMetricPairType;
+      };
+      PredefinedScalingMetricSpecification: PredictiveScalingPredefinedScalingMetric & {
+        PredefinedMetricType: PredefinedScalingMetricType;
+      };
+      PredefinedLoadMetricSpecification: PredictiveScalingPredefinedLoadMetric & {
+        PredefinedMetricType: PredefinedLoadMetricType;
+      };
+      CustomizedScalingMetricSpecification: PredictiveScalingCustomizedScalingMetric & {
+        MetricDataQueries: (MetricDataQuery & {
+          Id: XmlStringMaxLen255;
+          MetricStat: MetricStat & {
+            Metric: Metric & {
+              Namespace: MetricNamespace;
+              MetricName: MetricName;
+              Dimensions: (MetricDimension & {
+                Name: MetricDimensionName;
+                Value: MetricDimensionValue;
+              })[];
+            };
+            Stat: XmlStringMetricStat;
+          };
+        })[];
+      };
+      CustomizedLoadMetricSpecification: PredictiveScalingCustomizedLoadMetric & {
+        MetricDataQueries: (MetricDataQuery & {
+          Id: XmlStringMaxLen255;
+          MetricStat: MetricStat & {
+            Metric: Metric & {
+              Namespace: MetricNamespace;
+              MetricName: MetricName;
+              Dimensions: (MetricDimension & {
+                Name: MetricDimensionName;
+                Value: MetricDimensionValue;
+              })[];
+            };
+            Stat: XmlStringMetricStat;
+          };
+        })[];
+      };
+      CustomizedCapacityMetricSpecification: PredictiveScalingCustomizedCapacityMetric & {
+        MetricDataQueries: (MetricDataQuery & {
+          Id: XmlStringMaxLen255;
+          MetricStat: MetricStat & {
+            Metric: Metric & {
+              Namespace: MetricNamespace;
+              MetricName: MetricName;
+              Dimensions: (MetricDimension & {
+                Name: MetricDimensionName;
+                Value: MetricDimensionValue;
+              })[];
+            };
+            Stat: XmlStringMetricStat;
+          };
+        })[];
+      };
+    };
+  })[];
+  CapacityForecast: CapacityForecast & {
+    Timestamps: PredictiveScalingForecastTimestamps;
+    Values: PredictiveScalingForecastValues;
+  };
+  UpdateTime: Date;
 }
 export const GetPredictiveScalingForecastAnswer = S.suspend(() =>
   S.Struct({
@@ -3927,7 +4072,99 @@ export const ScalingPolicy = S.suspend(() =>
 export type ScalingPolicies = ScalingPolicy[];
 export const ScalingPolicies = S.Array(ScalingPolicy);
 export interface PoliciesType {
-  ScalingPolicies?: ScalingPolicy[];
+  ScalingPolicies?: (ScalingPolicy & {
+    StepAdjustments: (StepAdjustment & {
+      ScalingAdjustment: PolicyIncrement;
+    })[];
+    TargetTrackingConfiguration: TargetTrackingConfiguration & {
+      TargetValue: MetricScale;
+      PredefinedMetricSpecification: PredefinedMetricSpecification & {
+        PredefinedMetricType: MetricType;
+      };
+      CustomizedMetricSpecification: CustomizedMetricSpecification & {
+        Dimensions: (MetricDimension & {
+          Name: MetricDimensionName;
+          Value: MetricDimensionValue;
+        })[];
+        Metrics: (TargetTrackingMetricDataQuery & {
+          Id: XmlStringMaxLen64;
+          MetricStat: TargetTrackingMetricStat & {
+            Metric: Metric & {
+              Namespace: MetricNamespace;
+              MetricName: MetricName;
+              Dimensions: (MetricDimension & {
+                Name: MetricDimensionName;
+                Value: MetricDimensionValue;
+              })[];
+            };
+            Stat: XmlStringMetricStat;
+          };
+        })[];
+      };
+    };
+    PredictiveScalingConfiguration: PredictiveScalingConfiguration & {
+      MetricSpecifications: (PredictiveScalingMetricSpecification & {
+        TargetValue: MetricScale;
+        PredefinedMetricPairSpecification: PredictiveScalingPredefinedMetricPair & {
+          PredefinedMetricType: PredefinedMetricPairType;
+        };
+        PredefinedScalingMetricSpecification: PredictiveScalingPredefinedScalingMetric & {
+          PredefinedMetricType: PredefinedScalingMetricType;
+        };
+        PredefinedLoadMetricSpecification: PredictiveScalingPredefinedLoadMetric & {
+          PredefinedMetricType: PredefinedLoadMetricType;
+        };
+        CustomizedScalingMetricSpecification: PredictiveScalingCustomizedScalingMetric & {
+          MetricDataQueries: (MetricDataQuery & {
+            Id: XmlStringMaxLen255;
+            MetricStat: MetricStat & {
+              Metric: Metric & {
+                Namespace: MetricNamespace;
+                MetricName: MetricName;
+                Dimensions: (MetricDimension & {
+                  Name: MetricDimensionName;
+                  Value: MetricDimensionValue;
+                })[];
+              };
+              Stat: XmlStringMetricStat;
+            };
+          })[];
+        };
+        CustomizedLoadMetricSpecification: PredictiveScalingCustomizedLoadMetric & {
+          MetricDataQueries: (MetricDataQuery & {
+            Id: XmlStringMaxLen255;
+            MetricStat: MetricStat & {
+              Metric: Metric & {
+                Namespace: MetricNamespace;
+                MetricName: MetricName;
+                Dimensions: (MetricDimension & {
+                  Name: MetricDimensionName;
+                  Value: MetricDimensionValue;
+                })[];
+              };
+              Stat: XmlStringMetricStat;
+            };
+          })[];
+        };
+        CustomizedCapacityMetricSpecification: PredictiveScalingCustomizedCapacityMetric & {
+          MetricDataQueries: (MetricDataQuery & {
+            Id: XmlStringMaxLen255;
+            MetricStat: MetricStat & {
+              Metric: Metric & {
+                Namespace: MetricNamespace;
+                MetricName: MetricName;
+                Dimensions: (MetricDimension & {
+                  Name: MetricDimensionName;
+                  Value: MetricDimensionValue;
+                })[];
+              };
+              Stat: XmlStringMetricStat;
+            };
+          })[];
+        };
+      })[];
+    };
+  })[];
   NextToken?: string;
 }
 export const PoliciesType = S.suspend(() =>
@@ -4098,7 +4335,36 @@ export const InstanceRefresh = S.suspend(() =>
 export type InstanceRefreshes = InstanceRefresh[];
 export const InstanceRefreshes = S.Array(InstanceRefresh);
 export interface AutoScalingGroupsType {
-  AutoScalingGroups?: AutoScalingGroup[];
+  AutoScalingGroups: (AutoScalingGroup & {
+    AutoScalingGroupName: XmlStringMaxLen255;
+    MinSize: AutoScalingGroupMinSize;
+    MaxSize: AutoScalingGroupMaxSize;
+    DesiredCapacity: AutoScalingGroupDesiredCapacity;
+    DefaultCooldown: Cooldown;
+    AvailabilityZones: AvailabilityZones;
+    HealthCheckType: XmlStringMaxLen32;
+    CreatedTime: Date;
+    MixedInstancesPolicy: MixedInstancesPolicy & {
+      LaunchTemplate: LaunchTemplate & {
+        Overrides: (LaunchTemplateOverrides & {
+          InstanceRequirements: InstanceRequirements & {
+            VCpuCount: VCpuCountRequest & { Min: NullablePositiveInteger };
+            MemoryMiB: MemoryMiBRequest & { Min: NullablePositiveInteger };
+          };
+        })[];
+      };
+    };
+    Instances: (Instance & {
+      InstanceId: XmlStringMaxLen19;
+      AvailabilityZone: XmlStringMaxLen255;
+      LifecycleState: LifecycleState;
+      HealthStatus: XmlStringMaxLen32;
+      ProtectedFromScaleIn: InstanceProtected;
+    })[];
+    TrafficSources: (TrafficSourceIdentifier & {
+      Identifier: XmlStringMaxLen511;
+    })[];
+  })[];
   NextToken?: string;
 }
 export const AutoScalingGroupsType = S.suspend(() =>
@@ -4110,7 +4376,20 @@ export const AutoScalingGroupsType = S.suspend(() =>
   identifier: "AutoScalingGroupsType",
 }) as any as S.Schema<AutoScalingGroupsType>;
 export interface DescribeInstanceRefreshesAnswer {
-  InstanceRefreshes?: InstanceRefresh[];
+  InstanceRefreshes?: (InstanceRefresh & {
+    DesiredConfiguration: DesiredConfiguration & {
+      MixedInstancesPolicy: MixedInstancesPolicy & {
+        LaunchTemplate: LaunchTemplate & {
+          Overrides: (LaunchTemplateOverrides & {
+            InstanceRequirements: InstanceRequirements & {
+              VCpuCount: VCpuCountRequest & { Min: NullablePositiveInteger };
+              MemoryMiB: MemoryMiBRequest & { Min: NullablePositiveInteger };
+            };
+          })[];
+        };
+      };
+    };
+  })[];
   NextToken?: string;
 }
 export const DescribeInstanceRefreshesAnswer = S.suspend(() =>

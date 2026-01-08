@@ -102,6 +102,7 @@ export type ServiceLevelObjectiveBudgetReportErrorMessage = string;
 export type MetricId = string;
 export type MetricExpression = string;
 export type MetricLabel = string;
+export type ReturnData = boolean;
 export type Period = number;
 export type AccountId = string;
 export type RollingIntervalDuration = number;

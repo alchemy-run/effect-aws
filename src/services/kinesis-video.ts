@@ -112,6 +112,7 @@ export type ErrorMessage = string;
 export type FailedStatusDetails = string;
 export type DataEndpoint = string;
 export type EdgeRetentionInHours = number;
+export type DeleteAfterUpload = boolean;
 export type DestinationUri = string;
 export type DestinationRegion = string;
 export type FormatConfigValue = string;

@@ -87,6 +87,7 @@ const rules = T.EndpointResolver((p, _) => {
 export type LabelTemplate = string;
 export type ResourceIdentifier = string;
 export type SinkName = string;
+export type IncludeTags = boolean;
 export type ListAttachedLinksMaxResults = number;
 export type NextToken = string;
 export type ListLinksMaxResults = number;

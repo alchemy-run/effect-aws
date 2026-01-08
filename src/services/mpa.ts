@@ -67,6 +67,7 @@ export type TagValue = string | redacted.Redacted<string>;
 export type IdentityId = string;
 export type PolicyName = string;
 export type PolicyDocument = string | redacted.Redacted<string>;
+export type IsoTimestamp = Date;
 export type Message = string;
 export type ActionName = string;
 export type ServicePrincipal = string;
@@ -1013,7 +1014,7 @@ export interface CreateApprovalTeamRequest {
 }
 export const CreateApprovalTeamRequest = S.suspend(() =>
   S.Struct({
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ApprovalStrategy: ApprovalStrategy,
     Approvers: ApprovalTeamRequestApprovers,
     Description: SensitiveString,
@@ -1091,7 +1092,7 @@ export interface CreateIdentitySourceRequest {
 export const CreateIdentitySourceRequest = S.suspend(() =>
   S.Struct({
     IdentitySourceParameters: IdentitySourceParameters,
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     Tags: S.optional(Tags),
   }).pipe(
     T.all(

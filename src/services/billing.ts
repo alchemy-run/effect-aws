@@ -505,7 +505,10 @@ export const CreateBillingViewRequest = S.suspend(() =>
     description: S.optional(SensitiveString),
     sourceViews: BillingViewSourceViewsList,
     dataFilterExpression: S.optional(Expression),
-    clientToken: S.optional(S.String).pipe(T.HttpHeader("X-Amzn-Client-Token")),
+    clientToken: S.optional(S.String).pipe(
+      T.HttpHeader("X-Amzn-Client-Token"),
+      T.IdempotencyToken(),
+    ),
     resourceTags: S.optional(ResourceTagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),

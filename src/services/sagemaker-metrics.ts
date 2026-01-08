@@ -260,7 +260,11 @@ export const BatchPutMetricsError = S.suspend(() =>
 export type BatchPutMetricsErrorList = BatchPutMetricsError[];
 export const BatchPutMetricsErrorList = S.Array(BatchPutMetricsError);
 export interface BatchGetMetricsResponse {
-  MetricQueryResults?: MetricQueryResult[];
+  MetricQueryResults?: (MetricQueryResult & {
+    Status: MetricQueryResultStatus;
+    XAxisValues: XAxisValues;
+    MetricValues: MetricValues;
+  })[];
 }
 export const BatchGetMetricsResponse = S.suspend(() =>
   S.Struct({ MetricQueryResults: S.optional(MetricQueryResultList) }),

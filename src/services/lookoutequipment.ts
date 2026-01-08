@@ -252,7 +252,7 @@ export const CreateLabelRequest = S.suspend(() =>
     FaultCode: S.optional(S.String),
     Notes: S.optional(S.String),
     Equipment: S.optional(S.String),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -278,7 +278,7 @@ export const CreateLabelGroupRequest = S.suspend(() =>
   S.Struct({
     LabelGroupName: S.String,
     FaultCodes: S.optional(FaultCodes),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -303,7 +303,7 @@ export const CreateRetrainingSchedulerRequest = S.suspend(() =>
     RetrainingFrequency: S.String,
     LookbackWindow: S.String,
     PromoteMode: S.optional(ModelPromoteMode),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -520,7 +520,7 @@ export const ImportDatasetRequest = S.suspend(() =>
   S.Struct({
     SourceDatasetArn: S.String,
     DatasetName: S.optional(S.String),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     ServerSideKmsKeyId: S.optional(S.String),
     Tags: S.optional(TagList),
   }).pipe(
@@ -567,7 +567,7 @@ export const ImportModelVersionRequest = S.suspend(() =>
     ModelName: S.optional(S.String),
     DatasetName: S.String,
     LabelsInputConfiguration: S.optional(LabelsInputConfiguration),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     RoleArn: S.optional(S.String),
     ServerSideKmsKeyId: S.optional(S.String),
     Tags: S.optional(TagList),
@@ -831,7 +831,7 @@ export const PutResourcePolicyRequest = S.suspend(() =>
     ResourceArn: S.String,
     ResourcePolicy: S.String,
     PolicyRevisionId: S.optional(S.String),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
@@ -1186,7 +1186,7 @@ export const CreateDatasetRequest = S.suspend(() =>
     DatasetName: S.String,
     DatasetSchema: S.optional(DatasetSchema),
     ServerSideKmsKeyId: S.optional(S.String),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -2094,7 +2094,7 @@ export const CreateInferenceSchedulerRequest = S.suspend(() =>
     DataOutputConfiguration: InferenceOutputConfiguration,
     RoleArn: S.String,
     ServerSideKmsKeyId: S.optional(S.String),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -2125,7 +2125,7 @@ export const CreateModelRequest = S.suspend(() =>
     DatasetName: S.String,
     DatasetSchema: S.optional(DatasetSchema),
     LabelsInputConfiguration: S.optional(LabelsInputConfiguration),
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
     TrainingDataStartTime: S.optional(
       S.Date.pipe(T.TimestampFormat("epoch-seconds")),
     ),
@@ -2381,7 +2381,7 @@ export const StartDataIngestionJobRequest = S.suspend(() =>
     DatasetName: S.String,
     IngestionInputConfiguration: IngestionInputConfiguration,
     RoleArn: S.String,
-    ClientToken: S.String,
+    ClientToken: S.String.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),

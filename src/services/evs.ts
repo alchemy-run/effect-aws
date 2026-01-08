@@ -175,7 +175,7 @@ export interface DeleteEnvironmentRequest {
 }
 export const DeleteEnvironmentRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     environmentId: S.String.pipe(T.HttpLabel("environmentId")),
   }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
@@ -207,7 +207,7 @@ export interface AssociateEipToVlanRequest {
 }
 export const AssociateEipToVlanRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     environmentId: S.String,
     vlanName: S.String,
     allocationId: S.String,
@@ -244,7 +244,7 @@ export interface CreateEnvironmentHostRequest {
 }
 export const CreateEnvironmentHostRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     environmentId: S.String,
     host: HostInfoForCreate,
   }).pipe(
@@ -260,7 +260,7 @@ export interface DeleteEnvironmentHostRequest {
 }
 export const DeleteEnvironmentHostRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     environmentId: S.String,
     hostName: S.String,
   }).pipe(
@@ -277,7 +277,7 @@ export interface DisassociateEipFromVlanRequest {
 }
 export const DisassociateEipFromVlanRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     environmentId: S.String,
     vlanName: S.String,
     associationId: S.String,
@@ -748,7 +748,7 @@ export interface CreateEnvironmentRequest {
 }
 export const CreateEnvironmentRequest = S.suspend(() =>
   S.Struct({
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     environmentName: S.optional(S.String),
     kmsKeyId: S.optional(S.String),
     tags: S.optional(RequestTagMap),

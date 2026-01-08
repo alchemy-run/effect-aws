@@ -110,6 +110,7 @@ export type VersionAttribute = number;
 export type ShortStringAttribute = string;
 export type LongStringAttribute = string;
 export type CustomerAgreementIdAttribute = string;
+export type TimestampAttribute = Date;
 export type SequenceNumberAttribute = number;
 export type StatusMessage = string;
 export type ValidationExceptionReason = string;

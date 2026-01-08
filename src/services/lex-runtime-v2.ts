@@ -99,6 +99,7 @@ export type AttachmentUrl = string;
 export type ActiveContextName = string;
 export type EventId = string;
 export type EpochMillis = number;
+export type AudioChunk = Uint8Array;
 export type DTMFRegex = string | redacted.Redacted<string>;
 export type Name = string;
 export type ButtonText = string;

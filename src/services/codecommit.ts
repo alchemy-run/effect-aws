@@ -102,6 +102,7 @@ export type CommitId = string;
 export type Name = string;
 export type Email = string;
 export type Message = string;
+export type KeepEmptyFolders = boolean;
 export type Title = string;
 export type Description = string;
 export type ClientRequestToken = string;
@@ -117,6 +118,7 @@ export type Limit = number;
 export type ResourceArn = string;
 export type Content = string;
 export type ReactionValue = string;
+export type FileContent = Uint8Array;
 export type TagKey = string;
 export type RuleContentSha256 = string;
 export type ReferenceName = string;
@@ -127,25 +129,40 @@ export type RepositoryTriggerCustomData = string;
 export type ApprovalRuleTemplateId = string;
 export type ApprovalRuleId = string;
 export type RepositoryId = string;
+export type blob = Uint8Array;
 export type ObjectSize = number;
+export type IsMergeable = boolean;
+export type Overridden = boolean;
 export type RepositoryTriggersConfigurationId = string;
+export type IsMove = boolean;
 export type ErrorCode = string;
 export type ErrorMessage = string;
 export type ExceptionName = string;
 export type AdditionalData = string;
 export type AccountId = string;
+export type LastModifiedDate = Date;
+export type CreationDate = Date;
 export type CloneUrlHttp = string;
 export type CloneUrlSsh = string;
+export type IsCommentDeleted = boolean;
 export type NumberOfConflicts = number;
+export type IsContentConflict = boolean;
+export type IsFileModeConflict = boolean;
+export type IsObjectTypeConflict = boolean;
+export type IsHunkConflict = boolean;
+export type EventDate = Date;
+export type Approved = boolean;
 export type Count = number;
 export type RepositoryTriggerExecutionFailureMessage = string;
 export type FileSize = number;
+export type CapitalBoolean = boolean;
 export type LineNumber = number;
 export type HunkContent = string;
 export type ReactionEmoji = string;
 export type ReactionShortCode = string;
 export type ReactionUnicode = string;
 export type Mode = string;
+export type IsMerged = boolean;
 
 //# Schemas
 export type RepositoryNameList = string[];
@@ -1637,7 +1654,7 @@ export const PostCommentForPullRequestInput = S.suspend(() =>
     afterCommitId: S.String,
     location: S.optional(Location),
     content: S.String,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -1660,7 +1677,7 @@ export interface PostCommentReplyInput {
 export const PostCommentReplyInput = S.suspend(() =>
   S.Struct({
     inReplyTo: S.String,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     content: S.String,
   }).pipe(
     T.all(
@@ -2279,7 +2296,7 @@ export const CreatePullRequestInput = S.suspend(() =>
     title: S.String,
     description: S.optional(S.String),
     targets: TargetList,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,
@@ -2893,7 +2910,7 @@ export const PostCommentForComparedCommitInput = S.suspend(() =>
     afterCommitId: S.String,
     location: S.optional(Location),
     content: S.String,
-    clientRequestToken: S.optional(S.String),
+    clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       ns,

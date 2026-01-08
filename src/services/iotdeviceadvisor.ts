@@ -95,8 +95,11 @@ export type MaxResults = number;
 export type Token = string;
 export type String128 = string;
 export type SuiteDefinitionName = string;
+export type IntendedForQualificationBoolean = boolean;
+export type IsLongDurationTestBoolean = boolean;
 export type RootGroup = string;
 export type String256 = string;
+export type ParallelRun = boolean;
 export type Message = string;
 export type Endpoint = string;
 export type ErrorReason = string;
@@ -513,7 +516,11 @@ export interface GetSuiteDefinitionResponse {
   suiteDefinitionArn?: string;
   suiteDefinitionVersion?: string;
   latestVersion?: string;
-  suiteDefinitionConfiguration?: SuiteDefinitionConfiguration;
+  suiteDefinitionConfiguration?: SuiteDefinitionConfiguration & {
+    suiteDefinitionName: SuiteDefinitionName;
+    rootGroup: RootGroup;
+    devicePermissionRoleArn: AmazonResourceName;
+  };
   createdAt?: Date;
   lastModifiedAt?: Date;
   tags?: { [key: string]: string };
@@ -661,7 +668,7 @@ export const CreateSuiteDefinitionRequest = S.suspend(() =>
   S.Struct({
     suiteDefinitionConfiguration: S.optional(SuiteDefinitionConfiguration),
     tags: S.optional(TagMap),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/suiteDefinitions" }),
@@ -848,7 +855,9 @@ export interface GetSuiteRunResponse {
   suiteDefinitionVersion?: string;
   suiteRunId?: string;
   suiteRunArn?: string;
-  suiteRunConfiguration?: SuiteRunConfiguration;
+  suiteRunConfiguration?: SuiteRunConfiguration & {
+    primaryDevice: DeviceUnderTest;
+  };
   testResult?: TestResult;
   startTime?: Date;
   endTime?: Date;

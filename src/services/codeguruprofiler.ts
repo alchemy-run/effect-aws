@@ -485,7 +485,10 @@ export const PostAgentProfileRequest = S.suspend(() =>
   S.Struct({
     profilingGroupName: S.String.pipe(T.HttpLabel("profilingGroupName")),
     agentProfile: T.StreamingInput.pipe(T.HttpPayload()),
-    profileToken: S.optional(S.String).pipe(T.HttpQuery("profileToken")),
+    profileToken: S.optional(S.String).pipe(
+      T.HttpQuery("profileToken"),
+      T.IdempotencyToken(),
+    ),
     contentType: S.String.pipe(T.HttpHeader("Content-Type")),
   }).pipe(
     T.all(
@@ -753,7 +756,10 @@ export const CreateProfilingGroupRequest = S.suspend(() =>
   S.Struct({
     profilingGroupName: S.String,
     computePlatform: S.optional(S.String),
-    clientToken: S.String.pipe(T.HttpQuery("clientToken")),
+    clientToken: S.String.pipe(
+      T.HttpQuery("clientToken"),
+      T.IdempotencyToken(),
+    ),
     agentOrchestrationConfig: S.optional(AgentOrchestrationConfig),
     tags: S.optional(TagsMap),
   }).pipe(

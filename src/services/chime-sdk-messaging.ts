@@ -90,6 +90,7 @@ const rules = T.EndpointResolver((p, _) => {
 export type ChimeArn = string;
 export type SubChannelId = string;
 export type CallbackIdType = string;
+export type NonNullableBoolean = boolean;
 export type NonEmptyResourceName = string | redacted.Redacted<string>;
 export type Metadata = string | redacted.Redacted<string>;
 export type ClientRequestToken = string | redacted.Redacted<string>;
@@ -1595,7 +1596,7 @@ export interface ChannelFlowCallbackRequest {
 }
 export const ChannelFlowCallbackRequest = S.suspend(() =>
   S.Struct({
-    CallbackId: S.String,
+    CallbackId: S.String.pipe(T.IdempotencyToken()),
     ChannelArn: S.String.pipe(T.HttpLabel("ChannelArn")),
     DeleteResource: S.optional(S.Boolean),
     ChannelMessage: ChannelMessageCallback,
@@ -1637,7 +1638,7 @@ export const CreateChannelRequest = S.suspend(() =>
     Mode: S.optional(ChannelMode),
     Privacy: S.optional(ChannelPrivacy),
     Metadata: S.optional(SensitiveString),
-    ClientRequestToken: SensitiveString,
+    ClientRequestToken: SensitiveString.pipe(T.IdempotencyToken()),
     Tags: S.optional(TagList),
     ChimeBearer: S.String.pipe(T.HttpHeader("x-amz-chime-bearer")),
     ChannelId: S.optional(SensitiveString),
@@ -2527,7 +2528,7 @@ export const SendChannelMessageRequest = S.suspend(() =>
     Type: ChannelMessageType,
     Persistence: ChannelMessagePersistenceType,
     Metadata: S.optional(SensitiveString),
-    ClientRequestToken: SensitiveString,
+    ClientRequestToken: SensitiveString.pipe(T.IdempotencyToken()),
     ChimeBearer: S.String.pipe(T.HttpHeader("x-amz-chime-bearer")),
     PushNotification: S.optional(PushNotificationConfiguration),
     MessageAttributes: S.optional(MessageAttributeMap),
@@ -2560,7 +2561,7 @@ export const CreateChannelFlowRequest = S.suspend(() =>
     Processors: ProcessorList,
     Name: SensitiveString,
     Tags: S.optional(TagList),
-    ClientRequestToken: SensitiveString,
+    ClientRequestToken: SensitiveString.pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/channel-flows" }),

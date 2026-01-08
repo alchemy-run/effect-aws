@@ -121,6 +121,8 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type ClientId = string;
+export type CleanSession = boolean;
+export type PreventWillMessage = boolean;
 export type ThingName = string;
 export type ShadowName = string;
 export type Topic = string;
@@ -128,12 +130,15 @@ export type NextToken = string;
 export type PageSize = number;
 export type MaxResults = number;
 export type Qos = number;
+export type Retain = boolean;
 export type SynthesizedJsonUserProperties = string;
 export type ContentType = string;
 export type ResponseTopic = string;
 export type CorrelationData = string;
 export type MessageExpiry = number;
 export type errorMessage = string;
+export type Payload = Uint8Array;
+export type UserPropertiesBlob = Uint8Array;
 export type PayloadSize = number;
 
 //# Schemas

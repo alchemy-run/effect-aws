@@ -99,6 +99,8 @@ export type AvailabilityZone = string;
 export type MetricIdentifier = string;
 export type ResourceArn = string;
 export type ResourceName = string;
+export type ExpiryTime = Date;
+export type StartTime = Date;
 export type Weight = number;
 
 //# Schemas

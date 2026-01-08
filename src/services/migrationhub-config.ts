@@ -88,11 +88,13 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type HomeRegion = string;
+export type DryRun = boolean;
 export type ControlId = string;
 export type DescribeHomeRegionControlsMaxResults = number;
 export type Token = string;
 export type TargetId = string;
 export type ErrorMessage = string;
+export type RequestedTime = Date;
 export type RetryAfterSeconds = number;
 
 //# Schemas

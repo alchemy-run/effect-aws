@@ -111,7 +111,6 @@ export type ClientSideTimestampsStatus = string;
 export type CdcStatus = string;
 export type ViewType = string;
 export type CdcPropagateTags = string;
-export type GenericString = string;
 export type TableStatus = string;
 export type StreamArn = string;
 export type TypeStatus = string;

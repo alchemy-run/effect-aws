@@ -104,6 +104,7 @@ export type FilterValueContent = string;
 export type SortBy = string;
 export type ChangeType = string;
 export type Json = string;
+export type JsonDocumentType = unknown;
 export type ChangeName = string;
 export type TagValue = string;
 export type ARN = string;
@@ -1336,7 +1337,7 @@ export const StartChangeSetRequest = S.suspend(() =>
     Catalog: S.String,
     ChangeSet: RequestedChangeList,
     ChangeSetName: S.optional(S.String),
-    ClientRequestToken: S.optional(S.String),
+    ClientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     ChangeSetTags: S.optional(TagList),
     Intent: S.optional(Intent),
   }).pipe(

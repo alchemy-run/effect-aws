@@ -325,7 +325,7 @@ export const CreateProgramManagementAccountRequest = S.suspend(() =>
     program: Program,
     displayName: S.String,
     accountId: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -374,7 +374,7 @@ export const DeleteProgramManagementAccountRequest = S.suspend(() =>
   S.Struct({
     catalog: S.String,
     identifier: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/DeleteProgramManagementAccount" }),
@@ -509,7 +509,7 @@ export const DeleteRelationshipRequest = S.suspend(() =>
     catalog: S.String,
     identifier: S.String,
     programManagementAccountIdentifier: S.String,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/DeleteRelationship" }),
@@ -915,7 +915,7 @@ export const CreateChannelHandshakeRequest = S.suspend(() =>
     catalog: S.String,
     associatedResourceIdentifier: S.String,
     payload: S.optional(ChannelHandshakePayload),
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
   }).pipe(
     T.all(
@@ -1040,7 +1040,7 @@ export const CreateRelationshipRequest = S.suspend(() =>
     displayName: S.String,
     resaleAccountModel: S.optional(ResaleAccountModel),
     sector: Sector,
-    clientToken: S.optional(S.String),
+    clientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     tags: S.optional(TagList),
     requestedSupportPlan: S.optional(SupportPlan),
   }).pipe(

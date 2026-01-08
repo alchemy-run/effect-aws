@@ -91,7 +91,6 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type IntegerOptional = number;
 export type UserGroupId = string;
 export type UserId = string;
 export type UserName = string;
@@ -3370,7 +3369,11 @@ export const ReplicationGroupMessage = S.suspend(() =>
 }) as any as S.Schema<ReplicationGroupMessage>;
 export interface DescribeServerlessCachesResponse {
   NextToken?: string;
-  ServerlessCaches?: ServerlessCache[];
+  ServerlessCaches?: (ServerlessCache & {
+    CacheUsageLimits: CacheUsageLimits & {
+      DataStorage: DataStorage & { Unit: DataStorageUnit };
+    };
+  })[];
 }
 export const DescribeServerlessCachesResponse = S.suspend(() =>
   S.Struct({
@@ -3709,7 +3712,11 @@ export const ModifyReplicationGroupShardConfigurationMessage = S.suspend(() =>
   identifier: "ModifyReplicationGroupShardConfigurationMessage",
 }) as any as S.Schema<ModifyReplicationGroupShardConfigurationMessage>;
 export interface ModifyServerlessCacheResponse {
-  ServerlessCache?: ServerlessCache;
+  ServerlessCache?: ServerlessCache & {
+    CacheUsageLimits: CacheUsageLimits & {
+      DataStorage: DataStorage & { Unit: DataStorageUnit };
+    };
+  };
 }
 export const ModifyServerlessCacheResponse = S.suspend(() =>
   S.Struct({ ServerlessCache: S.optional(ServerlessCache) }).pipe(ns),
@@ -4241,7 +4248,11 @@ export const DecreaseReplicaCountResult = S.suspend(() =>
   identifier: "DecreaseReplicaCountResult",
 }) as any as S.Schema<DecreaseReplicaCountResult>;
 export interface DeleteServerlessCacheResponse {
-  ServerlessCache?: ServerlessCache;
+  ServerlessCache?: ServerlessCache & {
+    CacheUsageLimits: CacheUsageLimits & {
+      DataStorage: DataStorage & { Unit: DataStorageUnit };
+    };
+  };
 }
 export const DeleteServerlessCacheResponse = S.suspend(() =>
   S.Struct({ ServerlessCache: S.optional(ServerlessCache) }).pipe(ns),
@@ -4489,7 +4500,11 @@ export const CreateGlobalReplicationGroupResult = S.suspend(() =>
   identifier: "CreateGlobalReplicationGroupResult",
 }) as any as S.Schema<CreateGlobalReplicationGroupResult>;
 export interface CreateServerlessCacheResponse {
-  ServerlessCache?: ServerlessCache;
+  ServerlessCache?: ServerlessCache & {
+    CacheUsageLimits: CacheUsageLimits & {
+      DataStorage: DataStorage & { Unit: DataStorageUnit };
+    };
+  };
 }
 export const CreateServerlessCacheResponse = S.suspend(() =>
   S.Struct({ ServerlessCache: S.optional(ServerlessCache) }).pipe(ns),

@@ -298,7 +298,7 @@ export const CreateRescoreExecutionPlanRequest = S.suspend(() =>
     Description: S.optional(S.String),
     CapacityUnits: S.optional(CapacityUnitsConfiguration),
     Tags: S.optional(TagList),
-    ClientToken: S.optional(S.String),
+    ClientToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/rescore-execution-plans" }),

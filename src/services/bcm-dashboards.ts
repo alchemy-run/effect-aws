@@ -76,7 +76,6 @@ export type WidgetTitle = string;
 export type WidgetWidth = number;
 export type WidgetHeight = number;
 export type ResourceTagValue = string;
-export type GenericString = string;
 
 //# Schemas
 export type ResourceTagKeyList = string[];

@@ -77,6 +77,7 @@ export type TopK = number;
 export type TagValue = string;
 export type KmsKeyArn = string;
 export type MetadataKey = string;
+export type VectorMetadata = unknown;
 export type ExceptionMessage = string;
 
 //# Schemas
@@ -753,7 +754,7 @@ export const ListOutputVector = S.suspend(() =>
 export type ListVectorsOutputList = ListOutputVector[];
 export const ListVectorsOutputList = S.Array(ListOutputVector);
 export interface CreateVectorBucketOutput {
-  vectorBucketArn?: string;
+  vectorBucketArn: string;
 }
 export const CreateVectorBucketOutput = S.suspend(() =>
   S.Struct({ vectorBucketArn: S.optional(S.String) }),
@@ -781,7 +782,7 @@ export const ListVectorBucketsOutput = S.suspend(() =>
   identifier: "ListVectorBucketsOutput",
 }) as any as S.Schema<ListVectorBucketsOutput>;
 export interface CreateIndexOutput {
-  indexArn?: string;
+  indexArn: string;
 }
 export const CreateIndexOutput = S.suspend(() =>
   S.Struct({ indexArn: S.optional(S.String) }),
@@ -840,7 +841,7 @@ export type QueryVectorsOutputList = QueryOutputVector[];
 export const QueryVectorsOutputList = S.Array(QueryOutputVector);
 export interface QueryVectorsOutput {
   vectors: QueryOutputVector[];
-  distanceMetric?: DistanceMetric;
+  distanceMetric: DistanceMetric;
 }
 export const QueryVectorsOutput = S.suspend(() =>
   S.Struct({
