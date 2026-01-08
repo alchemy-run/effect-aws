@@ -87,52 +87,51 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type errorMessage = string;
-export type customerAccountId = string;
-export type nextToken = string;
-export type maxResults = number;
-export type vehicleName = string;
+export type ErrorMessage = string;
+export type CustomerAccountId = string;
+export type NextToken = string;
+export type MaxResults = number;
+export type VehicleName = string;
 export type AmazonResourceName = string;
 export type TagKey = string;
-export type campaignName = string;
-export type description = string;
-export type arn = string;
-export type uint32 = number;
-export type priority = number;
+export type CampaignName = string;
+export type Description = string;
+export type Arn = string;
+export type Uint32 = number;
+export type Priority = number;
 export type NodePath = string;
-export type statusStr = string;
-export type resourceName = string;
+export type StatusStr = string;
+export type ResourceName = string;
 export type FullyQualifiedName = string;
 export type InterfaceId = string;
-export type fleetId = string;
+export type FleetId = string;
 export type ResourceIdentifier = string;
-export type attributeName = string;
-export type attributeValue = string;
-export type listVehiclesMaxResults = number;
+export type AttributeName = string;
+export type AttributeValue = string;
+export type ListVehiclesMaxResults = number;
 export type CloudWatchLogGroupName = string;
 export type TimestreamDatabaseName = string;
 export type TimestreamTableName = string;
 export type IAMRoleArn = string;
 export type TagValue = string;
-export type wildcardSignalName = string;
-export type maxSampleCount = number;
+export type WildcardSignalName = string;
+export type MaxSampleCount = number;
 export type DataPartitionId = string;
-export type languageVersion = number;
-export type actionEventExpression = string | redacted.Redacted<string>;
-export type campaignArn = string;
-export type message = string;
+export type LanguageVersion = number;
+export type ActionEventExpression = string | redacted.Redacted<string>;
+export type CampaignArn = string;
+export type Message = string;
 export type ResourceUniqueId = string;
-export type collectionPeriodMs = number;
-export type eventExpression = string | redacted.Redacted<string>;
+export type CollectionPeriodMs = number;
+export type EventExpression = string | redacted.Redacted<string>;
 export type S3BucketArn = string;
 export type Prefix = string;
 export type TimestreamTableArn = string;
 export type MqttTopicArn = string;
 export type StorageLocation = string | redacted.Redacted<string>;
-export type nonNegativeInteger = number;
-export type double = number;
+export type NonNegativeInteger = number;
 export type CanSignalName = string;
-export type positiveInteger = number;
+export type PositiveInteger = number;
 export type ObdByteLength = number;
 export type ObdBitmaskLength = number;
 export type TopicName = string;
@@ -147,11 +146,11 @@ export type CustomDecodingSignalInterfaceName = string;
 export type NetworkFileBlob = Uint8Array;
 export type StorageMaximumSizeValue = number;
 export type StorageMinimumTimeToLiveValue = number;
-export type positiveLong = number;
-export type fetchConfigEventExpression = string | redacted.Redacted<string>;
+export type PositiveLong = number;
+export type FetchConfigEventExpression = string | redacted.Redacted<string>;
 export type RetryAfterSeconds = number;
 export type StructureMessageName = string;
-export type maxStringSize = number;
+export type MaxStringSize = number;
 
 //# Schemas
 export interface GetEncryptionConfigurationRequest {}
@@ -249,8 +248,8 @@ export const ManifestStatus = S.Literal(
   "INVALID",
   "VALIDATING",
 );
-export type listOfStrings = string[];
-export const listOfStrings = S.Array(S.String);
+export type ListOfStrings = string[];
+export const ListOfStrings = S.Array(S.String);
 export type NodePaths = string[];
 export const NodePaths = S.Array(S.String);
 export type SignalNodeType =
@@ -287,10 +286,10 @@ export type UpdateMode = "Overwrite" | "Merge";
 export const UpdateMode = S.Literal("Overwrite", "Merge");
 export type StateTemplateAssociationIdentifiers = string[];
 export const StateTemplateAssociationIdentifiers = S.Array(S.String);
-export type attributeNamesList = string[];
-export const attributeNamesList = S.Array(S.String);
-export type attributeValuesList = string[];
-export const attributeValuesList = S.Array(S.String);
+export type AttributeNamesList = string[];
+export const AttributeNamesList = S.Array(S.String);
+export type AttributeValuesList = string[];
+export const AttributeValuesList = S.Array(S.String);
 export interface GetEncryptionConfigurationResponse {
   kmsKeyId?: string;
   encryptionStatus: EncryptionStatus;
@@ -1081,7 +1080,7 @@ export const CreateModelManifestRequest = S.suspend(() =>
   S.Struct({
     name: S.String.pipe(T.HttpLabel("name")),
     description: S.optional(S.String),
-    nodes: listOfStrings,
+    nodes: ListOfStrings,
     signalCatalogArn: S.String,
     tags: S.optional(TagList),
   }).pipe(
@@ -1320,7 +1319,7 @@ export const Sensor = S.suspend(() =>
     dataType: NodeDataType,
     description: S.optional(S.String),
     unit: S.optional(S.String),
-    allowedValues: S.optional(listOfStrings),
+    allowedValues: S.optional(ListOfStrings),
     min: S.optional(S.Number),
     max: S.optional(S.Number),
     deprecationMessage: S.optional(S.String),
@@ -1347,7 +1346,7 @@ export const Actuator = S.suspend(() =>
     dataType: NodeDataType,
     description: S.optional(S.String),
     unit: S.optional(S.String),
-    allowedValues: S.optional(listOfStrings),
+    allowedValues: S.optional(ListOfStrings),
     min: S.optional(S.Number),
     max: S.optional(S.Number),
     assignedValue: S.optional(S.String),
@@ -1375,7 +1374,7 @@ export const Attribute = S.suspend(() =>
     dataType: NodeDataType,
     description: S.optional(S.String),
     unit: S.optional(S.String),
-    allowedValues: S.optional(listOfStrings),
+    allowedValues: S.optional(ListOfStrings),
     min: S.optional(S.Number),
     max: S.optional(S.Number),
     assignedValue: S.optional(S.String),
@@ -1675,8 +1674,8 @@ export const GetVehicleRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetVehicleRequest",
 }) as any as S.Schema<GetVehicleRequest>;
-export type attributesMap = { [key: string]: string };
-export const attributesMap = S.Record({ key: S.String, value: S.String });
+export type AttributesMap = { [key: string]: string };
+export const AttributesMap = S.Record({ key: S.String, value: S.String });
 export type TimeUnit = "MILLISECOND" | "SECOND" | "MINUTE" | "HOUR";
 export const TimeUnit = S.Literal("MILLISECOND", "SECOND", "MINUTE", "HOUR");
 export interface TimePeriod {
@@ -1736,7 +1735,7 @@ export const UpdateVehicleRequest = S.suspend(() =>
     vehicleName: S.String.pipe(T.HttpLabel("vehicleName")),
     modelManifestArn: S.optional(S.String),
     decoderManifestArn: S.optional(S.String),
-    attributes: S.optional(attributesMap),
+    attributes: S.optional(AttributesMap),
     attributeUpdateMode: S.optional(UpdateMode),
     stateTemplatesToAdd: S.optional(StateTemplateAssociations),
     stateTemplatesToRemove: S.optional(StateTemplateAssociationIdentifiers),
@@ -1784,10 +1783,10 @@ export const ListVehiclesRequest = S.suspend(() =>
     modelManifestArn: S.optional(S.String).pipe(
       T.HttpQuery("modelManifestArn"),
     ),
-    attributeNames: S.optional(attributeNamesList).pipe(
+    attributeNames: S.optional(AttributeNamesList).pipe(
       T.HttpQuery("attributeNames"),
     ),
-    attributeValues: S.optional(attributeValuesList).pipe(
+    attributeValues: S.optional(AttributeValuesList).pipe(
       T.HttpQuery("attributeValues"),
     ),
     nextToken: S.optional(S.String).pipe(T.HttpQuery("nextToken")),
@@ -1901,7 +1900,7 @@ export const CreateVehicleRequestItem = S.suspend(() =>
     vehicleName: S.String,
     modelManifestArn: S.String,
     decoderManifestArn: S.String,
-    attributes: S.optional(attributesMap),
+    attributes: S.optional(AttributesMap),
     associationBehavior: S.optional(VehicleAssociationBehavior),
     tags: S.optional(TagList),
     stateTemplates: S.optional(StateTemplateAssociations),
@@ -1909,8 +1908,8 @@ export const CreateVehicleRequestItem = S.suspend(() =>
 ).annotations({
   identifier: "CreateVehicleRequestItem",
 }) as any as S.Schema<CreateVehicleRequestItem>;
-export type createVehicleRequestItems = CreateVehicleRequestItem[];
-export const createVehicleRequestItems = S.Array(CreateVehicleRequestItem);
+export type CreateVehicleRequestItems = CreateVehicleRequestItem[];
+export const CreateVehicleRequestItems = S.Array(CreateVehicleRequestItem);
 export interface UpdateVehicleRequestItem {
   vehicleName: string;
   modelManifestArn?: string;
@@ -1926,7 +1925,7 @@ export const UpdateVehicleRequestItem = S.suspend(() =>
     vehicleName: S.String,
     modelManifestArn: S.optional(S.String),
     decoderManifestArn: S.optional(S.String),
-    attributes: S.optional(attributesMap),
+    attributes: S.optional(AttributesMap),
     attributeUpdateMode: S.optional(UpdateMode),
     stateTemplatesToAdd: S.optional(StateTemplateAssociations),
     stateTemplatesToRemove: S.optional(StateTemplateAssociationIdentifiers),
@@ -1935,8 +1934,8 @@ export const UpdateVehicleRequestItem = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVehicleRequestItem",
 }) as any as S.Schema<UpdateVehicleRequestItem>;
-export type updateVehicleRequestItems = UpdateVehicleRequestItem[];
-export const updateVehicleRequestItems = S.Array(UpdateVehicleRequestItem);
+export type UpdateVehicleRequestItems = UpdateVehicleRequestItem[];
+export const UpdateVehicleRequestItems = S.Array(UpdateVehicleRequestItem);
 export interface TimestreamRegistrationResponse {
   timestreamDatabaseName: string;
   timestreamTableName: string;
@@ -2015,12 +2014,12 @@ export const CampaignStatus = S.Literal(
   "RUNNING",
   "SUSPENDED",
 );
-export type vehicles = string[];
-export const vehicles = S.Array(S.String);
+export type Vehicles = string[];
+export const Vehicles = S.Array(S.String);
 export type FormattedVss = { vssJson: string };
 export const FormattedVss = S.Union(S.Struct({ vssJson: S.String }));
-export type fleets = string[];
-export const fleets = S.Array(S.String);
+export type Fleets = string[];
+export const Fleets = S.Array(S.String);
 export type TriggerMode = "ALWAYS" | "RISING_EDGE";
 export const TriggerMode = S.Literal("ALWAYS", "RISING_EDGE");
 export type DataFormat = "JSON" | "PARQUET";
@@ -2033,7 +2032,7 @@ export interface BatchCreateVehicleRequest {
   vehicles: CreateVehicleRequestItem[];
 }
 export const BatchCreateVehicleRequest = S.suspend(() =>
-  S.Struct({ vehicles: createVehicleRequestItems }).pipe(
+  S.Struct({ vehicles: CreateVehicleRequestItems }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/vehicles" }),
       svc,
@@ -2050,7 +2049,7 @@ export interface BatchUpdateVehicleRequest {
   vehicles: UpdateVehicleRequestItem[];
 }
 export const BatchUpdateVehicleRequest = S.suspend(() =>
-  S.Struct({ vehicles: updateVehicleRequestItems }).pipe(
+  S.Struct({ vehicles: UpdateVehicleRequestItems }).pipe(
     T.all(
       T.Http({ method: "PUT", uri: "/vehicles" }),
       svc,
@@ -2532,7 +2531,7 @@ export interface ListVehiclesInFleetResponse {
   nextToken?: string;
 }
 export const ListVehiclesInFleetResponse = S.suspend(() =>
-  S.Struct({ vehicles: S.optional(vehicles), nextToken: S.optional(S.String) }),
+  S.Struct({ vehicles: S.optional(Vehicles), nextToken: S.optional(S.String) }),
 ).annotations({
   identifier: "ListVehiclesInFleetResponse",
 }) as any as S.Schema<ListVehiclesInFleetResponse>;
@@ -2738,7 +2737,7 @@ export const GetVehicleResponse = S.suspend(() =>
     arn: S.optional(S.String),
     modelManifestArn: S.optional(S.String),
     decoderManifestArn: S.optional(S.String),
-    attributes: S.optional(attributesMap),
+    attributes: S.optional(AttributesMap),
     stateTemplates: S.optional(StateTemplateAssociations),
     creationTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
     lastModificationTime: S.optional(
@@ -2771,7 +2770,7 @@ export interface ListFleetsForVehicleResponse {
   nextToken?: string;
 }
 export const ListFleetsForVehicleResponse = S.suspend(() =>
-  S.Struct({ fleets: S.optional(fleets), nextToken: S.optional(S.String) }),
+  S.Struct({ fleets: S.optional(Fleets), nextToken: S.optional(S.String) }),
 ).annotations({
   identifier: "ListFleetsForVehicleResponse",
 }) as any as S.Schema<ListFleetsForVehicleResponse>;
@@ -2830,8 +2829,8 @@ export const CampaignSummary = S.suspend(() =>
 ).annotations({
   identifier: "CampaignSummary",
 }) as any as S.Schema<CampaignSummary>;
-export type campaignSummaries = CampaignSummary[];
-export const campaignSummaries = S.Array(CampaignSummary);
+export type CampaignSummaries = CampaignSummary[];
+export const CampaignSummaries = S.Array(CampaignSummary);
 export interface DecoderManifestSummary {
   name?: string;
   arn?: string;
@@ -2856,8 +2855,8 @@ export const DecoderManifestSummary = S.suspend(() =>
 ).annotations({
   identifier: "DecoderManifestSummary",
 }) as any as S.Schema<DecoderManifestSummary>;
-export type decoderManifestSummaries = DecoderManifestSummary[];
-export const decoderManifestSummaries = S.Array(DecoderManifestSummary);
+export type DecoderManifestSummaries = DecoderManifestSummary[];
+export const DecoderManifestSummaries = S.Array(DecoderManifestSummary);
 export interface FleetSummary {
   id: string;
   arn: string;
@@ -2878,8 +2877,8 @@ export const FleetSummary = S.suspend(() =>
     ),
   }),
 ).annotations({ identifier: "FleetSummary" }) as any as S.Schema<FleetSummary>;
-export type fleetSummaries = FleetSummary[];
-export const fleetSummaries = S.Array(FleetSummary);
+export type FleetSummaries = FleetSummary[];
+export const FleetSummaries = S.Array(FleetSummary);
 export interface ModelManifestSummary {
   name?: string;
   arn?: string;
@@ -2902,8 +2901,8 @@ export const ModelManifestSummary = S.suspend(() =>
 ).annotations({
   identifier: "ModelManifestSummary",
 }) as any as S.Schema<ModelManifestSummary>;
-export type modelManifestSummaries = ModelManifestSummary[];
-export const modelManifestSummaries = S.Array(ModelManifestSummary);
+export type ModelManifestSummaries = ModelManifestSummary[];
+export const ModelManifestSummaries = S.Array(ModelManifestSummary);
 export interface NodeCounts {
   totalNodes?: number;
   totalBranches?: number;
@@ -2942,8 +2941,8 @@ export const SignalCatalogSummary = S.suspend(() =>
 ).annotations({
   identifier: "SignalCatalogSummary",
 }) as any as S.Schema<SignalCatalogSummary>;
-export type signalCatalogSummaries = SignalCatalogSummary[];
-export const signalCatalogSummaries = S.Array(SignalCatalogSummary);
+export type SignalCatalogSummaries = SignalCatalogSummary[];
+export const SignalCatalogSummaries = S.Array(SignalCatalogSummary);
 export interface StateTemplateSummary {
   name?: string;
   arn?: string;
@@ -2987,13 +2986,13 @@ export const VehicleSummary = S.suspend(() =>
     decoderManifestArn: S.String,
     creationTime: S.Date.pipe(T.TimestampFormat("epoch-seconds")),
     lastModificationTime: S.Date.pipe(T.TimestampFormat("epoch-seconds")),
-    attributes: S.optional(attributesMap),
+    attributes: S.optional(AttributesMap),
   }),
 ).annotations({
   identifier: "VehicleSummary",
 }) as any as S.Schema<VehicleSummary>;
-export type vehicleSummaries = VehicleSummary[];
-export const vehicleSummaries = S.Array(VehicleSummary);
+export type VehicleSummaries = VehicleSummary[];
+export const VehicleSummaries = S.Array(VehicleSummary);
 export type ModelSignalsMap = { [key: string]: string };
 export const ModelSignalsMap = S.Record({ key: S.String, value: S.String });
 export interface GetVehicleStatusResponse {
@@ -3032,7 +3031,7 @@ export interface ListCampaignsResponse {
 }
 export const ListCampaignsResponse = S.suspend(() =>
   S.Struct({
-    campaignSummaries: S.optional(campaignSummaries),
+    campaignSummaries: S.optional(CampaignSummaries),
     nextToken: S.optional(S.String),
   }),
 ).annotations({
@@ -3053,7 +3052,7 @@ export interface ListDecoderManifestsResponse {
 }
 export const ListDecoderManifestsResponse = S.suspend(() =>
   S.Struct({
-    summaries: S.optional(decoderManifestSummaries),
+    summaries: S.optional(DecoderManifestSummaries),
     nextToken: S.optional(S.String),
   }),
 ).annotations({
@@ -3065,7 +3064,7 @@ export interface ListFleetsResponse {
 }
 export const ListFleetsResponse = S.suspend(() =>
   S.Struct({
-    fleetSummaries: S.optional(fleetSummaries),
+    fleetSummaries: S.optional(FleetSummaries),
     nextToken: S.optional(S.String),
   }),
 ).annotations({
@@ -3077,7 +3076,7 @@ export interface ListModelManifestsResponse {
 }
 export const ListModelManifestsResponse = S.suspend(() =>
   S.Struct({
-    summaries: S.optional(modelManifestSummaries),
+    summaries: S.optional(ModelManifestSummaries),
     nextToken: S.optional(S.String),
   }),
 ).annotations({
@@ -3134,7 +3133,7 @@ export interface ListSignalCatalogsResponse {
 }
 export const ListSignalCatalogsResponse = S.suspend(() =>
   S.Struct({
-    summaries: S.optional(signalCatalogSummaries),
+    summaries: S.optional(SignalCatalogSummaries),
     nextToken: S.optional(S.String),
   }),
 ).annotations({
@@ -3167,7 +3166,7 @@ export interface ListVehiclesResponse {
 }
 export const ListVehiclesResponse = S.suspend(() =>
   S.Struct({
-    vehicleSummaries: S.optional(vehicleSummaries),
+    vehicleSummaries: S.optional(VehicleSummaries),
     nextToken: S.optional(S.String),
   }),
 ).annotations({
@@ -3241,8 +3240,8 @@ export const CreateVehicleResponseItem = S.suspend(() =>
 ).annotations({
   identifier: "CreateVehicleResponseItem",
 }) as any as S.Schema<CreateVehicleResponseItem>;
-export type createVehicleResponses = CreateVehicleResponseItem[];
-export const createVehicleResponses = S.Array(CreateVehicleResponseItem);
+export type CreateVehicleResponses = CreateVehicleResponseItem[];
+export const CreateVehicleResponses = S.Array(CreateVehicleResponseItem);
 export interface CreateVehicleError {
   vehicleName?: string;
   code?: string;
@@ -3257,8 +3256,8 @@ export const CreateVehicleError = S.suspend(() =>
 ).annotations({
   identifier: "CreateVehicleError",
 }) as any as S.Schema<CreateVehicleError>;
-export type createVehicleErrors = CreateVehicleError[];
-export const createVehicleErrors = S.Array(CreateVehicleError);
+export type CreateVehicleErrors = CreateVehicleError[];
+export const CreateVehicleErrors = S.Array(CreateVehicleError);
 export interface UpdateVehicleResponseItem {
   vehicleName?: string;
   arn?: string;
@@ -3268,8 +3267,8 @@ export const UpdateVehicleResponseItem = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVehicleResponseItem",
 }) as any as S.Schema<UpdateVehicleResponseItem>;
-export type updateVehicleResponseItems = UpdateVehicleResponseItem[];
-export const updateVehicleResponseItems = S.Array(UpdateVehicleResponseItem);
+export type UpdateVehicleResponseItems = UpdateVehicleResponseItem[];
+export const UpdateVehicleResponseItems = S.Array(UpdateVehicleResponseItem);
 export interface UpdateVehicleError {
   vehicleName?: string;
   code?: number;
@@ -3284,8 +3283,8 @@ export const UpdateVehicleError = S.suspend(() =>
 ).annotations({
   identifier: "UpdateVehicleError",
 }) as any as S.Schema<UpdateVehicleError>;
-export type updateVehicleErrors = UpdateVehicleError[];
-export const updateVehicleErrors = S.Array(UpdateVehicleError);
+export type UpdateVehicleErrors = UpdateVehicleError[];
+export const UpdateVehicleErrors = S.Array(UpdateVehicleError);
 export type ValidationExceptionReason =
   | "unknownOperation"
   | "cannotParse"
@@ -3309,8 +3308,8 @@ export interface BatchCreateVehicleResponse {
 }
 export const BatchCreateVehicleResponse = S.suspend(() =>
   S.Struct({
-    vehicles: S.optional(createVehicleResponses),
-    errors: S.optional(createVehicleErrors),
+    vehicles: S.optional(CreateVehicleResponses),
+    errors: S.optional(CreateVehicleErrors),
   }),
 ).annotations({
   identifier: "BatchCreateVehicleResponse",
@@ -3321,8 +3320,8 @@ export interface BatchUpdateVehicleResponse {
 }
 export const BatchUpdateVehicleResponse = S.suspend(() =>
   S.Struct({
-    vehicles: S.optional(updateVehicleResponseItems),
-    errors: S.optional(updateVehicleErrors),
+    vehicles: S.optional(UpdateVehicleResponseItems),
+    errors: S.optional(UpdateVehicleErrors),
   }),
 ).annotations({
   identifier: "BatchUpdateVehicleResponse",
@@ -3548,7 +3547,7 @@ export const CreateVehicleRequest = S.suspend(() =>
     vehicleName: S.String.pipe(T.HttpLabel("vehicleName")),
     modelManifestArn: S.String,
     decoderManifestArn: S.String,
-    attributes: S.optional(attributesMap),
+    attributes: S.optional(AttributesMap),
     associationBehavior: S.optional(VehicleAssociationBehavior),
     tags: S.optional(TagList),
     stateTemplates: S.optional(StateTemplateAssociations),
@@ -4476,7 +4475,7 @@ export const listVehiclesInFleet: {
   items: (
     input: ListVehiclesInFleetRequest,
   ) => stream.Stream<
-    vehicleName,
+    VehicleName,
     | AccessDeniedException
     | InternalServerException
     | ResourceNotFoundException
@@ -4633,7 +4632,7 @@ export const listFleetsForVehicle: {
   items: (
     input: ListFleetsForVehicleRequest,
   ) => stream.Stream<
-    fleetId,
+    FleetId,
     | AccessDeniedException
     | InternalServerException
     | ResourceNotFoundException

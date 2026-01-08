@@ -133,7 +133,7 @@ export type CustomerAWSAccountId = string;
 export type AllocatedUsageQuantity = number;
 export type TagKey = string;
 export type TagValue = string;
-export type errorMessage = string;
+export type ErrorMessage = string;
 
 //# Schemas
 export interface RegisterUsageRequest {

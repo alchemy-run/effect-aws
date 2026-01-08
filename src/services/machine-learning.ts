@@ -135,7 +135,7 @@ export type ErrorCode = number;
 export type PerformanceMetricsPropertyKey = string;
 export type PerformanceMetricsPropertyValue = string;
 export type Label = string;
-export type floatLabel = number;
+export type FloatLabel = number;
 export type ScoreValue = number;
 export type DetailsValue = string;
 

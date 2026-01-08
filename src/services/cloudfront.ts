@@ -147,15 +147,14 @@ const rules = T.EndpointResolver((p, _) => {
 
 //# Newtypes
 export type AnycastIpListName = string;
-export type integer = number;
 export type FunctionName = string;
 export type FunctionBlob = Uint8Array | redacted.Redacted<Uint8Array>;
 export type KeyValueStoreName = string;
 export type KeyValueStoreComment = string;
 export type ResourceId = string;
-export type distributionIdString = string;
-export type aliasString = string;
-export type listConflictingAliasesMaxItemsInteger = number;
+export type DistributionIdString = string;
+export type AliasString = string;
+export type ListConflictingAliasesMaxItemsInteger = number;
 export type ResourceARN = string;
 export type FunctionEventObject = Uint8Array | redacted.Redacted<Uint8Array>;
 export type CommentType = string | redacted.Redacted<string>;
@@ -165,9 +164,8 @@ export type TagKey = string;
 export type TagValue = string;
 export type ServerCertificateId = string;
 export type SamplingRate = number;
-export type sensitiveStringType = string | redacted.Redacted<string>;
+export type SensitiveStringType = string | redacted.Redacted<string>;
 export type KeyValueStoreARN = string;
-export type float = number;
 export type OriginShieldRegion = string;
 export type LambdaFunctionARN = string;
 export type FunctionARN = string;

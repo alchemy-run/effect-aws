@@ -87,11 +87,11 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type messageIdType = string;
-export type s3BucketIdType = string;
-export type s3KeyIdType = string;
-export type s3VersionType = string;
-export type errorMessage = string;
+export type MessageIdType = string;
+export type S3BucketIdType = string;
+export type S3KeyIdType = string;
+export type S3VersionType = string;
+export type ErrorMessage = string;
 
 //# Schemas
 export interface GetRawMessageContentRequest {

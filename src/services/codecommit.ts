@@ -129,7 +129,6 @@ export type RepositoryTriggerCustomData = string;
 export type ApprovalRuleTemplateId = string;
 export type ApprovalRuleId = string;
 export type RepositoryId = string;
-export type blob = Uint8Array;
 export type ObjectSize = number;
 export type IsMergeable = boolean;
 export type Overridden = boolean;

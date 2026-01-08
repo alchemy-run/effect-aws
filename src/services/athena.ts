@@ -164,7 +164,7 @@ export type TypeString = string;
 export type CommentString = string;
 export type ErrorCategory = number;
 export type ErrorType = number;
-export type datumString = string;
+export type DatumString = string;
 
 //# Schemas
 export type NamedQueryIdList = string[];
@@ -2956,8 +2956,8 @@ export interface Datum {
 export const Datum = S.suspend(() =>
   S.Struct({ VarCharValue: S.optional(S.String) }),
 ).annotations({ identifier: "Datum" }) as any as S.Schema<Datum>;
-export type datumList = Datum[];
-export const datumList = S.Array(Datum);
+export type DatumList = Datum[];
+export const DatumList = S.Array(Datum);
 export interface ColumnInfo {
   CatalogName?: string;
   SchemaName?: string;
@@ -3086,7 +3086,7 @@ export interface Row {
   Data?: Datum[];
 }
 export const Row = S.suspend(() =>
-  S.Struct({ Data: S.optional(datumList) }),
+  S.Struct({ Data: S.optional(DatumList) }),
 ).annotations({ identifier: "Row" }) as any as S.Schema<Row>;
 export type RowList = Row[];
 export const RowList = S.Array(Row);

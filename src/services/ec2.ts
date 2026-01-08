@@ -396,7 +396,7 @@ export type AllowedInstanceType = string;
 export type SensitiveUrl = string | redacted.Redacted<string>;
 export type ImportManifestUrl = string | redacted.Redacted<string>;
 export type SecurityGroupRuleId = string;
-export type preSharedKey = string | redacted.Redacted<string>;
+export type PreSharedKey = string | redacted.Redacted<string>;
 export type ImageProviderRequest = string;
 export type MarketplaceProductCodeRequest = string;
 export type ImageNameRequest = string;
@@ -427,7 +427,7 @@ export type HibernationFlag = boolean;
 export type BurstablePerformanceFlag = boolean;
 export type DedicatedHostFlag = boolean;
 export type AutoRecoveryFlag = boolean;
-export type customerGatewayConfiguration = string | redacted.Redacted<string>;
+export type CustomerGatewayConfiguration = string | redacted.Redacted<string>;
 export type ImageProvider = string;
 export type MarketplaceProductCode = string;
 export type ImageName = string;
@@ -455,9 +455,9 @@ export type Ipv6Flag = boolean;
 export type EfaSupportedFlag = boolean;
 export type EncryptionInTransitSupported = boolean;
 export type EnaSrdSupported = boolean;
-export type totalGpuMemory = number;
-export type totalFpgaMemory = number;
-export type totalInferenceMemory = number;
+export type TotalGpuMemory = number;
+export type TotalFpgaMemory = number;
+export type TotalInferenceMemory = number;
 export type NitroTpmSupportedVersionType = string;
 export type TotalMediaMemory = number;
 export type TotalNeuronMemory = number;
@@ -25117,8 +25117,8 @@ export const PeriodType = S.Literal(
   "one-day",
   "one-week",
 );
-export type scope = "Availability Zone" | "Region";
-export const scope = S.Literal("Availability Zone", "Region");
+export type Scope = "Availability Zone" | "Region";
+export const Scope = S.Literal("Availability Zone", "Region");
 export type EncryptionSupportOptionValue = "enable" | "disable";
 export const EncryptionSupportOptionValue = S.Literal("enable", "disable");
 export type ModifyVerifiedAccessEndpointSubnetIdList = string[];
@@ -35119,7 +35119,7 @@ export interface ReservedInstancesConfiguration {
   InstanceCount?: number;
   InstanceType?: InstanceType;
   Platform?: string;
-  Scope?: scope;
+  Scope?: Scope;
   AvailabilityZoneId?: string;
 }
 export const ReservedInstancesConfiguration = S.suspend(() =>
@@ -35140,7 +35140,7 @@ export const ReservedInstancesConfiguration = S.suspend(() =>
       T.XmlName("platform"),
       T.Ec2QueryName("Platform"),
     ),
-    Scope: S.optional(scope).pipe(T.XmlName("scope"), T.Ec2QueryName("Scope")),
+    Scope: S.optional(Scope).pipe(T.XmlName("scope"), T.Ec2QueryName("Scope")),
     AvailabilityZoneId: S.optional(S.String).pipe(
       T.XmlName("availabilityZoneId"),
       T.Ec2QueryName("AvailabilityZoneId"),
@@ -50692,8 +50692,8 @@ export const SnapshotTierStatus = S.suspend(() =>
 ).annotations({
   identifier: "SnapshotTierStatus",
 }) as any as S.Schema<SnapshotTierStatus>;
-export type snapshotTierStatusSet = SnapshotTierStatus[];
-export const snapshotTierStatusSet = S.Array(
+export type SnapshotTierStatusSet = SnapshotTierStatus[];
+export const SnapshotTierStatusSet = S.Array(
   SnapshotTierStatus.pipe(T.XmlName("item")).annotations({
     identifier: "SnapshotTierStatus",
   }),
@@ -57847,7 +57847,7 @@ export interface DescribeSnapshotTierStatusResult {
 }
 export const DescribeSnapshotTierStatusResult = S.suspend(() =>
   S.Struct({
-    SnapshotTierStatuses: S.optional(snapshotTierStatusSet).pipe(
+    SnapshotTierStatuses: S.optional(SnapshotTierStatusSet).pipe(
       T.XmlName("snapshotTierStatusSet"),
       T.Ec2QueryName("SnapshotTierStatusSet"),
     ),
@@ -63271,7 +63271,7 @@ export interface ReservedInstances {
   OfferingClass?: OfferingClassType;
   OfferingType?: OfferingTypeValues;
   RecurringCharges?: RecurringCharge[];
-  Scope?: scope;
+  Scope?: Scope;
   Tags?: Tag[];
   AvailabilityZoneId?: string;
   ReservedInstancesId?: string;
@@ -63308,7 +63308,7 @@ export const ReservedInstances = S.suspend(() =>
       T.XmlName("recurringCharges"),
       T.Ec2QueryName("RecurringCharges"),
     ),
-    Scope: S.optional(scope).pipe(T.XmlName("scope"), T.Ec2QueryName("Scope")),
+    Scope: S.optional(Scope).pipe(T.XmlName("scope"), T.Ec2QueryName("Scope")),
     Tags: S.optional(TagList).pipe(
       T.XmlName("tagSet"),
       T.Ec2QueryName("TagSet"),
@@ -63440,7 +63440,7 @@ export interface ReservedInstancesOffering {
   OfferingType?: OfferingTypeValues;
   PricingDetails?: PricingDetail[];
   RecurringCharges?: RecurringCharge[];
-  Scope?: scope;
+  Scope?: Scope;
   AvailabilityZoneId?: string;
   ReservedInstancesOfferingId?: string;
   InstanceType?: InstanceType;
@@ -63480,7 +63480,7 @@ export const ReservedInstancesOffering = S.suspend(() =>
       T.XmlName("recurringCharges"),
       T.Ec2QueryName("RecurringCharges"),
     ),
-    Scope: S.optional(scope).pipe(T.XmlName("scope"), T.Ec2QueryName("Scope")),
+    Scope: S.optional(Scope).pipe(T.XmlName("scope"), T.Ec2QueryName("Scope")),
     AvailabilityZoneId: S.optional(S.String).pipe(
       T.XmlName("availabilityZoneId"),
       T.Ec2QueryName("AvailabilityZoneId"),

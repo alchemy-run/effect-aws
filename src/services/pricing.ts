@@ -101,7 +101,7 @@ export type CurrencyCode = string;
 export type MaxResults = number;
 export type Field = string;
 export type Value = string;
-export type errorMessage = string;
+export type ErrorMessage = string;
 export type SynthesizedJsonPriceListJsonItem = string;
 
 //# Schemas

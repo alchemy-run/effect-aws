@@ -117,8 +117,8 @@ export type StatusCode = number;
 export type ChangesetArn = string;
 export type DatasetArn = string;
 export type DataViewArn = string;
-export type stringValueLength1to1024 = string;
-export type stringValueLength1to63 = string;
+export type StringValueLength1to1024 = string;
+export type StringValueLength1to63 = string;
 export type Password = string | redacted.Redacted<string>;
 export type StringValueLength1to250 = string;
 export type ColumnName = string;
@@ -129,7 +129,7 @@ export type SessionToken = string | redacted.Redacted<string>;
 export type S3BucketName = string;
 export type S3Key = string;
 export type StringValueLength1to2552 = string;
-export type stringValueMaxLength1000 = string;
+export type StringValueMaxLength1000 = string;
 export type ColumnDescription = string;
 export type ErrorMessage2 = string;
 
@@ -165,8 +165,8 @@ export type UserType = "SUPER_USER" | "APP_USER";
 export const UserType = S.Literal("SUPER_USER", "APP_USER");
 export type ApiAccess = "ENABLED" | "DISABLED";
 export const ApiAccess = S.Literal("ENABLED", "DISABLED");
-export type locationType = "INGESTION" | "SAGEMAKER";
-export const locationType = S.Literal("INGESTION", "SAGEMAKER");
+export type LocationType = "INGESTION" | "SAGEMAKER";
+export const LocationType = S.Literal("INGESTION", "SAGEMAKER");
 export interface AssociateUserToPermissionGroupRequest {
   permissionGroupId: string;
   userId: string;
@@ -520,10 +520,10 @@ export const GetUserRequest = S.suspend(() =>
   identifier: "GetUserRequest",
 }) as any as S.Schema<GetUserRequest>;
 export interface GetWorkingLocationRequest {
-  locationType?: locationType;
+  locationType?: LocationType;
 }
 export const GetWorkingLocationRequest = S.suspend(() =>
-  S.Struct({ locationType: S.optional(locationType) }).pipe(
+  S.Struct({ locationType: S.optional(LocationType) }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/workingLocationV1" }),
       svc,

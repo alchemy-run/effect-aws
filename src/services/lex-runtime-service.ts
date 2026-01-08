@@ -627,8 +627,8 @@ export interface Button {
 export const Button = S.suspend(() =>
   S.Struct({ text: S.String, value: S.String }),
 ).annotations({ identifier: "Button" }) as any as S.Schema<Button>;
-export type listOfButtons = Button[];
-export const listOfButtons = S.Array(Button);
+export type ListOfButtons = Button[];
+export const ListOfButtons = S.Array(Button);
 export interface GenericAttachment {
   title?: string;
   subTitle?: string;
@@ -642,13 +642,13 @@ export const GenericAttachment = S.suspend(() =>
     subTitle: S.optional(S.String),
     attachmentLinkUrl: S.optional(S.String),
     imageUrl: S.optional(S.String),
-    buttons: S.optional(listOfButtons),
+    buttons: S.optional(ListOfButtons),
   }),
 ).annotations({
   identifier: "GenericAttachment",
 }) as any as S.Schema<GenericAttachment>;
-export type genericAttachmentList = GenericAttachment[];
-export const genericAttachmentList = S.Array(GenericAttachment);
+export type GenericAttachmentList = GenericAttachment[];
+export const GenericAttachmentList = S.Array(GenericAttachment);
 export interface ResponseCard {
   version?: string;
   contentType?: ContentType;
@@ -658,7 +658,7 @@ export const ResponseCard = S.suspend(() =>
   S.Struct({
     version: S.optional(S.String),
     contentType: S.optional(ContentType),
-    genericAttachments: S.optional(genericAttachmentList),
+    genericAttachments: S.optional(GenericAttachmentList),
   }),
 ).annotations({ identifier: "ResponseCard" }) as any as S.Schema<ResponseCard>;
 export interface PostTextResponse {

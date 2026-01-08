@@ -95,7 +95,6 @@ export type DomainName = string;
 export type StringMax256 = string;
 export type ContainerServiceName = string;
 export type ContainerServiceScale = number;
-export type integer = number;
 export type Port = number;
 export type SensitiveString = string | redacted.Redacted<string>;
 export type IsoDate = Date;
@@ -104,7 +103,6 @@ export type Base64 = string;
 export type MetricPeriod = number;
 export type IncludeCertificateDetails = boolean;
 export type SetupHistoryPageToken = string;
-export type double = number;
 export type ContainerLabel = string;
 export type EmailAddress = string | redacted.Redacted<string>;
 export type SetupDomainName = string;
@@ -113,7 +111,6 @@ export type TagKey = string;
 export type TagValue = string;
 export type ContainerName = string;
 export type DomainEntryType = string;
-export type float = number;
 export type BucketAccessLogPrefix = string;
 export type TimeOfDay = string;
 export type DomainEntryOptionsKeys = string;
@@ -8155,8 +8152,8 @@ export const SetupHistory = S.suspend(() =>
     status: S.optional(SetupStatus),
   }),
 ).annotations({ identifier: "SetupHistory" }) as any as S.Schema<SetupHistory>;
-export type setupHistoryList = SetupHistory[];
-export const setupHistoryList = S.Array(SetupHistory);
+export type SetupHistoryList = SetupHistory[];
+export const SetupHistoryList = S.Array(SetupHistory);
 export interface DiskSnapshotInfo {
   sizeInGb?: number;
 }
@@ -8394,7 +8391,7 @@ export interface GetSetupHistoryResult {
 }
 export const GetSetupHistoryResult = S.suspend(() =>
   S.Struct({
-    setupHistory: S.optional(setupHistoryList),
+    setupHistory: S.optional(SetupHistoryList),
     nextPageToken: S.optional(S.String),
   }),
 ).annotations({

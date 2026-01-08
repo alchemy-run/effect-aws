@@ -355,6 +355,10 @@ function formatName(shapeId: string, lowercase = false) {
   name = aliasMappings[name] ?? name;
   if (lowercase) {
     name = name.charAt(0).toLowerCase() + name.slice(1);
+  } else {
+    // Always capitalize type names for consistency
+    // (Smithy models sometimes use lowercase names like "teamId")
+    name = name.charAt(0).toUpperCase() + name.slice(1);
   }
   return name;
 }
@@ -2730,6 +2734,7 @@ const generateClient = Effect.fn(function* (
 
     // Generate type aliases for newtypes (e.g., type PhoneNumber = string)
     // Skip names in reservedNewtypeNames (shadows built-in types or trivial primitive aliases)
+    // Names are already capitalized by formatName() for consistency
     const newtypes = yield* Ref.get(sdkFile.newtypes);
     const newtypeDefinitions = [...newtypes.entries()]
       .filter(([name]) => !reservedNewtypeNames.has(name))

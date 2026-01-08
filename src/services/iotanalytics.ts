@@ -151,7 +151,7 @@ export type GlueDatabaseName = string;
 export type ColumnName = string;
 export type ColumnDataType = string;
 export type ErrorCode = string;
-export type resourceId = string;
+export type ResourceId = string;
 export type ResourceArn2 = string;
 
 //# Schemas

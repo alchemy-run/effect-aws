@@ -163,7 +163,6 @@ export type PermissionMode = string;
 export type PermissionId = number;
 export type CacheReportFilterValue = string;
 export type MinimumNumTapes = number;
-export type double = number;
 export type GatewayId = string;
 export type GatewayState = string;
 export type NextUpdateAvailabilityDate = string;
@@ -201,7 +200,6 @@ export type FileSystemAssociationId = string;
 export type GatewayOperationalState = string;
 export type DiskAllocationType = string;
 export type DiskAttribute = string;
-export type integer = number;
 export type FileSystemAssociationSyncErrorCode = string;
 
 //# Schemas
@@ -4514,8 +4512,8 @@ export const DescribeVTLDevicesOutput = S.suspend(() =>
 ).annotations({
   identifier: "DescribeVTLDevicesOutput",
 }) as any as S.Schema<DescribeVTLDevicesOutput>;
-export type errorDetails = { [key: string]: string };
-export const errorDetails = S.Record({ key: S.String, value: S.String });
+export type ErrorDetails = { [key: string]: string };
+export const ErrorDetails = S.Record({ key: S.String, value: S.String });
 export interface StorageGatewayError {
   errorCode?: ErrorCode;
   errorDetails?: { [key: string]: string };
@@ -4523,7 +4521,7 @@ export interface StorageGatewayError {
 export const StorageGatewayError = S.suspend(() =>
   S.Struct({
     errorCode: S.optional(ErrorCode),
-    errorDetails: S.optional(errorDetails),
+    errorDetails: S.optional(ErrorDetails),
   }),
 ).annotations({
   identifier: "StorageGatewayError",

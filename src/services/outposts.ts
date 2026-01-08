@@ -1275,8 +1275,8 @@ export const Outpost = S.suspend(() =>
     SupportedHardwareType: S.optional(SupportedHardwareType),
   }),
 ).annotations({ identifier: "Outpost" }) as any as S.Schema<Outpost>;
-export type outpostListDefinition = Outpost[];
-export const outpostListDefinition = S.Array(Outpost);
+export type OutpostListDefinition = Outpost[];
+export const OutpostListDefinition = S.Array(Outpost);
 export interface Site {
   SiteId?: string;
   AccountId?: string;
@@ -1305,8 +1305,8 @@ export const Site = S.suspend(() =>
     RackPhysicalProperties: S.optional(RackPhysicalProperties),
   }),
 ).annotations({ identifier: "Site" }) as any as S.Schema<Site>;
-export type siteListDefinition = Site[];
-export const siteListDefinition = S.Array(Site);
+export type SiteListDefinition = Site[];
+export const SiteListDefinition = S.Array(Site);
 export interface InstanceTypeCapacity {
   InstanceType: string;
   Count: number;
@@ -1499,7 +1499,7 @@ export interface ListOutpostsOutput {
 }
 export const ListOutpostsOutput = S.suspend(() =>
   S.Struct({
-    Outposts: S.optional(outpostListDefinition),
+    Outposts: S.optional(OutpostListDefinition),
     NextToken: S.optional(S.String),
   }),
 ).annotations({
@@ -1511,7 +1511,7 @@ export interface ListSitesOutput {
 }
 export const ListSitesOutput = S.suspend(() =>
   S.Struct({
-    Sites: S.optional(siteListDefinition),
+    Sites: S.optional(SiteListDefinition),
     NextToken: S.optional(S.String),
   }),
 ).annotations({

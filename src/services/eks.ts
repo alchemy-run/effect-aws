@@ -115,17 +115,17 @@ export type ListPodIdentityAssociationsMaxResults = number;
 export type ListUpdatesRequestMaxResults = number;
 export type TagKey = string;
 export type TagValue = string;
-export type namespace = string;
+export type Namespace = string;
 export type ZeroCapacity = number;
 export type Capacity = number;
-export type labelKey = string;
-export type labelValue = string;
-export type taintKey = string;
-export type taintValue = string;
+export type LabelKey = string;
+export type LabelValue = string;
+export type TaintKey = string;
+export type TaintValue = string;
 export type NonZeroInteger = number;
 export type PercentCapacity = number;
-export type requiredClaimsKey = string;
-export type requiredClaimsValue = string;
+export type RequiredClaimsKey = string;
+export type RequiredClaimsValue = string;
 
 //# Schemas
 export type StringList = string[];
@@ -1562,8 +1562,8 @@ export const ConnectorConfigProvider = S.Literal(
   "EC2",
   "OTHER",
 );
-export type labelsKeyList = string[];
-export const labelsKeyList = S.Array(S.String);
+export type LabelsKeyList = string[];
+export const LabelsKeyList = S.Array(S.String);
 export interface AccessScope {
   type?: AccessScopeType;
   namespaces?: string[];
@@ -1688,8 +1688,8 @@ export const RemoteAccessConfig = S.suspend(() =>
 ).annotations({
   identifier: "RemoteAccessConfig",
 }) as any as S.Schema<RemoteAccessConfig>;
-export type labelsMap = { [key: string]: string };
-export const labelsMap = S.Record({ key: S.String, value: S.String });
+export type LabelsMap = { [key: string]: string };
+export const LabelsMap = S.Record({ key: S.String, value: S.String });
 export interface Taint {
   key?: string;
   value?: string;
@@ -1702,8 +1702,8 @@ export const Taint = S.suspend(() =>
     effect: S.optional(TaintEffect),
   }),
 ).annotations({ identifier: "Taint" }) as any as S.Schema<Taint>;
-export type taintsList = Taint[];
-export const taintsList = S.Array(Taint);
+export type TaintsList = Taint[];
+export const TaintsList = S.Array(Taint);
 export interface NodegroupUpdateConfig {
   maxUnavailable?: number;
   maxUnavailablePercentage?: number;
@@ -1808,8 +1808,8 @@ export interface UpdateLabelsPayload {
 }
 export const UpdateLabelsPayload = S.suspend(() =>
   S.Struct({
-    addOrUpdateLabels: S.optional(labelsMap),
-    removeLabels: S.optional(labelsKeyList),
+    addOrUpdateLabels: S.optional(LabelsMap),
+    removeLabels: S.optional(LabelsKeyList),
   }),
 ).annotations({
   identifier: "UpdateLabelsPayload",
@@ -1820,8 +1820,8 @@ export interface UpdateTaintsPayload {
 }
 export const UpdateTaintsPayload = S.suspend(() =>
   S.Struct({
-    addOrUpdateTaints: S.optional(taintsList),
-    removeTaints: S.optional(taintsList),
+    addOrUpdateTaints: S.optional(TaintsList),
+    removeTaints: S.optional(TaintsList),
   }),
 ).annotations({
   identifier: "UpdateTaintsPayload",
@@ -3047,8 +3047,8 @@ export const Nodegroup = S.suspend(() =>
     remoteAccess: S.optional(RemoteAccessConfig),
     amiType: S.optional(AMITypes),
     nodeRole: S.optional(S.String),
-    labels: S.optional(labelsMap),
-    taints: S.optional(taintsList),
+    labels: S.optional(LabelsMap),
+    taints: S.optional(TaintsList),
     resources: S.optional(NodegroupResources),
     diskSize: S.optional(S.Number),
     health: S.optional(NodegroupHealth),
@@ -3609,8 +3609,8 @@ export const UpdatePodIdentityAssociationResponse = S.suspend(() =>
 ).annotations({
   identifier: "UpdatePodIdentityAssociationResponse",
 }) as any as S.Schema<UpdatePodIdentityAssociationResponse>;
-export type requiredClaimsMap = { [key: string]: string };
-export const requiredClaimsMap = S.Record({ key: S.String, value: S.String });
+export type RequiredClaimsMap = { [key: string]: string };
+export const RequiredClaimsMap = S.Record({ key: S.String, value: S.String });
 export interface ControlPlanePlacementRequest {
   groupName?: string;
 }
@@ -3638,7 +3638,7 @@ export const OidcIdentityProviderConfigRequest = S.suspend(() =>
     usernamePrefix: S.optional(S.String),
     groupsClaim: S.optional(S.String),
     groupsPrefix: S.optional(S.String),
-    requiredClaims: S.optional(requiredClaimsMap),
+    requiredClaims: S.optional(RequiredClaimsMap),
   }),
 ).annotations({
   identifier: "OidcIdentityProviderConfigRequest",
@@ -4024,8 +4024,8 @@ export const CreateNodegroupRequest = S.suspend(() =>
     amiType: S.optional(AMITypes),
     remoteAccess: S.optional(RemoteAccessConfig),
     nodeRole: S.String,
-    labels: S.optional(labelsMap),
-    taints: S.optional(taintsList),
+    labels: S.optional(LabelsMap),
+    taints: S.optional(TaintsList),
     tags: S.optional(TagMap),
     clientRequestToken: S.optional(S.String).pipe(T.IdempotencyToken()),
     launchTemplate: S.optional(LaunchTemplateSpecification),
@@ -4255,8 +4255,8 @@ export const Compatibility = S.suspend(() =>
 }) as any as S.Schema<Compatibility>;
 export type Compatibilities = Compatibility[];
 export const Compatibilities = S.Array(Compatibility);
-export type configStatus = "CREATING" | "DELETING" | "ACTIVE";
-export const configStatus = S.Literal("CREATING", "DELETING", "ACTIVE");
+export type ConfigStatus = "CREATING" | "DELETING" | "ACTIVE";
+export const ConfigStatus = S.Literal("CREATING", "DELETING", "ACTIVE");
 export interface AddonCompatibilityDetail {
   name?: string;
   compatibleVersions?: string[];
@@ -4422,7 +4422,7 @@ export interface OidcIdentityProviderConfig {
   groupsPrefix?: string;
   requiredClaims?: { [key: string]: string };
   tags?: { [key: string]: string };
-  status?: configStatus;
+  status?: ConfigStatus;
 }
 export const OidcIdentityProviderConfig = S.suspend(() =>
   S.Struct({
@@ -4435,9 +4435,9 @@ export const OidcIdentityProviderConfig = S.suspend(() =>
     usernamePrefix: S.optional(S.String),
     groupsClaim: S.optional(S.String),
     groupsPrefix: S.optional(S.String),
-    requiredClaims: S.optional(requiredClaimsMap),
+    requiredClaims: S.optional(RequiredClaimsMap),
     tags: S.optional(TagMap),
-    status: S.optional(configStatus),
+    status: S.optional(ConfigStatus),
   }),
 ).annotations({
   identifier: "OidcIdentityProviderConfig",

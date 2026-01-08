@@ -833,8 +833,8 @@ export const ConnectivityInfo = S.suspend(() =>
 ).annotations({
   identifier: "ConnectivityInfo",
 }) as any as S.Schema<ConnectivityInfo>;
-export type connectivityInfoList = ConnectivityInfo[];
-export const connectivityInfoList = S.Array(ConnectivityInfo);
+export type ConnectivityInfoList = ConnectivityInfo[];
+export const ConnectivityInfoList = S.Array(ConnectivityInfo);
 export type LambdaInputPayloadEncodingType = "json" | "binary";
 export const LambdaInputPayloadEncodingType = S.Literal("json", "binary");
 export type LambdaExecArgsList = string[];
@@ -941,7 +941,7 @@ export interface GetConnectivityInfoResponse {
 }
 export const GetConnectivityInfoResponse = S.suspend(() =>
   S.Struct({
-    connectivityInfo: S.optional(connectivityInfoList).pipe(
+    connectivityInfo: S.optional(ConnectivityInfoList).pipe(
       T.JsonName("ConnectivityInfo"),
     ),
     message: S.optional(S.String).pipe(T.JsonName("Message")),
@@ -1221,7 +1221,7 @@ export interface UpdateConnectivityInfoRequest {
 export const UpdateConnectivityInfoRequest = S.suspend(() =>
   S.Struct({
     thingName: S.String.pipe(T.HttpLabel("thingName"), T.JsonName("ThingName")),
-    connectivityInfo: connectivityInfoList.pipe(T.JsonName("ConnectivityInfo")),
+    connectivityInfo: ConnectivityInfoList.pipe(T.JsonName("ConnectivityInfo")),
   }).pipe(
     T.all(
       T.Http({

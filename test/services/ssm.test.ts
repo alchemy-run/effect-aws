@@ -8,7 +8,7 @@
  */
 
 import { expect } from "@effect/vitest";
-import { Effect, Schedule } from "effect";
+import { Effect } from "effect";
 import {
   createMaintenanceWindow,
   deleteMaintenanceWindow,
@@ -16,11 +16,6 @@ import {
   getMaintenanceWindow,
 } from "../../src/services/ssm.ts";
 import { test } from "../test.ts";
-
-const retrySchedule = Schedule.intersect(
-  Schedule.recurs(10),
-  Schedule.spaced("1 second"),
-);
 
 const MAINTENANCE_WINDOW_NAME = "itty-ssm-idempotency-test";
 

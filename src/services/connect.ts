@@ -599,8 +599,8 @@ export type DataSetIds = string[];
 export const DataSetIds = S.Array(S.String);
 export type FileIdList = string[];
 export const FileIdList = S.Array(S.String);
-export type resourceArnListMaxLimit100 = string[];
-export const resourceArnListMaxLimit100 = S.Array(S.String);
+export type ResourceArnListMaxLimit100 = string[];
+export const ResourceArnListMaxLimit100 = S.Array(S.String);
 export type ListFlowAssociationResourceType =
   | "WHATSAPP_MESSAGING_PHONE_NUMBER"
   | "VOICE_PHONE_NUMBER"
@@ -1950,7 +1950,7 @@ export interface BatchGetFlowAssociationRequest {
 export const BatchGetFlowAssociationRequest = S.suspend(() =>
   S.Struct({
     InstanceId: S.String.pipe(T.HttpLabel("InstanceId")),
-    ResourceIds: resourceArnListMaxLimit100,
+    ResourceIds: ResourceArnListMaxLimit100,
     ResourceType: S.optional(ListFlowAssociationResourceType),
   }).pipe(
     T.all(

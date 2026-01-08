@@ -87,80 +87,80 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type uuid = string;
-export type name = string;
-export type string1To255 = string;
-export type typeName = string;
-export type displayName = string;
-export type sensitiveText = string | redacted.Redacted<string>;
-export type optionalBoolean = boolean;
-export type expirationDaysInteger = number;
-export type encryptionKey = string;
-export type sqsQueueUrl = string;
-export type sensitiveString1To2000000 = string | redacted.Redacted<string>;
+export type Uuid = string;
+export type Name = string;
+export type String1To255 = string;
+export type TypeName = string;
+export type DisplayName = string;
+export type SensitiveText = string | redacted.Redacted<string>;
+export type OptionalBoolean = boolean;
+export type ExpirationDaysInteger = number;
+export type EncryptionKey = string;
+export type SqsQueueUrl = string;
+export type SensitiveString1To2000000 = string | redacted.Redacted<string>;
 export type RoleArn = string;
-export type sensitiveString1To255 = string | redacted.Redacted<string>;
-export type sensitiveString1To1000 = string | redacted.Redacted<string>;
-export type sensitiveString1To4000 = string | redacted.Redacted<string>;
-export type sensitiveString1To50000 = string | redacted.Redacted<string>;
-export type text = string;
-export type stringifiedJson = string | redacted.Redacted<string>;
+export type SensitiveString1To255 = string | redacted.Redacted<string>;
+export type SensitiveString1To1000 = string | redacted.Redacted<string>;
+export type SensitiveString1To4000 = string | redacted.Redacted<string>;
+export type SensitiveString1To50000 = string | redacted.Redacted<string>;
+export type Text = string;
+export type StringifiedJson = string | redacted.Redacted<string>;
 export type Double0To1 = number;
-export type token = string;
-export type maxSize100 = number;
-export type string1To1000 = string;
+export type Token = string;
+export type MaxSize100 = number;
+export type String1To1000 = string;
 export type MaxSize10 = number;
 export type GetRecommenderRequestTrainingMetricsCountInteger = number;
 export type ListRecommenderRecipesRequestMaxResultsInteger = number;
 export type ListRecommendersRequestMaxResultsInteger = number;
 export type MaxSize500 = number;
 export type TagArn = string;
-export type sensitiveString1To10000 = string | redacted.Redacted<string>;
-export type minSize1 = number;
+export type SensitiveString1To10000 = string | redacted.Redacted<string>;
+export type MinSize1 = number;
 export type TagKey = string;
-export type sensitiveString0To1000 = string | redacted.Redacted<string>;
-export type sensitiveString0To255 = string | redacted.Redacted<string>;
+export type SensitiveString0To1000 = string | redacted.Redacted<string>;
+export type SensitiveString0To255 = string | redacted.Redacted<string>;
 export type ObjectCount = number;
 export type TagValue = string;
 export type MaxAllowedRuleLevelForMerging = number;
 export type MaxAllowedRuleLevelForMatching = number;
-export type optionalLong = number;
+export type OptionalLong = number;
 export type RecommenderConfigTrainingFrequencyInteger = number;
-export type fieldName = string;
+export type FieldName = string;
 export type ContextKey = string;
 export type DomainObjectTypeFieldName = string;
 export type FlowDescription = string;
 export type FlowName = string;
 export type KmsArn = string;
-export type string0To255 = string;
-export type message = string;
-export type stringTo2048 = string;
-export type matchesNumber = number;
-export type minSize0 = number;
+export type String0To255 = string;
+export type Message = string;
+export type StringTo2048 = string;
+export type MatchesNumber = number;
+export type MinSize0 = number;
 export type SegmentDefinitionArn = string;
 export type StatusCode = number;
 export type RuleLevel = number;
 export type Start = number;
 export type End = number;
-export type attributeName = string;
+export type AttributeName = string;
 export type Value = number;
 export type JobScheduleTime = string;
-export type maxSize24 = number;
-export type maxSize1000 = number;
+export type MaxSize24 = number;
+export type MaxSize1000 = number;
 export type ConnectorProfileName = string;
 export type DestinationField = string;
-export type percentageInteger = number;
+export type PercentageInteger = number;
 export type ProfileId = string;
 export type GetSegmentMembershipMessage = string;
 export type GetSegmentMembershipStatus = number;
 export type ValueRangeStart = number;
 export type ValueRangeEnd = number;
-export type s3BucketName = string;
-export type s3KeyNameCustomerOutputConfig = string;
+export type S3BucketName = string;
+export type S3KeyNameCustomerOutputConfig = string;
 export type EventParametersEventTypeString = string;
 export type DatetimeTypeFieldName = string;
 export type Property = string;
-export type s3KeyName = string;
+export type S3KeyName = string;
 export type BucketName = string;
 export type BucketPrefix = string;
 export type ScheduleExpression = string;
@@ -169,8 +169,8 @@ export type ScheduleOffset = number;
 export type Arn = string;
 
 //# Schemas
-export type requestValueList = string[];
-export const requestValueList = S.Array(S.String);
+export type RequestValueList = string[];
+export const RequestValueList = S.Array(S.String);
 export type BatchGetCalculatedAttributeForProfileIdList = string[];
 export const BatchGetCalculatedAttributeForProfileIdList = S.Array(S.String);
 export type BatchGetProfileIdList = string[];
@@ -269,8 +269,8 @@ export type EventTriggerNames = string[];
 export const EventTriggerNames = S.Array(S.String);
 export type Scope = "PROFILE" | "DOMAIN";
 export const Scope = S.Literal("PROFILE", "DOMAIN");
-export type logicalOperator = "AND" | "OR";
-export const logicalOperator = S.Literal("AND", "OR");
+export type LogicalOperator = "AND" | "OR";
+export const LogicalOperator = S.Literal("AND", "OR");
 export type TagKeyList = string[];
 export const TagKeyList = S.Array(S.String);
 export interface AddProfileKeyRequest {
@@ -283,7 +283,7 @@ export const AddProfileKeyRequest = S.suspend(() =>
   S.Struct({
     ProfileId: S.String,
     KeyName: S.String,
-    Values: requestValueList,
+    Values: RequestValueList,
     DomainName: S.String.pipe(T.HttpLabel("DomainName")),
   }).pipe(
     T.all(
@@ -632,7 +632,7 @@ export const DeleteProfileKeyRequest = S.suspend(() =>
   S.Struct({
     ProfileId: S.String,
     KeyName: S.String,
-    Values: requestValueList,
+    Values: RequestValueList,
     DomainName: S.String.pipe(T.HttpLabel("DomainName")),
   }).pipe(
     T.all(
@@ -3186,7 +3186,7 @@ export interface ObjectFilter {
   Values: string[];
 }
 export const ObjectFilter = S.suspend(() =>
-  S.Struct({ KeyName: S.String, Values: requestValueList }),
+  S.Struct({ KeyName: S.String, Values: RequestValueList }),
 ).annotations({ identifier: "ObjectFilter" }) as any as S.Schema<ObjectFilter>;
 export type MatchIdList = string[];
 export const MatchIdList = S.Array(S.String);
@@ -3197,12 +3197,12 @@ export interface AdditionalSearchKey {
   Values: string[];
 }
 export const AdditionalSearchKey = S.suspend(() =>
-  S.Struct({ KeyName: S.String, Values: requestValueList }),
+  S.Struct({ KeyName: S.String, Values: RequestValueList }),
 ).annotations({
   identifier: "AdditionalSearchKey",
 }) as any as S.Schema<AdditionalSearchKey>;
-export type additionalSearchKeysList = AdditionalSearchKey[];
-export const additionalSearchKeysList = S.Array(AdditionalSearchKey);
+export type AdditionalSearchKeysList = AdditionalSearchKey[];
+export const AdditionalSearchKeysList = S.Array(AdditionalSearchKey);
 export interface UpdateAddress {
   Address1?: string;
   Address2?: string;
@@ -3336,7 +3336,7 @@ export interface AddProfileKeyResponse {
 export const AddProfileKeyResponse = S.suspend(() =>
   S.Struct({
     KeyName: S.optional(S.String),
-    Values: S.optional(requestValueList),
+    Values: S.optional(RequestValueList),
   }),
 ).annotations({
   identifier: "AddProfileKeyResponse",
@@ -4037,7 +4037,7 @@ export interface SearchProfilesRequest {
   KeyName: string;
   Values: string[];
   AdditionalSearchKeys?: AdditionalSearchKey[];
-  LogicalOperator?: logicalOperator;
+  LogicalOperator?: LogicalOperator;
 }
 export const SearchProfilesRequest = S.suspend(() =>
   S.Struct({
@@ -4045,9 +4045,9 @@ export const SearchProfilesRequest = S.suspend(() =>
     MaxResults: S.optional(S.Number).pipe(T.HttpQuery("max-results")),
     DomainName: S.String.pipe(T.HttpLabel("DomainName")),
     KeyName: S.String,
-    Values: requestValueList,
-    AdditionalSearchKeys: S.optional(additionalSearchKeysList),
-    LogicalOperator: S.optional(logicalOperator),
+    Values: RequestValueList,
+    AdditionalSearchKeys: S.optional(AdditionalSearchKeysList),
+    LogicalOperator: S.optional(LogicalOperator),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/domains/{DomainName}/profiles/search" }),
@@ -4703,13 +4703,13 @@ export interface FoundByKeyValue {
 export const FoundByKeyValue = S.suspend(() =>
   S.Struct({
     KeyName: S.optional(S.String),
-    Values: S.optional(requestValueList),
+    Values: S.optional(RequestValueList),
   }),
 ).annotations({
   identifier: "FoundByKeyValue",
 }) as any as S.Schema<FoundByKeyValue>;
-export type foundByList = FoundByKeyValue[];
-export const foundByList = S.Array(FoundByKeyValue);
+export type FoundByList = FoundByKeyValue[];
+export const FoundByList = S.Array(FoundByKeyValue);
 export interface Profile {
   ProfileId?: string;
   AccountNumber?: string | redacted.Redacted<string>;
@@ -4763,7 +4763,7 @@ export const Profile = S.suspend(() =>
     MailingAddress: S.optional(Address),
     BillingAddress: S.optional(Address),
     Attributes: S.optional(Attributes),
-    FoundByItems: S.optional(foundByList),
+    FoundByItems: S.optional(FoundByList),
     PartyTypeString: S.optional(SensitiveString),
     GenderString: S.optional(SensitiveString),
     ProfileType: S.optional(ProfileType),
@@ -8404,7 +8404,7 @@ export const getSimilarProfiles: {
   items: (
     input: GetSimilarProfilesRequest,
   ) => stream.Stream<
-    uuid,
+    Uuid,
     | AccessDeniedException
     | BadRequestException
     | InternalServerException
@@ -8512,7 +8512,7 @@ export const listRuleBasedMatches: {
   items: (
     input: ListRuleBasedMatchesRequest,
   ) => stream.Stream<
-    string1To255,
+    String1To255,
     | AccessDeniedException
     | BadRequestException
     | InternalServerException

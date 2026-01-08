@@ -175,58 +175,58 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type arnType = string;
-export type roleSessionNameType = string;
-export type unrestrictedSessionPolicyDocumentType = string;
-export type roleDurationSecondsType = number;
-export type tagKeyType = string;
-export type externalIdType = string;
-export type serialNumberType = string;
-export type tokenCodeType = string;
-export type sourceIdentityType = string;
+export type ArnType = string;
+export type RoleSessionNameType = string;
+export type UnrestrictedSessionPolicyDocumentType = string;
+export type RoleDurationSecondsType = number;
+export type TagKeyType = string;
+export type ExternalIdType = string;
+export type SerialNumberType = string;
+export type TokenCodeType = string;
+export type SourceIdentityType = string;
 export type SAMLAssertionType = string | redacted.Redacted<string>;
-export type sessionPolicyDocumentType = string;
-export type clientTokenType = string | redacted.Redacted<string>;
-export type urlType = string;
+export type SessionPolicyDocumentType = string;
+export type ClientTokenType = string | redacted.Redacted<string>;
+export type UrlType = string;
 export type TargetPrincipalType = string;
 export type RootDurationSecondsType = number;
-export type encodedMessageType = string;
-export type accessKeyIdType = string;
-export type userIdType = string;
-export type accountType = string;
-export type tradeInTokenType = string | redacted.Redacted<string>;
-export type userNameType = string;
-export type durationSecondsType = number;
-export type webIdentityTokenAudienceStringType = string;
-export type webIdentityTokenDurationSecondsType = number;
-export type jwtAlgorithmType = string;
-export type tagValueType = string;
-export type contextAssertionType = string;
-export type nonNegativeIntegerType = number;
+export type EncodedMessageType = string;
+export type AccessKeyIdType = string;
+export type UserIdType = string;
+export type AccountType = string;
+export type TradeInTokenType = string | redacted.Redacted<string>;
+export type UserNameType = string;
+export type DurationSecondsType = number;
+export type WebIdentityTokenAudienceStringType = string;
+export type WebIdentityTokenDurationSecondsType = number;
+export type JwtAlgorithmType = string;
+export type TagValueType = string;
+export type ContextAssertionType = string;
+export type NonNegativeIntegerType = number;
 export type Subject = string;
 export type SubjectType = string;
 export type Issuer = string;
 export type Audience = string;
 export type NameQualifier = string;
-export type webIdentitySubjectType = string;
-export type decodedMessageType = string;
-export type webIdentityTokenType = string | redacted.Redacted<string>;
-export type accessKeySecretType = string | redacted.Redacted<string>;
-export type tokenType = string;
-export type assumedRoleIdType = string;
-export type federatedIdType = string;
-export type expiredIdentityTokenMessage = string;
-export type invalidAuthorizationMessage = string;
-export type expiredTradeInTokenExceptionMessage = string;
-export type regionDisabledMessage = string;
+export type WebIdentitySubjectType = string;
+export type DecodedMessageType = string;
+export type WebIdentityTokenType = string | redacted.Redacted<string>;
+export type AccessKeySecretType = string | redacted.Redacted<string>;
+export type TokenType = string;
+export type AssumedRoleIdType = string;
+export type FederatedIdType = string;
+export type ExpiredIdentityTokenMessage = string;
+export type InvalidAuthorizationMessage = string;
+export type ExpiredTradeInTokenExceptionMessage = string;
+export type RegionDisabledMessage = string;
 export type JWTPayloadSizeExceededException2 = string;
-export type idpCommunicationErrorMessage = string;
-export type packedPolicyTooLargeMessage = string;
-export type malformedPolicyDocumentMessage = string;
+export type IdpCommunicationErrorMessage = string;
+export type PackedPolicyTooLargeMessage = string;
+export type MalformedPolicyDocumentMessage = string;
 export type OutboundWebIdentityFederationDisabledException2 = string;
-export type idpRejectedClaimMessage = string;
+export type IdpRejectedClaimMessage = string;
 export type SessionDurationEscalationException2 = string;
-export type invalidIdentityTokenMessage = string;
+export type InvalidIdentityTokenMessage = string;
 
 //# Schemas
 export interface GetCallerIdentityRequest {}
@@ -245,10 +245,10 @@ export const GetCallerIdentityRequest = S.suspend(() =>
 ).annotations({
   identifier: "GetCallerIdentityRequest",
 }) as any as S.Schema<GetCallerIdentityRequest>;
-export type tagKeyListType = string[];
-export const tagKeyListType = S.Array(S.String);
-export type webIdentityTokenAudienceListType = string[];
-export const webIdentityTokenAudienceListType = S.Array(S.String);
+export type TagKeyListType = string[];
+export const TagKeyListType = S.Array(S.String);
+export type WebIdentityTokenAudienceListType = string[];
+export const WebIdentityTokenAudienceListType = S.Array(S.String);
 export interface PolicyDescriptorType {
   arn?: string;
 }
@@ -257,8 +257,8 @@ export const PolicyDescriptorType = S.suspend(() =>
 ).annotations({
   identifier: "PolicyDescriptorType",
 }) as any as S.Schema<PolicyDescriptorType>;
-export type policyDescriptorListType = PolicyDescriptorType[];
-export const policyDescriptorListType = S.Array(PolicyDescriptorType);
+export type PolicyDescriptorListType = PolicyDescriptorType[];
+export const PolicyDescriptorListType = S.Array(PolicyDescriptorType);
 export interface AssumeRoleWithSAMLRequest {
   RoleArn: string;
   PrincipalArn: string;
@@ -272,7 +272,7 @@ export const AssumeRoleWithSAMLRequest = S.suspend(() =>
     RoleArn: S.String,
     PrincipalArn: S.String,
     SAMLAssertion: SensitiveString,
-    PolicyArns: S.optional(policyDescriptorListType),
+    PolicyArns: S.optional(PolicyDescriptorListType),
     Policy: S.optional(S.String),
     DurationSeconds: S.optional(S.Number),
   }).pipe(
@@ -304,7 +304,7 @@ export const AssumeRoleWithWebIdentityRequest = S.suspend(() =>
     RoleSessionName: S.String,
     WebIdentityToken: SensitiveString,
     ProviderId: S.optional(S.String),
-    PolicyArns: S.optional(policyDescriptorListType),
+    PolicyArns: S.optional(PolicyDescriptorListType),
     Policy: S.optional(S.String),
     DurationSeconds: S.optional(S.Number),
   }).pipe(
@@ -420,8 +420,8 @@ export interface Tag {
 export const Tag = S.suspend(() =>
   S.Struct({ Key: S.String, Value: S.String }),
 ).annotations({ identifier: "Tag" }) as any as S.Schema<Tag>;
-export type tagListType = Tag[];
-export const tagListType = S.Array(Tag);
+export type TagListType = Tag[];
+export const TagListType = S.Array(Tag);
 export interface GetFederationTokenRequest {
   Name: string;
   Policy?: string;
@@ -433,9 +433,9 @@ export const GetFederationTokenRequest = S.suspend(() =>
   S.Struct({
     Name: S.String,
     Policy: S.optional(S.String),
-    PolicyArns: S.optional(policyDescriptorListType),
+    PolicyArns: S.optional(PolicyDescriptorListType),
     DurationSeconds: S.optional(S.Number),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -482,10 +482,10 @@ export interface GetWebIdentityTokenRequest {
 }
 export const GetWebIdentityTokenRequest = S.suspend(() =>
   S.Struct({
-    Audience: webIdentityTokenAudienceListType,
+    Audience: WebIdentityTokenAudienceListType,
     DurationSeconds: S.optional(S.Number),
     SigningAlgorithm: S.String,
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -532,11 +532,11 @@ export const AssumeRoleRequest = S.suspend(() =>
   S.Struct({
     RoleArn: S.String,
     RoleSessionName: S.String,
-    PolicyArns: S.optional(policyDescriptorListType),
+    PolicyArns: S.optional(PolicyDescriptorListType),
     Policy: S.optional(S.String),
     DurationSeconds: S.optional(S.Number),
-    Tags: S.optional(tagListType),
-    TransitiveTagKeys: S.optional(tagKeyListType),
+    Tags: S.optional(TagListType),
+    TransitiveTagKeys: S.optional(TagKeyListType),
     ExternalId: S.optional(S.String),
     SerialNumber: S.optional(S.String),
     TokenCode: S.optional(S.String),

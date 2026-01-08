@@ -8,7 +8,7 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Health",
@@ -143,30 +143,30 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type eventArn = string;
-export type nextToken = string;
-export type maxResults = number;
-export type locale = string;
-export type maxResultsLowerRange = number;
-export type accountId = string;
-export type healthServiceAccessStatusForOrganization = string;
-export type entityArn = string;
-export type entityValue = string;
+export type EventArn = string;
+export type NextToken = string;
+export type MaxResults = number;
+export type Locale = string;
+export type MaxResultsLowerRange = number;
+export type AccountId = string;
+export type HealthServiceAccessStatusForOrganization = string;
+export type EntityArn = string;
+export type EntityValue = string;
 export type EventType2 = string;
-export type service = string;
-export type region = string;
-export type availabilityZone = string;
-export type eventTypeCode = string;
-export type tagKey = string;
-export type tagValue = string;
-export type count = number;
+export type Service = string;
+export type Region = string;
+export type AvailabilityZone = string;
+export type EventTypeCode = string;
+export type TagKey = string;
+export type TagValue = string;
+export type Count = number;
 export type EventDescription2 = string;
-export type metadataKey = string;
-export type metadataValue = string;
-export type entityUrl = string;
-export type aggregateValue = string;
-export type entityMetadataKey = string;
-export type entityMetadataValue = string;
+export type MetadataKey = string;
+export type MetadataValue = string;
+export type EntityUrl = string;
+export type AggregateValue = string;
+export type EntityMetadataKey = string;
+export type EntityMetadataValue = string;
 
 //# Schemas
 export interface DescribeHealthServiceStatusForOrganizationRequest {}
@@ -211,10 +211,10 @@ export type OrganizationEventArnsList = string[];
 export const OrganizationEventArnsList = S.Array(S.String);
 export type OrganizationAccountIdsList = string[];
 export const OrganizationAccountIdsList = S.Array(S.String);
-export type eventAggregateField = "eventTypeCategory";
-export const eventAggregateField = S.Literal("eventTypeCategory");
-export type eventArnList = string[];
-export const eventArnList = S.Array(S.String);
+export type EventAggregateField = "eventTypeCategory";
+export const EventAggregateField = S.Literal("eventTypeCategory");
+export type EventArnList = string[];
+export const EventArnList = S.Array(S.String);
 export interface EventAccountFilter {
   eventArn: string;
   awsAccountId?: string;
@@ -271,7 +271,7 @@ export interface DescribeEventDetailsRequest {
   locale?: string;
 }
 export const DescribeEventDetailsRequest = S.suspend(() =>
-  S.Struct({ eventArns: eventArnList, locale: S.optional(S.String) }).pipe(
+  S.Struct({ eventArns: EventArnList, locale: S.optional(S.String) }).pipe(
     T.all(T.Http({ method: "POST", uri: "/" }), svc, auth, proto, ver, rules),
   ),
 ).annotations({
@@ -302,14 +302,14 @@ export const EventActionability = S.Literal(
 );
 export type EventActionabilityList = EventActionability[];
 export const EventActionabilityList = S.Array(EventActionability);
-export type eventTypeList2 = string[];
-export const eventTypeList2 = S.Array(S.String);
-export type serviceList = string[];
-export const serviceList = S.Array(S.String);
-export type regionList = string[];
-export const regionList = S.Array(S.String);
-export type availabilityZones = string[];
-export const availabilityZones = S.Array(S.String);
+export type EventTypeList2 = string[];
+export const EventTypeList2 = S.Array(S.String);
+export type ServiceList = string[];
+export const ServiceList = S.Array(S.String);
+export type RegionList = string[];
+export const RegionList = S.Array(S.String);
+export type AvailabilityZones = string[];
+export const AvailabilityZones = S.Array(S.String);
 export interface DateTimeRange {
   from?: Date;
   to?: Date;
@@ -322,33 +322,33 @@ export const DateTimeRange = S.suspend(() =>
 ).annotations({
   identifier: "DateTimeRange",
 }) as any as S.Schema<DateTimeRange>;
-export type dateTimeRangeList = DateTimeRange[];
-export const dateTimeRangeList = S.Array(DateTimeRange);
-export type entityArnList = string[];
-export const entityArnList = S.Array(S.String);
-export type entityValueList = string[];
-export const entityValueList = S.Array(S.String);
-export type eventTypeCategory =
+export type DateTimeRangeList = DateTimeRange[];
+export const DateTimeRangeList = S.Array(DateTimeRange);
+export type EntityArnList = string[];
+export const EntityArnList = S.Array(S.String);
+export type EntityValueList = string[];
+export const EntityValueList = S.Array(S.String);
+export type EventTypeCategory =
   | "issue"
   | "accountNotification"
   | "scheduledChange"
   | "investigation";
-export const eventTypeCategory = S.Literal(
+export const EventTypeCategory = S.Literal(
   "issue",
   "accountNotification",
   "scheduledChange",
   "investigation",
 );
-export type eventTypeCategoryList2 = eventTypeCategory[];
-export const eventTypeCategoryList2 = S.Array(eventTypeCategory);
-export type tagSet = { [key: string]: string };
-export const tagSet = S.Record({ key: S.String, value: S.String });
-export type tagFilter = { [key: string]: string }[];
-export const tagFilter = S.Array(tagSet);
-export type eventStatusCode = "open" | "closed" | "upcoming";
-export const eventStatusCode = S.Literal("open", "closed", "upcoming");
-export type eventStatusCodeList = eventStatusCode[];
-export const eventStatusCodeList = S.Array(eventStatusCode);
+export type EventTypeCategoryList2 = EventTypeCategory[];
+export const EventTypeCategoryList2 = S.Array(EventTypeCategory);
+export type TagSet = { [key: string]: string };
+export const TagSet = S.Record({ key: S.String, value: S.String });
+export type TagFilter = { [key: string]: string }[];
+export const TagFilter = S.Array(TagSet);
+export type EventStatusCode = "open" | "closed" | "upcoming";
+export const EventStatusCode = S.Literal("open", "closed", "upcoming");
+export type EventStatusCodeList = EventStatusCode[];
+export const EventStatusCodeList = S.Array(EventStatusCode);
 export type EventPersona = "OPERATIONS" | "SECURITY" | "BILLING";
 export const EventPersona = S.Literal("OPERATIONS", "SECURITY", "BILLING");
 export type EventPersonaList = EventPersona[];
@@ -365,27 +365,27 @@ export interface EventFilter {
   lastUpdatedTimes?: DateTimeRange[];
   entityArns?: string[];
   entityValues?: string[];
-  eventTypeCategories?: eventTypeCategory[];
+  eventTypeCategories?: EventTypeCategory[];
   tags?: { [key: string]: string }[];
-  eventStatusCodes?: eventStatusCode[];
+  eventStatusCodes?: EventStatusCode[];
   personas?: EventPersona[];
 }
 export const EventFilter = S.suspend(() =>
   S.Struct({
     actionabilities: S.optional(EventActionabilityList),
-    eventArns: S.optional(eventArnList),
-    eventTypeCodes: S.optional(eventTypeList2),
-    services: S.optional(serviceList),
-    regions: S.optional(regionList),
-    availabilityZones: S.optional(availabilityZones),
-    startTimes: S.optional(dateTimeRangeList),
-    endTimes: S.optional(dateTimeRangeList),
-    lastUpdatedTimes: S.optional(dateTimeRangeList),
-    entityArns: S.optional(entityArnList),
-    entityValues: S.optional(entityValueList),
-    eventTypeCategories: S.optional(eventTypeCategoryList2),
-    tags: S.optional(tagFilter),
-    eventStatusCodes: S.optional(eventStatusCodeList),
+    eventArns: S.optional(EventArnList),
+    eventTypeCodes: S.optional(EventTypeList2),
+    services: S.optional(ServiceList),
+    regions: S.optional(RegionList),
+    availabilityZones: S.optional(AvailabilityZones),
+    startTimes: S.optional(DateTimeRangeList),
+    endTimes: S.optional(DateTimeRangeList),
+    lastUpdatedTimes: S.optional(DateTimeRangeList),
+    entityArns: S.optional(EntityArnList),
+    entityValues: S.optional(EntityValueList),
+    eventTypeCategories: S.optional(EventTypeCategoryList2),
+    tags: S.optional(TagFilter),
+    eventStatusCodes: S.optional(EventStatusCodeList),
     personas: S.optional(EventPersonaList),
   }),
 ).annotations({ identifier: "EventFilter" }) as any as S.Schema<EventFilter>;
@@ -418,27 +418,27 @@ export const DescribeHealthServiceStatusForOrganizationResponse = S.suspend(
 ).annotations({
   identifier: "DescribeHealthServiceStatusForOrganizationResponse",
 }) as any as S.Schema<DescribeHealthServiceStatusForOrganizationResponse>;
-export type entityStatusCode =
+export type EntityStatusCode =
   | "IMPAIRED"
   | "UNIMPAIRED"
   | "UNKNOWN"
   | "PENDING"
   | "RESOLVED";
-export const entityStatusCode = S.Literal(
+export const EntityStatusCode = S.Literal(
   "IMPAIRED",
   "UNIMPAIRED",
   "UNKNOWN",
   "PENDING",
   "RESOLVED",
 );
-export type entityStatusCodeList = entityStatusCode[];
-export const entityStatusCodeList = S.Array(entityStatusCode);
-export type awsAccountIdsList = string[];
-export const awsAccountIdsList = S.Array(S.String);
+export type EntityStatusCodeList = EntityStatusCode[];
+export const EntityStatusCodeList = S.Array(EntityStatusCode);
+export type AwsAccountIdsList = string[];
+export const AwsAccountIdsList = S.Array(S.String);
 export type EventTypeCodeList = string[];
 export const EventTypeCodeList = S.Array(S.String);
-export type EventTypeCategoryList = eventTypeCategory[];
-export const EventTypeCategoryList = S.Array(eventTypeCategory);
+export type EventTypeCategoryList = EventTypeCategory[];
+export const EventTypeCategoryList = S.Array(EventTypeCategory);
 export type EventTypeActionability =
   | "ACTION_REQUIRED"
   | "ACTION_MAY_BE_REQUIRED"
@@ -454,22 +454,22 @@ export type EventTypePersona = "OPERATIONS" | "SECURITY" | "BILLING";
 export const EventTypePersona = S.Literal("OPERATIONS", "SECURITY", "BILLING");
 export type EventTypePersonaList = EventTypePersona[];
 export const EventTypePersonaList = S.Array(EventTypePersona);
-export type affectedAccountsList = string[];
-export const affectedAccountsList = S.Array(S.String);
-export type eventScopeCode = "PUBLIC" | "ACCOUNT_SPECIFIC" | "NONE";
-export const eventScopeCode = S.Literal("PUBLIC", "ACCOUNT_SPECIFIC", "NONE");
+export type AffectedAccountsList = string[];
+export const AffectedAccountsList = S.Array(S.String);
+export type EventScopeCode = "PUBLIC" | "ACCOUNT_SPECIFIC" | "NONE";
+export const EventScopeCode = S.Literal("PUBLIC", "ACCOUNT_SPECIFIC", "NONE");
 export type OrganizationEntityFiltersList = EventAccountFilter[];
 export const OrganizationEntityFiltersList = S.Array(EventAccountFilter);
 export interface EntityAccountFilter {
   eventArn: string;
   awsAccountId?: string;
-  statusCodes?: entityStatusCode[];
+  statusCodes?: EntityStatusCode[];
 }
 export const EntityAccountFilter = S.suspend(() =>
   S.Struct({
     eventArn: S.String,
     awsAccountId: S.optional(S.String),
-    statusCodes: S.optional(entityStatusCodeList),
+    statusCodes: S.optional(EntityStatusCodeList),
   }),
 ).annotations({
   identifier: "EntityAccountFilter",
@@ -488,24 +488,24 @@ export interface OrganizationEventFilter {
   lastUpdatedTime?: DateTimeRange;
   entityArns?: string[];
   entityValues?: string[];
-  eventTypeCategories?: eventTypeCategory[];
-  eventStatusCodes?: eventStatusCode[];
+  eventTypeCategories?: EventTypeCategory[];
+  eventStatusCodes?: EventStatusCode[];
   personas?: EventPersona[];
 }
 export const OrganizationEventFilter = S.suspend(() =>
   S.Struct({
     actionabilities: S.optional(EventActionabilityList),
-    eventTypeCodes: S.optional(eventTypeList2),
-    awsAccountIds: S.optional(awsAccountIdsList),
-    services: S.optional(serviceList),
-    regions: S.optional(regionList),
+    eventTypeCodes: S.optional(EventTypeList2),
+    awsAccountIds: S.optional(AwsAccountIdsList),
+    services: S.optional(ServiceList),
+    regions: S.optional(RegionList),
     startTime: S.optional(DateTimeRange),
     endTime: S.optional(DateTimeRange),
     lastUpdatedTime: S.optional(DateTimeRange),
-    entityArns: S.optional(entityArnList),
-    entityValues: S.optional(entityValueList),
-    eventTypeCategories: S.optional(eventTypeCategoryList2),
-    eventStatusCodes: S.optional(eventStatusCodeList),
+    entityArns: S.optional(EntityArnList),
+    entityValues: S.optional(EntityValueList),
+    eventTypeCategories: S.optional(EventTypeCategoryList2),
+    eventStatusCodes: S.optional(EventStatusCodeList),
     personas: S.optional(EventPersonaList),
   }),
 ).annotations({
@@ -514,14 +514,14 @@ export const OrganizationEventFilter = S.suspend(() =>
 export interface EventTypeFilter {
   eventTypeCodes?: string[];
   services?: string[];
-  eventTypeCategories?: eventTypeCategory[];
+  eventTypeCategories?: EventTypeCategory[];
   actionabilities?: EventTypeActionability[];
   personas?: EventTypePersona[];
 }
 export const EventTypeFilter = S.suspend(() =>
   S.Struct({
     eventTypeCodes: S.optional(EventTypeCodeList),
-    services: S.optional(serviceList),
+    services: S.optional(ServiceList),
     eventTypeCategories: S.optional(EventTypeCategoryList),
     actionabilities: S.optional(EventTypeActionabilityList),
     personas: S.optional(EventTypePersonaList),
@@ -531,13 +531,13 @@ export const EventTypeFilter = S.suspend(() =>
 }) as any as S.Schema<EventTypeFilter>;
 export interface DescribeAffectedAccountsForOrganizationResponse {
   affectedAccounts?: string[];
-  eventScopeCode?: eventScopeCode;
+  eventScopeCode?: EventScopeCode;
   nextToken?: string;
 }
 export const DescribeAffectedAccountsForOrganizationResponse = S.suspend(() =>
   S.Struct({
-    affectedAccounts: S.optional(affectedAccountsList),
-    eventScopeCode: S.optional(eventScopeCode),
+    affectedAccounts: S.optional(AffectedAccountsList),
+    eventScopeCode: S.optional(EventScopeCode),
     nextToken: S.optional(S.String),
   }),
 ).annotations({
@@ -567,14 +567,14 @@ export const DescribeAffectedEntitiesForOrganizationRequest = S.suspend(() =>
 }) as any as S.Schema<DescribeAffectedEntitiesForOrganizationRequest>;
 export interface DescribeEventAggregatesRequest {
   filter?: EventFilter;
-  aggregateField: eventAggregateField;
+  aggregateField: EventAggregateField;
   maxResults?: number;
   nextToken?: string;
 }
 export const DescribeEventAggregatesRequest = S.suspend(() =>
   S.Struct({
     filter: S.optional(EventFilter),
-    aggregateField: eventAggregateField,
+    aggregateField: EventAggregateField,
     maxResults: S.optional(S.Number),
     nextToken: S.optional(S.String),
   }).pipe(
@@ -625,16 +625,16 @@ export interface EntityFilter {
   entityValues?: string[];
   lastUpdatedTimes?: DateTimeRange[];
   tags?: { [key: string]: string }[];
-  statusCodes?: entityStatusCode[];
+  statusCodes?: EntityStatusCode[];
 }
 export const EntityFilter = S.suspend(() =>
   S.Struct({
-    eventArns: eventArnList,
-    entityArns: S.optional(entityArnList),
-    entityValues: S.optional(entityValueList),
-    lastUpdatedTimes: S.optional(dateTimeRangeList),
-    tags: S.optional(tagFilter),
-    statusCodes: S.optional(entityStatusCodeList),
+    eventArns: EventArnList,
+    entityArns: S.optional(EntityArnList),
+    entityValues: S.optional(EntityValueList),
+    lastUpdatedTimes: S.optional(DateTimeRangeList),
+    tags: S.optional(TagFilter),
+    statusCodes: S.optional(EntityStatusCodeList),
   }),
 ).annotations({ identifier: "EntityFilter" }) as any as S.Schema<EntityFilter>;
 export interface EventDetailsErrorItem {
@@ -657,14 +657,14 @@ export interface Event {
   arn?: string;
   service?: string;
   eventTypeCode?: string;
-  eventTypeCategory?: eventTypeCategory;
+  eventTypeCategory?: EventTypeCategory;
   region?: string;
   availabilityZone?: string;
   startTime?: Date;
   endTime?: Date;
   lastUpdatedTime?: Date;
-  statusCode?: eventStatusCode;
-  eventScopeCode?: eventScopeCode;
+  statusCode?: EventStatusCode;
+  eventScopeCode?: EventScopeCode;
   actionability?: EventActionability;
   personas?: EventPersona[];
 }
@@ -673,7 +673,7 @@ export const Event = S.suspend(() =>
     arn: S.optional(S.String),
     service: S.optional(S.String),
     eventTypeCode: S.optional(S.String),
-    eventTypeCategory: S.optional(eventTypeCategory),
+    eventTypeCategory: S.optional(EventTypeCategory),
     region: S.optional(S.String),
     availabilityZone: S.optional(S.String),
     startTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
@@ -681,8 +681,8 @@ export const Event = S.suspend(() =>
     lastUpdatedTime: S.optional(
       S.Date.pipe(T.TimestampFormat("epoch-seconds")),
     ),
-    statusCode: S.optional(eventStatusCode),
-    eventScopeCode: S.optional(eventScopeCode),
+    statusCode: S.optional(EventStatusCode),
+    eventScopeCode: S.optional(EventScopeCode),
     actionability: S.optional(EventActionability),
     personas: S.optional(EventPersonaList),
   }),
@@ -695,8 +695,8 @@ export const EventDescription = S.suspend(() =>
 ).annotations({
   identifier: "EventDescription",
 }) as any as S.Schema<EventDescription>;
-export type eventMetadata = { [key: string]: string };
-export const eventMetadata = S.Record({ key: S.String, value: S.String });
+export type EventMetadata = { [key: string]: string };
+export const EventMetadata = S.Record({ key: S.String, value: S.String });
 export interface OrganizationEventDetails {
   awsAccountId?: string;
   event?: Event;
@@ -708,7 +708,7 @@ export const OrganizationEventDetails = S.suspend(() =>
     awsAccountId: S.optional(S.String),
     event: S.optional(Event),
     eventDescription: S.optional(EventDescription),
-    eventMetadata: S.optional(eventMetadata),
+    eventMetadata: S.optional(EventMetadata),
   }),
 ).annotations({
   identifier: "OrganizationEventDetails",
@@ -780,9 +780,9 @@ export const DescribeEventsResponse = S.suspend(() =>
 ).annotations({
   identifier: "DescribeEventsResponse",
 }) as any as S.Schema<DescribeEventsResponse>;
-export type entityStatuses = { [key in entityStatusCode]?: number };
-export const entityStatuses = S.partial(
-  S.Record({ key: entityStatusCode, value: S.Number }),
+export type EntityStatuses = { [key in EntityStatusCode]?: number };
+export const EntityStatuses = S.partial(
+  S.Record({ key: EntityStatusCode, value: S.Number }),
 );
 export interface AccountEntityAggregate {
   accountId?: string;
@@ -793,7 +793,7 @@ export const AccountEntityAggregate = S.suspend(() =>
   S.Struct({
     accountId: S.optional(S.String),
     count: S.optional(S.Number),
-    statuses: S.optional(entityStatuses),
+    statuses: S.optional(EntityStatuses),
   }),
 ).annotations({
   identifier: "AccountEntityAggregate",
@@ -830,7 +830,7 @@ export const EntityAggregate = S.suspend(() =>
   S.Struct({
     eventArn: S.optional(S.String),
     count: S.optional(S.Number),
-    statuses: S.optional(entityStatuses),
+    statuses: S.optional(EntityStatuses),
   }),
 ).annotations({
   identifier: "EntityAggregate",
@@ -847,7 +847,7 @@ export const OrganizationEntityAggregate = S.suspend(() =>
   S.Struct({
     eventArn: S.optional(S.String),
     count: S.optional(S.Number),
-    statuses: S.optional(entityStatuses),
+    statuses: S.optional(EntityStatuses),
     accounts: S.optional(AccountEntityAggregatesList),
   }),
 ).annotations({
@@ -880,7 +880,7 @@ export const EventDetails = S.suspend(() =>
   S.Struct({
     event: S.optional(Event),
     eventDescription: S.optional(EventDescription),
-    eventMetadata: S.optional(eventMetadata),
+    eventMetadata: S.optional(EventMetadata),
   }),
 ).annotations({ identifier: "EventDetails" }) as any as S.Schema<EventDetails>;
 export type DescribeEventDetailsSuccessfulSet = EventDetails[];
@@ -889,13 +889,13 @@ export interface OrganizationEvent {
   arn?: string;
   service?: string;
   eventTypeCode?: string;
-  eventTypeCategory?: eventTypeCategory;
-  eventScopeCode?: eventScopeCode;
+  eventTypeCategory?: EventTypeCategory;
+  eventScopeCode?: EventScopeCode;
   region?: string;
   startTime?: Date;
   endTime?: Date;
   lastUpdatedTime?: Date;
-  statusCode?: eventStatusCode;
+  statusCode?: EventStatusCode;
   actionability?: EventActionability;
   personas?: EventPersona[];
 }
@@ -904,15 +904,15 @@ export const OrganizationEvent = S.suspend(() =>
     arn: S.optional(S.String),
     service: S.optional(S.String),
     eventTypeCode: S.optional(S.String),
-    eventTypeCategory: S.optional(eventTypeCategory),
-    eventScopeCode: S.optional(eventScopeCode),
+    eventTypeCategory: S.optional(EventTypeCategory),
+    eventScopeCode: S.optional(EventScopeCode),
     region: S.optional(S.String),
     startTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
     endTime: S.optional(S.Date.pipe(T.TimestampFormat("epoch-seconds"))),
     lastUpdatedTime: S.optional(
       S.Date.pipe(T.TimestampFormat("epoch-seconds")),
     ),
-    statusCode: S.optional(eventStatusCode),
+    statusCode: S.optional(EventStatusCode),
     actionability: S.optional(EventActionability),
     personas: S.optional(EventPersonaList),
   }),
@@ -924,7 +924,7 @@ export const OrganizationEventList = S.Array(OrganizationEvent);
 export interface EventType {
   service?: string;
   code?: string;
-  category?: eventTypeCategory;
+  category?: EventTypeCategory;
   actionability?: EventTypeActionability;
   personas?: EventTypePersona[];
 }
@@ -932,15 +932,15 @@ export const EventType = S.suspend(() =>
   S.Struct({
     service: S.optional(S.String),
     code: S.optional(S.String),
-    category: S.optional(eventTypeCategory),
+    category: S.optional(EventTypeCategory),
     actionability: S.optional(EventTypeActionability),
     personas: S.optional(EventTypePersonaList),
   }),
 ).annotations({ identifier: "EventType" }) as any as S.Schema<EventType>;
 export type EventTypeList = EventType[];
 export const EventTypeList = S.Array(EventType);
-export type entityMetadata = { [key: string]: string };
-export const entityMetadata = S.Record({ key: S.String, value: S.String });
+export type EntityMetadata = { [key: string]: string };
+export const EntityMetadata = S.Record({ key: S.String, value: S.String });
 export interface AffectedEntity {
   entityArn?: string;
   eventArn?: string;
@@ -948,7 +948,7 @@ export interface AffectedEntity {
   entityUrl?: string;
   awsAccountId?: string;
   lastUpdatedTime?: Date;
-  statusCode?: entityStatusCode;
+  statusCode?: EntityStatusCode;
   tags?: { [key: string]: string };
   entityMetadata?: { [key: string]: string };
 }
@@ -962,9 +962,9 @@ export const AffectedEntity = S.suspend(() =>
     lastUpdatedTime: S.optional(
       S.Date.pipe(T.TimestampFormat("epoch-seconds")),
     ),
-    statusCode: S.optional(entityStatusCode),
-    tags: S.optional(tagSet),
-    entityMetadata: S.optional(entityMetadata),
+    statusCode: S.optional(EntityStatusCode),
+    tags: S.optional(TagSet),
+    entityMetadata: S.optional(EntityMetadata),
   }),
 ).annotations({
   identifier: "AffectedEntity",
@@ -1089,7 +1089,7 @@ export const describeHealthServiceStatusForOrganization: (
 ) => effect.Effect<
   DescribeHealthServiceStatusForOrganizationResponse,
   CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeHealthServiceStatusForOrganizationRequest,
   output: DescribeHealthServiceStatusForOrganizationResponse,
@@ -1116,7 +1116,7 @@ export const disableHealthServiceAccessForOrganization: (
 ) => effect.Effect<
   DisableHealthServiceAccessForOrganizationResponse,
   ConcurrentModificationException | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisableHealthServiceAccessForOrganizationRequest,
   output: DisableHealthServiceAccessForOrganizationResponse,
@@ -1149,7 +1149,7 @@ export const enableHealthServiceAccessForOrganization: (
 ) => effect.Effect<
   EnableHealthServiceAccessForOrganizationResponse,
   ConcurrentModificationException | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: EnableHealthServiceAccessForOrganizationRequest,
   output: EnableHealthServiceAccessForOrganizationResponse,
@@ -1172,21 +1172,21 @@ export const describeAffectedAccountsForOrganization: {
   ): effect.Effect<
     DescribeAffectedAccountsForOrganizationResponse,
     InvalidPaginationToken | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAffectedAccountsForOrganizationRequest,
   ) => stream.Stream<
     DescribeAffectedAccountsForOrganizationResponse,
     InvalidPaginationToken | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAffectedAccountsForOrganizationRequest,
   ) => stream.Stream<
-    accountId,
+    AccountId,
     InvalidPaginationToken | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedAccountsForOrganizationRequest,
@@ -1207,7 +1207,7 @@ export const describeEntityAggregates: (
 ) => effect.Effect<
   DescribeEntityAggregatesResponse,
   CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntityAggregatesRequest,
   output: DescribeEntityAggregatesResponse,
@@ -1221,7 +1221,7 @@ export const describeEntityAggregatesForOrganization: (
 ) => effect.Effect<
   DescribeEntityAggregatesForOrganizationResponse,
   CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEntityAggregatesForOrganizationRequest,
   output: DescribeEntityAggregatesForOrganizationResponse,
@@ -1240,21 +1240,21 @@ export const describeEventAggregates: {
   ): effect.Effect<
     DescribeEventAggregatesResponse,
     InvalidPaginationToken | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventAggregatesRequest,
   ) => stream.Stream<
     DescribeEventAggregatesResponse,
     InvalidPaginationToken | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventAggregatesRequest,
   ) => stream.Stream<
     EventAggregate,
     InvalidPaginationToken | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventAggregatesRequest,
@@ -1302,7 +1302,7 @@ export const describeEventDetailsForOrganization: (
 ) => effect.Effect<
   DescribeEventDetailsForOrganizationResponse,
   UnsupportedLocale | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventDetailsForOrganizationRequest,
   output: DescribeEventDetailsForOrganizationResponse,
@@ -1339,21 +1339,21 @@ export const describeEventsForOrganization: {
   ): effect.Effect<
     DescribeEventsForOrganizationResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsForOrganizationRequest,
   ) => stream.Stream<
     DescribeEventsForOrganizationResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsForOrganizationRequest,
   ) => stream.Stream<
     OrganizationEvent,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsForOrganizationRequest,
@@ -1381,21 +1381,21 @@ export const describeEventTypes: {
   ): effect.Effect<
     DescribeEventTypesResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventTypesRequest,
   ) => stream.Stream<
     DescribeEventTypesResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventTypesRequest,
   ) => stream.Stream<
     EventType,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventTypesRequest,
@@ -1434,21 +1434,21 @@ export const describeEvents: {
   ): effect.Effect<
     DescribeEventsResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEventsRequest,
   ) => stream.Stream<
     DescribeEventsResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEventsRequest,
   ) => stream.Stream<
     Event,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEventsRequest,
@@ -1481,21 +1481,21 @@ export const describeAffectedEntities: {
   ): effect.Effect<
     DescribeAffectedEntitiesResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAffectedEntitiesRequest,
   ) => stream.Stream<
     DescribeAffectedEntitiesResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAffectedEntitiesRequest,
   ) => stream.Stream<
     AffectedEntity,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedEntitiesRequest,
@@ -1525,7 +1525,7 @@ export const describeEventDetails: (
 ) => effect.Effect<
   DescribeEventDetailsResponse,
   UnsupportedLocale | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeEventDetailsRequest,
   output: DescribeEventDetailsResponse,
@@ -1554,21 +1554,21 @@ export const describeAffectedEntitiesForOrganization: {
   ): effect.Effect<
     DescribeAffectedEntitiesForOrganizationResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeAffectedEntitiesForOrganizationRequest,
   ) => stream.Stream<
     DescribeAffectedEntitiesForOrganizationResponse,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeAffectedEntitiesForOrganizationRequest,
   ) => stream.Stream<
     AffectedEntity,
     InvalidPaginationToken | UnsupportedLocale | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeAffectedEntitiesForOrganizationRequest,

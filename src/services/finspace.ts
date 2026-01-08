@@ -122,8 +122,8 @@ export type FinSpaceTaggableArn = string;
 export type TagKey = string;
 export type TagValue = string;
 export type SamlMetadataDocument = string;
-export type url = string;
-export type urn = string;
+export type Url = string;
+export type Urn = string;
 export type FederationProviderName = string;
 export type EmailId = string | redacted.Redacted<string>;
 export type NameString = string;
@@ -158,13 +158,13 @@ export type EnvironmentArn = string;
 export type ErrorMessage2 = string;
 export type KxClusterStatusReason = string;
 export type SignedKxConnectionString = string | redacted.Redacted<string>;
-export type numBytes = number;
-export type numChangesets = number;
-export type numFiles = number;
+export type NumBytes = number;
+export type NumChangesets = number;
+export type NumFiles = number;
 export type KxDataviewStatusReason = string;
 export type EnvironmentErrorMessage = string;
-export type stringValueLength1to255 = string;
-export type arn = string;
+export type StringValueLength1to255 = string;
+export type Arn = string;
 export type KxVolumeArn = string;
 export type KxVolumeStatusReason = string;
 export type FederationAttributeKey = string;
@@ -1653,26 +1653,26 @@ export const KxDataviewStatus = S.Literal(
   "FAILED",
   "DELETING",
 );
-export type tgwStatus =
+export type TgwStatus =
   | "NONE"
   | "UPDATE_REQUESTED"
   | "UPDATING"
   | "FAILED_UPDATE"
   | "SUCCESSFULLY_UPDATED";
-export const tgwStatus = S.Literal(
+export const TgwStatus = S.Literal(
   "NONE",
   "UPDATE_REQUESTED",
   "UPDATING",
   "FAILED_UPDATE",
   "SUCCESSFULLY_UPDATED",
 );
-export type dnsStatus =
+export type DnsStatus =
   | "NONE"
   | "UPDATE_REQUESTED"
   | "UPDATING"
   | "FAILED_UPDATE"
   | "SUCCESSFULLY_UPDATED";
-export const dnsStatus = S.Literal(
+export const DnsStatus = S.Literal(
   "NONE",
   "UPDATE_REQUESTED",
   "UPDATING",
@@ -2060,8 +2060,8 @@ export interface GetKxEnvironmentResponse {
   environmentId?: string;
   awsAccountId?: string;
   status?: EnvironmentStatus;
-  tgwStatus?: tgwStatus;
-  dnsStatus?: dnsStatus;
+  tgwStatus?: TgwStatus;
+  dnsStatus?: DnsStatus;
   errorMessage?: string;
   description?: string;
   environmentArn?: string;
@@ -2080,8 +2080,8 @@ export const GetKxEnvironmentResponse = S.suspend(() =>
     environmentId: S.optional(S.String),
     awsAccountId: S.optional(S.String),
     status: S.optional(EnvironmentStatus),
-    tgwStatus: S.optional(tgwStatus),
-    dnsStatus: S.optional(dnsStatus),
+    tgwStatus: S.optional(TgwStatus),
+    dnsStatus: S.optional(DnsStatus),
     errorMessage: S.optional(S.String),
     description: S.optional(S.String),
     environmentArn: S.optional(S.String),
@@ -2392,8 +2392,8 @@ export interface UpdateKxEnvironmentResponse {
   environmentId?: string;
   awsAccountId?: string;
   status?: EnvironmentStatus;
-  tgwStatus?: tgwStatus;
-  dnsStatus?: dnsStatus;
+  tgwStatus?: TgwStatus;
+  dnsStatus?: DnsStatus;
   errorMessage?: string;
   description?: string;
   environmentArn?: string;
@@ -2411,8 +2411,8 @@ export const UpdateKxEnvironmentResponse = S.suspend(() =>
     environmentId: S.optional(S.String),
     awsAccountId: S.optional(S.String),
     status: S.optional(EnvironmentStatus),
-    tgwStatus: S.optional(tgwStatus),
-    dnsStatus: S.optional(dnsStatus),
+    tgwStatus: S.optional(TgwStatus),
+    dnsStatus: S.optional(DnsStatus),
     errorMessage: S.optional(S.String),
     description: S.optional(S.String),
     environmentArn: S.optional(S.String),
@@ -2695,8 +2695,8 @@ export interface KxEnvironment {
   environmentId?: string;
   awsAccountId?: string;
   status?: EnvironmentStatus;
-  tgwStatus?: tgwStatus;
-  dnsStatus?: dnsStatus;
+  tgwStatus?: TgwStatus;
+  dnsStatus?: DnsStatus;
   errorMessage?: string;
   description?: string;
   environmentArn?: string;
@@ -2715,8 +2715,8 @@ export const KxEnvironment = S.suspend(() =>
     environmentId: S.optional(S.String),
     awsAccountId: S.optional(S.String),
     status: S.optional(EnvironmentStatus),
-    tgwStatus: S.optional(tgwStatus),
-    dnsStatus: S.optional(dnsStatus),
+    tgwStatus: S.optional(TgwStatus),
+    dnsStatus: S.optional(DnsStatus),
     errorMessage: S.optional(S.String),
     description: S.optional(S.String),
     environmentArn: S.optional(S.String),
@@ -3403,8 +3403,8 @@ export interface UpdateKxEnvironmentNetworkResponse {
   environmentId?: string;
   awsAccountId?: string;
   status?: EnvironmentStatus;
-  tgwStatus?: tgwStatus;
-  dnsStatus?: dnsStatus;
+  tgwStatus?: TgwStatus;
+  dnsStatus?: DnsStatus;
   errorMessage?: string;
   description?: string;
   environmentArn?: string;
@@ -3422,8 +3422,8 @@ export const UpdateKxEnvironmentNetworkResponse = S.suspend(() =>
     environmentId: S.optional(S.String),
     awsAccountId: S.optional(S.String),
     status: S.optional(EnvironmentStatus),
-    tgwStatus: S.optional(tgwStatus),
-    dnsStatus: S.optional(dnsStatus),
+    tgwStatus: S.optional(TgwStatus),
+    dnsStatus: S.optional(DnsStatus),
     errorMessage: S.optional(S.String),
     description: S.optional(S.String),
     environmentArn: S.optional(S.String),

@@ -88,55 +88,52 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type identifier = string;
-export type s3BucketLocation = string;
-export type iamRoleArn = string;
-export type wholeNumberVersionString = string;
-export type description = string;
-export type noDashIdentifier = string;
+export type Identifier = string;
+export type S3BucketLocation = string;
+export type IamRoleArn = string;
+export type WholeNumberVersionString = string;
+export type Description = string;
+export type NoDashIdentifier = string;
 export type Elements = string | redacted.Redacted<string>;
-export type variableType = string;
-export type modelIdentifier = string;
-export type ruleExpression = string | redacted.Redacted<string>;
+export type VariableType = string;
+export type ModelIdentifier = string;
+export type RuleExpression = string | redacted.Redacted<string>;
 export type DeleteAuditHistory = boolean;
-export type sageMakerEndpointIdentifier = string;
-export type floatVersionString = string;
+export type SageMakerEndpointIdentifier = string;
+export type FloatVersionString = string;
 export type DetectorVersionMaxResults = number;
-export type modelsMaxPageSize = number;
-export type batchImportsMaxPageSize = number;
-export type batchPredictionsMaxPageSize = number;
+export type ModelsMaxPageSize = number;
+export type BatchImportsMaxPageSize = number;
+export type BatchPredictionsMaxPageSize = number;
 export type DetectorsMaxResults = number;
-export type entityTypesMaxResults = number;
-export type utcTimestampISO8601 = string;
-export type time = string;
-export type eventTypesMaxResults = number;
+export type EntityTypesMaxResults = number;
+export type UtcTimestampISO8601 = string;
+export type EventTypesMaxResults = number;
 export type ExternalModelsMaxResults = number;
-export type labelsMaxResults = number;
-export type nextToken = string;
+export type LabelsMaxResults = number;
+export type NextToken = string;
 export type ListsElementsMaxResults = number;
 export type ListsMetadataMaxResults = number;
 export type OutcomesMaxResults = number;
 export type RulesMaxResults = number;
 export type VariablesMaxResults = number;
 export type EventPredictionsMaxResults = number;
-export type fraudDetectorArn = string;
+export type FraudDetectorArn = string;
 export type TagsMaxResults = number;
 export type KmsEncryptionKeyArn = string;
-export type tagKey = string;
-export type tagValue = string;
-export type entityRestrictedString = string;
-export type variableName = string;
-export type variableValue = string | redacted.Redacted<string>;
-export type filterString = string;
+export type TagKey = string;
+export type TagValue = string;
+export type EntityRestrictedString = string;
+export type VariableName = string;
+export type VariableValue = string | redacted.Redacted<string>;
+export type FilterString = string;
 export type UseEventVariables = boolean;
-export type modelInputTemplate = string;
-export type blob = Uint8Array;
-export type contentType = string;
+export type ModelInputTemplate = string;
+export type ContentType = string;
 export type Integer2 = number;
-export type sensitiveString = string | redacted.Redacted<string>;
-export type attributeKey = string;
-export type attributeValue = string | redacted.Redacted<string>;
-export type float = number;
+export type SensitiveString = string | redacted.Redacted<string>;
+export type AttributeKey = string;
+export type AttributeValue = string | redacted.Redacted<string>;
 
 //# Schemas
 export interface GetKMSEncryptionKeyRequest {}
@@ -201,8 +198,8 @@ export type ModelSource = "SAGEMAKER";
 export const ModelSource = S.Literal("SAGEMAKER");
 export type ModelEndpointStatus = "ASSOCIATED" | "DISSOCIATED";
 export const ModelEndpointStatus = S.Literal("ASSOCIATED", "DISSOCIATED");
-export type tagKeyList = string[];
-export const tagKeyList = S.Array(S.String);
+export type TagKeyList = string[];
+export const TagKeyList = S.Array(S.String);
 export type DetectorVersionStatus = "DRAFT" | "ACTIVE" | "INACTIVE";
 export const DetectorVersionStatus = S.Literal("DRAFT", "ACTIVE", "INACTIVE");
 export type ListUpdateMode = "REPLACE" | "APPEND" | "REMOVE";
@@ -286,8 +283,8 @@ export interface Tag {
 export const Tag = S.suspend(() =>
   S.Struct({ key: S.String, value: S.String }),
 ).annotations({ identifier: "Tag" }) as any as S.Schema<Tag>;
-export type tagList = Tag[];
-export const tagList = S.Array(Tag);
+export type TagList = Tag[];
+export const TagList = S.Array(Tag);
 export interface CreateBatchImportJobRequest {
   jobId: string;
   inputPath: string;
@@ -303,7 +300,7 @@ export const CreateBatchImportJobRequest = S.suspend(() =>
     outputPath: S.String,
     eventTypeName: S.String,
     iamRoleArn: S.String,
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -343,7 +340,7 @@ export const CreateBatchPredictionJobRequest = S.suspend(() =>
     detectorName: S.String,
     detectorVersion: S.optional(S.String),
     iamRoleArn: S.String,
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -377,7 +374,7 @@ export const CreateListRequest = S.suspend(() =>
     elements: S.optional(ElementsList),
     variableType: S.optional(S.String),
     description: S.optional(S.String),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -411,7 +408,7 @@ export const CreateModelRequest = S.suspend(() =>
     modelType: ModelTypeEnum,
     description: S.optional(S.String),
     eventTypeName: S.String,
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -449,7 +446,7 @@ export const CreateRuleRequest = S.suspend(() =>
     expression: SensitiveString,
     language: Language,
     outcomes: NonEmptyListOfStrings,
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -481,7 +478,7 @@ export const CreateVariableRequest = S.suspend(() =>
     defaultValue: S.String,
     description: S.optional(S.String),
     variableType: S.optional(S.String),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -1415,7 +1412,7 @@ export const PutDetectorRequest = S.suspend(() =>
     detectorId: S.String,
     description: S.optional(S.String),
     eventTypeName: S.String,
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -1445,7 +1442,7 @@ export const PutEntityTypeRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
     description: S.optional(S.String),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -1499,7 +1496,7 @@ export const PutLabelRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
     description: S.optional(S.String),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -1529,7 +1526,7 @@ export const PutOutcomeRequest = S.suspend(() =>
   S.Struct({
     name: S.String,
     description: S.optional(S.String),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -1564,8 +1561,8 @@ export interface Entity {
 export const Entity = S.suspend(() =>
   S.Struct({ entityType: S.String, entityId: S.String }),
 ).annotations({ identifier: "Entity" }) as any as S.Schema<Entity>;
-export type listOfEntities = Entity[];
-export const listOfEntities = S.Array(Entity);
+export type ListOfEntities = Entity[];
+export const ListOfEntities = S.Array(Entity);
 export interface SendEventRequest {
   eventId: string;
   eventTypeName: string;
@@ -1583,7 +1580,7 @@ export const SendEventRequest = S.suspend(() =>
     eventVariables: EventVariableMap,
     assignedLabel: S.optional(S.String),
     labelTimestamp: S.optional(S.String),
-    entities: listOfEntities,
+    entities: ListOfEntities,
   }).pipe(
     T.all(
       ns,
@@ -1609,7 +1606,7 @@ export interface TagResourceRequest {
   tags: Tag[];
 }
 export const TagResourceRequest = S.suspend(() =>
-  S.Struct({ resourceARN: S.String, tags: tagList }).pipe(
+  S.Struct({ resourceARN: S.String, tags: TagList }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -1634,7 +1631,7 @@ export interface UntagResourceRequest {
   tagKeys: string[];
 }
 export const UntagResourceRequest = S.suspend(() =>
-  S.Struct({ resourceARN: S.String, tagKeys: tagKeyList }).pipe(
+  S.Struct({ resourceARN: S.String, tagKeys: TagKeyList }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -1907,7 +1904,7 @@ export const UpdateModelVersionRequest = S.suspend(() =>
     majorVersionNumber: S.String,
     externalEventsDetail: S.optional(ExternalEventsDetail),
     ingestedEventsDetail: S.optional(IngestedEventsDetail),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -1994,7 +1991,7 @@ export const UpdateRuleVersionRequest = S.suspend(() =>
     expression: SensitiveString,
     language: Language,
     outcomes: NonEmptyListOfStrings,
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -2148,7 +2145,7 @@ export interface BatchCreateVariableRequest {
 export const BatchCreateVariableRequest = S.suspend(() =>
   S.Struct({
     variableEntries: VariableEntryList,
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -2180,7 +2177,7 @@ export const CreateDetectorVersionRequest = S.suspend(() =>
     rules: RuleList,
     modelVersions: S.optional(ListOfModelVersions),
     ruleExecutionMode: S.optional(RuleExecutionMode),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -2277,15 +2274,15 @@ export const GetListElementsResult = S.suspend(() =>
 ).annotations({
   identifier: "GetListElementsResult",
 }) as any as S.Schema<GetListElementsResult>;
-export type labelMapper = { [key: string]: string[] };
-export const labelMapper = S.Record({ key: S.String, value: ListOfStrings });
+export type LabelMapper = { [key: string]: string[] };
+export const LabelMapper = S.Record({ key: S.String, value: ListOfStrings });
 export interface LabelSchema {
   labelMapper?: { [key: string]: string[] };
   unlabeledEventsTreatment?: UnlabeledEventsTreatment;
 }
 export const LabelSchema = S.suspend(() =>
   S.Struct({
-    labelMapper: S.optional(labelMapper),
+    labelMapper: S.optional(LabelMapper),
     unlabeledEventsTreatment: S.optional(UnlabeledEventsTreatment),
   }),
 ).annotations({ identifier: "LabelSchema" }) as any as S.Schema<LabelSchema>;
@@ -2402,7 +2399,7 @@ export interface ListTagsForResourceResult {
   nextToken?: string;
 }
 export const ListTagsForResourceResult = S.suspend(() =>
-  S.Struct({ tags: S.optional(tagList), nextToken: S.optional(S.String) }).pipe(
+  S.Struct({ tags: S.optional(TagList), nextToken: S.optional(S.String) }).pipe(
     ns,
   ),
 ).annotations({
@@ -2426,7 +2423,7 @@ export const PutEventTypeRequest = S.suspend(() =>
     labels: S.optional(ListOfStrings),
     entityTypes: NonEmptyListOfStrings,
     eventIngestion: S.optional(EventIngestion),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
     eventOrchestration: S.optional(EventOrchestration),
   }).pipe(
     T.all(
@@ -2638,8 +2635,8 @@ export const EntityType = S.suspend(() =>
     arn: S.optional(S.String),
   }),
 ).annotations({ identifier: "EntityType" }) as any as S.Schema<EntityType>;
-export type entityTypeList = EntityType[];
-export const entityTypeList = S.Array(EntityType);
+export type EntityTypeList = EntityType[];
+export const EntityTypeList = S.Array(EntityType);
 export type ExternalModelEndpointDataBlobMap = {
   [key: string]: ModelEndpointDataBlob;
 };
@@ -2745,8 +2742,8 @@ export const Label = S.suspend(() =>
     arn: S.optional(S.String),
   }),
 ).annotations({ identifier: "Label" }) as any as S.Schema<Label>;
-export type labelList = Label[];
-export const labelList = S.Array(Label);
+export type LabelList = Label[];
+export const LabelList = S.Array(Label);
 export interface AllowDenyList {
   name: string;
   description?: string;
@@ -2789,8 +2786,8 @@ export const Model = S.suspend(() =>
     arn: S.optional(S.String),
   }),
 ).annotations({ identifier: "Model" }) as any as S.Schema<Model>;
-export type modelList = Model[];
-export const modelList = S.Array(Model);
+export type ModelList = Model[];
+export const ModelList = S.Array(Model);
 export interface Outcome {
   name?: string;
   description?: string;
@@ -2921,7 +2918,7 @@ export interface GetEntityTypesResult {
 }
 export const GetEntityTypesResult = S.suspend(() =>
   S.Struct({
-    entityTypes: S.optional(entityTypeList),
+    entityTypes: S.optional(EntityTypeList),
     nextToken: S.optional(S.String),
   }).pipe(ns),
 ).annotations({
@@ -2943,7 +2940,7 @@ export const GetEventPredictionRequest = S.suspend(() =>
     detectorVersionId: S.optional(S.String),
     eventId: S.String,
     eventTypeName: S.String,
-    entities: listOfEntities,
+    entities: ListOfEntities,
     eventTimestamp: S.String,
     eventVariables: EventVariableMap,
     externalModelEndpointDataBlobs: S.optional(
@@ -2981,7 +2978,7 @@ export interface GetLabelsResult {
 }
 export const GetLabelsResult = S.suspend(() =>
   S.Struct({
-    labels: S.optional(labelList),
+    labels: S.optional(LabelList),
     nextToken: S.optional(S.String),
   }).pipe(ns),
 ).annotations({
@@ -3006,7 +3003,7 @@ export interface GetModelsResult {
 export const GetModelsResult = S.suspend(() =>
   S.Struct({
     nextToken: S.optional(S.String),
-    models: S.optional(modelList),
+    models: S.optional(ModelList),
   }).pipe(ns),
 ).annotations({
   identifier: "GetModelsResult",
@@ -3052,7 +3049,7 @@ export const PutExternalModelRequest = S.suspend(() =>
     inputConfiguration: ModelInputConfiguration,
     outputConfiguration: ModelOutputConfiguration,
     modelEndpointStatus: ModelEndpointStatus,
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -3133,7 +3130,7 @@ export const Event = S.suspend(() =>
     eventVariables: S.optional(EventAttributeMap),
     currentLabel: S.optional(S.String),
     labelTimestamp: S.optional(S.String),
-    entities: S.optional(listOfEntities),
+    entities: S.optional(ListOfEntities),
   }),
 ).annotations({ identifier: "Event" }) as any as S.Schema<Event>;
 export interface EvaluatedExternalModel {
@@ -3182,8 +3179,8 @@ export const EventType = S.suspend(() =>
     eventOrchestration: S.optional(EventOrchestration),
   }),
 ).annotations({ identifier: "EventType" }) as any as S.Schema<EventType>;
-export type eventTypeList = EventType[];
-export const eventTypeList = S.Array(EventType);
+export type EventTypeList = EventType[];
+export const EventTypeList = S.Array(EventType);
 export interface EventPredictionSummary {
   eventId?: string;
   eventTypeName?: string;
@@ -3231,7 +3228,7 @@ export const CreateModelVersionRequest = S.suspend(() =>
     trainingDataSchema: TrainingDataSchema,
     externalEventsDetail: S.optional(ExternalEventsDetail),
     ingestedEventsDetail: S.optional(IngestedEventsDetail),
-    tags: S.optional(tagList),
+    tags: S.optional(TagList),
   }).pipe(
     T.all(
       ns,
@@ -3260,7 +3257,7 @@ export interface GetEventTypesResult {
 }
 export const GetEventTypesResult = S.suspend(() =>
   S.Struct({
-    eventTypes: S.optional(eventTypeList),
+    eventTypes: S.optional(EventTypeList),
     nextToken: S.optional(S.String),
   }).pipe(ns),
 ).annotations({
@@ -3292,8 +3289,8 @@ export const FileValidationMessage = S.suspend(() =>
 ).annotations({
   identifier: "FileValidationMessage",
 }) as any as S.Schema<FileValidationMessage>;
-export type fileValidationMessageList = FileValidationMessage[];
-export const fileValidationMessageList = S.Array(FileValidationMessage);
+export type FileValidationMessageList = FileValidationMessage[];
+export const FileValidationMessageList = S.Array(FileValidationMessage);
 export interface FieldValidationMessage {
   fieldName?: string;
   identifier?: string;
@@ -3312,8 +3309,8 @@ export const FieldValidationMessage = S.suspend(() =>
 ).annotations({
   identifier: "FieldValidationMessage",
 }) as any as S.Schema<FieldValidationMessage>;
-export type fieldValidationMessageList = FieldValidationMessage[];
-export const fieldValidationMessageList = S.Array(FieldValidationMessage);
+export type FieldValidationMessageList = FieldValidationMessage[];
+export const FieldValidationMessageList = S.Array(FieldValidationMessage);
 export interface MetricDataPoint {
   fpr?: number;
   precision?: number;
@@ -3330,8 +3327,8 @@ export const MetricDataPoint = S.suspend(() =>
 ).annotations({
   identifier: "MetricDataPoint",
 }) as any as S.Schema<MetricDataPoint>;
-export type metricDataPointsList = MetricDataPoint[];
-export const metricDataPointsList = S.Array(MetricDataPoint);
+export type MetricDataPointsList = MetricDataPoint[];
+export const MetricDataPointsList = S.Array(MetricDataPoint);
 export interface LogOddsMetric {
   variableName: string;
   variableType: string;
@@ -3376,8 +3373,8 @@ export const VariableImpactExplanation = S.suspend(() =>
 ).annotations({
   identifier: "VariableImpactExplanation",
 }) as any as S.Schema<VariableImpactExplanation>;
-export type listOfVariableImpactExplanations = VariableImpactExplanation[];
-export const listOfVariableImpactExplanations = S.Array(
+export type ListOfVariableImpactExplanations = VariableImpactExplanation[];
+export const ListOfVariableImpactExplanations = S.Array(
   VariableImpactExplanation,
 );
 export interface AggregatedVariablesImpactExplanation {
@@ -3417,8 +3414,8 @@ export interface DataValidationMetrics {
 }
 export const DataValidationMetrics = S.suspend(() =>
   S.Struct({
-    fileLevelMessages: S.optional(fileValidationMessageList),
-    fieldLevelMessages: S.optional(fieldValidationMessageList),
+    fileLevelMessages: S.optional(FileValidationMessageList),
+    fieldLevelMessages: S.optional(FieldValidationMessageList),
   }),
 ).annotations({
   identifier: "DataValidationMetrics",
@@ -3430,7 +3427,7 @@ export interface TrainingMetrics {
 export const TrainingMetrics = S.suspend(() =>
   S.Struct({
     auc: S.optional(S.Number),
-    metricDataPoints: S.optional(metricDataPointsList),
+    metricDataPoints: S.optional(MetricDataPointsList),
   }),
 ).annotations({
   identifier: "TrainingMetrics",
@@ -3457,7 +3454,7 @@ export interface PredictionExplanations {
 }
 export const PredictionExplanations = S.suspend(() =>
   S.Struct({
-    variableImpactExplanations: S.optional(listOfVariableImpactExplanations),
+    variableImpactExplanations: S.optional(ListOfVariableImpactExplanations),
     aggregatedVariablesImpactExplanations: S.optional(
       ListOfAggregatedVariablesImpactExplanations,
     ),
@@ -3823,15 +3820,15 @@ export const ModelVersionDetail = S.suspend(() =>
 ).annotations({
   identifier: "ModelVersionDetail",
 }) as any as S.Schema<ModelVersionDetail>;
-export type modelVersionDetailList = ModelVersionDetail[];
-export const modelVersionDetailList = S.Array(ModelVersionDetail);
+export type ModelVersionDetailList = ModelVersionDetail[];
+export const ModelVersionDetailList = S.Array(ModelVersionDetail);
 export interface DescribeModelVersionsResult {
   modelVersionDetails?: ModelVersionDetail[];
   nextToken?: string;
 }
 export const DescribeModelVersionsResult = S.suspend(() =>
   S.Struct({
-    modelVersionDetails: S.optional(modelVersionDetailList),
+    modelVersionDetails: S.optional(ModelVersionDetailList),
     nextToken: S.optional(S.String),
   }).pipe(ns),
 ).annotations({

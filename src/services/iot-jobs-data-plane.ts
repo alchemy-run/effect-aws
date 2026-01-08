@@ -115,9 +115,9 @@ export type StartedAt = number;
 export type LastUpdatedAt = number;
 export type ApproximateSecondsBeforeTimedOut = number;
 export type VersionNumber = number;
-export type errorMessage = string;
+export type ErrorMessage = string;
 export type CommandExecutionId = string;
-export type resourceId = string;
+export type ResourceId = string;
 export type BinaryBlob = Uint8Array;
 
 //# Schemas

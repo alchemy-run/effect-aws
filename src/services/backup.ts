@@ -115,7 +115,6 @@ export type TagKey = string;
 export type TagValue = string;
 export type BackupSelectionName = string;
 export type ControlName = string;
-export type integer = number;
 export type BackupVaultNameOrWildcard = string;
 export type GlobalSettingsName = string;
 export type GlobalSettingsValue = string;
@@ -2907,8 +2906,8 @@ export type ComplianceResourceIdList = string[];
 export const ComplianceResourceIdList = S.Array(S.String);
 export type ResourceTypeList = string[];
 export const ResourceTypeList = S.Array(S.String);
-export type stringMap = { [key: string]: string };
-export const stringMap = S.Record({ key: S.String, value: S.String });
+export type StringMap = { [key: string]: string };
+export const StringMap = S.Record({ key: S.String, value: S.String });
 export interface ControlScope {
   ComplianceResourceIds?: string[];
   ComplianceResourceTypes?: string[];
@@ -2918,7 +2917,7 @@ export const ControlScope = S.suspend(() =>
   S.Struct({
     ComplianceResourceIds: S.optional(ComplianceResourceIdList),
     ComplianceResourceTypes: S.optional(ResourceTypeList),
-    Tags: S.optional(stringMap),
+    Tags: S.optional(StringMap),
   }),
 ).annotations({ identifier: "ControlScope" }) as any as S.Schema<ControlScope>;
 export interface FrameworkControl {
@@ -3096,8 +3095,8 @@ export const ReportDeliveryChannel = S.suspend(() =>
 ).annotations({
   identifier: "ReportDeliveryChannel",
 }) as any as S.Schema<ReportDeliveryChannel>;
-export type stringList = string[];
-export const stringList = S.Array(S.String);
+export type StringList = string[];
+export const StringList = S.Array(S.String);
 export interface ReportSetting {
   ReportTemplate: string;
   FrameworkArns?: string[];
@@ -3109,11 +3108,11 @@ export interface ReportSetting {
 export const ReportSetting = S.suspend(() =>
   S.Struct({
     ReportTemplate: S.String,
-    FrameworkArns: S.optional(stringList),
+    FrameworkArns: S.optional(StringList),
     NumberOfFrameworks: S.optional(S.Number),
-    Accounts: S.optional(stringList),
-    OrganizationUnits: S.optional(stringList),
-    Regions: S.optional(stringList),
+    Accounts: S.optional(StringList),
+    OrganizationUnits: S.optional(StringList),
+    Regions: S.optional(StringList),
   }),
 ).annotations({
   identifier: "ReportSetting",
@@ -3321,7 +3320,7 @@ export interface ReportDestination {
 export const ReportDestination = S.suspend(() =>
   S.Struct({
     S3BucketName: S.optional(S.String),
-    S3Keys: S.optional(stringList),
+    S3Keys: S.optional(StringList),
   }),
 ).annotations({
   identifier: "ReportDestination",
@@ -3409,8 +3408,8 @@ export interface RestoreTestingRecoveryPointSelection {
 export const RestoreTestingRecoveryPointSelection = S.suspend(() =>
   S.Struct({
     Algorithm: S.optional(RestoreTestingRecoveryPointSelectionAlgorithm),
-    ExcludeVaults: S.optional(stringList),
-    IncludeVaults: S.optional(stringList),
+    ExcludeVaults: S.optional(StringList),
+    IncludeVaults: S.optional(StringList),
     RecoveryPointTypes: S.optional(RestoreTestingRecoveryPointTypeList),
     SelectionWindowDays: S.optional(S.Number),
   }),
@@ -3464,7 +3463,7 @@ export interface RestoreTestingSelectionForUpdate {
 export const RestoreTestingSelectionForUpdate = S.suspend(() =>
   S.Struct({
     IamRoleArn: S.optional(S.String),
-    ProtectedResourceArns: S.optional(stringList),
+    ProtectedResourceArns: S.optional(StringList),
     ProtectedResourceConditions: S.optional(ProtectedResourceConditions),
     RestoreMetadataOverrides: S.optional(SensitiveStringMap),
     ValidationWindowHours: S.optional(S.Number),
@@ -3546,7 +3545,7 @@ export const CreateReportPlanInput = S.suspend(() =>
     ReportPlanDescription: S.optional(S.String),
     ReportDeliveryChannel: ReportDeliveryChannel,
     ReportSetting: ReportSetting,
-    ReportPlanTags: S.optional(stringMap),
+    ReportPlanTags: S.optional(StringMap),
     IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
   }).pipe(
     T.all(
@@ -3977,7 +3976,7 @@ export interface GetRestoreTestingInferredMetadataOutput {
   InferredMetadata: { [key: string]: string };
 }
 export const GetRestoreTestingInferredMetadataOutput = S.suspend(() =>
-  S.Struct({ InferredMetadata: stringMap }),
+  S.Struct({ InferredMetadata: StringMap }),
 ).annotations({
   identifier: "GetRestoreTestingInferredMetadataOutput",
 }) as any as S.Schema<GetRestoreTestingInferredMetadataOutput>;
@@ -4613,7 +4612,7 @@ export const RestoreTestingSelectionForGet = S.suspend(() =>
     CreationTime: S.Date.pipe(T.TimestampFormat("epoch-seconds")),
     CreatorRequestId: S.optional(S.String),
     IamRoleArn: S.String,
-    ProtectedResourceArns: S.optional(stringList),
+    ProtectedResourceArns: S.optional(StringList),
     ProtectedResourceConditions: S.optional(ProtectedResourceConditions),
     ProtectedResourceType: S.String,
     RestoreMetadataOverrides: S.optional(SensitiveStringMap),
@@ -5181,7 +5180,7 @@ export const CreateFrameworkInput = S.suspend(() =>
     FrameworkDescription: S.optional(S.String),
     FrameworkControls: FrameworkControls,
     IdempotencyToken: S.optional(S.String).pipe(T.IdempotencyToken()),
-    FrameworkTags: S.optional(stringMap),
+    FrameworkTags: S.optional(StringMap),
   }).pipe(
     T.all(
       T.Http({ method: "POST", uri: "/audit/frameworks" }),
@@ -5953,7 +5952,7 @@ export interface RestoreTestingSelectionForCreate {
 export const RestoreTestingSelectionForCreate = S.suspend(() =>
   S.Struct({
     IamRoleArn: S.String,
-    ProtectedResourceArns: S.optional(stringList),
+    ProtectedResourceArns: S.optional(StringList),
     ProtectedResourceConditions: S.optional(ProtectedResourceConditions),
     ProtectedResourceType: S.String,
     RestoreMetadataOverrides: S.optional(SensitiveStringMap),

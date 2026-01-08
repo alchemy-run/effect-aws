@@ -101,7 +101,7 @@ export type ErrorMessage = string;
 export type ETag = string;
 export type NonNegativeLong = number;
 export type ContentRangePattern = string;
-export type statusCode = number;
+export type StatusCode = number;
 export type SHA256Hash = string;
 export type ItemName = string;
 

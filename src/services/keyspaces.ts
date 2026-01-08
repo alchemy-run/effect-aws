@@ -8,7 +8,7 @@ import * as T from "../traits.ts";
 import * as C from "../category.ts";
 import type { Credentials } from "../credentials.ts";
 import type { CommonErrors } from "../errors.ts";
-import type { Region } from "../region.ts";
+import type { Region as Rgn } from "../region.ts";
 import { SensitiveString, SensitiveBlob } from "../sensitive.ts";
 const svc = T.AwsApiService({
   sdkId: "Keyspaces",
@@ -99,12 +99,12 @@ export type MaxResults = number;
 export type ARN = string;
 export type TagKey = string;
 export type TagValue = string;
-export type rs = string;
-export type region = string;
+export type Rs = string;
+export type Region = string;
 export type ThroughputMode = string;
 export type CapacityUnits = number;
 export type EncryptionType = string;
-export type kmsKeyARN = string;
+export type KmsKeyARN = string;
 export type PointInTimeRecoveryStatus = string;
 export type TimeToLiveStatus = string;
 export type ClientSideTimestampsStatus = string;
@@ -1063,7 +1063,7 @@ export const createKeyspace: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateKeyspaceRequest,
   output: CreateKeyspaceResponse,
@@ -1089,7 +1089,7 @@ export const listKeyspaces: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListKeyspacesRequest,
@@ -1101,7 +1101,7 @@ export const listKeyspaces: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListKeyspacesRequest,
@@ -1113,7 +1113,7 @@ export const listKeyspaces: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListKeyspacesRequest,
@@ -1148,7 +1148,7 @@ export const listTables: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTablesRequest,
@@ -1160,7 +1160,7 @@ export const listTables: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTablesRequest,
@@ -1172,7 +1172,7 @@ export const listTables: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesRequest,
@@ -1205,7 +1205,7 @@ export const updateTable: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateTableRequest,
   output: UpdateTableResponse,
@@ -1234,7 +1234,7 @@ export const deleteType: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTypeRequest,
   output: DeleteTypeResponse,
@@ -1287,7 +1287,7 @@ export const restoreTable: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RestoreTableRequest,
   output: RestoreTableResponse,
@@ -1354,7 +1354,7 @@ export const updateKeyspace: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UpdateKeyspaceRequest,
   output: UpdateKeyspaceResponse,
@@ -1381,7 +1381,7 @@ export const deleteTable: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTableRequest,
   output: DeleteTableResponse,
@@ -1410,7 +1410,7 @@ export const tagResource: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: TagResourceRequest,
   output: TagResourceResponse,
@@ -1437,7 +1437,7 @@ export const untagResource: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: UntagResourceRequest,
   output: UntagResourceResponse,
@@ -1468,7 +1468,7 @@ export const createType: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTypeRequest,
   output: CreateTypeResponse,
@@ -1497,7 +1497,7 @@ export const listTagsForResource: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTagsForResourceRequest,
@@ -1509,7 +1509,7 @@ export const listTagsForResource: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTagsForResourceRequest,
@@ -1521,7 +1521,7 @@ export const listTagsForResource: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsForResourceRequest,
@@ -1556,7 +1556,7 @@ export const listTypes: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListTypesRequest,
@@ -1568,7 +1568,7 @@ export const listTypes: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListTypesRequest,
@@ -1580,7 +1580,7 @@ export const listTypes: {
     | ServiceQuotaExceededException
     | ValidationException
     | CommonErrors,
-    Credentials | Region | HttpClient.HttpClient
+    Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypesRequest,
@@ -1613,7 +1613,7 @@ export const deleteKeyspace: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteKeyspaceRequest,
   output: DeleteKeyspaceResponse,
@@ -1639,7 +1639,7 @@ export const getKeyspace: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetKeyspaceRequest,
   output: GetKeyspaceResponse,
@@ -1666,7 +1666,7 @@ export const getTable: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableRequest,
   output: GetTableResponse,
@@ -1701,7 +1701,7 @@ export const getTableAutoScalingSettings: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTableAutoScalingSettingsRequest,
   output: GetTableAutoScalingSettingsResponse,
@@ -1728,7 +1728,7 @@ export const getType: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: GetTypeRequest,
   output: GetTypeResponse,
@@ -1758,7 +1758,7 @@ export const createTable: (
   | ServiceQuotaExceededException
   | ValidationException
   | CommonErrors,
-  Credentials | Region | HttpClient.HttpClient
+  Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTableRequest,
   output: CreateTableResponse,

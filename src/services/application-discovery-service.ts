@@ -643,8 +643,8 @@ export const ImportTaskFilterName = S.Literal(
 );
 export type ImportTaskFilterValueList = string[];
 export const ImportTaskFilterValueList = S.Array(S.String);
-export type orderString = "ASC" | "DESC";
-export const orderString = S.Literal("ASC", "DESC");
+export type OrderString = "ASC" | "DESC";
+export const OrderString = S.Literal("ASC", "DESC");
 export interface DeleteAgent {
   agentId: string;
   force?: boolean;
@@ -787,10 +787,10 @@ export const CustomerAgentlessCollectorInfo = S.suspend(() =>
 }) as any as S.Schema<CustomerAgentlessCollectorInfo>;
 export interface OrderByElement {
   fieldName: string;
-  sortOrder?: orderString;
+  sortOrder?: OrderString;
 }
 export const OrderByElement = S.suspend(() =>
-  S.Struct({ fieldName: S.String, sortOrder: S.optional(orderString) }),
+  S.Struct({ fieldName: S.String, sortOrder: S.optional(OrderString) }),
 ).annotations({
   identifier: "OrderByElement",
 }) as any as S.Schema<OrderByElement>;

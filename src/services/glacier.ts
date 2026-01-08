@@ -91,7 +91,7 @@ const rules = T.EndpointResolver((p, _) => {
 export type TagKey = string;
 export type TagValue = string;
 export type Size = number;
-export type httpstatus = number;
+export type Httpstatus = number;
 
 //# Schemas
 export type TagKeyList = string[];
@@ -1030,8 +1030,8 @@ export const Grant = S.suspend(() =>
 ).annotations({ identifier: "Grant" }) as any as S.Schema<Grant>;
 export type AccessControlPolicyList = Grant[];
 export const AccessControlPolicyList = S.Array(Grant);
-export type hashmap = { [key: string]: string };
-export const hashmap = S.Record({ key: S.String, value: S.String });
+export type Hashmap = { [key: string]: string };
+export const Hashmap = S.Record({ key: S.String, value: S.String });
 export type StorageClass = "STANDARD" | "REDUCED_REDUNDANCY" | "STANDARD_IA";
 export const StorageClass = S.Literal(
   "STANDARD",
@@ -1055,8 +1055,8 @@ export const S3Location = S.suspend(() =>
     Encryption: S.optional(Encryption),
     CannedACL: S.optional(CannedACL),
     AccessControlList: S.optional(AccessControlPolicyList),
-    Tagging: S.optional(hashmap),
-    UserMetadata: S.optional(hashmap),
+    Tagging: S.optional(Hashmap),
+    UserMetadata: S.optional(Hashmap),
     StorageClass: S.optional(StorageClass),
   }),
 ).annotations({ identifier: "S3Location" }) as any as S.Schema<S3Location>;

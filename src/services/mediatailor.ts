@@ -225,8 +225,8 @@ export const DashPlaylistSettings = S.suspend(() =>
 }) as any as S.Schema<DashPlaylistSettings>;
 export type AdMarkupType = "DATERANGE" | "SCTE35_ENHANCED";
 export const AdMarkupType = S.Literal("DATERANGE", "SCTE35_ENHANCED");
-export type adMarkupTypes = AdMarkupType[];
-export const adMarkupTypes = S.Array(AdMarkupType);
+export type AdMarkupTypes = AdMarkupType[];
+export const AdMarkupTypes = S.Array(AdMarkupType);
 export interface HlsPlaylistSettings {
   ManifestWindowSeconds?: number;
   AdMarkupType?: AdMarkupType[];
@@ -234,7 +234,7 @@ export interface HlsPlaylistSettings {
 export const HlsPlaylistSettings = S.suspend(() =>
   S.Struct({
     ManifestWindowSeconds: S.optional(S.Number),
-    AdMarkupType: S.optional(adMarkupTypes),
+    AdMarkupType: S.optional(AdMarkupTypes),
   }),
 ).annotations({
   identifier: "HlsPlaylistSettings",

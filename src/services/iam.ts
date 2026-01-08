@@ -248,138 +248,137 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type delegationRequestIdType = string;
-export type arnType = string;
-export type clientIDType = string;
-export type instanceProfileNameType = string;
-export type roleNameType = string;
-export type groupNameType = string;
-export type existingUserNameType = string;
-export type userNameType = string;
-export type passwordType = string | redacted.Redacted<string>;
-export type accountAliasType = string;
-export type accountIdType = string;
-export type delegationRequestDescriptionType = string;
-export type requestMessageType = string;
-export type requestorWorkflowIdType = string;
-export type redirectUrlType = string;
-export type notificationChannelType = string;
-export type sessionDurationType = number;
-export type booleanType = boolean;
-export type pathType = string;
+export type DelegationRequestIdType = string;
+export type ArnType = string;
+export type ClientIDType = string;
+export type InstanceProfileNameType = string;
+export type RoleNameType = string;
+export type GroupNameType = string;
+export type ExistingUserNameType = string;
+export type UserNameType = string;
+export type PasswordType = string | redacted.Redacted<string>;
+export type AccountAliasType = string;
+export type AccountIdType = string;
+export type DelegationRequestDescriptionType = string;
+export type RequestMessageType = string;
+export type RequestorWorkflowIdType = string;
+export type RedirectUrlType = string;
+export type NotificationChannelType = string;
+export type SessionDurationType = number;
+export type PathType = string;
 export type OpenIDConnectProviderUrlType = string;
-export type thumbprintType = string;
-export type policyNameType = string;
-export type policyPathType = string;
-export type policyDocumentType = string;
-export type policyDescriptionType = string;
-export type roleDescriptionType = string;
-export type roleMaxSessionDurationType = number;
+export type ThumbprintType = string;
+export type PolicyNameType = string;
+export type PolicyPathType = string;
+export type PolicyDocumentType = string;
+export type PolicyDescriptionType = string;
+export type RoleDescriptionType = string;
+export type RoleMaxSessionDurationType = number;
 export type SAMLMetadataDocumentType = string;
 export type SAMLProviderNameType = string;
-export type privateKeyType = string | redacted.Redacted<string>;
-export type customSuffixType = string;
-export type serviceName = string;
-export type credentialAgeDays = number;
-export type virtualMFADeviceName = string;
-export type serialNumberType = string;
-export type accessKeyIdType = string;
-export type limitExceededMessage = string;
-export type policyVersionIdType = string;
-export type serverCertificateNameType = string;
-export type serviceSpecificCredentialId = string;
-export type certificateIdType = string;
-export type publicKeyIdType = string;
+export type PrivateKeyType = string | redacted.Redacted<string>;
+export type CustomSuffixType = string;
+export type ServiceName = string;
+export type CredentialAgeDays = number;
+export type VirtualMFADeviceName = string;
+export type SerialNumberType = string;
+export type AccessKeyIdType = string;
+export type LimitExceededMessage = string;
+export type PolicyVersionIdType = string;
+export type ServerCertificateNameType = string;
+export type ServiceSpecificCredentialId = string;
+export type CertificateIdType = string;
+export type PublicKeyIdType = string;
 export type OrganizationIdType = string;
 export type FeatureDisabledMessage = string;
-export type authenticationCodeType = string;
-export type stringType = string;
+export type AuthenticationCodeType = string;
+export type StringType = string;
 export type ReportStateDescriptionType = string;
-export type organizationsEntityPathType = string;
-export type organizationsPolicyIdType = string;
-export type maxItemsType = number;
-export type markerType = string;
+export type OrganizationsEntityPathType = string;
+export type OrganizationsPolicyIdType = string;
+export type MaxItemsType = number;
+export type MarkerType = string;
 export type ReportContentType = Uint8Array;
-export type localeType = string;
-export type jobIDType = string;
-export type serviceNamespaceType = string;
+export type LocaleType = string;
+export type JobIDType = string;
+export type ServiceNamespaceType = string;
 export type DeletionTaskIdType = string;
-export type ownerIdType = string;
-export type pathPrefixType = string;
-export type allUsers = boolean;
-export type notesType = string;
+export type OwnerIdType = string;
+export type PathPrefixType = string;
+export type AllUsers = boolean;
+export type NotesType = string;
 export type ActionNameType = string;
 export type ResourceNameType = string;
 export type ResourceHandlingOptionType = string;
-export type tagKeyType = string;
-export type minimumPasswordLengthType = number;
-export type maxPasswordAgeType = number;
-export type passwordReusePreventionType = number;
-export type booleanObjectType = boolean;
-export type privateKeyIdType = string;
-export type certificateBodyType = string;
-export type certificateChainType = string;
-export type publicKeyMaterialType = string;
-export type tagValueType = string;
-export type summaryValueType = number;
+export type TagKeyType = string;
+export type MinimumPasswordLengthType = number;
+export type MaxPasswordAgeType = number;
+export type PasswordReusePreventionType = number;
+export type BooleanObjectType = boolean;
+export type PrivateKeyIdType = string;
+export type CertificateBodyType = string;
+export type CertificateChainType = string;
+export type PublicKeyMaterialType = string;
+export type TagValueType = string;
+export type SummaryValueType = number;
 export type ContextKeyNameType = string;
 export type ContextKeyValueType = string;
 export type ConcurrentModificationMessage = string;
-export type entityAlreadyExistsMessage = string;
-export type invalidInputMessage = string;
-export type entityTemporarilyUnmodifiableMessage = string;
-export type noSuchEntityMessage = string;
-export type deleteConflictMessage = string;
+export type EntityAlreadyExistsMessage = string;
+export type InvalidInputMessage = string;
+export type EntityTemporarilyUnmodifiableMessage = string;
+export type NoSuchEntityMessage = string;
+export type DeleteConflictMessage = string;
 export type ExceptionMessage = string;
 export type FeatureEnabledMessage = string;
-export type serviceFailureExceptionMessage = string;
-export type responseMarkerType = string;
-export type credentialReportExpiredExceptionMessage = string;
-export type summaryContentType = string;
-export type integerType = number;
-export type malformedPolicyDocumentMessage = string;
-export type policyParameterNameType = string;
-export type policyParameterValueType = string;
-export type accessKeySecretType = string | redacted.Redacted<string>;
-export type idType = string;
-export type attachmentCountType = number;
-export type serviceUserName = string;
-export type servicePassword = string | redacted.Redacted<string>;
-export type serviceCredentialAlias = string;
-export type serviceCredentialSecret = string | redacted.Redacted<string>;
+export type ServiceFailureExceptionMessage = string;
+export type ResponseMarkerType = string;
+export type CredentialReportExpiredExceptionMessage = string;
+export type SummaryContentType = string;
+export type IntegerType = number;
+export type MalformedPolicyDocumentMessage = string;
+export type PolicyParameterNameType = string;
+export type PolicyParameterValueType = string;
+export type AccessKeySecretType = string | redacted.Redacted<string>;
+export type IdType = string;
+export type AttachmentCountType = number;
+export type ServiceUserName = string;
+export type ServicePassword = string | redacted.Redacted<string>;
+export type ServiceCredentialAlias = string;
+export type ServiceCredentialSecret = string | redacted.Redacted<string>;
 export type BootstrapDatum = Uint8Array | redacted.Redacted<Uint8Array>;
-export type permissionType = string;
-export type requestorNameType = string;
+export type PermissionType = string;
+export type RequestorNameType = string;
 export type CertificationKeyType = string;
 export type CertificationValueType = string;
-export type serviceNameType = string;
+export type ServiceNameType = string;
 export type ReasonType = string;
-export type publicKeyFingerprintType = string;
-export type invalidUserTypeMessage = string;
-export type openIdIdpCommunicationErrorExceptionMessage = string;
-export type reportGenerationLimitExceededMessage = string;
-export type credentialReportNotPresentExceptionMessage = string;
-export type policyEvaluationErrorMessage = string;
-export type unmodifiableEntityMessage = string;
-export type keyPairMismatchMessage = string;
-export type duplicateCertificateMessage = string;
-export type duplicateSSHPublicKeyMessage = string;
-export type invalidAuthenticationCodeMessage = string;
-export type policyNotAttachableMessage = string;
-export type passwordPolicyViolationMessage = string;
+export type PublicKeyFingerprintType = string;
+export type InvalidUserTypeMessage = string;
+export type OpenIdIdpCommunicationErrorExceptionMessage = string;
+export type ReportGenerationLimitExceededMessage = string;
+export type CredentialReportNotPresentExceptionMessage = string;
+export type PolicyEvaluationErrorMessage = string;
+export type UnmodifiableEntityMessage = string;
+export type KeyPairMismatchMessage = string;
+export type DuplicateCertificateMessage = string;
+export type DuplicateSSHPublicKeyMessage = string;
+export type InvalidAuthenticationCodeMessage = string;
+export type PolicyNotAttachableMessage = string;
+export type PasswordPolicyViolationMessage = string;
 export type RegionNameType = string;
-export type entityNameType = string;
+export type EntityNameType = string;
 export type PolicyIdentifierType = string;
 export type EvalDecisionSourceType = string;
 export type LineNumber = number;
 export type ColumnNumber = number;
-export type consoleDeepLinkType = string;
-export type serviceNotSupportedMessage = string;
-export type credentialReportNotReadyExceptionMessage = string;
-export type unrecognizedPublicKeyEncodingMessage = string;
-export type malformedCertificateMessage = string;
-export type invalidCertificateMessage = string;
-export type invalidPublicKeyMessage = string;
+export type ConsoleDeepLinkType = string;
+export type ServiceNotSupportedMessage = string;
+export type CredentialReportNotReadyExceptionMessage = string;
+export type UnrecognizedPublicKeyEncodingMessage = string;
+export type MalformedCertificateMessage = string;
+export type InvalidCertificateMessage = string;
+export type InvalidPublicKeyMessage = string;
 
 //# Schemas
 export interface DeleteAccountPasswordPolicyRequest {}
@@ -636,12 +635,12 @@ export const ListSAMLProvidersRequest = S.suspend(() =>
 ).annotations({
   identifier: "ListSAMLProvidersRequest",
 }) as any as S.Schema<ListSAMLProvidersRequest>;
-export type clientIDListType = string[];
-export const clientIDListType = S.Array(S.String);
-export type thumbprintListType = string[];
-export const thumbprintListType = S.Array(S.String);
-export type assertionEncryptionModeType = "Required" | "Allowed";
-export const assertionEncryptionModeType = S.Literal("Required", "Allowed");
+export type ClientIDListType = string[];
+export const ClientIDListType = S.Array(S.String);
+export type ThumbprintListType = string[];
+export const ThumbprintListType = S.Array(S.String);
+export type AssertionEncryptionModeType = "Required" | "Allowed";
+export const AssertionEncryptionModeType = S.Literal("Required", "Allowed");
 export type FeatureType = "RootCredentialsManagement" | "RootSessions";
 export const FeatureType = S.Literal(
   "RootCredentialsManagement",
@@ -671,46 +670,46 @@ export const EntityType = S.Literal(
   "LocalManagedPolicy",
   "AWSManagedPolicy",
 );
-export type entityListType = EntityType[];
-export const entityListType = S.Array(EntityType);
+export type EntityListType = EntityType[];
+export const EntityListType = S.Array(EntityType);
 export type SimulationPolicyListType = string[];
 export const SimulationPolicyListType = S.Array(S.String);
 export type ReportFormatType = "text/csv";
 export const ReportFormatType = S.Literal("text/csv");
-export type sortKeyType =
+export type SortKeyType =
   | "SERVICE_NAMESPACE_ASCENDING"
   | "SERVICE_NAMESPACE_DESCENDING"
   | "LAST_AUTHENTICATED_TIME_ASCENDING"
   | "LAST_AUTHENTICATED_TIME_DESCENDING";
-export const sortKeyType = S.Literal(
+export const SortKeyType = S.Literal(
   "SERVICE_NAMESPACE_ASCENDING",
   "SERVICE_NAMESPACE_DESCENDING",
   "LAST_AUTHENTICATED_TIME_ASCENDING",
   "LAST_AUTHENTICATED_TIME_DESCENDING",
 );
-export type encodingType = "SSH" | "PEM";
-export const encodingType = S.Literal("SSH", "PEM");
+export type EncodingType = "SSH" | "PEM";
+export const EncodingType = S.Literal("SSH", "PEM");
 export type PolicyUsageType = "PermissionsPolicy" | "PermissionsBoundary";
 export const PolicyUsageType = S.Literal(
   "PermissionsPolicy",
   "PermissionsBoundary",
 );
-export type policyScopeType = "All" | "AWS" | "Local";
-export const policyScopeType = S.Literal("All", "AWS", "Local");
-export type serviceNamespaceListType = string[];
-export const serviceNamespaceListType = S.Array(S.String);
-export type assignmentStatusType = "Assigned" | "Unassigned" | "Any";
-export const assignmentStatusType = S.Literal("Assigned", "Unassigned", "Any");
-export type globalEndpointTokenVersion = "v1Token" | "v2Token";
-export const globalEndpointTokenVersion = S.Literal("v1Token", "v2Token");
+export type PolicyScopeType = "All" | "AWS" | "Local";
+export const PolicyScopeType = S.Literal("All", "AWS", "Local");
+export type ServiceNamespaceListType = string[];
+export const ServiceNamespaceListType = S.Array(S.String);
+export type AssignmentStatusType = "Assigned" | "Unassigned" | "Any";
+export const AssignmentStatusType = S.Literal("Assigned", "Unassigned", "Any");
+export type GlobalEndpointTokenVersion = "v1Token" | "v2Token";
+export const GlobalEndpointTokenVersion = S.Literal("v1Token", "v2Token");
 export type ActionNameListType = string[];
 export const ActionNameListType = S.Array(S.String);
 export type ResourceNameListType = string[];
 export const ResourceNameListType = S.Array(S.String);
-export type tagKeyListType = string[];
-export const tagKeyListType = S.Array(S.String);
-export type statusType = "Active" | "Inactive" | "Expired";
-export const statusType = S.Literal("Active", "Inactive", "Expired");
+export type TagKeyListType = string[];
+export const TagKeyListType = S.Array(S.String);
+export type StatusType = "Active" | "Inactive" | "Expired";
+export const StatusType = S.Literal("Active", "Inactive", "Expired");
 export interface AcceptDelegationRequestRequest {
   DelegationRequestId: string;
 }
@@ -1026,8 +1025,8 @@ export interface Tag {
 export const Tag = S.suspend(() =>
   S.Struct({ Key: S.String, Value: S.String }),
 ).annotations({ identifier: "Tag" }) as any as S.Schema<Tag>;
-export type tagListType = Tag[];
-export const tagListType = S.Array(Tag);
+export type TagListType = Tag[];
+export const TagListType = S.Array(Tag);
 export interface CreateOpenIDConnectProviderRequest {
   Url: string;
   ClientIDList?: string[];
@@ -1037,9 +1036,9 @@ export interface CreateOpenIDConnectProviderRequest {
 export const CreateOpenIDConnectProviderRequest = S.suspend(() =>
   S.Struct({
     Url: S.String,
-    ClientIDList: S.optional(clientIDListType),
-    ThumbprintList: S.optional(thumbprintListType),
-    Tags: S.optional(tagListType),
+    ClientIDList: S.optional(ClientIDListType),
+    ThumbprintList: S.optional(ThumbprintListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -1067,7 +1066,7 @@ export const CreatePolicyRequest = S.suspend(() =>
     Path: S.optional(S.String),
     PolicyDocument: S.String,
     Description: S.optional(S.String),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -1123,7 +1122,7 @@ export const CreateRoleRequest = S.suspend(() =>
     Description: S.optional(S.String),
     MaxSessionDuration: S.optional(S.Number),
     PermissionsBoundary: S.optional(S.String),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -1142,15 +1141,15 @@ export interface CreateSAMLProviderRequest {
   SAMLMetadataDocument: string;
   Name: string;
   Tags?: Tag[];
-  AssertionEncryptionMode?: assertionEncryptionModeType;
+  AssertionEncryptionMode?: AssertionEncryptionModeType;
   AddPrivateKey?: string | redacted.Redacted<string>;
 }
 export const CreateSAMLProviderRequest = S.suspend(() =>
   S.Struct({
     SAMLMetadataDocument: S.String,
     Name: S.String,
-    Tags: S.optional(tagListType),
-    AssertionEncryptionMode: S.optional(assertionEncryptionModeType),
+    Tags: S.optional(TagListType),
+    AssertionEncryptionMode: S.optional(AssertionEncryptionModeType),
     AddPrivateKey: S.optional(SensitiveString),
   }).pipe(
     T.all(
@@ -1225,7 +1224,7 @@ export const CreateUserRequest = S.suspend(() =>
     Path: S.optional(S.String),
     UserName: S.String,
     PermissionsBoundary: S.optional(S.String),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -1249,7 +1248,7 @@ export const CreateVirtualMFADeviceRequest = S.suspend(() =>
   S.Struct({
     Path: S.optional(S.String),
     VirtualMFADeviceName: S.String,
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -2068,7 +2067,7 @@ export interface GetAccountAuthorizationDetailsRequest {
 }
 export const GetAccountAuthorizationDetailsRequest = S.suspend(() =>
   S.Struct({
-    Filter: S.optional(entityListType),
+    Filter: S.optional(EntityListType),
     MaxItems: S.optional(S.Number),
     Marker: S.optional(S.String),
   }).pipe(
@@ -2300,14 +2299,14 @@ export interface GetOrganizationsAccessReportRequest {
   JobId: string;
   MaxItems?: number;
   Marker?: string;
-  SortKey?: sortKeyType;
+  SortKey?: SortKeyType;
 }
 export const GetOrganizationsAccessReportRequest = S.suspend(() =>
   S.Struct({
     JobId: S.String,
     MaxItems: S.optional(S.Number),
     Marker: S.optional(S.String),
-    SortKey: S.optional(sortKeyType),
+    SortKey: S.optional(SortKeyType),
   }).pipe(
     T.all(
       ns,
@@ -2515,13 +2514,13 @@ export const GetServiceLinkedRoleDeletionStatusRequest = S.suspend(() =>
 export interface GetSSHPublicKeyRequest {
   UserName: string;
   SSHPublicKeyId: string;
-  Encoding: encodingType;
+  Encoding: EncodingType;
 }
 export const GetSSHPublicKeyRequest = S.suspend(() =>
   S.Struct({
     UserName: S.String,
     SSHPublicKeyId: S.String,
-    Encoding: encodingType,
+    Encoding: EncodingType,
   }).pipe(
     T.all(
       ns,
@@ -2980,7 +2979,7 @@ export const ListOrganizationsFeaturesResponse = S.suspend(() =>
   identifier: "ListOrganizationsFeaturesResponse",
 }) as any as S.Schema<ListOrganizationsFeaturesResponse>;
 export interface ListPoliciesRequest {
-  Scope?: policyScopeType;
+  Scope?: PolicyScopeType;
   OnlyAttached?: boolean;
   PathPrefix?: string;
   PolicyUsageFilter?: PolicyUsageType;
@@ -2989,7 +2988,7 @@ export interface ListPoliciesRequest {
 }
 export const ListPoliciesRequest = S.suspend(() =>
   S.Struct({
-    Scope: S.optional(policyScopeType),
+    Scope: S.optional(PolicyScopeType),
     OnlyAttached: S.optional(S.Boolean),
     PathPrefix: S.optional(S.String),
     PolicyUsageFilter: S.optional(PolicyUsageType),
@@ -3018,7 +3017,7 @@ export const ListPoliciesGrantingServiceAccessRequest = S.suspend(() =>
   S.Struct({
     Marker: S.optional(S.String),
     Arn: S.String,
-    ServiceNamespaces: serviceNamespaceListType,
+    ServiceNamespaces: ServiceNamespaceListType,
   }).pipe(
     T.all(
       ns,
@@ -3374,13 +3373,13 @@ export const ListUserTagsRequest = S.suspend(() =>
   identifier: "ListUserTagsRequest",
 }) as any as S.Schema<ListUserTagsRequest>;
 export interface ListVirtualMFADevicesRequest {
-  AssignmentStatus?: assignmentStatusType;
+  AssignmentStatus?: AssignmentStatusType;
   Marker?: string;
   MaxItems?: number;
 }
 export const ListVirtualMFADevicesRequest = S.suspend(() =>
   S.Struct({
-    AssignmentStatus: S.optional(assignmentStatusType),
+    AssignmentStatus: S.optional(AssignmentStatusType),
     Marker: S.optional(S.String),
     MaxItems: S.optional(S.Number),
   }).pipe(
@@ -3741,10 +3740,10 @@ export const SetDefaultPolicyVersionResponse = S.suspend(() =>
   identifier: "SetDefaultPolicyVersionResponse",
 }) as any as S.Schema<SetDefaultPolicyVersionResponse>;
 export interface SetSecurityTokenServicePreferencesRequest {
-  GlobalEndpointTokenVersion: globalEndpointTokenVersion;
+  GlobalEndpointTokenVersion: GlobalEndpointTokenVersion;
 }
 export const SetSecurityTokenServicePreferencesRequest = S.suspend(() =>
-  S.Struct({ GlobalEndpointTokenVersion: globalEndpointTokenVersion }).pipe(
+  S.Struct({ GlobalEndpointTokenVersion: GlobalEndpointTokenVersion }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -3854,7 +3853,7 @@ export interface TagInstanceProfileRequest {
   Tags: Tag[];
 }
 export const TagInstanceProfileRequest = S.suspend(() =>
-  S.Struct({ InstanceProfileName: S.String, Tags: tagListType }).pipe(
+  S.Struct({ InstanceProfileName: S.String, Tags: TagListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -3879,7 +3878,7 @@ export interface TagMFADeviceRequest {
   Tags: Tag[];
 }
 export const TagMFADeviceRequest = S.suspend(() =>
-  S.Struct({ SerialNumber: S.String, Tags: tagListType }).pipe(
+  S.Struct({ SerialNumber: S.String, Tags: TagListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -3904,7 +3903,7 @@ export interface TagOpenIDConnectProviderRequest {
   Tags: Tag[];
 }
 export const TagOpenIDConnectProviderRequest = S.suspend(() =>
-  S.Struct({ OpenIDConnectProviderArn: S.String, Tags: tagListType }).pipe(
+  S.Struct({ OpenIDConnectProviderArn: S.String, Tags: TagListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -3929,7 +3928,7 @@ export interface TagPolicyRequest {
   Tags: Tag[];
 }
 export const TagPolicyRequest = S.suspend(() =>
-  S.Struct({ PolicyArn: S.String, Tags: tagListType }).pipe(
+  S.Struct({ PolicyArn: S.String, Tags: TagListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -3954,7 +3953,7 @@ export interface TagRoleRequest {
   Tags: Tag[];
 }
 export const TagRoleRequest = S.suspend(() =>
-  S.Struct({ RoleName: S.String, Tags: tagListType }).pipe(
+  S.Struct({ RoleName: S.String, Tags: TagListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -3979,7 +3978,7 @@ export interface TagSAMLProviderRequest {
   Tags: Tag[];
 }
 export const TagSAMLProviderRequest = S.suspend(() =>
-  S.Struct({ SAMLProviderArn: S.String, Tags: tagListType }).pipe(
+  S.Struct({ SAMLProviderArn: S.String, Tags: TagListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4004,7 +4003,7 @@ export interface TagServerCertificateRequest {
   Tags: Tag[];
 }
 export const TagServerCertificateRequest = S.suspend(() =>
-  S.Struct({ ServerCertificateName: S.String, Tags: tagListType }).pipe(
+  S.Struct({ ServerCertificateName: S.String, Tags: TagListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4029,7 +4028,7 @@ export interface TagUserRequest {
   Tags: Tag[];
 }
 export const TagUserRequest = S.suspend(() =>
-  S.Struct({ UserName: S.String, Tags: tagListType }).pipe(
+  S.Struct({ UserName: S.String, Tags: TagListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4054,7 +4053,7 @@ export interface UntagInstanceProfileRequest {
   TagKeys: string[];
 }
 export const UntagInstanceProfileRequest = S.suspend(() =>
-  S.Struct({ InstanceProfileName: S.String, TagKeys: tagKeyListType }).pipe(
+  S.Struct({ InstanceProfileName: S.String, TagKeys: TagKeyListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4079,7 +4078,7 @@ export interface UntagMFADeviceRequest {
   TagKeys: string[];
 }
 export const UntagMFADeviceRequest = S.suspend(() =>
-  S.Struct({ SerialNumber: S.String, TagKeys: tagKeyListType }).pipe(
+  S.Struct({ SerialNumber: S.String, TagKeys: TagKeyListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4106,7 +4105,7 @@ export interface UntagOpenIDConnectProviderRequest {
 export const UntagOpenIDConnectProviderRequest = S.suspend(() =>
   S.Struct({
     OpenIDConnectProviderArn: S.String,
-    TagKeys: tagKeyListType,
+    TagKeys: TagKeyListType,
   }).pipe(
     T.all(
       ns,
@@ -4132,7 +4131,7 @@ export interface UntagPolicyRequest {
   TagKeys: string[];
 }
 export const UntagPolicyRequest = S.suspend(() =>
-  S.Struct({ PolicyArn: S.String, TagKeys: tagKeyListType }).pipe(
+  S.Struct({ PolicyArn: S.String, TagKeys: TagKeyListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4157,7 +4156,7 @@ export interface UntagRoleRequest {
   TagKeys: string[];
 }
 export const UntagRoleRequest = S.suspend(() =>
-  S.Struct({ RoleName: S.String, TagKeys: tagKeyListType }).pipe(
+  S.Struct({ RoleName: S.String, TagKeys: TagKeyListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4182,7 +4181,7 @@ export interface UntagSAMLProviderRequest {
   TagKeys: string[];
 }
 export const UntagSAMLProviderRequest = S.suspend(() =>
-  S.Struct({ SAMLProviderArn: S.String, TagKeys: tagKeyListType }).pipe(
+  S.Struct({ SAMLProviderArn: S.String, TagKeys: TagKeyListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4207,7 +4206,7 @@ export interface UntagServerCertificateRequest {
   TagKeys: string[];
 }
 export const UntagServerCertificateRequest = S.suspend(() =>
-  S.Struct({ ServerCertificateName: S.String, TagKeys: tagKeyListType }).pipe(
+  S.Struct({ ServerCertificateName: S.String, TagKeys: TagKeyListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4232,7 +4231,7 @@ export interface UntagUserRequest {
   TagKeys: string[];
 }
 export const UntagUserRequest = S.suspend(() =>
-  S.Struct({ UserName: S.String, TagKeys: tagKeyListType }).pipe(
+  S.Struct({ UserName: S.String, TagKeys: TagKeyListType }).pipe(
     T.all(
       ns,
       T.Http({ method: "POST", uri: "/" }),
@@ -4255,13 +4254,13 @@ export const UntagUserResponse = S.suspend(() =>
 export interface UpdateAccessKeyRequest {
   UserName?: string;
   AccessKeyId: string;
-  Status: statusType;
+  Status: StatusType;
 }
 export const UpdateAccessKeyRequest = S.suspend(() =>
   S.Struct({
     UserName: S.optional(S.String),
     AccessKeyId: S.String,
-    Status: statusType,
+    Status: StatusType,
   }).pipe(
     T.all(
       ns,
@@ -4441,7 +4440,7 @@ export interface UpdateOpenIDConnectProviderThumbprintRequest {
 export const UpdateOpenIDConnectProviderThumbprintRequest = S.suspend(() =>
   S.Struct({
     OpenIDConnectProviderArn: S.String,
-    ThumbprintList: thumbprintListType,
+    ThumbprintList: ThumbprintListType,
   }).pipe(
     T.all(
       ns,
@@ -4514,7 +4513,7 @@ export const UpdateRoleDescriptionRequest = S.suspend(() =>
 export interface UpdateSAMLProviderRequest {
   SAMLMetadataDocument?: string;
   SAMLProviderArn: string;
-  AssertionEncryptionMode?: assertionEncryptionModeType;
+  AssertionEncryptionMode?: AssertionEncryptionModeType;
   AddPrivateKey?: string | redacted.Redacted<string>;
   RemovePrivateKey?: string;
 }
@@ -4522,7 +4521,7 @@ export const UpdateSAMLProviderRequest = S.suspend(() =>
   S.Struct({
     SAMLMetadataDocument: S.optional(S.String),
     SAMLProviderArn: S.String,
-    AssertionEncryptionMode: S.optional(assertionEncryptionModeType),
+    AssertionEncryptionMode: S.optional(AssertionEncryptionModeType),
     AddPrivateKey: S.optional(SensitiveString),
     RemovePrivateKey: S.optional(S.String),
   }).pipe(
@@ -4572,13 +4571,13 @@ export const UpdateServerCertificateResponse = S.suspend(() =>
 export interface UpdateServiceSpecificCredentialRequest {
   UserName?: string;
   ServiceSpecificCredentialId: string;
-  Status: statusType;
+  Status: StatusType;
 }
 export const UpdateServiceSpecificCredentialRequest = S.suspend(() =>
   S.Struct({
     UserName: S.optional(S.String),
     ServiceSpecificCredentialId: S.String,
-    Status: statusType,
+    Status: StatusType,
   }).pipe(
     T.all(
       ns,
@@ -4602,13 +4601,13 @@ export const UpdateServiceSpecificCredentialResponse = S.suspend(() =>
 export interface UpdateSigningCertificateRequest {
   UserName?: string;
   CertificateId: string;
-  Status: statusType;
+  Status: StatusType;
 }
 export const UpdateSigningCertificateRequest = S.suspend(() =>
   S.Struct({
     UserName: S.optional(S.String),
     CertificateId: S.String,
-    Status: statusType,
+    Status: StatusType,
   }).pipe(
     T.all(
       ns,
@@ -4632,13 +4631,13 @@ export const UpdateSigningCertificateResponse = S.suspend(() =>
 export interface UpdateSSHPublicKeyRequest {
   UserName: string;
   SSHPublicKeyId: string;
-  Status: statusType;
+  Status: StatusType;
 }
 export const UpdateSSHPublicKeyRequest = S.suspend(() =>
   S.Struct({
     UserName: S.String,
     SSHPublicKeyId: S.String,
-    Status: statusType,
+    Status: StatusType,
   }).pipe(
     T.all(
       ns,
@@ -4704,7 +4703,7 @@ export const UploadServerCertificateRequest = S.suspend(() =>
     CertificateBody: S.String,
     PrivateKey: SensitiveString,
     CertificateChain: S.optional(S.String),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -4757,7 +4756,7 @@ export const UploadSSHPublicKeyRequest = S.suspend(() =>
 ).annotations({
   identifier: "UploadSSHPublicKeyRequest",
 }) as any as S.Schema<UploadSSHPublicKeyRequest>;
-export type summaryKeyType =
+export type SummaryKeyType =
   | "Users"
   | "UsersQuota"
   | "Groups"
@@ -4792,7 +4791,7 @@ export type summaryKeyType =
   | "RolePolicySizeQuota"
   | "Roles"
   | "RolesQuota";
-export const summaryKeyType = S.Literal(
+export const SummaryKeyType = S.Literal(
   "Users",
   "UsersQuota",
   "Groups",
@@ -4856,20 +4855,20 @@ export const PasswordPolicy = S.suspend(() =>
 ).annotations({
   identifier: "PasswordPolicy",
 }) as any as S.Schema<PasswordPolicy>;
-export type summaryMapType = { [key in summaryKeyType]?: number };
-export const summaryMapType = S.partial(
-  S.Record({ key: summaryKeyType, value: S.Number }),
+export type SummaryMapType = { [key in SummaryKeyType]?: number };
+export const SummaryMapType = S.partial(
+  S.Record({ key: SummaryKeyType, value: S.Number }),
 );
 export type ContextKeyNamesResultListType = string[];
 export const ContextKeyNamesResultListType = S.Array(S.String);
-export type permissionCheckStatusType = "COMPLETE" | "IN_PROGRESS" | "FAILED";
-export const permissionCheckStatusType = S.Literal(
+export type PermissionCheckStatusType = "COMPLETE" | "IN_PROGRESS" | "FAILED";
+export const PermissionCheckStatusType = S.Literal(
   "COMPLETE",
   "IN_PROGRESS",
   "FAILED",
 );
-export type permissionCheckResultType = "ALLOWED" | "DENIED" | "UNSURE";
-export const permissionCheckResultType = S.Literal(
+export type PermissionCheckResultType = "ALLOWED" | "DENIED" | "UNSURE";
+export const PermissionCheckResultType = S.Literal(
   "ALLOWED",
   "DENIED",
   "UNSURE",
@@ -4909,24 +4908,24 @@ export const User = S.suspend(() =>
     CreateDate: S.Date.pipe(T.TimestampFormat("date-time")),
     PasswordLastUsed: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
     PermissionsBoundary: S.optional(AttachedPermissionsBoundary),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }),
 ).annotations({ identifier: "User" }) as any as S.Schema<User>;
-export type userListType = User[];
-export const userListType = S.Array(User);
-export type summaryStateType =
+export type UserListType = User[];
+export const UserListType = S.Array(User);
+export type SummaryStateType =
   | "AVAILABLE"
   | "NOT_AVAILABLE"
   | "NOT_SUPPORTED"
   | "FAILED";
-export const summaryStateType = S.Literal(
+export const SummaryStateType = S.Literal(
   "AVAILABLE",
   "NOT_AVAILABLE",
   "NOT_SUPPORTED",
   "FAILED",
 );
-export type jobStatusType = "IN_PROGRESS" | "COMPLETED" | "FAILED";
-export const jobStatusType = S.Literal("IN_PROGRESS", "COMPLETED", "FAILED");
+export type JobStatusType = "IN_PROGRESS" | "COMPLETED" | "FAILED";
+export const JobStatusType = S.Literal("IN_PROGRESS", "COMPLETED", "FAILED");
 export type DeletionTaskStatusType =
   | "SUCCEEDED"
   | "IN_PROGRESS"
@@ -4938,10 +4937,10 @@ export const DeletionTaskStatusType = S.Literal(
   "FAILED",
   "NOT_STARTED",
 );
-export type accountAliasListType = string[];
-export const accountAliasListType = S.Array(S.String);
-export type policyParameterValuesListType = string[];
-export const policyParameterValuesListType = S.Array(S.String);
+export type AccountAliasListType = string[];
+export const AccountAliasListType = S.Array(S.String);
+export type PolicyParameterValuesListType = string[];
+export const PolicyParameterValuesListType = S.Array(S.String);
 export type PolicyParameterTypeEnum = "string" | "stringList";
 export const PolicyParameterTypeEnum = S.Literal("string", "stringList");
 export interface PolicyParameter {
@@ -4952,14 +4951,14 @@ export interface PolicyParameter {
 export const PolicyParameter = S.suspend(() =>
   S.Struct({
     Name: S.optional(S.String),
-    Values: S.optional(policyParameterValuesListType),
+    Values: S.optional(PolicyParameterValuesListType),
     Type: S.optional(PolicyParameterTypeEnum),
   }),
 ).annotations({
   identifier: "PolicyParameter",
 }) as any as S.Schema<PolicyParameter>;
-export type policyParameterListType = PolicyParameter[];
-export const policyParameterListType = S.Array(PolicyParameter);
+export type PolicyParameterListType = PolicyParameter[];
+export const PolicyParameterListType = S.Array(PolicyParameter);
 export interface DelegationPermission {
   PolicyTemplateArn?: string;
   Parameters?: PolicyParameter[];
@@ -4967,14 +4966,14 @@ export interface DelegationPermission {
 export const DelegationPermission = S.suspend(() =>
   S.Struct({
     PolicyTemplateArn: S.optional(S.String),
-    Parameters: S.optional(policyParameterListType),
+    Parameters: S.optional(PolicyParameterListType),
   }),
 ).annotations({
   identifier: "DelegationPermission",
 }) as any as S.Schema<DelegationPermission>;
-export type rolePermissionRestrictionArnListType = string[];
-export const rolePermissionRestrictionArnListType = S.Array(S.String);
-export type stateType =
+export type RolePermissionRestrictionArnListType = string[];
+export const RolePermissionRestrictionArnListType = S.Array(S.String);
+export type StateType =
   | "UNASSIGNED"
   | "ASSIGNED"
   | "PENDING_APPROVAL"
@@ -4982,7 +4981,7 @@ export type stateType =
   | "ACCEPTED"
   | "REJECTED"
   | "EXPIRED";
-export const stateType = S.Literal(
+export const StateType = S.Literal(
   "UNASSIGNED",
   "ASSIGNED",
   "PENDING_APPROVAL",
@@ -5001,7 +5000,7 @@ export interface DelegationRequest {
   RolePermissionRestrictionArns?: string[];
   OwnerId?: string;
   ApproverId?: string;
-  State?: stateType;
+  State?: StateType;
   ExpirationTime?: Date;
   RequestorId?: string;
   RequestorName?: string;
@@ -5022,11 +5021,11 @@ export const DelegationRequest = S.suspend(() =>
     Permissions: S.optional(DelegationPermission),
     PermissionPolicy: S.optional(S.String),
     RolePermissionRestrictionArns: S.optional(
-      rolePermissionRestrictionArnListType,
+      RolePermissionRestrictionArnListType,
     ),
     OwnerId: S.optional(S.String),
     ApproverId: S.optional(S.String),
-    State: S.optional(stateType),
+    State: S.optional(StateType),
     ExpirationTime: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
     RequestorId: S.optional(S.String),
     RequestorName: S.optional(S.String),
@@ -5041,10 +5040,10 @@ export const DelegationRequest = S.suspend(() =>
 ).annotations({
   identifier: "DelegationRequest",
 }) as any as S.Schema<DelegationRequest>;
-export type delegationRequestsListType = DelegationRequest[];
-export const delegationRequestsListType = S.Array(DelegationRequest);
-export type policyNameListType = string[];
-export const policyNameListType = S.Array(S.String);
+export type DelegationRequestsListType = DelegationRequest[];
+export const DelegationRequestsListType = S.Array(DelegationRequest);
+export type PolicyNameListType = string[];
+export const PolicyNameListType = S.Array(S.String);
 export interface Group {
   Path: string;
   GroupName: string;
@@ -5061,8 +5060,8 @@ export const Group = S.suspend(() =>
     CreateDate: S.Date.pipe(T.TimestampFormat("date-time")),
   }),
 ).annotations({ identifier: "Group" }) as any as S.Schema<Group>;
-export type groupListType = Group[];
-export const groupListType = S.Array(Group);
+export type GroupListType = Group[];
+export const GroupListType = S.Array(Group);
 export interface RoleLastUsed {
   LastUsedDate?: Date;
   Region?: string;
@@ -5097,12 +5096,12 @@ export const Role = S.suspend(() =>
     Description: S.optional(S.String),
     MaxSessionDuration: S.optional(S.Number),
     PermissionsBoundary: S.optional(AttachedPermissionsBoundary),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
     RoleLastUsed: S.optional(RoleLastUsed),
   }),
 ).annotations({ identifier: "Role" }) as any as S.Schema<Role>;
-export type roleListType = Role[];
-export const roleListType = S.Array(Role);
+export type RoleListType = Role[];
+export const RoleListType = S.Array(Role);
 export interface InstanceProfile {
   Path: string;
   InstanceProfileName: string;
@@ -5119,14 +5118,14 @@ export const InstanceProfile = S.suspend(() =>
     InstanceProfileId: S.String,
     Arn: S.String,
     CreateDate: S.Date.pipe(T.TimestampFormat("date-time")),
-    Roles: roleListType,
-    Tags: S.optional(tagListType),
+    Roles: RoleListType,
+    Tags: S.optional(TagListType),
   }),
 ).annotations({
   identifier: "InstanceProfile",
 }) as any as S.Schema<InstanceProfile>;
-export type instanceProfileListType = InstanceProfile[];
-export const instanceProfileListType = S.Array(InstanceProfile);
+export type InstanceProfileListType = InstanceProfile[];
+export const InstanceProfileListType = S.Array(InstanceProfile);
 export interface OpenIDConnectProviderListEntry {
   Arn?: string;
 }
@@ -5166,11 +5165,11 @@ export const Policy = S.suspend(() =>
     Description: S.optional(S.String),
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
     UpdateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }),
 ).annotations({ identifier: "Policy" }) as any as S.Schema<Policy>;
-export type policyListType = Policy[];
-export const policyListType = S.Array(Policy);
+export type PolicyListType = Policy[];
+export const PolicyListType = S.Array(Policy);
 export interface PolicyVersion {
   Document?: string;
   VersionId?: string;
@@ -5187,8 +5186,8 @@ export const PolicyVersion = S.suspend(() =>
 ).annotations({
   identifier: "PolicyVersion",
 }) as any as S.Schema<PolicyVersion>;
-export type policyDocumentVersionListType = PolicyVersion[];
-export const policyDocumentVersionListType = S.Array(PolicyVersion);
+export type PolicyDocumentVersionListType = PolicyVersion[];
+export const PolicyDocumentVersionListType = S.Array(PolicyVersion);
 export interface SAMLProviderListEntry {
   Arn?: string;
   ValidUntil?: Date;
@@ -5220,13 +5219,13 @@ export const VirtualMFADevice = S.suspend(() =>
     QRCodePNG: S.optional(SensitiveBlob),
     User: S.optional(User),
     EnableDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }),
 ).annotations({
   identifier: "VirtualMFADevice",
 }) as any as S.Schema<VirtualMFADevice>;
-export type virtualMFADeviceListType = VirtualMFADevice[];
-export const virtualMFADeviceListType = S.Array(VirtualMFADevice);
+export type VirtualMFADeviceListType = VirtualMFADevice[];
+export const VirtualMFADeviceListType = S.Array(VirtualMFADevice);
 export interface CreateInstanceProfileRequest {
   InstanceProfileName: string;
   Path?: string;
@@ -5236,7 +5235,7 @@ export const CreateInstanceProfileRequest = S.suspend(() =>
   S.Struct({
     InstanceProfileName: S.String,
     Path: S.optional(S.String),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(
     T.all(
       ns,
@@ -5258,7 +5257,7 @@ export interface CreateOpenIDConnectProviderResponse {
 export const CreateOpenIDConnectProviderResponse = S.suspend(() =>
   S.Struct({
     OpenIDConnectProviderArn: S.optional(S.String),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(ns),
 ).annotations({
   identifier: "CreateOpenIDConnectProviderResponse",
@@ -5270,7 +5269,7 @@ export interface CreateSAMLProviderResponse {
 export const CreateSAMLProviderResponse = S.suspend(() =>
   S.Struct({
     SAMLProviderArn: S.optional(S.String),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(ns),
 ).annotations({
   identifier: "CreateSAMLProviderResponse",
@@ -5319,7 +5318,7 @@ export interface GetAccountSummaryResponse {
   SummaryMap?: { [key: string]: number };
 }
 export const GetAccountSummaryResponse = S.suspend(() =>
-  S.Struct({ SummaryMap: S.optional(summaryMapType) }).pipe(ns),
+  S.Struct({ SummaryMap: S.optional(SummaryMapType) }).pipe(ns),
 ).annotations({
   identifier: "GetAccountSummaryResponse",
 }) as any as S.Schema<GetAccountSummaryResponse>;
@@ -5342,7 +5341,7 @@ export interface GetGroupResponse {
 export const GetGroupResponse = S.suspend(() =>
   S.Struct({
     Group: Group,
-    Users: userListType,
+    Users: UserListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5366,13 +5365,13 @@ export const GetGroupPolicyResponse = S.suspend(() =>
 export interface GetHumanReadableSummaryResponse {
   SummaryContent?: string;
   Locale?: string;
-  SummaryState?: summaryStateType;
+  SummaryState?: SummaryStateType;
 }
 export const GetHumanReadableSummaryResponse = S.suspend(() =>
   S.Struct({
     SummaryContent: S.optional(S.String),
     Locale: S.optional(S.String),
-    SummaryState: S.optional(summaryStateType),
+    SummaryState: S.optional(SummaryStateType),
   }).pipe(ns),
 ).annotations({
   identifier: "GetHumanReadableSummaryResponse",
@@ -5407,10 +5406,10 @@ export interface GetOpenIDConnectProviderResponse {
 export const GetOpenIDConnectProviderResponse = S.suspend(() =>
   S.Struct({
     Url: S.optional(S.String),
-    ClientIDList: S.optional(clientIDListType),
-    ThumbprintList: S.optional(thumbprintListType),
+    ClientIDList: S.optional(ClientIDListType),
+    ThumbprintList: S.optional(ThumbprintListType),
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(ns),
 ).annotations({
   identifier: "GetOpenIDConnectProviderResponse",
@@ -5482,7 +5481,7 @@ export interface ListAccountAliasesResponse {
 }
 export const ListAccountAliasesResponse = S.suspend(() =>
   S.Struct({
-    AccountAliases: accountAliasListType,
+    AccountAliases: AccountAliasListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5501,8 +5500,8 @@ export const AttachedPolicy = S.suspend(() =>
 ).annotations({
   identifier: "AttachedPolicy",
 }) as any as S.Schema<AttachedPolicy>;
-export type attachedPoliciesListType = AttachedPolicy[];
-export const attachedPoliciesListType = S.Array(AttachedPolicy);
+export type AttachedPoliciesListType = AttachedPolicy[];
+export const AttachedPoliciesListType = S.Array(AttachedPolicy);
 export interface ListAttachedRolePoliciesResponse {
   AttachedPolicies?: AttachedPolicy[];
   IsTruncated?: boolean;
@@ -5510,7 +5509,7 @@ export interface ListAttachedRolePoliciesResponse {
 }
 export const ListAttachedRolePoliciesResponse = S.suspend(() =>
   S.Struct({
-    AttachedPolicies: S.optional(attachedPoliciesListType),
+    AttachedPolicies: S.optional(AttachedPoliciesListType),
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5524,7 +5523,7 @@ export interface ListAttachedUserPoliciesResponse {
 }
 export const ListAttachedUserPoliciesResponse = S.suspend(() =>
   S.Struct({
-    AttachedPolicies: S.optional(attachedPoliciesListType),
+    AttachedPolicies: S.optional(AttachedPoliciesListType),
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5538,7 +5537,7 @@ export interface ListDelegationRequestsResponse {
 }
 export const ListDelegationRequestsResponse = S.suspend(() =>
   S.Struct({
-    DelegationRequests: S.optional(delegationRequestsListType),
+    DelegationRequests: S.optional(DelegationRequestsListType),
     Marker: S.optional(S.String),
     isTruncated: S.optional(S.Boolean),
   }).pipe(ns),
@@ -5552,7 +5551,7 @@ export interface ListGroupPoliciesResponse {
 }
 export const ListGroupPoliciesResponse = S.suspend(() =>
   S.Struct({
-    PolicyNames: policyNameListType,
+    PolicyNames: PolicyNameListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5566,7 +5565,7 @@ export interface ListGroupsResponse {
 }
 export const ListGroupsResponse = S.suspend(() =>
   S.Struct({
-    Groups: groupListType,
+    Groups: GroupListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5580,7 +5579,7 @@ export interface ListGroupsForUserResponse {
 }
 export const ListGroupsForUserResponse = S.suspend(() =>
   S.Struct({
-    Groups: groupListType,
+    Groups: GroupListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5594,7 +5593,7 @@ export interface ListInstanceProfilesResponse {
 }
 export const ListInstanceProfilesResponse = S.suspend(() =>
   S.Struct({
-    InstanceProfiles: instanceProfileListType,
+    InstanceProfiles: InstanceProfileListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5608,7 +5607,7 @@ export interface ListInstanceProfilesForRoleResponse {
 }
 export const ListInstanceProfilesForRoleResponse = S.suspend(() =>
   S.Struct({
-    InstanceProfiles: instanceProfileListType,
+    InstanceProfiles: InstanceProfileListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5622,7 +5621,7 @@ export interface ListInstanceProfileTagsResponse {
 }
 export const ListInstanceProfileTagsResponse = S.suspend(() =>
   S.Struct({
-    Tags: tagListType,
+    Tags: TagListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5636,7 +5635,7 @@ export interface ListMFADeviceTagsResponse {
 }
 export const ListMFADeviceTagsResponse = S.suspend(() =>
   S.Struct({
-    Tags: tagListType,
+    Tags: TagListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5660,7 +5659,7 @@ export interface ListOpenIDConnectProviderTagsResponse {
 }
 export const ListOpenIDConnectProviderTagsResponse = S.suspend(() =>
   S.Struct({
-    Tags: tagListType,
+    Tags: TagListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5674,7 +5673,7 @@ export interface ListPoliciesResponse {
 }
 export const ListPoliciesResponse = S.suspend(() =>
   S.Struct({
-    Policies: S.optional(policyListType),
+    Policies: S.optional(PolicyListType),
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5688,7 +5687,7 @@ export interface ListPolicyTagsResponse {
 }
 export const ListPolicyTagsResponse = S.suspend(() =>
   S.Struct({
-    Tags: tagListType,
+    Tags: TagListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5702,7 +5701,7 @@ export interface ListPolicyVersionsResponse {
 }
 export const ListPolicyVersionsResponse = S.suspend(() =>
   S.Struct({
-    Versions: S.optional(policyDocumentVersionListType),
+    Versions: S.optional(PolicyDocumentVersionListType),
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5716,7 +5715,7 @@ export interface ListRolePoliciesResponse {
 }
 export const ListRolePoliciesResponse = S.suspend(() =>
   S.Struct({
-    PolicyNames: policyNameListType,
+    PolicyNames: PolicyNameListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5730,7 +5729,7 @@ export interface ListRolesResponse {
 }
 export const ListRolesResponse = S.suspend(() =>
   S.Struct({
-    Roles: roleListType,
+    Roles: RoleListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5744,7 +5743,7 @@ export interface ListRoleTagsResponse {
 }
 export const ListRoleTagsResponse = S.suspend(() =>
   S.Struct({
-    Tags: tagListType,
+    Tags: TagListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5766,7 +5765,7 @@ export interface ListSAMLProviderTagsResponse {
 }
 export const ListSAMLProviderTagsResponse = S.suspend(() =>
   S.Struct({
-    Tags: tagListType,
+    Tags: TagListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5780,7 +5779,7 @@ export interface ListServerCertificateTagsResponse {
 }
 export const ListServerCertificateTagsResponse = S.suspend(() =>
   S.Struct({
-    Tags: tagListType,
+    Tags: TagListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5794,7 +5793,7 @@ export interface ListUserPoliciesResponse {
 }
 export const ListUserPoliciesResponse = S.suspend(() =>
   S.Struct({
-    PolicyNames: policyNameListType,
+    PolicyNames: PolicyNameListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5808,7 +5807,7 @@ export interface ListUsersResponse {
 }
 export const ListUsersResponse = S.suspend(() =>
   S.Struct({
-    Users: userListType,
+    Users: UserListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5822,7 +5821,7 @@ export interface ListUserTagsResponse {
 }
 export const ListUserTagsResponse = S.suspend(() =>
   S.Struct({
-    Tags: tagListType,
+    Tags: TagListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5836,7 +5835,7 @@ export interface ListVirtualMFADevicesResponse {
 }
 export const ListVirtualMFADevicesResponse = S.suspend(() =>
   S.Struct({
-    VirtualMFADevices: virtualMFADeviceListType,
+    VirtualMFADevices: VirtualMFADeviceListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -5853,7 +5852,7 @@ export interface ServiceSpecificCredential {
   ServiceCredentialSecret?: string | redacted.Redacted<string>;
   ServiceSpecificCredentialId: string;
   UserName: string;
-  Status: statusType;
+  Status: StatusType;
 }
 export const ServiceSpecificCredential = S.suspend(() =>
   S.Struct({
@@ -5866,7 +5865,7 @@ export const ServiceSpecificCredential = S.suspend(() =>
     ServiceCredentialSecret: S.optional(SensitiveString),
     ServiceSpecificCredentialId: S.String,
     UserName: S.String,
-    Status: statusType,
+    Status: StatusType,
   }),
 ).annotations({
   identifier: "ServiceSpecificCredential",
@@ -5964,7 +5963,7 @@ export interface UploadServerCertificateResponse {
 export const UploadServerCertificateResponse = S.suspend(() =>
   S.Struct({
     ServerCertificateMetadata: S.optional(ServerCertificateMetadata),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }).pipe(ns),
 ).annotations({
   identifier: "UploadServerCertificateResponse",
@@ -5973,7 +5972,7 @@ export interface SigningCertificate {
   UserName: string;
   CertificateId: string;
   CertificateBody: string;
-  Status: statusType;
+  Status: StatusType;
   UploadDate?: Date;
 }
 export const SigningCertificate = S.suspend(() =>
@@ -5981,7 +5980,7 @@ export const SigningCertificate = S.suspend(() =>
     UserName: S.String,
     CertificateId: S.String,
     CertificateBody: S.String,
-    Status: statusType,
+    Status: StatusType,
     UploadDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
   }),
 ).annotations({
@@ -6000,7 +5999,7 @@ export interface SSHPublicKey {
   SSHPublicKeyId: string;
   Fingerprint: string;
   SSHPublicKeyBody: string;
-  Status: statusType;
+  Status: StatusType;
   UploadDate?: Date;
 }
 export const SSHPublicKey = S.suspend(() =>
@@ -6009,7 +6008,7 @@ export const SSHPublicKey = S.suspend(() =>
     SSHPublicKeyId: S.String,
     Fingerprint: S.String,
     SSHPublicKeyBody: S.String,
-    Status: statusType,
+    Status: StatusType,
     UploadDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
   }),
 ).annotations({ identifier: "SSHPublicKey" }) as any as S.Schema<SSHPublicKey>;
@@ -6021,8 +6020,8 @@ export const UploadSSHPublicKeyResponse = S.suspend(() =>
 ).annotations({
   identifier: "UploadSSHPublicKeyResponse",
 }) as any as S.Schema<UploadSSHPublicKeyResponse>;
-export type groupNameListType = string[];
-export const groupNameListType = S.Array(S.String);
+export type GroupNameListType = string[];
+export const GroupNameListType = S.Array(S.String);
 export type PolicyEvaluationDecisionType =
   | "allowed"
   | "explicitDeny"
@@ -6035,7 +6034,7 @@ export const PolicyEvaluationDecisionType = S.Literal(
 export interface AccessKey {
   UserName: string;
   AccessKeyId: string;
-  Status: statusType;
+  Status: StatusType;
   SecretAccessKey: string | redacted.Redacted<string>;
   CreateDate?: Date;
 }
@@ -6043,7 +6042,7 @@ export const AccessKey = S.suspend(() =>
   S.Struct({
     UserName: S.String,
     AccessKeyId: S.String,
-    Status: statusType,
+    Status: StatusType,
     SecretAccessKey: SensitiveString,
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
   }),
@@ -6072,8 +6071,8 @@ export const PolicyDetail = S.suspend(() =>
     PolicyDocument: S.optional(S.String),
   }),
 ).annotations({ identifier: "PolicyDetail" }) as any as S.Schema<PolicyDetail>;
-export type policyDetailListType = PolicyDetail[];
-export const policyDetailListType = S.Array(PolicyDetail);
+export type PolicyDetailListType = PolicyDetail[];
+export const PolicyDetailListType = S.Array(PolicyDetail);
 export interface GroupDetail {
   Path?: string;
   GroupName?: string;
@@ -6090,12 +6089,12 @@ export const GroupDetail = S.suspend(() =>
     GroupId: S.optional(S.String),
     Arn: S.optional(S.String),
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
-    GroupPolicyList: S.optional(policyDetailListType),
-    AttachedManagedPolicies: S.optional(attachedPoliciesListType),
+    GroupPolicyList: S.optional(PolicyDetailListType),
+    AttachedManagedPolicies: S.optional(AttachedPoliciesListType),
   }),
 ).annotations({ identifier: "GroupDetail" }) as any as S.Schema<GroupDetail>;
-export type groupDetailListType = GroupDetail[];
-export const groupDetailListType = S.Array(GroupDetail);
+export type GroupDetailListType = GroupDetail[];
+export const GroupDetailListType = S.Array(GroupDetail);
 export interface RoleDetail {
   Path?: string;
   RoleName?: string;
@@ -6118,16 +6117,16 @@ export const RoleDetail = S.suspend(() =>
     Arn: S.optional(S.String),
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
     AssumeRolePolicyDocument: S.optional(S.String),
-    InstanceProfileList: S.optional(instanceProfileListType),
-    RolePolicyList: S.optional(policyDetailListType),
-    AttachedManagedPolicies: S.optional(attachedPoliciesListType),
+    InstanceProfileList: S.optional(InstanceProfileListType),
+    RolePolicyList: S.optional(PolicyDetailListType),
+    AttachedManagedPolicies: S.optional(AttachedPoliciesListType),
     PermissionsBoundary: S.optional(AttachedPermissionsBoundary),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
     RoleLastUsed: S.optional(RoleLastUsed),
   }),
 ).annotations({ identifier: "RoleDetail" }) as any as S.Schema<RoleDetail>;
-export type roleDetailListType = RoleDetail[];
-export const roleDetailListType = S.Array(RoleDetail);
+export type RoleDetailListType = RoleDetail[];
+export const RoleDetailListType = S.Array(RoleDetail);
 export interface ManagedPolicyDetail {
   PolicyName?: string;
   PolicyId?: string;
@@ -6155,7 +6154,7 @@ export const ManagedPolicyDetail = S.suspend(() =>
     Description: S.optional(S.String),
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
     UpdateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
-    PolicyVersionList: S.optional(policyDocumentVersionListType),
+    PolicyVersionList: S.optional(PolicyDocumentVersionListType),
   }),
 ).annotations({
   identifier: "ManagedPolicyDetail",
@@ -6208,8 +6207,8 @@ export const SAMLPrivateKey = S.suspend(() =>
 ).annotations({
   identifier: "SAMLPrivateKey",
 }) as any as S.Schema<SAMLPrivateKey>;
-export type privateKeyList = SAMLPrivateKey[];
-export const privateKeyList = S.Array(SAMLPrivateKey);
+export type PrivateKeyList = SAMLPrivateKey[];
+export const PrivateKeyList = S.Array(SAMLPrivateKey);
 export interface ServerCertificate {
   ServerCertificateMetadata: ServerCertificateMetadata;
   CertificateBody: string;
@@ -6221,7 +6220,7 @@ export const ServerCertificate = S.suspend(() =>
     ServerCertificateMetadata: ServerCertificateMetadata,
     CertificateBody: S.String,
     CertificateChain: S.optional(S.String),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }),
 ).annotations({
   identifier: "ServerCertificate",
@@ -6229,21 +6228,21 @@ export const ServerCertificate = S.suspend(() =>
 export interface AccessKeyMetadata {
   UserName?: string;
   AccessKeyId?: string;
-  Status?: statusType;
+  Status?: StatusType;
   CreateDate?: Date;
 }
 export const AccessKeyMetadata = S.suspend(() =>
   S.Struct({
     UserName: S.optional(S.String),
     AccessKeyId: S.optional(S.String),
-    Status: S.optional(statusType),
+    Status: S.optional(StatusType),
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
   }),
 ).annotations({
   identifier: "AccessKeyMetadata",
 }) as any as S.Schema<AccessKeyMetadata>;
-export type accessKeyMetadataListType = AccessKeyMetadata[];
-export const accessKeyMetadataListType = S.Array(AccessKeyMetadata);
+export type AccessKeyMetadataListType = AccessKeyMetadata[];
+export const AccessKeyMetadataListType = S.Array(AccessKeyMetadata);
 export interface PolicyGroup {
   GroupName?: string;
   GroupId?: string;
@@ -6283,15 +6282,15 @@ export const MFADevice = S.suspend(() =>
     EnableDate: S.Date.pipe(T.TimestampFormat("date-time")),
   }),
 ).annotations({ identifier: "MFADevice" }) as any as S.Schema<MFADevice>;
-export type mfaDeviceListType = MFADevice[];
-export const mfaDeviceListType = S.Array(MFADevice);
-export type serverCertificateMetadataListType = ServerCertificateMetadata[];
-export const serverCertificateMetadataListType = S.Array(
+export type MfaDeviceListType = MFADevice[];
+export const MfaDeviceListType = S.Array(MFADevice);
+export type ServerCertificateMetadataListType = ServerCertificateMetadata[];
+export const ServerCertificateMetadataListType = S.Array(
   ServerCertificateMetadata,
 );
 export interface ServiceSpecificCredentialMetadata {
   UserName: string;
-  Status: statusType;
+  Status: StatusType;
   ServiceUserName?: string;
   ServiceCredentialAlias?: string;
   CreateDate: Date;
@@ -6302,7 +6301,7 @@ export interface ServiceSpecificCredentialMetadata {
 export const ServiceSpecificCredentialMetadata = S.suspend(() =>
   S.Struct({
     UserName: S.String,
-    Status: statusType,
+    Status: StatusType,
     ServiceUserName: S.optional(S.String),
     ServiceCredentialAlias: S.optional(S.String),
     CreateDate: S.Date.pipe(T.TimestampFormat("date-time")),
@@ -6318,19 +6317,19 @@ export type ServiceSpecificCredentialsListType =
 export const ServiceSpecificCredentialsListType = S.Array(
   ServiceSpecificCredentialMetadata,
 );
-export type certificateListType = SigningCertificate[];
-export const certificateListType = S.Array(SigningCertificate);
+export type CertificateListType = SigningCertificate[];
+export const CertificateListType = S.Array(SigningCertificate);
 export interface SSHPublicKeyMetadata {
   UserName: string;
   SSHPublicKeyId: string;
-  Status: statusType;
+  Status: StatusType;
   UploadDate: Date;
 }
 export const SSHPublicKeyMetadata = S.suspend(() =>
   S.Struct({
     UserName: S.String,
     SSHPublicKeyId: S.String,
-    Status: statusType,
+    Status: StatusType,
     UploadDate: S.Date.pipe(T.TimestampFormat("date-time")),
   }),
 ).annotations({
@@ -6338,12 +6337,12 @@ export const SSHPublicKeyMetadata = S.suspend(() =>
 }) as any as S.Schema<SSHPublicKeyMetadata>;
 export type SSHPublicKeyListType = SSHPublicKeyMetadata[];
 export const SSHPublicKeyListType = S.Array(SSHPublicKeyMetadata);
-export type policyOwnerEntityType = "USER" | "ROLE" | "GROUP";
-export const policyOwnerEntityType = S.Literal("USER", "ROLE", "GROUP");
+export type PolicyOwnerEntityType = "USER" | "ROLE" | "GROUP";
+export const PolicyOwnerEntityType = S.Literal("USER", "ROLE", "GROUP");
 export type ArnListType = string[];
 export const ArnListType = S.Array(S.String);
-export type policyType = "INLINE" | "MANAGED";
-export const policyType = S.Literal("INLINE", "MANAGED");
+export type PolicyType = "INLINE" | "MANAGED";
+export const PolicyType = S.Literal("INLINE", "MANAGED");
 export type PolicySourceType =
   | "user"
   | "group"
@@ -6485,14 +6484,14 @@ export const GetAccessKeyLastUsedResponse = S.suspend(() =>
 }) as any as S.Schema<GetAccessKeyLastUsedResponse>;
 export interface GetDelegationRequestResponse {
   DelegationRequest?: DelegationRequest;
-  PermissionCheckStatus?: permissionCheckStatusType;
-  PermissionCheckResult?: permissionCheckResultType;
+  PermissionCheckStatus?: PermissionCheckStatusType;
+  PermissionCheckResult?: PermissionCheckResultType;
 }
 export const GetDelegationRequestResponse = S.suspend(() =>
   S.Struct({
     DelegationRequest: S.optional(DelegationRequest),
-    PermissionCheckStatus: S.optional(permissionCheckStatusType),
-    PermissionCheckResult: S.optional(permissionCheckResultType),
+    PermissionCheckStatus: S.optional(PermissionCheckStatusType),
+    PermissionCheckResult: S.optional(PermissionCheckResultType),
   }).pipe(ns),
 ).annotations({
   identifier: "GetDelegationRequestResponse",
@@ -6522,7 +6521,7 @@ export const GetMFADeviceResponse = S.suspend(() =>
   identifier: "GetMFADeviceResponse",
 }) as any as S.Schema<GetMFADeviceResponse>;
 export interface GetOrganizationsAccessReportResponse {
-  JobStatus: jobStatusType;
+  JobStatus: JobStatusType;
   JobCreationDate: Date;
   JobCompletionDate?: Date;
   NumberOfServicesAccessible?: number;
@@ -6534,7 +6533,7 @@ export interface GetOrganizationsAccessReportResponse {
 }
 export const GetOrganizationsAccessReportResponse = S.suspend(() =>
   S.Struct({
-    JobStatus: jobStatusType,
+    JobStatus: JobStatusType,
     JobCreationDate: S.Date.pipe(T.TimestampFormat("date-time")),
     JobCompletionDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
     NumberOfServicesAccessible: S.optional(S.Number),
@@ -6553,7 +6552,7 @@ export interface GetSAMLProviderResponse {
   CreateDate?: Date;
   ValidUntil?: Date;
   Tags?: Tag[];
-  AssertionEncryptionMode?: assertionEncryptionModeType;
+  AssertionEncryptionMode?: AssertionEncryptionModeType;
   PrivateKeyList?: SAMLPrivateKey[];
 }
 export const GetSAMLProviderResponse = S.suspend(() =>
@@ -6562,9 +6561,9 @@ export const GetSAMLProviderResponse = S.suspend(() =>
     SAMLMetadataDocument: S.optional(S.String),
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
     ValidUntil: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
-    Tags: S.optional(tagListType),
-    AssertionEncryptionMode: S.optional(assertionEncryptionModeType),
-    PrivateKeyList: S.optional(privateKeyList),
+    Tags: S.optional(TagListType),
+    AssertionEncryptionMode: S.optional(AssertionEncryptionModeType),
+    PrivateKeyList: S.optional(PrivateKeyList),
   }).pipe(ns),
 ).annotations({
   identifier: "GetSAMLProviderResponse",
@@ -6592,7 +6591,7 @@ export interface ListAccessKeysResponse {
 }
 export const ListAccessKeysResponse = S.suspend(() =>
   S.Struct({
-    AccessKeyMetadata: accessKeyMetadataListType,
+    AccessKeyMetadata: AccessKeyMetadataListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -6606,7 +6605,7 @@ export interface ListAttachedGroupPoliciesResponse {
 }
 export const ListAttachedGroupPoliciesResponse = S.suspend(() =>
   S.Struct({
-    AttachedPolicies: S.optional(attachedPoliciesListType),
+    AttachedPolicies: S.optional(AttachedPoliciesListType),
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -6638,7 +6637,7 @@ export interface ListMFADevicesResponse {
 }
 export const ListMFADevicesResponse = S.suspend(() =>
   S.Struct({
-    MFADevices: mfaDeviceListType,
+    MFADevices: MfaDeviceListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -6652,7 +6651,7 @@ export interface ListServerCertificatesResponse {
 }
 export const ListServerCertificatesResponse = S.suspend(() =>
   S.Struct({
-    ServerCertificateMetadataList: serverCertificateMetadataListType,
+    ServerCertificateMetadataList: ServerCertificateMetadataListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -6680,7 +6679,7 @@ export interface ListSigningCertificatesResponse {
 }
 export const ListSigningCertificatesResponse = S.suspend(() =>
   S.Struct({
-    Certificates: certificateListType,
+    Certificates: CertificateListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -6722,7 +6721,7 @@ export const TrackedActionsLastAccessed = S.Array(TrackedActionLastAccessed);
 export interface EntityInfo {
   Arn: string;
   Name: string;
-  Type: policyOwnerEntityType;
+  Type: PolicyOwnerEntityType;
   Id: string;
   Path?: string;
 }
@@ -6730,7 +6729,7 @@ export const EntityInfo = S.suspend(() =>
   S.Struct({
     Arn: S.String,
     Name: S.String,
-    Type: policyOwnerEntityType,
+    Type: PolicyOwnerEntityType,
     Id: S.String,
     Path: S.optional(S.String),
   }),
@@ -6751,24 +6750,24 @@ export type RoleUsageListType = RoleUsageType[];
 export const RoleUsageListType = S.Array(RoleUsageType);
 export interface PolicyGrantingServiceAccess {
   PolicyName: string;
-  PolicyType: policyType;
+  PolicyType: PolicyType;
   PolicyArn?: string;
-  EntityType?: policyOwnerEntityType;
+  EntityType?: PolicyOwnerEntityType;
   EntityName?: string;
 }
 export const PolicyGrantingServiceAccess = S.suspend(() =>
   S.Struct({
     PolicyName: S.String,
-    PolicyType: policyType,
+    PolicyType: PolicyType,
     PolicyArn: S.optional(S.String),
-    EntityType: S.optional(policyOwnerEntityType),
+    EntityType: S.optional(PolicyOwnerEntityType),
     EntityName: S.optional(S.String),
   }),
 ).annotations({
   identifier: "PolicyGrantingServiceAccess",
 }) as any as S.Schema<PolicyGrantingServiceAccess>;
-export type policyGrantingServiceAccessListType = PolicyGrantingServiceAccess[];
-export const policyGrantingServiceAccessListType = S.Array(
+export type PolicyGrantingServiceAccessListType = PolicyGrantingServiceAccess[];
+export const PolicyGrantingServiceAccessListType = S.Array(
   PolicyGrantingServiceAccess,
 );
 export interface OrganizationsDecisionDetail {
@@ -6860,15 +6859,15 @@ export const UserDetail = S.suspend(() =>
     UserId: S.optional(S.String),
     Arn: S.optional(S.String),
     CreateDate: S.optional(S.Date.pipe(T.TimestampFormat("date-time"))),
-    UserPolicyList: S.optional(policyDetailListType),
-    GroupList: S.optional(groupNameListType),
-    AttachedManagedPolicies: S.optional(attachedPoliciesListType),
+    UserPolicyList: S.optional(PolicyDetailListType),
+    GroupList: S.optional(GroupNameListType),
+    AttachedManagedPolicies: S.optional(AttachedPoliciesListType),
     PermissionsBoundary: S.optional(AttachedPermissionsBoundary),
-    Tags: S.optional(tagListType),
+    Tags: S.optional(TagListType),
   }),
 ).annotations({ identifier: "UserDetail" }) as any as S.Schema<UserDetail>;
-export type userDetailListType = UserDetail[];
-export const userDetailListType = S.Array(UserDetail);
+export type UserDetailListType = UserDetail[];
+export const UserDetailListType = S.Array(UserDetail);
 export interface ServiceLastAccessed {
   ServiceName: string;
   LastAuthenticated?: Date;
@@ -6905,8 +6904,8 @@ export const EntityDetails = S.suspend(() =>
 ).annotations({
   identifier: "EntityDetails",
 }) as any as S.Schema<EntityDetails>;
-export type entityDetailsListType = EntityDetails[];
-export const entityDetailsListType = S.Array(EntityDetails);
+export type EntityDetailsListType = EntityDetails[];
+export const EntityDetailsListType = S.Array(EntityDetails);
 export interface DeletionTaskFailureReasonType {
   Reason?: string;
   RoleUsageList?: RoleUsageType[];
@@ -6926,14 +6925,14 @@ export interface ListPoliciesGrantingServiceAccessEntry {
 export const ListPoliciesGrantingServiceAccessEntry = S.suspend(() =>
   S.Struct({
     ServiceNamespace: S.optional(S.String),
-    Policies: S.optional(policyGrantingServiceAccessListType),
+    Policies: S.optional(PolicyGrantingServiceAccessListType),
   }),
 ).annotations({
   identifier: "ListPoliciesGrantingServiceAccessEntry",
 }) as any as S.Schema<ListPoliciesGrantingServiceAccessEntry>;
-export type listPolicyGrantingServiceAccessResponseListType =
+export type ListPolicyGrantingServiceAccessResponseListType =
   ListPoliciesGrantingServiceAccessEntry[];
-export const listPolicyGrantingServiceAccessResponseListType = S.Array(
+export const ListPolicyGrantingServiceAccessResponseListType = S.Array(
   ListPoliciesGrantingServiceAccessEntry,
 );
 export interface CreateDelegationRequestResponse {
@@ -6966,9 +6965,9 @@ export interface GetAccountAuthorizationDetailsResponse {
 }
 export const GetAccountAuthorizationDetailsResponse = S.suspend(() =>
   S.Struct({
-    UserDetailList: S.optional(userDetailListType),
-    GroupDetailList: S.optional(groupDetailListType),
-    RoleDetailList: S.optional(roleDetailListType),
+    UserDetailList: S.optional(UserDetailListType),
+    GroupDetailList: S.optional(GroupDetailListType),
+    RoleDetailList: S.optional(RoleDetailListType),
     Policies: S.optional(ManagedPolicyDetailListType),
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
@@ -6977,7 +6976,7 @@ export const GetAccountAuthorizationDetailsResponse = S.suspend(() =>
   identifier: "GetAccountAuthorizationDetailsResponse",
 }) as any as S.Schema<GetAccountAuthorizationDetailsResponse>;
 export interface GetServiceLastAccessedDetailsResponse {
-  JobStatus: jobStatusType;
+  JobStatus: JobStatusType;
   JobType?: AccessAdvisorUsageGranularityType;
   JobCreationDate: Date;
   ServicesLastAccessed: ServiceLastAccessed[];
@@ -6988,7 +6987,7 @@ export interface GetServiceLastAccessedDetailsResponse {
 }
 export const GetServiceLastAccessedDetailsResponse = S.suspend(() =>
   S.Struct({
-    JobStatus: jobStatusType,
+    JobStatus: JobStatusType,
     JobType: S.optional(AccessAdvisorUsageGranularityType),
     JobCreationDate: S.Date.pipe(T.TimestampFormat("date-time")),
     ServicesLastAccessed: ServicesLastAccessed,
@@ -7001,7 +7000,7 @@ export const GetServiceLastAccessedDetailsResponse = S.suspend(() =>
   identifier: "GetServiceLastAccessedDetailsResponse",
 }) as any as S.Schema<GetServiceLastAccessedDetailsResponse>;
 export interface GetServiceLastAccessedDetailsWithEntitiesResponse {
-  JobStatus: jobStatusType;
+  JobStatus: JobStatusType;
   JobCreationDate: Date;
   JobCompletionDate: Date;
   EntityDetailsList: EntityDetails[];
@@ -7011,10 +7010,10 @@ export interface GetServiceLastAccessedDetailsWithEntitiesResponse {
 }
 export const GetServiceLastAccessedDetailsWithEntitiesResponse = S.suspend(() =>
   S.Struct({
-    JobStatus: jobStatusType,
+    JobStatus: JobStatusType,
     JobCreationDate: S.Date.pipe(T.TimestampFormat("date-time")),
     JobCompletionDate: S.Date.pipe(T.TimestampFormat("date-time")),
-    EntityDetailsList: entityDetailsListType,
+    EntityDetailsList: EntityDetailsListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
     Error: S.optional(ErrorDetails),
@@ -7042,7 +7041,7 @@ export interface ListPoliciesGrantingServiceAccessResponse {
 export const ListPoliciesGrantingServiceAccessResponse = S.suspend(() =>
   S.Struct({
     PoliciesGrantingServiceAccess:
-      listPolicyGrantingServiceAccessResponseListType,
+      ListPolicyGrantingServiceAccessResponseListType,
     IsTruncated: S.optional(S.Boolean),
     Marker: S.optional(S.String),
   }).pipe(ns),
@@ -7818,7 +7817,7 @@ export const listAccountAliases: {
   items: (
     input: ListAccountAliasesRequest,
   ) => stream.Stream<
-    accountAliasType,
+    AccountAliasType,
     ServiceFailureException | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
   >;
@@ -8012,7 +8011,7 @@ export const listGroupPolicies: {
   items: (
     input: ListGroupPoliciesRequest,
   ) => stream.Stream<
-    policyNameType,
+    PolicyNameType,
     NoSuchEntityException | ServiceFailureException | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
   >;
@@ -8542,7 +8541,7 @@ export const listRolePolicies: {
   items: (
     input: ListRolePoliciesRequest,
   ) => stream.Stream<
-    policyNameType,
+    PolicyNameType,
     NoSuchEntityException | ServiceFailureException | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
   >;
@@ -8793,7 +8792,7 @@ export const listUserPolicies: {
   items: (
     input: ListUserPoliciesRequest,
   ) => stream.Stream<
-    policyNameType,
+    PolicyNameType,
     NoSuchEntityException | ServiceFailureException | CommonErrors,
     Credentials | Region | HttpClient.HttpClient
   >;

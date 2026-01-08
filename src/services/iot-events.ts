@@ -106,7 +106,7 @@ export type TagKey = string;
 export type TagValue = string;
 export type StateName = string;
 export type LoggingEnabled = boolean;
-export type errorMessage = string;
+export type ErrorMessage = string;
 export type AlarmModelArn = string;
 export type StatusMessage = string;
 export type InputProperty = string;
@@ -154,8 +154,8 @@ export type VariableName = string;
 export type VariableValue = string;
 export type TimerName = string;
 export type Seconds = number;
-export type resourceId = string;
-export type resourceArn = string;
+export type ResourceId = string;
+export type ResourceArn = string;
 export type ResourceName = string;
 
 //# Schemas

@@ -94,34 +94,34 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type topicARN = string;
-export type label = string;
-export type delegate = string;
-export type action = string;
+export type TopicARN = string;
+export type Label = string;
+export type Delegate = string;
+export type Action = string;
 export type PhoneNumber = string | redacted.Redacted<string>;
-export type token = string;
-export type authenticateOnUnsubscribe = string;
+export type Token = string;
+export type AuthenticateOnUnsubscribe = string;
 export type PhoneNumberString = string | redacted.Redacted<string>;
-export type topicName = string;
-export type attributeValue = string;
-export type subscriptionARN = string;
-export type nextToken = string;
+export type TopicName = string;
+export type AttributeValue = string;
+export type SubscriptionARN = string;
+export type NextToken = string;
 export type MaxItemsListOriginationNumbers = number;
 export type MaxItems = number;
 export type AmazonResourceName = string;
-export type message = string;
-export type subject = string;
-export type messageStructure = string;
-export type attributeName = string;
-export type protocol = string;
+export type Message = string;
+export type Subject = string;
+export type MessageStructure = string;
+export type AttributeName = string;
+export type Protocol = string;
 export type Endpoint2 = string;
 export type TagKey = string;
 export type OTPCode = string;
 export type TagValue = string;
 export type Binary = Uint8Array;
 export type Iso2CountryCode = string;
-export type account = string;
-export type messageId = string;
+export type Account = string;
+export type MessageId = string;
 
 //# Schemas
 export interface GetSMSSandboxAccountStatusInput {}

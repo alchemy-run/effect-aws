@@ -87,15 +87,15 @@ const rules = T.EndpointResolver((p, _) => {
 });
 
 //# Newtypes
-export type teamId = string;
-export type channelId = string;
-export type channelName = string;
+export type TeamId = string;
+export type ChannelId = string;
+export type ChannelName = string;
 export type NotificationSeverityLevel = string;
-export type roleArn = string;
-export type errorMessage = string;
-export type awsAccountAlias = string;
-export type paginationToken = string;
-export type teamName = string;
+export type RoleArn = string;
+export type ErrorMessage = string;
+export type AwsAccountAlias = string;
+export type PaginationToken = string;
+export type TeamName = string;
 export type AccountType = string;
 
 //# Schemas
@@ -417,8 +417,8 @@ export const SlackChannelConfiguration = S.suspend(() =>
 ).annotations({
   identifier: "SlackChannelConfiguration",
 }) as any as S.Schema<SlackChannelConfiguration>;
-export type slackChannelConfigurationList = SlackChannelConfiguration[];
-export const slackChannelConfigurationList = S.Array(SlackChannelConfiguration);
+export type SlackChannelConfigurationList = SlackChannelConfiguration[];
+export const SlackChannelConfigurationList = S.Array(SlackChannelConfiguration);
 export interface SlackWorkspaceConfiguration {
   teamId: string;
   teamName?: string;
@@ -444,7 +444,7 @@ export interface ListSlackChannelConfigurationsResult {
 export const ListSlackChannelConfigurationsResult = S.suspend(() =>
   S.Struct({
     nextToken: S.optional(S.String),
-    slackChannelConfigurations: slackChannelConfigurationList,
+    slackChannelConfigurations: SlackChannelConfigurationList,
   }),
 ).annotations({
   identifier: "ListSlackChannelConfigurationsResult",
