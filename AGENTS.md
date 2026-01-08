@@ -36,16 +36,15 @@ flowchart LR
 
 ```
 AGENTS.md (you are here)
-├── src/AGENTS.md ──────────── Runtime library
-│   ├── protocols/AGENTS.md   Request/response serialization
-│   ├── aws/AGENTS.md         Credentials, region, errors
-│   ├── rules-engine/AGENTS.md Endpoint resolution
-│   ├── eventstream/AGENTS.md  Bi-directional streaming
-│   └── middleware/AGENTS.md   Checksum, streaming body
-├── scripts/AGENTS.md ──────── Code generator, cleanup utilities
+├── src/
+│   ├── client/AGENTS.md ────── API orchestration, signing, retries
+│   ├── protocols/AGENTS.md ─── Request/response serialization
+│   ├── rules-engine/AGENTS.md  Endpoint resolution
+│   ├── eventstream/AGENTS.md ─ Bi-directional streaming
+│   └── middleware/AGENTS.md ── Checksum, streaming body
+├── scripts/AGENTS.md ───────── Code generator, cleanup utilities
 └── test/
-    ├── services/AGENTS.md ─── Live AWS integration tests
-    └── protocols/AGENTS.md ── Serialization unit tests
+    └── services/AGENTS.md ──── Live AWS integration tests
 ```
 
 **Read the node for where you're working.** Follow downlinks for detail.
@@ -63,9 +62,9 @@ bun find:errors "explore S3 errors"      # Discover undocumented errors
 
 | What | Where |
 |------|-------|
-| API client (`API.make`, `API.makePaginated`) | `src/api.ts` |
+| API client (`API.make`, `API.makePaginated`) | `src/client/api.ts` |
 | Smithy traits (`T.HttpHeader`, `T.XmlName`) | `src/traits.ts` |
-| Request/response flow | `src/request-builder.ts`, `src/response-parser.ts` |
+| Request/response flow | `src/client/request-builder.ts`, `src/client/response-parser.ts` |
 | Code generator | `scripts/generate-clients.ts` |
 | Generated clients | `src/services/*.ts` (DO NOT EDIT) |
 | Error patches | `spec/*.json` |

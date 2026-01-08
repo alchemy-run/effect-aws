@@ -13,7 +13,7 @@ import { awsQueryProtocol } from "./protocols/aws-query.ts";
 import { ec2QueryProtocol } from "./protocols/ec2-query.ts";
 import { restJson1Protocol } from "./protocols/rest-json.ts";
 import { restXmlProtocol } from "./protocols/rest-xml.ts";
-import type { RuleSetObject } from "./rules-engine/model.ts";
+import type { RuleSetObject } from "./rules-engine/expression.ts";
 
 /**
  * Internal symbol for annotation metadata storage
@@ -464,12 +464,56 @@ export const ServiceVersion = (version: string) =>
 // Endpoint Routing Traits (smithy.rules#*)
 // =============================================================================
 
-/** smithy.rules#endpointRuleSet - Endpoint resolution rule set */
+/** smithy.rules#endpointRuleSet - Endpoint resolution rule set (legacy JSON) */
 export const endpointRuleSetSymbol = Symbol.for(
   "itty-aws/smithy.rules#endpointRuleSet",
 );
 export const EndpointRuleSet = (ruleSet: unknown) =>
   makeAnnotation(endpointRuleSetSymbol, ruleSet);
+
+/** Endpoint resolver result type */
+export type EndpointResolverResult =
+  | {
+      type: "endpoint";
+      endpoint: {
+        url: string;
+        properties: Record<string, unknown>;
+        headers: Record<string, string[]>;
+      };
+    }
+  | { type: "error"; message: string };
+
+/** Runtime helpers for endpoint resolution */
+export interface EndpointResolverHelpers {
+  partition: (region: unknown) => unknown;
+  parseArn: (value: unknown) => unknown;
+  isVirtualHostableS3Bucket: (
+    value: unknown,
+    allowSubDomains?: unknown,
+  ) => boolean;
+  parseURL: (url: unknown) => unknown;
+  substring: (
+    input: unknown,
+    start: unknown,
+    stop: unknown,
+    reverse: unknown,
+  ) => unknown;
+  uriEncode: (value: unknown) => unknown;
+  isValidHostLabel: (value: unknown, allowSubDomains: unknown) => boolean;
+  getAttr: (value: unknown, path: string) => unknown;
+  resolveTemplates: <T>(value: T) => T;
+}
+
+/** Endpoint resolver function type */
+export type EndpointResolverFn = (
+  params: Record<string, unknown>,
+  helpers: EndpointResolverHelpers,
+) => EndpointResolverResult;
+
+/** Endpoint resolver - compiled function for endpoint resolution */
+export const endpointResolverSymbol = Symbol.for("itty-aws/endpoint-resolver");
+export const EndpointResolver = (resolver: EndpointResolverFn) =>
+  makeAnnotation(endpointResolverSymbol, resolver);
 
 /** smithy.rules#clientContextParams - Client-level endpoint parameters */
 export const clientContextParamsSymbol = Symbol.for(
@@ -1184,6 +1228,10 @@ export const hasS3UnwrappedXmlOutput = (ast: AST.AST): boolean =>
 /** Get smithy.rules#endpointRuleSet trait from a schema */
 export const getEndpointRuleSet = (ast: AST.AST) =>
   getAnnotationUnwrap<RuleSetObject>(ast, endpointRuleSetSymbol);
+
+/** Get endpoint resolver from a schema */
+export const getEndpointResolver = (ast: AST.AST) =>
+  getAnnotationUnwrap<EndpointResolverFn>(ast, endpointResolverSymbol);
 
 /** Get smithy.rules#clientContextParams trait from a schema */
 export const getClientContextParams = (

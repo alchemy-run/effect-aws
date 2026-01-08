@@ -18,424 +18,144 @@ const svc = T.AwsApiService({
 const auth = T.AwsAuthSigv4({ name: "events" });
 const ver = T.ServiceVersion("2015-10-07");
 const proto = T.AwsProtocolsAwsJson1_1();
-const rules = T.EndpointRuleSet({
-  version: "1.0",
-  parameters: {
-    Region: {
-      builtIn: "AWS::Region",
-      required: false,
-      documentation: "The AWS region used to dispatch the request.",
-      type: "string",
-    },
-    UseDualStack: {
-      builtIn: "AWS::UseDualStack",
-      required: true,
-      default: false,
-      documentation:
-        "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
-      type: "boolean",
-    },
-    UseFIPS: {
-      builtIn: "AWS::UseFIPS",
-      required: true,
-      default: false,
-      documentation:
-        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
-      type: "boolean",
-    },
-    Endpoint: {
-      builtIn: "SDK::Endpoint",
-      required: false,
-      documentation: "Override the endpoint used to send this request",
-      type: "string",
-    },
-    EndpointId: {
-      required: false,
-      documentation: "Operation parameter for EndpointId",
-      type: "string",
-    },
-  },
-  rules: [
+const rules = T.EndpointResolver((p, _) => {
+  const {
+    Region,
+    UseDualStack = false,
+    UseFIPS = false,
+    Endpoint,
+    EndpointId,
+  } = p;
+  const e = (u: unknown, p = {}, h = {}): T.EndpointResolverResult => ({
+    type: "endpoint" as const,
+    endpoint: { url: u as string, properties: p, headers: h },
+  });
+  const err = (m: unknown): T.EndpointResolverResult => ({
+    type: "error" as const,
+    message: m as string,
+  });
+  const _p0 = () => ({
+    authSchemes: [
+      { name: "sigv4a", signingName: "events", signingRegionSet: ["*"] },
+    ],
+  });
+  {
+    const PartitionResult = _.partition(Region);
+    if (
+      !(Endpoint != null) &&
+      Region != null &&
+      PartitionResult != null &&
+      PartitionResult !== false &&
+      _.getAttr(PartitionResult, "name") === "aws-us-gov" &&
+      UseFIPS === true &&
+      UseDualStack === true
+    ) {
+      return e(
+        `https://events.${Region}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+      );
+    }
+  }
+  {
+    const PartitionResult = _.partition(Region);
+    if (
+      EndpointId != null &&
+      Region != null &&
+      PartitionResult != null &&
+      PartitionResult !== false
+    ) {
+      if (_.isValidHostLabel(EndpointId, true)) {
+        if (UseFIPS === false) {
+          if (Endpoint != null) {
+            return e(Endpoint, _p0(), {});
+          }
+          if (UseDualStack === true) {
+            if (true === _.getAttr(PartitionResult, "supportsDualStack")) {
+              return e(
+                `https://${EndpointId}.endpoint.events.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+                _p0(),
+                {},
+              );
+            }
+            return err(
+              "DualStack is enabled but this partition does not support DualStack",
+            );
+          }
+          return e(
+            `https://${EndpointId}.endpoint.events.${_.getAttr(PartitionResult, "dnsSuffix")}`,
+            _p0(),
+            {},
+          );
+        }
+        return err(
+          "Invalid Configuration: FIPS is not supported with EventBridge multi-region endpoints.",
+        );
+      }
+      return err("EndpointId must be a valid host label.");
+    }
+  }
+  if (Endpoint != null) {
+    if (UseFIPS === true) {
+      return err(
+        "Invalid Configuration: FIPS and custom endpoint are not supported",
+      );
+    }
+    if (UseDualStack === true) {
+      return err(
+        "Invalid Configuration: Dualstack and custom endpoint are not supported",
+      );
+    }
+    return e(Endpoint);
+  }
+  if (Region != null) {
     {
-      conditions: [
-        { fn: "not", argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }] },
-        { fn: "isSet", argv: [{ ref: "Region" }] },
-        {
-          fn: "aws.partition",
-          argv: [{ ref: "Region" }],
-          assign: "PartitionResult",
-        },
-        {
-          fn: "stringEquals",
-          argv: [
-            { fn: "getAttr", argv: [{ ref: "PartitionResult" }, "name"] },
-            "aws-us-gov",
-          ],
-        },
-        { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-        { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
-      ],
-      endpoint: {
-        url: "https://events.{Region}.{PartitionResult#dualStackDnsSuffix}",
-        properties: {},
-        headers: {},
-      },
-      type: "endpoint",
-    },
-    {
-      conditions: [
-        { fn: "isSet", argv: [{ ref: "EndpointId" }] },
-        { fn: "isSet", argv: [{ ref: "Region" }] },
-        {
-          fn: "aws.partition",
-          argv: [{ ref: "Region" }],
-          assign: "PartitionResult",
-        },
-      ],
-      rules: [
-        {
-          conditions: [
-            { fn: "isValidHostLabel", argv: [{ ref: "EndpointId" }, true] },
-          ],
-          rules: [
-            {
-              conditions: [
-                { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-              ],
-              rules: [
-                {
-                  conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                  endpoint: {
-                    url: { ref: "Endpoint" },
-                    properties: {
-                      authSchemes: [
-                        {
-                          name: "sigv4a",
-                          signingName: "events",
-                          signingRegionSet: ["*"],
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            true,
-                            {
-                              fn: "getAttr",
-                              argv: [
-                                { ref: "PartitionResult" },
-                                "supportsDualStack",
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://{EndpointId}.endpoint.events.{PartitionResult#dualStackDnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  name: "sigv4a",
-                                  signingName: "events",
-                                  signingRegionSet: ["*"],
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "DualStack is enabled but this partition does not support DualStack",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  endpoint: {
-                    url: "https://{EndpointId}.endpoint.events.{PartitionResult#dnsSuffix}",
-                    properties: {
-                      authSchemes: [
-                        {
-                          name: "sigv4a",
-                          signingName: "events",
-                          signingRegionSet: ["*"],
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [],
-              error:
-                "Invalid Configuration: FIPS is not supported with EventBridge multi-region endpoints.",
-              type: "error",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [],
-          error: "EndpointId must be a valid host label.",
-          type: "error",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-      rules: [
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          error:
-            "Invalid Configuration: FIPS and custom endpoint are not supported",
-          type: "error",
-        },
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
-          ],
-          error:
-            "Invalid Configuration: Dualstack and custom endpoint are not supported",
-          type: "error",
-        },
-        {
-          conditions: [],
-          endpoint: { url: { ref: "Endpoint" }, properties: {}, headers: {} },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-      rules: [
-        {
-          conditions: [
-            {
-              fn: "aws.partition",
-              argv: [{ ref: "Region" }],
-              assign: "PartitionResult",
-            },
-          ],
-          rules: [
-            {
-              conditions: [
-                { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "booleanEquals",
-                      argv: [
-                        true,
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "supportsFIPS"],
-                        },
-                      ],
-                    },
-                    {
-                      fn: "booleanEquals",
-                      argv: [
-                        true,
-                        {
-                          fn: "getAttr",
-                          argv: [
-                            { ref: "PartitionResult" },
-                            "supportsDualStack",
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [],
-                      endpoint: {
-                        url: "https://events-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
-                        properties: {},
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error:
-                    "FIPS and DualStack are enabled, but this partition does not support one or both",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "booleanEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "supportsFIPS"],
-                        },
-                        true,
-                      ],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "Region" }, "us-gov-east-1"],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://events.us-gov-east-1.amazonaws.com",
-                        properties: {},
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "Region" }, "us-gov-west-1"],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://events.us-gov-west-1.amazonaws.com",
-                        properties: {},
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [],
-                      endpoint: {
-                        url: "https://events-fips.{Region}.{PartitionResult#dnsSuffix}",
-                        properties: {},
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error:
-                    "FIPS is enabled but this partition does not support FIPS",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "booleanEquals",
-                      argv: [
-                        true,
-                        {
-                          fn: "getAttr",
-                          argv: [
-                            { ref: "PartitionResult" },
-                            "supportsDualStack",
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [],
-                      endpoint: {
-                        url: "https://events.{Region}.{PartitionResult#dualStackDnsSuffix}",
-                        properties: {},
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error:
-                    "DualStack is enabled but this partition does not support DualStack",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [],
-              endpoint: {
-                url: "https://events.{Region}.{PartitionResult#dnsSuffix}",
-                properties: {},
-                headers: {},
-              },
-              type: "endpoint",
-            },
-          ],
-          type: "tree",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [],
-      error: "Invalid Configuration: Missing Region",
-      type: "error",
-    },
-  ],
+      const PartitionResult = _.partition(Region);
+      if (PartitionResult != null && PartitionResult !== false) {
+        if (UseFIPS === true && UseDualStack === true) {
+          if (
+            true === _.getAttr(PartitionResult, "supportsFIPS") &&
+            true === _.getAttr(PartitionResult, "supportsDualStack")
+          ) {
+            return e(
+              `https://events-fips.${Region}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+            );
+          }
+          return err(
+            "FIPS and DualStack are enabled, but this partition does not support one or both",
+          );
+        }
+        if (UseFIPS === true) {
+          if (_.getAttr(PartitionResult, "supportsFIPS") === true) {
+            if (Region === "us-gov-east-1") {
+              return e("https://events.us-gov-east-1.amazonaws.com");
+            }
+            if (Region === "us-gov-west-1") {
+              return e("https://events.us-gov-west-1.amazonaws.com");
+            }
+            return e(
+              `https://events-fips.${Region}.${_.getAttr(PartitionResult, "dnsSuffix")}`,
+            );
+          }
+          return err(
+            "FIPS is enabled but this partition does not support FIPS",
+          );
+        }
+        if (UseDualStack === true) {
+          if (true === _.getAttr(PartitionResult, "supportsDualStack")) {
+            return e(
+              `https://events.${Region}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+            );
+          }
+          return err(
+            "DualStack is enabled but this partition does not support DualStack",
+          );
+        }
+        return e(
+          `https://events.${Region}.${_.getAttr(PartitionResult, "dnsSuffix")}`,
+        );
+      }
+    }
+  }
+  return err("Invalid Configuration: Missing Region");
 });
 
 //# Newtypes

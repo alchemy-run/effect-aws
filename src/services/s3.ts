@@ -15,8777 +15,2997 @@ const svc = T.AwsApiService({ sdkId: "S3", serviceShapeName: "AmazonS3" });
 const auth = T.AwsAuthSigv4({ name: "s3" });
 const ver = T.ServiceVersion("2006-03-01");
 const proto = T.AwsProtocolsRestXml();
-const rules = T.EndpointRuleSet({
-  version: "1.0",
-  parameters: {
-    Bucket: {
-      required: false,
-      documentation:
-        "The S3 bucket used to send the request. This is an optional parameter that will be set automatically for operations that are scoped to an S3 bucket.",
-      type: "string",
-    },
-    Region: {
-      builtIn: "AWS::Region",
-      required: false,
-      documentation: "The AWS region used to dispatch the request.",
-      type: "string",
-    },
-    UseFIPS: {
-      builtIn: "AWS::UseFIPS",
-      required: true,
-      default: false,
-      documentation:
-        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
-      type: "boolean",
-    },
-    UseDualStack: {
-      builtIn: "AWS::UseDualStack",
-      required: true,
-      default: false,
-      documentation:
-        "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
-      type: "boolean",
-    },
-    Endpoint: {
-      builtIn: "SDK::Endpoint",
-      required: false,
-      documentation: "Override the endpoint used to send this request",
-      type: "string",
-    },
-    ForcePathStyle: {
-      builtIn: "AWS::S3::ForcePathStyle",
-      required: true,
-      default: false,
-      documentation:
-        "When true, force a path-style endpoint to be used where the bucket name is part of the path.",
-      type: "boolean",
-    },
-    Accelerate: {
-      builtIn: "AWS::S3::Accelerate",
-      required: true,
-      default: false,
-      documentation:
-        "When true, use S3 Accelerate. NOTE: Not all regions support S3 accelerate.",
-      type: "boolean",
-    },
-    UseGlobalEndpoint: {
-      builtIn: "AWS::S3::UseGlobalEndpoint",
-      required: true,
-      default: false,
-      documentation:
-        "Whether the global endpoint should be used, rather then the regional endpoint for us-east-1.",
-      type: "boolean",
-    },
-    UseObjectLambdaEndpoint: {
-      required: false,
-      documentation:
-        "Internal parameter to use object lambda endpoint for an operation (eg: WriteGetObjectResponse)",
-      type: "boolean",
-    },
-    Key: {
-      required: false,
-      documentation:
-        "The S3 Key used to send the request. This is an optional parameter that will be set automatically for operations that are scoped to an S3 Key.",
-      type: "string",
-    },
-    Prefix: {
-      required: false,
-      documentation:
-        "The S3 Prefix used to send the request. This is an optional parameter that will be set automatically for operations that are scoped to an S3 Prefix.",
-      type: "string",
-    },
-    CopySource: {
-      required: false,
-      documentation:
-        "The Copy Source used for Copy Object request. This is an optional parameter that will be set automatically for operations that are scoped to Copy Source.",
-      type: "string",
-    },
-    DisableAccessPoints: {
-      required: false,
-      documentation: "Internal parameter to disable Access Point Buckets",
-      type: "boolean",
-    },
-    DisableMultiRegionAccessPoints: {
-      builtIn: "AWS::S3::DisableMultiRegionAccessPoints",
-      required: true,
-      default: false,
-      documentation:
-        "Whether multi-region access points (MRAP) should be disabled.",
-      type: "boolean",
-    },
-    UseArnRegion: {
-      builtIn: "AWS::S3::UseArnRegion",
-      required: false,
-      documentation:
-        "When an Access Point ARN is provided and this flag is enabled, the SDK MUST use the ARN's region when constructing the endpoint instead of the client's configured region.",
-      type: "boolean",
-    },
-    UseS3ExpressControlEndpoint: {
-      required: false,
-      documentation:
-        "Internal parameter to indicate whether S3Express operation should use control plane, (ex. CreateBucket)",
-      type: "boolean",
-    },
-    DisableS3ExpressSessionAuth: {
-      required: false,
-      documentation:
-        "Parameter to indicate whether S3Express session auth should be disabled",
-      type: "boolean",
-    },
-  },
-  rules: [
+const rules = T.EndpointResolver((p, _) => {
+  const {
+    Bucket,
+    Region,
+    UseFIPS = false,
+    UseDualStack = false,
+    Endpoint,
+    ForcePathStyle = false,
+    Accelerate = false,
+    UseGlobalEndpoint = false,
+    UseObjectLambdaEndpoint,
+    Key,
+    Prefix,
+    CopySource,
+    DisableAccessPoints,
+    DisableMultiRegionAccessPoints = false,
+    UseArnRegion,
+    UseS3ExpressControlEndpoint,
+    DisableS3ExpressSessionAuth,
+  } = p;
+  const e = (u: unknown, p = {}, h = {}): T.EndpointResolverResult => ({
+    type: "endpoint" as const,
+    endpoint: { url: u as string, properties: p, headers: h },
+  });
+  const err = (m: unknown): T.EndpointResolverResult => ({
+    type: "error" as const,
+    message: m as string,
+  });
+  const _p0 = (_0: unknown) => ({
+    backend: "S3Express",
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4",
+        signingName: "s3express",
+        signingRegion: `${_0}`,
+      },
+    ],
+  });
+  const _p1 = (_0: unknown) => ({
+    backend: "S3Express",
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4-s3express",
+        signingName: "s3express",
+        signingRegion: `${_0}`,
+      },
+    ],
+  });
+  const _p2 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4a",
+        signingName: "s3-outposts",
+        signingRegionSet: ["*"],
+      },
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4",
+        signingName: "s3-outposts",
+        signingRegion: `${_0}`,
+      },
+    ],
+  });
+  const _p3 = () => ({
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4",
+        signingName: "s3",
+        signingRegion: "us-east-1",
+      },
+    ],
+  });
+  const _p4 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4",
+        signingName: "s3",
+        signingRegion: `${_0}`,
+      },
+    ],
+  });
+  const _p5 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4",
+        signingName: "s3-object-lambda",
+        signingRegion: `${_.getAttr(_0, "region")}`,
+      },
+    ],
+  });
+  const _p6 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4",
+        signingName: "s3",
+        signingRegion: `${_.getAttr(_0, "region")}`,
+      },
+    ],
+  });
+  const _p7 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4a",
+        signingName: "s3-outposts",
+        signingRegionSet: ["*"],
+      },
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4",
+        signingName: "s3-outposts",
+        signingRegion: `${_.getAttr(_0, "region")}`,
+      },
+    ],
+  });
+  const _p8 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        disableDoubleEncoding: true,
+        name: "sigv4",
+        signingName: "s3-object-lambda",
+        signingRegion: `${_0}`,
+      },
+    ],
+  });
+  if (Region != null) {
+    if (Accelerate === true && UseFIPS === true) {
+      return err("Accelerate cannot be used with FIPS");
+    }
+    if (UseDualStack === true && Endpoint != null) {
+      return err(
+        "Cannot set dual-stack in combination with a custom endpoint.",
+      );
+    }
+    if (Endpoint != null && UseFIPS === true) {
+      return err("A custom endpoint cannot be combined with FIPS");
+    }
+    if (Endpoint != null && Accelerate === true) {
+      return err("A custom endpoint cannot be combined with S3 Accelerate");
+    }
     {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-      rules: [
+      const partitionResult = _.partition(Region);
+      if (
+        UseFIPS === true &&
+        partitionResult != null &&
+        partitionResult !== false &&
+        _.getAttr(partitionResult, "name") === "aws-cn"
+      ) {
+        return err("Partition does not support FIPS");
+      }
+    }
+    {
+      const bucketSuffix = _.substring(Bucket, 0, 6, true);
+      if (
+        Bucket != null &&
+        bucketSuffix != null &&
+        bucketSuffix !== false &&
+        bucketSuffix === "--x-s3"
+      ) {
+        if (Accelerate === true) {
+          return err("S3Express does not support S3 Accelerate.");
+        }
         {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "Accelerate" }, true] },
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          error: "Accelerate cannot be used with FIPS",
-          type: "error",
-        },
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
-            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-          ],
-          error: "Cannot set dual-stack in combination with a custom endpoint.",
-          type: "error",
-        },
-        {
-          conditions: [
-            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          error: "A custom endpoint cannot be combined with FIPS",
-          type: "error",
-        },
-        {
-          conditions: [
-            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-            { fn: "booleanEquals", argv: [{ ref: "Accelerate" }, true] },
-          ],
-          error: "A custom endpoint cannot be combined with S3 Accelerate",
-          type: "error",
-        },
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-            {
-              fn: "aws.partition",
-              argv: [{ ref: "Region" }],
-              assign: "partitionResult",
-            },
-            {
-              fn: "stringEquals",
-              argv: [
-                { fn: "getAttr", argv: [{ ref: "partitionResult" }, "name"] },
-                "aws-cn",
-              ],
-            },
-          ],
-          error: "Partition does not support FIPS",
-          type: "error",
-        },
-        {
-          conditions: [
-            { fn: "isSet", argv: [{ ref: "Bucket" }] },
-            {
-              fn: "substring",
-              argv: [{ ref: "Bucket" }, 0, 6, true],
-              assign: "bucketSuffix",
-            },
-            { fn: "stringEquals", argv: [{ ref: "bucketSuffix" }, "--x-s3"] },
-          ],
-          rules: [
-            {
-              conditions: [
-                { fn: "booleanEquals", argv: [{ ref: "Accelerate" }, true] },
-              ],
-              error: "S3Express does not support S3 Accelerate.",
-              type: "error",
-            },
-            {
-              conditions: [
-                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                { fn: "parseURL", argv: [{ ref: "Endpoint" }], assign: "url" },
-              ],
-              rules: [
+          const url = _.parseURL(Endpoint);
+          if (Endpoint != null && url != null && url !== false) {
+            if (
+              DisableS3ExpressSessionAuth != null &&
+              DisableS3ExpressSessionAuth === true
+            ) {
+              if (_.getAttr(url, "isIp") === true) {
                 {
-                  conditions: [
-                    {
-                      fn: "isSet",
-                      argv: [{ ref: "DisableS3ExpressSessionAuth" }],
-                    },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "DisableS3ExpressSessionAuth" }, true],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            { fn: "getAttr", argv: [{ ref: "url" }, "isIp"] },
-                            true,
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "uriEncode",
-                              argv: [{ ref: "Bucket" }],
-                              assign: "uri_encoded_bucket",
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "aws.isVirtualHostableS3Bucket",
-                          argv: [{ ref: "Bucket" }, false],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "S3Express bucket name is not a valid virtual hostable name.",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "booleanEquals",
-                      argv: [
-                        { fn: "getAttr", argv: [{ ref: "url" }, "isIp"] },
-                        true,
-                      ],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "uriEncode",
-                          argv: [{ ref: "Bucket" }],
-                          assign: "uri_encoded_bucket",
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "aws.isVirtualHostableS3Bucket",
-                      argv: [{ ref: "Bucket" }, false],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [],
-                      endpoint: {
-                        url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                        properties: {
-                          backend: "S3Express",
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4-s3express",
-                              signingName: "s3express",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error:
-                    "S3Express bucket name is not a valid virtual hostable name.",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                { fn: "isSet", argv: [{ ref: "UseS3ExpressControlEndpoint" }] },
-                {
-                  fn: "booleanEquals",
-                  argv: [{ ref: "UseS3ExpressControlEndpoint" }, true],
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "aws.partition",
-                      argv: [{ ref: "Region" }],
-                      assign: "partitionResult",
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "uriEncode",
-                          argv: [{ ref: "Bucket" }],
-                          assign: "uri_encoded_bucket",
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                  ],
-                  type: "tree",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                {
-                  fn: "aws.isVirtualHostableS3Bucket",
-                  argv: [{ ref: "Bucket" }, false],
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "aws.partition",
-                      argv: [{ ref: "Region" }],
-                      assign: "partitionResult",
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "isSet",
-                          argv: [{ ref: "DisableS3ExpressSessionAuth" }],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "DisableS3ExpressSessionAuth" }, true],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 6, 14, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 14, 16, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 6, 15, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 15, 17, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 6, 19, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 19, 21, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 6, 20, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 20, 22, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 6, 26, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 26, 28, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [],
-                          error: "Unrecognized S3Express bucket name format.",
-                          type: "error",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 6, 14, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 14, 16, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 6, 15, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 15, 17, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 6, 19, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 19, 21, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 6, 20, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 20, 22, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 6, 26, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 26, 28, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error: "Unrecognized S3Express bucket name format.",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [],
-              error:
+                  const uri_encoded_bucket = _.uriEncode(Bucket);
+                  if (
+                    uri_encoded_bucket != null &&
+                    uri_encoded_bucket !== false
+                  ) {
+                    return e(
+                      `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}/${uri_encoded_bucket}${_.getAttr(url, "path")}`,
+                      _p0(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              if (_.isVirtualHostableS3Bucket(Bucket, false)) {
+                return e(
+                  `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                  _p0(Region),
+                  {},
+                );
+              }
+              return err(
                 "S3Express bucket name is not a valid virtual hostable name.",
-              type: "error",
-            },
-          ],
-          type: "tree",
-        },
+              );
+            }
+            if (_.getAttr(url, "isIp") === true) {
+              {
+                const uri_encoded_bucket = _.uriEncode(Bucket);
+                if (
+                  uri_encoded_bucket != null &&
+                  uri_encoded_bucket !== false
+                ) {
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}/${uri_encoded_bucket}${_.getAttr(url, "path")}`,
+                    _p1(Region),
+                    {},
+                  );
+                }
+              }
+            }
+            if (_.isVirtualHostableS3Bucket(Bucket, false)) {
+              return e(
+                `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                _p1(Region),
+                {},
+              );
+            }
+            return err(
+              "S3Express bucket name is not a valid virtual hostable name.",
+            );
+          }
+        }
+        if (
+          UseS3ExpressControlEndpoint != null &&
+          UseS3ExpressControlEndpoint === true
+        ) {
+          {
+            const partitionResult = _.partition(Region);
+            if (partitionResult != null && partitionResult !== false) {
+              {
+                const uri_encoded_bucket = _.uriEncode(Bucket);
+                if (
+                  uri_encoded_bucket != null &&
+                  uri_encoded_bucket !== false &&
+                  !(Endpoint != null)
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://s3express-control-fips.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                      _p0(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://s3express-control-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                      _p0(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://s3express-control.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                      _p0(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://s3express-control.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                      _p0(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (_.isVirtualHostableS3Bucket(Bucket, false)) {
+          {
+            const partitionResult = _.partition(Region);
+            if (partitionResult != null && partitionResult !== false) {
+              if (
+                DisableS3ExpressSessionAuth != null &&
+                DisableS3ExpressSessionAuth === true
+              ) {
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    6,
+                    14,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    14,
+                    16,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    6,
+                    15,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    15,
+                    17,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    6,
+                    19,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    19,
+                    21,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    6,
+                    20,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    20,
+                    22,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    6,
+                    26,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    26,
+                    28,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                return err("Unrecognized S3Express bucket name format.");
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  6,
+                  14,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  14,
+                  16,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  6,
+                  15,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  15,
+                  17,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  6,
+                  19,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  19,
+                  21,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  6,
+                  20,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  20,
+                  22,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  6,
+                  26,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  26,
+                  28,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              return err("Unrecognized S3Express bucket name format.");
+            }
+          }
+        }
+        return err(
+          "S3Express bucket name is not a valid virtual hostable name.",
+        );
+      }
+    }
+    {
+      const accessPointSuffix = _.substring(Bucket, 0, 7, true);
+      if (
+        Bucket != null &&
+        accessPointSuffix != null &&
+        accessPointSuffix !== false &&
+        accessPointSuffix === "--xa-s3"
+      ) {
+        if (Accelerate === true) {
+          return err("S3Express does not support S3 Accelerate.");
+        }
         {
-          conditions: [
-            { fn: "isSet", argv: [{ ref: "Bucket" }] },
-            {
-              fn: "substring",
-              argv: [{ ref: "Bucket" }, 0, 7, true],
-              assign: "accessPointSuffix",
-            },
-            {
-              fn: "stringEquals",
-              argv: [{ ref: "accessPointSuffix" }, "--xa-s3"],
-            },
-          ],
-          rules: [
-            {
-              conditions: [
-                { fn: "booleanEquals", argv: [{ ref: "Accelerate" }, true] },
-              ],
-              error: "S3Express does not support S3 Accelerate.",
-              type: "error",
-            },
-            {
-              conditions: [
-                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                { fn: "parseURL", argv: [{ ref: "Endpoint" }], assign: "url" },
-              ],
-              rules: [
+          const url = _.parseURL(Endpoint);
+          if (Endpoint != null && url != null && url !== false) {
+            if (
+              DisableS3ExpressSessionAuth != null &&
+              DisableS3ExpressSessionAuth === true
+            ) {
+              if (_.getAttr(url, "isIp") === true) {
                 {
-                  conditions: [
-                    {
-                      fn: "isSet",
-                      argv: [{ ref: "DisableS3ExpressSessionAuth" }],
-                    },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "DisableS3ExpressSessionAuth" }, true],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            { fn: "getAttr", argv: [{ ref: "url" }, "isIp"] },
-                            true,
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "uriEncode",
-                              argv: [{ ref: "Bucket" }],
-                              assign: "uri_encoded_bucket",
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "aws.isVirtualHostableS3Bucket",
-                          argv: [{ ref: "Bucket" }, false],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "S3Express bucket name is not a valid virtual hostable name.",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "booleanEquals",
-                      argv: [
-                        { fn: "getAttr", argv: [{ ref: "url" }, "isIp"] },
-                        true,
-                      ],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "uriEncode",
-                          argv: [{ ref: "Bucket" }],
-                          assign: "uri_encoded_bucket",
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "{url#scheme}://{url#authority}/{uri_encoded_bucket}{url#path}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "aws.isVirtualHostableS3Bucket",
-                      argv: [{ ref: "Bucket" }, false],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [],
-                      endpoint: {
-                        url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                        properties: {
-                          backend: "S3Express",
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4-s3express",
-                              signingName: "s3express",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error:
-                    "S3Express bucket name is not a valid virtual hostable name.",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                {
-                  fn: "aws.isVirtualHostableS3Bucket",
-                  argv: [{ ref: "Bucket" }, false],
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "aws.partition",
-                      argv: [{ ref: "Region" }],
-                      assign: "partitionResult",
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "isSet",
-                          argv: [{ ref: "DisableS3ExpressSessionAuth" }],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "DisableS3ExpressSessionAuth" }, true],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 7, 15, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 15, 17, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 7, 16, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 16, 18, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 7, 20, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 20, 22, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 7, 21, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 21, 23, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 7, 27, true],
-                              assign: "s3expressAvailabilityZoneId",
-                            },
-                            {
-                              fn: "substring",
-                              argv: [{ ref: "Bucket" }, 27, 29, true],
-                              assign: "s3expressAvailabilityZoneDelim",
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                { ref: "s3expressAvailabilityZoneDelim" },
-                                "--",
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, true],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, true],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseFIPS" }, false],
-                                },
-                                {
-                                  fn: "booleanEquals",
-                                  argv: [{ ref: "UseDualStack" }, false],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  backend: "S3Express",
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3express",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [],
-                          error: "Unrecognized S3Express bucket name format.",
-                          type: "error",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 7, 15, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 15, 17, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 7, 16, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 16, 18, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 7, 20, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 20, 22, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 7, 21, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 21, 23, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 7, 27, true],
-                          assign: "s3expressAvailabilityZoneId",
-                        },
-                        {
-                          fn: "substring",
-                          argv: [{ ref: "Bucket" }, 27, 29, true],
-                          assign: "s3expressAvailabilityZoneDelim",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            { ref: "s3expressAvailabilityZoneDelim" },
-                            "--",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-fips-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3express-{s3expressAvailabilityZoneId}.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              backend: "S3Express",
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4-s3express",
-                                  signingName: "s3express",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error: "Unrecognized S3Express bucket name format.",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [],
-              error:
+                  const uri_encoded_bucket = _.uriEncode(Bucket);
+                  if (
+                    uri_encoded_bucket != null &&
+                    uri_encoded_bucket !== false
+                  ) {
+                    return e(
+                      `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}/${uri_encoded_bucket}${_.getAttr(url, "path")}`,
+                      _p0(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              if (_.isVirtualHostableS3Bucket(Bucket, false)) {
+                return e(
+                  `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                  _p0(Region),
+                  {},
+                );
+              }
+              return err(
                 "S3Express bucket name is not a valid virtual hostable name.",
-              type: "error",
-            },
-          ],
-          type: "tree",
-        },
+              );
+            }
+            if (_.getAttr(url, "isIp") === true) {
+              {
+                const uri_encoded_bucket = _.uriEncode(Bucket);
+                if (
+                  uri_encoded_bucket != null &&
+                  uri_encoded_bucket !== false
+                ) {
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}/${uri_encoded_bucket}${_.getAttr(url, "path")}`,
+                    _p1(Region),
+                    {},
+                  );
+                }
+              }
+            }
+            if (_.isVirtualHostableS3Bucket(Bucket, false)) {
+              return e(
+                `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                _p1(Region),
+                {},
+              );
+            }
+            return err(
+              "S3Express bucket name is not a valid virtual hostable name.",
+            );
+          }
+        }
+        if (_.isVirtualHostableS3Bucket(Bucket, false)) {
+          {
+            const partitionResult = _.partition(Region);
+            if (partitionResult != null && partitionResult !== false) {
+              if (
+                DisableS3ExpressSessionAuth != null &&
+                DisableS3ExpressSessionAuth === true
+              ) {
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    7,
+                    15,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    15,
+                    17,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    7,
+                    16,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    16,
+                    18,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    7,
+                    20,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    20,
+                    22,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    7,
+                    21,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    21,
+                    23,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                {
+                  const s3expressAvailabilityZoneId = _.substring(
+                    Bucket,
+                    7,
+                    27,
+                    true,
+                  );
+                  const s3expressAvailabilityZoneDelim = _.substring(
+                    Bucket,
+                    27,
+                    29,
+                    true,
+                  );
+                  if (
+                    s3expressAvailabilityZoneId != null &&
+                    s3expressAvailabilityZoneId !== false &&
+                    s3expressAvailabilityZoneDelim != null &&
+                    s3expressAvailabilityZoneDelim !== false &&
+                    s3expressAvailabilityZoneDelim === "--"
+                  ) {
+                    if (UseFIPS === true && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === true && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === true) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                    if (UseFIPS === false && UseDualStack === false) {
+                      return e(
+                        `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                        _p0(Region),
+                        {},
+                      );
+                    }
+                  }
+                }
+                return err("Unrecognized S3Express bucket name format.");
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  7,
+                  15,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  15,
+                  17,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  7,
+                  16,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  16,
+                  18,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  7,
+                  20,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  20,
+                  22,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  7,
+                  21,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  21,
+                  23,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              {
+                const s3expressAvailabilityZoneId = _.substring(
+                  Bucket,
+                  7,
+                  27,
+                  true,
+                );
+                const s3expressAvailabilityZoneDelim = _.substring(
+                  Bucket,
+                  27,
+                  29,
+                  true,
+                );
+                if (
+                  s3expressAvailabilityZoneId != null &&
+                  s3expressAvailabilityZoneId !== false &&
+                  s3expressAvailabilityZoneDelim != null &&
+                  s3expressAvailabilityZoneDelim !== false &&
+                  s3expressAvailabilityZoneDelim === "--"
+                ) {
+                  if (UseFIPS === true && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === true && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-fips-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === true) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                  if (UseFIPS === false && UseDualStack === false) {
+                    return e(
+                      `https://${Bucket}.s3express-${s3expressAvailabilityZoneId}.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                      _p1(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              return err("Unrecognized S3Express bucket name format.");
+            }
+          }
+        }
+        return err(
+          "S3Express bucket name is not a valid virtual hostable name.",
+        );
+      }
+    }
+    if (
+      !(Bucket != null) &&
+      UseS3ExpressControlEndpoint != null &&
+      UseS3ExpressControlEndpoint === true
+    ) {
+      {
+        const partitionResult = _.partition(Region);
+        if (partitionResult != null && partitionResult !== false) {
+          {
+            const url = _.parseURL(Endpoint);
+            if (Endpoint != null && url != null && url !== false) {
+              return e(
+                `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                _p0(Region),
+                {},
+              );
+            }
+          }
+          if (UseFIPS === true && UseDualStack === true) {
+            return e(
+              `https://s3express-control-fips.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+              _p0(Region),
+              {},
+            );
+          }
+          if (UseFIPS === true && UseDualStack === false) {
+            return e(
+              `https://s3express-control-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+              _p0(Region),
+              {},
+            );
+          }
+          if (UseFIPS === false && UseDualStack === true) {
+            return e(
+              `https://s3express-control.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+              _p0(Region),
+              {},
+            );
+          }
+          if (UseFIPS === false && UseDualStack === false) {
+            return e(
+              `https://s3express-control.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+              _p0(Region),
+              {},
+            );
+          }
+        }
+      }
+    }
+    {
+      const hardwareType = _.substring(Bucket, 49, 50, true);
+      const regionPrefix = _.substring(Bucket, 8, 12, true);
+      const bucketAliasSuffix = _.substring(Bucket, 0, 7, true);
+      const outpostId = _.substring(Bucket, 32, 49, true);
+      const regionPartition = _.partition(Region);
+      if (
+        Bucket != null &&
+        hardwareType != null &&
+        hardwareType !== false &&
+        regionPrefix != null &&
+        regionPrefix !== false &&
+        bucketAliasSuffix != null &&
+        bucketAliasSuffix !== false &&
+        outpostId != null &&
+        outpostId !== false &&
+        regionPartition != null &&
+        regionPartition !== false &&
+        bucketAliasSuffix === "--op-s3"
+      ) {
+        if (_.isValidHostLabel(outpostId, false)) {
+          if (_.isVirtualHostableS3Bucket(Bucket, false)) {
+            if (hardwareType === "e") {
+              if (regionPrefix === "beta") {
+                if (!(Endpoint != null)) {
+                  return err(
+                    "Expected a endpoint to be specified but no endpoint was found",
+                  );
+                }
+                {
+                  const url = _.parseURL(Endpoint);
+                  if (Endpoint != null && url != null && url !== false) {
+                    return e(
+                      `https://${Bucket}.ec2.${_.getAttr(url, "authority")}`,
+                      _p2(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              return e(
+                `https://${Bucket}.ec2.s3-outposts.${Region}.${_.getAttr(regionPartition, "dnsSuffix")}`,
+                _p2(Region),
+                {},
+              );
+            }
+            if (hardwareType === "o") {
+              if (regionPrefix === "beta") {
+                if (!(Endpoint != null)) {
+                  return err(
+                    "Expected a endpoint to be specified but no endpoint was found",
+                  );
+                }
+                {
+                  const url = _.parseURL(Endpoint);
+                  if (Endpoint != null && url != null && url !== false) {
+                    return e(
+                      `https://${Bucket}.op-${outpostId}.${_.getAttr(url, "authority")}`,
+                      _p2(Region),
+                      {},
+                    );
+                  }
+                }
+              }
+              return e(
+                `https://${Bucket}.op-${outpostId}.s3-outposts.${Region}.${_.getAttr(regionPartition, "dnsSuffix")}`,
+                _p2(Region),
+                {},
+              );
+            }
+            return err(
+              `Unrecognized hardware type: "Expected hardware type o or e but got ${hardwareType}"`,
+            );
+          }
+          return err(
+            "Invalid Outposts Bucket alias - it must be a valid bucket name.",
+          );
+        }
+        return err(
+          "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`.",
+        );
+      }
+    }
+    if (Bucket != null) {
+      if (Endpoint != null && !(_.parseURL(Endpoint) != null)) {
+        return err(`Custom endpoint \`${Endpoint}\` was not a valid URI`);
+      }
+      if (
+        ForcePathStyle === false &&
+        _.isVirtualHostableS3Bucket(Bucket, false)
+      ) {
         {
-          conditions: [
-            { fn: "not", argv: [{ fn: "isSet", argv: [{ ref: "Bucket" }] }] },
-            { fn: "isSet", argv: [{ ref: "UseS3ExpressControlEndpoint" }] },
-            {
-              fn: "booleanEquals",
-              argv: [{ ref: "UseS3ExpressControlEndpoint" }, true],
-            },
-          ],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "aws.partition",
-                  argv: [{ ref: "Region" }],
-                  assign: "partitionResult",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                    {
-                      fn: "parseURL",
-                      argv: [{ ref: "Endpoint" }],
-                      assign: "url",
-                    },
-                  ],
-                  endpoint: {
-                    url: "{url#scheme}://{url#authority}{url#path}",
-                    properties: {
-                      backend: "S3Express",
-                      authSchemes: [
-                        {
-                          disableDoubleEncoding: true,
-                          name: "sigv4",
-                          signingName: "s3express",
-                          signingRegion: "{Region}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://s3express-control-fips.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                    properties: {
-                      backend: "S3Express",
-                      authSchemes: [
-                        {
-                          disableDoubleEncoding: true,
-                          name: "sigv4",
-                          signingName: "s3express",
-                          signingRegion: "{Region}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://s3express-control-fips.{Region}.{partitionResult#dnsSuffix}",
-                    properties: {
-                      backend: "S3Express",
-                      authSchemes: [
-                        {
-                          disableDoubleEncoding: true,
-                          name: "sigv4",
-                          signingName: "s3express",
-                          signingRegion: "{Region}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://s3express-control.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                    properties: {
-                      backend: "S3Express",
-                      authSchemes: [
-                        {
-                          disableDoubleEncoding: true,
-                          name: "sigv4",
-                          signingName: "s3express",
-                          signingRegion: "{Region}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://s3express-control.{Region}.{partitionResult#dnsSuffix}",
-                    properties: {
-                      backend: "S3Express",
-                      authSchemes: [
-                        {
-                          disableDoubleEncoding: true,
-                          name: "sigv4",
-                          signingName: "s3express",
-                          signingRegion: "{Region}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-              ],
-              type: "tree",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [
-            { fn: "isSet", argv: [{ ref: "Bucket" }] },
-            {
-              fn: "substring",
-              argv: [{ ref: "Bucket" }, 49, 50, true],
-              assign: "hardwareType",
-            },
-            {
-              fn: "substring",
-              argv: [{ ref: "Bucket" }, 8, 12, true],
-              assign: "regionPrefix",
-            },
-            {
-              fn: "substring",
-              argv: [{ ref: "Bucket" }, 0, 7, true],
-              assign: "bucketAliasSuffix",
-            },
-            {
-              fn: "substring",
-              argv: [{ ref: "Bucket" }, 32, 49, true],
-              assign: "outpostId",
-            },
-            {
-              fn: "aws.partition",
-              argv: [{ ref: "Region" }],
-              assign: "regionPartition",
-            },
-            {
-              fn: "stringEquals",
-              argv: [{ ref: "bucketAliasSuffix" }, "--op-s3"],
-            },
-          ],
-          rules: [
-            {
-              conditions: [
-                { fn: "isValidHostLabel", argv: [{ ref: "outpostId" }, false] },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "aws.isVirtualHostableS3Bucket",
-                      argv: [{ ref: "Bucket" }, false],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "hardwareType" }, "e"],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "regionPrefix" }, "beta"],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "not",
-                                  argv: [
-                                    {
-                                      fn: "isSet",
-                                      argv: [{ ref: "Endpoint" }],
-                                    },
-                                  ],
-                                },
-                              ],
-                              error:
-                                "Expected a endpoint to be specified but no endpoint was found",
-                              type: "error",
-                            },
-                            {
-                              conditions: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                                {
-                                  fn: "parseURL",
-                                  argv: [{ ref: "Endpoint" }],
-                                  assign: "url",
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.ec2.{url#authority}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4a",
-                                      signingName: "s3-outposts",
-                                      signingRegionSet: ["*"],
-                                    },
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3-outposts",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://{Bucket}.ec2.s3-outposts.{Region}.{regionPartition#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4a",
-                                  signingName: "s3-outposts",
-                                  signingRegionSet: ["*"],
-                                },
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3-outposts",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "hardwareType" }, "o"],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "regionPrefix" }, "beta"],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "not",
-                                  argv: [
-                                    {
-                                      fn: "isSet",
-                                      argv: [{ ref: "Endpoint" }],
-                                    },
-                                  ],
-                                },
-                              ],
-                              error:
-                                "Expected a endpoint to be specified but no endpoint was found",
-                              type: "error",
-                            },
-                            {
-                              conditions: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                                {
-                                  fn: "parseURL",
-                                  argv: [{ ref: "Endpoint" }],
-                                  assign: "url",
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.op-{outpostId}.{url#authority}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4a",
-                                      signingName: "s3-outposts",
-                                      signingRegionSet: ["*"],
-                                    },
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3-outposts",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://{Bucket}.op-{outpostId}.s3-outposts.{Region}.{regionPartition#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4a",
-                                  signingName: "s3-outposts",
-                                  signingRegionSet: ["*"],
-                                },
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3-outposts",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        'Unrecognized hardware type: "Expected hardware type o or e but got {hardwareType}"',
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error:
-                    "Invalid Outposts Bucket alias - it must be a valid bucket name.",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [],
-              error:
-                "Invalid ARN: The outpost Id must only contain a-z, A-Z, 0-9 and `-`.",
-              type: "error",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [{ fn: "isSet", argv: [{ ref: "Bucket" }] }],
-          rules: [
-            {
-              conditions: [
-                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                {
-                  fn: "not",
-                  argv: [
-                    {
-                      fn: "isSet",
-                      argv: [{ fn: "parseURL", argv: [{ ref: "Endpoint" }] }],
-                    },
-                  ],
-                },
-              ],
-              error: "Custom endpoint `{Endpoint}` was not a valid URI",
-              type: "error",
-            },
-            {
-              conditions: [
-                {
-                  fn: "booleanEquals",
-                  argv: [{ ref: "ForcePathStyle" }, false],
-                },
-                {
-                  fn: "aws.isVirtualHostableS3Bucket",
-                  argv: [{ ref: "Bucket" }, false],
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "aws.partition",
-                      argv: [{ ref: "Region" }],
-                      assign: "partitionResult",
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "isValidHostLabel",
-                          argv: [{ ref: "Region" }, false],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, true],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "partitionResult" }, "name"],
-                                },
-                                "aws-cn",
-                              ],
-                            },
-                          ],
-                          error: "S3 Accelerate cannot be used in this region",
-                          type: "error",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://{Bucket}.s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3-fips.us-east-1.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://{Bucket}.s3-fips.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3-fips.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3-accelerate.dualstack.us-east-1.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://{Bucket}.s3-accelerate.dualstack.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3-accelerate.dualstack.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3.dualstack.us-east-1.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://{Bucket}.s3.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "url" }, "isIp"],
-                                },
-                                true,
-                              ],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "url" }, "isIp"],
-                                },
-                                false,
-                              ],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "url" }, "isIp"],
-                                },
-                                true,
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "us-east-1"],
-                                },
-                              ],
-                              endpoint: {
-                                url: "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "url" }, "isIp"],
-                                },
-                                false,
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "us-east-1"],
-                                },
-                              ],
-                              endpoint: {
-                                url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "url" }, "isIp"],
-                                },
-                                true,
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "{url#scheme}://{url#authority}{url#normalizedPath}{Bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "url" }, "isIp"],
-                                },
-                                false,
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "us-east-1"],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3-accelerate.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "us-east-1"],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://{Bucket}.s3.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://{Bucket}.s3.{Region}.{partitionResult#dnsSuffix}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://{Bucket}.s3.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error: "Invalid region: region was not a valid DNS name.",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                { fn: "parseURL", argv: [{ ref: "Endpoint" }], assign: "url" },
-                {
-                  fn: "stringEquals",
-                  argv: [
-                    { fn: "getAttr", argv: [{ ref: "url" }, "scheme"] },
-                    "http",
-                  ],
-                },
-                {
-                  fn: "aws.isVirtualHostableS3Bucket",
-                  argv: [{ ref: "Bucket" }, true],
-                },
-                {
-                  fn: "booleanEquals",
-                  argv: [{ ref: "ForcePathStyle" }, false],
-                },
-                { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, false] },
-                { fn: "booleanEquals", argv: [{ ref: "Accelerate" }, false] },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "aws.partition",
-                      argv: [{ ref: "Region" }],
-                      assign: "partitionResult",
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "isValidHostLabel",
-                          argv: [{ ref: "Region" }, false],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "{url#scheme}://{Bucket}.{url#authority}{url#path}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error: "Invalid region: region was not a valid DNS name.",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                {
-                  fn: "booleanEquals",
-                  argv: [{ ref: "ForcePathStyle" }, false],
-                },
-                {
-                  fn: "aws.parseArn",
-                  argv: [{ ref: "Bucket" }],
-                  assign: "bucketArn",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "getAttr",
-                      argv: [{ ref: "bucketArn" }, "resourceId[0]"],
-                      assign: "arnType",
-                    },
-                    {
-                      fn: "not",
-                      argv: [
-                        { fn: "stringEquals", argv: [{ ref: "arnType" }, ""] },
-                      ],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            {
-                              fn: "getAttr",
-                              argv: [{ ref: "bucketArn" }, "service"],
-                            },
-                            "s3-object-lambda",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "arnType" }, "accesspoint"],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "bucketArn" }, "resourceId[1]"],
-                                  assign: "accessPointName",
-                                },
-                                {
-                                  fn: "not",
-                                  argv: [
-                                    {
-                                      fn: "stringEquals",
-                                      argv: [{ ref: "accessPointName" }, ""],
-                                    },
-                                  ],
-                                },
-                              ],
-                              rules: [
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "booleanEquals",
-                                      argv: [{ ref: "UseDualStack" }, true],
-                                    },
-                                  ],
-                                  error:
-                                    "S3 Object Lambda does not support Dual-stack",
-                                  type: "error",
-                                },
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "booleanEquals",
-                                      argv: [{ ref: "Accelerate" }, true],
-                                    },
-                                  ],
-                                  error:
-                                    "S3 Object Lambda does not support S3 Accelerate",
-                                  type: "error",
-                                },
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "not",
-                                      argv: [
-                                        {
-                                          fn: "stringEquals",
-                                          argv: [
-                                            {
-                                              fn: "getAttr",
-                                              argv: [
-                                                { ref: "bucketArn" },
-                                                "region",
-                                              ],
-                                            },
-                                            "",
-                                          ],
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                  rules: [
-                                    {
-                                      conditions: [
-                                        {
-                                          fn: "isSet",
-                                          argv: [
-                                            { ref: "DisableAccessPoints" },
-                                          ],
-                                        },
-                                        {
-                                          fn: "booleanEquals",
-                                          argv: [
-                                            { ref: "DisableAccessPoints" },
-                                            true,
-                                          ],
-                                        },
-                                      ],
-                                      error:
-                                        "Access points are not supported for this operation",
-                                      type: "error",
-                                    },
-                                    {
-                                      conditions: [
-                                        {
-                                          fn: "not",
-                                          argv: [
-                                            {
-                                              fn: "isSet",
-                                              argv: [
-                                                {
-                                                  fn: "getAttr",
-                                                  argv: [
-                                                    { ref: "bucketArn" },
-                                                    "resourceId[2]",
-                                                  ],
-                                                },
-                                              ],
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                      rules: [
-                                        {
-                                          conditions: [
-                                            {
-                                              fn: "isSet",
-                                              argv: [{ ref: "UseArnRegion" }],
-                                            },
-                                            {
-                                              fn: "booleanEquals",
-                                              argv: [
-                                                { ref: "UseArnRegion" },
-                                                false,
-                                              ],
-                                            },
-                                            {
-                                              fn: "not",
-                                              argv: [
-                                                {
-                                                  fn: "stringEquals",
-                                                  argv: [
-                                                    {
-                                                      fn: "getAttr",
-                                                      argv: [
-                                                        { ref: "bucketArn" },
-                                                        "region",
-                                                      ],
-                                                    },
-                                                    "{Region}",
-                                                  ],
-                                                },
-                                              ],
-                                            },
-                                          ],
-                                          error:
-                                            "Invalid configuration: region from ARN `{bucketArn#region}` does not match client region `{Region}` and UseArnRegion is `false`",
-                                          type: "error",
-                                        },
-                                        {
-                                          conditions: [
-                                            {
-                                              fn: "aws.partition",
-                                              argv: [
-                                                {
-                                                  fn: "getAttr",
-                                                  argv: [
-                                                    { ref: "bucketArn" },
-                                                    "region",
-                                                  ],
-                                                },
-                                              ],
-                                              assign: "bucketPartition",
-                                            },
-                                          ],
-                                          rules: [
-                                            {
-                                              conditions: [
-                                                {
-                                                  fn: "aws.partition",
-                                                  argv: [{ ref: "Region" }],
-                                                  assign: "partitionResult",
-                                                },
-                                              ],
-                                              rules: [
-                                                {
-                                                  conditions: [
-                                                    {
-                                                      fn: "stringEquals",
-                                                      argv: [
-                                                        {
-                                                          fn: "getAttr",
-                                                          argv: [
-                                                            {
-                                                              ref: "bucketPartition",
-                                                            },
-                                                            "name",
-                                                          ],
-                                                        },
-                                                        {
-                                                          fn: "getAttr",
-                                                          argv: [
-                                                            {
-                                                              ref: "partitionResult",
-                                                            },
-                                                            "name",
-                                                          ],
-                                                        },
-                                                      ],
-                                                    },
-                                                  ],
-                                                  rules: [
-                                                    {
-                                                      conditions: [
-                                                        {
-                                                          fn: "isValidHostLabel",
-                                                          argv: [
-                                                            {
-                                                              fn: "getAttr",
-                                                              argv: [
-                                                                {
-                                                                  ref: "bucketArn",
-                                                                },
-                                                                "region",
-                                                              ],
-                                                            },
-                                                            true,
-                                                          ],
-                                                        },
-                                                      ],
-                                                      rules: [
-                                                        {
-                                                          conditions: [
-                                                            {
-                                                              fn: "stringEquals",
-                                                              argv: [
-                                                                {
-                                                                  fn: "getAttr",
-                                                                  argv: [
-                                                                    {
-                                                                      ref: "bucketArn",
-                                                                    },
-                                                                    "accountId",
-                                                                  ],
-                                                                },
-                                                                "",
-                                                              ],
-                                                            },
-                                                          ],
-                                                          error:
-                                                            "Invalid ARN: Missing account id",
-                                                          type: "error",
-                                                        },
-                                                        {
-                                                          conditions: [
-                                                            {
-                                                              fn: "isValidHostLabel",
-                                                              argv: [
-                                                                {
-                                                                  fn: "getAttr",
-                                                                  argv: [
-                                                                    {
-                                                                      ref: "bucketArn",
-                                                                    },
-                                                                    "accountId",
-                                                                  ],
-                                                                },
-                                                                false,
-                                                              ],
-                                                            },
-                                                          ],
-                                                          rules: [
-                                                            {
-                                                              conditions: [
-                                                                {
-                                                                  fn: "isValidHostLabel",
-                                                                  argv: [
-                                                                    {
-                                                                      ref: "accessPointName",
-                                                                    },
-                                                                    false,
-                                                                  ],
-                                                                },
-                                                              ],
-                                                              rules: [
-                                                                {
-                                                                  conditions: [
-                                                                    {
-                                                                      fn: "isSet",
-                                                                      argv: [
-                                                                        {
-                                                                          ref: "Endpoint",
-                                                                        },
-                                                                      ],
-                                                                    },
-                                                                    {
-                                                                      fn: "parseURL",
-                                                                      argv: [
-                                                                        {
-                                                                          ref: "Endpoint",
-                                                                        },
-                                                                      ],
-                                                                      assign:
-                                                                        "url",
-                                                                    },
-                                                                  ],
-                                                                  endpoint: {
-                                                                    url: "{url#scheme}://{accessPointName}-{bucketArn#accountId}.{url#authority}{url#path}",
-                                                                    properties:
-                                                                      {
-                                                                        authSchemes:
-                                                                          [
-                                                                            {
-                                                                              disableDoubleEncoding: true,
-                                                                              name: "sigv4",
-                                                                              signingName:
-                                                                                "s3-object-lambda",
-                                                                              signingRegion:
-                                                                                "{bucketArn#region}",
-                                                                            },
-                                                                          ],
-                                                                      },
-                                                                    headers: {},
-                                                                  },
-                                                                  type: "endpoint",
-                                                                },
-                                                                {
-                                                                  conditions: [
-                                                                    {
-                                                                      fn: "booleanEquals",
-                                                                      argv: [
-                                                                        {
-                                                                          ref: "UseFIPS",
-                                                                        },
-                                                                        true,
-                                                                      ],
-                                                                    },
-                                                                  ],
-                                                                  endpoint: {
-                                                                    url: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}",
-                                                                    properties:
-                                                                      {
-                                                                        authSchemes:
-                                                                          [
-                                                                            {
-                                                                              disableDoubleEncoding: true,
-                                                                              name: "sigv4",
-                                                                              signingName:
-                                                                                "s3-object-lambda",
-                                                                              signingRegion:
-                                                                                "{bucketArn#region}",
-                                                                            },
-                                                                          ],
-                                                                      },
-                                                                    headers: {},
-                                                                  },
-                                                                  type: "endpoint",
-                                                                },
-                                                                {
-                                                                  conditions:
-                                                                    [],
-                                                                  endpoint: {
-                                                                    url: "https://{accessPointName}-{bucketArn#accountId}.s3-object-lambda.{bucketArn#region}.{bucketPartition#dnsSuffix}",
-                                                                    properties:
-                                                                      {
-                                                                        authSchemes:
-                                                                          [
-                                                                            {
-                                                                              disableDoubleEncoding: true,
-                                                                              name: "sigv4",
-                                                                              signingName:
-                                                                                "s3-object-lambda",
-                                                                              signingRegion:
-                                                                                "{bucketArn#region}",
-                                                                            },
-                                                                          ],
-                                                                      },
-                                                                    headers: {},
-                                                                  },
-                                                                  type: "endpoint",
-                                                                },
-                                                              ],
-                                                              type: "tree",
-                                                            },
-                                                            {
-                                                              conditions: [],
-                                                              error:
-                                                                "Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and `-`. Found: `{accessPointName}`",
-                                                              type: "error",
-                                                            },
-                                                          ],
-                                                          type: "tree",
-                                                        },
-                                                        {
-                                                          conditions: [],
-                                                          error:
-                                                            "Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and `-`. Found: `{bucketArn#accountId}`",
-                                                          type: "error",
-                                                        },
-                                                      ],
-                                                      type: "tree",
-                                                    },
-                                                    {
-                                                      conditions: [],
-                                                      error:
-                                                        "Invalid region in ARN: `{bucketArn#region}` (invalid DNS name)",
-                                                      type: "error",
-                                                    },
-                                                  ],
-                                                  type: "tree",
-                                                },
-                                                {
-                                                  conditions: [],
-                                                  error:
-                                                    "Client was configured for partition `{partitionResult#name}` but ARN (`{Bucket}`) has `{bucketPartition#name}`",
-                                                  type: "error",
-                                                },
-                                              ],
-                                              type: "tree",
-                                            },
-                                          ],
-                                          type: "tree",
-                                        },
-                                      ],
-                                      type: "tree",
-                                    },
-                                    {
-                                      conditions: [],
-                                      error:
-                                        "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`.",
-                                      type: "error",
-                                    },
-                                  ],
-                                  type: "tree",
-                                },
-                                {
-                                  conditions: [],
-                                  error:
-                                    "Invalid ARN: bucket ARN is missing a region",
-                                  type: "error",
-                                },
-                              ],
-                              type: "tree",
-                            },
-                            {
-                              conditions: [],
-                              error:
-                                "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided",
-                              type: "error",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [],
-                          error:
-                            "Invalid ARN: Object Lambda ARNs only support `accesspoint` arn types, but found: `{arnType}`",
-                          type: "error",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "arnType" }, "accesspoint"],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "getAttr",
-                              argv: [{ ref: "bucketArn" }, "resourceId[1]"],
-                              assign: "accessPointName",
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "accessPointName" }, ""],
-                                },
-                              ],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "not",
-                                  argv: [
-                                    {
-                                      fn: "stringEquals",
-                                      argv: [
-                                        {
-                                          fn: "getAttr",
-                                          argv: [
-                                            { ref: "bucketArn" },
-                                            "region",
-                                          ],
-                                        },
-                                        "",
-                                      ],
-                                    },
-                                  ],
-                                },
-                              ],
-                              rules: [
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "stringEquals",
-                                      argv: [{ ref: "arnType" }, "accesspoint"],
-                                    },
-                                  ],
-                                  rules: [
-                                    {
-                                      conditions: [
-                                        {
-                                          fn: "not",
-                                          argv: [
-                                            {
-                                              fn: "stringEquals",
-                                              argv: [
-                                                {
-                                                  fn: "getAttr",
-                                                  argv: [
-                                                    { ref: "bucketArn" },
-                                                    "region",
-                                                  ],
-                                                },
-                                                "",
-                                              ],
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                      rules: [
-                                        {
-                                          conditions: [
-                                            {
-                                              fn: "isSet",
-                                              argv: [
-                                                { ref: "DisableAccessPoints" },
-                                              ],
-                                            },
-                                            {
-                                              fn: "booleanEquals",
-                                              argv: [
-                                                { ref: "DisableAccessPoints" },
-                                                true,
-                                              ],
-                                            },
-                                          ],
-                                          error:
-                                            "Access points are not supported for this operation",
-                                          type: "error",
-                                        },
-                                        {
-                                          conditions: [
-                                            {
-                                              fn: "not",
-                                              argv: [
-                                                {
-                                                  fn: "isSet",
-                                                  argv: [
-                                                    {
-                                                      fn: "getAttr",
-                                                      argv: [
-                                                        { ref: "bucketArn" },
-                                                        "resourceId[2]",
-                                                      ],
-                                                    },
-                                                  ],
-                                                },
-                                              ],
-                                            },
-                                          ],
-                                          rules: [
-                                            {
-                                              conditions: [
-                                                {
-                                                  fn: "isSet",
-                                                  argv: [
-                                                    { ref: "UseArnRegion" },
-                                                  ],
-                                                },
-                                                {
-                                                  fn: "booleanEquals",
-                                                  argv: [
-                                                    { ref: "UseArnRegion" },
-                                                    false,
-                                                  ],
-                                                },
-                                                {
-                                                  fn: "not",
-                                                  argv: [
-                                                    {
-                                                      fn: "stringEquals",
-                                                      argv: [
-                                                        {
-                                                          fn: "getAttr",
-                                                          argv: [
-                                                            {
-                                                              ref: "bucketArn",
-                                                            },
-                                                            "region",
-                                                          ],
-                                                        },
-                                                        "{Region}",
-                                                      ],
-                                                    },
-                                                  ],
-                                                },
-                                              ],
-                                              error:
-                                                "Invalid configuration: region from ARN `{bucketArn#region}` does not match client region `{Region}` and UseArnRegion is `false`",
-                                              type: "error",
-                                            },
-                                            {
-                                              conditions: [
-                                                {
-                                                  fn: "aws.partition",
-                                                  argv: [
-                                                    {
-                                                      fn: "getAttr",
-                                                      argv: [
-                                                        { ref: "bucketArn" },
-                                                        "region",
-                                                      ],
-                                                    },
-                                                  ],
-                                                  assign: "bucketPartition",
-                                                },
-                                              ],
-                                              rules: [
-                                                {
-                                                  conditions: [
-                                                    {
-                                                      fn: "aws.partition",
-                                                      argv: [{ ref: "Region" }],
-                                                      assign: "partitionResult",
-                                                    },
-                                                  ],
-                                                  rules: [
-                                                    {
-                                                      conditions: [
-                                                        {
-                                                          fn: "stringEquals",
-                                                          argv: [
-                                                            {
-                                                              fn: "getAttr",
-                                                              argv: [
-                                                                {
-                                                                  ref: "bucketPartition",
-                                                                },
-                                                                "name",
-                                                              ],
-                                                            },
-                                                            "{partitionResult#name}",
-                                                          ],
-                                                        },
-                                                      ],
-                                                      rules: [
-                                                        {
-                                                          conditions: [
-                                                            {
-                                                              fn: "isValidHostLabel",
-                                                              argv: [
-                                                                {
-                                                                  fn: "getAttr",
-                                                                  argv: [
-                                                                    {
-                                                                      ref: "bucketArn",
-                                                                    },
-                                                                    "region",
-                                                                  ],
-                                                                },
-                                                                true,
-                                                              ],
-                                                            },
-                                                          ],
-                                                          rules: [
-                                                            {
-                                                              conditions: [
-                                                                {
-                                                                  fn: "stringEquals",
-                                                                  argv: [
-                                                                    {
-                                                                      fn: "getAttr",
-                                                                      argv: [
-                                                                        {
-                                                                          ref: "bucketArn",
-                                                                        },
-                                                                        "service",
-                                                                      ],
-                                                                    },
-                                                                    "s3",
-                                                                  ],
-                                                                },
-                                                              ],
-                                                              rules: [
-                                                                {
-                                                                  conditions: [
-                                                                    {
-                                                                      fn: "isValidHostLabel",
-                                                                      argv: [
-                                                                        {
-                                                                          fn: "getAttr",
-                                                                          argv: [
-                                                                            {
-                                                                              ref: "bucketArn",
-                                                                            },
-                                                                            "accountId",
-                                                                          ],
-                                                                        },
-                                                                        false,
-                                                                      ],
-                                                                    },
-                                                                  ],
-                                                                  rules: [
-                                                                    {
-                                                                      conditions:
-                                                                        [
-                                                                          {
-                                                                            fn: "isValidHostLabel",
-                                                                            argv: [
-                                                                              {
-                                                                                ref: "accessPointName",
-                                                                              },
-                                                                              false,
-                                                                            ],
-                                                                          },
-                                                                        ],
-                                                                      rules: [
-                                                                        {
-                                                                          conditions:
-                                                                            [
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "Accelerate",
-                                                                                  },
-                                                                                  true,
-                                                                                ],
-                                                                              },
-                                                                            ],
-                                                                          error:
-                                                                            "Access Points do not support S3 Accelerate",
-                                                                          type: "error",
-                                                                        },
-                                                                        {
-                                                                          conditions:
-                                                                            [
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseFIPS",
-                                                                                  },
-                                                                                  true,
-                                                                                ],
-                                                                              },
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseDualStack",
-                                                                                  },
-                                                                                  true,
-                                                                                ],
-                                                                              },
-                                                                            ],
-                                                                          endpoint:
-                                                                            {
-                                                                              url: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}",
-                                                                              properties:
-                                                                                {
-                                                                                  authSchemes:
-                                                                                    [
-                                                                                      {
-                                                                                        disableDoubleEncoding: true,
-                                                                                        name: "sigv4",
-                                                                                        signingName:
-                                                                                          "s3",
-                                                                                        signingRegion:
-                                                                                          "{bucketArn#region}",
-                                                                                      },
-                                                                                    ],
-                                                                                },
-                                                                              headers:
-                                                                                {},
-                                                                            },
-                                                                          type: "endpoint",
-                                                                        },
-                                                                        {
-                                                                          conditions:
-                                                                            [
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseFIPS",
-                                                                                  },
-                                                                                  true,
-                                                                                ],
-                                                                              },
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseDualStack",
-                                                                                  },
-                                                                                  false,
-                                                                                ],
-                                                                              },
-                                                                            ],
-                                                                          endpoint:
-                                                                            {
-                                                                              url: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint-fips.{bucketArn#region}.{bucketPartition#dnsSuffix}",
-                                                                              properties:
-                                                                                {
-                                                                                  authSchemes:
-                                                                                    [
-                                                                                      {
-                                                                                        disableDoubleEncoding: true,
-                                                                                        name: "sigv4",
-                                                                                        signingName:
-                                                                                          "s3",
-                                                                                        signingRegion:
-                                                                                          "{bucketArn#region}",
-                                                                                      },
-                                                                                    ],
-                                                                                },
-                                                                              headers:
-                                                                                {},
-                                                                            },
-                                                                          type: "endpoint",
-                                                                        },
-                                                                        {
-                                                                          conditions:
-                                                                            [
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseFIPS",
-                                                                                  },
-                                                                                  false,
-                                                                                ],
-                                                                              },
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseDualStack",
-                                                                                  },
-                                                                                  true,
-                                                                                ],
-                                                                              },
-                                                                            ],
-                                                                          endpoint:
-                                                                            {
-                                                                              url: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.dualstack.{bucketArn#region}.{bucketPartition#dnsSuffix}",
-                                                                              properties:
-                                                                                {
-                                                                                  authSchemes:
-                                                                                    [
-                                                                                      {
-                                                                                        disableDoubleEncoding: true,
-                                                                                        name: "sigv4",
-                                                                                        signingName:
-                                                                                          "s3",
-                                                                                        signingRegion:
-                                                                                          "{bucketArn#region}",
-                                                                                      },
-                                                                                    ],
-                                                                                },
-                                                                              headers:
-                                                                                {},
-                                                                            },
-                                                                          type: "endpoint",
-                                                                        },
-                                                                        {
-                                                                          conditions:
-                                                                            [
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseFIPS",
-                                                                                  },
-                                                                                  false,
-                                                                                ],
-                                                                              },
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseDualStack",
-                                                                                  },
-                                                                                  false,
-                                                                                ],
-                                                                              },
-                                                                              {
-                                                                                fn: "isSet",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "Endpoint",
-                                                                                  },
-                                                                                ],
-                                                                              },
-                                                                              {
-                                                                                fn: "parseURL",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "Endpoint",
-                                                                                  },
-                                                                                ],
-                                                                                assign:
-                                                                                  "url",
-                                                                              },
-                                                                            ],
-                                                                          endpoint:
-                                                                            {
-                                                                              url: "{url#scheme}://{accessPointName}-{bucketArn#accountId}.{url#authority}{url#path}",
-                                                                              properties:
-                                                                                {
-                                                                                  authSchemes:
-                                                                                    [
-                                                                                      {
-                                                                                        disableDoubleEncoding: true,
-                                                                                        name: "sigv4",
-                                                                                        signingName:
-                                                                                          "s3",
-                                                                                        signingRegion:
-                                                                                          "{bucketArn#region}",
-                                                                                      },
-                                                                                    ],
-                                                                                },
-                                                                              headers:
-                                                                                {},
-                                                                            },
-                                                                          type: "endpoint",
-                                                                        },
-                                                                        {
-                                                                          conditions:
-                                                                            [
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseFIPS",
-                                                                                  },
-                                                                                  false,
-                                                                                ],
-                                                                              },
-                                                                              {
-                                                                                fn: "booleanEquals",
-                                                                                argv: [
-                                                                                  {
-                                                                                    ref: "UseDualStack",
-                                                                                  },
-                                                                                  false,
-                                                                                ],
-                                                                              },
-                                                                            ],
-                                                                          endpoint:
-                                                                            {
-                                                                              url: "https://{accessPointName}-{bucketArn#accountId}.s3-accesspoint.{bucketArn#region}.{bucketPartition#dnsSuffix}",
-                                                                              properties:
-                                                                                {
-                                                                                  authSchemes:
-                                                                                    [
-                                                                                      {
-                                                                                        disableDoubleEncoding: true,
-                                                                                        name: "sigv4",
-                                                                                        signingName:
-                                                                                          "s3",
-                                                                                        signingRegion:
-                                                                                          "{bucketArn#region}",
-                                                                                      },
-                                                                                    ],
-                                                                                },
-                                                                              headers:
-                                                                                {},
-                                                                            },
-                                                                          type: "endpoint",
-                                                                        },
-                                                                      ],
-                                                                      type: "tree",
-                                                                    },
-                                                                    {
-                                                                      conditions:
-                                                                        [],
-                                                                      error:
-                                                                        "Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and `-`. Found: `{accessPointName}`",
-                                                                      type: "error",
-                                                                    },
-                                                                  ],
-                                                                  type: "tree",
-                                                                },
-                                                                {
-                                                                  conditions:
-                                                                    [],
-                                                                  error:
-                                                                    "Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and `-`. Found: `{bucketArn#accountId}`",
-                                                                  type: "error",
-                                                                },
-                                                              ],
-                                                              type: "tree",
-                                                            },
-                                                            {
-                                                              conditions: [],
-                                                              error:
-                                                                "Invalid ARN: The ARN was not for the S3 service, found: {bucketArn#service}",
-                                                              type: "error",
-                                                            },
-                                                          ],
-                                                          type: "tree",
-                                                        },
-                                                        {
-                                                          conditions: [],
-                                                          error:
-                                                            "Invalid region in ARN: `{bucketArn#region}` (invalid DNS name)",
-                                                          type: "error",
-                                                        },
-                                                      ],
-                                                      type: "tree",
-                                                    },
-                                                    {
-                                                      conditions: [],
-                                                      error:
-                                                        "Client was configured for partition `{partitionResult#name}` but ARN (`{Bucket}`) has `{bucketPartition#name}`",
-                                                      type: "error",
-                                                    },
-                                                  ],
-                                                  type: "tree",
-                                                },
-                                              ],
-                                              type: "tree",
-                                            },
-                                          ],
-                                          type: "tree",
-                                        },
-                                        {
-                                          conditions: [],
-                                          error:
-                                            "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`.",
-                                          type: "error",
-                                        },
-                                      ],
-                                      type: "tree",
-                                    },
-                                  ],
-                                  type: "tree",
-                                },
-                              ],
-                              type: "tree",
-                            },
-                            {
-                              conditions: [
-                                {
-                                  fn: "isValidHostLabel",
-                                  argv: [{ ref: "accessPointName" }, true],
-                                },
-                              ],
-                              rules: [
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "booleanEquals",
-                                      argv: [{ ref: "UseDualStack" }, true],
-                                    },
-                                  ],
-                                  error: "S3 MRAP does not support dual-stack",
-                                  type: "error",
-                                },
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "booleanEquals",
-                                      argv: [{ ref: "UseFIPS" }, true],
-                                    },
-                                  ],
-                                  error: "S3 MRAP does not support FIPS",
-                                  type: "error",
-                                },
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "booleanEquals",
-                                      argv: [{ ref: "Accelerate" }, true],
-                                    },
-                                  ],
-                                  error:
-                                    "S3 MRAP does not support S3 Accelerate",
-                                  type: "error",
-                                },
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "booleanEquals",
-                                      argv: [
-                                        {
-                                          ref: "DisableMultiRegionAccessPoints",
-                                        },
+          const partitionResult = _.partition(Region);
+          if (partitionResult != null && partitionResult !== false) {
+            if (_.isValidHostLabel(Region, false)) {
+              if (
+                Accelerate === true &&
+                _.getAttr(partitionResult, "name") === "aws-cn"
+              ) {
+                return err("S3 Accelerate cannot be used in this region");
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === true &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                Region === "aws-global"
+              ) {
+                return e(
+                  `https://${Bucket}.s3-fips.dualstack.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p3(),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === true &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === true
+              ) {
+                return e(
+                  `https://${Bucket}.s3-fips.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === true &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === false
+              ) {
+                return e(
+                  `https://${Bucket}.s3-fips.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === true &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                Region === "aws-global"
+              ) {
+                return e(
+                  `https://${Bucket}.s3-fips.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p3(),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === true &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === true
+              ) {
+                return e(
+                  `https://${Bucket}.s3-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === true &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === false
+              ) {
+                return e(
+                  `https://${Bucket}.s3-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === false &&
+                Accelerate === true &&
+                !(Endpoint != null) &&
+                Region === "aws-global"
+              ) {
+                return e(
+                  `https://${Bucket}.s3-accelerate.dualstack.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p3(),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === false &&
+                Accelerate === true &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === true
+              ) {
+                return e(
+                  `https://${Bucket}.s3-accelerate.dualstack.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === false &&
+                Accelerate === true &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === false
+              ) {
+                return e(
+                  `https://${Bucket}.s3-accelerate.dualstack.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === false &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                Region === "aws-global"
+              ) {
+                return e(
+                  `https://${Bucket}.s3.dualstack.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p3(),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === false &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === true
+              ) {
+                return e(
+                  `https://${Bucket}.s3.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === true &&
+                UseFIPS === false &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === false
+              ) {
+                return e(
+                  `https://${Bucket}.s3.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              {
+                const url = _.parseURL(Endpoint);
+                if (
+                  UseDualStack === false &&
+                  UseFIPS === false &&
+                  Accelerate === false &&
+                  Endpoint != null &&
+                  url != null &&
+                  url !== false &&
+                  _.getAttr(url, "isIp") === true &&
+                  Region === "aws-global"
+                ) {
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "normalizedPath")}${Bucket}`,
+                    _p3(),
+                    {},
+                  );
+                }
+              }
+              {
+                const url = _.parseURL(Endpoint);
+                if (
+                  UseDualStack === false &&
+                  UseFIPS === false &&
+                  Accelerate === false &&
+                  Endpoint != null &&
+                  url != null &&
+                  url !== false &&
+                  _.getAttr(url, "isIp") === false &&
+                  Region === "aws-global"
+                ) {
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                    _p3(),
+                    {},
+                  );
+                }
+              }
+              {
+                const url = _.parseURL(Endpoint);
+                if (
+                  UseDualStack === false &&
+                  UseFIPS === false &&
+                  Accelerate === false &&
+                  Endpoint != null &&
+                  url != null &&
+                  url !== false &&
+                  _.getAttr(url, "isIp") === true &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === true
+                ) {
+                  if (Region === "us-east-1") {
+                    return e(
+                      `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "normalizedPath")}${Bucket}`,
+                      _p4(Region),
+                      {},
+                    );
+                  }
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "normalizedPath")}${Bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+              }
+              {
+                const url = _.parseURL(Endpoint);
+                if (
+                  UseDualStack === false &&
+                  UseFIPS === false &&
+                  Accelerate === false &&
+                  Endpoint != null &&
+                  url != null &&
+                  url !== false &&
+                  _.getAttr(url, "isIp") === false &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === true
+                ) {
+                  if (Region === "us-east-1") {
+                    return e(
+                      `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                      _p4(Region),
+                      {},
+                    );
+                  }
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+              }
+              {
+                const url = _.parseURL(Endpoint);
+                if (
+                  UseDualStack === false &&
+                  UseFIPS === false &&
+                  Accelerate === false &&
+                  Endpoint != null &&
+                  url != null &&
+                  url !== false &&
+                  _.getAttr(url, "isIp") === true &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === false
+                ) {
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "normalizedPath")}${Bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+              }
+              {
+                const url = _.parseURL(Endpoint);
+                if (
+                  UseDualStack === false &&
+                  UseFIPS === false &&
+                  Accelerate === false &&
+                  Endpoint != null &&
+                  url != null &&
+                  url !== false &&
+                  _.getAttr(url, "isIp") === false &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === false
+                ) {
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === false &&
+                Accelerate === true &&
+                !(Endpoint != null) &&
+                Region === "aws-global"
+              ) {
+                return e(
+                  `https://${Bucket}.s3-accelerate.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p3(),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === false &&
+                Accelerate === true &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === true
+              ) {
+                if (Region === "us-east-1") {
+                  return e(
+                    `https://${Bucket}.s3-accelerate.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                return e(
+                  `https://${Bucket}.s3-accelerate.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === false &&
+                Accelerate === true &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === false
+              ) {
+                return e(
+                  `https://${Bucket}.s3-accelerate.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === false &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                Region === "aws-global"
+              ) {
+                return e(
+                  `https://${Bucket}.s3.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p3(),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === false &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === true
+              ) {
+                if (Region === "us-east-1") {
+                  return e(
+                    `https://${Bucket}.s3.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                return e(
+                  `https://${Bucket}.s3.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              if (
+                UseDualStack === false &&
+                UseFIPS === false &&
+                Accelerate === false &&
+                !(Endpoint != null) &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === false
+              ) {
+                return e(
+                  `https://${Bucket}.s3.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+            }
+            return err("Invalid region: region was not a valid DNS name.");
+          }
+        }
+      }
+      {
+        const url = _.parseURL(Endpoint);
+        if (
+          Endpoint != null &&
+          url != null &&
+          url !== false &&
+          _.getAttr(url, "scheme") === "http" &&
+          _.isVirtualHostableS3Bucket(Bucket, true) &&
+          ForcePathStyle === false &&
+          UseFIPS === false &&
+          UseDualStack === false &&
+          Accelerate === false
+        ) {
+          {
+            const partitionResult = _.partition(Region);
+            if (partitionResult != null && partitionResult !== false) {
+              if (_.isValidHostLabel(Region, false)) {
+                return e(
+                  `${_.getAttr(url, "scheme")}://${Bucket}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              return err("Invalid region: region was not a valid DNS name.");
+            }
+          }
+        }
+      }
+      {
+        const bucketArn = _.parseArn(Bucket);
+        if (
+          ForcePathStyle === false &&
+          bucketArn != null &&
+          bucketArn !== false
+        ) {
+          {
+            const arnType = _.getAttr(bucketArn, "resourceId[0]");
+            if (arnType != null && arnType !== false && !(arnType === "")) {
+              if (_.getAttr(bucketArn, "service") === "s3-object-lambda") {
+                if (arnType === "accesspoint") {
+                  {
+                    const accessPointName = _.getAttr(
+                      bucketArn,
+                      "resourceId[1]",
+                    );
+                    if (
+                      accessPointName != null &&
+                      accessPointName !== false &&
+                      !(accessPointName === "")
+                    ) {
+                      if (UseDualStack === true) {
+                        return err(
+                          "S3 Object Lambda does not support Dual-stack",
+                        );
+                      }
+                      if (Accelerate === true) {
+                        return err(
+                          "S3 Object Lambda does not support S3 Accelerate",
+                        );
+                      }
+                      if (!(_.getAttr(bucketArn, "region") === "")) {
+                        if (
+                          DisableAccessPoints != null &&
+                          DisableAccessPoints === true
+                        ) {
+                          return err(
+                            "Access points are not supported for this operation",
+                          );
+                        }
+                        if (!(_.getAttr(bucketArn, "resourceId[2]") != null)) {
+                          if (
+                            UseArnRegion != null &&
+                            UseArnRegion === false &&
+                            !(_.getAttr(bucketArn, "region") === `${Region}`)
+                          ) {
+                            return err(
+                              `Invalid configuration: region from ARN \`${_.getAttr(bucketArn, "region")}\` does not match client region \`${Region}\` and UseArnRegion is \`false\``,
+                            );
+                          }
+                          {
+                            const bucketPartition = _.partition(
+                              _.getAttr(bucketArn, "region"),
+                            );
+                            if (
+                              bucketPartition != null &&
+                              bucketPartition !== false
+                            ) {
+                              {
+                                const partitionResult = _.partition(Region);
+                                if (
+                                  partitionResult != null &&
+                                  partitionResult !== false
+                                ) {
+                                  if (
+                                    _.getAttr(bucketPartition, "name") ===
+                                    _.getAttr(partitionResult, "name")
+                                  ) {
+                                    if (
+                                      _.isValidHostLabel(
+                                        _.getAttr(bucketArn, "region"),
                                         true,
-                                      ],
-                                    },
-                                  ],
-                                  error:
-                                    "Invalid configuration: Multi-Region Access Point ARNs are disabled.",
-                                  type: "error",
-                                },
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "aws.partition",
-                                      argv: [{ ref: "Region" }],
-                                      assign: "mrapPartition",
-                                    },
-                                  ],
-                                  rules: [
-                                    {
-                                      conditions: [
-                                        {
-                                          fn: "stringEquals",
-                                          argv: [
-                                            {
-                                              fn: "getAttr",
-                                              argv: [
-                                                { ref: "mrapPartition" },
-                                                "name",
-                                              ],
-                                            },
-                                            {
-                                              fn: "getAttr",
-                                              argv: [
-                                                { ref: "bucketArn" },
-                                                "partition",
-                                              ],
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                      rules: [
-                                        {
-                                          conditions: [],
-                                          endpoint: {
-                                            url: "https://{accessPointName}.accesspoint.s3-global.{mrapPartition#dnsSuffix}",
-                                            properties: {
-                                              authSchemes: [
-                                                {
-                                                  disableDoubleEncoding: true,
-                                                  name: "sigv4a",
-                                                  signingName: "s3",
-                                                  signingRegionSet: ["*"],
-                                                },
-                                              ],
-                                            },
-                                            headers: {},
-                                          },
-                                          type: "endpoint",
-                                        },
-                                      ],
-                                      type: "tree",
-                                    },
-                                    {
-                                      conditions: [],
-                                      error:
-                                        "Client was configured for partition `{mrapPartition#name}` but bucket referred to partition `{bucketArn#partition}`",
-                                      type: "error",
-                                    },
-                                  ],
-                                  type: "tree",
-                                },
-                              ],
-                              type: "tree",
-                            },
-                            {
-                              conditions: [],
-                              error: "Invalid Access Point Name",
-                              type: "error",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [],
-                          error:
-                            "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided",
-                          type: "error",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "stringEquals",
-                          argv: [
-                            {
-                              fn: "getAttr",
-                              argv: [{ ref: "bucketArn" }, "service"],
-                            },
-                            "s3-outposts",
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                          ],
-                          error: "S3 Outposts does not support Dual-stack",
-                          type: "error",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                          ],
-                          error: "S3 Outposts does not support FIPS",
-                          type: "error",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "Accelerate" }, true],
-                            },
-                          ],
-                          error: "S3 Outposts does not support S3 Accelerate",
-                          type: "error",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "isSet",
-                              argv: [
-                                {
-                                  fn: "getAttr",
-                                  argv: [{ ref: "bucketArn" }, "resourceId[4]"],
-                                },
-                              ],
-                            },
-                          ],
-                          error:
-                            "Invalid Arn: Outpost Access Point ARN contains sub resources",
-                          type: "error",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "getAttr",
-                              argv: [{ ref: "bucketArn" }, "resourceId[1]"],
-                              assign: "outpostId",
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "isValidHostLabel",
-                                  argv: [{ ref: "outpostId" }, false],
-                                },
-                              ],
-                              rules: [
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "isSet",
-                                      argv: [{ ref: "UseArnRegion" }],
-                                    },
-                                    {
-                                      fn: "booleanEquals",
-                                      argv: [{ ref: "UseArnRegion" }, false],
-                                    },
-                                    {
-                                      fn: "not",
-                                      argv: [
-                                        {
-                                          fn: "stringEquals",
-                                          argv: [
-                                            {
-                                              fn: "getAttr",
-                                              argv: [
-                                                { ref: "bucketArn" },
-                                                "region",
-                                              ],
-                                            },
-                                            "{Region}",
-                                          ],
-                                        },
-                                      ],
-                                    },
-                                  ],
-                                  error:
-                                    "Invalid configuration: region from ARN `{bucketArn#region}` does not match client region `{Region}` and UseArnRegion is `false`",
-                                  type: "error",
-                                },
-                                {
-                                  conditions: [
-                                    {
-                                      fn: "aws.partition",
-                                      argv: [
-                                        {
-                                          fn: "getAttr",
-                                          argv: [
-                                            { ref: "bucketArn" },
-                                            "region",
-                                          ],
-                                        },
-                                      ],
-                                      assign: "bucketPartition",
-                                    },
-                                  ],
-                                  rules: [
-                                    {
-                                      conditions: [
-                                        {
-                                          fn: "aws.partition",
-                                          argv: [{ ref: "Region" }],
-                                          assign: "partitionResult",
-                                        },
-                                      ],
-                                      rules: [
-                                        {
-                                          conditions: [
-                                            {
-                                              fn: "stringEquals",
-                                              argv: [
-                                                {
-                                                  fn: "getAttr",
-                                                  argv: [
-                                                    { ref: "bucketPartition" },
-                                                    "name",
-                                                  ],
-                                                },
-                                                {
-                                                  fn: "getAttr",
-                                                  argv: [
-                                                    { ref: "partitionResult" },
-                                                    "name",
-                                                  ],
-                                                },
-                                              ],
-                                            },
-                                          ],
-                                          rules: [
-                                            {
-                                              conditions: [
-                                                {
-                                                  fn: "isValidHostLabel",
-                                                  argv: [
-                                                    {
-                                                      fn: "getAttr",
-                                                      argv: [
-                                                        { ref: "bucketArn" },
-                                                        "region",
-                                                      ],
-                                                    },
-                                                    true,
-                                                  ],
-                                                },
-                                              ],
-                                              rules: [
-                                                {
-                                                  conditions: [
-                                                    {
-                                                      fn: "isValidHostLabel",
-                                                      argv: [
-                                                        {
-                                                          fn: "getAttr",
-                                                          argv: [
-                                                            {
-                                                              ref: "bucketArn",
-                                                            },
-                                                            "accountId",
-                                                          ],
-                                                        },
-                                                        false,
-                                                      ],
-                                                    },
-                                                  ],
-                                                  rules: [
-                                                    {
-                                                      conditions: [
-                                                        {
-                                                          fn: "getAttr",
-                                                          argv: [
-                                                            {
-                                                              ref: "bucketArn",
-                                                            },
-                                                            "resourceId[2]",
-                                                          ],
-                                                          assign: "outpostType",
-                                                        },
-                                                      ],
-                                                      rules: [
-                                                        {
-                                                          conditions: [
-                                                            {
-                                                              fn: "getAttr",
-                                                              argv: [
-                                                                {
-                                                                  ref: "bucketArn",
-                                                                },
-                                                                "resourceId[3]",
-                                                              ],
-                                                              assign:
-                                                                "accessPointName",
-                                                            },
-                                                          ],
-                                                          rules: [
-                                                            {
-                                                              conditions: [
-                                                                {
-                                                                  fn: "stringEquals",
-                                                                  argv: [
-                                                                    {
-                                                                      ref: "outpostType",
-                                                                    },
-                                                                    "accesspoint",
-                                                                  ],
-                                                                },
-                                                              ],
-                                                              rules: [
-                                                                {
-                                                                  conditions: [
-                                                                    {
-                                                                      fn: "isSet",
-                                                                      argv: [
-                                                                        {
-                                                                          ref: "Endpoint",
-                                                                        },
-                                                                      ],
-                                                                    },
-                                                                    {
-                                                                      fn: "parseURL",
-                                                                      argv: [
-                                                                        {
-                                                                          ref: "Endpoint",
-                                                                        },
-                                                                      ],
-                                                                      assign:
-                                                                        "url",
-                                                                    },
-                                                                  ],
-                                                                  endpoint: {
-                                                                    url: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.{url#authority}",
-                                                                    properties:
-                                                                      {
-                                                                        authSchemes:
-                                                                          [
-                                                                            {
-                                                                              disableDoubleEncoding: true,
-                                                                              name: "sigv4a",
-                                                                              signingName:
-                                                                                "s3-outposts",
-                                                                              signingRegionSet:
-                                                                                [
-                                                                                  "*",
-                                                                                ],
-                                                                            },
-                                                                            {
-                                                                              disableDoubleEncoding: true,
-                                                                              name: "sigv4",
-                                                                              signingName:
-                                                                                "s3-outposts",
-                                                                              signingRegion:
-                                                                                "{bucketArn#region}",
-                                                                            },
-                                                                          ],
-                                                                      },
-                                                                    headers: {},
-                                                                  },
-                                                                  type: "endpoint",
-                                                                },
-                                                                {
-                                                                  conditions:
-                                                                    [],
-                                                                  endpoint: {
-                                                                    url: "https://{accessPointName}-{bucketArn#accountId}.{outpostId}.s3-outposts.{bucketArn#region}.{bucketPartition#dnsSuffix}",
-                                                                    properties:
-                                                                      {
-                                                                        authSchemes:
-                                                                          [
-                                                                            {
-                                                                              disableDoubleEncoding: true,
-                                                                              name: "sigv4a",
-                                                                              signingName:
-                                                                                "s3-outposts",
-                                                                              signingRegionSet:
-                                                                                [
-                                                                                  "*",
-                                                                                ],
-                                                                            },
-                                                                            {
-                                                                              disableDoubleEncoding: true,
-                                                                              name: "sigv4",
-                                                                              signingName:
-                                                                                "s3-outposts",
-                                                                              signingRegion:
-                                                                                "{bucketArn#region}",
-                                                                            },
-                                                                          ],
-                                                                      },
-                                                                    headers: {},
-                                                                  },
-                                                                  type: "endpoint",
-                                                                },
-                                                              ],
-                                                              type: "tree",
-                                                            },
-                                                            {
-                                                              conditions: [],
-                                                              error:
-                                                                "Expected an outpost type `accesspoint`, found {outpostType}",
-                                                              type: "error",
-                                                            },
-                                                          ],
-                                                          type: "tree",
-                                                        },
-                                                        {
-                                                          conditions: [],
-                                                          error:
-                                                            "Invalid ARN: expected an access point name",
-                                                          type: "error",
-                                                        },
-                                                      ],
-                                                      type: "tree",
-                                                    },
-                                                    {
-                                                      conditions: [],
-                                                      error:
-                                                        "Invalid ARN: Expected a 4-component resource",
-                                                      type: "error",
-                                                    },
-                                                  ],
-                                                  type: "tree",
-                                                },
-                                                {
-                                                  conditions: [],
-                                                  error:
-                                                    "Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and `-`. Found: `{bucketArn#accountId}`",
-                                                  type: "error",
-                                                },
-                                              ],
-                                              type: "tree",
-                                            },
-                                            {
-                                              conditions: [],
-                                              error:
-                                                "Invalid region in ARN: `{bucketArn#region}` (invalid DNS name)",
-                                              type: "error",
-                                            },
-                                          ],
-                                          type: "tree",
-                                        },
-                                        {
-                                          conditions: [],
-                                          error:
-                                            "Client was configured for partition `{partitionResult#name}` but ARN (`{Bucket}`) has `{bucketPartition#name}`",
-                                          type: "error",
-                                        },
-                                      ],
-                                      type: "tree",
-                                    },
-                                  ],
-                                  type: "tree",
-                                },
-                              ],
-                              type: "tree",
-                            },
-                            {
-                              conditions: [],
-                              error:
-                                "Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and `-`. Found: `{outpostId}`",
-                              type: "error",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [],
-                          error: "Invalid ARN: The Outpost Id was not set",
-                          type: "error",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "Invalid ARN: Unrecognized format: {Bucket} (type: {arnType})",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
+                                      )
+                                    ) {
+                                      if (
+                                        _.getAttr(bucketArn, "accountId") === ""
+                                      ) {
+                                        return err(
+                                          "Invalid ARN: Missing account id",
+                                        );
+                                      }
+                                      if (
+                                        _.isValidHostLabel(
+                                          _.getAttr(bucketArn, "accountId"),
+                                          false,
+                                        )
+                                      ) {
+                                        if (
+                                          _.isValidHostLabel(
+                                            accessPointName,
+                                            false,
+                                          )
+                                        ) {
+                                          {
+                                            const url = _.parseURL(Endpoint);
+                                            if (
+                                              Endpoint != null &&
+                                              url != null &&
+                                              url !== false
+                                            ) {
+                                              return e(
+                                                `${_.getAttr(url, "scheme")}://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                                                _p5(bucketArn),
+                                                {},
+                                              );
+                                            }
+                                          }
+                                          if (UseFIPS === true) {
+                                            return e(
+                                              `https://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.s3-object-lambda-fips.${_.getAttr(bucketArn, "region")}.${_.getAttr(bucketPartition, "dnsSuffix")}`,
+                                              _p5(bucketArn),
+                                              {},
+                                            );
+                                          }
+                                          return e(
+                                            `https://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.s3-object-lambda.${_.getAttr(bucketArn, "region")}.${_.getAttr(bucketPartition, "dnsSuffix")}`,
+                                            _p5(bucketArn),
+                                            {},
+                                          );
+                                        }
+                                        return err(
+                                          `Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and \`-\`. Found: \`${accessPointName}\``,
+                                        );
+                                      }
+                                      return err(
+                                        `Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and \`-\`. Found: \`${_.getAttr(bucketArn, "accountId")}\``,
+                                      );
+                                    }
+                                    return err(
+                                      `Invalid region in ARN: \`${_.getAttr(bucketArn, "region")}\` (invalid DNS name)`,
+                                    );
+                                  }
+                                  return err(
+                                    `Client was configured for partition \`${_.getAttr(partitionResult, "name")}\` but ARN (\`${Bucket}\`) has \`${_.getAttr(bucketPartition, "name")}\``,
+                                  );
+                                }
+                              }
+                            }
+                          }
+                        }
+                        return err(
+                          "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`.",
+                        );
+                      }
+                      return err("Invalid ARN: bucket ARN is missing a region");
+                    }
+                  }
+                  return err(
+                    "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided",
+                  );
+                }
+                return err(
+                  `Invalid ARN: Object Lambda ARNs only support \`accesspoint\` arn types, but found: \`${arnType}\``,
+                );
+              }
+              if (arnType === "accesspoint") {
                 {
-                  conditions: [],
-                  error: "Invalid ARN: No ARN type specified",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
+                  const accessPointName = _.getAttr(bucketArn, "resourceId[1]");
+                  if (
+                    accessPointName != null &&
+                    accessPointName !== false &&
+                    !(accessPointName === "")
+                  ) {
+                    if (!(_.getAttr(bucketArn, "region") === "")) {
+                      if (arnType === "accesspoint") {
+                        if (!(_.getAttr(bucketArn, "region") === "")) {
+                          if (
+                            DisableAccessPoints != null &&
+                            DisableAccessPoints === true
+                          ) {
+                            return err(
+                              "Access points are not supported for this operation",
+                            );
+                          }
+                          if (
+                            !(_.getAttr(bucketArn, "resourceId[2]") != null)
+                          ) {
+                            if (
+                              UseArnRegion != null &&
+                              UseArnRegion === false &&
+                              !(_.getAttr(bucketArn, "region") === `${Region}`)
+                            ) {
+                              return err(
+                                `Invalid configuration: region from ARN \`${_.getAttr(bucketArn, "region")}\` does not match client region \`${Region}\` and UseArnRegion is \`false\``,
+                              );
+                            }
+                            {
+                              const bucketPartition = _.partition(
+                                _.getAttr(bucketArn, "region"),
+                              );
+                              if (
+                                bucketPartition != null &&
+                                bucketPartition !== false
+                              ) {
+                                {
+                                  const partitionResult = _.partition(Region);
+                                  if (
+                                    partitionResult != null &&
+                                    partitionResult !== false
+                                  ) {
+                                    if (
+                                      _.getAttr(bucketPartition, "name") ===
+                                      `${_.getAttr(partitionResult, "name")}`
+                                    ) {
+                                      if (
+                                        _.isValidHostLabel(
+                                          _.getAttr(bucketArn, "region"),
+                                          true,
+                                        )
+                                      ) {
+                                        if (
+                                          _.getAttr(bucketArn, "service") ===
+                                          "s3"
+                                        ) {
+                                          if (
+                                            _.isValidHostLabel(
+                                              _.getAttr(bucketArn, "accountId"),
+                                              false,
+                                            )
+                                          ) {
+                                            if (
+                                              _.isValidHostLabel(
+                                                accessPointName,
+                                                false,
+                                              )
+                                            ) {
+                                              if (Accelerate === true) {
+                                                return err(
+                                                  "Access Points do not support S3 Accelerate",
+                                                );
+                                              }
+                                              if (
+                                                UseFIPS === true &&
+                                                UseDualStack === true
+                                              ) {
+                                                return e(
+                                                  `https://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.s3-accesspoint-fips.dualstack.${_.getAttr(bucketArn, "region")}.${_.getAttr(bucketPartition, "dnsSuffix")}`,
+                                                  _p6(bucketArn),
+                                                  {},
+                                                );
+                                              }
+                                              if (
+                                                UseFIPS === true &&
+                                                UseDualStack === false
+                                              ) {
+                                                return e(
+                                                  `https://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.s3-accesspoint-fips.${_.getAttr(bucketArn, "region")}.${_.getAttr(bucketPartition, "dnsSuffix")}`,
+                                                  _p6(bucketArn),
+                                                  {},
+                                                );
+                                              }
+                                              if (
+                                                UseFIPS === false &&
+                                                UseDualStack === true
+                                              ) {
+                                                return e(
+                                                  `https://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.s3-accesspoint.dualstack.${_.getAttr(bucketArn, "region")}.${_.getAttr(bucketPartition, "dnsSuffix")}`,
+                                                  _p6(bucketArn),
+                                                  {},
+                                                );
+                                              }
+                                              {
+                                                const url =
+                                                  _.parseURL(Endpoint);
+                                                if (
+                                                  UseFIPS === false &&
+                                                  UseDualStack === false &&
+                                                  Endpoint != null &&
+                                                  url != null &&
+                                                  url !== false
+                                                ) {
+                                                  return e(
+                                                    `${_.getAttr(url, "scheme")}://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                                                    _p6(bucketArn),
+                                                    {},
+                                                  );
+                                                }
+                                              }
+                                              if (
+                                                UseFIPS === false &&
+                                                UseDualStack === false
+                                              ) {
+                                                return e(
+                                                  `https://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.s3-accesspoint.${_.getAttr(bucketArn, "region")}.${_.getAttr(bucketPartition, "dnsSuffix")}`,
+                                                  _p6(bucketArn),
+                                                  {},
+                                                );
+                                              }
+                                            }
+                                            return err(
+                                              `Invalid ARN: The access point name may only contain a-z, A-Z, 0-9 and \`-\`. Found: \`${accessPointName}\``,
+                                            );
+                                          }
+                                          return err(
+                                            `Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and \`-\`. Found: \`${_.getAttr(bucketArn, "accountId")}\``,
+                                          );
+                                        }
+                                        return err(
+                                          `Invalid ARN: The ARN was not for the S3 service, found: ${_.getAttr(bucketArn, "service")}`,
+                                        );
+                                      }
+                                      return err(
+                                        `Invalid region in ARN: \`${_.getAttr(bucketArn, "region")}\` (invalid DNS name)`,
+                                      );
+                                    }
+                                    return err(
+                                      `Client was configured for partition \`${_.getAttr(partitionResult, "name")}\` but ARN (\`${Bucket}\`) has \`${_.getAttr(bucketPartition, "name")}\``,
+                                    );
+                                  }
+                                }
+                              }
+                            }
+                          }
+                          return err(
+                            "Invalid ARN: The ARN may only contain a single resource component after `accesspoint`.",
+                          );
+                        }
+                      }
+                    }
+                    if (_.isValidHostLabel(accessPointName, true)) {
+                      if (UseDualStack === true) {
+                        return err("S3 MRAP does not support dual-stack");
+                      }
+                      if (UseFIPS === true) {
+                        return err("S3 MRAP does not support FIPS");
+                      }
+                      if (Accelerate === true) {
+                        return err("S3 MRAP does not support S3 Accelerate");
+                      }
+                      if (DisableMultiRegionAccessPoints === true) {
+                        return err(
+                          "Invalid configuration: Multi-Region Access Point ARNs are disabled.",
+                        );
+                      }
+                      {
+                        const mrapPartition = _.partition(Region);
+                        if (mrapPartition != null && mrapPartition !== false) {
+                          if (
+                            _.getAttr(mrapPartition, "name") ===
+                            _.getAttr(bucketArn, "partition")
+                          ) {
+                            return e(
+                              `https://${accessPointName}.accesspoint.s3-global.${_.getAttr(mrapPartition, "dnsSuffix")}`,
+                              {
+                                authSchemes: [
+                                  {
+                                    disableDoubleEncoding: true,
+                                    name: "sigv4a",
+                                    signingName: "s3",
+                                    signingRegionSet: ["*"],
+                                  },
+                                ],
+                              },
+                              {},
+                            );
+                          }
+                          return err(
+                            `Client was configured for partition \`${_.getAttr(mrapPartition, "name")}\` but bucket referred to partition \`${_.getAttr(bucketArn, "partition")}\``,
+                          );
+                        }
+                      }
+                    }
+                    return err("Invalid Access Point Name");
+                  }
+                }
+                return err(
+                  "Invalid ARN: Expected a resource of the format `accesspoint:<accesspoint name>` but no name was provided",
+                );
+              }
+              if (_.getAttr(bucketArn, "service") === "s3-outposts") {
+                if (UseDualStack === true) {
+                  return err("S3 Outposts does not support Dual-stack");
+                }
+                if (UseFIPS === true) {
+                  return err("S3 Outposts does not support FIPS");
+                }
+                if (Accelerate === true) {
+                  return err("S3 Outposts does not support S3 Accelerate");
+                }
+                if (_.getAttr(bucketArn, "resourceId[4]") != null) {
+                  return err(
+                    "Invalid Arn: Outpost Access Point ARN contains sub resources",
+                  );
+                }
+                {
+                  const outpostId = _.getAttr(bucketArn, "resourceId[1]");
+                  if (outpostId != null && outpostId !== false) {
+                    if (_.isValidHostLabel(outpostId, false)) {
+                      if (
+                        UseArnRegion != null &&
+                        UseArnRegion === false &&
+                        !(_.getAttr(bucketArn, "region") === `${Region}`)
+                      ) {
+                        return err(
+                          `Invalid configuration: region from ARN \`${_.getAttr(bucketArn, "region")}\` does not match client region \`${Region}\` and UseArnRegion is \`false\``,
+                        );
+                      }
+                      {
+                        const bucketPartition = _.partition(
+                          _.getAttr(bucketArn, "region"),
+                        );
+                        if (
+                          bucketPartition != null &&
+                          bucketPartition !== false
+                        ) {
+                          {
+                            const partitionResult = _.partition(Region);
+                            if (
+                              partitionResult != null &&
+                              partitionResult !== false
+                            ) {
+                              if (
+                                _.getAttr(bucketPartition, "name") ===
+                                _.getAttr(partitionResult, "name")
+                              ) {
+                                if (
+                                  _.isValidHostLabel(
+                                    _.getAttr(bucketArn, "region"),
+                                    true,
+                                  )
+                                ) {
+                                  if (
+                                    _.isValidHostLabel(
+                                      _.getAttr(bucketArn, "accountId"),
+                                      false,
+                                    )
+                                  ) {
+                                    {
+                                      const outpostType = _.getAttr(
+                                        bucketArn,
+                                        "resourceId[2]",
+                                      );
+                                      if (
+                                        outpostType != null &&
+                                        outpostType !== false
+                                      ) {
+                                        {
+                                          const accessPointName = _.getAttr(
+                                            bucketArn,
+                                            "resourceId[3]",
+                                          );
+                                          if (
+                                            accessPointName != null &&
+                                            accessPointName !== false
+                                          ) {
+                                            if (outpostType === "accesspoint") {
+                                              {
+                                                const url =
+                                                  _.parseURL(Endpoint);
+                                                if (
+                                                  Endpoint != null &&
+                                                  url != null &&
+                                                  url !== false
+                                                ) {
+                                                  return e(
+                                                    `https://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.${outpostId}.${_.getAttr(url, "authority")}`,
+                                                    _p7(bucketArn),
+                                                    {},
+                                                  );
+                                                }
+                                              }
+                                              return e(
+                                                `https://${accessPointName}-${_.getAttr(bucketArn, "accountId")}.${outpostId}.s3-outposts.${_.getAttr(bucketArn, "region")}.${_.getAttr(bucketPartition, "dnsSuffix")}`,
+                                                _p7(bucketArn),
+                                                {},
+                                              );
+                                            }
+                                            return err(
+                                              `Expected an outpost type \`accesspoint\`, found ${outpostType}`,
+                                            );
+                                          }
+                                        }
+                                        return err(
+                                          "Invalid ARN: expected an access point name",
+                                        );
+                                      }
+                                    }
+                                    return err(
+                                      "Invalid ARN: Expected a 4-component resource",
+                                    );
+                                  }
+                                  return err(
+                                    `Invalid ARN: The account id may only contain a-z, A-Z, 0-9 and \`-\`. Found: \`${_.getAttr(bucketArn, "accountId")}\``,
+                                  );
+                                }
+                                return err(
+                                  `Invalid region in ARN: \`${_.getAttr(bucketArn, "region")}\` (invalid DNS name)`,
+                                );
+                              }
+                              return err(
+                                `Client was configured for partition \`${_.getAttr(partitionResult, "name")}\` but ARN (\`${Bucket}\`) has \`${_.getAttr(bucketPartition, "name")}\``,
+                              );
+                            }
+                          }
+                        }
+                      }
+                    }
+                    return err(
+                      `Invalid ARN: The outpost Id may only contain a-z, A-Z, 0-9 and \`-\`. Found: \`${outpostId}\``,
+                    );
+                  }
+                }
+                return err("Invalid ARN: The Outpost Id was not set");
+              }
+              return err(
+                `Invalid ARN: Unrecognized format: ${Bucket} (type: ${arnType})`,
+              );
+            }
+          }
+          return err("Invalid ARN: No ARN type specified");
+        }
+      }
+      {
+        const arnPrefix = _.substring(Bucket, 0, 4, false);
+        if (
+          arnPrefix != null &&
+          arnPrefix !== false &&
+          arnPrefix === "arn:" &&
+          !(_.parseArn(Bucket) != null)
+        ) {
+          return err(`Invalid ARN: \`${Bucket}\` was not a valid ARN`);
+        }
+      }
+      if (ForcePathStyle === true && _.parseArn(Bucket)) {
+        return err("Path-style addressing cannot be used with ARN buckets");
+      }
+      {
+        const uri_encoded_bucket = _.uriEncode(Bucket);
+        if (uri_encoded_bucket != null && uri_encoded_bucket !== false) {
+          {
+            const partitionResult = _.partition(Region);
+            if (partitionResult != null && partitionResult !== false) {
+              if (Accelerate === false) {
+                if (
+                  UseDualStack === true &&
+                  !(Endpoint != null) &&
+                  UseFIPS === true &&
+                  Region === "aws-global"
+                ) {
+                  return e(
+                    `https://s3-fips.dualstack.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p3(),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === true &&
+                  !(Endpoint != null) &&
+                  UseFIPS === true &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === true
+                ) {
+                  return e(
+                    `https://s3-fips.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === true &&
+                  !(Endpoint != null) &&
+                  UseFIPS === true &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === false
+                ) {
+                  return e(
+                    `https://s3-fips.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === false &&
+                  !(Endpoint != null) &&
+                  UseFIPS === true &&
+                  Region === "aws-global"
+                ) {
+                  return e(
+                    `https://s3-fips.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p3(),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === false &&
+                  !(Endpoint != null) &&
+                  UseFIPS === true &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === true
+                ) {
+                  return e(
+                    `https://s3-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === false &&
+                  !(Endpoint != null) &&
+                  UseFIPS === true &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === false
+                ) {
+                  return e(
+                    `https://s3-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === true &&
+                  !(Endpoint != null) &&
+                  UseFIPS === false &&
+                  Region === "aws-global"
+                ) {
+                  return e(
+                    `https://s3.dualstack.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p3(),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === true &&
+                  !(Endpoint != null) &&
+                  UseFIPS === false &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === true
+                ) {
+                  return e(
+                    `https://s3.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === true &&
+                  !(Endpoint != null) &&
+                  UseFIPS === false &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === false
+                ) {
+                  return e(
+                    `https://s3.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                {
+                  const url = _.parseURL(Endpoint);
+                  if (
+                    UseDualStack === false &&
+                    Endpoint != null &&
+                    url != null &&
+                    url !== false &&
+                    UseFIPS === false &&
+                    Region === "aws-global"
+                  ) {
+                    return e(
+                      `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "normalizedPath")}${uri_encoded_bucket}`,
+                      _p3(),
+                      {},
+                    );
+                  }
+                }
+                {
+                  const url = _.parseURL(Endpoint);
+                  if (
+                    UseDualStack === false &&
+                    Endpoint != null &&
+                    url != null &&
+                    url !== false &&
+                    UseFIPS === false &&
+                    !(Region === "aws-global") &&
+                    UseGlobalEndpoint === true
+                  ) {
+                    if (Region === "us-east-1") {
+                      return e(
+                        `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "normalizedPath")}${uri_encoded_bucket}`,
+                        _p4(Region),
+                        {},
+                      );
+                    }
+                    return e(
+                      `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "normalizedPath")}${uri_encoded_bucket}`,
+                      _p4(Region),
+                      {},
+                    );
+                  }
+                }
+                {
+                  const url = _.parseURL(Endpoint);
+                  if (
+                    UseDualStack === false &&
+                    Endpoint != null &&
+                    url != null &&
+                    url !== false &&
+                    UseFIPS === false &&
+                    !(Region === "aws-global") &&
+                    UseGlobalEndpoint === false
+                  ) {
+                    return e(
+                      `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "normalizedPath")}${uri_encoded_bucket}`,
+                      _p4(Region),
+                      {},
+                    );
+                  }
+                }
+                if (
+                  UseDualStack === false &&
+                  !(Endpoint != null) &&
+                  UseFIPS === false &&
+                  Region === "aws-global"
+                ) {
+                  return e(
+                    `https://s3.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p3(),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === false &&
+                  !(Endpoint != null) &&
+                  UseFIPS === false &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === true
+                ) {
+                  if (Region === "us-east-1") {
+                    return e(
+                      `https://s3.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                      _p4(Region),
+                      {},
+                    );
+                  }
+                  return e(
+                    `https://s3.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                if (
+                  UseDualStack === false &&
+                  !(Endpoint != null) &&
+                  UseFIPS === false &&
+                  !(Region === "aws-global") &&
+                  UseGlobalEndpoint === false
+                ) {
+                  return e(
+                    `https://s3.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}/${uri_encoded_bucket}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+              }
+              return err(
+                "Path-style addressing cannot be used with S3 Accelerate",
+              );
+            }
+          }
+        }
+      }
+    }
+    if (UseObjectLambdaEndpoint != null && UseObjectLambdaEndpoint === true) {
+      {
+        const partitionResult = _.partition(Region);
+        if (partitionResult != null && partitionResult !== false) {
+          if (_.isValidHostLabel(Region, true)) {
+            if (UseDualStack === true) {
+              return err("S3 Object Lambda does not support Dual-stack");
+            }
+            if (Accelerate === true) {
+              return err("S3 Object Lambda does not support S3 Accelerate");
+            }
             {
-              conditions: [
-                {
-                  fn: "substring",
-                  argv: [{ ref: "Bucket" }, 0, 4, false],
-                  assign: "arnPrefix",
-                },
-                { fn: "stringEquals", argv: [{ ref: "arnPrefix" }, "arn:"] },
-                {
-                  fn: "not",
-                  argv: [
-                    {
-                      fn: "isSet",
-                      argv: [{ fn: "aws.parseArn", argv: [{ ref: "Bucket" }] }],
-                    },
-                  ],
-                },
-              ],
-              error: "Invalid ARN: `{Bucket}` was not a valid ARN",
-              type: "error",
-            },
+              const url = _.parseURL(Endpoint);
+              if (Endpoint != null && url != null && url !== false) {
+                return e(
+                  `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                  _p8(Region),
+                  {},
+                );
+              }
+            }
+            if (UseFIPS === true) {
+              return e(
+                `https://s3-object-lambda-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p8(Region),
+                {},
+              );
+            }
+            return e(
+              `https://s3-object-lambda.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+              _p8(Region),
+              {},
+            );
+          }
+          return err("Invalid region: region was not a valid DNS name.");
+        }
+      }
+    }
+    if (!(Bucket != null)) {
+      {
+        const partitionResult = _.partition(Region);
+        if (partitionResult != null && partitionResult !== false) {
+          if (_.isValidHostLabel(Region, true)) {
+            if (
+              UseFIPS === true &&
+              UseDualStack === true &&
+              !(Endpoint != null) &&
+              Region === "aws-global"
+            ) {
+              return e(
+                `https://s3-fips.dualstack.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p3(),
+                {},
+              );
+            }
+            if (
+              UseFIPS === true &&
+              UseDualStack === true &&
+              !(Endpoint != null) &&
+              !(Region === "aws-global") &&
+              UseGlobalEndpoint === true
+            ) {
+              return e(
+                `https://s3-fips.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p4(Region),
+                {},
+              );
+            }
+            if (
+              UseFIPS === true &&
+              UseDualStack === true &&
+              !(Endpoint != null) &&
+              !(Region === "aws-global") &&
+              UseGlobalEndpoint === false
+            ) {
+              return e(
+                `https://s3-fips.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p4(Region),
+                {},
+              );
+            }
+            if (
+              UseFIPS === true &&
+              UseDualStack === false &&
+              !(Endpoint != null) &&
+              Region === "aws-global"
+            ) {
+              return e(
+                `https://s3-fips.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p3(),
+                {},
+              );
+            }
+            if (
+              UseFIPS === true &&
+              UseDualStack === false &&
+              !(Endpoint != null) &&
+              !(Region === "aws-global") &&
+              UseGlobalEndpoint === true
+            ) {
+              return e(
+                `https://s3-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p4(Region),
+                {},
+              );
+            }
+            if (
+              UseFIPS === true &&
+              UseDualStack === false &&
+              !(Endpoint != null) &&
+              !(Region === "aws-global") &&
+              UseGlobalEndpoint === false
+            ) {
+              return e(
+                `https://s3-fips.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p4(Region),
+                {},
+              );
+            }
+            if (
+              UseFIPS === false &&
+              UseDualStack === true &&
+              !(Endpoint != null) &&
+              Region === "aws-global"
+            ) {
+              return e(
+                `https://s3.dualstack.us-east-1.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p3(),
+                {},
+              );
+            }
+            if (
+              UseFIPS === false &&
+              UseDualStack === true &&
+              !(Endpoint != null) &&
+              !(Region === "aws-global") &&
+              UseGlobalEndpoint === true
+            ) {
+              return e(
+                `https://s3.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p4(Region),
+                {},
+              );
+            }
+            if (
+              UseFIPS === false &&
+              UseDualStack === true &&
+              !(Endpoint != null) &&
+              !(Region === "aws-global") &&
+              UseGlobalEndpoint === false
+            ) {
+              return e(
+                `https://s3.dualstack.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p4(Region),
+                {},
+              );
+            }
             {
-              conditions: [
-                {
-                  fn: "booleanEquals",
-                  argv: [{ ref: "ForcePathStyle" }, true],
-                },
-                { fn: "aws.parseArn", argv: [{ ref: "Bucket" }] },
-              ],
-              error: "Path-style addressing cannot be used with ARN buckets",
-              type: "error",
-            },
+              const url = _.parseURL(Endpoint);
+              if (
+                UseFIPS === false &&
+                UseDualStack === false &&
+                Endpoint != null &&
+                url != null &&
+                url !== false &&
+                Region === "aws-global"
+              ) {
+                return e(
+                  `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                  _p3(),
+                  {},
+                );
+              }
+            }
             {
-              conditions: [
-                {
-                  fn: "uriEncode",
-                  argv: [{ ref: "Bucket" }],
-                  assign: "uri_encoded_bucket",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "aws.partition",
-                      argv: [{ ref: "Region" }],
-                      assign: "partitionResult",
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "Accelerate" }, false],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, true],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "us-east-1"],
-                                },
-                              ],
-                              endpoint: {
-                                url: "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                            {
-                              fn: "parseURL",
-                              argv: [{ ref: "Endpoint" }],
-                              assign: "url",
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "{url#scheme}://{url#authority}{url#normalizedPath}{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "us-east-1",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, true],
-                            },
-                          ],
-                          rules: [
-                            {
-                              conditions: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "us-east-1"],
-                                },
-                              ],
-                              endpoint: {
-                                url: "https://s3.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                            {
-                              conditions: [],
-                              endpoint: {
-                                url: "https://s3.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                                properties: {
-                                  authSchemes: [
-                                    {
-                                      disableDoubleEncoding: true,
-                                      name: "sigv4",
-                                      signingName: "s3",
-                                      signingRegion: "{Region}",
-                                    },
-                                  ],
-                                },
-                                headers: {},
-                              },
-                              type: "endpoint",
-                            },
-                          ],
-                          type: "tree",
-                        },
-                        {
-                          conditions: [
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseDualStack" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseFIPS" }, false],
-                            },
-                            {
-                              fn: "not",
-                              argv: [
-                                {
-                                  fn: "stringEquals",
-                                  argv: [{ ref: "Region" }, "aws-global"],
-                                },
-                              ],
-                            },
-                            {
-                              fn: "booleanEquals",
-                              argv: [{ ref: "UseGlobalEndpoint" }, false],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3.{Region}.{partitionResult#dnsSuffix}/{uri_encoded_bucket}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "Path-style addressing cannot be used with S3 Accelerate",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-              ],
-              type: "tree",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [
-            { fn: "isSet", argv: [{ ref: "UseObjectLambdaEndpoint" }] },
+              const url = _.parseURL(Endpoint);
+              if (
+                UseFIPS === false &&
+                UseDualStack === false &&
+                Endpoint != null &&
+                url != null &&
+                url !== false &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === true
+              ) {
+                if (Region === "us-east-1") {
+                  return e(
+                    `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                    _p4(Region),
+                    {},
+                  );
+                }
+                return e(
+                  `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+            }
             {
-              fn: "booleanEquals",
-              argv: [{ ref: "UseObjectLambdaEndpoint" }, true],
-            },
-          ],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "aws.partition",
-                  argv: [{ ref: "Region" }],
-                  assign: "partitionResult",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    { fn: "isValidHostLabel", argv: [{ ref: "Region" }, true] },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, true],
-                        },
-                      ],
-                      error: "S3 Object Lambda does not support Dual-stack",
-                      type: "error",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "Accelerate" }, true],
-                        },
-                      ],
-                      error: "S3 Object Lambda does not support S3 Accelerate",
-                      type: "error",
-                    },
-                    {
-                      conditions: [
-                        { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                        {
-                          fn: "parseURL",
-                          argv: [{ ref: "Endpoint" }],
-                          assign: "url",
-                        },
-                      ],
-                      endpoint: {
-                        url: "{url#scheme}://{url#authority}{url#path}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3-object-lambda",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, true],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3-object-lambda-fips.{Region}.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3-object-lambda",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [],
-                      endpoint: {
-                        url: "https://s3-object-lambda.{Region}.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3-object-lambda",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error: "Invalid region: region was not a valid DNS name.",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [
-            { fn: "not", argv: [{ fn: "isSet", argv: [{ ref: "Bucket" }] }] },
-          ],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "aws.partition",
-                  argv: [{ ref: "Region" }],
-                  assign: "partitionResult",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    { fn: "isValidHostLabel", argv: [{ ref: "Region" }, true] },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, true],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, true],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "Region" }, "aws-global"],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3-fips.dualstack.us-east-1.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "us-east-1",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, true],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, true],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, true],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, true],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, true],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, false],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3-fips.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, true],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "Region" }, "aws-global"],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3-fips.us-east-1.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "us-east-1",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, true],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, true],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, true],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, false],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3-fips.{Region}.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, true],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "Region" }, "aws-global"],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3.dualstack.us-east-1.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "us-east-1",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, true],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, true],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, true],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, false],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3.dualstack.{Region}.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                        {
-                          fn: "parseURL",
-                          argv: [{ ref: "Endpoint" }],
-                          assign: "url",
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "Region" }, "aws-global"],
-                        },
-                      ],
-                      endpoint: {
-                        url: "{url#scheme}://{url#authority}{url#path}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "us-east-1",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                        {
-                          fn: "parseURL",
-                          argv: [{ ref: "Endpoint" }],
-                          assign: "url",
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, true],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "us-east-1"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "{url#scheme}://{url#authority}{url#path}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "{url#scheme}://{url#authority}{url#path}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        { fn: "isSet", argv: [{ ref: "Endpoint" }] },
-                        {
-                          fn: "parseURL",
-                          argv: [{ ref: "Endpoint" }],
-                          assign: "url",
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, false],
-                        },
-                      ],
-                      endpoint: {
-                        url: "{url#scheme}://{url#authority}{url#path}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "stringEquals",
-                          argv: [{ ref: "Region" }, "aws-global"],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "us-east-1",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, true],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "us-east-1"],
-                            },
-                          ],
-                          endpoint: {
-                            url: "https://s3.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://s3.{Region}.{partitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  disableDoubleEncoding: true,
-                                  name: "sigv4",
-                                  signingName: "s3",
-                                  signingRegion: "{Region}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseFIPS" }, false],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseDualStack" }, false],
-                        },
-                        {
-                          fn: "not",
-                          argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-                        },
-                        {
-                          fn: "not",
-                          argv: [
-                            {
-                              fn: "stringEquals",
-                              argv: [{ ref: "Region" }, "aws-global"],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [{ ref: "UseGlobalEndpoint" }, false],
-                        },
-                      ],
-                      endpoint: {
-                        url: "https://s3.{Region}.{partitionResult#dnsSuffix}",
-                        properties: {
-                          authSchemes: [
-                            {
-                              disableDoubleEncoding: true,
-                              name: "sigv4",
-                              signingName: "s3",
-                              signingRegion: "{Region}",
-                            },
-                          ],
-                        },
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error: "Invalid region: region was not a valid DNS name.",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-          ],
-          type: "tree",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [],
-      error: "A region must be set when sending requests to S3.",
-      type: "error",
-    },
-  ],
+              const url = _.parseURL(Endpoint);
+              if (
+                UseFIPS === false &&
+                UseDualStack === false &&
+                Endpoint != null &&
+                url != null &&
+                url !== false &&
+                !(Region === "aws-global") &&
+                UseGlobalEndpoint === false
+              ) {
+                return e(
+                  `${_.getAttr(url, "scheme")}://${_.getAttr(url, "authority")}${_.getAttr(url, "path")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+            }
+            if (
+              UseFIPS === false &&
+              UseDualStack === false &&
+              !(Endpoint != null) &&
+              Region === "aws-global"
+            ) {
+              return e(
+                `https://s3.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p3(),
+                {},
+              );
+            }
+            if (
+              UseFIPS === false &&
+              UseDualStack === false &&
+              !(Endpoint != null) &&
+              !(Region === "aws-global") &&
+              UseGlobalEndpoint === true
+            ) {
+              if (Region === "us-east-1") {
+                return e(
+                  `https://s3.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                  _p4(Region),
+                  {},
+                );
+              }
+              return e(
+                `https://s3.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p4(Region),
+                {},
+              );
+            }
+            if (
+              UseFIPS === false &&
+              UseDualStack === false &&
+              !(Endpoint != null) &&
+              !(Region === "aws-global") &&
+              UseGlobalEndpoint === false
+            ) {
+              return e(
+                `https://s3.${Region}.${_.getAttr(partitionResult, "dnsSuffix")}`,
+                _p4(Region),
+                {},
+              );
+            }
+          }
+          return err("Invalid region: region was not a valid DNS name.");
+        }
+      }
+    }
+  }
+  return err("A region must be set when sending requests to S3.");
 });
 
 //# Newtypes

@@ -48,7 +48,7 @@ const parseResponse = <A, I>(
   errors: S.Schema.AnyNoContext[] = [],
 ) => {
   const operation = { input: schema, output: schema, errors };
-  const parser = makeResponseParser<A, I, never>(operation, {
+  const parser = makeResponseParser<A>(operation, {
     protocol: awsJson1_0Protocol,
   });
   return parser(response);

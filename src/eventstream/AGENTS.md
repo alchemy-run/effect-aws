@@ -2,7 +2,7 @@
 
 Bi-directional event stream encoding/decoding for streaming APIs (Transcribe, Lex, Bedrock).
 
-→ Parent: [src/AGENTS.md](../AGENTS.md)
+→ Parent: [AGENTS.md](../../AGENTS.md)
 
 ## FILES
 

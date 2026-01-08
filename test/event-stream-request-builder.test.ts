@@ -10,23 +10,20 @@
 import { it } from "@effect/vitest";
 import { Effect, Stream } from "effect";
 import { describe, expect } from "vitest";
+import { makeRequestBuilder } from "../src/client/request-builder.ts";
 import {
   decodeMessage,
   getStringHeader,
   HEADER_CONTENT_TYPE,
   HEADER_EVENT_TYPE,
   HEADER_MESSAGE_TYPE,
-} from "../../src/eventstream/codec.ts";
-import { restJson1Protocol } from "../../src/protocols/rest-json.ts";
-import { makeRequestBuilder } from "../../src/client/request-builder.ts";
+} from "../src/eventstream/codec.ts";
+import { restJson1Protocol } from "../src/protocols/rest-json.ts";
 import {
-  AudioEvent,
   AudioStream,
-  ChannelDefinition,
-  ConfigurationEvent,
   StartStreamTranscriptionRequest,
-} from "../../src/services/transcribe-streaming.ts";
-import { streamingSymbol } from "../../src/traits.ts";
+} from "../src/services/transcribe-streaming.ts";
+import { streamingSymbol } from "../src/traits.ts";
 
 // Helper to read all chunks from a ReadableStream
 const readAllChunks = (stream: ReadableStream<Uint8Array>) =>
@@ -68,8 +65,8 @@ describe("Bi-directional Event Stream Request Building", () => {
         // Create the input event stream
         // Note: For Transcribe, we need to wrap events in the union member format
         const inputEvents = Stream.fromIterable([
-          { AudioEvent: new AudioEvent({ AudioChunk: audioChunk1 }) },
-          { AudioEvent: new AudioEvent({ AudioChunk: audioChunk2 }) },
+          { AudioEvent: { AudioChunk: audioChunk1 } },
+          { AudioEvent: { AudioChunk: audioChunk2 } },
         ]);
 
         // Build the request with the event stream
@@ -129,13 +126,13 @@ describe("Bi-directional Event Stream Request Building", () => {
       });
 
       // Create a configuration event using proper class instances
-      const channelDef = new ChannelDefinition({
+      const channelDef = {
         ChannelId: 0,
         ParticipantRole: "AGENT",
-      });
-      const configEvent = new ConfigurationEvent({
+      };
+      const configEvent = {
         ChannelDefinitions: [channelDef],
-      });
+      };
 
       const inputEvents = Stream.fromIterable([
         { ConfigurationEvent: configEvent },
@@ -181,9 +178,9 @@ describe("Bi-directional Event Stream Request Building", () => {
 
       // Create 10 audio events
       const audioEvents = Array.from({ length: 10 }, (_, i) => ({
-        AudioEvent: new AudioEvent({
+        AudioEvent: {
           AudioChunk: new Uint8Array([i, i + 1, i + 2, i + 3]),
-        }),
+        },
       }));
 
       const request = yield* buildRequest({

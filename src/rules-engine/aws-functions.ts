@@ -5,7 +5,7 @@
  * @see https://smithy.io/2.0/aws/rules-engine/library-functions.html
  */
 
-import type { ParsedArn, PartitionInfo, RulesValue } from "./model.ts";
+import type { ParsedArn, PartitionInfo, RulesValue } from "./expression.ts";
 // NOTE: partitions.json is copied from smithy during client generation (see scripts/generate-clients.ts)
 import partitionsData from "./partitions.json" with { type: "json" };
 import { isIpAddress, isValidHostLabel } from "./standard-functions.ts";

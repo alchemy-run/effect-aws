@@ -17,313 +17,106 @@ const svc = T.AwsApiService({
 const auth = T.AwsAuthSigv4({ name: "freetier" });
 const ver = T.ServiceVersion("2023-09-07");
 const proto = T.AwsProtocolsAwsJson1_0();
-const rules = T.EndpointRuleSet({
-  version: "1.0",
-  parameters: {
-    Region: {
-      builtIn: "AWS::Region",
-      required: false,
-      documentation: "The AWS region used to dispatch the request.",
-      type: "string",
-    },
-    UseFIPS: {
-      builtIn: "AWS::UseFIPS",
-      required: true,
-      default: false,
-      documentation:
-        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
-      type: "boolean",
-    },
-    Endpoint: {
-      builtIn: "SDK::Endpoint",
-      required: false,
-      documentation: "Override the endpoint used to send this request",
-      type: "string",
-    },
-  },
-  rules: [
+const rules = T.EndpointResolver((p, _) => {
+  const { Region, UseFIPS = false, Endpoint } = p;
+  const e = (u: unknown, p = {}, h = {}): T.EndpointResolverResult => ({
+    type: "endpoint" as const,
+    endpoint: { url: u as string, properties: p, headers: h },
+  });
+  const err = (m: unknown): T.EndpointResolverResult => ({
+    type: "error" as const,
+    message: m as string,
+  });
+  const _p0 = () => ({
+    authSchemes: [
+      {
+        name: "sigv4",
+        signingName: "freetier",
+        signingRegion: "cn-northwest-1",
+      },
+    ],
+  });
+  if (Endpoint != null) {
+    if (UseFIPS === true) {
+      return err(
+        "Invalid Configuration: FIPS and custom endpoint are not supported",
+      );
+    }
+    return e(Endpoint);
+  }
+  if (Region != null) {
     {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-      rules: [
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          error:
-            "Invalid Configuration: FIPS and custom endpoint are not supported",
-          type: "error",
-        },
-        {
-          conditions: [],
-          endpoint: { url: { ref: "Endpoint" }, properties: {}, headers: {} },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-      rules: [
-        {
-          conditions: [
+      const PartitionResult = _.partition(Region);
+      if (PartitionResult != null && PartitionResult !== false) {
+        if (_.getAttr(PartitionResult, "name") === "aws") {
+          if (UseFIPS === true) {
+            if (_.getAttr(PartitionResult, "supportsFIPS") === true) {
+              return e(`https://freetier-fips.${Region}.api.aws`);
+            }
+            return err(
+              "FIPS is enabled but this partition does not support FIPS",
+            );
+          }
+          return e(
+            "https://freetier.us-east-1.api.aws",
             {
-              fn: "aws.partition",
-              argv: [{ ref: "Region" }],
-              assign: "PartitionResult",
+              authSchemes: [
+                {
+                  name: "sigv4",
+                  signingName: "freetier",
+                  signingRegion: "us-east-1",
+                },
+              ],
             },
-          ],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "stringEquals",
-                  argv: [
-                    {
-                      fn: "getAttr",
-                      argv: [{ ref: "PartitionResult" }, "name"],
-                    },
-                    "aws",
-                  ],
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            {
-                              fn: "getAttr",
-                              argv: [
-                                { ref: "PartitionResult" },
-                                "supportsFIPS",
-                              ],
-                            },
-                            true,
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://freetier-fips.{Region}.api.aws",
-                            properties: {},
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "FIPS is enabled but this partition does not support FIPS",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  endpoint: {
-                    url: "https://freetier.us-east-1.api.aws",
-                    properties: {
-                      authSchemes: [
-                        {
-                          name: "sigv4",
-                          signingName: "freetier",
-                          signingRegion: "us-east-1",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                {
-                  fn: "booleanEquals",
-                  argv: [
-                    true,
-                    {
-                      fn: "getAttr",
-                      argv: [{ ref: "PartitionResult" }, "supportsDualStack"],
-                    },
-                  ],
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            {
-                              fn: "getAttr",
-                              argv: [
-                                { ref: "PartitionResult" },
-                                "supportsFIPS",
-                              ],
-                            },
-                            true,
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://freetier-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
-                            properties: {},
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "FIPS is enabled but this partition does not support FIPS",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [{ ref: "Region" }, "aws-cn-global"],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://freetier.cn-northwest-1.api.amazonwebservices.com.cn",
-                    properties: {
-                      authSchemes: [
-                        {
-                          name: "sigv4",
-                          signingName: "freetier",
-                          signingRegion: "cn-northwest-1",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [],
-                  endpoint: {
-                    url: "https://freetier.{Region}.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {},
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "booleanEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "supportsFIPS"],
-                        },
-                        true,
-                      ],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [],
-                      endpoint: {
-                        url: "https://freetier-fips.{Region}.{PartitionResult#dnsSuffix}",
-                        properties: {},
-                        headers: {},
-                      },
-                      type: "endpoint",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  error:
-                    "FIPS is enabled but this partition does not support FIPS",
-                  type: "error",
-                },
-              ],
-              type: "tree",
-            },
-            {
-              conditions: [
-                {
-                  fn: "stringEquals",
-                  argv: [{ ref: "Region" }, "aws-cn-global"],
-                },
-              ],
-              endpoint: {
-                url: "https://freetier.cn-northwest-1.api.amazonwebservices.com.cn",
-                properties: {
-                  authSchemes: [
-                    {
-                      name: "sigv4",
-                      signingName: "freetier",
-                      signingRegion: "cn-northwest-1",
-                    },
-                  ],
-                },
-                headers: {},
-              },
-              type: "endpoint",
-            },
-            {
-              conditions: [],
-              endpoint: {
-                url: "https://freetier.{Region}.{PartitionResult#dnsSuffix}",
-                properties: {},
-                headers: {},
-              },
-              type: "endpoint",
-            },
-          ],
-          type: "tree",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [],
-      error: "Invalid Configuration: Missing Region",
-      type: "error",
-    },
-  ],
+            {},
+          );
+        }
+        if (true === _.getAttr(PartitionResult, "supportsDualStack")) {
+          if (UseFIPS === true) {
+            if (_.getAttr(PartitionResult, "supportsFIPS") === true) {
+              return e(
+                `https://freetier-fips.${Region}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+              );
+            }
+            return err(
+              "FIPS is enabled but this partition does not support FIPS",
+            );
+          }
+          if (Region === "aws-cn-global") {
+            return e(
+              "https://freetier.cn-northwest-1.api.amazonwebservices.com.cn",
+              _p0(),
+              {},
+            );
+          }
+          return e(
+            `https://freetier.${Region}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+          );
+        }
+        if (UseFIPS === true) {
+          if (_.getAttr(PartitionResult, "supportsFIPS") === true) {
+            return e(
+              `https://freetier-fips.${Region}.${_.getAttr(PartitionResult, "dnsSuffix")}`,
+            );
+          }
+          return err(
+            "FIPS is enabled but this partition does not support FIPS",
+          );
+        }
+        if (Region === "aws-cn-global") {
+          return e(
+            "https://freetier.cn-northwest-1.api.amazonwebservices.com.cn",
+            _p0(),
+            {},
+          );
+        }
+        return e(
+          `https://freetier.${Region}.${_.getAttr(PartitionResult, "dnsSuffix")}`,
+        );
+      }
+    }
+  }
+  return err("Invalid Configuration: Missing Region");
 });
 
 //# Newtypes

@@ -2,7 +2,7 @@
 
 Request/response middleware for checksums and streaming body handling.
 
-→ Parent: [src/AGENTS.md](../AGENTS.md)
+→ Parent: [AGENTS.md](../../AGENTS.md)
 
 ## FILES
 
@@ -10,6 +10,8 @@ Request/response middleware for checksums and streaming body handling.
 | ------------------- | ---------------------------- | ----------------------------------------- |
 | `checksum.ts`       | `aws.protocols#httpChecksum` | CRC32/MD5 checksums, aws-chunked encoding |
 | `streaming-body.ts` | `smithy.api#requiresLength`  | Buffer streams to compute Content-Length  |
+| `middleware.ts`     | —                            | `Middleware` interface definition         |
+| `index.ts`          | —                            | Re-exports                                |
 
 ## CHECKSUM MIDDLEWARE
 

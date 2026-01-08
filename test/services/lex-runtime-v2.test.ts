@@ -75,27 +75,27 @@ if (!isLocalStack && BOT_ID) {
       yield* Effect.logInfo("Starting bi-directional event stream test");
 
       // Create the configuration event (required as first event)
-      const configEvent = new ConfigurationEvent({
+      const configEvent: ConfigurationEvent = {
         sessionState: {
           dialogAction: {
             type: "ElicitIntent",
           },
         },
         responseContentType: "text/plain; charset=utf-8",
-      });
+      };
 
       // Create a text input event
-      const textEvent = new TextInputEvent({
+      const textEvent: TextInputEvent = {
         text: "Hello",
         eventId: "event-1",
         clientTimestampMillis: Date.now(),
-      });
+      };
 
       // Create disconnection event to signal end of conversation
-      const disconnectEvent = new DisconnectionEvent({
+      const disconnectEvent: DisconnectionEvent = {
         eventId: "disconnect-1",
         clientTimestampMillis: Date.now(),
-      });
+      };
 
       // Create the input event stream
       const inputEvents = Stream.fromIterable([
@@ -151,38 +151,38 @@ if (!isLocalStack && BOT_ID) {
       yield* Effect.logInfo("Starting multi-turn conversation test");
 
       // Create configuration event
-      const configEvent = new ConfigurationEvent({
+      const configEvent: ConfigurationEvent = {
         sessionState: {
           dialogAction: {
             type: "ElicitIntent",
           },
         },
         responseContentType: "text/plain; charset=utf-8",
-      });
+      };
 
       // Create multiple text inputs for a conversation
-      const textEvents = [
-        new TextInputEvent({
+      const textEvents: TextInputEvent[] = [
+        {
           text: "I want to book a hotel",
           eventId: "event-1",
           clientTimestampMillis: Date.now(),
-        }),
-        new TextInputEvent({
+        },
+        {
           text: "In Seattle",
           eventId: "event-2",
           clientTimestampMillis: Date.now() + 1000,
-        }),
-        new TextInputEvent({
+        },
+        {
           text: "For next weekend",
           eventId: "event-3",
           clientTimestampMillis: Date.now() + 2000,
-        }),
+        },
       ];
 
-      const disconnectEvent = new DisconnectionEvent({
+      const disconnectEvent: DisconnectionEvent = {
         eventId: "disconnect-1",
         clientTimestampMillis: Date.now() + 3000,
-      });
+      };
 
       // Build the event stream
       const inputEvents = Stream.fromIterable([

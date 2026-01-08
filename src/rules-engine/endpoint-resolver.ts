@@ -1,11 +1,14 @@
 /**
- * Rules Resolver - resolves endpoints using Smithy rules engine.
+ * Endpoint Resolver - resolves endpoints using compiled Smithy rules.
  *
  * This layer:
- * 1. Extracts endpoint rule set from schema annotations
+ * 1. Extracts the endpoint resolver function from schema annotations
  * 2. Builds endpoint parameters from input and region
- * 3. Evaluates rules to resolve endpoint URL, headers, and auth schemes
+ * 3. Calls the resolver to get endpoint URL, headers, and auth schemes
  * 4. Adjusts request path when context params are moved to hostname
+ *
+ * The resolver function is compiled at code generation time from the Smithy
+ * rule set, eliminating the need for runtime interpretation.
  *
  * This is independently testable without making HTTP requests.
  */
@@ -15,16 +18,61 @@ import * as AST from "effect/SchemaAST";
 import type { Operation } from "../client/operation.ts";
 import type { Request } from "../client/request.ts";
 import {
+  type EndpointResolverHelpers,
   getContextParam,
-  getEndpointRuleSet,
+  getEndpointResolver,
   getStaticContextParams,
   hasHttpLabel,
 } from "../traits.ts";
 import { getPropertySignatures } from "../util/ast.ts";
-import { resolveEndpoint } from "./evaluator.ts";
-import type { EndpointParams, ResolvedEndpoint, RulesValue } from "./model.ts";
+import {
+  isVirtualHostableS3Bucket,
+  parseArn,
+  partition,
+} from "./aws-functions.ts";
+import type {
+  EndpointParams,
+  ResolvedEndpoint,
+  RulesValue,
+} from "./expression.ts";
+import {
+  getAttr,
+  isValidHostLabel,
+  parseURL,
+  substring,
+  uriEncode,
+} from "./standard-functions.ts";
 
-export interface RulesResolverInput {
+/**
+ * Recursively resolve template values in nested objects/arrays
+ */
+const resolveTemplates = <T>(value: T): T => {
+  if (typeof value === "string") return value;
+  if (Array.isArray(value)) return value.map(resolveTemplates) as T;
+  if (value && typeof value === "object") {
+    const result: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value)) {
+      result[k] = resolveTemplates(v);
+    }
+    return result as T;
+  }
+  return value;
+};
+
+/** Runtime helpers for compiled endpoint resolvers */
+const endpointResolverHelpers = {
+  partition,
+  parseArn,
+  isVirtualHostableS3Bucket,
+  parseURL,
+  substring,
+  uriEncode,
+  isValidHostLabel,
+  getAttr,
+  resolveTemplates,
+} as EndpointResolverHelpers;
+
+export interface EndpointResolverInput {
   /** The operation input payload */
   input: unknown;
   /** The AWS region */
@@ -33,7 +81,7 @@ export interface RulesResolverInput {
   request: Request;
 }
 
-export interface RulesResolverOutput {
+export interface EndpointResolverOutput {
   /** The resolved endpoint */
   endpoint: ResolvedEndpoint;
   /** The request with path adjusted if needed */
@@ -41,22 +89,21 @@ export interface RulesResolverOutput {
 }
 
 /**
- * Create a rules resolver for a given operation.
+ * Create an endpoint resolver for a given operation.
  *
- * Expensive work (rule set discovery, context param extraction) is done once at creation time.
+ * Expensive work (resolver discovery, context param extraction) is done once at creation time.
  *
- * @param operation - The operation (with input schema containing endpoint rule set annotations)
- * @param options - Optional overrides
+ * @param operation - The operation (with input schema containing endpoint resolver annotation)
  * @returns A function that resolves endpoints from input values and region
  */
-export const makeRulesResolver = (operation: Operation) => {
+export const makeEndpointResolver = (operation: Operation) => {
   const inputAst = operation.input.ast;
 
-  // Extract rule set from annotations or use override (done once)
-  const ruleSet = getEndpointRuleSet(inputAst);
+  // Extract compiled endpoint resolver from annotations (done once)
+  const resolver = getEndpointResolver(inputAst);
 
-  // If no rule set is available, return null
-  if (!ruleSet) {
+  // If no resolver is available, return undefined
+  if (!resolver) {
     return undefined;
   }
 
@@ -67,7 +114,7 @@ export const makeRulesResolver = (operation: Operation) => {
   const staticContextParams = getStaticContextParams(inputAst);
 
   // Return a function that resolves endpoints and adjusts request
-  return Effect.fn(function* (resolverInput: RulesResolverInput) {
+  return Effect.fn(function* (resolverInput: EndpointResolverInput) {
     const { input, region, request } = resolverInput;
 
     // Build endpoint params from input + region
@@ -90,8 +137,21 @@ export const makeRulesResolver = (operation: Operation) => {
       }
     }
 
-    // Resolve endpoint using the rules engine
-    const endpoint = yield* resolveEndpoint(ruleSet, { endpointParams });
+    // Resolve endpoint using the compiled resolver
+    const result = resolver(
+      endpointParams as Record<string, unknown>,
+      endpointResolverHelpers,
+    );
+
+    if (result.type === "error") {
+      return yield* Effect.fail(new Error(result.message));
+    }
+
+    const endpoint: ResolvedEndpoint = {
+      url: result.endpoint.url,
+      properties: result.endpoint.properties as Record<string, RulesValue>,
+      headers: result.endpoint.headers,
+    };
 
     // Adjust request path if context params were moved to hostname
     // This handles S3 virtual-hosted style where Bucket is in the hostname

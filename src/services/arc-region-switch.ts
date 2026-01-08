@@ -17,250 +17,117 @@ const svc = T.AwsApiService({
 const auth = T.AwsAuthSigv4({ name: "arc-region-switch" });
 const ver = T.ServiceVersion("2022-07-26");
 const proto = T.AwsProtocolsAwsJson1_0();
-const rules = T.EndpointRuleSet({
-  version: "1.0",
-  parameters: {
-    UseFIPS: {
-      builtIn: "AWS::UseFIPS",
-      required: true,
-      default: false,
-      documentation:
-        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
-      type: "boolean",
-    },
-    Endpoint: {
-      builtIn: "SDK::Endpoint",
-      required: false,
-      documentation: "Override the endpoint used to send this request",
-      type: "string",
-    },
-    Region: {
-      builtIn: "AWS::Region",
-      required: false,
-      documentation: "The AWS region used to dispatch the request.",
-      type: "string",
-    },
-    UseControlPlaneEndpoint: {
-      required: false,
-      documentation:
-        "Whether the operation is a control plane operation. Control plane operations are routed to a centralized endpoint in the partition leader.",
-      type: "boolean",
-    },
-  },
-  rules: [
-    {
-      conditions: [
-        { fn: "isSet", argv: [{ ref: "UseControlPlaneEndpoint" }] },
+const rules = T.EndpointResolver((p, _) => {
+  const { UseFIPS = false, Endpoint, Region, UseControlPlaneEndpoint } = p;
+  const e = (u: unknown, p = {}, h = {}): T.EndpointResolverResult => ({
+    type: "endpoint" as const,
+    endpoint: { url: u as string, properties: p, headers: h },
+  });
+  const err = (m: unknown): T.EndpointResolverResult => ({
+    type: "error" as const,
+    message: m as string,
+  });
+  const _p0 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        name: "sigv4",
+        signingName: "arc-region-switch",
+        signingRegion: `${_.getAttr(_0, "implicitGlobalRegion")}`,
+      },
+    ],
+  });
+  {
+    const PartitionResult = _.partition(Region);
+    if (
+      UseControlPlaneEndpoint != null &&
+      UseControlPlaneEndpoint === true &&
+      Region != null &&
+      !(UseFIPS === true) &&
+      !(Endpoint != null) &&
+      PartitionResult != null &&
+      PartitionResult !== false &&
+      _.getAttr(PartitionResult, "name") === "aws-cn"
+    ) {
+      return e(
+        `https://arc-region-switch-control-plane.cn-north-1.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
         {
-          fn: "booleanEquals",
-          argv: [{ ref: "UseControlPlaneEndpoint" }, true],
-        },
-        { fn: "isSet", argv: [{ ref: "Region" }] },
-        {
-          fn: "not",
-          argv: [{ fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] }],
-        },
-        { fn: "not", argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }] },
-        {
-          fn: "aws.partition",
-          argv: [{ ref: "Region" }],
-          assign: "PartitionResult",
-        },
-        {
-          fn: "stringEquals",
-          argv: [
-            { fn: "getAttr", argv: [{ ref: "PartitionResult" }, "name"] },
-            "aws-cn",
-          ],
-        },
-      ],
-      rules: [
-        {
-          conditions: [],
-          endpoint: {
-            url: "https://arc-region-switch-control-plane.cn-north-1.{PartitionResult#dualStackDnsSuffix}",
-            properties: {
-              authSchemes: [
-                {
-                  name: "sigv4",
-                  signingName: "arc-region-switch",
-                  signingRegion: "cn-north-1",
-                },
-              ],
-            },
-            headers: {},
-          },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [
-        { fn: "not", argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }] },
-        { fn: "isSet", argv: [{ ref: "UseControlPlaneEndpoint" }] },
-        {
-          fn: "booleanEquals",
-          argv: [{ ref: "UseControlPlaneEndpoint" }, true],
-        },
-        { fn: "isSet", argv: [{ ref: "Region" }] },
-        { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-        {
-          fn: "aws.partition",
-          argv: [{ ref: "Region" }],
-          assign: "PartitionResult",
-        },
-      ],
-      rules: [
-        {
-          conditions: [
+          authSchemes: [
             {
-              fn: "stringEquals",
-              argv: [
-                { fn: "getAttr", argv: [{ ref: "PartitionResult" }, "name"] },
-                "aws-cn",
-              ],
+              name: "sigv4",
+              signingName: "arc-region-switch",
+              signingRegion: "cn-north-1",
             },
           ],
-          error:
-            "Invalid Configuration: FIPS is not supported in this partition",
-          type: "error",
         },
-        {
-          conditions: [],
-          rules: [
-            {
-              conditions: [],
-              endpoint: {
-                url: "https://arc-region-switch-control-plane-fips.{PartitionResult#implicitGlobalRegion}.{PartitionResult#dualStackDnsSuffix}",
-                properties: {
-                  authSchemes: [
-                    {
-                      name: "sigv4",
-                      signingName: "arc-region-switch",
-                      signingRegion: "{PartitionResult#implicitGlobalRegion}",
-                    },
-                  ],
-                },
-                headers: {},
-              },
-              type: "endpoint",
-            },
-          ],
-          type: "tree",
-        },
-      ],
-      type: "tree",
-    },
+        {},
+      );
+    }
+  }
+  {
+    const PartitionResult = _.partition(Region);
+    if (
+      !(Endpoint != null) &&
+      UseControlPlaneEndpoint != null &&
+      UseControlPlaneEndpoint === true &&
+      Region != null &&
+      UseFIPS === true &&
+      PartitionResult != null &&
+      PartitionResult !== false
+    ) {
+      if (_.getAttr(PartitionResult, "name") === "aws-cn") {
+        return err(
+          "Invalid Configuration: FIPS is not supported in this partition",
+        );
+      }
+      return e(
+        `https://arc-region-switch-control-plane-fips.${_.getAttr(PartitionResult, "implicitGlobalRegion")}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+        _p0(PartitionResult),
+        {},
+      );
+    }
+  }
+  {
+    const PartitionResult = _.partition(Region);
+    if (
+      UseControlPlaneEndpoint != null &&
+      UseControlPlaneEndpoint === true &&
+      Region != null &&
+      !(UseFIPS === true) &&
+      !(Endpoint != null) &&
+      PartitionResult != null &&
+      PartitionResult !== false
+    ) {
+      return e(
+        `https://arc-region-switch-control-plane.${_.getAttr(PartitionResult, "implicitGlobalRegion")}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+        _p0(PartitionResult),
+        {},
+      );
+    }
+  }
+  if (Endpoint != null) {
+    if (UseFIPS === true) {
+      return err(
+        "Invalid Configuration: FIPS and custom endpoint are not supported",
+      );
+    }
+    return e(Endpoint);
+  }
+  if (Region != null) {
     {
-      conditions: [
-        { fn: "isSet", argv: [{ ref: "UseControlPlaneEndpoint" }] },
-        {
-          fn: "booleanEquals",
-          argv: [{ ref: "UseControlPlaneEndpoint" }, true],
-        },
-        { fn: "isSet", argv: [{ ref: "Region" }] },
-        {
-          fn: "not",
-          argv: [{ fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] }],
-        },
-        { fn: "not", argv: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }] },
-        {
-          fn: "aws.partition",
-          argv: [{ ref: "Region" }],
-          assign: "PartitionResult",
-        },
-      ],
-      rules: [
-        {
-          conditions: [],
-          endpoint: {
-            url: "https://arc-region-switch-control-plane.{PartitionResult#implicitGlobalRegion}.{PartitionResult#dualStackDnsSuffix}",
-            properties: {
-              authSchemes: [
-                {
-                  name: "sigv4",
-                  signingName: "arc-region-switch",
-                  signingRegion: "{PartitionResult#implicitGlobalRegion}",
-                },
-              ],
-            },
-            headers: {},
-          },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-      rules: [
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          error:
-            "Invalid Configuration: FIPS and custom endpoint are not supported",
-          type: "error",
-        },
-        {
-          conditions: [],
-          endpoint: { url: { ref: "Endpoint" }, properties: {}, headers: {} },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [],
-      rules: [
-        {
-          conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "aws.partition",
-                  argv: [{ ref: "Region" }],
-                  assign: "PartitionResult",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                  ],
-                  endpoint: {
-                    url: "https://arc-region-switch-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {},
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [],
-                  endpoint: {
-                    url: "https://arc-region-switch.{Region}.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {},
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-              ],
-              type: "tree",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [],
-          error: "Invalid Configuration: Missing Region",
-          type: "error",
-        },
-      ],
-      type: "tree",
-    },
-  ],
+      const PartitionResult = _.partition(Region);
+      if (PartitionResult != null && PartitionResult !== false) {
+        if (UseFIPS === true) {
+          return e(
+            `https://arc-region-switch-fips.${Region}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+          );
+        }
+        return e(
+          `https://arc-region-switch.${Region}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+        );
+      }
+    }
+  }
+  return err("Invalid Configuration: Missing Region");
 });
 
 //# Newtypes

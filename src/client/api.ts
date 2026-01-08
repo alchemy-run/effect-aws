@@ -8,7 +8,7 @@ import * as Ref from "effect/Ref";
 import * as Stream from "effect/Stream";
 
 import { makeDefault, Retry } from "../retry.ts";
-import { makeRulesResolver } from "../rules-engine/resolver.ts";
+import { makeEndpointResolver } from "../rules-engine/endpoint-resolver.ts";
 import { getAwsAuthSigv4, getPath } from "../traits.ts";
 import type { Operation } from "./operation.ts";
 import { makeRequestBuilder } from "./request-builder.ts";
@@ -30,19 +30,23 @@ export const make = <Op extends Operation>(initOperation: () => Op): any => {
     const sigv4 = getAwsAuthSigv4(inputAst);
 
     // Create rules resolver (if rule set available)
-    const rulesResolver = makeRulesResolver(op);
+    const resolveEndpoint = makeEndpointResolver(op);
 
     return {
       buildRequest,
       parseResponse,
       sigv4,
-      rulesResolver,
+      resolveEndpoint,
     };
   };
 
   const fn = Effect.fnUntraced(function* (payload: Operation.Input<Op>) {
-    const { buildRequest, parseResponse, sigv4, rulesResolver } = (_init ??=
-      init()) as ReturnType<typeof init>;
+    const {
+      buildRequest,
+      parseResponse,
+      sigv4,
+      resolveEndpoint: rulesResolver,
+    } = (_init ??= init()) as ReturnType<typeof init>;
     yield* Effect.logDebug("Payload", payload);
 
     // Build request using the request builder (handles protocol serialization + middleware)

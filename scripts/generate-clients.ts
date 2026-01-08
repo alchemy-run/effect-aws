@@ -16,6 +16,8 @@ import {
   Schema as S,
 } from "effect";
 import { loadServiceSpecPatch, ServiceSpec } from "../src/patch/spec-schema.ts";
+import type { RuleSetObject } from "../src/rules-engine/expression.ts";
+import { generateRuleSetCode } from "./compile-rules.ts";
 import {
   GenericShape,
   ServiceShape,
@@ -2263,10 +2265,14 @@ const generateClient = Effect.fn(function* (
     );
     serviceConstants.push(`const proto = ${protoAnnotation};`);
 
-    // Endpoint rule set constant (if available)
+    // Compiled endpoint resolver function (if rule set available)
     if (sdkFile.endpointRuleSet) {
+      const compiledCode = generateRuleSetCode(
+        sdkFile.endpointRuleSet as RuleSetObject,
+        { typed: true },
+      );
       serviceConstants.push(
-        `const rules = T.EndpointRuleSet(${JSON.stringify(sdkFile.endpointRuleSet)});`,
+        `const rules = T.EndpointResolver(${compiledCode});`,
       );
     }
 

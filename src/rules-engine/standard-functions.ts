@@ -5,7 +5,7 @@
  * @see https://smithy.io/2.0/additional-specs/rules-engine/specification.html#standard-library-functions
  */
 
-import type { ParsedUrl, RulesValue } from "./model.ts";
+import type { ParsedUrl, RulesValue } from "./expression.ts";
 
 /** Returns true if the value is set (not null or undefined). */
 export const isSet = (value: RulesValue): boolean =>
@@ -85,12 +85,29 @@ export function parseURL(url: RulesValue): ParsedUrl | undefined {
   try {
     const parsed = new URL(url);
 
+    // Reject URLs with query strings
+    if (parsed.search) {
+      return undefined;
+    }
+
     // Check if authority is an IP address
     const host = parsed.hostname;
     const isIp = isIpAddress(host);
 
-    // Build normalized path (ensure trailing slash)
-    let normalizedPath = parsed.pathname;
+    // Get path - JavaScript's URL.pathname returns "/" for URLs without a path,
+    // but the Smithy Java implementation returns empty string.
+    // We need to match Java's behavior for compatibility.
+    let path = parsed.pathname;
+    if (path === "/" && !url.includes(parsed.host + "/")) {
+      // URL has no explicit path, Java returns empty string
+      path = "";
+    }
+
+    // Build normalized path (ensure starts and ends with slash)
+    let normalizedPath = path;
+    if (!normalizedPath.startsWith("/")) {
+      normalizedPath = "/" + normalizedPath;
+    }
     if (!normalizedPath.endsWith("/")) {
       normalizedPath += "/";
     }
@@ -98,7 +115,7 @@ export function parseURL(url: RulesValue): ParsedUrl | undefined {
     return {
       scheme: parsed.protocol.replace(":", ""),
       authority: parsed.host,
-      path: parsed.pathname,
+      path,
       normalizedPath,
       isIp,
     };

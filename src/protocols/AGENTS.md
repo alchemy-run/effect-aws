@@ -2,7 +2,7 @@
 
 AWS protocol implementations. Each handles request serialization and response parsing.
 
-→ Parent: [src/AGENTS.md](../AGENTS.md)
+→ Parent: [AGENTS.md](../../AGENTS.md)
 
 ## PROTOCOLS
 

@@ -1,26 +1,26 @@
 # src/rules-engine
 
-Smithy rules engine for endpoint resolution. Evaluates rule sets to compute endpoint URL, headers, and auth scheme.
+Smithy rules engine for endpoint resolution. Compiles rule sets to JavaScript functions that compute endpoint URL, headers, and auth scheme.
 
-→ Parent: [src/AGENTS.md](../AGENTS.md)
+→ Parent: [AGENTS.md](../../AGENTS.md)
 
 ## FILES
 
-| File                    | Purpose                                                       |
-| ----------------------- | ------------------------------------------------------------- |
-| `resolver.ts`           | `makeRulesResolver(operation)` — creates resolver from schema |
-| `evaluator.ts`          | `resolveEndpoint(ruleSet, params)` — walks rule tree          |
-| `model.ts`              | `RuleSetObject`, `EndpointParams` types                       |
-| `standard-functions.ts` | `isSet`, `parseURL`, `substring`, `stringEquals`              |
-| `aws-functions.ts`      | `aws.partition`, `aws.isVirtualHostableS3Bucket`              |
-| `partitions.json`       | AWS partition data (copied from Smithy)                       |
+| File                    | Purpose                                                          |
+| ----------------------- | ---------------------------------------------------------------- |
+| `endpoint-resolver.ts`  | `makeEndpointResolver(operation)` — creates resolver from schema |
+| `expression.ts`         | `RuleSetObject`, `EndpointParams`, `Expression` types            |
+| `standard-functions.ts` | `isSet`, `parseURL`, `substring`, `stringEquals`                 |
+| `aws-functions.ts`      | `aws.partition`, `aws.isVirtualHostableS3Bucket`                 |
+| `partitions.json`       | AWS partition data (copied from Smithy)                          |
 
 ## HOW IT WORKS
 
-1. **`makeRulesResolver`** — Pre-computes context param extraction from schema
-2. **Input → EndpointParams** — Extracts `Region`, `Bucket`, etc. from input + static context
-3. **`resolveEndpoint`** — Walks rule tree, evaluates conditions, returns first match
-4. **Result** — `{ url, headers, authSchemes }` used to configure request
+1. **Code Generation** — `scripts/compile-rules.ts` compiles Smithy rule sets to JavaScript functions at build time
+2. **`makeEndpointResolver`** — Retrieves compiled resolver from schema annotations
+3. **Input → EndpointParams** — Extracts `Region`, `Bucket`, etc. from input + static context
+4. **Compiled Function** — Executes compiled JS function with runtime helpers
+5. **Result** — `{ url, headers, authSchemes }` used to configure request
 
 ## SMITHY TRAITS
 
@@ -36,3 +36,5 @@ Smithy rules engine for endpoint resolution. Evaluates rule sets to compute endp
 Standard functions go in `standard-functions.ts`. AWS-specific in `aws-functions.ts`.
 
 Functions must match the Smithy spec exactly — see `smithy/docs/source-2.0/aws/rules-engine/library-functions.rst`.
+
+The compiler in `scripts/compile-rules.ts` must also be updated to emit calls to new functions.

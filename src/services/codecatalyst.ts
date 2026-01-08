@@ -17,143 +17,60 @@ const svc = T.AwsApiService({
 const auth = T.AwsAuthSigv4({ name: "CodeCatalyst" });
 const ver = T.ServiceVersion("2022-09-28");
 const proto = T.AwsProtocolsRestJson1();
-const rules = T.EndpointRuleSet({
-  version: "1.0",
-  parameters: {
-    UseFIPS: {
-      builtIn: "AWS::UseFIPS",
-      required: true,
-      default: false,
-      documentation:
-        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
-      type: "boolean",
-    },
-    Region: {
-      builtIn: "AWS::Region",
-      required: false,
-      documentation: "The AWS region used to dispatch the request.",
-      type: "string",
-    },
-    Endpoint: {
-      builtIn: "SDK::Endpoint",
-      required: false,
-      documentation: "Override the endpoint used to send this request",
-      type: "string",
-    },
-  },
-  rules: [
-    {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-      endpoint: { url: { ref: "Endpoint" }, properties: {}, headers: {} },
-      type: "endpoint",
-    },
-    {
-      conditions: [
-        { fn: "not", argv: [{ fn: "isSet", argv: [{ ref: "Region" }] }] },
-        { fn: "aws.partition", argv: ["us-west-2"], assign: "PartitionResult" },
-      ],
-      rules: [
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "booleanEquals",
-                  argv: [
-                    {
-                      fn: "getAttr",
-                      argv: [{ ref: "PartitionResult" }, "supportsFIPS"],
-                    },
-                    false,
-                  ],
-                },
-              ],
-              error: "Partition does not support FIPS.",
-              type: "error",
-            },
-            {
-              conditions: [],
-              endpoint: {
-                url: "https://codecatalyst-fips.global.{PartitionResult#dualStackDnsSuffix}",
-                properties: {},
-                headers: {},
-              },
-              type: "endpoint",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [],
-          endpoint: {
-            url: "https://codecatalyst.global.{PartitionResult#dualStackDnsSuffix}",
-            properties: {},
-            headers: {},
-          },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [
-        { fn: "isSet", argv: [{ ref: "Region" }] },
-        {
-          fn: "aws.partition",
-          argv: [{ ref: "Region" }],
-          assign: "PartitionResult",
-        },
-      ],
-      rules: [
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "booleanEquals",
-                  argv: [
-                    {
-                      fn: "getAttr",
-                      argv: [{ ref: "PartitionResult" }, "supportsFIPS"],
-                    },
-                    false,
-                  ],
-                },
-              ],
-              error: "Partition does not support FIPS.",
-              type: "error",
-            },
-            {
-              conditions: [],
-              endpoint: {
-                url: "https://codecatalyst-fips.global.{PartitionResult#dualStackDnsSuffix}",
-                properties: {},
-                headers: {},
-              },
-              type: "endpoint",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [],
-          endpoint: {
-            url: "https://codecatalyst.global.{PartitionResult#dualStackDnsSuffix}",
-            properties: {},
-            headers: {},
-          },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-  ],
+const rules = T.EndpointResolver((p, _) => {
+  const { UseFIPS = false, Region, Endpoint } = p;
+  const e = (u: unknown, p = {}, h = {}): T.EndpointResolverResult => ({
+    type: "endpoint" as const,
+    endpoint: { url: u as string, properties: p, headers: h },
+  });
+  const err = (m: unknown): T.EndpointResolverResult => ({
+    type: "error" as const,
+    message: m as string,
+  });
+  if (Endpoint != null) {
+    return e(Endpoint);
+  }
+  {
+    const PartitionResult = _.partition("us-west-2");
+    if (
+      !(Region != null) &&
+      PartitionResult != null &&
+      PartitionResult !== false
+    ) {
+      if (UseFIPS === true) {
+        if (_.getAttr(PartitionResult, "supportsFIPS") === false) {
+          return err("Partition does not support FIPS.");
+        }
+        return e(
+          `https://codecatalyst-fips.global.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+        );
+      }
+      return e(
+        `https://codecatalyst.global.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+      );
+    }
+  }
+  {
+    const PartitionResult = _.partition(Region);
+    if (
+      Region != null &&
+      PartitionResult != null &&
+      PartitionResult !== false
+    ) {
+      if (UseFIPS === true) {
+        if (_.getAttr(PartitionResult, "supportsFIPS") === false) {
+          return err("Partition does not support FIPS.");
+        }
+        return e(
+          `https://codecatalyst-fips.global.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+        );
+      }
+      return e(
+        `https://codecatalyst.global.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+      );
+    }
+  }
+  return err("No matching endpoint rule");
 });
 
 //# Newtypes

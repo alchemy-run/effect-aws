@@ -5,6 +5,9 @@
  * @see https://smithy.io/2.0/additional-specs/rules-engine/index.html
  */
 
+/** An expression is either a literal, reference, or function call */
+export type Expression = RulesValue | ReferenceObject | FunctionObject;
+
 /** Primitive values that can appear in rules engine expressions */
 export type RulesValue =
   | string
@@ -26,9 +29,6 @@ export interface FunctionObject {
   argv: Expression[];
   assign?: string;
 }
-
-/** An expression is either a literal, reference, or function call */
-export type Expression = RulesValue | ReferenceObject | FunctionObject;
 
 /** A condition is a function call that may assign its result to a variable */
 export interface ConditionObject {

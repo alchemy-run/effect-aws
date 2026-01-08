@@ -18,14 +18,14 @@ import {
   QueryInput,
   ResourceNotFoundException,
   ScanInput,
-} from "../../src/services/dynamodb.ts";
+} from "../src/services/dynamodb.ts";
 
 // SNS - awsQuery, has map types with struct values
 import {
   MessageAttributeMap,
   MessageAttributeValue,
   PublishInput,
-} from "../../src/services/sns.ts";
+} from "../src/services/sns.ts";
 
 // S3 - restXml, has complex structures with XML traits
 // Note: GetObjectInput/PutObjectInput have streaming body which doesn't work with JSONSchema
@@ -37,7 +37,7 @@ import {
   ListBucketsOutput,
   ListObjectsV2Output,
   ObjectList,
-} from "../../src/services/s3.ts";
+} from "../src/services/s3.ts";
 
 // Lambda - restJson1, has blob types and streaming
 // Note: InvokeRequest has streaming body which doesn't work with JSONSchema
@@ -46,7 +46,7 @@ import {
   GetFunctionRequest,
   ListFunctionsRequest,
   ListFunctionsResponse,
-} from "../../src/services/lambda.ts";
+} from "../src/services/lambda.ts";
 
 // IAM - awsQuery, has list types and complex nested structures
 import {
@@ -56,7 +56,7 @@ import {
   ListAttachedRolePoliciesResponse,
   ListUsersResponse,
   User,
-} from "../../src/services/iam.ts";
+} from "../src/services/iam.ts";
 
 // EC2 - ec2Query, has extensive enum-like strings and complex structures
 import {
@@ -66,14 +66,14 @@ import {
   Reservation,
   RunInstancesRequest,
   TerminateInstancesRequest,
-} from "../../src/services/ec2.ts";
+} from "../src/services/ec2.ts";
 
 // KMS - awsJson1_1, simpler structures
 import {
   CreateKeyRequest,
   DecryptRequest,
   EncryptRequest,
-} from "../../src/services/kms.ts";
+} from "../src/services/kms.ts";
 
 // =============================================================================
 // Test helpers

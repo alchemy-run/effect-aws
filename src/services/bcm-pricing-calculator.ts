@@ -17,116 +17,52 @@ const svc = T.AwsApiService({
 const auth = T.AwsAuthSigv4({ name: "bcm-pricing-calculator" });
 const ver = T.ServiceVersion("2024-06-19");
 const proto = T.AwsProtocolsAwsJson1_0();
-const rules = T.EndpointRuleSet({
-  version: "1.0",
-  parameters: {
-    UseFIPS: {
-      builtIn: "AWS::UseFIPS",
-      required: true,
-      default: false,
-      documentation:
-        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
-      type: "boolean",
-    },
-    Endpoint: {
-      builtIn: "SDK::Endpoint",
-      required: false,
-      documentation: "Override the endpoint used to send this request",
-      type: "string",
-    },
-    Region: {
-      builtIn: "AWS::Region",
-      required: false,
-      documentation: "The AWS region used to dispatch the request.",
-      type: "string",
-    },
-  },
-  rules: [
+const rules = T.EndpointResolver((p, _) => {
+  const { UseFIPS = false, Endpoint, Region } = p;
+  const e = (u: unknown, p = {}, h = {}): T.EndpointResolverResult => ({
+    type: "endpoint" as const,
+    endpoint: { url: u as string, properties: p, headers: h },
+  });
+  const err = (m: unknown): T.EndpointResolverResult => ({
+    type: "error" as const,
+    message: m as string,
+  });
+  const _p0 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        name: "sigv4",
+        signingRegion: `${_.getAttr(_0, "implicitGlobalRegion")}`,
+      },
+    ],
+  });
+  if (Endpoint != null) {
+    if (UseFIPS === true) {
+      return err(
+        "Invalid Configuration: FIPS and custom endpoint are not supported",
+      );
+    }
+    return e(Endpoint);
+  }
+  if (Region != null) {
     {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-      rules: [
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          error:
-            "Invalid Configuration: FIPS and custom endpoint are not supported",
-          type: "error",
-        },
-        {
-          conditions: [],
-          endpoint: { url: { ref: "Endpoint" }, properties: {}, headers: {} },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [],
-      rules: [
-        {
-          conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "aws.partition",
-                  argv: [{ ref: "Region" }],
-                  assign: "PartitionResult",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                  ],
-                  endpoint: {
-                    url: "https://bcm-pricing-calculator-fips.{PartitionResult#implicitGlobalRegion}.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {
-                      authSchemes: [
-                        {
-                          name: "sigv4",
-                          signingRegion:
-                            "{PartitionResult#implicitGlobalRegion}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [],
-                  endpoint: {
-                    url: "https://bcm-pricing-calculator.{PartitionResult#implicitGlobalRegion}.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {
-                      authSchemes: [
-                        {
-                          name: "sigv4",
-                          signingRegion:
-                            "{PartitionResult#implicitGlobalRegion}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-              ],
-              type: "tree",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [],
-          error: "Invalid Configuration: Missing Region",
-          type: "error",
-        },
-      ],
-      type: "tree",
-    },
-  ],
+      const PartitionResult = _.partition(Region);
+      if (PartitionResult != null && PartitionResult !== false) {
+        if (UseFIPS === true) {
+          return e(
+            `https://bcm-pricing-calculator-fips.${_.getAttr(PartitionResult, "implicitGlobalRegion")}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+            _p0(PartitionResult),
+            {},
+          );
+        }
+        return e(
+          `https://bcm-pricing-calculator.${_.getAttr(PartitionResult, "implicitGlobalRegion")}.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+          _p0(PartitionResult),
+          {},
+        );
+      }
+    }
+  }
+  return err("Invalid Configuration: Missing Region");
 });
 
 //# Newtypes

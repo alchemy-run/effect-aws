@@ -18,765 +18,247 @@ const svc = T.AwsApiService({
 const auth = T.AwsAuthSigv4({ name: "route53" });
 const ver = T.ServiceVersion("2013-04-01");
 const proto = T.AwsProtocolsRestXml();
-const rules = T.EndpointRuleSet({
-  version: "1.0",
-  parameters: {
-    UseDualStack: {
-      builtIn: "AWS::UseDualStack",
-      required: true,
-      default: false,
-      documentation:
-        "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
-      type: "boolean",
-    },
-    UseFIPS: {
-      builtIn: "AWS::UseFIPS",
-      required: true,
-      default: false,
-      documentation:
-        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
-      type: "boolean",
-    },
-    Endpoint: {
-      builtIn: "SDK::Endpoint",
-      required: false,
-      documentation: "Override the endpoint used to send this request",
-      type: "string",
-    },
-    Region: {
-      builtIn: "AWS::Region",
-      required: false,
-      documentation: "The AWS region used to dispatch the request.",
-      type: "string",
-    },
-  },
-  rules: [
+const rules = T.EndpointResolver((p, _) => {
+  const { UseDualStack = false, UseFIPS = false, Endpoint, Region } = p;
+  const e = (u: unknown, p = {}, h = {}): T.EndpointResolverResult => ({
+    type: "endpoint" as const,
+    endpoint: { url: u as string, properties: p, headers: h },
+  });
+  const err = (m: unknown): T.EndpointResolverResult => ({
+    type: "error" as const,
+    message: m as string,
+  });
+  const _p0 = () => ({
+    authSchemes: [{ name: "sigv4", signingRegion: "us-east-1" }],
+  });
+  const _p1 = () => ({
+    authSchemes: [{ name: "sigv4", signingRegion: "cn-northwest-1" }],
+  });
+  const _p2 = () => ({
+    authSchemes: [{ name: "sigv4", signingRegion: "us-gov-west-1" }],
+  });
+  const _p3 = () => ({
+    authSchemes: [{ name: "sigv4", signingRegion: "eusc-de-east-1" }],
+  });
+  const _p4 = (_0: unknown) => ({
+    authSchemes: [
+      {
+        name: "sigv4",
+        signingRegion: `${_.getAttr(_0, "implicitGlobalRegion")}`,
+      },
+    ],
+  });
+  if (Endpoint != null) {
+    if (UseFIPS === true) {
+      return err(
+        "Invalid Configuration: FIPS and custom endpoint are not supported",
+      );
+    }
+    if (UseDualStack === true) {
+      return err(
+        "Invalid Configuration: Dualstack and custom endpoint are not supported",
+      );
+    }
+    return e(Endpoint);
+  }
+  if (Region != null) {
     {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-      rules: [
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          error:
-            "Invalid Configuration: FIPS and custom endpoint are not supported",
-          type: "error",
-        },
-        {
-          conditions: [],
-          rules: [
+      const PartitionResult = _.partition(Region);
+      if (PartitionResult != null && PartitionResult !== false) {
+        if (
+          _.getAttr(PartitionResult, "name") === "aws" &&
+          UseFIPS === false &&
+          UseDualStack === false
+        ) {
+          return e("https://route53.amazonaws.com", _p0(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws" &&
+          UseFIPS === true &&
+          UseDualStack === false
+        ) {
+          return e("https://route53-fips.amazonaws.com", _p0(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws" &&
+          UseFIPS === false &&
+          UseDualStack === true
+        ) {
+          return e("https://route53.global.api.aws", _p0(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws" &&
+          UseFIPS === true &&
+          UseDualStack === true
+        ) {
+          return e("https://route53-fips.global.api.aws", _p0(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-cn" &&
+          UseFIPS === false &&
+          UseDualStack === false
+        ) {
+          return e("https://route53.amazonaws.com.cn", _p1(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-cn" &&
+          UseFIPS === false &&
+          UseDualStack === true
+        ) {
+          return e(
+            "https://route53.global.api.amazonwebservices.com.cn",
+            _p1(),
+            {},
+          );
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-us-gov" &&
+          UseFIPS === false &&
+          UseDualStack === false
+        ) {
+          return e("https://route53.us-gov.amazonaws.com", _p2(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-us-gov" &&
+          UseFIPS === true &&
+          UseDualStack === false
+        ) {
+          return e("https://route53.us-gov.amazonaws.com", _p2(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-us-gov" &&
+          UseFIPS === false &&
+          UseDualStack === true
+        ) {
+          return e("https://route53.us-gov.api.aws", _p2(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-us-gov" &&
+          UseFIPS === true &&
+          UseDualStack === true
+        ) {
+          return e("https://route53.us-gov.api.aws", _p2(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-iso" &&
+          UseFIPS === false &&
+          UseDualStack === false
+        ) {
+          return e(
+            "https://route53.c2s.ic.gov",
             {
-              conditions: [
-                { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
-              ],
-              error:
-                "Invalid Configuration: Dualstack and custom endpoint are not supported",
-              type: "error",
+              authSchemes: [{ name: "sigv4", signingRegion: "us-iso-east-1" }],
             },
+            {},
+          );
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-iso-b" &&
+          UseFIPS === false &&
+          UseDualStack === false
+        ) {
+          return e(
+            "https://route53.sc2s.sgov.gov",
             {
-              conditions: [],
-              endpoint: {
-                url: { ref: "Endpoint" },
-                properties: {},
-                headers: {},
-              },
-              type: "endpoint",
+              authSchemes: [{ name: "sigv4", signingRegion: "us-isob-east-1" }],
             },
-          ],
-          type: "tree",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [],
-      rules: [
-        {
-          conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-          rules: [
+            {},
+          );
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-iso-e" &&
+          UseFIPS === false &&
+          UseDualStack === false
+        ) {
+          return e(
+            "https://route53.cloud.adc-e.uk",
             {
-              conditions: [
-                {
-                  fn: "aws.partition",
-                  argv: [{ ref: "Region" }],
-                  assign: "PartitionResult",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.amazonaws.com",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-east-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53-fips.amazonaws.com",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-east-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.global.api.aws",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-east-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53-fips.global.api.aws",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-east-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-cn",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.amazonaws.com.cn",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "cn-northwest-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-cn",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.global.api.amazonwebservices.com.cn",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "cn-northwest-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-us-gov",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.us-gov.amazonaws.com",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-gov-west-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-us-gov",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.us-gov.amazonaws.com",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-gov-west-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-us-gov",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.us-gov.api.aws",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-gov-west-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-us-gov",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.us-gov.api.aws",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-gov-west-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-iso",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.c2s.ic.gov",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-iso-east-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-iso-b",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.sc2s.sgov.gov",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-isob-east-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-iso-e",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.cloud.adc-e.uk",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "eu-isoe-west-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-iso-f",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.csp.hci.ic.gov",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "us-isof-south-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-eusc",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.amazonaws.eu",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "eusc-de-east-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-eusc",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  endpoint: {
-                    url: "https://route53.global.api.amazonwebservices.eu",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4", signingRegion: "eusc-de-east-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            true,
-                            {
-                              fn: "getAttr",
-                              argv: [
-                                { ref: "PartitionResult" },
-                                "supportsFIPS",
-                              ],
-                            },
-                          ],
-                        },
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            true,
-                            {
-                              fn: "getAttr",
-                              argv: [
-                                { ref: "PartitionResult" },
-                                "supportsDualStack",
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://route53-fips.{PartitionResult#dualStackDnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  name: "sigv4",
-                                  signingRegion:
-                                    "{PartitionResult#implicitGlobalRegion}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "FIPS and DualStack are enabled, but this partition does not support one or both",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, false],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            {
-                              fn: "getAttr",
-                              argv: [
-                                { ref: "PartitionResult" },
-                                "supportsFIPS",
-                              ],
-                            },
-                            true,
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://route53-fips.{PartitionResult#dnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  name: "sigv4",
-                                  signingRegion:
-                                    "{PartitionResult#implicitGlobalRegion}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "FIPS is enabled but this partition does not support FIPS",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                    {
-                      fn: "booleanEquals",
-                      argv: [{ ref: "UseDualStack" }, true],
-                    },
-                  ],
-                  rules: [
-                    {
-                      conditions: [
-                        {
-                          fn: "booleanEquals",
-                          argv: [
-                            true,
-                            {
-                              fn: "getAttr",
-                              argv: [
-                                { ref: "PartitionResult" },
-                                "supportsDualStack",
-                              ],
-                            },
-                          ],
-                        },
-                      ],
-                      rules: [
-                        {
-                          conditions: [],
-                          endpoint: {
-                            url: "https://route53.{PartitionResult#dualStackDnsSuffix}",
-                            properties: {
-                              authSchemes: [
-                                {
-                                  name: "sigv4",
-                                  signingRegion:
-                                    "{PartitionResult#implicitGlobalRegion}",
-                                },
-                              ],
-                            },
-                            headers: {},
-                          },
-                          type: "endpoint",
-                        },
-                      ],
-                      type: "tree",
-                    },
-                    {
-                      conditions: [],
-                      error:
-                        "DualStack is enabled but this partition does not support DualStack",
-                      type: "error",
-                    },
-                  ],
-                  type: "tree",
-                },
-                {
-                  conditions: [],
-                  endpoint: {
-                    url: "https://route53.{PartitionResult#dnsSuffix}",
-                    properties: {
-                      authSchemes: [
-                        {
-                          name: "sigv4",
-                          signingRegion:
-                            "{PartitionResult#implicitGlobalRegion}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-              ],
-              type: "tree",
+              authSchemes: [{ name: "sigv4", signingRegion: "eu-isoe-west-1" }],
             },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [],
-          error: "Invalid Configuration: Missing Region",
-          type: "error",
-        },
-      ],
-      type: "tree",
-    },
-  ],
+            {},
+          );
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-iso-f" &&
+          UseFIPS === false &&
+          UseDualStack === false
+        ) {
+          return e(
+            "https://route53.csp.hci.ic.gov",
+            {
+              authSchemes: [
+                { name: "sigv4", signingRegion: "us-isof-south-1" },
+              ],
+            },
+            {},
+          );
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-eusc" &&
+          UseFIPS === false &&
+          UseDualStack === false
+        ) {
+          return e("https://route53.amazonaws.eu", _p3(), {});
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-eusc" &&
+          UseFIPS === false &&
+          UseDualStack === true
+        ) {
+          return e(
+            "https://route53.global.api.amazonwebservices.eu",
+            _p3(),
+            {},
+          );
+        }
+        if (UseFIPS === true && UseDualStack === true) {
+          if (
+            true === _.getAttr(PartitionResult, "supportsFIPS") &&
+            true === _.getAttr(PartitionResult, "supportsDualStack")
+          ) {
+            return e(
+              `https://route53-fips.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+              _p4(PartitionResult),
+              {},
+            );
+          }
+          return err(
+            "FIPS and DualStack are enabled, but this partition does not support one or both",
+          );
+        }
+        if (UseFIPS === true && UseDualStack === false) {
+          if (_.getAttr(PartitionResult, "supportsFIPS") === true) {
+            return e(
+              `https://route53-fips.${_.getAttr(PartitionResult, "dnsSuffix")}`,
+              _p4(PartitionResult),
+              {},
+            );
+          }
+          return err(
+            "FIPS is enabled but this partition does not support FIPS",
+          );
+        }
+        if (UseFIPS === false && UseDualStack === true) {
+          if (true === _.getAttr(PartitionResult, "supportsDualStack")) {
+            return e(
+              `https://route53.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+              _p4(PartitionResult),
+              {},
+            );
+          }
+          return err(
+            "DualStack is enabled but this partition does not support DualStack",
+          );
+        }
+        return e(
+          `https://route53.${_.getAttr(PartitionResult, "dnsSuffix")}`,
+          _p4(PartitionResult),
+          {},
+        );
+      }
+    }
+  }
+  return err("Invalid Configuration: Missing Region");
 });
 
 //# Newtypes

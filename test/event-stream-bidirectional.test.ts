@@ -18,19 +18,19 @@ import {
   HEADER_EVENT_TYPE,
   HEADER_MESSAGE_TYPE,
   type MessageEvent,
-} from "../../src/eventstream/codec.ts";
+} from "../src/eventstream/codec.ts";
 import {
   serializeInputEvent,
   serializeInputEventStream,
   serializeInputEventStreamWithPayloads,
   serializeInputEventWithPayload,
   type InputEvent,
-} from "../../src/eventstream/serializer.ts";
+} from "../src/eventstream/serializer.ts";
 import {
   AudioEvent,
   AudioStream,
-} from "../../src/services/transcribe-streaming.ts";
-import { isInputEventStream, isStreamingType } from "../../src/traits.ts";
+} from "../src/services/transcribe-streaming.ts";
+import { isInputEventStream, isStreamingType } from "../src/traits.ts";
 
 // Helper to read all chunks from a ReadableStream
 const readAllChunks = (stream: ReadableStream<Uint8Array>) =>

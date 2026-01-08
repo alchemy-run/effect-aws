@@ -17,179 +17,88 @@ const svc = T.AwsApiService({
 const auth = T.AwsAuthSigv4({ name: "partnercentral-channel" });
 const ver = T.ServiceVersion("2024-03-18");
 const proto = T.AwsProtocolsAwsJson1_0();
-const rules = T.EndpointRuleSet({
-  version: "1.0",
-  parameters: {
-    UseFIPS: {
-      builtIn: "AWS::UseFIPS",
-      required: true,
-      default: false,
-      documentation:
-        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
-      type: "boolean",
-    },
-    Endpoint: {
-      builtIn: "SDK::Endpoint",
-      required: false,
-      documentation: "Override the endpoint used to send this request",
-      type: "string",
-    },
-    Region: {
-      builtIn: "AWS::Region",
-      required: false,
-      documentation: "The AWS region used to dispatch the request.",
-      type: "string",
-    },
-  },
-  rules: [
+const rules = T.EndpointResolver((p, _) => {
+  const { UseFIPS = false, Endpoint, Region } = p;
+  const e = (u: unknown, p = {}, h = {}): T.EndpointResolverResult => ({
+    type: "endpoint" as const,
+    endpoint: { url: u as string, properties: p, headers: h },
+  });
+  const err = (m: unknown): T.EndpointResolverResult => ({
+    type: "error" as const,
+    message: m as string,
+  });
+  const _p0 = () => ({
+    authSchemes: [
+      { name: "sigv4a", signingRegionSet: ["*"] },
+      { name: "sigv4", signingRegion: "us-gov-west-1" },
+    ],
+  });
+  const _p1 = (_0: unknown) => ({
+    authSchemes: [
+      { name: "sigv4a", signingRegionSet: ["*"] },
+      {
+        name: "sigv4",
+        signingRegion: `${_.getAttr(_0, "implicitGlobalRegion")}`,
+      },
+    ],
+  });
+  if (Endpoint != null) {
+    if (UseFIPS === true) {
+      return err(
+        "Invalid Configuration: FIPS and custom endpoint are not supported",
+      );
+    }
+    return e(
+      Endpoint,
+      {
+        authSchemes: [
+          { name: "sigv4a", signingRegionSet: ["*"] },
+          { name: "sigv4" },
+        ],
+      },
+      {},
+    );
+  }
+  if (Region != null) {
     {
-      conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-      rules: [
-        {
-          conditions: [
-            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-          ],
-          error:
-            "Invalid Configuration: FIPS and custom endpoint are not supported",
-          type: "error",
-        },
-        {
-          conditions: [],
-          endpoint: {
-            url: { ref: "Endpoint" },
-            properties: {
-              authSchemes: [
-                { name: "sigv4a", signingRegionSet: ["*"] },
-                { name: "sigv4" },
-              ],
-            },
-            headers: {},
-          },
-          type: "endpoint",
-        },
-      ],
-      type: "tree",
-    },
-    {
-      conditions: [],
-      rules: [
-        {
-          conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-          rules: [
-            {
-              conditions: [
-                {
-                  fn: "aws.partition",
-                  argv: [{ ref: "Region" }],
-                  assign: "PartitionResult",
-                },
-              ],
-              rules: [
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-us-gov",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-                  ],
-                  endpoint: {
-                    url: "https://partnercentral-channel.us-gov.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4a", signingRegionSet: ["*"] },
-                        { name: "sigv4", signingRegion: "us-gov-west-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    {
-                      fn: "stringEquals",
-                      argv: [
-                        {
-                          fn: "getAttr",
-                          argv: [{ ref: "PartitionResult" }, "name"],
-                        },
-                        "aws-us-gov",
-                      ],
-                    },
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                  ],
-                  endpoint: {
-                    url: "https://partnercentral-channel-fips.us-gov.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4a", signingRegionSet: ["*"] },
-                        { name: "sigv4", signingRegion: "us-gov-west-1" },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [
-                    { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                  ],
-                  endpoint: {
-                    url: "https://partnercentral-channel-fips.global.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4a", signingRegionSet: ["*"] },
-                        {
-                          name: "sigv4",
-                          signingRegion:
-                            "{PartitionResult#implicitGlobalRegion}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-                {
-                  conditions: [],
-                  endpoint: {
-                    url: "https://partnercentral-channel.global.{PartitionResult#dualStackDnsSuffix}",
-                    properties: {
-                      authSchemes: [
-                        { name: "sigv4a", signingRegionSet: ["*"] },
-                        {
-                          name: "sigv4",
-                          signingRegion:
-                            "{PartitionResult#implicitGlobalRegion}",
-                        },
-                      ],
-                    },
-                    headers: {},
-                  },
-                  type: "endpoint",
-                },
-              ],
-              type: "tree",
-            },
-          ],
-          type: "tree",
-        },
-        {
-          conditions: [],
-          error: "Invalid Configuration: Missing Region",
-          type: "error",
-        },
-      ],
-      type: "tree",
-    },
-  ],
+      const PartitionResult = _.partition(Region);
+      if (PartitionResult != null && PartitionResult !== false) {
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-us-gov" &&
+          UseFIPS === false
+        ) {
+          return e(
+            `https://partnercentral-channel.us-gov.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+            _p0(),
+            {},
+          );
+        }
+        if (
+          _.getAttr(PartitionResult, "name") === "aws-us-gov" &&
+          UseFIPS === true
+        ) {
+          return e(
+            `https://partnercentral-channel-fips.us-gov.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+            _p0(),
+            {},
+          );
+        }
+        if (UseFIPS === true) {
+          return e(
+            `https://partnercentral-channel-fips.global.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+            _p1(PartitionResult),
+            {},
+          );
+        }
+        return e(
+          `https://partnercentral-channel.global.${_.getAttr(PartitionResult, "dualStackDnsSuffix")}`,
+          _p1(PartitionResult),
+          {},
+        );
+      }
+    }
+  }
+  return err("Invalid Configuration: Missing Region");
 });
 
 //# Newtypes

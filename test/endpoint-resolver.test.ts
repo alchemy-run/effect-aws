@@ -6,10 +6,8 @@ import {
   isVirtualHostableS3Bucket,
   parseArn,
   partition,
-} from "../../src/rules-engine/aws-functions.ts";
-import { resolveEndpointSync } from "../../src/rules-engine/evaluator.ts";
-import { RuleSetObject } from "../../src/rules-engine/model.ts";
-import { makeRulesResolver } from "../../src/rules-engine/resolver.ts";
+} from "../src/rules-engine/aws-functions.ts";
+import { makeEndpointResolver } from "../src/rules-engine/endpoint-resolver.ts";
 import {
   booleanEquals,
   getAttr,
@@ -20,14 +18,22 @@ import {
   stringEquals,
   substring,
   uriEncode,
-} from "../../src/rules-engine/standard-functions.ts";
-import { PutEventsRequest } from "../../src/services/eventbridge.ts";
+} from "../src/rules-engine/standard-functions.ts";
+import { PutEventsRequest } from "../src/services/eventbridge.ts";
 import {
   GetObjectRequest,
   ListBucketsRequest,
   PutObjectRequest,
-} from "../../src/services/s3.ts";
-import { GetCallerIdentityRequest } from "../../src/services/sts.ts";
+} from "../src/services/s3.ts";
+import { GetCallerIdentityRequest } from "../src/services/sts.ts";
+
+import { existsSync, readdirSync, readFileSync } from "fs";
+import { join } from "path";
+import { compileRuleSet } from "../scripts/compile-rules.ts";
+import type {
+  EndpointParams,
+  RuleSetObject,
+} from "../src/rules-engine/expression.ts";
 
 // Helper to resolve endpoint for a given schema and input
 const resolveEndpoint = <A, I>(
@@ -36,7 +42,7 @@ const resolveEndpoint = <A, I>(
   region: string,
 ) => {
   const operation = { input: schema, output: schema, errors: [] };
-  const resolver = makeRulesResolver(operation);
+  const resolver = makeEndpointResolver(operation);
   if (!resolver) {
     return Effect.fail(new Error("No rules resolver available"));
   }
@@ -165,7 +171,8 @@ describe("standard library functions", () => {
       expect(result).toBeDefined();
       expect(result?.scheme).toBe("https");
       expect(result?.authority).toBe("example.com");
-      expect(result?.path).toBe("/");
+      // URL with no path returns empty string
+      expect(result?.path).toBe("");
     });
 
     it("parses URL with path", () => {
@@ -731,523 +738,191 @@ describe("rules resolver", () => {
   });
 });
 
+/**
+ * Comprehensive Endpoint Rules Tests
+ *
+ * Tests the JIT-compiled endpoint resolver against AWS's official test cases
+ * from the smithy.rules#endpointTests trait in each service model.
+ */
+
 // =============================================================================
-// DIRECT RULESET EVALUATION TESTS
+// Service Discovery
 // =============================================================================
 
-describe("direct ruleset evaluation", () => {
-  describe("basic endpoint resolution", () => {
-    it("resolves simple endpoint with region substitution", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-        },
-        rules: [
-          {
-            conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-            endpoint: {
-              url: "https://service.{Region}.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
+interface ServiceInfo {
+  name: string;
+  modelPath: string;
+}
 
-      const result = resolveEndpointSync(ruleSet, { Region: "us-west-2" });
-      expect(result.url).toBe("https://service.us-west-2.amazonaws.com");
-    });
+interface EndpointTest {
+  documentation?: string;
+  params: EndpointParams;
+  expect: {
+    endpoint?: {
+      url: string;
+      properties?: Record<string, unknown>;
+      headers?: Record<string, string[]>;
+    };
+    error?: string;
+  };
+}
 
-    it("uses parameter defaults", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-          UseFIPS: { type: "boolean", default: false },
-        },
-        rules: [
-          {
-            conditions: [
-              { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, false] },
-            ],
-            endpoint: {
-              url: "https://service.{Region}.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
+interface ServiceWithTests {
+  name: string;
+  ruleSet: RuleSetObject;
+  tests: EndpointTest[];
+}
 
-      const result = resolveEndpointSync(ruleSet, { Region: "us-east-1" });
-      expect(result.url).toBe("https://service.us-east-1.amazonaws.com");
-    });
+/**
+ * Discover all service model files in aws-models/models/
+ */
+const discoverServices = (modelsPath: string): ServiceInfo[] => {
+  const services: ServiceInfo[] = [];
+
+  if (!existsSync(modelsPath)) {
+    return services;
+  }
+
+  const serviceDirs = readdirSync(modelsPath, { withFileTypes: true });
+
+  for (const serviceDir of serviceDirs) {
+    if (!serviceDir.isDirectory()) continue;
+
+    const servicePath = join(modelsPath, serviceDir.name, "service");
+    if (!existsSync(servicePath)) continue;
+
+    // Find version directories
+    const versionDirs = readdirSync(servicePath, { withFileTypes: true });
+    for (const versionDir of versionDirs) {
+      if (!versionDir.isDirectory()) continue;
+
+      const versionPath = join(servicePath, versionDir.name);
+      const files = readdirSync(versionPath);
+
+      // Find the JSON model file
+      const modelFile = files.find((f) => f.endsWith(".json"));
+      if (modelFile) {
+        services.push({
+          name: serviceDir.name,
+          modelPath: join(versionPath, modelFile),
+        });
+        break; // Take first version found
+      }
+    }
+  }
+
+  return services;
+};
+
+/**
+ * Load endpoint rule set and tests from a service model (synchronous)
+ */
+const loadServiceRuleSetAndTestsSync = (
+  modelPath: string,
+): { ruleSet: RuleSetObject; tests: EndpointTest[] } | null => {
+  try {
+    const content = readFileSync(modelPath, "utf-8");
+    const model = JSON.parse(content);
+
+    // Find the service shape
+    for (const shape of Object.values(model.shapes) as Array<{
+      type: string;
+      traits?: Record<string, unknown>;
+    }>) {
+      if (shape.type === "service" && shape.traits) {
+        const ruleSet = shape.traits["smithy.rules#endpointRuleSet"] as
+          | RuleSetObject
+          | undefined;
+        const testsData = shape.traits["smithy.rules#endpointTests"] as
+          | { testCases?: EndpointTest[] }
+          | undefined;
+
+        if (ruleSet) {
+          return {
+            ruleSet,
+            tests: testsData?.testCases ?? [],
+          };
+        }
+      }
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+// =============================================================================
+// Test Suite
+// =============================================================================
+
+// Use process.cwd() since tests run from project root
+const modelsPath = join(process.cwd(), "aws-models/models");
+const services = discoverServices(modelsPath);
+
+// Load all services with their rule sets and tests (synchronous)
+const loadAllServicesSync = (): ServiceWithTests[] => {
+  const results: ServiceWithTests[] = [];
+
+  for (const service of services) {
+    const data = loadServiceRuleSetAndTestsSync(service.modelPath);
+    if (data && data.tests.length > 0) {
+      results.push({
+        name: service.name,
+        ruleSet: data.ruleSet,
+        tests: data.tests,
+      });
+    }
+  }
+
+  return results;
+};
+
+// Load services synchronously at module level
+const loadedServices = loadAllServicesSync();
+
+describe("endpoint rules - AWS official test cases", () => {
+  it("discovered services with endpoint tests", () => {
+    expect(loadedServices.length).toBeGreaterThan(0);
+    console.log(`Found ${loadedServices.length} services with endpoint tests`);
   });
 
-  describe("conditional logic", () => {
-    it("handles tree rules with nested conditions", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-          UseFIPS: { type: "boolean", default: false },
-        },
-        rules: [
-          {
-            conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
-            type: "tree",
-            rules: [
-              {
-                conditions: [
-                  { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
-                ],
-                endpoint: {
-                  url: "https://service-fips.{Region}.amazonaws.com",
-                  properties: {},
-                  headers: {},
-                },
-                type: "endpoint",
-              },
-              {
-                conditions: [],
-                endpoint: {
-                  url: "https://service.{Region}.amazonaws.com",
-                  properties: {},
-                  headers: {},
-                },
-                type: "endpoint",
-              },
-            ],
-          },
-        ],
-      };
+  // Create a describe block for each service
+  for (const service of loadedServices) {
+    describe(service.name, () => {
+      // JIT compile the rule set once per service
+      const resolver = compileRuleSet(service.ruleSet);
 
-      const fipsResult = resolveEndpointSync(ruleSet, {
-        Region: "us-east-1",
-        UseFIPS: true,
-      });
-      expect(fipsResult.url).toBe(
-        "https://service-fips.us-east-1.amazonaws.com",
-      );
+      // Limit to first 20 tests per service for quick coverage
+      const testsToRun = service.tests.slice(0, 20);
 
-      const normalResult = resolveEndpointSync(ruleSet, {
-        Region: "us-east-1",
-        UseFIPS: false,
-      });
-      expect(normalResult.url).toBe("https://service.us-east-1.amazonaws.com");
+      for (const test of testsToRun) {
+        const testName =
+          test.documentation ?? `params: ${JSON.stringify(test.params)}`;
+
+        it(testName, () => {
+          const params = test.params ?? {};
+          const result = resolver(params);
+
+          // Verify against AWS's expected results
+          if (test.expect.error) {
+            expect(result.type, `Expected error: ${test.expect.error}`).toBe(
+              "error",
+            );
+            if (result.type === "error") {
+              expect(result.message).toContain(test.expect.error);
+            }
+          } else if (test.expect.endpoint) {
+            expect(
+              result.type,
+              `Expected endpoint but got error: ${result.type === "error" ? result.message : ""}`,
+            ).toBe("endpoint");
+            if (result.type === "endpoint") {
+              expect(result.endpoint.url).toBe(test.expect.endpoint.url);
+            }
+          }
+        });
+      }
     });
-
-    it("uses stringEquals for region matching", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-        },
-        rules: [
-          {
-            conditions: [
-              { fn: "stringEquals", argv: [{ ref: "Region" }, "us-east-1"] },
-            ],
-            endpoint: {
-              url: "https://service.us-east-1.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-          {
-            conditions: [],
-            endpoint: {
-              url: "https://service.{Region}.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      const result1 = resolveEndpointSync(ruleSet, { Region: "us-east-1" });
-      expect(result1.url).toBe("https://service.us-east-1.amazonaws.com");
-
-      const result2 = resolveEndpointSync(ruleSet, { Region: "us-west-2" });
-      expect(result2.url).toBe("https://service.us-west-2.amazonaws.com");
-    });
-  });
-
-  describe("error rules", () => {
-    it("throws on error rules", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string" },
-        },
-        rules: [
-          {
-            conditions: [
-              { fn: "not", argv: [{ fn: "isSet", argv: [{ ref: "Region" }] }] },
-            ],
-            error: "Region is required",
-            type: "error",
-          },
-          {
-            conditions: [],
-            endpoint: {
-              url: "https://service.{Region}.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      expect(() => resolveEndpointSync(ruleSet, {})).toThrow(
-        "Region is required",
-      );
-    });
-  });
-
-  describe("aws.partition function", () => {
-    it("resolves partition and uses partition attributes", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-        },
-        rules: [
-          {
-            conditions: [
-              {
-                fn: "aws.partition",
-                argv: [{ ref: "Region" }],
-                assign: "PartitionResult",
-              },
-            ],
-            endpoint: {
-              url: "https://service.{Region}.{PartitionResult#dnsSuffix}",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      const awsResult = resolveEndpointSync(ruleSet, { Region: "us-east-1" });
-      expect(awsResult.url).toBe("https://service.us-east-1.amazonaws.com");
-
-      const chinaResult = resolveEndpointSync(ruleSet, {
-        Region: "cn-north-1",
-      });
-      expect(chinaResult.url).toBe(
-        "https://service.cn-north-1.amazonaws.com.cn",
-      );
-    });
-
-    it("uses partition dualStackDnsSuffix", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-          UseDualStack: { type: "boolean", default: false },
-        },
-        rules: [
-          {
-            conditions: [
-              {
-                fn: "aws.partition",
-                argv: [{ ref: "Region" }],
-                assign: "PartitionResult",
-              },
-              { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
-            ],
-            endpoint: {
-              url: "https://service.{Region}.{PartitionResult#dualStackDnsSuffix}",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-          {
-            conditions: [
-              {
-                fn: "aws.partition",
-                argv: [{ ref: "Region" }],
-                assign: "PartitionResult",
-              },
-            ],
-            endpoint: {
-              url: "https://service.{Region}.{PartitionResult#dnsSuffix}",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      const dualStackResult = resolveEndpointSync(ruleSet, {
-        Region: "us-east-1",
-        UseDualStack: true,
-      });
-      expect(dualStackResult.url).toBe("https://service.us-east-1.api.aws");
-    });
-  });
-
-  describe("getAttr function", () => {
-    it("accesses nested partition properties", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-        },
-        rules: [
-          {
-            conditions: [
-              {
-                fn: "aws.partition",
-                argv: [{ ref: "Region" }],
-                assign: "PartitionResult",
-              },
-              {
-                fn: "booleanEquals",
-                argv: [
-                  {
-                    fn: "getAttr",
-                    argv: [{ ref: "PartitionResult" }, "supportsFIPS"],
-                  },
-                  true,
-                ],
-              },
-            ],
-            endpoint: {
-              url: "https://service-fips.{Region}.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      const result = resolveEndpointSync(ruleSet, { Region: "us-east-1" });
-      expect(result.url).toBe("https://service-fips.us-east-1.amazonaws.com");
-    });
-  });
-
-  describe("auth scheme properties", () => {
-    it("resolves auth schemes with template interpolation", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-        },
-        rules: [
-          {
-            conditions: [],
-            endpoint: {
-              url: "https://service.{Region}.amazonaws.com",
-              properties: {
-                authSchemes: [
-                  {
-                    name: "sigv4",
-                    signingName: "myservice",
-                    signingRegion: "{Region}",
-                  },
-                ],
-              },
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      const result = resolveEndpointSync(ruleSet, { Region: "eu-west-1" });
-      expect(result.properties?.authSchemes).toEqual([
-        {
-          name: "sigv4",
-          signingName: "myservice",
-          signingRegion: "eu-west-1",
-        },
-      ]);
-    });
-
-    it("resolves sigv4a auth schemes with signingRegionSet", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-          EndpointId: { type: "string" },
-        },
-        rules: [
-          {
-            conditions: [{ fn: "isSet", argv: [{ ref: "EndpointId" }] }],
-            endpoint: {
-              url: "https://{EndpointId}.endpoint.events.amazonaws.com",
-              properties: {
-                authSchemes: [
-                  {
-                    name: "sigv4a",
-                    signingName: "events",
-                    signingRegionSet: ["*"],
-                  },
-                ],
-              },
-              headers: {},
-            },
-            type: "endpoint",
-          },
-          {
-            conditions: [],
-            endpoint: {
-              url: "https://events.{Region}.amazonaws.com",
-              properties: {
-                authSchemes: [
-                  {
-                    name: "sigv4",
-                    signingName: "events",
-                    signingRegion: "{Region}",
-                  },
-                ],
-              },
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      const resultWithEndpointId = resolveEndpointSync(ruleSet, {
-        Region: "us-east-1",
-        EndpointId: "abc123",
-      });
-      expect(resultWithEndpointId.url).toBe(
-        "https://abc123.endpoint.events.amazonaws.com",
-      );
-      expect(resultWithEndpointId.properties?.authSchemes).toEqual([
-        {
-          name: "sigv4a",
-          signingName: "events",
-          signingRegionSet: ["*"],
-        },
-      ]);
-
-      const resultWithoutEndpointId = resolveEndpointSync(ruleSet, {
-        Region: "us-east-1",
-      });
-      expect(resultWithoutEndpointId.url).toBe(
-        "https://events.us-east-1.amazonaws.com",
-      );
-      expect(resultWithoutEndpointId.properties?.authSchemes).toEqual([
-        {
-          name: "sigv4",
-          signingName: "events",
-          signingRegion: "us-east-1",
-        },
-      ]);
-    });
-  });
-
-  describe("isValidHostLabel function", () => {
-    it("validates endpoint IDs as host labels", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-          EndpointId: { type: "string" },
-        },
-        rules: [
-          {
-            conditions: [
-              { fn: "isSet", argv: [{ ref: "EndpointId" }] },
-              { fn: "isValidHostLabel", argv: [{ ref: "EndpointId" }, true] },
-            ],
-            endpoint: {
-              url: "https://{EndpointId}.endpoint.service.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-          {
-            conditions: [{ fn: "isSet", argv: [{ ref: "EndpointId" }] }],
-            error: "EndpointId must be a valid host label.",
-            type: "error",
-          },
-          {
-            conditions: [],
-            endpoint: {
-              url: "https://service.{Region}.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      const validResult = resolveEndpointSync(ruleSet, {
-        Region: "us-east-1",
-        EndpointId: "abc123.456def",
-      });
-      expect(validResult.url).toBe(
-        "https://abc123.456def.endpoint.service.amazonaws.com",
-      );
-
-      expect(() =>
-        resolveEndpointSync(ruleSet, {
-          Region: "us-east-1",
-          EndpointId: "-invalid-",
-        }),
-      ).toThrow("EndpointId must be a valid host label");
-    });
-  });
-
-  describe("custom endpoint override", () => {
-    it("uses custom endpoint when provided", () => {
-      const ruleSet: RuleSetObject = {
-        version: "1.0",
-        parameters: {
-          Region: { type: "string", required: true },
-          Endpoint: { type: "string", builtIn: "SDK::Endpoint" },
-        },
-        rules: [
-          {
-            conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
-            endpoint: {
-              url: "{Endpoint}",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-          {
-            conditions: [],
-            endpoint: {
-              url: "https://service.{Region}.amazonaws.com",
-              properties: {},
-              headers: {},
-            },
-            type: "endpoint",
-          },
-        ],
-      };
-
-      const customResult = resolveEndpointSync(ruleSet, {
-        Region: "us-east-1",
-        Endpoint: "http://localhost:4566",
-      });
-      expect(customResult.url).toBe("http://localhost:4566");
-
-      const defaultResult = resolveEndpointSync(ruleSet, {
-        Region: "us-east-1",
-      });
-      expect(defaultResult.url).toBe("https://service.us-east-1.amazonaws.com");
-    });
-  });
+  }
 });

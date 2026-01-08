@@ -85,9 +85,9 @@ if (!isLocalStack) {
       // Create the input event stream with AudioEvents
       const inputEvents = Stream.fromIterable(
         audioChunks.map((chunk) => ({
-          AudioEvent: new AudioEvent({
+          AudioEvent: {
             AudioChunk: chunk as Uint8Array<ArrayBuffer>,
-          }),
+          } as AudioEvent,
         })),
       );
 
@@ -148,12 +148,12 @@ if (!isLocalStack) {
                 yield* Effect.sleep("50 millis");
               }
               return {
-                AudioEvent: new AudioEvent({
+                AudioEvent: {
                   AudioChunk: generateToneChunk(
                     50,
                     200 + i * 50,
                   ) as Uint8Array<ArrayBuffer>,
-                }),
+                } as AudioEvent,
               };
             }),
           ),

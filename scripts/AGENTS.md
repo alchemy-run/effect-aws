@@ -9,6 +9,7 @@ Build scripts and utilities. Code generation, cleanup, testing infrastructure.
 | Script                  | Purpose                                               |
 | ----------------------- | ----------------------------------------------------- |
 | `generate-clients.ts`   | **Main codegen** — Smithy models → TypeScript clients |
+| `compile-rules.ts`      | Compiles endpoint rule sets to JavaScript functions   |
 | `model-schema.ts`       | Effect schemas for parsing Smithy JSON models         |
 | `service-patches.ts`    | Service-specific codegen patches                      |
 | `find-errors.ts`        | Runs AI agent to discover undocumented AWS errors     |
