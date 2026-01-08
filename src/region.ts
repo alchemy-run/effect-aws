@@ -7,12 +7,13 @@ export class Region extends Context.Tag("distilled-aws/Region")<
   RegionName
 >() {}
 
-export const fromEnv = Layer.effect(
-  Region,
-  Config.string("AWS_REGION").pipe(
-    Config.orElse(() => Config.string("AWS_DEFAULT_REGION")),
-  ),
-);
+export const fromEnv = () =>
+  Layer.effect(
+    Region,
+    Config.string("AWS_REGION").pipe(
+      Config.orElse(() => Config.string("AWS_DEFAULT_REGION")),
+    ),
+  );
 
 export type RegionName =
   | "us-east-1"
