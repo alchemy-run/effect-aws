@@ -479,12 +479,21 @@ We need to discover the ACTUAL error codes returned by AWS APIs and compare them
 8. When you're satisfied you've found all discoverable errors and cleaned up, provide a summary of what you found.
 
 ## Important Notes
+- This is a SANDBOX AWS account - ALL RESOURCES CAN BE SAFELY DELETED!
 - You're running against LocalStack, so you can safely make any API calls - CREATE RESOURCES FREELY!
 - Use ListOperations to find helper operations (CreateBucket, PutObject, DeleteBucket) for setting up test scenarios
 - Focus on discovering UNIQUE errors - don't repeat the same error condition
 - ALWAYS set up resources when testing state-dependent errors
 - Keep going until you've exhausted reasonable input variations AND state-based scenarios
 - Always provide ALL required fields, even if with dummy values
+
+## Handling Limit Errors
+If you encounter errors indicating a limit has been exceeded (e.g., "LimitExceeded", "TooManyBuckets", "QuotaExceeded", "ResourceLimitExceeded", or similar), **DO NOT HESITATE TO DELETE EXISTING RESOURCES** to make room for your tests:
+- List existing resources using appropriate List* operations
+- Delete old/unused resources to free up quota
+- Then retry your operation
+- This is a sandbox environment - treat ALL resources as expendable and safe to remove
+- Never let limit errors block your exploration - just clean up and continue
 `;
 
 const discover = Command.make(
