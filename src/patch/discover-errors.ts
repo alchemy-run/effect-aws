@@ -602,14 +602,14 @@ const eff = Effect.gen(function* () {
   ),
   Effect.scoped,
   Effect.provide(locks),
-  Effect.provide(process.env.LIVE ? Credentials.mock : Credentials.fromSSO()),
+  Effect.provide(process.env.LIVE ? Credentials.fromSSO() : Credentials.mock),
   Effect.provideService(Region, "us-west-2"),
   Effect.provide(Persistence.layerMemory),
 );
 
 const nodePlatform = Layer.mergeAll(NodeContext.layer, NodeHttpClient.layer);
 
-if (process.env.LIVE) {
+if (!process.env.LIVE) {
   eff.pipe(
     Effect.provideService(Endpoint, "http://localhost:4566"),
     Effect.provide(nodePlatform),

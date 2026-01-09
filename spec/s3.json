@@ -440,6 +440,11 @@
         "NoSuchBucket",
         "PermanentRedirect"
       ]
+    },
+    "listBuckets": {
+      "errors": [
+        "RequestError"
+      ]
     }
   }
 }

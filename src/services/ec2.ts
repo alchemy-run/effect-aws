@@ -71651,32 +71651,84 @@ export class InvalidVpcIDNotFound extends S.TaggedError<InvalidVpcIDNotFound>()(
   "InvalidVpcID.NotFound",
   {},
 ) {}
+export class InvalidVpcIdMalformed extends S.TaggedError<InvalidVpcIdMalformed>()(
+  "InvalidVpcId.Malformed",
+  {},
+) {}
 export class InvalidInternetGatewayIDNotFound extends S.TaggedError<InvalidInternetGatewayIDNotFound>()(
   "InvalidInternetGatewayID.NotFound",
+  {},
+) {}
+export class InvalidInternetGatewayIdMalformed extends S.TaggedError<InvalidInternetGatewayIdMalformed>()(
+  "InvalidInternetGatewayId.Malformed",
   {},
 ) {}
 export class InvalidCustomerGatewayIDNotFound extends S.TaggedError<InvalidCustomerGatewayIDNotFound>()(
   "InvalidCustomerGatewayID.NotFound",
   {},
 ) {}
+export class InvalidCustomerGatewayIdMalformed extends S.TaggedError<InvalidCustomerGatewayIdMalformed>()(
+  "InvalidCustomerGatewayId.Malformed",
+  {},
+) {}
 export class InvalidDhcpOptionIDNotFound extends S.TaggedError<InvalidDhcpOptionIDNotFound>()(
   "InvalidDhcpOptionID.NotFound",
+  {},
+) {}
+export class InvalidDhcpOptionsIdMalformed extends S.TaggedError<InvalidDhcpOptionsIdMalformed>()(
+  "InvalidDhcpOptionsId.Malformed",
+  {},
+) {}
+export class DependencyViolation extends S.TaggedError<DependencyViolation>()(
+  "DependencyViolation",
+  {},
+) {}
+export class DryRunOperation extends S.TaggedError<DryRunOperation>()(
+  "DryRunOperation",
   {},
 ) {}
 export class InvalidNetworkAclIDNotFound extends S.TaggedError<InvalidNetworkAclIDNotFound>()(
   "InvalidNetworkAclID.NotFound",
   {},
 ) {}
+export class InvalidNetworkAclIdMalformed extends S.TaggedError<InvalidNetworkAclIdMalformed>()(
+  "InvalidNetworkAclId.Malformed",
+  {},
+) {}
 export class InvalidNetworkInterfaceIDNotFound extends S.TaggedError<InvalidNetworkInterfaceIDNotFound>()(
   "InvalidNetworkInterfaceID.NotFound",
+  {},
+) {}
+export class InvalidNetworkInterfaceIdMalformed extends S.TaggedError<InvalidNetworkInterfaceIdMalformed>()(
+  "InvalidNetworkInterfaceId.Malformed",
+  {},
+) {}
+export class InvalidPlacementGroupUnknown extends S.TaggedError<InvalidPlacementGroupUnknown>()(
+  "InvalidPlacementGroup.Unknown",
+  {},
+) {}
+export class InvalidParameterCombination extends S.TaggedError<InvalidParameterCombination>()(
+  "InvalidParameterCombination",
+  {},
+) {}
+export class InvalidParameterValue extends S.TaggedError<InvalidParameterValue>()(
+  "InvalidParameterValue",
+  {},
+) {}
+export class InvalidRouteNotFound extends S.TaggedError<InvalidRouteNotFound>()(
+  "InvalidRoute.NotFound",
   {},
 ) {}
 export class InvalidRouteTableIDNotFound extends S.TaggedError<InvalidRouteTableIDNotFound>()(
   "InvalidRouteTableID.NotFound",
   {},
 ) {}
-export class DependencyViolation extends S.TaggedError<DependencyViolation>()(
-  "DependencyViolation",
+export class InvalidRouteTableIdMalformed extends S.TaggedError<InvalidRouteTableIdMalformed>()(
+  "InvalidRouteTableId.Malformed",
+  {},
+) {}
+export class MissingParameter extends S.TaggedError<MissingParameter>()(
+  "MissingParameter",
   {},
 ) {}
 export class InvalidSnapshotNotFound extends S.TaggedError<InvalidSnapshotNotFound>()(
@@ -71687,9 +71739,17 @@ export class InvalidSubnetIDNotFound extends S.TaggedError<InvalidSubnetIDNotFou
   "InvalidSubnetID.NotFound",
   {},
 ) {}
+export class InvalidSubnetIdMalformed extends S.TaggedError<InvalidSubnetIdMalformed>()(
+  "InvalidSubnetId.Malformed",
+  {},
+) {}
 export class InvalidID extends S.TaggedError<InvalidID>()("InvalidID", {}) {}
 export class InvalidVolumeNotFound extends S.TaggedError<InvalidVolumeNotFound>()(
   "InvalidVolume.NotFound",
+  {},
+) {}
+export class RequestError extends S.TaggedError<RequestError>()(
+  "RequestError",
   {},
 ) {}
 export class InvalidVpnConnectionIDNotFound extends S.TaggedError<InvalidVpnConnectionIDNotFound>()(
@@ -71712,6 +71772,10 @@ export class InvalidInstanceIDNotFound extends S.TaggedError<InvalidInstanceIDNo
   "InvalidInstanceID.NotFound",
   {},
 ) {}
+export class AuthFailure extends S.TaggedError<AuthFailure>()(
+  "AuthFailure",
+  {},
+) {}
 export class InvalidAllocationIDNotFound extends S.TaggedError<InvalidAllocationIDNotFound>()(
   "InvalidAllocationID.NotFound",
   {},
@@ -71728,29 +71792,109 @@ export class InvalidGroupDuplicate extends S.TaggedError<InvalidGroupDuplicate>(
   "InvalidGroup.Duplicate",
   {},
 ) {}
-export class MissingParameter extends S.TaggedError<MissingParameter>()(
-  "MissingParameter",
+export class VPCIdNotSpecified extends S.TaggedError<VPCIdNotSpecified>()(
+  "VPCIdNotSpecified",
   {},
 ) {}
 export class ParseError extends S.TaggedError<ParseError>()("ParseError", {}) {}
+export class InvalidCarrierGatewayIDMalformed extends S.TaggedError<InvalidCarrierGatewayIDMalformed>()(
+  "InvalidCarrierGatewayID.Malformed",
+  {},
+) {}
 export class InvalidCarrierGatewayIDNotFound extends S.TaggedError<InvalidCarrierGatewayIDNotFound>()(
   "InvalidCarrierGatewayID.NotFound",
+  {},
+) {}
+export class InvalidIpv4PoolCoipIdMalformed extends S.TaggedError<InvalidIpv4PoolCoipIdMalformed>()(
+  "InvalidIpv4PoolCoipId.Malformed",
   {},
 ) {}
 export class InvalidGatewayIDNotFound extends S.TaggedError<InvalidGatewayIDNotFound>()(
   "InvalidGatewayID.NotFound",
   {},
 ) {}
+export class MalformedGatewayIDNotFound extends S.TaggedError<MalformedGatewayIDNotFound>()(
+  "MalformedGatewayID.NotFound",
+  {},
+) {}
 export class InvalidFlowLogIdNotFound extends S.TaggedError<InvalidFlowLogIdNotFound>()(
   "InvalidFlowLogId.NotFound",
+  {},
+) {}
+export class InvalidInstanceConnectEndpointIdNotFound extends S.TaggedError<InvalidInstanceConnectEndpointIdNotFound>()(
+  "InvalidInstanceConnectEndpointId.NotFound",
+  {},
+) {}
+export class InvalidIpamPolicyIdNotFound extends S.TaggedError<InvalidIpamPolicyIdNotFound>()(
+  "InvalidIpamPolicyId.NotFound",
+  {},
+) {}
+export class InvalidIpamResourceDiscoveryIdNotFound extends S.TaggedError<InvalidIpamResourceDiscoveryIdNotFound>()(
+  "InvalidIpamResourceDiscoveryId.NotFound",
+  {},
+) {}
+export class InvalidParameter extends S.TaggedError<InvalidParameter>()(
+  "InvalidParameter",
+  {},
+) {}
+export class NatGatewayMalformed extends S.TaggedError<NatGatewayMalformed>()(
+  "NatGatewayMalformed",
+  {},
+) {}
+export class InvalidPermissionIDNotFound extends S.TaggedError<InvalidPermissionIDNotFound>()(
+  "InvalidPermissionID.NotFound",
+  {},
+) {}
+export class InvalidRouteServerIdNotFound extends S.TaggedError<InvalidRouteServerIdNotFound>()(
+  "InvalidRouteServerId.NotFound",
+  {},
+) {}
+export class CannotDelete extends S.TaggedError<CannotDelete>()(
+  "CannotDelete",
   {},
 ) {}
 export class InvalidGroupNotFound extends S.TaggedError<InvalidGroupNotFound>()(
   "InvalidGroup.NotFound",
   {},
 ) {}
+export class InvalidGroupIdMalformed extends S.TaggedError<InvalidGroupIdMalformed>()(
+  "InvalidGroupId.Malformed",
+  {},
+) {}
+export class InvalidSubnetCidrReservationIDNotFound extends S.TaggedError<InvalidSubnetCidrReservationIDNotFound>()(
+  "InvalidSubnetCidrReservationID.NotFound",
+  {},
+) {}
+export class InvalidTransitGatewayAttachmentIDMalformed extends S.TaggedError<InvalidTransitGatewayAttachmentIDMalformed>()(
+  "InvalidTransitGatewayAttachmentID.Malformed",
+  {},
+) {}
+export class InvalidVerifiedAccessGroupIdNotFound extends S.TaggedError<InvalidVerifiedAccessGroupIdNotFound>()(
+  "InvalidVerifiedAccessGroupId.NotFound",
+  {},
+) {}
+export class InvalidVerifiedAccessInstanceIdNotFound extends S.TaggedError<InvalidVerifiedAccessInstanceIdNotFound>()(
+  "InvalidVerifiedAccessInstanceId.NotFound",
+  {},
+) {}
+export class InvalidVerifiedAccessTrustProviderIdNotFound extends S.TaggedError<InvalidVerifiedAccessTrustProviderIdNotFound>()(
+  "InvalidVerifiedAccessTrustProviderId.NotFound",
+  {},
+) {}
+export class InvalidVpcEncryptionControlIdNotFound extends S.TaggedError<InvalidVpcEncryptionControlIdNotFound>()(
+  "InvalidVpcEncryptionControlId.NotFound",
+  {},
+) {}
+export class InvalidVpcPeeringConnectionIDNotFound extends S.TaggedError<InvalidVpcPeeringConnectionIDNotFound>()(
+  "InvalidVpcPeeringConnectionID.NotFound",
+  {},
+) {}
 export class InvalidVpcPeeringConnectionIdNotFound extends S.TaggedError<InvalidVpcPeeringConnectionIdNotFound>()(
   "InvalidVpcPeeringConnectionId.NotFound",
+  {},
+) {}
+export class InvalidEgressOnlyInternetGatewayIdMalformed extends S.TaggedError<InvalidEgressOnlyInternetGatewayIdMalformed>()(
+  "InvalidEgressOnlyInternetGatewayId.Malformed",
   {},
 ) {}
 export class InvalidSecurityGroupRuleIdNotFound extends S.TaggedError<InvalidSecurityGroupRuleIdNotFound>()(
@@ -71765,6 +71909,10 @@ export class InvalidSubnetCidrBlockAssociationIDNotFound extends S.TaggedError<I
   "InvalidSubnetCidrBlockAssociationID.NotFound",
   {},
 ) {}
+export class InvalidVpcCidrBlockAssociationIDNotFound extends S.TaggedError<InvalidVpcCidrBlockAssociationIDNotFound>()(
+  "InvalidVpcCidrBlockAssociationID.NotFound",
+  {},
+) {}
 export class InvalidVpcCidrBlockAssociationIdErrorNotFound extends S.TaggedError<InvalidVpcCidrBlockAssociationIdErrorNotFound>()(
   "InvalidVpcCidrBlockAssociationIdError.NotFound",
   {},
@@ -71773,28 +71921,108 @@ export class InvalidVpcEndpointIdNotFound extends S.TaggedError<InvalidVpcEndpoi
   "InvalidVpcEndpointId.NotFound",
   {},
 ) {}
+export class InvalidPublicIpv4PoolIDMalformed extends S.TaggedError<InvalidPublicIpv4PoolIDMalformed>()(
+  "InvalidPublicIpv4PoolID.Malformed",
+  {},
+) {}
+export class InvalidPublicIpv4PoolIDNotFound extends S.TaggedError<InvalidPublicIpv4PoolIDNotFound>()(
+  "InvalidPublicIpv4PoolID.NotFound",
+  {},
+) {}
+export class InvalidLocalGatewayRouteTableIDMalformed extends S.TaggedError<InvalidLocalGatewayRouteTableIDMalformed>()(
+  "InvalidLocalGatewayRouteTableID.Malformed",
+  {},
+) {}
 export class DefaultVpcAlreadyExists extends S.TaggedError<DefaultVpcAlreadyExists>()(
   "DefaultVpcAlreadyExists",
+  {},
+) {}
+export class InvalidIpamScopeIdNotFound extends S.TaggedError<InvalidIpamScopeIdNotFound>()(
+  "InvalidIpamScopeId.NotFound",
+  {},
+) {}
+export class InvalidIpamIdNotFound extends S.TaggedError<InvalidIpamIdNotFound>()(
+  "InvalidIpamId.NotFound",
+  {},
+) {}
+export class InvalidElasticIpIDNotFound extends S.TaggedError<InvalidElasticIpIDNotFound>()(
+  "InvalidElasticIpID.NotFound",
+  {},
+) {}
+export class InvalidSubnet extends S.TaggedError<InvalidSubnet>()(
+  "InvalidSubnet",
+  {},
+) {}
+export class InvalidSubnetIDMalformed extends S.TaggedError<InvalidSubnetIDMalformed>()(
+  "InvalidSubnetID.Malformed",
+  {},
+) {}
+export class InvalidTransitGatewayIDMalformed extends S.TaggedError<InvalidTransitGatewayIDMalformed>()(
+  "InvalidTransitGatewayID.Malformed",
   {},
 ) {}
 export class InvalidTransitGatewayIDNotFound extends S.TaggedError<InvalidTransitGatewayIDNotFound>()(
   "InvalidTransitGatewayID.NotFound",
   {},
 ) {}
-export class InvalidParameterValue extends S.TaggedError<InvalidParameterValue>()(
-  "InvalidParameterValue",
+export class VpcLimitExceeded extends S.TaggedError<VpcLimitExceeded>()(
+  "VpcLimitExceeded",
+  {},
+) {}
+export class InvalidServiceName extends S.TaggedError<InvalidServiceName>()(
+  "InvalidServiceName",
+  {},
+) {}
+export class InvalidVpcIdNotFound extends S.TaggedError<InvalidVpcIdNotFound>()(
+  "InvalidVpcId.NotFound",
+  {},
+) {}
+export class InvalidClientVpnEndpointIdNotFound extends S.TaggedError<InvalidClientVpnEndpointIdNotFound>()(
+  "InvalidClientVpnEndpointId.NotFound",
   {},
 ) {}
 export class InvalidLaunchTemplateNameNotFoundException extends S.TaggedError<InvalidLaunchTemplateNameNotFoundException>()(
   "InvalidLaunchTemplateName.NotFoundException",
   {},
 ) {}
+export class InvalidPrefixListIDNotFound extends S.TaggedError<InvalidPrefixListIDNotFound>()(
+  "InvalidPrefixListID.NotFound",
+  {},
+) {}
 export class InvalidKeyPairNotFound extends S.TaggedError<InvalidKeyPairNotFound>()(
   "InvalidKeyPair.NotFound",
   {},
 ) {}
+export class InvalidSecurityGroupRuleIdMalformed extends S.TaggedError<InvalidSecurityGroupRuleIdMalformed>()(
+  "InvalidSecurityGroupRuleId.Malformed",
+  {},
+) {}
+export class UnknownParameter extends S.TaggedError<UnknownParameter>()(
+  "UnknownParameter",
+  {},
+) {}
 export class DefaultSubnetAlreadyExistsInAvailabilityZone extends S.TaggedError<DefaultSubnetAlreadyExistsInAvailabilityZone>()(
   "DefaultSubnetAlreadyExistsInAvailabilityZone",
+  {},
+) {}
+export class ResourceLimitExceeded extends S.TaggedError<ResourceLimitExceeded>()(
+  "ResourceLimitExceeded",
+  {},
+) {}
+export class InvalidLocalGatewayIDMalformed extends S.TaggedError<InvalidLocalGatewayIDMalformed>()(
+  "InvalidLocalGatewayID.Malformed",
+  {},
+) {}
+export class InvalidIpamPoolIdNotFound extends S.TaggedError<InvalidIpamPoolIdNotFound>()(
+  "InvalidIpamPoolId.NotFound",
+  {},
+) {}
+export class FilterLimitExceeded extends S.TaggedError<FilterLimitExceeded>()(
+  "FilterLimitExceeded",
+  {},
+) {}
+export class InvalidVerifiedAccessEndpointIdNotFound extends S.TaggedError<InvalidVerifiedAccessEndpointIdNotFound>()(
+  "InvalidVerifiedAccessEndpointId.NotFound",
   {},
 ) {}
 
@@ -71811,12 +72039,12 @@ export const associateDhcpOptions: (
   input: AssociateDhcpOptionsRequest,
 ) => effect.Effect<
   AssociateDhcpOptionsResponse,
-  InvalidVpcIDNotFound | CommonErrors,
+  InvalidVpcIDNotFound | InvalidVpcIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateDhcpOptionsRequest,
   output: AssociateDhcpOptionsResponse,
-  errors: [InvalidVpcIDNotFound],
+  errors: [InvalidVpcIDNotFound, InvalidVpcIdMalformed],
 }));
 /**
  * Attaches an internet gateway or a virtual private gateway to a VPC, enabling connectivity
@@ -71827,12 +72055,14 @@ export const attachInternetGateway: (
   input: AttachInternetGatewayRequest,
 ) => effect.Effect<
   AttachInternetGatewayResponse,
-  InvalidInternetGatewayIDNotFound | CommonErrors,
+  | InvalidInternetGatewayIDNotFound
+  | InvalidInternetGatewayIdMalformed
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AttachInternetGatewayRequest,
   output: AttachInternetGatewayResponse,
-  errors: [InvalidInternetGatewayIDNotFound],
+  errors: [InvalidInternetGatewayIDNotFound, InvalidInternetGatewayIdMalformed],
 }));
 /**
  * Cancels an active conversion task. The task can be the import of an instance or volume. The action removes all
@@ -71893,12 +72123,14 @@ export const deleteCustomerGateway: (
   input: DeleteCustomerGatewayRequest,
 ) => effect.Effect<
   DeleteCustomerGatewayResponse,
-  InvalidCustomerGatewayIDNotFound | CommonErrors,
+  | InvalidCustomerGatewayIDNotFound
+  | InvalidCustomerGatewayIdMalformed
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCustomerGatewayRequest,
   output: DeleteCustomerGatewayResponse,
-  errors: [InvalidCustomerGatewayIDNotFound],
+  errors: [InvalidCustomerGatewayIDNotFound, InvalidCustomerGatewayIdMalformed],
 }));
 /**
  * Deletes the specified set of DHCP options. You must disassociate the set of DHCP options before you can delete it. You can disassociate the set of DHCP options by associating either a new set of options or the default set of options with the VPC.
@@ -71907,12 +72139,12 @@ export const deleteDhcpOptions: (
   input: DeleteDhcpOptionsRequest,
 ) => effect.Effect<
   DeleteDhcpOptionsResponse,
-  InvalidDhcpOptionIDNotFound | CommonErrors,
+  InvalidDhcpOptionIDNotFound | InvalidDhcpOptionsIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteDhcpOptionsRequest,
   output: DeleteDhcpOptionsResponse,
-  errors: [InvalidDhcpOptionIDNotFound],
+  errors: [InvalidDhcpOptionIDNotFound, InvalidDhcpOptionsIdMalformed],
 }));
 /**
  * Deletes the specified internet gateway. You must detach the internet gateway from the
@@ -71922,12 +72154,19 @@ export const deleteInternetGateway: (
   input: DeleteInternetGatewayRequest,
 ) => effect.Effect<
   DeleteInternetGatewayResponse,
-  InvalidInternetGatewayIDNotFound | CommonErrors,
+  | DependencyViolation
+  | InvalidInternetGatewayIDNotFound
+  | InvalidInternetGatewayIdMalformed
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInternetGatewayRequest,
   output: DeleteInternetGatewayResponse,
-  errors: [InvalidInternetGatewayIDNotFound],
+  errors: [
+    DependencyViolation,
+    InvalidInternetGatewayIDNotFound,
+    InvalidInternetGatewayIdMalformed,
+  ],
 }));
 /**
  * Deletes the specified network ACL. You can't delete the ACL if it's associated with any subnets. You can't delete the default network ACL.
@@ -71936,12 +72175,19 @@ export const deleteNetworkAcl: (
   input: DeleteNetworkAclRequest,
 ) => effect.Effect<
   DeleteNetworkAclResponse,
-  InvalidNetworkAclIDNotFound | CommonErrors,
+  | DryRunOperation
+  | InvalidNetworkAclIDNotFound
+  | InvalidNetworkAclIdMalformed
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkAclRequest,
   output: DeleteNetworkAclResponse,
-  errors: [InvalidNetworkAclIDNotFound],
+  errors: [
+    DryRunOperation,
+    InvalidNetworkAclIDNotFound,
+    InvalidNetworkAclIdMalformed,
+  ],
 }));
 /**
  * Deletes the specified ingress or egress entry (rule) from the specified network ACL.
@@ -71950,12 +72196,12 @@ export const deleteNetworkAclEntry: (
   input: DeleteNetworkAclEntryRequest,
 ) => effect.Effect<
   DeleteNetworkAclEntryResponse,
-  InvalidNetworkAclIDNotFound | CommonErrors,
+  InvalidNetworkAclIDNotFound | InvalidNetworkAclIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkAclEntryRequest,
   output: DeleteNetworkAclEntryResponse,
-  errors: [InvalidNetworkAclIDNotFound],
+  errors: [InvalidNetworkAclIDNotFound, InvalidNetworkAclIdMalformed],
 }));
 /**
  * Deletes the specified network interface. You must detach the network interface before
@@ -71965,12 +72211,17 @@ export const deleteNetworkInterface: (
   input: DeleteNetworkInterfaceRequest,
 ) => effect.Effect<
   DeleteNetworkInterfaceResponse,
-  InvalidNetworkInterfaceIDNotFound | CommonErrors,
+  | InvalidNetworkInterfaceIDNotFound
+  | InvalidNetworkInterfaceIdMalformed
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInterfaceRequest,
   output: DeleteNetworkInterfaceResponse,
-  errors: [InvalidNetworkInterfaceIDNotFound],
+  errors: [
+    InvalidNetworkInterfaceIDNotFound,
+    InvalidNetworkInterfaceIdMalformed,
+  ],
 }));
 /**
  * Deletes the specified placement group. You must terminate all instances in the
@@ -71981,12 +72232,12 @@ export const deletePlacementGroup: (
   input: DeletePlacementGroupRequest,
 ) => effect.Effect<
   DeletePlacementGroupResponse,
-  CommonErrors,
+  InvalidPlacementGroupUnknown | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeletePlacementGroupRequest,
   output: DeletePlacementGroupResponse,
-  errors: [],
+  errors: [InvalidPlacementGroupUnknown],
 }));
 /**
  * Deletes the specified route from the specified route table.
@@ -71995,12 +72246,25 @@ export const deleteRoute: (
   input: DeleteRouteRequest,
 ) => effect.Effect<
   DeleteRouteResponse,
-  InvalidRouteTableIDNotFound | CommonErrors,
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidRouteNotFound
+  | InvalidRouteTableIDNotFound
+  | InvalidRouteTableIdMalformed
+  | MissingParameter
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteRequest,
   output: DeleteRouteResponse,
-  errors: [InvalidRouteTableIDNotFound],
+  errors: [
+    InvalidParameterCombination,
+    InvalidParameterValue,
+    InvalidRouteNotFound,
+    InvalidRouteTableIDNotFound,
+    InvalidRouteTableIdMalformed,
+    MissingParameter,
+  ],
 }));
 /**
  * Deletes the specified route table. You must disassociate the route table from any subnets before you can delete it. You can't delete the main route table.
@@ -72009,12 +72273,19 @@ export const deleteRouteTable: (
   input: DeleteRouteTableRequest,
 ) => effect.Effect<
   DeleteRouteTableResponse,
-  DependencyViolation | InvalidRouteTableIDNotFound | CommonErrors,
+  | DependencyViolation
+  | InvalidRouteTableIDNotFound
+  | InvalidRouteTableIdMalformed
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteTableRequest,
   output: DeleteRouteTableResponse,
-  errors: [DependencyViolation, InvalidRouteTableIDNotFound],
+  errors: [
+    DependencyViolation,
+    InvalidRouteTableIDNotFound,
+    InvalidRouteTableIdMalformed,
+  ],
 }));
 /**
  * Deletes the specified snapshot.
@@ -72063,12 +72334,19 @@ export const deleteSubnet: (
   input: DeleteSubnetRequest,
 ) => effect.Effect<
   DeleteSubnetResponse,
-  InvalidSubnetIDNotFound | CommonErrors,
+  | DependencyViolation
+  | InvalidSubnetIDNotFound
+  | InvalidSubnetIdMalformed
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSubnetRequest,
   output: DeleteSubnetResponse,
-  errors: [InvalidSubnetIDNotFound],
+  errors: [
+    DependencyViolation,
+    InvalidSubnetIDNotFound,
+    InvalidSubnetIdMalformed,
+  ],
 }));
 /**
  * Deletes the specified set of tags from the specified set of resources.
@@ -72123,12 +72401,21 @@ export const deleteVpc: (
   input: DeleteVpcRequest,
 ) => effect.Effect<
   DeleteVpcResponse,
-  DependencyViolation | InvalidVpcIDNotFound | CommonErrors,
+  | DependencyViolation
+  | InvalidVpcIDNotFound
+  | InvalidVpcIdMalformed
+  | RequestError
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcRequest,
   output: DeleteVpcResponse,
-  errors: [DependencyViolation, InvalidVpcIDNotFound],
+  errors: [
+    DependencyViolation,
+    InvalidVpcIDNotFound,
+    InvalidVpcIdMalformed,
+    RequestError,
+  ],
 }));
 /**
  * Deletes the specified VPN connection.
@@ -72549,12 +72836,25 @@ export const releaseAddress: (
   input: ReleaseAddressRequest,
 ) => effect.Effect<
   ReleaseAddressResponse,
-  InvalidAllocationIDNotFound | CommonErrors,
+  | AuthFailure
+  | DryRunOperation
+  | InvalidAllocationIDNotFound
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | MissingParameter
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReleaseAddressRequest,
   output: ReleaseAddressResponse,
-  errors: [InvalidAllocationIDNotFound],
+  errors: [
+    AuthFailure,
+    DryRunOperation,
+    InvalidAllocationIDNotFound,
+    InvalidParameterCombination,
+    InvalidParameterValue,
+    MissingParameter,
+  ],
 }));
 /**
  * Replaces an entry (rule) in a network ACL. For more information, see Network ACLs in the
@@ -73382,12 +73682,12 @@ export const createNetworkAclEntry: (
   input: CreateNetworkAclEntryRequest,
 ) => effect.Effect<
   CreateNetworkAclEntryResponse,
-  InvalidNetworkAclIDNotFound | CommonErrors,
+  InvalidNetworkAclIDNotFound | MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkAclEntryRequest,
   output: CreateNetworkAclEntryResponse,
-  errors: [InvalidNetworkAclIDNotFound],
+  errors: [InvalidNetworkAclIDNotFound, MissingParameter],
 }));
 /**
  * Creates a public IPv4 address pool. A public IPv4 pool is an EC2 IP address pool required for the public IPv4 CIDRs that you own and bring to Amazon Web Services to manage with IPAM. IPv6 addresses you bring to Amazon Web Services, however, use IPAM pools only. To monitor the status of pool creation, use DescribePublicIpv4Pools.
@@ -73449,12 +73749,12 @@ export const createRoute: (
   input: CreateRouteRequest,
 ) => effect.Effect<
   CreateRouteResult,
-  InvalidRouteTableIDNotFound | CommonErrors,
+  InvalidRouteTableIDNotFound | InvalidRouteTableIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteRequest,
   output: CreateRouteResult,
-  errors: [InvalidRouteTableIDNotFound],
+  errors: [InvalidRouteTableIDNotFound, InvalidRouteTableIdMalformed],
 }));
 /**
  * Creates a security group.
@@ -73486,12 +73786,23 @@ export const createSecurityGroup: (
   input: CreateSecurityGroupRequest,
 ) => effect.Effect<
   CreateSecurityGroupResult,
-  InvalidGroupDuplicate | MissingParameter | CommonErrors,
+  | InvalidGroupDuplicate
+  | InvalidVpcIDNotFound
+  | InvalidVpcIdMalformed
+  | MissingParameter
+  | VPCIdNotSpecified
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSecurityGroupRequest,
   output: CreateSecurityGroupResult,
-  errors: [InvalidGroupDuplicate, MissingParameter],
+  errors: [
+    InvalidGroupDuplicate,
+    InvalidVpcIDNotFound,
+    InvalidVpcIdMalformed,
+    MissingParameter,
+    VPCIdNotSpecified,
+  ],
 }));
 /**
  * Creates a snapshot of an EBS volume and stores it in Amazon S3. You can use snapshots for
@@ -73607,12 +73918,12 @@ export const createVerifiedAccessInstance: (
   input: CreateVerifiedAccessInstanceRequest,
 ) => effect.Effect<
   CreateVerifiedAccessInstanceResult,
-  CommonErrors,
+  ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVerifiedAccessInstanceRequest,
   output: CreateVerifiedAccessInstanceResult,
-  errors: [],
+  errors: [ParseError],
 }));
 /**
  * Requests a VPC peering connection between two VPCs: a requester VPC that you own and
@@ -73634,12 +73945,12 @@ export const createVpcPeeringConnection: (
   input: CreateVpcPeeringConnectionRequest,
 ) => effect.Effect<
   CreateVpcPeeringConnectionResult,
-  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  InvalidVpcIDNotFound | InvalidVpcIdMalformed | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcPeeringConnectionRequest,
   output: CreateVpcPeeringConnectionResult,
-  errors: [InvalidVpcIDNotFound, ParseError],
+  errors: [InvalidVpcIDNotFound, InvalidVpcIdMalformed, ParseError],
 }));
 /**
  * Deletes an existing Capacity Manager data export configuration. This stops future scheduled exports but does not delete previously exported files from S3.
@@ -73666,12 +73977,14 @@ export const deleteCarrierGateway: (
   input: DeleteCarrierGatewayRequest,
 ) => effect.Effect<
   DeleteCarrierGatewayResult,
-  InvalidCarrierGatewayIDNotFound | CommonErrors,
+  | InvalidCarrierGatewayIDMalformed
+  | InvalidCarrierGatewayIDNotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCarrierGatewayRequest,
   output: DeleteCarrierGatewayResult,
-  errors: [InvalidCarrierGatewayIDNotFound],
+  errors: [InvalidCarrierGatewayIDMalformed, InvalidCarrierGatewayIDNotFound],
 }));
 /**
  * Deletes a route from a Client VPN endpoint. You can only delete routes that you manually added using
@@ -73711,12 +74024,12 @@ export const deleteCoipPool: (
   input: DeleteCoipPoolRequest,
 ) => effect.Effect<
   DeleteCoipPoolResult,
-  CommonErrors,
+  InvalidIpv4PoolCoipIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteCoipPoolRequest,
   output: DeleteCoipPoolResult,
-  errors: [],
+  errors: [InvalidIpv4PoolCoipIdMalformed],
 }));
 /**
  * Deletes an egress-only internet gateway.
@@ -73725,12 +74038,21 @@ export const deleteEgressOnlyInternetGateway: (
   input: DeleteEgressOnlyInternetGatewayRequest,
 ) => effect.Effect<
   DeleteEgressOnlyInternetGatewayResult,
-  InvalidGatewayIDNotFound | CommonErrors,
+  | DryRunOperation
+  | InvalidGatewayIDNotFound
+  | MalformedGatewayIDNotFound
+  | MissingParameter
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteEgressOnlyInternetGatewayRequest,
   output: DeleteEgressOnlyInternetGatewayResult,
-  errors: [InvalidGatewayIDNotFound],
+  errors: [
+    DryRunOperation,
+    InvalidGatewayIDNotFound,
+    MalformedGatewayIDNotFound,
+    MissingParameter,
+  ],
 }));
 /**
  * Deletes one or more flow logs.
@@ -73784,12 +74106,12 @@ export const deleteInstanceConnectEndpoint: (
   input: DeleteInstanceConnectEndpointRequest,
 ) => effect.Effect<
   DeleteInstanceConnectEndpointResult,
-  CommonErrors,
+  InvalidInstanceConnectEndpointIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteInstanceConnectEndpointRequest,
   output: DeleteInstanceConnectEndpointResult,
-  errors: [],
+  errors: [InvalidInstanceConnectEndpointIdNotFound],
 }));
 /**
  * Delete a verification token.
@@ -73816,12 +74138,12 @@ export const deleteIpamPolicy: (
   input: DeleteIpamPolicyRequest,
 ) => effect.Effect<
   DeleteIpamPolicyResult,
-  CommonErrors,
+  InvalidIpamPolicyIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamPolicyRequest,
   output: DeleteIpamPolicyResult,
-  errors: [],
+  errors: [InvalidIpamPolicyIdNotFound],
 }));
 /**
  * Deletes an IPAM prefix list resolver target. This removes the association between the resolver and the managed prefix list, stopping automatic CIDR synchronization.
@@ -73846,12 +74168,12 @@ export const deleteIpamResourceDiscovery: (
   input: DeleteIpamResourceDiscoveryRequest,
 ) => effect.Effect<
   DeleteIpamResourceDiscoveryResult,
-  CommonErrors,
+  InvalidIpamResourceDiscoveryIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamResourceDiscoveryRequest,
   output: DeleteIpamResourceDiscoveryResult,
-  errors: [],
+  errors: [InvalidIpamResourceDiscoveryIdNotFound],
 }));
 /**
  * Deletes the specified key pair, by removing the public key from Amazon EC2.
@@ -73960,12 +74282,21 @@ export const deleteNatGateway: (
   input: DeleteNatGatewayRequest,
 ) => effect.Effect<
   DeleteNatGatewayResult,
-  CommonErrors,
+  | DryRunOperation
+  | InvalidParameter
+  | MissingParameter
+  | NatGatewayMalformed
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNatGatewayRequest,
   output: DeleteNatGatewayResult,
-  errors: [],
+  errors: [
+    DryRunOperation,
+    InvalidParameter,
+    MissingParameter,
+    NatGatewayMalformed,
+  ],
 }));
 /**
  * Deletes the specified Network Access Scope.
@@ -73974,12 +74305,12 @@ export const deleteNetworkInsightsAccessScope: (
   input: DeleteNetworkInsightsAccessScopeRequest,
 ) => effect.Effect<
   DeleteNetworkInsightsAccessScopeResult,
-  CommonErrors,
+  InvalidParameterValue | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInsightsAccessScopeRequest,
   output: DeleteNetworkInsightsAccessScopeResult,
-  errors: [],
+  errors: [InvalidParameterValue],
 }));
 /**
  * Deletes the specified Network Access Scope analysis.
@@ -74016,12 +74347,12 @@ export const deleteNetworkInsightsPath: (
   input: DeleteNetworkInsightsPathRequest,
 ) => effect.Effect<
   DeleteNetworkInsightsPathResult,
-  CommonErrors,
+  InvalidParameterValue | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInsightsPathRequest,
   output: DeleteNetworkInsightsPathResult,
-  errors: [],
+  errors: [InvalidParameterValue],
 }));
 /**
  * Deletes a permission for a network interface. By default, you cannot delete the
@@ -74033,12 +74364,12 @@ export const deleteNetworkInterfacePermission: (
   input: DeleteNetworkInterfacePermissionRequest,
 ) => effect.Effect<
   DeleteNetworkInterfacePermissionResult,
-  CommonErrors,
+  InvalidPermissionIDNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteNetworkInterfacePermissionRequest,
   output: DeleteNetworkInterfacePermissionResult,
-  errors: [],
+  errors: [InvalidPermissionIDNotFound],
 }));
 /**
  * Delete a public IPv4 pool. A public IPv4 pool is an EC2 IP address pool required for the public IPv4 CIDRs that you own and bring to Amazon Web Services to manage with IPAM. IPv6 addresses you bring to Amazon Web Services, however, use IPAM pools only.
@@ -74076,12 +74407,12 @@ export const deleteRouteServer: (
   input: DeleteRouteServerRequest,
 ) => effect.Effect<
   DeleteRouteServerResult,
-  CommonErrors,
+  InvalidRouteServerIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteRouteServerRequest,
   output: DeleteRouteServerResult,
-  errors: [],
+  errors: [InvalidRouteServerIdNotFound],
 }));
 /**
  * Deletes the specified route server endpoint.
@@ -74110,12 +74441,21 @@ export const deleteSecurityGroup: (
   input: DeleteSecurityGroupRequest,
 ) => effect.Effect<
   DeleteSecurityGroupResult,
-  InvalidGroupNotFound | CommonErrors,
+  | CannotDelete
+  | InvalidGroupNotFound
+  | InvalidGroupIdMalformed
+  | MissingParameter
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSecurityGroupRequest,
   output: DeleteSecurityGroupResult,
-  errors: [InvalidGroupNotFound],
+  errors: [
+    CannotDelete,
+    InvalidGroupNotFound,
+    InvalidGroupIdMalformed,
+    MissingParameter,
+  ],
 }));
 /**
  * Deletes a subnet CIDR reservation.
@@ -74124,12 +74464,12 @@ export const deleteSubnetCidrReservation: (
   input: DeleteSubnetCidrReservationRequest,
 ) => effect.Effect<
   DeleteSubnetCidrReservationResult,
-  CommonErrors,
+  InvalidSubnetCidrReservationIDNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteSubnetCidrReservationRequest,
   output: DeleteSubnetCidrReservationResult,
-  errors: [],
+  errors: [InvalidSubnetCidrReservationIDNotFound],
 }));
 /**
  * Deletes the specified Traffic Mirror filter.
@@ -74140,12 +74480,12 @@ export const deleteTrafficMirrorFilter: (
   input: DeleteTrafficMirrorFilterRequest,
 ) => effect.Effect<
   DeleteTrafficMirrorFilterResult,
-  CommonErrors,
+  InvalidParameterValue | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficMirrorFilterRequest,
   output: DeleteTrafficMirrorFilterResult,
-  errors: [],
+  errors: [InvalidParameterValue],
 }));
 /**
  * Deletes the specified Traffic Mirror rule.
@@ -74168,12 +74508,12 @@ export const deleteTrafficMirrorSession: (
   input: DeleteTrafficMirrorSessionRequest,
 ) => effect.Effect<
   DeleteTrafficMirrorSessionResult,
-  CommonErrors,
+  InvalidParameterValue | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficMirrorSessionRequest,
   output: DeleteTrafficMirrorSessionResult,
-  errors: [],
+  errors: [InvalidParameterValue],
 }));
 /**
  * Deletes the specified Traffic Mirror target.
@@ -74184,12 +74524,12 @@ export const deleteTrafficMirrorTarget: (
   input: DeleteTrafficMirrorTargetRequest,
 ) => effect.Effect<
   DeleteTrafficMirrorTargetResult,
-  CommonErrors,
+  InvalidParameterValue | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTrafficMirrorTargetRequest,
   output: DeleteTrafficMirrorTargetResult,
-  errors: [],
+  errors: [InvalidParameterValue],
 }));
 /**
  * Deletes a transit gateway metering policy.
@@ -74283,12 +74623,12 @@ export const deleteTransitGatewayRouteTable: (
   input: DeleteTransitGatewayRouteTableRequest,
 ) => effect.Effect<
   DeleteTransitGatewayRouteTableResult,
-  ParseError | CommonErrors,
+  InvalidRouteTableIdMalformed | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayRouteTableRequest,
   output: DeleteTransitGatewayRouteTableResult,
-  errors: [ParseError],
+  errors: [InvalidRouteTableIdMalformed, ParseError],
 }));
 /**
  * Advertises to the transit gateway that a transit gateway route table is deleted.
@@ -74311,12 +74651,12 @@ export const deleteTransitGatewayVpcAttachment: (
   input: DeleteTransitGatewayVpcAttachmentRequest,
 ) => effect.Effect<
   DeleteTransitGatewayVpcAttachmentResult,
-  CommonErrors,
+  InvalidTransitGatewayAttachmentIDMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayVpcAttachmentRequest,
   output: DeleteTransitGatewayVpcAttachmentResult,
-  errors: [],
+  errors: [InvalidTransitGatewayAttachmentIDMalformed],
 }));
 /**
  * Delete an Amazon Web Services Verified Access group.
@@ -74325,12 +74665,12 @@ export const deleteVerifiedAccessGroup: (
   input: DeleteVerifiedAccessGroupRequest,
 ) => effect.Effect<
   DeleteVerifiedAccessGroupResult,
-  CommonErrors,
+  InvalidVerifiedAccessGroupIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedAccessGroupRequest,
   output: DeleteVerifiedAccessGroupResult,
-  errors: [],
+  errors: [InvalidVerifiedAccessGroupIdNotFound],
 }));
 /**
  * Delete an Amazon Web Services Verified Access instance.
@@ -74339,12 +74679,12 @@ export const deleteVerifiedAccessInstance: (
   input: DeleteVerifiedAccessInstanceRequest,
 ) => effect.Effect<
   DeleteVerifiedAccessInstanceResult,
-  CommonErrors,
+  InvalidVerifiedAccessInstanceIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedAccessInstanceRequest,
   output: DeleteVerifiedAccessInstanceResult,
-  errors: [],
+  errors: [InvalidVerifiedAccessInstanceIdNotFound],
 }));
 /**
  * Delete an Amazon Web Services Verified Access trust provider.
@@ -74353,12 +74693,12 @@ export const deleteVerifiedAccessTrustProvider: (
   input: DeleteVerifiedAccessTrustProviderRequest,
 ) => effect.Effect<
   DeleteVerifiedAccessTrustProviderResult,
-  CommonErrors,
+  InvalidVerifiedAccessTrustProviderIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedAccessTrustProviderRequest,
   output: DeleteVerifiedAccessTrustProviderResult,
-  errors: [],
+  errors: [InvalidVerifiedAccessTrustProviderIdNotFound],
 }));
 /**
  * Delete a VPC Block Public Access (BPA) exclusion. A VPC BPA exclusion is a mode that can be applied to a single VPC or subnet that exempts it from the account’s BPA mode and will allow bidirectional or egress-only access. You can create BPA exclusions for VPCs and subnets even when BPA is not enabled on the account to ensure that there is no traffic disruption to the exclusions when VPC BPA is turned on. To learn more about VPC BPA, see Block public access to VPCs and subnets in the *Amazon VPC User Guide*.
@@ -74367,12 +74707,12 @@ export const deleteVpcBlockPublicAccessExclusion: (
   input: DeleteVpcBlockPublicAccessExclusionRequest,
 ) => effect.Effect<
   DeleteVpcBlockPublicAccessExclusionResult,
-  CommonErrors,
+  MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcBlockPublicAccessExclusionRequest,
   output: DeleteVpcBlockPublicAccessExclusionResult,
-  errors: [],
+  errors: [MissingParameter],
 }));
 /**
  * Deletes a VPC Encryption Control configuration. This removes the encryption policy enforcement from the specified VPC.
@@ -74383,12 +74723,12 @@ export const deleteVpcEncryptionControl: (
   input: DeleteVpcEncryptionControlRequest,
 ) => effect.Effect<
   DeleteVpcEncryptionControlResult,
-  CommonErrors,
+  InvalidVpcEncryptionControlIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcEncryptionControlRequest,
   output: DeleteVpcEncryptionControlResult,
-  errors: [],
+  errors: [InvalidVpcEncryptionControlIdNotFound],
 }));
 /**
  * Deletes the specified VPC endpoint connection notifications.
@@ -74453,12 +74793,17 @@ export const deleteVpcPeeringConnection: (
   input: DeleteVpcPeeringConnectionRequest,
 ) => effect.Effect<
   DeleteVpcPeeringConnectionResult,
-  InvalidVpcPeeringConnectionIdNotFound | CommonErrors,
+  | InvalidVpcPeeringConnectionIDNotFound
+  | InvalidVpcPeeringConnectionIdNotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVpcPeeringConnectionRequest,
   output: DeleteVpcPeeringConnectionResult,
-  errors: [InvalidVpcPeeringConnectionIdNotFound],
+  errors: [
+    InvalidVpcPeeringConnectionIDNotFound,
+    InvalidVpcPeeringConnectionIdNotFound,
+  ],
 }));
 /**
  * Deletes the specified VPN concentrator.
@@ -74611,27 +74956,27 @@ export const describeCarrierGateways: {
     input: DescribeCarrierGatewaysRequest,
   ): effect.Effect<
     DescribeCarrierGatewaysResult,
-    ParseError | CommonErrors,
+    InvalidCarrierGatewayIDMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeCarrierGatewaysRequest,
   ) => stream.Stream<
     DescribeCarrierGatewaysResult,
-    ParseError | CommonErrors,
+    InvalidCarrierGatewayIDMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeCarrierGatewaysRequest,
   ) => stream.Stream<
     CarrierGateway,
-    ParseError | CommonErrors,
+    InvalidCarrierGatewayIDMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeCarrierGatewaysRequest,
   output: DescribeCarrierGatewaysResult,
-  errors: [ParseError],
+  errors: [InvalidCarrierGatewayIDMalformed, ParseError],
   pagination: {
     inputToken: "NextToken",
     outputToken: "NextToken",
@@ -74702,27 +75047,27 @@ export const describeEgressOnlyInternetGateways: {
     input: DescribeEgressOnlyInternetGatewaysRequest,
   ): effect.Effect<
     DescribeEgressOnlyInternetGatewaysResult,
-    ParseError | CommonErrors,
+    InvalidEgressOnlyInternetGatewayIdMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeEgressOnlyInternetGatewaysRequest,
   ) => stream.Stream<
     DescribeEgressOnlyInternetGatewaysResult,
-    ParseError | CommonErrors,
+    InvalidEgressOnlyInternetGatewayIdMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeEgressOnlyInternetGatewaysRequest,
   ) => stream.Stream<
     EgressOnlyInternetGateway,
-    ParseError | CommonErrors,
+    InvalidEgressOnlyInternetGatewayIdMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeEgressOnlyInternetGatewaysRequest,
   output: DescribeEgressOnlyInternetGatewaysResult,
-  errors: [ParseError],
+  errors: [InvalidEgressOnlyInternetGatewayIdMalformed, ParseError],
   pagination: {
     inputToken: "NextToken",
     outputToken: "NextToken",
@@ -75531,27 +75876,27 @@ export const describeNetworkAcls: {
     input: DescribeNetworkAclsRequest,
   ): effect.Effect<
     DescribeNetworkAclsResult,
-    InvalidRouteTableIDNotFound | CommonErrors,
+    InvalidNetworkAclIDNotFound | InvalidRouteTableIDNotFound | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkAclsRequest,
   ) => stream.Stream<
     DescribeNetworkAclsResult,
-    InvalidRouteTableIDNotFound | CommonErrors,
+    InvalidNetworkAclIDNotFound | InvalidRouteTableIDNotFound | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkAclsRequest,
   ) => stream.Stream<
     NetworkAcl,
-    InvalidRouteTableIDNotFound | CommonErrors,
+    InvalidNetworkAclIDNotFound | InvalidRouteTableIDNotFound | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkAclsRequest,
   output: DescribeNetworkAclsResult,
-  errors: [InvalidRouteTableIDNotFound],
+  errors: [InvalidNetworkAclIDNotFound, InvalidRouteTableIDNotFound],
   pagination: {
     inputToken: "NextToken",
     outputToken: "NextToken",
@@ -76895,27 +77240,27 @@ export const describeVpcPeeringConnections: {
     input: DescribeVpcPeeringConnectionsRequest,
   ): effect.Effect<
     DescribeVpcPeeringConnectionsResult,
-    ParseError | CommonErrors,
+    InvalidVpcPeeringConnectionIDNotFound | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcPeeringConnectionsRequest,
   ) => stream.Stream<
     DescribeVpcPeeringConnectionsResult,
-    ParseError | CommonErrors,
+    InvalidVpcPeeringConnectionIDNotFound | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcPeeringConnectionsRequest,
   ) => stream.Stream<
     VpcPeeringConnection,
-    ParseError | CommonErrors,
+    InvalidVpcPeeringConnectionIDNotFound | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcPeeringConnectionsRequest,
   output: DescribeVpcPeeringConnectionsResult,
-  errors: [ParseError],
+  errors: [InvalidVpcPeeringConnectionIDNotFound, ParseError],
   pagination: {
     inputToken: "NextToken",
     outputToken: "NextToken",
@@ -76933,27 +77278,27 @@ export const describeVpcs: {
     input: DescribeVpcsRequest,
   ): effect.Effect<
     DescribeVpcsResult,
-    InvalidVpcIDNotFound | ParseError | CommonErrors,
+    InvalidVpcIDNotFound | ParseError | RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeVpcsRequest,
   ) => stream.Stream<
     DescribeVpcsResult,
-    InvalidVpcIDNotFound | ParseError | CommonErrors,
+    InvalidVpcIDNotFound | ParseError | RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeVpcsRequest,
   ) => stream.Stream<
     Vpc,
-    InvalidVpcIDNotFound | ParseError | CommonErrors,
+    InvalidVpcIDNotFound | ParseError | RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeVpcsRequest,
   output: DescribeVpcsResult,
-  errors: [InvalidVpcIDNotFound, ParseError],
+  errors: [InvalidVpcIDNotFound, ParseError, RequestError],
   pagination: {
     inputToken: "NextToken",
     outputToken: "NextToken",
@@ -77598,12 +77943,17 @@ export const disassociateVpcCidrBlock: (
   input: DisassociateVpcCidrBlockRequest,
 ) => effect.Effect<
   DisassociateVpcCidrBlockResult,
-  InvalidVpcCidrBlockAssociationIdErrorNotFound | CommonErrors,
+  | InvalidVpcCidrBlockAssociationIDNotFound
+  | InvalidVpcCidrBlockAssociationIdErrorNotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DisassociateVpcCidrBlockRequest,
   output: DisassociateVpcCidrBlockResult,
-  errors: [InvalidVpcCidrBlockAssociationIdErrorNotFound],
+  errors: [
+    InvalidVpcCidrBlockAssociationIDNotFound,
+    InvalidVpcCidrBlockAssociationIdErrorNotFound,
+  ],
 }));
 /**
  * Enables Elastic IP address transfer. For more information, see Transfer Elastic IP addresses in the *Amazon VPC User Guide*.
@@ -79752,12 +80102,17 @@ export const rejectVpcPeeringConnection: (
   input: RejectVpcPeeringConnectionRequest,
 ) => effect.Effect<
   RejectVpcPeeringConnectionResult,
-  InvalidVpcPeeringConnectionIdNotFound | CommonErrors,
+  | InvalidVpcPeeringConnectionIDNotFound
+  | InvalidVpcPeeringConnectionIdNotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RejectVpcPeeringConnectionRequest,
   output: RejectVpcPeeringConnectionResult,
-  errors: [InvalidVpcPeeringConnectionIdNotFound],
+  errors: [
+    InvalidVpcPeeringConnectionIDNotFound,
+    InvalidVpcPeeringConnectionIdNotFound,
+  ],
 }));
 /**
  * When you no longer want to use an On-Demand Dedicated Host it can be released.
@@ -79829,12 +80184,15 @@ export const replaceNetworkAclAssociation: (
   input: ReplaceNetworkAclAssociationRequest,
 ) => effect.Effect<
   ReplaceNetworkAclAssociationResult,
-  CommonErrors,
+  | DryRunOperation
+  | InvalidAssociationIDNotFound
+  | MissingParameter
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: ReplaceNetworkAclAssociationRequest,
   output: ReplaceNetworkAclAssociationResult,
-  errors: [],
+  errors: [DryRunOperation, InvalidAssociationIDNotFound, MissingParameter],
 }));
 /**
  * Changes the route table associated with a given subnet, internet gateway, or virtual private gateway in a VPC. After the operation
@@ -80069,12 +80427,21 @@ export const revokeSecurityGroupIngress: (
   input: RevokeSecurityGroupIngressRequest,
 ) => effect.Effect<
   RevokeSecurityGroupIngressResult,
-  InvalidGroupNotFound | CommonErrors,
+  | InvalidGroupNotFound
+  | InvalidGroupIdMalformed
+  | MissingParameter
+  | ParseError
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeSecurityGroupIngressRequest,
   output: RevokeSecurityGroupIngressResult,
-  errors: [InvalidGroupNotFound],
+  errors: [
+    InvalidGroupNotFound,
+    InvalidGroupIdMalformed,
+    MissingParameter,
+    ParseError,
+  ],
 }));
 /**
  * Searches for routes in the specified local gateway route table.
@@ -80736,12 +81103,27 @@ export const associateRouteTable: (
   input: AssociateRouteTableRequest,
 ) => effect.Effect<
   AssociateRouteTableResult,
-  InvalidRouteTableIDNotFound | CommonErrors,
+  | DryRunOperation
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidPublicIpv4PoolIDMalformed
+  | InvalidPublicIpv4PoolIDNotFound
+  | InvalidRouteTableIDNotFound
+  | MissingParameter
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateRouteTableRequest,
   output: AssociateRouteTableResult,
-  errors: [InvalidRouteTableIDNotFound],
+  errors: [
+    DryRunOperation,
+    InvalidParameterCombination,
+    InvalidParameterValue,
+    InvalidPublicIpv4PoolIDMalformed,
+    InvalidPublicIpv4PoolIDNotFound,
+    InvalidRouteTableIDNotFound,
+    MissingParameter,
+  ],
 }));
 /**
  * Associates the specified transit gateway attachment with a transit gateway policy table.
@@ -80865,12 +81247,12 @@ export const createCarrierGateway: (
   input: CreateCarrierGatewayRequest,
 ) => effect.Effect<
   CreateCarrierGatewayResult,
-  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  InvalidVpcIDNotFound | InvalidVpcIdMalformed | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCarrierGatewayRequest,
   output: CreateCarrierGatewayResult,
-  errors: [InvalidVpcIDNotFound, ParseError],
+  errors: [InvalidVpcIDNotFound, InvalidVpcIdMalformed, ParseError],
 }));
 /**
  * Adds a route to a network to a Client VPN endpoint. Each Client VPN endpoint has a route table that describes the
@@ -80908,12 +81290,12 @@ export const createCoipPool: (
   input: CreateCoipPoolRequest,
 ) => effect.Effect<
   CreateCoipPoolResult,
-  CommonErrors,
+  InvalidLocalGatewayRouteTableIDMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateCoipPoolRequest,
   output: CreateCoipPoolResult,
-  errors: [],
+  errors: [InvalidLocalGatewayRouteTableIDMalformed],
 }));
 /**
  * Provides information to Amazon Web Services about your customer gateway device. The
@@ -81009,12 +81391,12 @@ export const createDhcpOptions: (
   input: CreateDhcpOptionsRequest,
 ) => effect.Effect<
   CreateDhcpOptionsResult,
-  ParseError | CommonErrors,
+  MissingParameter | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateDhcpOptionsRequest,
   output: CreateDhcpOptionsResult,
-  errors: [ParseError],
+  errors: [MissingParameter, ParseError],
 }));
 /**
  * Creates one or more flow logs to capture information about IP traffic for a specific network interface,
@@ -81037,12 +81419,12 @@ export const createFlowLogs: (
   input: CreateFlowLogsRequest,
 ) => effect.Effect<
   CreateFlowLogsResult,
-  InvalidID | CommonErrors,
+  InvalidID | InvalidParameterValue | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateFlowLogsRequest,
   output: CreateFlowLogsResult,
-  errors: [InvalidID],
+  errors: [InvalidID, InvalidParameterValue],
 }));
 /**
  * Creates an Amazon FPGA Image (AFI) from the specified design checkpoint (DCP).
@@ -81149,12 +81531,12 @@ export const createIpam: (
   input: CreateIpamRequest,
 ) => effect.Effect<
   CreateIpamResult,
-  CommonErrors,
+  ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamRequest,
   output: CreateIpamResult,
-  errors: [],
+  errors: [ParseError],
 }));
 /**
  * Create a verification token.
@@ -81183,12 +81565,12 @@ export const createIpamPolicy: (
   input: CreateIpamPolicyRequest,
 ) => effect.Effect<
   CreateIpamPolicyResult,
-  CommonErrors,
+  MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamPolicyRequest,
   output: CreateIpamPolicyResult,
-  errors: [],
+  errors: [MissingParameter],
 }));
 /**
  * Create an IP address pool for Amazon VPC IP Address Manager (IPAM). In IPAM, a pool is a collection of contiguous IP addresses CIDRs. Pools enable you to organize your IP addresses according to your routing and security needs. For example, if you have separate routing and security needs for development and production applications, you can create a pool for each.
@@ -81199,12 +81581,12 @@ export const createIpamPool: (
   input: CreateIpamPoolRequest,
 ) => effect.Effect<
   CreateIpamPoolResult,
-  CommonErrors,
+  InvalidIpamScopeIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamPoolRequest,
   output: CreateIpamPoolResult,
-  errors: [],
+  errors: [InvalidIpamScopeIdNotFound],
 }));
 /**
  * Creates an IPAM prefix list resolver target.
@@ -81233,12 +81615,12 @@ export const createIpamScope: (
   input: CreateIpamScopeRequest,
 ) => effect.Effect<
   CreateIpamScopeResult,
-  CommonErrors,
+  InvalidIpamIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamScopeRequest,
   output: CreateIpamScopeResult,
-  errors: [],
+  errors: [InvalidIpamIdNotFound],
 }));
 /**
  * Creates a static route for the specified local gateway route table. You must specify one of the
@@ -81404,12 +81786,21 @@ export const createNatGateway: (
   input: CreateNatGatewayRequest,
 ) => effect.Effect<
   CreateNatGatewayResult,
-  InvalidSubnetIDNotFound | ParseError | CommonErrors,
+  | InvalidElasticIpIDNotFound
+  | InvalidSubnet
+  | InvalidSubnetIDNotFound
+  | ParseError
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNatGatewayRequest,
   output: CreateNatGatewayResult,
-  errors: [InvalidSubnetIDNotFound, ParseError],
+  errors: [
+    InvalidElasticIpIDNotFound,
+    InvalidSubnet,
+    InvalidSubnetIDNotFound,
+    ParseError,
+  ],
 }));
 /**
  * Creates a network interface in the specified subnet.
@@ -81531,12 +81922,12 @@ export const createRouteServer: (
   input: CreateRouteServerRequest,
 ) => effect.Effect<
   CreateRouteServerResult,
-  CommonErrors,
+  MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateRouteServerRequest,
   output: CreateRouteServerResult,
-  errors: [],
+  errors: [MissingParameter],
 }));
 /**
  * Creates a new endpoint for a route server in a specified subnet.
@@ -81609,12 +82000,12 @@ export const createSubnetCidrReservation: (
   input: CreateSubnetCidrReservationRequest,
 ) => effect.Effect<
   CreateSubnetCidrReservationResult,
-  CommonErrors,
+  InvalidSubnetIDMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateSubnetCidrReservationRequest,
   output: CreateSubnetCidrReservationResult,
-  errors: [],
+  errors: [InvalidSubnetIDMalformed],
 }));
 /**
  * Creates a Traffic Mirror filter.
@@ -81629,12 +82020,12 @@ export const createTrafficMirrorFilter: (
   input: CreateTrafficMirrorFilterRequest,
 ) => effect.Effect<
   CreateTrafficMirrorFilterResult,
-  CommonErrors,
+  ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTrafficMirrorFilterRequest,
   output: CreateTrafficMirrorFilterResult,
-  errors: [],
+  errors: [ParseError],
 }));
 /**
  * Creates a Traffic Mirror filter rule.
@@ -81788,12 +82179,12 @@ export const createTransitGatewayMulticastDomain: (
   input: CreateTransitGatewayMulticastDomainRequest,
 ) => effect.Effect<
   CreateTransitGatewayMulticastDomainResult,
-  CommonErrors,
+  InvalidTransitGatewayIDMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateTransitGatewayMulticastDomainRequest,
   output: CreateTransitGatewayMulticastDomainResult,
-  errors: [],
+  errors: [InvalidTransitGatewayIDMalformed],
 }));
 /**
  * Requests a transit gateway peering attachment between the specified transit gateway
@@ -81885,12 +82276,12 @@ export const createVerifiedAccessGroup: (
   input: CreateVerifiedAccessGroupRequest,
 ) => effect.Effect<
   CreateVerifiedAccessGroupResult,
-  CommonErrors,
+  InvalidVerifiedAccessInstanceIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVerifiedAccessGroupRequest,
   output: CreateVerifiedAccessGroupResult,
-  errors: [],
+  errors: [InvalidVerifiedAccessInstanceIdNotFound],
 }));
 /**
  * A trust provider is a third-party entity that creates, maintains, and manages identity
@@ -81902,12 +82293,12 @@ export const createVerifiedAccessTrustProvider: (
   input: CreateVerifiedAccessTrustProviderRequest,
 ) => effect.Effect<
   CreateVerifiedAccessTrustProviderResult,
-  CommonErrors,
+  MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVerifiedAccessTrustProviderRequest,
   output: CreateVerifiedAccessTrustProviderResult,
-  errors: [],
+  errors: [MissingParameter],
 }));
 /**
  * Creates an EBS volume that can be attached to an instance in the same Availability Zone.
@@ -81959,12 +82350,12 @@ export const createVpc: (
   input: CreateVpcRequest,
 ) => effect.Effect<
   CreateVpcResult,
-  InvalidParameterValue | ParseError | CommonErrors,
+  InvalidParameterValue | ParseError | VpcLimitExceeded | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcRequest,
   output: CreateVpcResult,
-  errors: [InvalidParameterValue, ParseError],
+  errors: [InvalidParameterValue, ParseError, VpcLimitExceeded],
 }));
 /**
  * Create a VPC Block Public Access (BPA) exclusion. A VPC BPA exclusion is a mode that can be applied to a single VPC or subnet that exempts it from the account’s BPA mode and will allow bidirectional or egress-only access. You can create BPA exclusions for VPCs and subnets even when BPA is not enabled on the account to ensure that there is no traffic disruption to the exclusions when VPC BPA is turned on. To learn more about VPC BPA, see Block public access to VPCs and subnets in the *Amazon VPC User Guide*.
@@ -81973,12 +82364,12 @@ export const createVpcBlockPublicAccessExclusion: (
   input: CreateVpcBlockPublicAccessExclusionRequest,
 ) => effect.Effect<
   CreateVpcBlockPublicAccessExclusionResult,
-  CommonErrors,
+  InvalidVpcIdMalformed | MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcBlockPublicAccessExclusionRequest,
   output: CreateVpcBlockPublicAccessExclusionResult,
-  errors: [],
+  errors: [InvalidVpcIdMalformed, MissingParameter],
 }));
 /**
  * Creates a VPC endpoint. A VPC endpoint provides a private connection between the
@@ -81990,12 +82381,15 @@ export const createVpcEndpoint: (
   input: CreateVpcEndpointRequest,
 ) => effect.Effect<
   CreateVpcEndpointResult,
-  InvalidVpcIDNotFound | CommonErrors,
+  | InvalidServiceName
+  | InvalidVpcIDNotFound
+  | InvalidVpcIdNotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEndpointRequest,
   output: CreateVpcEndpointResult,
-  errors: [InvalidVpcIDNotFound],
+  errors: [InvalidServiceName, InvalidVpcIDNotFound, InvalidVpcIdNotFound],
 }));
 /**
  * Creates a connection notification for a specified VPC endpoint or VPC endpoint
@@ -82057,12 +82451,12 @@ export const deleteClientVpnEndpoint: (
   input: DeleteClientVpnEndpointRequest,
 ) => effect.Effect<
   DeleteClientVpnEndpointResult,
-  CommonErrors,
+  InvalidClientVpnEndpointIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteClientVpnEndpointRequest,
   output: DeleteClientVpnEndpointResult,
-  errors: [],
+  errors: [InvalidClientVpnEndpointIdNotFound],
 }));
 /**
  * Deletes the specified event window.
@@ -82090,12 +82484,12 @@ export const deleteIpam: (
   input: DeleteIpamRequest,
 ) => effect.Effect<
   DeleteIpamResult,
-  CommonErrors,
+  InvalidIpamIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamRequest,
   output: DeleteIpamResult,
-  errors: [],
+  errors: [InvalidIpamIdNotFound],
 }));
 /**
  * Deletes an IPAM prefix list resolver. Before deleting a resolver, you must first delete all resolver targets associated with it.
@@ -82133,12 +82527,12 @@ export const deleteManagedPrefixList: (
   input: DeleteManagedPrefixListRequest,
 ) => effect.Effect<
   DeleteManagedPrefixListResult,
-  ParseError | CommonErrors,
+  InvalidPrefixListIDNotFound | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteManagedPrefixListRequest,
   output: DeleteManagedPrefixListResult,
-  errors: [ParseError],
+  errors: [InvalidPrefixListIDNotFound, ParseError],
 }));
 /**
  * Deprovisions your Autonomous System Number (ASN) from your Amazon Web Services account. This action can only be called after any BYOIP CIDR associations are removed from your Amazon Web Services account with DisassociateIpamByoasn.
@@ -83628,27 +84022,27 @@ export const describeSecurityGroups: {
     input: DescribeSecurityGroupsRequest,
   ): effect.Effect<
     DescribeSecurityGroupsResult,
-    InvalidGroupNotFound | ParseError | CommonErrors,
+    InvalidGroupNotFound | InvalidGroupIdMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeSecurityGroupsRequest,
   ) => stream.Stream<
     DescribeSecurityGroupsResult,
-    InvalidGroupNotFound | ParseError | CommonErrors,
+    InvalidGroupNotFound | InvalidGroupIdMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeSecurityGroupsRequest,
   ) => stream.Stream<
     SecurityGroup,
-    InvalidGroupNotFound | ParseError | CommonErrors,
+    InvalidGroupNotFound | InvalidGroupIdMalformed | ParseError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeSecurityGroupsRequest,
   output: DescribeSecurityGroupsResult,
-  errors: [InvalidGroupNotFound, ParseError],
+  errors: [InvalidGroupNotFound, InvalidGroupIdMalformed, ParseError],
   pagination: {
     inputToken: "NextToken",
     outputToken: "NextToken",
@@ -84003,12 +84397,12 @@ export const describeVpcClassicLink: (
   input: DescribeVpcClassicLinkRequest,
 ) => effect.Effect<
   DescribeVpcClassicLinkResult,
-  InvalidVpcIDNotFound | CommonErrors,
+  InvalidVpcIDNotFound | InvalidVpcIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DescribeVpcClassicLinkRequest,
   output: DescribeVpcClassicLinkResult,
-  errors: [InvalidVpcIDNotFound],
+  errors: [InvalidVpcIDNotFound, InvalidVpcIdMalformed],
 }));
 /**
  * This action is deprecated.
@@ -85708,12 +86102,27 @@ export const revokeSecurityGroupEgress: (
   input: RevokeSecurityGroupEgressRequest,
 ) => effect.Effect<
   RevokeSecurityGroupEgressResult,
-  InvalidGroupNotFound | CommonErrors,
+  | InvalidGroupNotFound
+  | InvalidGroupIdMalformed
+  | InvalidParameterValue
+  | InvalidPrefixListIDNotFound
+  | InvalidSecurityGroupRuleIdMalformed
+  | MissingParameter
+  | UnknownParameter
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: RevokeSecurityGroupEgressRequest,
   output: RevokeSecurityGroupEgressResult,
-  errors: [InvalidGroupNotFound],
+  errors: [
+    InvalidGroupNotFound,
+    InvalidGroupIdMalformed,
+    InvalidParameterValue,
+    InvalidPrefixListIDNotFound,
+    InvalidSecurityGroupRuleIdMalformed,
+    MissingParameter,
+    UnknownParameter,
+  ],
 }));
 /**
  * Searches one or more transit gateway multicast groups and returns the group membership information.
@@ -85911,12 +86320,12 @@ export const associateVpcCidrBlock: (
   input: AssociateVpcCidrBlockRequest,
 ) => effect.Effect<
   AssociateVpcCidrBlockResult,
-  InvalidVpcIDNotFound | CommonErrors,
+  InvalidVpcIDNotFound | InvalidVpcIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AssociateVpcCidrBlockRequest,
   output: AssociateVpcCidrBlockResult,
-  errors: [InvalidVpcIDNotFound],
+  errors: [InvalidVpcIDNotFound, InvalidVpcIdMalformed],
 }));
 /**
  * Attaches a network interface to an instance.
@@ -85970,12 +86379,12 @@ export const authorizeSecurityGroupEgress: (
   input: AuthorizeSecurityGroupEgressRequest,
 ) => effect.Effect<
   AuthorizeSecurityGroupEgressResult,
-  InvalidGroupNotFound | CommonErrors,
+  InvalidGroupNotFound | MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeSecurityGroupEgressRequest,
   output: AuthorizeSecurityGroupEgressResult,
-  errors: [InvalidGroupNotFound],
+  errors: [InvalidGroupNotFound, MissingParameter],
 }));
 /**
  * Adds the specified inbound (ingress) rules to a security group.
@@ -86001,12 +86410,12 @@ export const authorizeSecurityGroupIngress: (
   input: AuthorizeSecurityGroupIngressRequest,
 ) => effect.Effect<
   AuthorizeSecurityGroupIngressResult,
-  InvalidGroupNotFound | CommonErrors,
+  InvalidGroupNotFound | InvalidGroupIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AuthorizeSecurityGroupIngressRequest,
   output: AuthorizeSecurityGroupIngressResult,
-  errors: [InvalidGroupNotFound],
+  errors: [InvalidGroupNotFound, InvalidGroupIdMalformed],
 }));
 /**
  * Bundles an Amazon instance store-backed Windows instance.
@@ -86168,12 +86577,12 @@ export const createClientVpnEndpoint: (
   input: CreateClientVpnEndpointRequest,
 ) => effect.Effect<
   CreateClientVpnEndpointResult,
-  CommonErrors,
+  MissingParameter | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateClientVpnEndpointRequest,
   output: CreateClientVpnEndpointResult,
-  errors: [],
+  errors: [MissingParameter],
 }));
 /**
  * Creates a default subnet with a size `/20` IPv4 CIDR block in the
@@ -86217,12 +86626,12 @@ export const createEgressOnlyInternetGateway: (
   input: CreateEgressOnlyInternetGatewayRequest,
 ) => effect.Effect<
   CreateEgressOnlyInternetGatewayResult,
-  InvalidVpcIDNotFound | ParseError | CommonErrors,
+  InvalidVpcIDNotFound | InvalidVpcIdMalformed | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateEgressOnlyInternetGatewayRequest,
   output: CreateEgressOnlyInternetGatewayResult,
-  errors: [InvalidVpcIDNotFound, ParseError],
+  errors: [InvalidVpcIDNotFound, InvalidVpcIdMalformed, ParseError],
 }));
 /**
  * Creates an Amazon EBS-backed AMI from an Amazon EBS-backed instance that is either running or
@@ -86300,12 +86709,12 @@ export const createIpamResourceDiscovery: (
   input: CreateIpamResourceDiscoveryRequest,
 ) => effect.Effect<
   CreateIpamResourceDiscoveryResult,
-  CommonErrors,
+  ResourceLimitExceeded | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateIpamResourceDiscoveryRequest,
   output: CreateIpamResourceDiscoveryResult,
-  errors: [],
+  errors: [ResourceLimitExceeded],
 }));
 /**
  * Creates a new version of a launch template. You must specify an existing launch
@@ -86341,12 +86750,12 @@ export const createLocalGatewayRouteTable: (
   input: CreateLocalGatewayRouteTableRequest,
 ) => effect.Effect<
   CreateLocalGatewayRouteTableResult,
-  CommonErrors,
+  InvalidLocalGatewayIDMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateLocalGatewayRouteTableRequest,
   output: CreateLocalGatewayRouteTableResult,
-  errors: [],
+  errors: [InvalidLocalGatewayIDMalformed],
 }));
 /**
  * Creates a network ACL in a VPC. Network ACLs provide an optional layer of security (in addition to security groups) for the instances in your VPC.
@@ -86376,12 +86785,12 @@ export const createNetworkInsightsPath: (
   input: CreateNetworkInsightsPathRequest,
 ) => effect.Effect<
   CreateNetworkInsightsPathResult,
-  CommonErrors,
+  InvalidParameterValue | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateNetworkInsightsPathRequest,
   output: CreateNetworkInsightsPathResult,
-  errors: [],
+  errors: [InvalidParameterValue],
 }));
 /**
  * Grants an Amazon Web Services-authorized account permission to attach the specified
@@ -86651,12 +87060,12 @@ export const deleteIpamPool: (
   input: DeleteIpamPoolRequest,
 ) => effect.Effect<
   DeleteIpamPoolResult,
-  CommonErrors,
+  InvalidIpamPoolIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamPoolRequest,
   output: DeleteIpamPoolResult,
-  errors: [],
+  errors: [InvalidIpamPoolIdNotFound],
 }));
 /**
  * Delete the scope for an IPAM. You cannot delete the default scopes.
@@ -86667,12 +87076,12 @@ export const deleteIpamScope: (
   input: DeleteIpamScopeRequest,
 ) => effect.Effect<
   DeleteIpamScopeResult,
-  CommonErrors,
+  InvalidIpamScopeIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteIpamScopeRequest,
   output: DeleteIpamScopeResult,
-  errors: [],
+  errors: [InvalidIpamScopeIdNotFound],
 }));
 /**
  * Deletes one or more versions of a launch template.
@@ -87489,27 +87898,48 @@ export const describeNatGateways: {
     input: DescribeNatGatewaysRequest,
   ): effect.Effect<
     DescribeNatGatewaysResult,
-    ParseError | CommonErrors,
+    | DryRunOperation
+    | FilterLimitExceeded
+    | InvalidParameter
+    | NatGatewayMalformed
+    | ParseError
+    | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNatGatewaysRequest,
   ) => stream.Stream<
     DescribeNatGatewaysResult,
-    ParseError | CommonErrors,
+    | DryRunOperation
+    | FilterLimitExceeded
+    | InvalidParameter
+    | NatGatewayMalformed
+    | ParseError
+    | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNatGatewaysRequest,
   ) => stream.Stream<
     NatGateway,
-    ParseError | CommonErrors,
+    | DryRunOperation
+    | FilterLimitExceeded
+    | InvalidParameter
+    | NatGatewayMalformed
+    | ParseError
+    | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNatGatewaysRequest,
   output: DescribeNatGatewaysResult,
-  errors: [ParseError],
+  errors: [
+    DryRunOperation,
+    FilterLimitExceeded,
+    InvalidParameter,
+    NatGatewayMalformed,
+    ParseError,
+  ],
   pagination: {
     inputToken: "NextToken",
     outputToken: "NextToken",
@@ -87534,27 +87964,40 @@ export const describeNetworkInterfaces: {
     input: DescribeNetworkInterfacesRequest,
   ): effect.Effect<
     DescribeNetworkInterfacesResult,
-    InvalidNetworkInterfaceIDNotFound | CommonErrors,
+    | InvalidNetworkInterfaceIDNotFound
+    | InvalidNetworkInterfaceIdMalformed
+    | ParseError
+    | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: DescribeNetworkInterfacesRequest,
   ) => stream.Stream<
     DescribeNetworkInterfacesResult,
-    InvalidNetworkInterfaceIDNotFound | CommonErrors,
+    | InvalidNetworkInterfaceIDNotFound
+    | InvalidNetworkInterfaceIdMalformed
+    | ParseError
+    | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: DescribeNetworkInterfacesRequest,
   ) => stream.Stream<
     NetworkInterface,
-    InvalidNetworkInterfaceIDNotFound | CommonErrors,
+    | InvalidNetworkInterfaceIDNotFound
+    | InvalidNetworkInterfaceIdMalformed
+    | ParseError
+    | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: DescribeNetworkInterfacesRequest,
   output: DescribeNetworkInterfacesResult,
-  errors: [InvalidNetworkInterfaceIDNotFound],
+  errors: [
+    InvalidNetworkInterfaceIDNotFound,
+    InvalidNetworkInterfaceIdMalformed,
+    ParseError,
+  ],
   pagination: {
     inputToken: "NextToken",
     outputToken: "NextToken",
@@ -88493,12 +88936,17 @@ export const acceptVpcPeeringConnection: (
   input: AcceptVpcPeeringConnectionRequest,
 ) => effect.Effect<
   AcceptVpcPeeringConnectionResult,
-  InvalidVpcPeeringConnectionIdNotFound | CommonErrors,
+  | InvalidVpcPeeringConnectionIDNotFound
+  | InvalidVpcPeeringConnectionIdNotFound
+  | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: AcceptVpcPeeringConnectionRequest,
   output: AcceptVpcPeeringConnectionResult,
-  errors: [InvalidVpcPeeringConnectionIdNotFound],
+  errors: [
+    InvalidVpcPeeringConnectionIDNotFound,
+    InvalidVpcPeeringConnectionIdNotFound,
+  ],
 }));
 /**
  * Creates an EC2 Instance Connect Endpoint.
@@ -88512,12 +88960,12 @@ export const createInstanceConnectEndpoint: (
   input: CreateInstanceConnectEndpointRequest,
 ) => effect.Effect<
   CreateInstanceConnectEndpointResult,
-  CommonErrors,
+  InvalidSubnetIDNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateInstanceConnectEndpointRequest,
   output: CreateInstanceConnectEndpointResult,
-  errors: [],
+  errors: [InvalidSubnetIDNotFound],
 }));
 /**
  * Creates a launch template.
@@ -88571,12 +89019,12 @@ export const createVpcEncryptionControl: (
   input: CreateVpcEncryptionControlRequest,
 ) => effect.Effect<
   CreateVpcEncryptionControlResult,
-  CommonErrors,
+  InvalidVpcIdMalformed | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: CreateVpcEncryptionControlRequest,
   output: CreateVpcEncryptionControlResult,
-  errors: [],
+  errors: [InvalidVpcIdMalformed],
 }));
 /**
  * Deletes the specified transit gateway.
@@ -88585,12 +89033,12 @@ export const deleteTransitGateway: (
   input: DeleteTransitGatewayRequest,
 ) => effect.Effect<
   DeleteTransitGatewayResult,
-  ParseError | CommonErrors,
+  InvalidTransitGatewayIDMalformed | ParseError | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteTransitGatewayRequest,
   output: DeleteTransitGatewayResult,
-  errors: [ParseError],
+  errors: [InvalidTransitGatewayIDMalformed, ParseError],
 }));
 /**
  * Deletes the specified Connect peer.
@@ -88613,12 +89061,12 @@ export const deleteVerifiedAccessEndpoint: (
   input: DeleteVerifiedAccessEndpointRequest,
 ) => effect.Effect<
   DeleteVerifiedAccessEndpointResult,
-  CommonErrors,
+  InvalidVerifiedAccessEndpointIdNotFound | CommonErrors,
   Credentials | Rgn | HttpClient.HttpClient
 > = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
   input: DeleteVerifiedAccessEndpointRequest,
   output: DeleteVerifiedAccessEndpointResult,
-  errors: [],
+  errors: [InvalidVerifiedAccessEndpointIdNotFound],
 }));
 /**
  * Describes one or more Client VPN endpoints in the account.

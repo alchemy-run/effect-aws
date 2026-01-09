@@ -12003,6 +12003,10 @@ export class InvalidObjectState extends S.TaggedError<InvalidObjectState>()(
     AccessTier: S.optional(IntelligentTieringAccessTier),
   },
 ).pipe(C.withAuthError) {}
+export class RequestError extends S.TaggedError<RequestError>()(
+  "RequestError",
+  {},
+) {}
 export class MalformedXML extends S.TaggedError<MalformedXML>()(
   "MalformedXML",
   {},
@@ -15912,27 +15916,27 @@ export const listBuckets: {
     input: ListBucketsRequest,
   ): effect.Effect<
     ListBucketsOutput,
-    CommonErrors,
+    RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   pages: (
     input: ListBucketsRequest,
   ) => stream.Stream<
     ListBucketsOutput,
-    CommonErrors,
+    RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
   items: (
     input: ListBucketsRequest,
   ) => stream.Stream<
     Bucket,
-    CommonErrors,
+    RequestError | CommonErrors,
     Credentials | Rgn | HttpClient.HttpClient
   >;
 } = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBucketsRequest,
   output: ListBucketsOutput,
-  errors: [],
+  errors: [RequestError],
   pagination: {
     inputToken: "ContinuationToken",
     outputToken: "ContinuationToken",

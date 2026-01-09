@@ -3,13 +3,16 @@
     "createVpc": {
       "errors": [
         "InvalidParameterValue",
-        "ParseError"
+        "ParseError",
+        "VpcLimitExceeded"
       ]
     },
     "deleteVpc": {
       "errors": [
         "DependencyViolation",
-        "InvalidVpcID.NotFound"
+        "InvalidVpcID.NotFound",
+        "InvalidVpcId.Malformed",
+        "RequestError"
       ]
     },
     "createSubnet": {
@@ -20,7 +23,9 @@
     },
     "deleteSubnet": {
       "errors": [
-        "InvalidSubnetID.NotFound"
+        "DependencyViolation",
+        "InvalidSubnetID.NotFound",
+        "InvalidSubnetId.Malformed"
       ]
     },
     "createInternetGateway": {
@@ -30,12 +35,15 @@
     },
     "deleteInternetGateway": {
       "errors": [
-        "InvalidInternetGatewayID.NotFound"
+        "DependencyViolation",
+        "InvalidInternetGatewayID.NotFound",
+        "InvalidInternetGatewayId.Malformed"
       ]
     },
     "attachInternetGateway": {
       "errors": [
-        "InvalidInternetGatewayID.NotFound"
+        "InvalidInternetGatewayID.NotFound",
+        "InvalidInternetGatewayId.Malformed"
       ]
     },
     "detachInternetGateway": {
@@ -52,16 +60,20 @@
     "deleteRouteTable": {
       "errors": [
         "DependencyViolation",
-        "InvalidRouteTableID.NotFound"
+        "InvalidRouteTableID.NotFound",
+        "InvalidRouteTableId.Malformed"
       ]
     },
     "createRoute": {
       "errors": [
-        "InvalidRouteTableID.NotFound"
+        "InvalidRouteTableID.NotFound",
+        "InvalidRouteTableId.Malformed"
       ]
     },
     "createNatGateway": {
       "errors": [
+        "InvalidElasticIpID.NotFound",
+        "InvalidSubnet",
         "InvalidSubnetID.NotFound",
         "ParseError"
       ]
@@ -69,7 +81,8 @@
     "describeVpcs": {
       "errors": [
         "InvalidVpcID.NotFound",
-        "ParseError"
+        "ParseError",
+        "RequestError"
       ]
     },
     "describeSubnets": {
@@ -92,7 +105,10 @@
     },
     "deleteSecurityGroup": {
       "errors": [
-        "InvalidGroup.NotFound"
+        "CannotDelete",
+        "InvalidGroup.NotFound",
+        "InvalidGroupId.Malformed",
+        "MissingParameter"
       ]
     },
     "createNetworkAcl": {
@@ -103,33 +119,45 @@
     },
     "deleteNetworkAcl": {
       "errors": [
-        "InvalidNetworkAclID.NotFound"
+        "DryRunOperation",
+        "InvalidNetworkAclID.NotFound",
+        "InvalidNetworkAclId.Malformed"
       ]
     },
     "createVpcPeeringConnection": {
       "errors": [
         "InvalidVpcID.NotFound",
+        "InvalidVpcId.Malformed",
         "ParseError"
       ]
     },
     "acceptVpcPeeringConnection": {
       "errors": [
+        "InvalidVpcPeeringConnectionID.NotFound",
         "InvalidVpcPeeringConnectionId.NotFound"
       ]
     },
     "deleteDhcpOptions": {
       "errors": [
-        "InvalidDhcpOptionID.NotFound"
+        "InvalidDhcpOptionID.NotFound",
+        "InvalidDhcpOptionsId.Malformed"
       ]
     },
     "associateDhcpOptions": {
       "errors": [
-        "InvalidVpcID.NotFound"
+        "InvalidVpcID.NotFound",
+        "InvalidVpcId.Malformed"
       ]
     },
     "associateRouteTable": {
       "errors": [
-        "InvalidRouteTableID.NotFound"
+        "DryRunOperation",
+        "InvalidParameterCombination",
+        "InvalidParameterValue",
+        "InvalidPublicIpv4PoolID.Malformed",
+        "InvalidPublicIpv4PoolID.NotFound",
+        "InvalidRouteTableID.NotFound",
+        "MissingParameter"
       ]
     },
     "disassociateRouteTable": {
@@ -139,12 +167,18 @@
     },
     "describeNatGateways": {
       "errors": [
+        "DryRunOperation",
+        "FilterLimitExceeded",
+        "InvalidParameter",
+        "NatGatewayMalformed",
         "ParseError"
       ]
     },
     "createVpcEndpoint": {
       "errors": [
-        "InvalidVpcID.NotFound"
+        "InvalidServiceName",
+        "InvalidVpcID.NotFound",
+        "InvalidVpcId.NotFound"
       ]
     },
     "deleteVpcEndpoints": {
@@ -154,17 +188,20 @@
     },
     "rejectVpcPeeringConnection": {
       "errors": [
+        "InvalidVpcPeeringConnectionID.NotFound",
         "InvalidVpcPeeringConnectionId.NotFound"
       ]
     },
     "deleteVpcPeeringConnection": {
       "errors": [
+        "InvalidVpcPeeringConnectionID.NotFound",
         "InvalidVpcPeeringConnectionId.NotFound"
       ]
     },
     "associateVpcCidrBlock": {
       "errors": [
-        "InvalidVpcID.NotFound"
+        "InvalidVpcID.NotFound",
+        "InvalidVpcId.Malformed"
       ]
     },
     "modifySubnetAttribute": {
@@ -174,17 +211,22 @@
     },
     "disassociateVpcCidrBlock": {
       "errors": [
+        "InvalidVpcCidrBlockAssociationID.NotFound",
         "InvalidVpcCidrBlockAssociationIdError.NotFound"
       ]
     },
     "authorizeSecurityGroupIngress": {
       "errors": [
-        "InvalidGroup.NotFound"
+        "InvalidGroup.NotFound",
+        "InvalidGroupId.Malformed"
       ]
     },
     "revokeSecurityGroupIngress": {
       "errors": [
-        "InvalidGroup.NotFound"
+        "InvalidGroup.NotFound",
+        "InvalidGroupId.Malformed",
+        "MissingParameter",
+        "ParseError"
       ]
     },
     "createNetworkInterface": {
@@ -195,18 +237,23 @@
     },
     "deleteNetworkInterface": {
       "errors": [
-        "InvalidNetworkInterfaceID.NotFound"
+        "InvalidNetworkInterfaceID.NotFound",
+        "InvalidNetworkInterfaceId.Malformed"
       ]
     },
     "createEgressOnlyInternetGateway": {
       "errors": [
         "InvalidVpcID.NotFound",
+        "InvalidVpcId.Malformed",
         "ParseError"
       ]
     },
     "deleteEgressOnlyInternetGateway": {
       "errors": [
-        "InvalidGatewayID.NotFound"
+        "DryRunOperation",
+        "InvalidGatewayID.NotFound",
+        "MalformedGatewayID.NotFound",
+        "MissingParameter"
       ]
     },
     "createVpnGateway": {
@@ -232,22 +279,28 @@
     "createSecurityGroup": {
       "errors": [
         "InvalidGroup.Duplicate",
-        "MissingParameter"
+        "InvalidVpcID.NotFound",
+        "InvalidVpcId.Malformed",
+        "MissingParameter",
+        "VPCIdNotSpecified"
       ]
     },
     "createDhcpOptions": {
       "errors": [
+        "MissingParameter",
         "ParseError"
       ]
     },
     "createNetworkAclEntry": {
       "errors": [
-        "InvalidNetworkAclID.NotFound"
+        "InvalidNetworkAclID.NotFound",
+        "MissingParameter"
       ]
     },
     "deleteNetworkAclEntry": {
       "errors": [
-        "InvalidNetworkAclID.NotFound"
+        "InvalidNetworkAclID.NotFound",
+        "InvalidNetworkAclId.Malformed"
       ]
     },
     "replaceNetworkAclEntry": {
@@ -293,39 +346,51 @@
     },
     "authorizeSecurityGroupEgress": {
       "errors": [
-        "InvalidGroup.NotFound"
+        "InvalidGroup.NotFound",
+        "MissingParameter"
       ]
     },
     "revokeSecurityGroupEgress": {
       "errors": [
-        "InvalidGroup.NotFound"
+        "InvalidGroup.NotFound",
+        "InvalidGroupId.Malformed",
+        "InvalidParameterValue",
+        "InvalidPrefixListID.NotFound",
+        "InvalidSecurityGroupRuleId.Malformed",
+        "MissingParameter",
+        "UnknownParameter"
       ]
     },
     "describeSecurityGroups": {
       "errors": [
         "InvalidGroup.NotFound",
+        "InvalidGroupId.Malformed",
         "ParseError"
       ]
     },
     "describeNetworkAcls": {
       "errors": [
+        "InvalidNetworkAclID.NotFound",
         "InvalidRouteTableID.NotFound"
       ]
     },
     "createCarrierGateway": {
       "errors": [
         "InvalidVpcID.NotFound",
+        "InvalidVpcId.Malformed",
         "ParseError"
       ]
     },
     "deleteCarrierGateway": {
       "errors": [
+        "InvalidCarrierGatewayID.Malformed",
         "InvalidCarrierGatewayID.NotFound"
       ]
     },
     "createFlowLogs": {
       "errors": [
-        "InvalidID"
+        "InvalidID",
+        "InvalidParameterValue"
       ]
     },
     "deleteFlowLogs": {
@@ -340,6 +405,7 @@
     },
     "describeVpcPeeringConnections": {
       "errors": [
+        "InvalidVpcPeeringConnectionID.NotFound",
         "ParseError"
       ]
     },
@@ -365,7 +431,12 @@
     },
     "deleteRoute": {
       "errors": [
-        "InvalidRouteTableID.NotFound"
+        "InvalidParameterCombination",
+        "InvalidParameterValue",
+        "InvalidRoute.NotFound",
+        "InvalidRouteTableID.NotFound",
+        "InvalidRouteTableId.Malformed",
+        "MissingParameter"
       ]
     },
     "describeVpcEndpointServices": {
@@ -380,7 +451,9 @@
     },
     "describeNetworkInterfaces": {
       "errors": [
-        "InvalidNetworkInterfaceID.NotFound"
+        "InvalidNetworkInterfaceID.NotFound",
+        "InvalidNetworkInterfaceId.Malformed",
+        "ParseError"
       ]
     },
     "describeManagedPrefixLists": {
@@ -395,6 +468,7 @@
     },
     "describeCarrierGateways": {
       "errors": [
+        "InvalidCarrierGatewayID.Malformed",
         "ParseError"
       ]
     },
@@ -415,7 +489,8 @@
     },
     "deleteCustomerGateway": {
       "errors": [
-        "InvalidCustomerGatewayID.NotFound"
+        "InvalidCustomerGatewayID.NotFound",
+        "InvalidCustomerGatewayId.Malformed"
       ]
     },
     "modifyVpcAttribute": {
@@ -511,7 +586,8 @@
     },
     "describeVpcClassicLink": {
       "errors": [
-        "InvalidVpcID.NotFound"
+        "InvalidVpcID.NotFound",
+        "InvalidVpcId.Malformed"
       ]
     },
     "describeVpcClassicLinkDnsSupport": {
@@ -541,12 +617,18 @@
     },
     "deleteManagedPrefixList": {
       "errors": [
+        "InvalidPrefixListID.NotFound",
         "ParseError"
       ]
     },
     "releaseAddress": {
       "errors": [
-        "InvalidAllocationID.NotFound"
+        "AuthFailure",
+        "DryRunOperation",
+        "InvalidAllocationID.NotFound",
+        "InvalidParameterCombination",
+        "InvalidParameterValue",
+        "MissingParameter"
       ]
     },
     "associateAddress": {
@@ -566,6 +648,7 @@
     },
     "describeEgressOnlyInternetGateways": {
       "errors": [
+        "InvalidEgressOnlyInternetGatewayId.Malformed",
         "ParseError"
       ]
     },
@@ -773,6 +856,7 @@
     },
     "deleteTransitGateway": {
       "errors": [
+        "InvalidTransitGatewayID.Malformed",
         "ParseError"
       ]
     },
@@ -783,6 +867,7 @@
     },
     "deleteTransitGatewayRouteTable": {
       "errors": [
+        "InvalidRouteTableId.Malformed",
         "ParseError"
       ]
     },
@@ -799,6 +884,237 @@
     "describeTransitGatewayRouteTables": {
       "errors": [
         "ParseError"
+      ]
+    },
+    "deleteNatGateway": {
+      "errors": [
+        "DryRunOperation",
+        "InvalidParameter",
+        "MissingParameter",
+        "NatGatewayMalformed"
+      ]
+    },
+    "deleteClientVpnEndpoint": {
+      "errors": [
+        "InvalidClientVpnEndpointId.NotFound"
+      ]
+    },
+    "deleteNetworkInterfacePermission": {
+      "errors": [
+        "InvalidPermissionID.NotFound"
+      ]
+    },
+    "createIpam": {
+      "errors": [
+        "ParseError"
+      ]
+    },
+    "deleteIpam": {
+      "errors": [
+        "InvalidIpamId.NotFound"
+      ]
+    },
+    "deleteTransitGatewayVpcAttachment": {
+      "errors": [
+        "InvalidTransitGatewayAttachmentID.Malformed"
+      ]
+    },
+    "createTransitGatewayMulticastDomain": {
+      "errors": [
+        "InvalidTransitGatewayID.Malformed"
+      ]
+    },
+    "createLocalGatewayRouteTable": {
+      "errors": [
+        "InvalidLocalGatewayID.Malformed"
+      ]
+    },
+    "createSubnetCidrReservation": {
+      "errors": [
+        "InvalidSubnetID.Malformed"
+      ]
+    },
+    "deleteSubnetCidrReservation": {
+      "errors": [
+        "InvalidSubnetCidrReservationID.NotFound"
+      ]
+    },
+    "createTrafficMirrorFilter": {
+      "errors": [
+        "ParseError"
+      ]
+    },
+    "deleteTrafficMirrorFilter": {
+      "errors": [
+        "InvalidParameterValue"
+      ]
+    },
+    "deleteTrafficMirrorTarget": {
+      "errors": [
+        "InvalidParameterValue"
+      ]
+    },
+    "deleteTrafficMirrorSession": {
+      "errors": [
+        "InvalidParameterValue"
+      ]
+    },
+    "createNetworkInsightsPath": {
+      "errors": [
+        "InvalidParameterValue"
+      ]
+    },
+    "deleteNetworkInsightsPath": {
+      "errors": [
+        "InvalidParameterValue"
+      ]
+    },
+    "deleteNetworkInsightsAccessScope": {
+      "errors": [
+        "InvalidParameterValue"
+      ]
+    },
+    "deletePlacementGroup": {
+      "errors": [
+        "InvalidPlacementGroup.Unknown"
+      ]
+    },
+    "createCoipPool": {
+      "errors": [
+        "InvalidLocalGatewayRouteTableID.Malformed"
+      ]
+    },
+    "deleteCoipPool": {
+      "errors": [
+        "InvalidIpv4PoolCoipId.Malformed"
+      ]
+    },
+    "createClientVpnEndpoint": {
+      "errors": [
+        "MissingParameter"
+      ]
+    },
+    "createVerifiedAccessInstance": {
+      "errors": [
+        "ParseError"
+      ]
+    },
+    "deleteVerifiedAccessInstance": {
+      "errors": [
+        "InvalidVerifiedAccessInstanceId.NotFound"
+      ]
+    },
+    "createVerifiedAccessGroup": {
+      "errors": [
+        "InvalidVerifiedAccessInstanceId.NotFound"
+      ]
+    },
+    "deleteVerifiedAccessGroup": {
+      "errors": [
+        "InvalidVerifiedAccessGroupId.NotFound"
+      ]
+    },
+    "deleteVerifiedAccessEndpoint": {
+      "errors": [
+        "InvalidVerifiedAccessEndpointId.NotFound"
+      ]
+    },
+    "createVerifiedAccessTrustProvider": {
+      "errors": [
+        "MissingParameter"
+      ]
+    },
+    "deleteVerifiedAccessTrustProvider": {
+      "errors": [
+        "InvalidVerifiedAccessTrustProviderId.NotFound"
+      ]
+    },
+    "createIpamPool": {
+      "errors": [
+        "InvalidIpamScopeId.NotFound"
+      ]
+    },
+    "deleteIpamPool": {
+      "errors": [
+        "InvalidIpamPoolId.NotFound"
+      ]
+    },
+    "createIpamResourceDiscovery": {
+      "errors": [
+        "ResourceLimitExceeded"
+      ]
+    },
+    "deleteIpamResourceDiscovery": {
+      "errors": [
+        "InvalidIpamResourceDiscoveryId.NotFound"
+      ]
+    },
+    "createIpamScope": {
+      "errors": [
+        "InvalidIpamId.NotFound"
+      ]
+    },
+    "deleteIpamScope": {
+      "errors": [
+        "InvalidIpamScopeId.NotFound"
+      ]
+    },
+    "createIpamPolicy": {
+      "errors": [
+        "MissingParameter"
+      ]
+    },
+    "deleteIpamPolicy": {
+      "errors": [
+        "InvalidIpamPolicyId.NotFound"
+      ]
+    },
+    "createRouteServer": {
+      "errors": [
+        "MissingParameter"
+      ]
+    },
+    "deleteRouteServer": {
+      "errors": [
+        "InvalidRouteServerId.NotFound"
+      ]
+    },
+    "createInstanceConnectEndpoint": {
+      "errors": [
+        "InvalidSubnetID.NotFound"
+      ]
+    },
+    "deleteInstanceConnectEndpoint": {
+      "errors": [
+        "InvalidInstanceConnectEndpointId.NotFound"
+      ]
+    },
+    "createVpcBlockPublicAccessExclusion": {
+      "errors": [
+        "InvalidVpcId.Malformed",
+        "MissingParameter"
+      ]
+    },
+    "deleteVpcBlockPublicAccessExclusion": {
+      "errors": [
+        "MissingParameter"
+      ]
+    },
+    "createVpcEncryptionControl": {
+      "errors": [
+        "InvalidVpcId.Malformed"
+      ]
+    },
+    "deleteVpcEncryptionControl": {
+      "errors": [
+        "InvalidVpcEncryptionControlId.NotFound"
+      ]
+    },
+    "replaceNetworkAclAssociation": {
+      "errors": [
+        "DryRunOperation",
+        "InvalidAssociationID.NotFound",
+        "MissingParameter"
       ]
     }
   }
